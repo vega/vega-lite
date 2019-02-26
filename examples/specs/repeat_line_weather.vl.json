@@ -4,13 +4,11 @@
   "data": {
     "url": "data/weather.csv"
   },
-  "repeat": {
-    "column": [
-      "temp_max",
-      "precipitation",
-      "wind"
-    ]
-  },
+  "repeat": [
+    "temp_max",
+    "precipitation",
+    "wind"
+  ],
   "spec": {
     "mark": "line",
     "encoding": {
@@ -21,7 +19,7 @@
       },
       "y": {
         "field": {
-          "repeat": "column"
+          "repeat": "repeat"
         },
         "type": "quantitative",
         "aggregate": "mean"

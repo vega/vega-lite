@@ -17,7 +17,7 @@ The `repeat` operator is part of Vega-Lite's [view composition](composition.html
 
 ## Repeat Operator
 
-To repeat a view, define what fields should be used for each entry in the row or columns. Then define the repeated view in `spec` with a reference to a repeated field (`{"repeat": ...}`).
+To repeat a view, define what fields should be used for each entry. Then define the repeated view in `spec` with a reference to a repeated field (`{"repeat": ...}`).
 
 ```js
 {
@@ -28,6 +28,22 @@ To repeat a view, define what fields should be used for each entry in the row or
 }
 ```
 
+In addition to [common properties of a view specification](spec.html#common), a repeat specification has the following properties:
+
+{% include table.html props="repeat,spec,columns" source="RepeatSpec" %}
+
+## Row/Column Repeat Mapping
+
+The `repeat` property can be an object with two optional properties (`"row"` and `"column"`), which define the list of fields that should be repeated into a row or column.
+
+{: #repeat}
+
+{% include table.html props="row,column" source="Repeat" %}
+
+## Examples
+
+### Repeated Line Charts
+
 For instance, you can use this operator to quickly create an overview over the trends in multiple variables.
 
 <span class="vl-example" data-name="repeat_line_weather"></span>
@@ -36,24 +52,16 @@ Note how the field for the y channel refers to a repeated field.
 
 ```js
 "y": {
-  "field": {"repeat": "column"}
+  "field": {"repeat": "repeat"}
   ...
 },
 ```
 
-In addition to [common properties of a view specification](spec.html#common), a repeat specification has the following properties:
-
-{% include table.html props="repeat,spec,align,bounds,center,spacing,resolve" source="RepeatSpec" %}
-
-The `repeat` property is an object with two optional properties. They define the list of fields that should be repeated into a row or column.
-
-{: #repeat} {% include table.html props="column,row" source="Repeat" %}
-
-## Example: Repeated Histogram
+### Repeated Histogram (Wrapped)
 
 <span class="vl-example" data-name="repeat_histogram"></span>
 
-## Example: Scatterplot Matrix (SPLOM)
+### Scatterplot Matrix (SPLOM)
 
 Repeat can be used to create a scatterplot matrix (SPLOM), where each cell shows a different 2D projection of the same data table. Here, we define **both** `row` and `column`.
 

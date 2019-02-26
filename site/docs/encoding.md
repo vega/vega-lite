@@ -50,6 +50,7 @@ An integral part of the data visualization process is encoding data with visual 
     "detail": ...,
 
     // Facet Channels
+    "facet": ...,
     "row": ...,
     "column": ...
   },
@@ -71,7 +72,7 @@ The keys in the `encoding` object are encoding channels. Vega-lite supports the 
 - [Level of Detail Channel](#detail): `detail`
 - [Key Channel](#key): `key`
 - [Order Channel](#order): `order`
-- [Facet Channels](#facet): `row`, `column`
+- [Facet Channels](#facet): `facet`, `row`, `column`
 
 ## Channel Definition
 
@@ -309,10 +310,8 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 ## Facet Channels
 
-`row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).
+`facet`, `row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).
 
-{% include table.html props="row,column" source="EncodingWithFacet" %}
+{% include table.html props="facet,row,column" source="FacetedEncoding" %}
 
 For more information, read the [facet documentation](facet.html).
-
-{:#def}

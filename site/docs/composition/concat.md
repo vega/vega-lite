@@ -5,7 +5,11 @@ title: Concatenating views
 permalink: /docs/concat.html
 ---
 
-To place views side-by-side, Vega-Lite's [view composition](composition.html) provides operators for horizontal (`hconcat`) and vertical (`vconcat`) concatenation.
+To place views side-by-side, Vega-Lite's [view composition](composition.html) provides the following concatenation operators:
+
+- [`hconcat`](#hconcat) - horizontal concatenation
+- [`vconcat`](#vconcat) - vertical concatenation
+- [`concat`](#concat) - general concatenation (wrappable)
 
 If you concatenate similar views where the only difference is the field that is used in an encoding, use the [`repeat` operator](repeat.html).
 
@@ -17,45 +21,75 @@ If you concatenate similar views where the only difference is the field that is 
 - TOC
 {:toc}
 
+{:#hconcat}
+
 ## Horizontal Concatenation
 
-Put multiple views into a row by putting the specs for each view into an array and assign it to the `hconcat` property.
+To put multiple views into a column, set the `"hconcat"` to an array of view specifications.
 
 ```js
 {
   "hconcat": [
     ...  // Specifications
-  ]
+  ],
+  ...
 }
 ```
 
-In addition to [common properties of a view specification](spec.html#common), a horizontal concatenation specification has the following properties:
+In addition to [common properties of a view specification](spec.html#common), a horizontal concat specification has the following properties:
 
-{% include table.html props="hconcat,bounds,center,spacing,resolve" source="HConcatSpec" %}
+{% include table.html props="hconcat" source="HConcatSpec" %}
 
 ### Example
 
 <span class="vl-example" data-name="hconcat_weather"></span>
 
+{:#vconcat}
+
 ## Vertical Concatenation
 
-Put multiple views into a column by putting the specs for each view into an array and assign it to the `vconcat` property.
+To put multiple views into a row, set the `"vconcat"` to an array of view specifications.
 
 ```js
 {
   "vconcat": [
     ...  // Specifications
-  ]
+  ],
+  ...
 }
 ```
 
-In addition to [common properties of a view specification](spec.html#common), a vertical concatenation specification has the following properties:
+In addition to [common properties of a view specification](spec.html#common), a vertical concat specification has the following properties:
 
-{% include table.html props="vconcat,bounds,center,spacing,resolve" source="VConcatSpec" %}
+{% include table.html props="vconcat" source="VConcatSpec" %}
 
 ### Example
 
 <span class="vl-example" data-name="vconcat_weather"></span>
+
+## General (Wrappable) Concatenation
+
+To put multiple views into a flexible flow layout, set the `"concat"` to an array of view specifications and specify the `"columns"` property to set the number of maximum items per rows.
+
+{: .suppress-error}
+
+```js
+{
+  "concat": [
+    ...  // Specifications
+  ],
+  "columns": ...,
+  ...
+}
+```
+
+In addition to [common properties of a view specification](spec.html#common), a general concat specification has the following properties:
+
+{% include table.html props="concat,columns" source="ConcatSpec" %}
+
+### Example
+
+<span class="vl-example" data-name="concat_weather"></span>
 
 ## Resolve
 

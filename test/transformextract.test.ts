@@ -28,6 +28,7 @@ describe('extractTransforms()', () => {
     'circle_github_punchcard.vl.json',
     'concat_bar_layer_circle.vl.json',
     'concat_marginal_histograms.vl.json',
+    'concat_weather.vl.json',
     'errorbar_aggregate.vl.json',
     'errorbar_horizontal_aggregate.vl.json',
     'facet_independent_scale_layer_broken.vl.json',

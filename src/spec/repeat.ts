@@ -6,12 +6,12 @@ import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
 export interface Repeat {
   /**
-   * Vertical repeated views.
+   * An array of fields to be repeated vertically.
    */
   row?: string[];
 
   /**
-   * Horizontal repeated views.
+   * An array of fields to be repeated horizontally.
    */
   column?: string[];
 }
@@ -24,10 +24,15 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extend
     GenericCompositionLayoutWithColumns,
     ResolveMixins {
   /**
-   * An object that describes what fields should be repeated into views that are laid out as a `row` or `column`.
+   * Definition for fields to be repeated.  One of:
+   * 1) An array of fields to be repeated.  If `"repeat"` is an array, the field can be referred using `{"repeat": "repeat"}`
+   * 2) An object that mapped `"row"` and/or `"column"` to the listed of fields to be repeated along the particular orientations. The objects `{"repeat": "row"}` and `{"repeat": "column"}` can be used to refer to the repeated field respectively.
    */
-  repeat: Repeat | string[];
+  repeat: string[] | Repeat;
 
+  /**
+   * A specification of the view that gets repeated.
+   */
   spec: GenericSpec<U, L>;
 }
 
