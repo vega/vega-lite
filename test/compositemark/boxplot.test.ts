@@ -716,7 +716,7 @@ describe('normalizeBoxIQR', () => {
       ]
     };
 
-    expect(output).toEqual({
+    expect(output).toMatchObject({
       layer: [
         {
           transform: [
@@ -821,7 +821,7 @@ describe('normalizeBoxIQR', () => {
       },
       defaultConfig
     );
-    expect(output).toEqual({
+    expect(output).toMatchObject({
       description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
       data: {url: 'data/population.json'},
       layer: [partialOutlierUnit, partialBoxUnit]

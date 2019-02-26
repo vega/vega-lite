@@ -17,4 +17,11 @@ describe('SignalRefWrapper', () => {
   it('should look like a signal', () => {
     expect(s).toEqual({signal: 'hello world'});
   });
+
+  it('should not overwrite previous property', () => {
+    const t = new SignalRefWrapper(() => 'hello vega');
+    expect(t).toEqual({signal: 'hello vega'});
+
+    expect(s).toEqual({signal: 'hello world'});
+  });
 });
