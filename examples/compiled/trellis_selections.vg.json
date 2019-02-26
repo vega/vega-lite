@@ -465,7 +465,7 @@
           "type": "path",
           "from": {"data": "child_marks"},
           "encode": {
-            "enter": {
+            "update": {
               "fill": {"value": "transparent"},
               "strokeWidth": {"value": 0.35},
               "stroke": {"value": "transparent"},
