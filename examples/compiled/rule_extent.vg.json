@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Minimum and maxmimum horsepower of cars from different origins.",
   "autosize": "pad",
   "padding": 5,
@@ -22,11 +22,8 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
-    {
-      "name": "width",
-      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-    }
+    {"name": "x_step", "value": 20},
+    {"name": "width", "update": "bandspace(domain('x').length, 0, 0) * x_step"}
   ],
   "marks": [
     {
@@ -59,8 +56,8 @@
       "type": "band",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
       "range": {"step": {"signal": "x_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     },
     {
       "name": "y",

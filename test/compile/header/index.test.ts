@@ -1,5 +1,4 @@
-import {assert} from 'chai';
-import {getHeaderGroups, getTitleGroup, labelAlign, labelBaseline} from '../../../src/compile/header';
+import {assembleHeaderGroups, assembleTitleGroup, labelAlign, labelBaseline} from '../../../src/compile/header';
 import {getHeaderProperties} from '../../../src/compile/header/index';
 import {
   HEADER_LABEL_PROPERTIES,
@@ -40,10 +39,10 @@ describe('compile/header/index', () => {
       model.parseLayoutSize();
       model.parseAxisAndHeader();
 
-      const rowHeaderGroups = getHeaderGroups(model, 'row');
-      const columnHeaderGroups = getHeaderGroups(model, 'column');
-      assert.equal(rowHeaderGroups[0].sort.order, 'ascending');
-      assert.equal(columnHeaderGroups[0].sort.order, 'descending');
+      const rowHeaderGroups = assembleHeaderGroups(model, 'row');
+      const columnHeaderGroups = assembleHeaderGroups(model, 'column');
+      expect(rowHeaderGroups[0].sort.order).toEqual('ascending');
+      expect(columnHeaderGroups[0].sort.order).toEqual('descending');
     });
 
     it('should correctly process sort field', () => {
@@ -63,8 +62,8 @@ describe('compile/header/index', () => {
       model.parseLayoutSize();
       model.parseAxisAndHeader();
 
-      const rowHeaderGroups = getHeaderGroups(model, 'row');
-      assert.equal(rowHeaderGroups[0].sort.field, 'datum["min_d"]');
+      const rowHeaderGroups = assembleHeaderGroups(model, 'row');
+      expect(rowHeaderGroups[0].sort.field).toEqual('datum["min_d"]');
     });
   });
 
@@ -87,7 +86,7 @@ describe('compile/header/index', () => {
     model.parseAxisAndHeader();
 
     describe('for column', () => {
-      const columnLabelGroup = getTitleGroup(model, 'column');
+      const columnLabelGroup = assembleTitleGroup(model, 'column');
       const {title, ...columnTitleGroupTopLevelProps} = columnLabelGroup;
       it('returns a header group mark with correct name, role, and type.', () => {
         expect(columnTitleGroupTopLevelProps).toEqual({
@@ -107,7 +106,7 @@ describe('compile/header/index', () => {
     });
 
     describe('for row', () => {
-      const rowTitleGroup = getTitleGroup(model, 'row');
+      const rowTitleGroup = assembleTitleGroup(model, 'row');
       const {title, ...rowTitleGroupTopLevelProps} = rowTitleGroup;
       it('returns a header group mark with correct name, role, and type.', () => {
         expect(rowTitleGroupTopLevelProps).toEqual({

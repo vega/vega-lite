@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "data": [
@@ -20,7 +20,7 @@
     {"name": "child_height", "value": 200}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "offset": {"rowTitle": 10, "columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -55,6 +55,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
@@ -80,6 +81,7 @@
         "text": {"signal": "''+parent[\"Origin\"]"},
         "offset": 10,
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
@@ -210,7 +212,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     },
     {
       "name": "shape",
@@ -222,6 +225,7 @@
   "legends": [
     {
       "stroke": "color",
+      "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
       "title": "Cylinders",
       "encode": {
         "symbols": {
@@ -234,6 +238,7 @@
     },
     {
       "shape": "shape",
+      "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
       "title": "Origin",
       "encode": {
         "symbols": {

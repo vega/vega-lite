@@ -5,8 +5,7 @@ title: Rect
 permalink: /docs/rect.html
 ---
 
-{: .suppress-error}
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -19,16 +18,17 @@ permalink: /docs/rect.html
 The `rect` mark represents an arbitrary rectangle.
 
 ## Documentation Overview
+
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 {:#properties}
+
 ## Rect Mark Properties
 
-
-{: .suppress-error}
-```json
+```js
 // Single View Specification
 {
   ...
@@ -41,8 +41,7 @@ The `rect` mark represents an arbitrary rectangle.
 }
 ```
 
-A rect mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
-{% include table.html props="cornerRadius" source="MarkConfig" %}
+A rect mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties: {% include table.html props="cornerRadius" source="MarkConfig" %}
 
 ## Examples
 
@@ -59,6 +58,7 @@ We can similarly use rect with binned fields and discretized temporal fields.
 <span class="vl-example" data-name="rect_heatmap_weather"></span>
 
 {:#ranged}
+
 ### Ranged Rectangles
 
 Specifying both `x` and `x2` and/or `y` and `y2` creates a rectangle that spans over certain x and/or y values.
@@ -71,12 +71,11 @@ We can also use `rect` to show a band covering one standard deviation over and b
 
 <span class="vl-example" data-name="layer_global_mean_dev"></span>
 
-
 {:#config}
+
 ## Rect Config
 
-{: .suppress-error}
-```json
+```js
 // Top-level View Specification
 {
   ...
@@ -87,6 +86,6 @@ We can also use `rect` to show a band covering one standard deviation over and b
 }
 ```
 
-The `rect` property of the top-level [`config`](config.html) object sets the default properties for all rect marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
+The `rect` property of the top-level [`config`](config.html) object sets the default properties for all rect marks. If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
 The rect config can contain any [rect mark properties](#properties) (except `type`, `style`, and `clip`).

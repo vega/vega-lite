@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "height": 200,
@@ -8,37 +8,20 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json", "parse": {"Horsepower": "number"}}
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
+      "format": {"type": "json", "parse": {"Horsepower": "number"}},
       "transform": [
         {
           "type": "aggregate",
           "groupby": ["Cylinders"],
-          "ops": ["max"],
-          "fields": ["Horsepower"],
-          "as": ["max_Horsepower"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["Cylinders"],
-          "ops": ["min"],
-          "fields": ["Horsepower"],
-          "as": ["min_Horsepower"]
+          "ops": ["min", "max"],
+          "fields": ["Horsepower", "Horsepower"],
+          "as": ["min_Horsepower", "max_Horsepower"]
         }
       ]
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
@@ -50,7 +33,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"Cylinders\"]", "order": "descending"},
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "darkred"},
@@ -69,7 +52,7 @@
       "name": "layer_0_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -93,7 +76,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"Cylinders\"]", "order": "descending"},
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -112,7 +95,7 @@
       "name": "layer_1_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -136,13 +119,7 @@
     {
       "name": "x",
       "type": "point",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "Cylinders"},
-          {"data": "data_1", "field": "Cylinders"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "padding": 0.5
     },
@@ -150,10 +127,8 @@
       "name": "y",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_0", "field": "max_Horsepower"},
-          {"data": "data_1", "field": "min_Horsepower"}
-        ]
+        "data": "source_0",
+        "fields": ["max_Horsepower", "min_Horsepower"]
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,

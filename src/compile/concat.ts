@@ -1,6 +1,7 @@
 import {Config} from '../config';
 import * as log from '../log';
-import {isVConcatSpec, NormalizedConcatSpec} from '../spec';
+import {isHConcatSpec, isVConcatSpec, NormalizedConcatSpec} from '../spec';
+import {NormalizedSpec} from '../spec/index';
 import {VgLayout} from '../vega.schema';
 import {BaseConcatModel} from './baseconcat';
 import {buildModel} from './buildmodel';
@@ -30,9 +31,18 @@ export class ConcatModel extends BaseConcatModel {
 
     this.isVConcat = isVConcatSpec(spec);
 
-    this.children = (isVConcatSpec(spec) ? spec.vconcat : spec.hconcat).map((child, i) => {
+    this.children = this.getChildren(spec).map((child, i) => {
       return buildModel(child, this, this.getName('concat_' + i), undefined, repeater, config, false);
     });
+  }
+
+  private getChildren(spec: NormalizedConcatSpec): NormalizedSpec[] {
+    if (isVConcatSpec(spec)) {
+      return spec.vconcat;
+    } else if (isHConcatSpec(spec)) {
+      return spec.hconcat;
+    }
+    return spec.concat;
   }
 
   public parseLayoutSize() {

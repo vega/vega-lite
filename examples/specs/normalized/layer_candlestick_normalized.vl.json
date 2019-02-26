@@ -215,7 +215,7 @@
           "value": "#ae1325"
         },
         "y": {"field": "low", "type": "quantitative", "scale": {"zero": false}},
-        "y2": {"field": "high", "type": "quantitative"}
+        "y2": {"field": "high"}
       }
     },
     {
@@ -227,7 +227,7 @@
           "value": "#ae1325"
         },
         "y": {"field": "open", "type": "quantitative"},
-        "y2": {"field": "close", "type": "quantitative"},
+        "y2": {"field": "close"},
         "size": {"value": 5}
       }
     }

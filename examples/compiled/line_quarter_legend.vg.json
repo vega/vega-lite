@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock price average broken down by quarter.",
   "autosize": "pad",
   "padding": 5,
@@ -90,10 +90,10 @@
     },
     {
       "name": "color",
-      "type": "sequential",
+      "type": "time",
       "domain": {"data": "source_0", "field": "quarter_date"},
       "range": "ramp",
-      "zero": false
+      "interpolate": "hcl"
     }
   ],
   "axes": [
@@ -151,7 +151,9 @@
   "legends": [
     {
       "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "date (quarter)",
+      "type": "symbol",
       "encode": {
         "labels": {"update": {"text": {"signal": "'Q' + quarter(datum.value)"}}}
       }

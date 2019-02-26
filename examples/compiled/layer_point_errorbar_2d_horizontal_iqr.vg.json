@@ -1,51 +1,35 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
   "style": "cell",
   "data": [
-    {"name": "source_0", "url": "data/barley.json", "format": {"type": "json"}},
     {
-      "name": "data_0",
-      "source": "source_0",
+      "name": "source_0",
+      "url": "data/barley.json",
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "aggregate",
           "groupby": ["variety"],
-          "ops": ["q1", "q3"],
-          "fields": ["yield", "yield"],
-          "as": ["lower_yield", "upper_yield"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["variety"],
-          "ops": ["median"],
-          "fields": ["yield"],
-          "as": ["median_yield"]
+          "ops": ["median", "median", "q1", "q3"],
+          "fields": ["yield", "yield", "yield", "yield"],
+          "as": ["median_yield", "center_yield", "lower_yield", "upper_yield"]
         }
       ]
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 21},
-    {
-      "name": "height",
-      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
-    }
+    {"name": "y_step", "value": 20},
+    {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
   ],
   "marks": [
     {
       "name": "layer_0_layer_0_marks",
       "type": "rule",
       "style": ["rule", "errorbar-rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": [
@@ -56,7 +40,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"upper_yield\": format(datum[\"upper_yield\"], \"\")}"
+            "signal": "{\"Q3 of yield\": format(datum[\"upper_yield\"], \"\"), \"Q1 of yield\": format(datum[\"lower_yield\"], \"\"), \"Median of yield\": format(datum[\"center_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},
@@ -68,7 +52,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -92,11 +76,8 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_0", "field": "lower_yield"},
-          {"data": "data_0", "field": "upper_yield"},
-          {"data": "data_1", "field": "median_yield"}
-        ]
+        "data": "source_0",
+        "fields": ["lower_yield", "upper_yield", "median_yield"]
       },
       "range": [0, {"signal": "width"}],
       "zero": false,
@@ -105,16 +86,10 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "variety"},
-          {"data": "data_1", "field": "variety"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "variety", "sort": true},
       "range": {"step": {"signal": "y_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     }
   ],
   "axes": [

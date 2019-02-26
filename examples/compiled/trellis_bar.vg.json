@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
   "autosize": "pad",
   "padding": 5,
@@ -47,7 +47,7 @@
     {"name": "child_height", "value": 200}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "offset": {"rowTitle": 10},
     "columns": 1,
     "bounds": "full",
@@ -76,6 +76,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
@@ -140,7 +141,7 @@
                 {"scale": "color", "field": "gender"}
               ],
               "tooltip": {
-                "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
               },
               "x": {"scale": "x", "field": "age"},
               "width": {"scale": "x", "band": true},
@@ -191,12 +192,14 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "gender", "sort": true},
-      "range": ["#EA98D2", "#659CCA"]
+      "range": ["#EA98D2", "#659CCA"],
+      "interpolate": "hcl"
     }
   ],
   "legends": [
     {
       "fill": "color",
+      "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
       "title": "gender",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }

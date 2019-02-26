@@ -1,6 +1,5 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
 import {FacetModel} from '../../../src/compile/facet';
 import * as selection from '../../../src/compile/selection/selection';
 import {UnitModel} from '../../../src/compile/unit';
@@ -38,24 +37,21 @@ describe('Faceted Selections', () => {
   const unit = model.children[0].children[1] as UnitModel;
 
   it('should assemble a facet signal', () => {
-    assert.includeDeepMembers(selection.assembleFacetSignals(model as FacetModel, []), [
-      {
-        name: 'facet',
-        value: {},
-        on: [
-          {
-            events: [{source: 'scope', type: 'mousemove'}],
-            update: 'isTuple(facet) ? facet : group("cell").datum'
-          }
-        ]
-      }
-    ]);
+    expect(selection.assembleFacetSignals(model as FacetModel, [])).toContainEqual({
+      name: 'facet',
+      value: {},
+      on: [
+        {
+          events: [{source: 'scope', type: 'mousemove'}],
+          update: 'isTuple(facet) ? facet : group("cell").datum'
+        }
+      ]
+    });
   });
 
   it('should name the unit with the facet keys', () => {
-    assert.equal(
-      selection.unitName(unit),
-      `"child_layer_1" + '_' + (facet["bin_maxbins_6_X"]) + '_' + (facet["Series"])`
+    expect(selection.unitName(unit)).toEqual(
+      `"child_layer_1" + '__facet_row_' + (facet["bin_maxbins_6_X"]) + '__facet_column_' + (facet["Series"])`
     );
   });
 });

@@ -1,6 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
-  "description": "A simple bar chart with embedded data.",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "height": 200,
@@ -31,7 +30,7 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
@@ -84,7 +83,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "data_0", "field": "c", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     }
   ],
   "axes": [
@@ -125,6 +125,7 @@
   "legends": [
     {
       "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "c",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }

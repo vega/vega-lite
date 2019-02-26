@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {dateTimeExpr} from '../src/datetime';
 import * as log from '../src/log';
 
@@ -12,8 +11,8 @@ describe('datetime', () => {
           day: 'monday'
         };
         const expr = dateTimeExpr(d, true);
-        assert.equal(expr, 'datetime(2007, 0, 1, 0, 0, 0, 0)');
-        assert.equal(localLogger.warns[0], log.message.droppedDay(d));
+        expect(expr).toEqual('datetime(2007, 0, 1, 0, 0, 0, 0)');
+        expect(localLogger.warns[0]).toEqual(log.message.droppedDay(d));
       })
     );
 
@@ -24,33 +23,28 @@ describe('datetime', () => {
         },
         true
       );
-      assert.equal(expr, 'datetime(0, 1*3, 1, 0, 0, 0, 0)');
+      expect(expr).toEqual('datetime(0, 1*3, 1, 0, 0, 0, 0)');
     });
 
     it(
       'should log warning for quarter > 4',
       log.wrap(localLogger => {
-        assert.equal(
+        expect(
           dateTimeExpr(
             {
               quarter: 5
             },
             true
-          ),
-          'datetime(0, 4*3, 1, 0, 0, 0, 0)'
-        );
-        assert.equal(localLogger.warns[0], log.message.invalidTimeUnit('quarter', 5));
+          )
+        ).toEqual('datetime(0, 4*3, 1, 0, 0, 0, 0)');
+        expect(localLogger.warns[0]).toEqual(log.message.invalidTimeUnit('quarter', 5));
       })
     );
 
     it('should throw error for invalid quarter', () => {
-      assert.throws(
-        () => {
-          dateTimeExpr({quarter: 'Q'}, true);
-        },
-        Error,
-        log.message.invalidTimeUnit('quarter', 'Q')
-      );
+      expect(() => {
+        dateTimeExpr({quarter: 'Q'}, true);
+      }).toThrow();
     });
 
     it('should normalize numeric month correctly', () => {
@@ -60,126 +54,108 @@ describe('datetime', () => {
         },
         true
       );
-      assert.equal(expr, 'datetime(0, 0, 1, 0, 0, 0, 0)');
+      expect(expr).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
     });
 
     it('should normalize month name correctly', () => {
-      assert.equal(
+      expect(
         dateTimeExpr(
           {
             month: 'January'
           },
           true
-        ),
-        'datetime(0, 0, 1, 0, 0, 0, 0)'
-      );
-      assert.equal(
+        )
+      ).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
+      expect(
         dateTimeExpr(
           {
             month: 'january'
           },
           true
-        ),
-        'datetime(0, 0, 1, 0, 0, 0, 0)'
-      );
-      assert.equal(
+        )
+      ).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
+      expect(
         dateTimeExpr(
           {
             month: 'Jan'
           },
           true
-        ),
-        'datetime(0, 0, 1, 0, 0, 0, 0)'
-      );
-      assert.equal(
+        )
+      ).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
+      expect(
         dateTimeExpr(
           {
             month: 'jan'
           },
           true
-        ),
-        'datetime(0, 0, 1, 0, 0, 0, 0)'
-      );
+        )
+      ).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
     });
 
     it('should throw error for invalid month', () => {
-      assert.throws(
-        () => {
-          dateTimeExpr({month: 'J'}, true);
-        },
-        Error,
-        log.message.invalidTimeUnit('month', 'J')
-      );
+      expect(() => {
+        dateTimeExpr({month: 'J'}, true);
+      }).toThrow();
     });
 
     it('should normalize numeric day (of week) correctly', () => {
-      assert.equal(
+      expect(
         dateTimeExpr(
           {
             day: 0
           },
           true
-        ),
-        'datetime(2006, 0, 0+1, 0, 0, 0, 0)'
-      );
-      assert.equal(
+        )
+      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      expect(
         dateTimeExpr(
           {
             day: 7
           },
           true
-        ),
-        'datetime(2006, 0, 0+1, 0, 0, 0, 0)'
-      );
+        )
+      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
     });
 
     it('should normalize day name correctly and use year 2006 to ensure correct', () => {
-      assert.equal(
+      expect(
         dateTimeExpr(
           {
             day: 'Sunday'
           },
           true
-        ),
-        'datetime(2006, 0, 0+1, 0, 0, 0, 0)'
-      );
-      assert.equal(
+        )
+      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      expect(
         dateTimeExpr(
           {
             day: 'sunday'
           },
           true
-        ),
-        'datetime(2006, 0, 0+1, 0, 0, 0, 0)'
-      );
-      assert.equal(
+        )
+      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      expect(
         dateTimeExpr(
           {
             day: 'Sun'
           },
           true
-        ),
-        'datetime(2006, 0, 0+1, 0, 0, 0, 0)'
-      );
-      assert.equal(
+        )
+      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      expect(
         dateTimeExpr(
           {
             day: 'sun'
           },
           true
-        ),
-        'datetime(2006, 0, 0+1, 0, 0, 0, 0)'
-      );
+        )
+      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
     });
 
     it('should throw error for invalid day', () => {
-      assert.throws(
-        () => {
-          dateTimeExpr({day: 'S'}, true);
-        },
-        Error,
-        log.message.invalidTimeUnit('day', 'S')
-      );
+      expect(() => {
+        dateTimeExpr({day: 'S'}, true);
+      }).toThrow();
     });
 
     it('should use utc expression if utc is specified', () => {
@@ -189,7 +165,7 @@ describe('datetime', () => {
         utc: true
       };
       const expr = dateTimeExpr(d, true);
-      assert.equal(expr, 'utc(2007, 0, 1, 0, 0, 0, 0)');
+      expect(expr).toEqual('utc(2007, 0, 1, 0, 0, 0, 0)');
     });
 
     // Note: Other part of coverage handled by timeUnit.fieldExpr's test

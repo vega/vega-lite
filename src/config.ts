@@ -1,7 +1,7 @@
 import {isObject} from 'vega-util';
 import {AxisConfigMixins} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
-import {VL_ONLY_GUIDE_CONFIG} from './guide';
+import {VL_ONLY_GUIDE_CONFIG, VL_ONLY_LEGEND_CONFIG} from './guide';
 import {HeaderConfig} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import * as mark from './mark';
@@ -15,13 +15,14 @@ import {
 import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
+import {BaseViewBackground} from './spec/base';
+import {TopLevelProperties} from './spec/toplevel';
 import {StackOffset} from './stack';
 import {extractTitleConfig, TitleConfig} from './title';
-import {TopLevelProperties} from './toplevelprops';
 import {duplicate, keys, mergeDeep} from './util';
-import {StrokeJoin, VgMarkConfig, VgScheme} from './vega.schema';
+import {BaseMarkConfig, SchemeConfig} from './vega.schema';
 
-export interface ViewConfig {
+export interface ViewConfig extends BaseViewBackground {
   /**
    * The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.
    *
@@ -42,79 +43,6 @@ export interface ViewConfig {
    * Whether the view should be clipped.
    */
   clip?: boolean;
-
-  // FILL_STROKE_CONFIG
-  /**
-   * The fill color.
-   *
-   * __Default value:__ (none)
-   *
-   */
-  fill?: string;
-
-  /**
-   * The fill opacity (value between [0,1]).
-   *
-   * __Default value:__ (none)
-   *
-   */
-  fillOpacity?: number;
-
-  /**
-   * The stroke color.
-   *
-   * __Default value:__ (none)
-   *
-   */
-  stroke?: string;
-
-  /**
-   * The stroke opacity (value between [0,1]).
-   *
-   * __Default value:__ (none)
-   *
-   */
-  strokeOpacity?: number;
-
-  /**
-   * The stroke width, in pixels.
-   *
-   * __Default value:__ (none)
-   *
-   */
-  strokeWidth?: number;
-
-  /**
-   * An array of alternating stroke, space lengths for creating dashed or dotted lines.
-   *
-   * __Default value:__ (none)
-   *
-   */
-  strokeDash?: number[];
-
-  /**
-   * The offset (in pixels) into which to begin drawing with the stroke dash array.
-   *
-   * __Default value:__ (none)
-   *
-   */
-  strokeDashOffset?: number;
-
-  /**
-   * The stroke line join method. One of miter (default), round or bevel.
-   *
-   * __Default value:__ 'miter'
-   *
-   */
-  strokeJoin?: StrokeJoin;
-
-  /**
-   * The stroke line join method. One of miter (default), round or bevel.
-   *
-   * __Default value:__ 'miter'
-   *
-   */
-  strokeMiterLimit?: number;
 }
 
 export const defaultViewConfig: ViewConfig = {
@@ -122,35 +50,35 @@ export const defaultViewConfig: ViewConfig = {
   height: 200
 };
 
-export type RangeConfigValue = (number | string)[] | VgScheme | {step: number};
+export type RangeConfigValue = (number | string)[] | SchemeConfig | {step: number};
 
-export type RangeConfig = RangeConfigProps & {[name: string]: RangeConfigValue};
+export type RangeConfig = RangeConfigProps & {[key: string]: RangeConfigValue};
 
 export interface RangeConfigProps {
   /**
    * Default range for _nominal_ (categorical) fields.
    */
-  category?: string[] | VgScheme;
+  category?: string[] | SchemeConfig;
 
   /**
    * Default range for diverging _quantitative_ fields.
    */
-  diverging?: string[] | VgScheme;
+  diverging?: string[] | SchemeConfig;
 
   /**
    * Default range for _quantitative_ heatmaps.
    */
-  heatmap?: string[] | VgScheme;
+  heatmap?: string[] | SchemeConfig;
 
   /**
    * Default range for _ordinal_ fields.
    */
-  ordinal?: string[] | VgScheme;
+  ordinal?: string[] | SchemeConfig;
 
   /**
    * Default range for _quantitative_ and _temporal_ fields.
    */
-  ramp?: string[] | VgScheme;
+  ramp?: string[] | SchemeConfig;
 
   /**
    * Default range palette for the `shape` channel.
@@ -158,7 +86,7 @@ export interface RangeConfigProps {
   symbol?: string[];
 }
 
-export function isVgScheme(rangeConfig: string[] | VgScheme): rangeConfig is VgScheme {
+export function isVgScheme(rangeConfig: string[] | SchemeConfig): rangeConfig is SchemeConfig {
   return rangeConfig && !!rangeConfig['scheme'];
 }
 
@@ -166,7 +94,7 @@ export interface VLOnlyConfig {
   /**
    * Default axis and legend title for count fields.
    *
-   * __Default value:__ `'Number of Records'`.
+   * __Default value:__ `'Count of Records`.
    *
    * @type {string}
    */
@@ -216,7 +144,7 @@ export interface VLOnlyConfig {
 }
 
 export interface StyleConfigIndex {
-  [style: string]: VgMarkConfig;
+  [style: string]: BaseMarkConfig;
 }
 
 export interface Config
@@ -225,6 +153,13 @@ export interface Config
     MarkConfigMixins,
     CompositeMarkConfigMixins,
     AxisConfigMixins {
+  /**
+   * CSS color property to use as the background of the whole Vega-Lite view
+   *
+   * __Default value:__ none (transparent)
+   */
+  background?: string;
+
   /**
    * An object hash that defines default range arrays or schemes for using with scales.
    * For a full list of scale range configuration options, please see the [corresponding section of the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#config).
@@ -258,7 +193,7 @@ export interface Config
 export const defaultConfig: Config = {
   padding: 5,
   timeFormat: '%b %d, %Y',
-  countTitle: 'Number of Records',
+  countTitle: 'Count of Records',
 
   invalidValues: 'filter',
 
@@ -361,6 +296,10 @@ export function stripAndRedirectConfig(config: Config) {
     for (const prop of VL_ONLY_GUIDE_CONFIG) {
       delete config.legend[prop];
     }
+
+    for (const prop of VL_ONLY_LEGEND_CONFIG) {
+      delete config.legend[prop];
+    }
   }
 
   // Remove Vega-Lite only generic mark config
@@ -415,7 +354,7 @@ function redirectConfig(
   toProp?: string,
   compositeMarkPart?: string
 ) {
-  const propConfig: VgMarkConfig =
+  const propConfig: BaseMarkConfig =
     prop === 'title'
       ? extractTitleConfig(config.title).mark
       : compositeMarkPart
@@ -426,7 +365,7 @@ function redirectConfig(
     toProp = 'cell'; // View's default style is "cell"
   }
 
-  const style: VgMarkConfig = {
+  const style: BaseMarkConfig = {
     ...propConfig,
     ...config.style[prop]
   };

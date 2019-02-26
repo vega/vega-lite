@@ -1,4 +1,5 @@
 import {ConditionValueDefMixins, ValueDef} from './fielddef';
+import {LegendConfig} from './legend';
 import {VgEncodeChannel} from './vega.schema';
 
 export interface TitleMixins {
@@ -9,7 +10,7 @@ export interface TitleMixins {
    *
    * __Notes__:
    *
-   * 1) You can customize the default field title format by providing the [`fieldTitle` property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).
+   * 1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).
    *
    * 2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.
    */
@@ -38,3 +39,10 @@ export interface VlOnlyGuideConfig {
 export type GuideEncodingEntry = {[k in VgEncodeChannel]?: ValueDef & ConditionValueDefMixins};
 
 export const VL_ONLY_GUIDE_CONFIG: (keyof VlOnlyGuideConfig)[] = ['shortTimeLabels'];
+
+export const VL_ONLY_LEGEND_CONFIG: (keyof LegendConfig)[] = [
+  'gradientHorizontalMaxLength',
+  'gradientHorizontalMinLength',
+  'gradientVerticalMaxLength',
+  'gradientVerticalMinLength'
+];

@@ -6,21 +6,21 @@
         "measure": "Open Exploration",
         "mean": 1.813,
         "lo": 1.255,
-        "hi": 2.370,
+        "hi": 2.37,
         "study": "PoleStar vs Voyager"
       },
       {
         "measure": "Focused Question Answering",
         "mean": -1.688,
         "lo": -2.325,
-        "hi": -1.050,
+        "hi": -1.05,
         "study": "PoleStar vs Voyager"
       },
       {
         "measure": "Open Exploration",
         "mean": 2.1875,
         "lo": 1.665,
-        "hi": 2.710,
+        "hi": 2.71,
         "study": "PoleStar vs Voyager 2"
       },
       {
@@ -32,9 +32,13 @@
       }
     ]
   },
+  "spacing": 10,
   "vconcat": [
     {
-      "title": "Mean of Subject Ratings (95% CIs)",
+      "title": {
+        "text": "Mean of Subject Ratings (95% CIs)",
+        "frame": "bounds"
+      },
       "encoding": {
         "y": {
           "field": "study",
@@ -56,20 +60,14 @@
               "field": "lo",
               "type": "quantitative",
               "scale": {
-                "domain": [
-                  -3,
-                  3
-                ]
+                "domain": [-3, 3]
               },
               "axis": {
                 "title": "",
                 "encoding": {
                   "grid": {
                     "strokeDash": {
-                      "value": [
-                        3,
-                        3
-                      ]
+                      "value": [3, 3]
                     },
                     "stroke": {
                       "condition": {
@@ -83,8 +81,7 @@
               }
             },
             "x2": {
-              "field": "hi",
-              "type": "quantitative"
+              "field": "hi"
             }
           }
         },
@@ -103,10 +100,7 @@
               "field": "measure",
               "type": "nominal",
               "scale": {
-                "range": [
-                  "black",
-                  "white"
-                ]
+                "range": ["black", "white"]
               },
               "legend": null
             }
@@ -142,8 +136,7 @@
               "axis": null
             },
             "x2": {
-              "field": "to",
-              "type": "quantitative"
+              "field": "to"
             }
           }
         },

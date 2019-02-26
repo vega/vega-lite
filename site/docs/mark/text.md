@@ -5,8 +5,7 @@ title: Text
 permalink: /docs/text.html
 ---
 
-{: .suppress-error}
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -18,18 +17,19 @@ permalink: /docs/text.html
 
 `text` mark represents each data point with a text instead of a point.
 
-
 ## Documentation Overview
+
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 
 {:#properties}
+
 ## Text Mark Properties
 
-{: .suppress-error}
-```json
+```js
 // Single View Specification
 {
   ...
@@ -42,7 +42,6 @@ permalink: /docs/text.html
 }
 ```
 
-
 A text mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
 {% include table.html props="angle,align,baseline,dir,dx,dy,ellipsis,font,fontSize,fontStyle,fontWeight,limit,radius,text,theta" source="MarkDef" %}
@@ -52,7 +51,6 @@ A text mark definition can contain any [standard mark properties](mark.html#mark
 ### Text Table Heatmap
 
 <span class="vl-example" data-name="layer_text_heatmap"></span>
-
 
 ### Labels
 
@@ -66,19 +64,17 @@ Mapping a field to `text` channel of text mark sets the mark's text value. For e
 
 <span class="vl-example" data-name="text_scatterplot_colored"></span>
 
-
 ### Geo Text
 
 By mapping geographic coordinate data to `longitude` and `latitude` channels of a corresponding [projection](projection.html), we can show text at accurate locations. The example below shows the name of every US state capital at the location of the capital.
 
 <span class="vl-example" data-name="geo_text"></span>
 
-
 {:#config}
+
 ## Text Config
 
-{: .suppress-error}
-```json
+```js
 // Top-level View Specification
 {
   ...
@@ -89,7 +85,7 @@ By mapping geographic coordinate data to `longitude` and `latitude` channels of 
 }
 ```
 
-The `text` property of the top-level [`config`](config.html) object sets the default properties for all text marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
+The `text` property of the top-level [`config`](config.html) object sets the default properties for all text marks. If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
 Besides standard [mark properties](mark.html#config) and [special properties for text marks](#properties), text config can contain the following additional properties:
 

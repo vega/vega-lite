@@ -1,4 +1,4 @@
-import {Legend as VgLegend, LegendEncode} from 'vega';
+import {Legend as VgLegend, LegendEncode, SignalRef} from 'vega';
 import {
   COLOR,
   FILL,
@@ -11,11 +11,12 @@ import {
   STROKEOPACITY,
   STROKEWIDTH
 } from '../../channel';
-import {FieldDef, isFieldDef, title as fieldDefTitle} from '../../fielddef';
+import {getTypedFieldDef, isFieldDef, title as fieldDefTitle, TypedFieldDef} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
-import {guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
+import {mergeTitleComponent, numberFormat} from '../common';
+import {guideEncodeEntry} from '../guide';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
@@ -23,6 +24,7 @@ import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
 import * as properties from './properties';
+import {direction, type} from './properties';
 
 export function parseLegend(model: Model) {
   if (isUnitModel(model)) {
@@ -51,28 +53,18 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
 }
 
 function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChannel): VgLegend {
-  // For binned field with continuous scale, use a special scale so we can override the mark props and labels
-  switch (channel) {
-    case COLOR:
-      const scale = model.scaleName(COLOR);
-      return model.markDef.filled ? {fill: scale} : {stroke: scale};
-    case FILL:
-    case STROKE:
-    case STROKEWIDTH:
-    case SIZE:
-    case SHAPE:
-    case OPACITY:
-    case FILLOPACITY:
-    case STROKEOPACITY:
-      return {[channel]: model.scaleName(channel)};
+  const scale = model.scaleName(COLOR);
+  if (channel === 'color') {
+    return model.markDef.filled ? {fill: scale} : {stroke: scale};
   }
+  return {[channel]: model.scaleName(channel)};
 }
 
 function isExplicit<T extends string | number | object | boolean>(
   value: T,
   property: keyof VgLegend,
   legend: Legend,
-  fieldDef: FieldDef<string>
+  fieldDef: TypedFieldDef<string>
 ) {
   switch (property) {
     case 'values':
@@ -128,33 +120,56 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
 
 function getProperty<K extends keyof VgLegend>(
   property: K,
-  specifiedLegend: Legend,
+  legend: Legend,
   channel: NonPositionScaleChannel,
   model: UnitModel
 ): VgLegend[K] {
-  const fieldDef = model.fieldDef(channel);
+  const {encoding} = model;
+  const fieldDef = getTypedFieldDef(encoding[channel]);
+  const legendConfig = model.config.legend;
+  const {timeUnit} = fieldDef;
+
+  const scaleType = model.getScaleComponent(channel).get('type');
 
   switch (property) {
     case 'format':
       // We don't include temporal field here as we apply format in encode block
-      return numberFormat(fieldDef, specifiedLegend.format, model.config);
+      return numberFormat(fieldDef, legend.format, model.config);
     case 'title':
       return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;
 
+    case 'type':
+      return type({legend, channel, timeUnit, scaleType, alwaysReturn: false});
+
+    case 'direction':
+      return direction({legend, legendConfig, timeUnit, channel, scaleType});
+
     // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
     // case 'clipHeight':
-    //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(model.getScaleComponent(channel).get('type')));
+    //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(properties.type(...)));
     case 'labelOverlap':
-      return getFirstDefined(
-        specifiedLegend.labelOverlap,
-        properties.labelOverlap(model.getScaleComponent(channel).get('type'))
+      return getFirstDefined(legend.labelOverlap, properties.defaultLabelOverlap(scaleType));
+    case 'gradientLength':
+      return getFirstDefined<number | SignalRef>(
+        // do specified gradientLength first
+        legend.gradientLength,
+        legendConfig.gradientLength,
+        // Otherwise, use smart default based on plot height
+        properties.defaultGradientLength({
+          model,
+          legend,
+          legendConfig,
+          channel,
+          scaleType
+        })
       );
+
     case 'values':
-      return properties.values(specifiedLegend, fieldDef);
+      return properties.values(legend, fieldDef);
   }
 
   // Otherwise, return specified property.
-  return (specifiedLegend as VgLegend)[property];
+  return (legend as VgLegend)[property];
 }
 
 function parseNonUnitLegend(model: Model) {

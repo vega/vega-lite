@@ -11,12 +11,10 @@
 
 const fs = require('fs');
 const vl = require('../build/vega-lite');
-const stableStringify = require('json-stable-stringify');
+const stableStringify = require('fast-json-stable-stringify');
 const compactStringify = require('json-stringify-pretty-compact');
 
-var args = require('yargs')
-  .demand(0)
-  .argv;
+var args = require('yargs').demand(0).argv;
 
 const DIR = __dirname + '/..';
 const SPECS = '/examples/specs';
@@ -27,8 +25,7 @@ if (example && example.includes('.vl.json')) {
   const spec = JSON.parse(fs.readFileSync(path));
 
   const preNormalized = stableStringify(spec);
-  const config = vl.config.initConfig(spec.config);
-  const fullSpec = vl.spec.normalize(spec, config);
+  const fullSpec = vl.normalize(spec);
   const postNormalized = stableStringify(fullSpec);
 
   // console.log(preNormalized, postNormalized);
@@ -37,9 +34,9 @@ if (example && example.includes('.vl.json')) {
     // -8 is cutting .vl.json
     const newFilename = example.slice(0, -8) + '_normalized.vl.json';
     const newFilenameAndPath = DIR + SPECS + '/normalized/' + newFilename;
-    fs.writeFile(newFilenameAndPath, postNormalizedOutput, (err) => {
+    fs.writeFile(newFilenameAndPath, postNormalizedOutput, err => {
       if (err) return console.log(err);
-      console.log("Built:", newFilename);
+      console.log('Built:', newFilename);
     });
   }
 }

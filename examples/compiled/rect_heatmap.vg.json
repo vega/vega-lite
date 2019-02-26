@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "style": "cell",
@@ -20,16 +20,10 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
-    {
-      "name": "width",
-      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-    },
-    {"name": "y_step", "value": 21},
-    {
-      "name": "height",
-      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
-    }
+    {"name": "x_step", "value": 20},
+    {"name": "width", "update": "bandspace(domain('x').length, 0, 0) * x_step"},
+    {"name": "y_step", "value": 20},
+    {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
   ],
   "marks": [
     {
@@ -47,7 +41,7 @@
             {"scale": "color", "field": "mean_Horsepower"}
           ],
           "tooltip": {
-            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"], \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\")}"
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
@@ -63,22 +57,23 @@
       "type": "band",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
       "range": {"step": {"signal": "x_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     },
     {
       "name": "y",
       "type": "band",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
       "range": {"step": {"signal": "y_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     },
     {
       "name": "color",
-      "type": "sequential",
+      "type": "linear",
       "domain": {"data": "source_0", "field": "mean_Horsepower"},
       "range": "heatmap",
+      "interpolate": "hcl",
       "zero": false
     }
   ],
@@ -102,6 +97,12 @@
       "zindex": 1
     }
   ],
-  "legends": [{"fill": "color", "title": "Mean of Horsepower"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "Mean of Horsepower"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

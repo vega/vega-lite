@@ -1,8 +1,7 @@
 import {parse} from 'vega-expression';
-import {StringSet} from './../../util';
 
 function getName(node: any) {
-  let name: string[] = [];
+  const name: string[] = [];
 
   if (node.type === 'Identifier') {
     return [node.name];
@@ -13,8 +12,8 @@ function getName(node: any) {
   }
 
   if (node.type === 'MemberExpression') {
-    name = name.concat(getName(node.object));
-    name = name.concat(getName(node.property));
+    name.push(...getName(node.object));
+    name.push(...getName(node.property));
   }
 
   return name;
@@ -29,14 +28,14 @@ function startsWithDatum(node: any): boolean {
 
 export function getDependentFields(expression: string) {
   const ast = parse(expression);
-  const dependents: StringSet = {};
+  const dependents = new Set<string>();
   ast.visit((node: any) => {
     if (node.type === 'MemberExpression' && startsWithDatum(node)) {
-      dependents[
+      dependents.add(
         getName(node)
           .slice(1)
           .join('.')
-      ] = true;
+      );
     }
   });
 

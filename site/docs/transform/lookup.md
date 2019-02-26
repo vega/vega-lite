@@ -7,8 +7,7 @@ permalink: /docs/lookup.html
 
 The lookup transform extends a primary data source by looking up values from another data source. It is similar to a one sided join.
 
-{: .suppress-error}
-```json
+```js
 {
   ...
   "transform": [
@@ -30,7 +29,6 @@ For each data object in the main data source, the transform tries to find a matc
 The secondary data reference (set with `from`) is an object that specifies how the lookup key should be matched to a second data source and what fields should be added.
 
 {% include table.html props="data,key,fields" source="LookupData" %}
-
 
 ## Example
 

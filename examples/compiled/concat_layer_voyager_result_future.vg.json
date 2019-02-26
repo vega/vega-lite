@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -56,24 +56,19 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_y_step", "value": 21},
+    {"name": "concat_0_y_step", "value": 20},
     {
       "name": "concat_0_height",
-      "update": "bandspace(domain('concat_0_y').length, 0.1, 0.05) * concat_0_y_step"
+      "update": "bandspace(domain('concat_0_y').length, 0, 0) * concat_0_y_step"
     },
-    {"name": "concat_1_height", "value": 21}
+    {"name": "concat_1_height", "value": 20}
   ],
-  "layout": {
-    "padding": {"row": 10, "column": 10},
-    "columns": 1,
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 10, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
       "name": "concat_0_group",
-      "title": {"text": "Mean of Subject Ratings (95% CIs)"},
+      "title": {"text": "Mean of Subject Ratings (95% CIs)", "frame": "bounds"},
       "style": "cell",
       "encode": {
         "update": {
@@ -97,7 +92,7 @@
                 {"value": "black"}
               ],
               "tooltip": {
-                "signal": "{\"lo\": format(datum[\"lo\"], \"\"), \"study\": ''+datum[\"study\"], \"hi\": format(datum[\"hi\"], \"\")}"
+                "signal": "{\"study\": ''+datum[\"study\"], \"lo\": format(datum[\"lo\"], \"\"), \"hi\": format(datum[\"hi\"], \"\")}"
               },
               "x": {"scale": "concat_0_x", "field": "lo"},
               "y": {"scale": "concat_0_y", "field": "study", "band": 0.5},
@@ -128,7 +123,7 @@
                 {"scale": "color", "field": "measure"}
               ],
               "tooltip": {
-                "signal": "{\"mean\": format(datum[\"mean\"], \"\"), \"study\": ''+datum[\"study\"], \"measure\": ''+datum[\"measure\"]}"
+                "signal": "{\"study\": ''+datum[\"study\"], \"mean\": format(datum[\"mean\"], \"\"), \"measure\": ''+datum[\"measure\"]}"
               },
               "x": {"scale": "concat_0_x", "field": "mean"},
               "y": {"scale": "concat_0_y", "field": "study", "band": 0.5},
@@ -361,7 +356,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "measure", "sort": true},
-      "range": ["black", "white"]
+      "range": ["black", "white"],
+      "interpolate": "hcl"
     },
     {
       "name": "concat_0_x",
@@ -376,8 +372,8 @@
       "type": "band",
       "domain": {"data": "source_0", "field": "study", "sort": true},
       "range": {"step": {"signal": "concat_0_y_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     },
     {
       "name": "concat_1_x",

@@ -1,10 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
-  "description": "A simple bar chart with embedded data.",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "height": 200,
-  "title": {"text": "A Simple Bar Chart"},
+  "title": {"text": "A Simple Bar Chart", "frame": "group"},
   "style": "cell",
   "data": [
     {
@@ -23,7 +22,7 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"

@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import {ScaleChannel} from '../../../src/channel';
 import {domainSort, mergeDomains, parseDomainForChannel} from '../../../src/compile/scale/domain';
 import {parseScaleCore} from '../../../src/compile/scale/parse';
@@ -10,7 +9,6 @@ import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {ScaleType} from '../../../src/scale';
 import {EncodingSortField} from '../../../src/sort';
-import {VgDomain} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 describe('compile/scale', () => {
@@ -33,10 +31,10 @@ describe('compile/scale', () => {
       });
 
       const xDomain = testParseDomainForChannel(model, 'x');
-      assert.deepEqual(xDomain, [{data: 'main', field: 'a'}, {data: 'main', field: 'b'}]);
+      expect(xDomain).toEqual([{data: 'main', field: 'a'}, {data: 'main', field: 'b'}]);
 
       const yDomain = testParseDomainForChannel(model, 'y');
-      assert.deepEqual(yDomain, [{data: 'main', field: 'c'}, {data: 'main', field: 'd'}]);
+      expect(yDomain).toEqual([{data: 'main', field: 'c'}, {data: 'main', field: 'd'}]);
     });
 
     it('should have correct domain for color', () => {
@@ -48,7 +46,7 @@ describe('compile/scale', () => {
       });
 
       const xDomain = testParseDomainForChannel(model, 'color');
-      assert.deepEqual(xDomain, [{data: 'main', field: 'a'}]);
+      expect(xDomain).toEqual([{data: 'main', field: 'a'}]);
     });
 
     it('should have correct domain for color ConditionField', () => {
@@ -62,7 +60,7 @@ describe('compile/scale', () => {
       });
 
       const xDomain = testParseDomainForChannel(model, 'color');
-      assert.deepEqual(xDomain, [{data: 'main', field: 'a'}]);
+      expect(xDomain).toEqual([{data: 'main', field: 'a'}]);
     });
 
     it('should return domain for stack', () => {
@@ -79,7 +77,7 @@ describe('compile/scale', () => {
         }
       });
 
-      assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+      expect(testParseDomainForChannel(model, 'y')).toEqual([
         {
           data: 'main',
           field: 'sum_origin_start'
@@ -108,7 +106,7 @@ describe('compile/scale', () => {
         }
       });
 
-      assert.deepEqual(testParseDomainForChannel(model, 'y'), [[0, 1]]);
+      expect(testParseDomainForChannel(model, 'y')).toEqual([[0, 1]]);
     });
 
     describe('for quantitative', () => {
@@ -128,37 +126,13 @@ describe('compile/scale', () => {
             }
           });
 
-          assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+          expect(testParseDomainForChannel(model, 'y')).toEqual([
             {
-              data: 'main',
-              field: 'bin_maxbins_15_origin'
-            },
-            {
-              data: 'main',
-              field: 'bin_maxbins_15_origin_end'
+              signal: '[bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop]'
             }
           ]);
 
-          assert.equal(localLogger.warns[0], log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
-        })
-      );
-
-      it(
-        'should follow the custom bin.extent for binned Q',
-        log.wrap(localLogger => {
-          const model = parseUnitModel({
-            mark: 'point',
-            encoding: {
-              y: {
-                field: 'origin',
-                type: 'quantitative',
-                bin: {maxbins: 15, extent: [0, 100]}
-              }
-            }
-          });
-          const _domain = testParseDomainForChannel(model, 'y');
-
-          assert.deepEqual(_domain, [[0, 100]]);
+          expect(localLogger.warns[0]).toEqual(log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
         })
       );
 
@@ -175,7 +149,7 @@ describe('compile/scale', () => {
           }
         });
 
-        assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+        expect(testParseDomainForChannel(model, 'y')).toEqual([
           {
             data: MAIN,
             field: 'min_acceleration'
@@ -202,7 +176,7 @@ describe('compile/scale', () => {
             }
           });
           testParseDomainForChannel(model, 'y');
-          assert.equal(localLogger.warns[0], log.message.unaggregateDomainWithNonSharedDomainOp('sum'));
+          expect(localLogger.warns[0]).toEqual(log.message.unaggregateDomainWithNonSharedDomainOp('sum'));
         })
       );
 
@@ -219,7 +193,7 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model, 'y');
 
-        assert.deepEqual(_domain, [[0, 200]]);
+        expect(_domain).toEqual([[0, 200]]);
       });
 
       it(
@@ -238,7 +212,7 @@ describe('compile/scale', () => {
           });
           const _domain = testParseDomainForChannel(model, 'y');
 
-          assert.deepEqual(_domain, [[0, 200]]);
+          expect(_domain).toEqual([[0, 200]]);
         })
       );
 
@@ -254,7 +228,7 @@ describe('compile/scale', () => {
           }
         });
 
-        assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+        expect(testParseDomainForChannel(model, 'y')).toEqual([
           {
             data: 'main',
             field: 'min_origin'
@@ -279,7 +253,7 @@ describe('compile/scale', () => {
           }
         });
 
-        assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+        expect(testParseDomainForChannel(model, 'y')).toEqual([
           {
             data: MAIN,
             field: 'min_acceleration'
@@ -305,7 +279,7 @@ describe('compile/scale', () => {
           }
         });
         const _domain = testParseDomainForChannel(model, 'y');
-        assert.deepEqual(_domain, [{data: 'main', field: 'month_origin'}]);
+        expect(_domain).toEqual([{data: 'main', field: 'month_origin'}]);
       });
 
       it('should return the correct domain for month O', () => {
@@ -320,7 +294,7 @@ describe('compile/scale', () => {
           }
         });
         const _domain = testParseDomainForChannel(model, 'y');
-        assert.deepEqual(_domain, [{data: 'main', field: 'month_origin', sort: true}]);
+        expect(_domain).toEqual([{data: 'main', field: 'month_origin', sort: true}]);
       });
 
       it('should return the correct domain for yearmonth T', () => {
@@ -336,7 +310,7 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model, 'y');
 
-        assert.deepEqual(_domain, [{data: 'main', field: 'yearmonth_origin'}]);
+        expect(_domain).toEqual([{data: 'main', field: 'yearmonth_origin'}]);
       });
 
       it('should return the correct domain for month O when specify sort', () => {
@@ -359,11 +333,101 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model, 'x');
 
-        assert.deepEqual(_domain, [
+        expect(_domain).toEqual([
           {
             data: 'raw',
             field: 'month_date',
             sort: sortDef
+          }
+        ]);
+      });
+
+      it('should return the correct domain for month O when specify sort does not have op', () => {
+        const sortDef: EncodingSortField<string> = {field: 'precipitation', order: 'descending'};
+        const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            x: {
+              timeUnit: 'month',
+              field: 'date',
+              type: 'ordinal',
+              sort: sortDef
+            },
+            y: {
+              aggregate: 'mean',
+              field: 'precipitation',
+              type: 'quantitative'
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'x');
+
+        expect(_domain).toEqual([
+          {
+            data: 'raw',
+            field: 'month_date',
+            sort: {...sortDef, op: 'mean'}
+          }
+        ]);
+      });
+
+      it('should return the correct domain for month O when the field is sorted by another encoding', () => {
+        const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            x: {
+              timeUnit: 'month',
+              field: 'date',
+              type: 'ordinal',
+              sort: {encoding: 'y'}
+            },
+            y: {
+              aggregate: 'median',
+              field: 'precipitation',
+              type: 'quantitative'
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'x');
+
+        expect(_domain).toEqual([
+          {
+            data: 'raw',
+            field: 'month_date',
+            sort: {op: 'median', field: 'precipitation'}
+          }
+        ]);
+      });
+
+      it('should return the correct domain for month O when specify sort does not have op and the plot is stacked', () => {
+        const sortDef: EncodingSortField<string> = {field: 'precipitation', order: 'descending'};
+        const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            x: {
+              timeUnit: 'month',
+              field: 'date',
+              type: 'ordinal',
+              sort: sortDef
+            },
+            y: {
+              aggregate: 'sum',
+              field: 'precipitation',
+              type: 'quantitative'
+            },
+            color: {
+              field: 'weather_type',
+              type: 'nominal'
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'x');
+
+        expect(_domain).toEqual([
+          {
+            data: 'raw',
+            field: 'month_date',
+            sort: {...sortDef, op: 'sum'}
           }
         ]);
       });
@@ -417,7 +481,7 @@ describe('compile/scale', () => {
         });
 
         const xDomain = testParseDomainForChannel(model, 'color');
-        assert.deepEqual(xDomain, [
+        expect(xDomain).toEqual([
           {data: 'main', field: 'bin_maxbins_6_a_range', sort: {field: 'bin_maxbins_6_a', op: 'min'}}
         ]);
       });
@@ -432,7 +496,7 @@ describe('compile/scale', () => {
             y: {field: 'origin', type: 'nominal', sort: sortDef}
           }
         });
-        assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+        expect(testParseDomainForChannel(model, 'y')).toEqual([
           {
             data: 'raw',
             field: 'origin',
@@ -450,7 +514,7 @@ describe('compile/scale', () => {
           }
         });
 
-        assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+        expect(testParseDomainForChannel(model, 'y')).toEqual([
           {
             data: 'raw',
             field: 'origin',
@@ -467,7 +531,7 @@ describe('compile/scale', () => {
           }
         });
 
-        assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+        expect(testParseDomainForChannel(model, 'y')).toEqual([
           {
             data: 'main',
             field: 'origin',
@@ -493,7 +557,7 @@ describe('compile/scale', () => {
         }
       ]);
 
-      assert.deepEqual<VgDomain>(domain, {
+      expect(domain).toEqual({
         data: 'foo',
         field: 'a',
         sort: {field: 'b', op: 'mean'}
@@ -509,7 +573,7 @@ describe('compile/scale', () => {
         }
       ]);
 
-      assert.deepEqual<VgDomain>(domain, {
+      expect(domain).toEqual({
         data: 'foo',
         field: 'a',
         sort: {op: 'count'}
@@ -529,7 +593,7 @@ describe('compile/scale', () => {
         }
       ]);
 
-      assert.deepEqual<VgDomain>(domain, {
+      expect(domain).toEqual({
         data: 'foo',
         field: 'a',
         sort: {field: 'b', op: 'mean', order: 'descending'}
@@ -549,7 +613,7 @@ describe('compile/scale', () => {
         }
       ]);
 
-      assert.deepEqual(domain, {
+      expect(domain).toEqual({
         data: 'foo',
         fields: ['a', 'b'],
         sort: true
@@ -568,7 +632,7 @@ describe('compile/scale', () => {
         }
       ]);
 
-      assert.deepEqual(domain, {
+      expect(domain).toEqual({
         data: 'foo',
         fields: ['a', 'b']
       });
@@ -588,7 +652,7 @@ describe('compile/scale', () => {
         }
       ]);
 
-      assert.deepEqual<VgDomain>(domain, {
+      expect(domain).toEqual({
         data: 'foo',
         field: 'a',
         sort: {field: 'b', op: 'mean'}
@@ -607,7 +671,7 @@ describe('compile/scale', () => {
         }
       ]);
 
-      assert.deepEqual<VgDomain>(domain, {
+      expect(domain).toEqual({
         data: 'foo',
         field: 'a'
       });
@@ -625,7 +689,7 @@ describe('compile/scale', () => {
         }
       ]);
 
-      assert.deepEqual<VgDomain>(domain, {
+      expect(domain).toEqual({
         data: 'foo',
         fields: ['a', 'b']
       });
@@ -645,7 +709,7 @@ describe('compile/scale', () => {
         }
       ]);
 
-      assert.deepEqual(domain, {
+      expect(domain).toEqual({
         fields: [
           {
             data: 'foo',
@@ -675,7 +739,7 @@ describe('compile/scale', () => {
         }
       ]);
 
-      assert.deepEqual<VgDomain>(domain, {
+      expect(domain).toEqual({
         fields: [
           {
             data: 'foo',
@@ -708,7 +772,7 @@ describe('compile/scale', () => {
         }
       ]);
 
-      assert.deepEqual(domain, {
+      expect(domain).toEqual({
         fields: [
           {
             data: 'foo',
@@ -737,7 +801,7 @@ describe('compile/scale', () => {
         }
       ]);
 
-      assert.deepEqual(domain, {
+      expect(domain).toEqual({
         fields: [
           {
             signal: 'foo'
@@ -768,13 +832,13 @@ describe('compile/scale', () => {
           }
         ]);
 
-        assert.deepEqual(domain, {
+        expect(domain).toEqual({
           data: 'foo',
           fields: ['a', 'b'],
           sort: true
         });
 
-        assert.equal(localLogger.warns[0], log.message.MORE_THAN_ONE_SORT);
+        expect(localLogger.warns[0]).toEqual(log.message.MORE_THAN_ONE_SORT);
       })
     );
 
@@ -796,13 +860,13 @@ describe('compile/scale', () => {
           }
         ]);
 
-        assert.deepEqual(domain, {
+        expect(domain).toEqual({
           data: 'foo',
           field: 'a',
           sort: true
         });
 
-        assert.equal(localLogger.warns[0], log.message.MORE_THAN_ONE_SORT);
+        expect(localLogger.warns[0]).toEqual(log.message.MORE_THAN_ONE_SORT);
       })
     );
 
@@ -824,14 +888,13 @@ describe('compile/scale', () => {
           }
         ]);
 
-        assert.deepEqual(domain, {
+        expect(domain).toEqual({
           data: 'foo',
           fields: ['a', 'b'],
           sort: true
         });
 
-        assert.equal(
-          localLogger.warns[0],
+        expect(localLogger.warns[0]).toEqual(
           log.message.domainSortDropped({
             op: 'mean',
             field: 'c'
@@ -843,7 +906,7 @@ describe('compile/scale', () => {
     it('should not sort explicit domains', () => {
       const domain = mergeDomains([[1, 2, 3, 4], [3, 4, 5, 6]]);
 
-      assert.deepEqual(domain, {
+      expect(domain).toEqual({
         fields: [[1, 2, 3, 4], [3, 4, 5, 6]]
       });
     });
@@ -858,7 +921,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.LINEAR);
-      assert.deepEqual(sort, undefined);
+      expect(sort).toEqual(undefined);
     });
 
     it('should return true by default for discrete domain', () => {
@@ -869,7 +932,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      assert.deepEqual(sort, true);
+      expect(sort).toEqual(true);
     });
 
     it('should return true for ascending', () => {
@@ -880,7 +943,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      assert.deepEqual(sort, true);
+      expect(sort).toEqual(true);
     });
 
     it('should return undefined if sort = null', () => {
@@ -891,7 +954,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      assert.deepEqual(sort, undefined);
+      expect(sort).toEqual(undefined);
     });
 
     it('should return normal sort spec if specified and aggregration is not count', () => {
@@ -903,7 +966,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      assert.deepEqual(sort, {op: 'sum', field: 'y'});
+      expect(sort).toEqual({op: 'sum', field: 'y'});
     });
 
     it('should return normal sort spec if aggregration is count and field not specified', () => {
@@ -915,7 +978,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      assert.deepEqual(sort, {op: 'count'});
+      expect(sort).toEqual({op: 'count'});
     });
 
     it('should return true if sort is not specified', () => {
@@ -927,7 +990,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      assert.deepEqual(sort, true);
+      expect(sort).toEqual(true);
     });
 
     it('should return undefined if sort is specified', () => {
@@ -938,7 +1001,7 @@ describe('compile/scale', () => {
           y: {field: 'b', aggregate: 'sum', type: 'quantitative'}
         }
       });
-      assert.deepEqual(domainSort(model, 'x', ScaleType.ORDINAL), {
+      expect(domainSort(model, 'x', ScaleType.ORDINAL)).toEqual({
         op: 'min',
         field: 'a',
         order: 'descending'
@@ -953,7 +1016,7 @@ describe('compile/scale', () => {
           y: {field: 'b', type: 'quantitative'}
         }
       });
-      assert.deepEqual(domainSort(model, 'x', ScaleType.ORDINAL), {
+      expect(domainSort(model, 'x', ScaleType.ORDINAL)).toEqual({
         op: 'min',
         field: 'x_a_sort_index',
         order: 'ascending'
@@ -967,7 +1030,7 @@ describe('compile/scale', () => {
           x: {field: 'a', type: 'ordinal', sort: {field: 'foo.bar', op: 'mean'}}
         }
       });
-      assert.deepEqual(domainSort(model, 'x', ScaleType.ORDINAL), {op: 'mean', field: 'foo\\.bar'});
+      expect(domainSort(model, 'x', ScaleType.ORDINAL)).toEqual({op: 'mean', field: 'foo\\.bar'});
     });
   });
 });

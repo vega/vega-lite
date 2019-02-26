@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "the population per state, engineers per state, and hurricanes per state",
   "autosize": "pad",
   "padding": 5,
@@ -30,7 +30,7 @@
         {
           "type": "geojson",
           "geojson": "geo",
-          "signal": "child_population_geojson_0"
+          "signal": "child__repeat_row_population_geojson_0"
         }
       ]
     },
@@ -48,7 +48,7 @@
         {
           "type": "geojson",
           "geojson": "geo",
-          "signal": "child_engineers_geojson_0"
+          "signal": "child__repeat_row_engineers_geojson_0"
         }
       ]
     },
@@ -66,7 +66,7 @@
         {
           "type": "geojson",
           "geojson": "geo",
-          "signal": "child_hurricanes_geojson_0"
+          "signal": "child__repeat_row_hurricanes_geojson_0"
         }
       ]
     }
@@ -76,13 +76,13 @@
       "name": "projection",
       "size": {"signal": "[width, height]"},
       "fit": {
-        "signal": "[child_population_geojson_0, child_engineers_geojson_0, child_hurricanes_geojson_0]"
+        "signal": "[child__repeat_row_population_geojson_0, child__repeat_row_engineers_geojson_0, child__repeat_row_hurricanes_geojson_0]"
       },
       "type": "albersUsa"
     }
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "columns": 1,
     "bounds": "full",
     "align": "all"
@@ -90,14 +90,14 @@
   "marks": [
     {
       "type": "group",
-      "name": "child_population_group",
+      "name": "child__repeat_row_population_group",
       "style": "cell",
       "encode": {
         "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
-          "name": "child_population_marks",
+          "name": "child__repeat_row_population_marks",
           "type": "shape",
           "style": ["geoshape"],
           "from": {"data": "data_0"},
@@ -108,10 +108,13 @@
                   "test": "datum[\"population\"] === null || isNaN(datum[\"population\"])",
                   "value": null
                 },
-                {"scale": "child_population_color", "field": "population"}
+                {
+                  "scale": "child__repeat_row_population_color",
+                  "field": "population"
+                }
               ],
               "tooltip": {
-                "signal": "{\"population\": format(datum[\"population\"], \"\"), \"geo\": ''+datum[\"geo\"]}"
+                "signal": "{\"geo\": ''+datum[\"geo\"], \"population\": format(datum[\"population\"], \"\")}"
               }
             }
           },
@@ -124,18 +127,24 @@
           ]
         }
       ],
-      "legends": [{"fill": "child_population_color", "title": "population"}]
+      "legends": [
+        {
+          "fill": "child__repeat_row_population_color",
+          "gradientLength": {"signal": "clamp(height, 64, 200)"},
+          "title": "population"
+        }
+      ]
     },
     {
       "type": "group",
-      "name": "child_engineers_group",
+      "name": "child__repeat_row_engineers_group",
       "style": "cell",
       "encode": {
         "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
-          "name": "child_engineers_marks",
+          "name": "child__repeat_row_engineers_marks",
           "type": "shape",
           "style": ["geoshape"],
           "from": {"data": "data_1"},
@@ -146,10 +155,13 @@
                   "test": "datum[\"engineers\"] === null || isNaN(datum[\"engineers\"])",
                   "value": null
                 },
-                {"scale": "child_engineers_color", "field": "engineers"}
+                {
+                  "scale": "child__repeat_row_engineers_color",
+                  "field": "engineers"
+                }
               ],
               "tooltip": {
-                "signal": "{\"engineers\": format(datum[\"engineers\"], \"\"), \"geo\": ''+datum[\"geo\"]}"
+                "signal": "{\"geo\": ''+datum[\"geo\"], \"engineers\": format(datum[\"engineers\"], \"\")}"
               }
             }
           },
@@ -162,18 +174,24 @@
           ]
         }
       ],
-      "legends": [{"fill": "child_engineers_color", "title": "engineers"}]
+      "legends": [
+        {
+          "fill": "child__repeat_row_engineers_color",
+          "gradientLength": {"signal": "clamp(height, 64, 200)"},
+          "title": "engineers"
+        }
+      ]
     },
     {
       "type": "group",
-      "name": "child_hurricanes_group",
+      "name": "child__repeat_row_hurricanes_group",
       "style": "cell",
       "encode": {
         "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
-          "name": "child_hurricanes_marks",
+          "name": "child__repeat_row_hurricanes_marks",
           "type": "shape",
           "style": ["geoshape"],
           "from": {"data": "data_2"},
@@ -184,10 +202,13 @@
                   "test": "datum[\"hurricanes\"] === null || isNaN(datum[\"hurricanes\"])",
                   "value": null
                 },
-                {"scale": "child_hurricanes_color", "field": "hurricanes"}
+                {
+                  "scale": "child__repeat_row_hurricanes_color",
+                  "field": "hurricanes"
+                }
               ],
               "tooltip": {
-                "signal": "{\"hurricanes\": format(datum[\"hurricanes\"], \"\"), \"geo\": ''+datum[\"geo\"]}"
+                "signal": "{\"geo\": ''+datum[\"geo\"], \"hurricanes\": format(datum[\"hurricanes\"], \"\")}"
               }
             }
           },
@@ -200,29 +221,38 @@
           ]
         }
       ],
-      "legends": [{"fill": "child_hurricanes_color", "title": "hurricanes"}]
+      "legends": [
+        {
+          "fill": "child__repeat_row_hurricanes_color",
+          "gradientLength": {"signal": "clamp(height, 64, 200)"},
+          "title": "hurricanes"
+        }
+      ]
     }
   ],
   "scales": [
     {
-      "name": "child_population_color",
-      "type": "sequential",
+      "name": "child__repeat_row_population_color",
+      "type": "linear",
       "domain": {"data": "data_0", "field": "population"},
       "range": "heatmap",
+      "interpolate": "hcl",
       "zero": false
     },
     {
-      "name": "child_engineers_color",
-      "type": "sequential",
+      "name": "child__repeat_row_engineers_color",
+      "type": "linear",
       "domain": {"data": "data_1", "field": "engineers"},
       "range": "heatmap",
+      "interpolate": "hcl",
       "zero": false
     },
     {
-      "name": "child_hurricanes_color",
-      "type": "sequential",
+      "name": "child__repeat_row_hurricanes_color",
+      "type": "linear",
       "domain": {"data": "data_2", "field": "hurricanes"},
       "range": "heatmap",
+      "interpolate": "hcl",
       "zero": false
     }
   ],

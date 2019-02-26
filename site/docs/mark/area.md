@@ -5,9 +5,7 @@ title: Area
 permalink: /docs/area.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -23,16 +21,15 @@ permalink: /docs/area.html
 
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
-  {:toc}
+{:toc}
 
 {:#properties}
 
 ## Area Mark Properties
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   ...
@@ -85,8 +82,7 @@ We can also shift the stacked area chart's baseline to center and produces a [st
 
 ### Ranged Area
 
-Specifying `x2` or `y2` for the quantitative axis of area marks produce ranged areas.
-For example, we can use ranged area with the `ci0` and `ci0` [aggregation operators](aggregate.html#ops) to highlight 95% confidence interval of a line chart that shows mean values over time.
+Specifying `x2` or `y2` for the quantitative axis of area marks produce ranged areas. For example, we can use ranged area with the `ci0` and `ci0` [aggregation operators](aggregate.html#ops) to highlight 95% confidence interval of a line chart that shows mean values over time.
 
 <span class="vl-example" data-name="area_temperature_range"></span>
 
@@ -94,9 +90,7 @@ For example, we can use ranged area with the `ci0` and `ci0` [aggregation operat
 
 ## Area Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

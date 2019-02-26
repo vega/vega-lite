@@ -1,5 +1,4 @@
 /* tslint:disable quotemark */
-import {assert} from 'chai';
 import {X, Y} from '../../../src/channel';
 import {text} from '../../../src/compile/mark/text';
 import {UnitModel} from '../../../src/compile/unit';
@@ -23,7 +22,7 @@ describe('Mark: Text', () => {
     const props = text.encodeEntry(model);
 
     it('should use stack_end on x', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'sum_a_end'});
+      expect(props.x).toEqual({scale: X, field: 'sum_a_end'});
     });
   });
 
@@ -43,7 +42,7 @@ describe('Mark: Text', () => {
     const props = text.encodeEntry(model);
 
     it('should use stack_end on y', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'sum_a_end'});
+      expect(props.y).toEqual({scale: Y, field: 'sum_a_end'});
     });
   });
 
@@ -90,7 +89,7 @@ describe('Mark: Text', () => {
     const props = text.encodeEntry(model);
 
     it('should use date template', () => {
-      assert.deepEqual(props.text, {signal: `timeFormat(datum["foo"], '%b %d, %Y')`});
+      expect(props.text).toEqual({signal: `timeFormat(datum["foo"], '%b %d, %Y')`});
     });
   });
 
@@ -108,18 +107,18 @@ describe('Mark: Text', () => {
     const props = text.encodeEntry(model);
 
     it('should scale on x', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'Acceleration'});
+      expect(props.x).toEqual({scale: X, field: 'Acceleration'});
     });
     it('should scale on y', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'Displacement'});
+      expect(props.y).toEqual({scale: Y, field: 'Displacement'});
     });
 
     it('should be centered', () => {
-      assert.deepEqual(props.align, {value: 'center'});
+      expect(props.align).toEqual({value: 'center'});
     });
 
     it('should map text without template', () => {
-      assert.deepEqual(props.text, {signal: `''+datum["Origin"]`});
+      expect(props.text).toEqual({signal: `''+datum["Origin"]`});
     });
   });
 
@@ -135,7 +134,7 @@ describe('Mark: Text', () => {
     const props = text.encodeEntry(model);
 
     it('should map size to fontSize', () => {
-      assert.deepEqual(props.fontSize, {value: 5});
+      expect(props.fontSize).toEqual({value: 5});
     });
   });
 
@@ -152,7 +151,7 @@ describe('Mark: Text', () => {
     const props = text.encodeEntry(model);
 
     it('should map size to fontSize', () => {
-      assert.deepEqual(props.fontSize, {value: 25});
+      expect(props.fontSize).toEqual({value: 25});
     });
   });
 
@@ -169,7 +168,7 @@ describe('Mark: Text', () => {
     const props = text.encodeEntry(model);
 
     it('should map size to fontSize', () => {
-      assert.deepEqual(props.fontSize, {value: 25});
+      expect(props.fontSize).toEqual({value: 25});
     });
   });
 
@@ -192,18 +191,18 @@ describe('Mark: Text', () => {
     const props = text.encodeEntry(childModel);
 
     it('should fit the view on x', () => {
-      assert.deepEqual(props.x, {signal: 'child_width', mult: 0.5});
+      expect(props.x).toEqual({signal: 'child_width', mult: 0.5});
     });
 
     it('should center on y', () => {
-      assert.deepEqual(props.y, {
+      expect(props.y).toEqual({
         mult: 0.5,
         signal: 'child_height'
       });
     });
 
     it('should map text to expression', () => {
-      assert.deepEqual(props.text, {
+      expect(props.text).toEqual({
         signal: `format(datum["mean_Acceleration"], "")`
       });
     });
@@ -222,7 +221,7 @@ describe('Mark: Text', () => {
     });
 
     it('should map size to fontSize', () => {
-      assert.deepEqual(props.fontSize, {
+      expect(props.fontSize).toEqual({
         scale: 'size',
         field: 'mean_Acceleration'
       });

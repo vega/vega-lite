@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
@@ -61,11 +60,11 @@ describe('Selection time unit', () => {
       two: {type: 'single', encodings: ['x', 'y']}
     }));
 
-    assert.isUndefined(selCmpts['one'].timeUnit);
-    assert.instanceOf(selCmpts['two'].timeUnit, TimeUnitNode);
+    expect(selCmpts['one'].timeUnit).not.toBeDefined();
+    expect(selCmpts['two'].timeUnit).toBeInstanceOf(TimeUnitNode);
 
     const as = selCmpts['two'].timeUnit.assemble().map(tx => tx.as);
-    assert.sameDeepMembers(as, ['seconds_date', 'minutes_date']);
+    expect(as).toEqual(['seconds_date', 'minutes_date']);
   });
 
   it('is added with conditional encodings', () => {
@@ -86,7 +85,7 @@ describe('Selection time unit', () => {
     });
 
     const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
-    assert.equal(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length, 1);
+    expect(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
   });
 
   it('is added before selection filters', () => {
@@ -118,8 +117,8 @@ describe('Selection time unit', () => {
       }
     });
 
-    assert.notEqual(tuIdx, -1);
-    assert.notEqual(selIdx, -1);
+    expect(tuIdx).not.toBe(-1);
+    expect(selIdx).not.toBe(-1);
   });
 
   it('removes duplicate time unit formulae', () => {
@@ -137,6 +136,6 @@ describe('Selection time unit', () => {
     });
 
     const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
-    assert.equal(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length, 1);
+    expect(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
   });
 });

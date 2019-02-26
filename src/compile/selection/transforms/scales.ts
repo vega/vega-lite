@@ -1,7 +1,7 @@
 import {stringValue} from 'vega-util';
 import {Channel, isScaleChannel, X, Y} from '../../../channel';
 import * as log from '../../../log';
-import {hasContinuousDomain, isBinScale} from '../../../scale';
+import {hasContinuousDomain} from '../../../scale';
 import {accessPathWithDatum, varName} from '../../../util';
 import {UnitModel} from '../../unit';
 import {channelSignalName, VL_SELECTION_RESOLVE} from '../selection';
@@ -26,7 +26,7 @@ const scaleBindings: TransformCompiler = {
       const scale = model.getScaleComponent(channel);
       const scaleType = scale ? scale.get('type') : undefined;
 
-      if (!scale || !hasContinuousDomain(scaleType) || isBinScale(scaleType)) {
+      if (!scale || !hasContinuousDomain(scaleType)) {
         log.warn(log.message.SCALE_BINDINGS_CONTINUOUS);
         continue;
       }
@@ -84,8 +84,9 @@ const scaleBindings: TransformCompiler = {
     // Nested signals need only push to top-level signals with multiview displays.
     if (model.parent) {
       for (const channel of selCmpt.scales) {
-        const signal = signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data'))[0];
+        const signal: any = signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data'))[0];
 
+        // convert to PushSignal
         signal.push = 'outer';
         delete signal.value;
         delete signal.update;

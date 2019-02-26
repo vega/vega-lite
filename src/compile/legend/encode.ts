@@ -1,14 +1,15 @@
 import {SymbolEncodeEntry} from 'vega';
 import {isArray} from 'vega-util';
-import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
+import {COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
 import {
   Conditional,
-  FieldDef,
   FieldDefWithCondition,
   hasConditionalValueDef,
   isTimeFieldDef,
   isValueDef,
   MarkPropFieldDef,
+  TypedFieldDef,
+  Value,
   ValueDef,
   ValueDefWithCondition
 } from '../../fielddef';
@@ -18,16 +19,23 @@ import {getFirstDefined, keys} from '../../util';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
+import {ScaleChannel} from './../../channel';
 import {LegendComponent} from './component';
+import {defaultType} from './properties';
+
+function type(legendCmp: LegendComponent, model: UnitModel, channel: ScaleChannel) {
+  const scaleType = model.getScaleComponent(channel).get('type');
+  return getFirstDefined(legendCmp.get('type'), defaultType({channel, scaleType, alwaysReturn: true}));
+}
 
 export function symbols(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   symbolsSpec: any,
   model: UnitModel,
-  channel: Channel,
+  channel: ScaleChannel,
   legendCmp: LegendComponent
 ): SymbolEncodeEntry {
-  if (legendCmp.get('type') === 'gradient') {
+  if (type(legendCmp, model, channel) !== 'symbol') {
     return undefined;
   }
 
@@ -104,11 +112,6 @@ export function symbols(
     }
   }
 
-  if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke) {
-    // for non color channel's legend, we need to override symbol stroke config from Vega config
-    out.stroke = {value: 'transparent'};
-  }
-
   if (channel !== SHAPE) {
     const shape = (getFirstConditionValue(encoding.shape) as string) || markDef.shape;
     if (shape) {
@@ -129,20 +132,22 @@ export function symbols(
 }
 
 export function gradient(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   gradientSpec: any,
   model: UnitModel,
-  channel: Channel,
+  channel: ScaleChannel,
   legendCmp: LegendComponent
 ) {
+  if (type(legendCmp, model, channel) !== 'gradient') {
+    return undefined;
+  }
+
   let out: SymbolEncodeEntry = {};
 
-  if (legendCmp.get('type') === 'gradient') {
-    const opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
-    if (opacity) {
-      // only apply opacity if it is neither zero or undefined
-      out.opacity = {value: opacity};
-    }
+  const opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
+  if (opacity) {
+    // only apply opacity if it is neither zero or undefined
+    out.opacity = {value: opacity};
   }
 
   out = {...out, ...gradientSpec};
@@ -150,7 +155,7 @@ export function gradient(
 }
 
 export function labels(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   labelsSpec: any,
   model: UnitModel,
   channel: NonPositionScaleChannel,
@@ -183,23 +188,27 @@ export function labels(
 }
 
 function getMaxValue(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>
+  channelDef:
+    | FieldDefWithCondition<MarkPropFieldDef<string>, number>
+    | ValueDefWithCondition<MarkPropFieldDef<string>, number>
 ) {
-  return getConditionValue(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
+  return getConditionValue<number>(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
 }
 
 function getFirstConditionValue(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>
+  channelDef:
+    | FieldDefWithCondition<MarkPropFieldDef<string>, Value>
+    | ValueDefWithCondition<MarkPropFieldDef<string>, Value>
 ) {
   return getConditionValue(channelDef, (v: number, conditionalDef) => {
     return getFirstDefined(v, conditionalDef.value);
   });
 }
 
-function getConditionValue<T>(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>,
-  reducer: (val: T, conditionalDef: Conditional<ValueDef>) => T
-): T {
+function getConditionValue<V extends Value>(
+  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, V> | ValueDefWithCondition<MarkPropFieldDef<string>, V>,
+  reducer: (val: V, conditionalDef: Conditional<ValueDef>) => V
+): V {
   if (hasConditionalValueDef(channelDef)) {
     return (isArray(channelDef.condition) ? channelDef.condition : [channelDef.condition]).reduce(
       reducer,

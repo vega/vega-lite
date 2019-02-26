@@ -12,8 +12,10 @@ A layered or multi-view display can also be composed with other views. Through t
 Vega-Lite's compiler infers how input data should be reused across constituent views, and whether scale domains should be unioned or remain independent.
 
 ## Documentation Overview
+
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 
@@ -27,7 +29,7 @@ Learn how to use it on the [facet page](facet.html).
 
 With the `layer` operator, you can place multiple views on top of each other. This can be useful to add annotations to views. Vega-Lite automatically unions scale domains and combines axes and legends.
 
-However, Vega-Lite can not enforce that a unioned domain is *semantically meaningful*. To prohibit layering of composite views with incompatible layouts, the layer operator restricts its operands to be single or layered views.
+However, Vega-Lite can not enforce that a unioned domain is _semantically meaningful_. To prohibit layering of composite views with incompatible layouts, the layer operator restricts its operands to be single or layered views.
 
 Learn how to use it on the [layering page](layer.html).
 

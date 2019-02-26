@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bubbleplot showing horsepower on x, miles per gallons on y, and weight with a diverging color scale.",
   "autosize": "pad",
   "padding": 5,
@@ -117,15 +117,9 @@
   "legends": [
     {
       "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Weight_in_lbs",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "transparent"},
-            "opacity": {"value": 0.7}
-          }
-        }
-      }
+      "encode": {"gradient": {"update": {"opacity": {"value": 0.7}}}}
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

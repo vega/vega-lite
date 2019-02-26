@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "The population of the German city of Falkensee over time",
   "autosize": "pad",
   "padding": 5,
@@ -48,16 +48,14 @@
         {"year": "2012", "population": 40905},
         {"year": "2013", "population": 41258},
         {"year": "2014", "population": 41777}
-      ],
-      "format": {}
+      ]
     },
     {
       "name": "source_1",
       "values": [
         {"start": "1933", "end": "1945", "event": "Nazi Rule"},
         {"start": "1948", "end": "1989", "event": "GDR (East Germany)"}
-      ],
-      "format": {}
+      ]
     },
     {
       "name": "data_0",
@@ -195,7 +193,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "data_1", "field": "event", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     },
     {
       "name": "y",
@@ -258,6 +257,12 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "title": "event"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "event"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

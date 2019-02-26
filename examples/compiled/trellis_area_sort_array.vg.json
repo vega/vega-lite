@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock prices of four large companies as a small multiples of area charts.",
   "autosize": "pad",
   "padding": 5,
@@ -23,7 +23,7 @@
         {
           "type": "impute",
           "field": "price",
-          "groupby": ["symbol"],
+          "groupby": ["symbol", "symbol"],
           "key": "date",
           "method": "value",
           "value": 0
@@ -57,7 +57,7 @@
     {"name": "child_height", "value": 40}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "offset": {"rowTitle": 10},
     "columns": 1,
     "bounds": "full",
@@ -89,6 +89,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
@@ -217,9 +218,16 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "symbol", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     }
   ],
-  "legends": [{"fill": "color", "title": "symbol"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "title": "symbol"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

@@ -1,6 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
-  "description": "A simple bar chart with embedded data.",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -12,7 +11,7 @@
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 21},
+    {"name": "y_step", "value": 20},
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
@@ -34,7 +33,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"b\": format(datum[\"b\"], \"\"), \"a\": ''+datum[\"a\"]}"
+            "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
           },
           "x": {"scale": "x", "field": "b"},
           "x2": {"scale": "x", "value": 0},
@@ -61,7 +60,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"b\": format(datum[\"b\"], \"\"), \"a\": ''+datum[\"a\"]}"
+            "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
           },
           "x": {"scale": "x", "field": "b"},
           "y": {"scale": "y", "field": "a", "band": 0.5},

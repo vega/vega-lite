@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "height": 200,
@@ -14,38 +14,19 @@
           "type": "formula",
           "as": "month_date",
           "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
+        },
         {
           "type": "aggregate",
           "groupby": ["month_date"],
-          "ops": ["mean"],
-          "fields": ["precipitation"],
-          "as": ["mean_precipitation"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["month_date"],
-          "ops": ["mean"],
-          "fields": ["temp_max"],
-          "as": ["mean_temp_max"]
+          "ops": ["mean", "mean"],
+          "fields": ["temp_max", "precipitation"],
+          "as": ["mean_temp_max", "mean_precipitation"]
         }
       ]
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
@@ -56,7 +37,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -81,7 +62,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "firebrick"},
@@ -101,13 +82,7 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "month_date"},
-          {"data": "data_1", "field": "month_date"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "month_date", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -115,7 +90,7 @@
     {
       "name": "layer_0_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "mean_precipitation"},
+      "domain": {"data": "source_0", "field": "mean_precipitation"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -123,7 +98,7 @@
     {
       "name": "layer_1_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "mean_temp_max"},
+      "domain": {"data": "source_0", "field": "mean_temp_max"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true

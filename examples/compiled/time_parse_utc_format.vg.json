@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Google's stock price over time.",
   "autosize": "pad",
   "padding": 5,
-  "width": 21,
+  "width": 20,
   "style": "cell",
   "data": [
     {
@@ -11,8 +11,7 @@
       "values": [
         {"date": "10 Oct 2011 22:48:00"},
         {"date": "11 Oct 2022 23:00:00"}
-      ],
-      "format": {}
+      ]
     },
     {
       "name": "data_0",
@@ -32,7 +31,7 @@
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 21},
+    {"name": "y_step", "value": 20},
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 1, 0.5) * y_step"

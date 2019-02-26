@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 800,
@@ -125,7 +125,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"origin_longitude\": format(datum[\"origin_longitude\"], \"\"), \"dest_longitude\": format(datum[\"dest_longitude\"], \"\"), \"origin_latitude\": format(datum[\"origin_latitude\"], \"\"), \"dest_latitude\": format(datum[\"dest_latitude\"], \"\")}"
+            "signal": "{\"origin_longitude\": format(datum[\"origin_longitude\"], \"\"), \"origin_latitude\": format(datum[\"origin_latitude\"], \"\"), \"dest_longitude\": format(datum[\"dest_longitude\"], \"\"), \"dest_latitude\": format(datum[\"dest_latitude\"], \"\")}"
           },
           "x": {"field": "layer_2_x"},
           "y": {"field": "layer_2_y"},

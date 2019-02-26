@@ -1,13 +1,10 @@
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
-
-import {StackComponent, StackNode} from '../../../src/compile/data/stack';
+import {StackNode} from '../../../src/compile/data/stack';
 import {UnitModel} from '../../../src/compile/unit';
 import {Transform} from '../../../src/transform';
-import {VgComparatorOrder, VgSort, VgTransform} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 function parse(model: UnitModel) {
   return StackNode.makeFromEncoding(null, model).stack;
@@ -28,7 +25,7 @@ describe('compile/data/stack', () => {
         }
       });
 
-      assert.deepEqual<StackComponent>(parse(model), {
+      expect(parse(model)).toEqual({
         dimensionFieldDef: {field: 'b', type: 'nominal'},
         facetby: [],
         stackField: 'sum_a',
@@ -53,7 +50,7 @@ describe('compile/data/stack', () => {
         }
       });
 
-      assert.deepEqual<StackComponent>(parse(model), {
+      expect(parse(model)).toEqual({
         dimensionFieldDef: {bin: {maxbins: 10}, field: 'b', type: 'quantitative'},
         facetby: [],
         stackField: 'sum_a',
@@ -77,7 +74,7 @@ describe('compile/data/stack', () => {
         }
       });
 
-      assert.deepEqual<StackComponent>(parse(model), {
+      expect(parse(model)).toEqual({
         dimensionFieldDef: undefined,
         facetby: [],
         stackField: 'sum_a',
@@ -91,7 +88,7 @@ describe('compile/data/stack', () => {
         as: ['sum_a_start', 'sum_a_end']
       });
 
-      assert.deepEqual<VgTransform[]>(assemble(model), [
+      expect(assemble(model)).toEqual([
         {
           type: 'stack',
           groupby: [],
@@ -117,7 +114,7 @@ describe('compile/data/stack', () => {
         }
       });
 
-      assert.deepEqual<StackComponent>(parse(model), {
+      expect(parse(model)).toEqual({
         dimensionFieldDef: {field: 'b', type: 'nominal'},
         facetby: [],
         stackField: 'sum_a',
@@ -131,7 +128,7 @@ describe('compile/data/stack', () => {
         as: ['sum_a_start', 'sum_a_end']
       });
 
-      assert.deepEqual<VgTransform[]>(assemble(model), [
+      expect(assemble(model)).toEqual([
         {
           type: 'impute',
           field: 'sum_a',
@@ -164,7 +161,7 @@ describe('compile/data/stack', () => {
         }
       });
 
-      assert.deepEqual<StackComponent>(parse(model), {
+      expect(parse(model)).toEqual({
         dimensionFieldDef: {bin: {maxbins: 10}, field: 'b', type: 'quantitative'},
         facetby: [],
         stackField: 'sum_a',
@@ -178,7 +175,7 @@ describe('compile/data/stack', () => {
         as: ['sum_a_start', 'sum_a_end']
       });
 
-      assert.deepEqual<VgTransform[]>(assemble(model), [
+      expect(assemble(model)).toEqual([
         {
           type: 'formula',
           expr: '(datum["bin_maxbins_10_b"]+datum["bin_maxbins_10_b_end"])/2',
@@ -215,13 +212,13 @@ describe('compile/data/stack', () => {
         as: ['v1', 'v2']
       };
       const stack = StackNode.makeFromTransform(null, transform);
-      assert.deepEqual<VgTransform[]>(stack.assemble(), [
+      expect(stack.assemble()).toEqual([
         {
           type: 'stack',
           groupby: ['age'],
           field: 'people',
           offset: 'zero',
-          sort: {field: [] as string[], order: [] as VgComparatorOrder[]} as VgSort,
+          sort: {field: [] as string[], order: []},
           as: ['v1', 'v2']
         }
       ]);
@@ -235,13 +232,13 @@ describe('compile/data/stack', () => {
         as: 'val'
       };
       const stack = StackNode.makeFromTransform(null, transform);
-      assert.deepEqual<VgTransform[]>(stack.assemble(), [
+      expect(stack.assemble()).toEqual([
         {
           type: 'stack',
           groupby: ['age', 'gender'],
           field: 'people',
           offset: 'normalize',
-          sort: {field: [] as string[], order: [] as VgComparatorOrder[]} as VgSort,
+          sort: {field: [] as string[], order: []},
           as: ['val', 'val_end']
         }
       ]);
@@ -256,7 +253,7 @@ describe('compile/data/stack', () => {
         as: 'val'
       };
       const stack = StackNode.makeFromTransform(null, transform);
-      assert.deepEqual<VgTransform[]>(stack.assemble(), [
+      expect(stack.assemble()).toEqual([
         {
           type: 'stack',
           groupby: ['age', 'gender'],
@@ -278,7 +275,7 @@ describe('compile/data/stack', () => {
       };
       const stack = StackNode.makeFromTransform(null, transform);
 
-      assert.deepEqual<VgTransform[]>(stack.assemble(), [
+      expect(stack.assemble()).toEqual([
         {
           type: 'stack',
           groupby: ['age', 'gender'],
@@ -298,10 +295,7 @@ describe('compile/data/stack', () => {
         as: 'people'
       };
       const stack = StackNode.makeFromTransform(null, transform);
-      assert.deepEqual(stack.producedFields(), {
-        people: true,
-        people_end: true
-      });
+      expect(stack.producedFields()).toEqual(new Set(['people', 'people_end']));
     });
 
     it('should give producedFields correctly when in encoding channel', () => {
@@ -314,10 +308,7 @@ describe('compile/data/stack', () => {
         }
       });
       const stack = StackNode.makeFromEncoding(null, model);
-      assert.deepEqual(stack.producedFields(), {
-        sum_a_start: true,
-        sum_a_end: true
-      });
+      expect(stack.producedFields()).toEqual(new Set(['sum_a_start', 'sum_a_end']));
     });
 
     it('should generate the correct hash', () => {
@@ -330,8 +321,7 @@ describe('compile/data/stack', () => {
         }
       });
       const stack = StackNode.makeFromEncoding(null, model);
-      assert.deepEqual(
-        stack.hash(),
+      expect(stack.hash()).toEqual(
         'Stack {"as":["sum_a_start","sum_a_end"],"dimensionFieldDef":{"field":"b","type":"nominal"},"facetby":[],"impute":false,"offset":"zero","sort":{"field":["c"],"order":["descending"]},"stackField":"sum_a","stackby":["c"]}'
       );
     });

@@ -11,8 +11,7 @@ For this tutorial, we will create visualizations to explore weather data for Sea
 
 To load the CSV file with Vega-Lite, we need to provide a URL and set the format type in the data section of the specification.
 
-{: .suppress-error}
-```json
+```js
 "data": {"url": "data/seattle-weather.csv"}
 ```
 
@@ -40,7 +39,7 @@ In this chart, it looks as though the maximum temperature is increasing from yea
 
 And yes, this chart shows that it is in fact increasing. You can observe a similar change for the minimum daily temperatures. Considering minimum and maximum temperatures, you might wonder how the variability of the temperatures changes throughout the year. For this, we have to add a computation to derive a new field.
 
-```json
+```js
 "transform": [
   {
     "calculate": "datum.temp_max - datum.temp_min",
@@ -54,6 +53,7 @@ We can use the new field `temp_range` just like any other field. You can find mo
 <div class="vl-example" data-name="line_calculate"></div>
 
 For the last visualization in this tutorial, we will explore the `weather` field. We might wish to know how different kinds of weather (e.g. sunny days or rainy days) are distributed throughout the year. To answer this, we discretize the `date` by month and then count the number of records on the y-Axis. We then break down the bars by the weather type by adding a color channel with nominal data. When a field is mapped to color for a bar mark, Vega-Lite automatically stacks the bars atop each other.
+
 <!-- TODO: link to stacking config once we finish moving it -->
 
 <div class="vl-example" data-name="stacked_bar_count"></div>

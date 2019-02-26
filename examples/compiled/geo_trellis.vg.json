@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "data": [
@@ -42,7 +42,7 @@
     {"name": "child_height", "value": 300}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "offset": {"rowTitle": 10},
     "columns": 1,
     "bounds": "full",
@@ -71,6 +71,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}}
@@ -105,7 +106,7 @@
                 {"scale": "color", "field": "pct"}
               ],
               "tooltip": {
-                "signal": "{\"pct\": format(datum[\"pct\"], \"\"), \"geo\": ''+datum[\"geo\"]}"
+                "signal": "{\"geo\": ''+datum[\"geo\"], \"pct\": format(datum[\"pct\"], \"\")}"
               }
             }
           },
@@ -123,12 +124,19 @@
   "scales": [
     {
       "name": "color",
-      "type": "sequential",
+      "type": "linear",
       "domain": {"data": "source_0", "field": "pct"},
       "range": "heatmap",
+      "interpolate": "hcl",
       "zero": false
     }
   ],
-  "legends": [{"fill": "color", "title": "pct"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "title": "pct"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

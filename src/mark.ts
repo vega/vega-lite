@@ -1,7 +1,7 @@
 import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
 import {contains, flagKeys} from './util';
-import {VgMarkConfig} from './vega.schema';
+import {BaseMarkConfig} from './vega.schema';
 
 export namespace Mark {
   export const AREA: 'area' = 'area';
@@ -90,15 +90,13 @@ export interface TooltipContent {
   content: 'encoding' | 'data';
 }
 
-export interface MarkConfig extends ColorMixins, VgMarkConfig {
+export interface MarkConfig extends ColorMixins, BaseMarkConfig {
   // ========== VL-Specific ==========
 
   /**
    * Whether the mark's color should be used as fill color instead of stroke color.
    *
-   * __Default value:__ `true` for all marks except `point` and `false` for `point`.
-   *
-   * __Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.
+   * __Default value:__ `false` for `point`, `line` and `rule`; otherwise, `true`.
    *
    * __Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
    *
@@ -112,8 +110,9 @@ export interface MarkConfig extends ColorMixins, VgMarkConfig {
    *
    * - If `tooltip` is `{"content": "encoding"}`, then all fields from `encoding` will be used.
    * - If `tooltip` is `{"content": "data"}`, then all fields that appear in the highlighted data point will be used.
+   * - If set to `null`, then no tooltip will be used.
    */
-  tooltip?: string | TooltipContent;
+  tooltip?: string | TooltipContent | null;
 
   /**
    * Default size for marks.
@@ -141,13 +140,13 @@ export interface BarBinSpacingMixins {
 
 export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
 
-export function isMarkDef(mark: AnyMark): mark is MarkDef | CompositeMarkDef {
+export function isMarkDef(mark: string | GenericMarkDef<any>): mark is GenericMarkDef<any> {
   return mark['type'];
 }
 
 const PRIMITIVE_MARK_INDEX = toSet(PRIMITIVE_MARKS);
 
-export function isPrimitiveMark(mark: CompositeMark | CompositeMarkDef | Mark | MarkDef): mark is Mark {
+export function isPrimitiveMark(mark: AnyMark): mark is Mark {
   const markType = isMarkDef(mark) ? mark.type : mark;
   return markType in PRIMITIVE_MARK_INDEX;
 }
@@ -338,21 +337,14 @@ export interface MarkDefMixins {
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
-export interface MarkDef
-  extends GenericMarkDef<Mark>,
+export interface MarkDef<M extends string | Mark = Mark>
+  extends GenericMarkDef<M>,
     BarBinSpacingMixins,
     MarkConfig,
     PointOverlayMixins,
     LineOverlayMixins,
     TickThicknessMixins,
-    MarkDefMixins {
-  /**
-   * The mark type.
-   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`.
-   */
-  type: Mark;
-}
+    MarkDefMixins {}
 
 export const defaultBarConfig: BarConfig = {
   binSpacing: 1,
@@ -370,7 +362,7 @@ export interface TickConfig extends MarkConfig, TickThicknessMixins {
   /**
    * The width of the ticks.
    *
-   * __Default value:__  2/3 of rangeStep.
+   * __Default value:__  3/4 of rangeStep.
    * @minimum 0
    */
   bandSize?: number;
@@ -379,3 +371,7 @@ export interface TickConfig extends MarkConfig, TickThicknessMixins {
 export const defaultTickConfig: TickConfig = {
   thickness: 1
 };
+
+export function getMarkType(m: string | GenericMarkDef<any>) {
+  return isMarkDef(m) ? m.type : m;
+}

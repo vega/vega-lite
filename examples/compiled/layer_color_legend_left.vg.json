@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock price over time with color legend orient = left.",
   "autosize": "pad",
   "padding": 5,
@@ -96,7 +96,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "symbol", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     }
   ],
   "axes": [
@@ -150,6 +151,7 @@
     {
       "orient": "left",
       "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "symbol",
       "fill": "color",
       "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}

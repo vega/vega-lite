@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -21,7 +21,7 @@
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 21},
+    {"name": "y_step", "value": 20},
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
@@ -73,7 +73,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "data_0", "field": "key", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     }
   ],
   "axes": [
@@ -105,6 +106,7 @@
   "legends": [
     {
       "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "key",
       "encode": {
         "symbols": {

@@ -1,14 +1,15 @@
+import {stringValue} from 'vega-util';
+import {SelectionInit} from '../../selection';
 import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
-import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from './selection';
-import nearest from './transforms/nearest';
+import {assembleInit, SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from './selection';
 import {TUPLE_FIELDS} from './transforms/project';
 
-export function signals(model: UnitModel, selCmpt: SelectionComponent) {
+export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionComponent<'single' | 'multi'>) {
   const name = selCmpt.name;
   const fieldsSg = name + TUPLE + TUPLE_FIELDS;
   const proj = selCmpt.project;
-  const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
+  const datum = '(item().isVoronoi ? datum.datum : datum)';
   const values = proj
     .map(p => {
       const fieldDef = model.fieldDef(p.channel);
@@ -27,25 +28,36 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
   // for constant null states but varying toggles (e.g., shift-click in
   // whitespace followed by a click in whitespace; the store should only
   // be cleared on the second click).
-  return [
+  const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
+  const signals: any[] = [
     {
       name: name + TUPLE,
-      value: {},
       on: [
         {
           events: selCmpt.events,
-          update:
-            `datum && item().mark.marktype !== 'group' ? ` +
-            `{unit: ${unitName(model)}, fields: ${fieldsSg}, values: [${values}]} : null`,
+          update: `datum && item().mark.marktype !== 'group' ? {${update}: [${values}]} : null`,
           force: true
         }
       ]
     }
   ];
+
+  if (selCmpt.init) {
+    const insert = selCmpt.init.map((i: SelectionInit | SelectionInit[]) => {
+      const str = assembleInit(i);
+      return `{${update}: ${str}}`;
+    });
+    signals.push({
+      name: `${name}_init`,
+      init: `modify(${stringValue(selCmpt.name + STORE)}, [${insert}])`
+    });
+  }
+
+  return signals;
 }
 
-const multi: SelectionCompiler = {
-  signals: signals,
+const multi: SelectionCompiler<'multi'> = {
+  signals: singleOrMultiSignals,
 
   modifyExpr: (model, selCmpt) => {
     const tpl = selCmpt.name + TUPLE;

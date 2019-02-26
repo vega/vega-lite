@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "height": 200,
@@ -57,7 +57,7 @@
             {"scale": "color", "field": "gender"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+            "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
           },
           "x": {"scale": "x", "field": "age"},
           "width": {"scale": "x", "band": true},
@@ -88,7 +88,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "gender", "sort": true},
-      "range": ["#EA98D2", "#659CCA"]
+      "range": ["#EA98D2", "#659CCA"],
+      "interpolate": "hcl"
     }
   ],
   "axes": [
@@ -129,6 +130,7 @@
   "legends": [
     {
       "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "gender",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }

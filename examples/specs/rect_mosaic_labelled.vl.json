@@ -32,7 +32,7 @@
       ]
     },
     {
-      "window": [
+      "joinaggregate": [
         {
           "op": "min",
           "field": "stack_count_Origin1",
@@ -46,10 +46,6 @@
       ],
       "groupby": [
         "Origin"
-      ],
-      "frame": [
-        null,
-        null
       ]
     },
     {

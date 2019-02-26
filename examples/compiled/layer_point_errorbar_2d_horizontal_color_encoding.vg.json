@@ -1,22 +1,28 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
   "style": "cell",
   "data": [
-    {"name": "source_0", "url": "data/barley.json", "format": {"type": "json"}},
     {
-      "name": "data_0",
-      "source": "source_0",
+      "name": "source_0",
+      "url": "data/barley.json",
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "aggregate",
           "groupby": ["variety"],
-          "ops": ["stderr", "mean"],
-          "fields": ["yield", "yield"],
-          "as": ["extent_yield", "center_yield"]
-        },
+          "ops": ["mean", "mean", "stderr"],
+          "fields": ["yield", "yield", "yield"],
+          "as": ["mean_yield", "center_yield", "extent_yield"]
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
           "type": "formula",
           "expr": "datum.center_yield + datum.extent_yield",
@@ -28,27 +34,11 @@
           "as": "lower_yield"
         }
       ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["variety"],
-          "ops": ["mean"],
-          "fields": ["yield"],
-          "as": ["mean_yield"]
-        }
-      ]
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 21},
-    {
-      "name": "height",
-      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
-    }
+    {"name": "y_step", "value": 20},
+    {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
   ],
   "marks": [
     {
@@ -67,11 +57,11 @@
             {"value": "#4682b4"}
           ],
           "tooltip": {
-            "signal": "{\"yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "xc": {"scale": "x", "field": "lower_yield"},
           "yc": {"scale": "y", "field": "variety", "band": 0.5},
-          "height": {"value": 14},
+          "height": {"value": 15},
           "width": {"value": 1}
         }
       }
@@ -92,11 +82,11 @@
             {"value": "#4682b4"}
           ],
           "tooltip": {
-            "signal": "{\"yield\": format(datum[\"upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "xc": {"scale": "x", "field": "upper_yield"},
           "yc": {"scale": "y", "field": "variety", "band": 0.5},
-          "height": {"value": 14},
+          "height": {"value": 15},
           "width": {"value": 1}
         }
       }
@@ -116,7 +106,7 @@
             {"value": "#4682b4"}
           ],
           "tooltip": {
-            "signal": "{\"yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"upper_yield\": format(datum[\"upper_yield\"], \"\")}"
+            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},
@@ -128,7 +118,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -155,7 +145,7 @@
         "fields": [
           {"data": "data_0", "field": "lower_yield"},
           {"data": "data_0", "field": "upper_yield"},
-          {"data": "data_1", "field": "mean_yield"}
+          {"data": "source_0", "field": "mean_yield"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -168,13 +158,13 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "variety"},
-          {"data": "data_1", "field": "variety"}
+          {"data": "source_0", "field": "variety"}
         ],
         "sort": true
       },
       "range": {"step": {"signal": "y_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     }
   ],
   "axes": [

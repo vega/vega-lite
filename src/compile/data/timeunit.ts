@@ -60,23 +60,11 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   public producedFields() {
-    const out = {};
-
-    vals(this.formula).forEach(f => {
-      out[f.as] = true;
-    });
-
-    return out;
+    return new Set(vals(this.formula).map(f => f.as));
   }
 
   public dependentFields() {
-    const out = {};
-
-    vals(this.formula).forEach(f => {
-      out[f.field] = true;
-    });
-
-    return out;
+    return new Set(vals(this.formula).map(f => f.field));
   }
 
   public hash() {

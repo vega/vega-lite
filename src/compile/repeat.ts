@@ -1,7 +1,8 @@
+import {isArray} from 'vega';
 import {Config} from '../config';
 import * as log from '../log';
-import {Repeat} from '../repeat';
 import {NormalizedRepeatSpec} from '../spec';
+import {Repeat} from '../spec/repeat';
 import {VgLayout} from '../vega.schema';
 import {BaseConcatModel} from './baseconcat';
 import {buildModel} from './buildmodel';
@@ -11,7 +12,7 @@ import {RepeaterValue} from './repeater';
 
 export class RepeatModel extends BaseConcatModel {
   public readonly type: 'repeat' = 'repeat';
-  public readonly repeat: Repeat;
+  public readonly repeat: Repeat | string[];
 
   public readonly children: Model[];
 
@@ -32,22 +33,37 @@ export class RepeatModel extends BaseConcatModel {
     this.children = this._initChildren(spec, this.repeat, repeatValues, config);
   }
 
-  private _initChildren(spec: NormalizedRepeatSpec, repeat: Repeat, repeater: RepeaterValue, config: Config): Model[] {
+  private _initChildren(
+    spec: NormalizedRepeatSpec,
+    repeat: Repeat | string[],
+    repeater: RepeaterValue,
+    config: Config
+  ): Model[] {
     const children: Model[] = [];
-    const row = repeat.row || [repeater ? repeater.row : null];
-    const column = repeat.column || [repeater ? repeater.column : null];
+
+    const row = (!isArray(repeat) && repeat.row) || [repeater ? repeater.row : null];
+    const column = (!isArray(repeat) && repeat.column) || [repeater ? repeater.column : null];
+    const repeatValues = (isArray(repeat) && repeat) || [repeater ? repeater.repeat : null];
 
     // cross product
-    for (const rowField of row) {
-      for (const columnField of column) {
-        const name = (rowField ? '_' + rowField : '') + (columnField ? '_' + columnField : '');
+    for (const repeatValue of repeatValues) {
+      for (const rowValue of row) {
+        for (const columnValue of column) {
+          const name =
+            (repeatValue ? `__repeat_repeat_${repeatValue}` : '') +
+            (rowValue ? `__repeat_row_${rowValue}` : '') +
+            (columnValue ? `__repeat_column_${columnValue}` : '');
 
-        const childRepeat = {
-          row: rowField,
-          column: columnField
-        };
+          const childRepeat = {
+            repeat: repeatValue,
+            row: rowValue,
+            column: columnValue
+          };
 
-        children.push(buildModel(spec.spec, this, this.getName('child' + name), undefined, childRepeat, config, false));
+          children.push(
+            buildModel(spec.spec, this, this.getName('child' + name), undefined, childRepeat, config, false)
+          );
+        }
       }
     }
 
@@ -59,8 +75,11 @@ export class RepeatModel extends BaseConcatModel {
   }
 
   protected assembleDefaultLayout(): VgLayout {
+    const {repeat} = this;
+    const columns = isArray(repeat) ? undefined : repeat.column ? repeat.column.length : 1;
+
     return {
-      columns: this.repeat && this.repeat.column ? this.repeat.column.length : 1,
+      ...(columns ? {columns} : {}),
       bounds: 'full',
       align: 'all'
     };

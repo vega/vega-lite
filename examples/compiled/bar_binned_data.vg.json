@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -36,10 +36,10 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"bin_start\": format(datum[\"bin_start\"], \"\"), \"count\": format(datum[\"count\"], \"\"), \"bin_end\": format(datum[\"bin_end\"], \"\")}"
+            "signal": "{\"bin_start\": format(datum[\"bin_start\"], \"\"), \"bin_end\": format(datum[\"bin_end\"], \"\"), \"count\": format(datum[\"count\"], \"\")}"
           },
           "x2": {"scale": "x", "field": "bin_start", "offset": 1},
-          "x": {"scale": "x", "field": "bin_end", "offset": 0},
+          "x": {"scale": "x", "field": "bin_end"},
           "y": {"scale": "y", "field": "count"},
           "y2": {"scale": "y", "value": 0}
         }
@@ -52,6 +52,7 @@
       "type": "linear",
       "domain": {"data": "source_0", "fields": ["bin_start", "bin_end"]},
       "range": [0, {"signal": "width"}],
+      "bins": {"step": 2},
       "zero": false
     },
     {
@@ -71,8 +72,7 @@
       "title": "bin_start, bin_end",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "(domain('x')[1] - domain('x')[0]) / 2 + 1"},
-      "values": {"signal": "sequence(domain('x')[0], domain('x')[1] + 2, 2)"},
+      "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 1
     },
     {

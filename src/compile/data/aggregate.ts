@@ -1,43 +1,40 @@
 import {AggregateOp} from 'vega';
 import {isBinning} from '../../bin';
 import {Channel, isScaleChannel} from '../../channel';
-import {FieldDef, vgField} from '../../fielddef';
+import {binRequiresRange, FieldDef, isTypedFieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
-import {Dict, differ, duplicate, hash, keys, replacePathInField, StringSet} from '../../util';
+import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
-import {binRequiresRange} from '../common';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
-function addDimension(dims: {[field: string]: boolean}, channel: Channel, fieldDef: FieldDef<string>) {
-  if (isBinning(fieldDef.bin)) {
-    dims[vgField(fieldDef, {})] = true;
-    dims[vgField(fieldDef, {binSuffix: 'end'})] = true;
+type Measures = Dict<{[key in AggregateOp]?: Set<string>}>;
+
+function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<string>) {
+  if (isTypedFieldDef(fieldDef) && isBinning(fieldDef.bin)) {
+    dims.add(vgField(fieldDef, {}));
+    dims.add(vgField(fieldDef, {binSuffix: 'end'}));
 
     if (binRequiresRange(fieldDef, channel)) {
-      dims[vgField(fieldDef, {binSuffix: 'range'})] = true;
+      dims.add(vgField(fieldDef, {binSuffix: 'range'}));
     }
   } else {
-    dims[vgField(fieldDef)] = true;
+    dims.add(vgField(fieldDef));
   }
   return dims;
 }
 
-function mergeMeasures(parentMeasures: Dict<Dict<string>>, childMeasures: Dict<Dict<string>>) {
-  for (const f in childMeasures) {
-    if (childMeasures.hasOwnProperty(f)) {
-      // when we merge a measure, we either have to add an aggregation operator or even a new field
-      const ops = childMeasures[f];
-      for (const op in ops) {
-        if (ops.hasOwnProperty(op)) {
-          if (f in parentMeasures) {
-            // add operator to existing measure field
-            parentMeasures[f][op] = ops[op];
-          } else {
-            parentMeasures[f] = {op: ops[op]};
-          }
-        }
+function mergeMeasures(parentMeasures: Measures, childMeasures: Measures) {
+  for (const field of keys(childMeasures)) {
+    // when we merge a measure, we either have to add an aggregation operator or even a new field
+    const ops = childMeasures[field];
+    for (const op of keys(ops)) {
+      if (field in parentMeasures) {
+        // add operator to existing measure field
+        parentMeasures[field][op] = new Set([...(parentMeasures[field][op] || []), ...ops[op]]);
+      } else {
+        parentMeasures[field] = {[op]: ops[op]};
       }
     }
   }
@@ -45,19 +42,19 @@ function mergeMeasures(parentMeasures: Dict<Dict<string>>, childMeasures: Dict<D
 
 export class AggregateNode extends DataFlowNode {
   public clone() {
-    return new AggregateNode(null, {...this.dimensions}, duplicate(this.measures));
+    return new AggregateNode(null, new Set(this.dimensions), duplicate(this.measures));
   }
 
   /**
    * @param dimensions string set for dimensions
    * @param measures dictionary mapping field name => dict of aggregation functions and names to use
    */
-  constructor(
-    parent: DataFlowNode,
-    private dimensions: StringSet,
-    private measures: Dict<{[key in AggregateOp]?: string}>
-  ) {
+  constructor(parent: DataFlowNode, private dimensions: Set<string>, private measures: Measures) {
     super(parent);
+  }
+
+  get groupBy() {
+    return this.dimensions;
   }
 
   public static makeFromEncoding(parent: DataFlowNode, model: UnitModel): AggregateNode {
@@ -68,8 +65,8 @@ export class AggregateNode extends DataFlowNode {
       }
     });
 
-    const meas = {};
-    const dims = {};
+    const meas: Measures = {};
+    const dims = new Set<string>();
 
     if (!isAggregate) {
       // no need to create this node if the model has no aggregation
@@ -81,15 +78,15 @@ export class AggregateNode extends DataFlowNode {
       if (aggregate) {
         if (aggregate === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = vgField(fieldDef, {forAs: true});
+          meas['*']['count'] = new Set([vgField(fieldDef, {forAs: true})]);
         } else {
           meas[field] = meas[field] || {};
-          meas[field][aggregate] = vgField(fieldDef, {forAs: true});
+          meas[field][aggregate] = new Set([vgField(fieldDef, {forAs: true})]);
 
           // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
           if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
-            meas[field]['min'] = vgField({field, aggregate: 'min'}, {forAs: true});
-            meas[field]['max'] = vgField({field, aggregate: 'max'}, {forAs: true});
+            meas[field]['min'] = new Set([vgField({field, aggregate: 'min'}, {forAs: true})]);
+            meas[field]['max'] = new Set([vgField({field, aggregate: 'max'}, {forAs: true})]);
           }
         }
       } else {
@@ -97,7 +94,7 @@ export class AggregateNode extends DataFlowNode {
       }
     });
 
-    if (keys(dims).length + keys(meas).length === 0) {
+    if (dims.size + keys(meas).length === 0) {
       return null;
     }
 
@@ -105,61 +102,62 @@ export class AggregateNode extends DataFlowNode {
   }
 
   public static makeFromTransform(parent: DataFlowNode, t: AggregateTransform): AggregateNode {
-    const dims = {};
-    const meas = {};
+    const dims = new Set<string>();
+    const meas: Measures = {};
 
     for (const s of t.aggregate) {
       const {op, field, as} = s;
       if (op) {
         if (op === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = as || vgField(s, {forAs: true});
+          meas['*']['count'] = new Set([as ? as : vgField(s, {forAs: true})]);
         } else {
           meas[field] = meas[field] || {};
-          meas[field][op] = as || vgField(s, {forAs: true});
+          meas[field][op] = new Set([as ? as : vgField(s, {forAs: true})]);
         }
       }
     }
 
     for (const s of t.groupby || []) {
-      dims[s] = true;
+      dims.add(s);
     }
 
-    if (keys(dims).length + keys(meas).length === 0) {
+    if (dims.size + keys(meas).length === 0) {
       return null;
     }
 
     return new AggregateNode(parent, dims, meas);
   }
 
-  public merge(other: AggregateNode) {
-    if (!differ(this.dimensions, other.dimensions)) {
+  public merge(other: AggregateNode): boolean {
+    if (setEqual(this.dimensions, other.dimensions)) {
       mergeMeasures(this.measures, other.measures);
-      other.remove();
+      return true;
     } else {
       log.debug('different dimensions, cannot merge');
+      return false;
     }
   }
 
   public addDimensions(fields: string[]) {
-    fields.forEach(f => (this.dimensions[f] = true));
+    fields.forEach(this.dimensions.add, this.dimensions);
   }
 
   public dependentFields() {
-    const out = {};
-
-    keys(this.dimensions).forEach(f => (out[f] = true));
-    keys(this.measures).forEach(m => (out[m] = true));
-
-    return out;
+    return new Set([...this.dimensions, ...keys(this.measures)]);
   }
 
   public producedFields() {
-    const out = {};
+    const out = new Set<string>();
 
     for (const field of keys(this.measures)) {
       for (const op of keys(this.measures[field])) {
-        out[this.measures[field][op] || `${op}_${field}`] = true;
+        const m = this.measures[field][op];
+        if (m.size === 0) {
+          out.add(`${op}_${field}`);
+        } else {
+          m.forEach(out.add, out);
+        }
       }
     }
 
@@ -177,15 +175,17 @@ export class AggregateNode extends DataFlowNode {
 
     for (const field of keys(this.measures)) {
       for (const op of keys(this.measures[field])) {
-        as.push(this.measures[field][op]);
-        ops.push(op);
-        fields.push(replacePathInField(field));
+        for (const alias of this.measures[field][op]) {
+          as.push(alias);
+          ops.push(op);
+          fields.push(field === '*' ? null : replacePathInField(field));
+        }
       }
     }
 
     const result: VgAggregateTransform = {
       type: 'aggregate',
-      groupby: keys(this.dimensions),
+      groupby: [...this.dimensions],
       ops,
       fields,
       as

@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import {COLOR, FILLOPACITY, OPACITY, SHAPE, SIZE, STROKEOPACITY, STROKEWIDTH} from '../../../src/channel';
 import * as legendParse from '../../../src/compile/legend/parse';
 import {parseLegend} from '../../../src/compile/legend/parse';
@@ -35,13 +34,13 @@ describe('compile/legend', () => {
 
       const unitModel = parseUnitModelWithScale(spec);
       const channelDef = unitModel.encoding[SHAPE];
-      assert.isTrue(isFieldDef(channelDef));
+      expect(isFieldDef(channelDef)).toBe(true);
       if (isFieldDef(channelDef)) {
-        assert.equal(channelDef.type, GEOJSON);
+        expect(channelDef.type).toEqual(GEOJSON);
       }
       parseLegend(unitModel);
       const legendComp = unitModel.component.legends;
-      assert.isUndefined(legendComp[SHAPE]);
+      expect(legendComp[SHAPE]).not.toBeDefined();
     });
   });
 
@@ -56,9 +55,9 @@ describe('compile/legend', () => {
       });
 
       const def = legendParse.parseLegendForChannel(model, COLOR).combine();
-      assert.isObject(def);
-      assert.equal(def.title, 'a');
-      assert.equal(def.stroke, 'color');
+      expect(typeof def).toBe('object');
+      expect(def.title).toEqual('a');
+      expect(def.stroke).toEqual('color');
     });
 
     it('should produce no legend title when title is null, "", or false', () => {
@@ -76,7 +75,7 @@ describe('compile/legend', () => {
         });
 
         const def = legendParse.parseLegendForChannel(model, COLOR).combine();
-        assert.doesNotHaveAnyKeys(def, ['title']);
+        expect(def).not.toHaveProperty('title');
       }
     });
 
@@ -94,10 +93,10 @@ describe('compile/legend', () => {
       });
 
       const def = legendParse.parseLegendForChannel(model, COLOR).combine();
-      assert.equal(def.title, 'foo');
+      expect(def.title).toEqual('foo');
     });
 
-    [SIZE, STROKEWIDTH, SHAPE, OPACITY, FILLOPACITY, STROKEOPACITY].forEach(channel => {
+    [SIZE, SHAPE, OPACITY].forEach(channel => {
       it(`should produce a Vega legend object with correct type and scale for ${channel}`, () => {
         const spec: NormalizedUnitSpec = {
           mark: 'point',
@@ -113,16 +112,32 @@ describe('compile/legend', () => {
 
         const channelDef = model.encoding[channel];
         if (isFieldDef(channelDef)) {
-          assert.notEqual(channelDef.type, GEOJSON);
+          expect(channelDef.type).not.toEqual(GEOJSON);
         }
 
         if (channel !== OPACITY) {
-          assert.equal((def.encode.symbols.update.opacity as any).value, 0.7);
+          expect((def.encode.symbols.update.opacity as any).value).toEqual(0.7);
         } else {
-          assert.isUndefined(def.encode.symbols.update.opacity);
+          expect(def.encode.symbols.update.opacity).not.toBeDefined();
         }
-        assert.isObject(def);
-        assert.equal(def.title, 'a');
+        expect(typeof def).toBe('object');
+        expect(def.title).toEqual('a');
+      });
+    });
+
+    [STROKEWIDTH, FILLOPACITY, STROKEOPACITY].forEach(channel => {
+      it(`should have no legend initialized`, () => {
+        const spec: NormalizedUnitSpec = {
+          mark: 'point',
+          encoding: {
+            x: {field: 'a', type: 'nominal'}
+          }
+        };
+        spec.encoding[channel] = {field: 'a', type: 'nominal'};
+
+        const model = parseUnitModelWithScale(spec);
+
+        expect(model.legend(channel)).toBeUndefined();
       });
     });
   });
@@ -154,7 +169,7 @@ describe('compile/legend', () => {
       });
       model.parseScale();
       model.parseLegend();
-      assert.equal(model.component.legends.color.explicit.orient, 'left');
+      expect(model.component.legends.color.explicit.orient).toEqual('left');
     });
 
     it('should correctly merge legend that exists only on one plot', () => {
@@ -182,9 +197,9 @@ describe('compile/legend', () => {
       });
       model.parseScale();
       model.parseLegend();
-      assert.isOk(model.component.legends.color);
-      assert.isUndefined(model.children[0].component.legends.color);
-      assert.isUndefined(model.children[1].component.legends.color);
+      expect(model.component.legends.color).toBeTruthy();
+      expect(model.children[0].component.legends.color).not.toBeDefined();
+      expect(model.children[1].component.legends.color).not.toBeDefined();
     });
   });
 });

@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {Mark} from '../../../src/mark';
@@ -30,7 +29,7 @@ describe('Identifier transform', () => {
     function test(selDef?: any) {
       const data = getVgData(selDef);
       for (const d of data) {
-        assert.isNotTrue(d.transform && d.transform.some(t => t.type === 'identifier'));
+        expect(d.transform && d.transform.some(t => t.type === 'identifier')).not.toBe(true);
       }
     }
 
@@ -43,7 +42,7 @@ describe('Identifier transform', () => {
   it('is added for default point selections', () => {
     for (const type of ['single', 'multi']) {
       const url = getVgData({pt: {type}});
-      assert.equal(url[0].transform[0].type, 'identifier');
+      expect(url[0].transform[0].type).toEqual('identifier');
     }
   });
 
@@ -51,8 +50,8 @@ describe('Identifier transform', () => {
     function test(transform: VgTransform[]) {
       let aggr = -1;
       transform.some((t, i) => ((aggr = i), t.type === 'aggregate'));
-      assert.isAtLeast(aggr, 0);
-      assert.equal(transform[aggr + 1].type, 'identifier');
+      expect(aggr).toBeGreaterThanOrEqual(0);
+      expect(transform[aggr + 1].type).toEqual('identifier');
     }
 
     for (const type of ['single', 'multi']) {
@@ -70,7 +69,7 @@ describe('Identifier transform', () => {
       const data = getVgData({pt: {type}}, null, null, null, null, [{calculate: 'datum.Horsepower * 2', as: 'foo'}]);
       let calc = -1;
       data[0].transform.some((t, i) => ((calc = i), t.type === 'formula' && t.as === 'foo'));
-      assert.equal(data[0].transform[calc - 1].type, 'identifier');
+      expect(data[0].transform[calc - 1].type).toEqual('identifier');
     }
   });
 });

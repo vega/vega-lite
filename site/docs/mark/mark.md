@@ -11,8 +11,7 @@ The `mark` property of a [single view specification](spec.html#single) can eithe
 
 <!-- why mark-based approach over chart typology + but we support variety of chart types -->
 
-{: .suppress-error}
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -22,45 +21,31 @@ The `mark` property of a [single view specification](spec.html#single) can eithe
 }
 ```
 
-
-
 ## Documentation Overview
+
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 
-## Mark Types
 {:#types}
 
-Vega-Lite supports the following primitive `mark` types:
-[`"area"`](area.html),
-[`"bar"`](bar.html),
-[`"circle"`](circle.html),
-[`"line"`](line.html),
-[`"point"`](point.html),
-[`"rect"`](rectangle.html),
-[`"rule"`](rule.html),
-[`"square"`](square.html),
-[`"text"`](text.html),
-[`"tick"`](tick.html),
-and [`"geoshape"`](geoshape.html).
-In general, one mark instance is generated per input data element. However, line and area marks represent multiple data elements as a contiguous line or shape.
+## Mark Types
 
-In addition to primitive marks, Vega-Lite also support composite marks,
-which are "macros" for complex layered graphics that contain multiple primitive marks.  Supported composite mark types include [`"boxplot"`](boxplot.html), [`"errorband"`](errorband.html), [`"errorbar"`](errorbar.html).
+Vega-Lite supports the following primitive `mark` types: [`"area"`](area.html), [`"bar"`](bar.html), [`"circle"`](circle.html), [`"line"`](line.html), [`"point"`](point.html), [`"rect"`](rectangle.html), [`"rule"`](rule.html), [`"square"`](square.html), [`"text"`](text.html), [`"tick"`](tick.html), and [`"geoshape"`](geoshape.html). In general, one mark instance is generated per input data element. However, line and area marks represent multiple data elements as a contiguous line or shape.
 
+In addition to primitive marks, Vega-Lite also support composite marks, which are "macros" for complex layered graphics that contain multiple primitive marks. Supported composite mark types include [`"boxplot"`](boxplot.html), [`"errorband"`](errorband.html), [`"errorbar"`](errorbar.html).
 
 For example, a bar chart has `mark` as a simple string `"bar"`.
 
 <span class="vl-example" data-name="bar"></span>
 
-## Mark Definition Object
 {:#mark-def}
 
+## Mark Definition Object
 
-{: .suppress-error}
-```json
+```js
 // Single View Specification
 {
   ...
@@ -72,27 +57,28 @@ For example, a bar chart has `mark` as a simple string `"bar"`.
 }
 ```
 
-To customize properties of a mark, users can set `mark` to be a mark definition object instead of a string describing mark type. The rest of this section lists standard mark properties for primitive mark types. Additionally, some marks may have special mark properties (listed in their documentation page).  For example, [point](https://vega.github.io/vega-lite/docs/point.html#properties)  marks support `shape` and `size` properties in addition to these standard properties.
+To customize properties of a mark, users can set `mark` to be a mark definition object instead of a string describing mark type. The rest of this section lists standard mark properties for primitive mark types. Additionally, some marks may have special mark properties (listed in their documentation page). For example, [point](https://vega.github.io/vega-lite/docs/point.html#properties) marks support `shape` and `size` properties in addition to these standard properties.
 
 Note: If [mark property encoding channels](encoding.html#mark-prop) are specified, these mark properties will be overridden.
-
 
 ### General Mark Properties
 
 {% include table.html props="type,style,clip" source="MarkDef" %}
 
 {:#offset}
+
 ### Offset Properties
 
 {% include table.html props="xOffset,x2Offset,yOffset,y2Offset" source="MarkDef" %}
 
-
 {:#color}
+
 ### Color Properties
 
 {% include table.html props="filled,color,fill,stroke,opacity,fillOpacity,strokeOpacity" source="MarkDef" %}
 
 {:#stroke}
+
 ### Stroke Style Properties
 
 {% include table.html props="strokeCap,strokeDash,strokeDashOffset,strokeJoin,strokeMiterLimit,strokeWidth" source="MarkDef" %}
@@ -102,6 +88,7 @@ Here is an example to the usage of the stroke dash where 6 is the size of dashes
 <div class="vl-example" data-name="layer_line_errorband_2d_horizontal_borders_strokedash"></div>
 
 {:#hyperlink}
+
 ### Hyperlink Properties
 
 Marks can act as hyperlinks when the `href` property or [channel](encoding.html#href) is defined. When the `href` property is specified, the [`cursor` mark property](mark.html#hyperlink) is set to `"pointer"` by default to serve as affordance for hyperlinks.
@@ -111,10 +98,10 @@ Marks can act as hyperlinks when the `href` property or [channel](encoding.html#
 <span class="vl-example" data-name="point_href"></span>
 
 {:#style-config}
+
 ## Mark Style Config
 
-{: .suppress-error}
-```json
+```js
 {
   // Top Level Specification
   "config": {
@@ -132,7 +119,6 @@ In addition to the default mark properties above, default values can be further 
 
 For example, to set a default shape and stroke width for `point` marks with a style named `"triangle"`:
 
-{: .suppress-error}
 ```json
 {
   "style": {
@@ -159,12 +145,11 @@ You can use [`text` marks](text.html) as labels for other marks by setting `styl
 
 See also: [a similar example that uses mark definition to configure offset, align, and baseline](text.html#labels).
 
-
 {:#config}
+
 ## Mark Config
 
-{: .suppress-error}
-```json
+```js
 // Top-level View Specification
 {
   ...
@@ -187,8 +172,9 @@ See also: [a similar example that uses mark definition to configure offset, alig
 
 The `mark` property of the [`config`](config.html) object sets the default properties for all marks. In addition, the `config` object also provides mark-specific config using its mark type as the property name (e.g., `config.area`) for defining default properties for each mark.
 
-The global mark config (`config.mark`) supports all standard mark properties (except `type`, `style`, `clip`, and `orient`).  For mark-specific config, please see the documentation for each mark type.
+The global mark config (`config.mark`) supports all standard mark properties (except `type`, `style`, `clip`, and `orient`). For mark-specific config, please see the documentation for each mark type.
 
 Note:
-1) If [mark properties in mark definition](#mark-def) or [mark property encoding channels](encoding.html#mark-prop) are specified, these config values will be overridden.
-2) Mark config do not support [offset mark properties](#offset).
+
+1. If [mark properties in mark definition](#mark-def) or [mark property encoding channels](encoding.html#mark-prop) are specified, these config values will be overridden.
+2. Mark config do not support [offset mark properties](#offset).

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar chart showing the US population distribution of age groups in 2000.",
   "autosize": "pad",
   "padding": 5,
@@ -45,7 +45,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"sum_people\"], \".2e\"), \"age\": ''+datum[\"age\"]}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \".2e\")}"
           },
           "x": {"scale": "x", "field": "sum_people"},
           "x2": {"scale": "x", "value": 0},

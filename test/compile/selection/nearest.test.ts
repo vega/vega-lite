@@ -1,6 +1,5 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
 import * as selection from '../../../src/compile/selection/selection';
 import nearest from '../../../src/compile/selection/transforms/nearest';
 import * as log from '../../../src/log';
@@ -63,12 +62,12 @@ function voronoiMark(x?: string | {expr: string}, y?: string | {expr: string}) {
 describe('Nearest Selection Transform', () => {
   it('identifies transform invocation', () => {
     const selCmpts = getModel('circle').component.selection;
-    assert.isNotFalse(nearest.has(selCmpts['one']));
-    assert.isNotFalse(nearest.has(selCmpts['two']));
-    assert.isNotTrue(nearest.has(selCmpts['three']));
-    assert.isNotTrue(nearest.has(selCmpts['four']));
-    assert.isNotTrue(nearest.has(selCmpts['five']));
-    assert.isNotTrue(nearest.has(selCmpts['six']));
+    expect(nearest.has(selCmpts['one'])).not.toBe(false);
+    expect(nearest.has(selCmpts['two'])).not.toBe(false);
+    expect(nearest.has(selCmpts['three'])).not.toBe(true);
+    expect(nearest.has(selCmpts['four'])).not.toBe(true);
+    expect(nearest.has(selCmpts['five'])).not.toBe(true);
+    expect(nearest.has(selCmpts['six'])).not.toBe(true);
   });
 
   it('adds voronoi for non-path marks', () => {
@@ -76,7 +75,7 @@ describe('Nearest Selection Transform', () => {
     const selCmpts = model.component.selection;
     const marks: any[] = [{hello: 'world'}];
 
-    assert.sameDeepMembers(nearest.marks(model, selCmpts['one'], marks), voronoiMark());
+    expect(nearest.marks(model, selCmpts['one'], marks)).toEqual(voronoiMark());
   });
 
   it(
@@ -85,8 +84,8 @@ describe('Nearest Selection Transform', () => {
       const model = getModel('line');
       const selCmpts = model.component.selection;
       const marks: any[] = [];
-      assert.equal(nearest.marks(model, selCmpts['one'], marks), marks);
-      assert.equal(localLogger.warns[0], log.message.nearestNotSupportForContinuous('line'));
+      expect(nearest.marks(model, selCmpts['one'], marks)).toEqual(marks);
+      expect(localLogger.warns[0]).toEqual(log.message.nearestNotSupportForContinuous('line'));
     })
   );
 
@@ -96,7 +95,7 @@ describe('Nearest Selection Transform', () => {
     const marks: any[] = [{hello: 'world'}];
 
     const marks2 = nearest.marks(model, selCmpts['one'], marks);
-    assert.sameDeepMembers(nearest.marks(model, selCmpts['two'], marks2), voronoiMark());
+    expect(nearest.marks(model, selCmpts['two'], marks2)).toEqual(voronoiMark());
   });
 
   it('supports 1D voronoi', () => {
@@ -104,10 +103,10 @@ describe('Nearest Selection Transform', () => {
     const selCmpts = model.component.selection;
     const marks: any[] = [{hello: 'world'}];
 
-    assert.sameDeepMembers(nearest.marks(model, selCmpts['seven'], duplicate(marks)), voronoiMark(null, {expr: '0'}));
+    expect(nearest.marks(model, selCmpts['seven'], duplicate(marks))).toEqual(voronoiMark(null, {expr: '0'}));
 
-    assert.sameDeepMembers(nearest.marks(model, selCmpts['eight'], duplicate(marks)), voronoiMark({expr: '0'}));
+    expect(nearest.marks(model, selCmpts['eight'], duplicate(marks))).toEqual(voronoiMark({expr: '0'}));
 
-    assert.sameDeepMembers(nearest.marks(model, selCmpts['nine'], duplicate(marks)), voronoiMark());
+    expect(nearest.marks(model, selCmpts['nine'], duplicate(marks))).toEqual(voronoiMark());
   });
 });

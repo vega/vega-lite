@@ -1,6 +1,7 @@
 import {
   Align,
   BaseLegend,
+  FontStyle,
   FontWeight,
   LabelOverlap,
   Legend as VgLegend,
@@ -13,7 +14,7 @@ import {
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
-import {Color, VgLayoutAlign} from './vega.schema';
+import {Color, LayoutAlign} from './vega.schema';
 
 export type LegendConfig = LegendMixins &
   VlOnlyGuideConfig &
@@ -23,12 +24,54 @@ export type LegendConfig = LegendMixins &
     string,
     Color,
     FontWeight,
+    FontStyle,
     Align,
     TextBaseline,
-    VgLayoutAlign,
+    LayoutAlign,
     LabelOverlap,
     SymbolShape
-  >;
+  > & {
+    /**
+     * Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
+     *
+     * __Default value:__ `200`
+     */
+    gradientVerticalMaxLength?: number;
+
+    /**
+     * Min legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
+     *
+     * __Default value:__ `100`
+     */
+    gradientVerticalMinLength?: number;
+
+    /**
+     * Max legend length for a horizontal gradient when `config.legend.gradientLength` is undefined.
+     *
+     * __Default value:__ `200`
+     */
+    gradientHorizontalMaxLength?: number;
+
+    /**
+     * Min legend length for a horizontal gradient when `config.legend.gradientLength` is undefined.
+     *
+     * __Default value:__ `100`
+     */
+    gradientHorizontalMinLength?: number;
+
+    /**
+     * The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.
+     *
+     * __Default value:__ `undefined`.  If `undefined`, the default gradient will be determined based on the following rules:
+     * - For vertical gradients, `clamp(plot_height, gradientVerticalMinLength, gradientVerticalMaxLength)`
+     * - For top-`orient`ed or bottom-`orient`ed horizontal gradients, `clamp(plot_width, gradientHorizontalMinLength, gradientHorizontalMaxLength)`
+     * - For other horizontal gradients, `gradientHorizontalMinLength`
+     *
+     * where `clamp(value, min, max)` restricts _value_ to be between the specified _min_ and _max_.
+     * @minimum 0
+     */
+    gradientLength?: number;
+  };
 
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
@@ -40,9 +83,10 @@ export interface Legend
       string,
       Color,
       FontWeight,
+      FontStyle,
       Align,
       TextBaseline,
-      VgLayoutAlign,
+      LayoutAlign,
       LabelOverlap,
       SymbolShape
     >,
@@ -59,6 +103,13 @@ export interface Legend
    * The desired number of tick values for quantitative legends.
    */
   tickCount?: number;
+
+  /**
+   * The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.
+   *
+   * __Default value__: `undefined`
+   */
+  tickMinStep?: number;
 
   /**
    * Explicitly set the visible legend values.
@@ -83,12 +134,17 @@ export interface Legend
   zindex?: number;
 
   /**
-   * The direction of the legend, one of `"vertical"` (default) or `"horizontal"`.
+   * The direction of the legend, one of `"vertical"` or `"horizontal"`.
+   *
+   * __Default value:__
+   * - For top-/bottom-`orient`ed legends, `"horizontal"`
+   * - For left-/right-`orient`ed legends, `"vertical"`
+   * - For top/bottom-left/right-`orient`ed legends, `"horizontal"` for gradient legends and `"vertical"` for symbol legends.
    */
   direction?: Orientation;
 
   /**
-   * The orientation of the legend, which determines how the legend is positioned within the scene. One of "left", "right", "top-left", "top-right", "bottom-left", "bottom-right", "none".
+   * The orientation of the legend, which determines how the legend is positioned within the scene. One of `"left"`, `"right"`, `"top-left"`, `"top-right"`, `"bottom-left"`, `"bottom-right"`, `"none"`.
    *
    * __Default value:__ `"right"`
    */
@@ -98,7 +154,7 @@ export interface Legend
 // Change comments to be Vega-Lite specific
 interface LegendMixins {
   /**
-   * The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` (default) or `"parity"`, a strategy of removing every other label is used. If set to `"greedy"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).
+   * The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` or `"parity"`, a strategy of removing every other label is used. If set to `"greedy"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).
    *
    * __Default value:__ `"greedy"` for `log scales otherwise `true`.
    */
@@ -133,7 +189,12 @@ export interface LegendEncoding {
   gradient?: GuideEncodingEntry;
 }
 
-export const defaultLegendConfig: LegendConfig = {};
+export const defaultLegendConfig: LegendConfig = {
+  gradientHorizontalMaxLength: 200,
+  gradientHorizontalMinLength: 100,
+  gradientVerticalMaxLength: 200,
+  gradientVerticalMinLength: 64 // This is the Vega's minimum.
+};
 
 const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   clipHeight: 1,
@@ -154,18 +215,19 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   labelColor: 1,
   labelFont: 1,
   labelFontSize: 1,
+  labelFontStyle: 1,
   labelFontWeight: 1,
   labelLimit: 1,
   labelOffset: 1,
   labelOpacity: 1,
   labelOverlap: 1,
   labelPadding: 1,
+  labelSeparation: 1,
   offset: 1,
   orient: 1,
   padding: 1,
   rowPadding: 1,
   strokeColor: 1,
-  strokeWidth: 1,
   symbolFillColor: 1,
   symbolOffset: 1,
   symbolOpacity: 1,
@@ -174,12 +236,14 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   symbolStrokeWidth: 1,
   symbolType: 1,
   tickCount: 1,
+  tickMinStep: 1,
   title: 1,
   titleAlign: 1,
   titleBaseline: 1,
   titleColor: 1,
   titleFont: 1,
   titleFontSize: 1,
+  titleFontStyle: 1,
   titleFontWeight: 1,
   titleLimit: 1,
   titleOpacity: 1,
@@ -197,6 +261,7 @@ const VG_LEGEND_PROPERTY_INDEX: Flag<Exclude<keyof VgLegend, 'strokeDash'>> = {
   stroke: 1,
   fill: 1,
   size: 1,
+  strokeWidth: 1,
   // encode
   encode: 1
 };

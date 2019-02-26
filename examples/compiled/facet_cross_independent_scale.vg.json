@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "data": [
@@ -18,7 +18,7 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["c", "r"],
+          "groupby": ["r", "c"],
           "fields": ["a", "b"],
           "ops": ["distinct", "distinct"]
         }
@@ -52,11 +52,11 @@
     }
   ],
   "signals": [
-    {"name": "child_x_step", "value": 21},
-    {"name": "child_y_step", "value": 21}
+    {"name": "child_x_step", "value": 20},
+    {"name": "child_y_step", "value": 20}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "offset": {"rowTitle": 10, "columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -91,12 +91,13 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {
         "update": {
           "height": {
-            "signal": "bandspace(datum[\"distinct_b\"], 0.1, 0.05) * child_y_step"
+            "signal": "bandspace(datum[\"distinct_b\"], 0, 0) * child_y_step"
           }
         }
       }
@@ -111,12 +112,13 @@
         "text": {"signal": "''+parent[\"c\"]"},
         "offset": 10,
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {
         "update": {
           "width": {
-            "signal": "bandspace(datum[\"distinct_a\"], 0.1, 0.05) * child_x_step"
+            "signal": "bandspace(datum[\"distinct_a\"], 0, 0) * child_x_step"
           }
         }
       }
@@ -145,10 +147,10 @@
       "encode": {
         "update": {
           "width": {
-            "signal": "bandspace(datum[\"distinct_a\"], 0.1, 0.05) * child_x_step"
+            "signal": "bandspace(datum[\"distinct_a\"], 0, 0) * child_x_step"
           },
           "height": {
-            "signal": "bandspace(datum[\"distinct_b\"], 0.1, 0.05) * child_y_step"
+            "signal": "bandspace(datum[\"distinct_b\"], 0, 0) * child_y_step"
           }
         }
       },
@@ -162,7 +164,7 @@
             "update": {
               "fill": {"value": "#4c78a8"},
               "tooltip": {
-                "signal": "{\"a\": ''+datum[\"a\"], \"b\": ''+datum[\"b\"]}"
+                "signal": "{\"b\": ''+datum[\"b\"], \"a\": ''+datum[\"a\"]}"
               },
               "x": {"scale": "child_x", "field": "a"},
               "width": {"scale": "child_x", "band": true},
@@ -178,16 +180,16 @@
           "type": "band",
           "domain": {"data": "facet", "field": "a", "sort": true},
           "range": {"step": {"signal": "child_x_step"}},
-          "paddingInner": 0.1,
-          "paddingOuter": 0.05
+          "paddingInner": 0,
+          "paddingOuter": 0
         },
         {
           "name": "child_y",
           "type": "band",
           "domain": {"data": "facet", "field": "b", "sort": true},
           "range": {"step": {"signal": "child_y_step"}},
-          "paddingInner": 0.1,
-          "paddingOuter": 0.05
+          "paddingInner": 0,
+          "paddingOuter": 0
         }
       ],
       "axes": [

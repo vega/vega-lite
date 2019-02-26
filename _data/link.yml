@@ -4,6 +4,8 @@
 CompositeUnitSpec:
   name: SingleViewSpec
   link: "spec.html#single"
+ViewBackground:
+  name: "spec.html#view-background"
 LayerSpec:
   link: "layer.html"
 AutoSizeParams:
@@ -118,14 +120,38 @@ EncodingWithFacet:
 Type:
   link: type.html
 SingleDefChannel:
-  name: Encoding
-  link: "encoding.html"
+  name: "Channel"
+  link: "encoding.html#channels"
+SingleDefUnitChannel:
+  name: "Channel"
+  link: "encoding.html#channels"
 
 # Channel Definitions
-MarkPropFieldDefWithCondition:
+ColorFieldDefWithCondition:
   name: MarkPropFieldDef
   link: "encoding.html#mark-prop-field-def"
-MarkPropValueDefWithCondition:
+ColorValueDefWithCondition:
+  name: MarkPropValueDef
+  link: "encoding.html#mark-prop-value-def"
+
+NumericFieldDefWithCondition:
+  name: MarkPropFieldDef
+  link: "encoding.html#mark-prop-field-def"
+NumericValueDefWithCondition:
+  name: MarkPropValueDef
+  link: "encoding.html#mark-prop-value-def"
+
+StringFieldDefWithCondition:
+  name: MarkPropFieldDef
+  link: "encoding.html#mark-prop-field-def"
+StringValueDefWithCondition:
+  name: MarkPropValueDef
+  link: "encoding.html#mark-prop-value-def"
+
+ShapeFieldDefWithCondition:
+  name: MarkPropFieldDef
+  link: "encoding.html#mark-prop-field-def"
+ShapeValueDefWithCondition:
   name: MarkPropValueDef
   link: "encoding.html#mark-prop-value-def"
 
@@ -154,13 +180,32 @@ ConditionalValueDef:
 
 FieldDef:
   link: "encoding.html#field"
+LatLongFieldDef:
+  name: FieldDef
+  link: "encoding.html#field"
+SecondaryFieldDef:
+  name: FieldDef
+  link: "encoding.html#field"
 FacetFieldDef:
   link: "facet.html#facet-field-definition"
 OrderFieldDef:
   link: "encoding.html#order"
 PositionFieldDef:
   link: "encoding.html#position-field-def"
+
 ValueDef:
+  link: "encoding.html#value"
+NumberValueDef:
+  name: ValueDef
+  link: "encoding.html#value"
+XValueDef:
+  name: ValueDef
+  link: "encoding.html#value"
+YValueDef:
+  name: ValueDef
+  link: "encoding.html#value"
+StringValueDef:
+  name: ValueDef
   link: "encoding.html#value"
 
 # Field Definition

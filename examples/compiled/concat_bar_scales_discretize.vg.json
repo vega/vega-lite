@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Horizontally concatenated charts that show different types of discretizing scales.",
   "autosize": "pad",
   "padding": 5,
@@ -20,27 +20,27 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_width", "value": 21},
-    {"name": "concat_0_y_step", "value": 21},
+    {"name": "concat_0_width", "value": 20},
+    {"name": "concat_0_y_step", "value": 20},
     {
       "name": "concat_0_height",
       "update": "bandspace(domain('concat_0_y').length, 1, 0.5) * concat_0_y_step"
     },
-    {"name": "concat_1_width", "value": 21},
-    {"name": "concat_1_y_step", "value": 21},
+    {"name": "concat_1_width", "value": 20},
+    {"name": "concat_1_y_step", "value": 20},
     {
       "name": "concat_1_height",
       "update": "bandspace(domain('concat_1_y').length, 1, 0.5) * concat_1_y_step"
     },
-    {"name": "concat_2_width", "value": 21},
-    {"name": "concat_2_y_step", "value": 21},
+    {"name": "concat_2_width", "value": 20},
+    {"name": "concat_2_y_step", "value": 20},
     {
       "name": "concat_2_height",
       "update": "bandspace(domain('concat_2_y').length, 1, 0.5) * concat_2_y_step"
     }
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "bounds": "full",
     "align": "each"
   },
@@ -96,6 +96,7 @@
         {
           "title": "Quantize",
           "fill": "concat_0_color",
+          "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
           "encode": {
             "symbols": {
               "update": {
@@ -160,6 +161,7 @@
           "format": "d",
           "title": "Quantile",
           "fill": "concat_1_color",
+          "gradientLength": {"signal": "clamp(concat_1_height, 64, 200)"},
           "labelOverlap": "greedy",
           "encode": {
             "symbols": {
@@ -224,6 +226,7 @@
         {
           "title": "Threshold",
           "fill": "concat_2_color",
+          "gradientLength": {"signal": "clamp(concat_2_height, 64, 200)"},
           "labelOverlap": "greedy",
           "encode": {
             "symbols": {
@@ -250,14 +253,17 @@
       "name": "concat_0_color",
       "type": "quantize",
       "domain": {"data": "source_0", "field": "b"},
-      "range": {"scheme": "blues", "count": 4},
-      "zero": true
+      "range": "ramp",
+      "zero": true,
+      "interpolate": "hcl"
     },
     {
       "name": "concat_0_size",
       "type": "quantize",
       "domain": {"data": "source_0", "field": "b"},
-      "range": [9, 126.33333333333333, 243.66666666666666, 361],
+      "range": {
+        "signal": "sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))"
+      },
       "zero": false
     },
     {
@@ -271,7 +277,8 @@
       "name": "concat_1_color",
       "type": "quantile",
       "domain": {"data": "source_0", "field": "b"},
-      "range": {"scheme": "magma"}
+      "range": {"scheme": "magma"},
+      "interpolate": "hcl"
     },
     {
       "name": "concat_1_size",
@@ -290,7 +297,8 @@
       "name": "concat_2_color",
       "type": "threshold",
       "domain": [30, 70],
-      "range": {"scheme": "viridis"}
+      "range": {"scheme": "viridis"},
+      "interpolate": "hcl"
     },
     {
       "name": "concat_2_size",

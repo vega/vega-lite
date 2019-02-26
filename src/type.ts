@@ -11,12 +11,9 @@ export namespace Type {
   export const GEOJSON: 'geojson' = 'geojson';
 }
 
-export type Type =
-  | typeof Type.QUANTITATIVE
-  | typeof Type.ORDINAL
-  | typeof Type.TEMPORAL
-  | typeof Type.NOMINAL
-  | typeof Type.GEOJSON;
+export type StandardType = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL;
+
+export type Type = StandardType | typeof Type.GEOJSON;
 
 export const TYPE_INDEX: Flag<Type> = {
   quantitative: 1,

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
   "autosize": "pad",
   "padding": 5,
@@ -73,7 +73,7 @@
                 "field": "bin_maxbins_6_Acceleration"
               },
               "tooltip": {
-                "signal": "{\"Year\": timeFormat(datum[\"Year\"], '%b %d, %Y'), \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\"), \"Acceleration (binned)\": datum[\"bin_maxbins_6_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\")}"
+                "signal": "{\"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\"), \"Year\": timeFormat(datum[\"Year\"], '%b %d, %Y'), \"Acceleration (binned)\": datum[\"bin_maxbins_6_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\")}"
               },
               "x": {"scale": "x", "field": "Year"},
               "y": {"scale": "y", "field": "mean_Horsepower"},
@@ -104,10 +104,9 @@
     {
       "name": "color",
       "type": "bin-ordinal",
-      "domain": {
-        "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
-      },
-      "range": "ramp"
+      "range": "ramp",
+      "bins": {"signal": "bin_maxbins_6_Acceleration_bins"},
+      "interpolate": "hcl"
     }
   ],
   "axes": [
@@ -157,6 +156,12 @@
       "zindex": 0
     }
   ],
-  "legends": [{"stroke": "color", "title": "Acceleration (binned)"}],
+  "legends": [
+    {
+      "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "Acceleration (binned)"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

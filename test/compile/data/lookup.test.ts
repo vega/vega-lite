@@ -1,9 +1,7 @@
-import {assert} from 'chai';
 import {AncestorParse} from '../../../src/compile/data';
 import {LookupNode} from '../../../src/compile/data/lookup';
 import {parseTransformArray} from '../../../src/compile/data/parse';
 import * as log from '../../../src/log';
-import {VgLookupTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
@@ -26,7 +24,7 @@ describe('compile/data/lookup', () => {
     });
 
     const t = parseTransformArray(null, model, new AncestorParse());
-    assert.deepEqual<VgLookupTransform>((t as LookupNode).assemble(), {
+    expect((t as LookupNode).assemble()).toEqual({
       type: 'lookup',
       from: 'lookup_0',
       key: 'name',
@@ -49,7 +47,7 @@ describe('compile/data/lookup', () => {
       'lookup_0'
     );
 
-    assert.deepEqual<VgLookupTransform>(lookup.assemble(), {
+    expect(lookup.assemble()).toEqual({
       type: 'lookup',
       from: 'lookup_0',
       key: 'name',
@@ -72,7 +70,7 @@ describe('compile/data/lookup', () => {
       'lookup_0'
     );
 
-    assert.deepEqual<VgLookupTransform>(lookup.assemble(), {
+    expect(lookup.assemble()).toEqual({
       type: 'lookup',
       from: 'lookup_0',
       key: 'name',
@@ -97,7 +95,7 @@ describe('compile/data/lookup', () => {
       );
       lookup.assemble();
 
-      assert.equal(localLogger.warns[0], log.message.NO_FIELDS_NEEDS_AS);
+      expect(localLogger.warns[0]).toEqual(log.message.NO_FIELDS_NEEDS_AS);
     })
   );
   it('should generate the correct hash', () => {
@@ -114,8 +112,7 @@ describe('compile/data/lookup', () => {
     );
     lookup.assemble();
 
-    assert.equal(
-      lookup.hash(),
+    expect(lookup.hash()).toEqual(
       'Lookup {"secondary":"lookup_0","transform":{"from":{"data":{"url":"data/lookup_people.csv"},"key":"name"},"lookup":"person"}}'
     );
   });

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "height": 200,
@@ -21,7 +21,7 @@
     }
   ],
   "signals": [
-    {"name": "plotname_x_step", "value": 21},
+    {"name": "plotname_x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('plotname_x').length, 1, 0.5) * plotname_x_step"

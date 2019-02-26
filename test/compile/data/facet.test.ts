@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {FacetNode} from '../../../src/compile/data/facet';
 import {parseFacetModelWithScale} from '../../util';
 
@@ -40,7 +39,7 @@ describe('compile/data/facet', () => {
       const node = new FacetNode(null, model, 'facetName', 'dataName');
       const data = node.assemble();
 
-      assert.deepEqual(data[0], {
+      expect(data[0]).toEqual({
         name: 'column_domain',
         source: 'dataName',
         transform: [
@@ -89,20 +88,20 @@ describe('compile/data/facet', () => {
       const data = node.assemble();
 
       // crossed data
-      assert.deepEqual(data[0], {
+      expect(data[0]).toEqual({
         name: 'cross_column_domain_row_domain',
         source: 'dataName',
         transform: [
           {
             type: 'aggregate',
-            groupby: ['c', 'r'],
+            groupby: ['r', 'c'],
             fields: ['a', 'b'],
             ops: ['distinct', 'distinct']
           }
         ]
       });
 
-      assert.deepEqual(data[1], {
+      expect(data[1]).toEqual({
         name: 'column_domain',
         source: 'cross_column_domain_row_domain',
         transform: [
@@ -116,7 +115,7 @@ describe('compile/data/facet', () => {
         ]
       });
 
-      assert.deepEqual(data[2], {
+      expect(data[2]).toEqual({
         name: 'row_domain',
         source: 'cross_column_domain_row_domain',
         transform: [
@@ -153,7 +152,7 @@ describe('compile/data/facet', () => {
       const node = new FacetNode(null, model, 'facetName', 'dataName');
       const data = node.assemble();
 
-      assert.deepEqual(data[0], {
+      expect(data[0]).toEqual({
         name: 'column_domain',
         source: 'dataName',
         transform: [
@@ -167,7 +166,7 @@ describe('compile/data/facet', () => {
         ]
       });
 
-      assert.deepEqual(data[1], {
+      expect(data[1]).toEqual({
         name: 'row_domain',
         source: 'dataName',
         transform: [
@@ -190,7 +189,7 @@ describe('compile/data/facet', () => {
         },
         facet: {
           row: {field: 'r', type: 'nominal', sort: {op: 'median', field: 'b'}},
-          column: {field: 'c', type: 'nominal', sort: {op: 'median', field: 'a'}}
+          column: {field: 'c', type: 'nominal', sort: {field: 'a'}}
         },
         spec: {
           mark: 'rect',
@@ -204,7 +203,7 @@ describe('compile/data/facet', () => {
       const node = new FacetNode(null, model, 'facetName', 'dataName');
       const data = node.assemble();
 
-      assert.deepEqual(data[0], {
+      expect(data[0]).toEqual({
         name: 'column_domain',
         source: 'dataName',
         transform: [
@@ -212,13 +211,13 @@ describe('compile/data/facet', () => {
             type: 'aggregate',
             groupby: ['c'],
             fields: ['a'],
-            ops: ['median'],
-            as: ['median_a']
+            ops: ['mean'],
+            as: ['a']
           }
         ]
       });
 
-      assert.deepEqual(data[1], {
+      expect(data[1]).toEqual({
         name: 'row_domain',
         source: 'dataName',
         transform: [
@@ -257,7 +256,7 @@ describe('compile/data/facet', () => {
       const facetNode = new FacetNode(null, model, 'facetName', 'dataName');
 
       expect(facetNode.hash()).toEqual(
-        'Facet c:{"fields":["c"],"name":"column_domain","sortField":{"field":"a","op":"median"}} r:{"fields":["r"],"name":"row_domain","sortField":{"field":"b","op":"median"}}'
+        'Facet r:{"fields":["r"],"name":"row_domain","sortField":{"field":"b","op":"median"}} c:{"fields":["c"],"name":"column_domain","sortField":{"field":"a","op":"median"}}'
       );
     });
   });

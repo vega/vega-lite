@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -20,28 +20,16 @@
     {"name": "pts", "update": "vlSelectionResolve(\"pts_store\")"},
     {
       "name": "pts_tuple",
-      "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [datum[\"Origin\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Origin\"]]} : null",
           "force": true
         }
       ]
     },
-    {
-      "name": "pts_tuple_fields",
-      "update": "[{\"field\":\"Origin\",\"type\":\"E\"}]"
-    },
-    {
-      "name": "pts_modify",
-      "on": [
-        {
-          "events": {"signal": "pts_tuple"},
-          "update": "modify(\"pts_store\", pts_tuple, true)"
-        }
-      ]
-    }
+    {"name": "pts_tuple_fields", "value": [{"field": "Origin", "type": "E"}]},
+    {"name": "pts_modify", "update": "modify(\"pts_store\", pts_tuple, true)"}
   ],
   "marks": [
     {
@@ -116,7 +104,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
-      "range": {"scheme": "yelloworangebrown"}
+      "range": {"scheme": "yelloworangebrown"},
+      "interpolate": "hcl"
     },
     {
       "name": "shape",
@@ -175,6 +164,7 @@
   "legends": [
     {
       "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Cylinders",
       "encode": {
         "symbols": {
@@ -188,6 +178,7 @@
     },
     {
       "shape": "shape",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Origin",
       "encode": {
         "symbols": {

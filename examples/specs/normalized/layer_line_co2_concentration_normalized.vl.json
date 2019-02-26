@@ -30,7 +30,6 @@
       "as": "end"
     }
   ],
-  "config": {"text": {"align": "left", "dx": 3, "dy": 1}},
   "layer": [
     {
       "mark": "line",
@@ -90,5 +89,6 @@
         "text": {"field": "year", "type": "nominal"}
       }
     }
-  ]
+  ],
+  "config": {"text": {"align": "left", "dx": 3, "dy": 1}}
 }

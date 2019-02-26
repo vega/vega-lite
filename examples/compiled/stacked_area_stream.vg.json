@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 300,
@@ -107,7 +107,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "series", "sort": true},
-      "range": {"scheme": "category20b"}
+      "range": {"scheme": "category20b"},
+      "interpolate": "hcl"
     }
   ],
   "axes": [
@@ -142,6 +143,12 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "title": "series"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "series"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

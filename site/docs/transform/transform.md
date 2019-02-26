@@ -11,8 +11,7 @@ When both types of transforms are specified, the view-level `transform`s are exe
 
 ## View-level Transform Property
 
-{: .suppress-error}
-```json
+```js
 {
   "data": ... ,
   "transform": [
@@ -24,8 +23,7 @@ When both types of transforms are specified, the view-level `transform`s are exe
 }
 ```
 
-The View-level `transform` object is an array of objects describing transformations. The transformations are executed in the order in which they are specified in the array.
-Vega-Lite's `transform` supports the following types of transformations:
+The View-level `transform` object is an array of objects describing transformations. The transformations are executed in the order in which they are specified in the array. Vega-Lite's `transform` supports the following types of transformations:
 
 - [Aggregate](aggregate.html#transform)
 - [Bin](bin.html#transform)

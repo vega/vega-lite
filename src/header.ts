@@ -1,8 +1,8 @@
-import {FontWeight, TextBaseline} from 'vega';
-import {TitleConfig as VgTitleConfig} from 'vega';
+import {FontWeight, TextBaseline, TitleConfig} from 'vega';
 import {Guide} from './guide';
+import {keys} from './util';
 
-export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTitleConfig} = {
+export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof TitleConfig} = {
   titleAnchor: 'anchor',
   titleAngle: 'angle',
   titleBaseline: 'baseline',
@@ -14,7 +14,7 @@ export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTi
   titlePadding: 'offset'
 };
 
-export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTitleConfig} = {
+export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof TitleConfig} = {
   labelAngle: 'angle',
   labelColor: 'color',
   labelFont: 'font',
@@ -23,9 +23,9 @@ export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTi
   labelPadding: 'offset'
 };
 
-export const HEADER_TITLE_PROPERTIES = Object.keys(HEADER_TITLE_PROPERTIES_MAP);
+export const HEADER_TITLE_PROPERTIES = keys(HEADER_TITLE_PROPERTIES_MAP);
 
-export const HEADER_LABEL_PROPERTIES = Object.keys(HEADER_LABEL_PROPERTIES_MAP);
+export const HEADER_LABEL_PROPERTIES = keys(HEADER_LABEL_PROPERTIES_MAP);
 
 export interface HeaderConfig {
   // ---------- Title ----------
@@ -85,7 +85,7 @@ export interface HeaderConfig {
   titleLimit?: number;
 
   /**
-   * The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.
+   * The padding, in pixel, between facet header's title and the label.
    *
    * __Default value:__ `10`
    */
@@ -127,7 +127,7 @@ export interface HeaderConfig {
   labelLimit?: number;
 
   /**
-   * The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.
+   * The padding, in pixel, between facet header's label and the plot.
    *
    * __Default value:__ `10`
    */

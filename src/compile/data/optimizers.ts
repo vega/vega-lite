@@ -1,9 +1,10 @@
 import {MAIN} from '../../data';
-import {fieldIntersection, flatten, keys} from '../../util';
+import {Dict, fieldIntersection, flatten, hash, hasIntersection, keys} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
+import {JoinAggregateTransformNode} from './joinaggregate';
 import {FACET_SCALE_PREFIX} from './optimize';
 import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
 import * as optimizers from './optimizers';
@@ -147,18 +148,16 @@ export class RemoveUnusedSubtrees extends BottomUpOptimizer {
  */
 
 export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
-  private fields = {};
+  private fields = new Set<string>();
   public run(node: DataFlowNode): OptimizerFlags {
     this.setContinue();
     if (node instanceof TimeUnitNode) {
       const pfields = node.producedFields();
-      const dupe = keys(pfields).every(k => !!this.fields[k]);
-
-      if (dupe) {
+      if (hasIntersection(pfields, this.fields)) {
         this.setMutated();
         node.remove();
       } else {
-        this.fields = {...this.fields, ...pfields};
+        this.fields = new Set([...this.fields, ...pfields]);
       }
     }
     return this.flags;
@@ -178,7 +177,12 @@ function cloneSubtree(facet: FacetNode) {
         copy.setSource(newName);
 
         facet.model.component.data.outputNodes[newName] = copy;
-      } else if (copy instanceof AggregateNode || copy instanceof StackNode || copy instanceof WindowTransformNode) {
+      } else if (
+        copy instanceof AggregateNode ||
+        copy instanceof StackNode ||
+        copy instanceof WindowTransformNode ||
+        copy instanceof JoinAggregateTransformNode
+      ) {
         copy.addDimensions(facet.fields);
       }
       flatten(node.children.map(clone)).forEach((n: DataFlowNode) => (n.parent = copy));
@@ -201,7 +205,12 @@ export function moveFacetDown(node: DataFlowNode) {
       // move down until we hit a fork or output node
       const child = node.children[0];
 
-      if (child instanceof AggregateNode || child instanceof StackNode || child instanceof WindowTransformNode) {
+      if (
+        child instanceof AggregateNode ||
+        child instanceof StackNode ||
+        child instanceof WindowTransformNode ||
+        child instanceof JoinAggregateTransformNode
+      ) {
         child.addDimensions(node.fields);
       }
 
@@ -286,6 +295,46 @@ export class MergeParse extends BottomUpOptimizer {
           parseNode.parent = mergedParseNode;
           if (keys(parseNode.parse).length === 0) {
             parseNode.remove();
+          }
+        }
+      }
+    }
+    this.setContinue();
+    return this.flags;
+  }
+}
+
+export class MergeAggregateNodes extends BottomUpOptimizer {
+  public run(node: DataFlowNode): optimizers.OptimizerFlags {
+    const parent = node.parent;
+    const aggChildren = parent.children.filter((x): x is AggregateNode => x instanceof AggregateNode);
+
+    // Object which we'll use to map the fields which an aggregate is grouped by to
+    // the set of aggregates with that grouping. This is useful as only aggregates
+    // with the same group by can be merged
+    const groupedAggregates: Dict<AggregateNode[]> = {};
+
+    // Build groupedAggregates
+    for (const agg of aggChildren) {
+      const groupBys = hash(keys(agg.groupBy).sort());
+      if (!(groupBys in groupedAggregates)) {
+        groupedAggregates[groupBys] = [];
+      }
+      groupedAggregates[groupBys].push(agg);
+    }
+
+    // Merge aggregateNodes with same key in groupedAggregates
+    for (const group of keys(groupedAggregates)) {
+      const mergeableAggs = groupedAggregates[group];
+      if (mergeableAggs.length > 1) {
+        const mergedAggs = mergeableAggs.pop();
+        for (const agg of mergeableAggs) {
+          if (mergedAggs.merge(agg)) {
+            parent.removeChild(agg);
+            agg.parent = mergedAggs;
+            agg.remove();
+
+            this.setMutated();
           }
         }
       }

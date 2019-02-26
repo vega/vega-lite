@@ -1,6 +1,4 @@
-import {assert} from 'chai';
 import {DETAIL, SHAPE, X} from '../../src/channel';
-import {FieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
 import {BAR} from '../../src/mark';
 import {QUANTITATIVE} from '../../src/type';
@@ -14,11 +12,11 @@ describe('UnitModel', () => {
         const model = parseUnitModel({
           mark: 'bar',
           encoding: {
-            shape: {field: 'a', type: 'quantitative'}
+            shape: {field: 'a', type: 'nominal'}
           }
         });
-        assert.equal(model.encoding.shape, undefined);
-        assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, BAR));
+        expect(model.encoding.shape).toEqual(undefined);
+        expect(localLogger.warns[0]).toEqual(log.message.incompatibleChannel(SHAPE, BAR));
       })
     );
 
@@ -31,7 +29,7 @@ describe('UnitModel', () => {
             _y: {type: 'quantitative'}
           }
         } as any); // To make parseUnitModel accept the model with invalid encoding channel
-        assert.equal(localLogger.warns[0], log.message.invalidEncodingChannel('_y'));
+        expect(localLogger.warns[0]).toEqual(log.message.invalidEncodingChannel('_y'));
       })
     );
 
@@ -44,8 +42,8 @@ describe('UnitModel', () => {
             x: {type: 'quantitative'}
           }
         });
-        assert.equal(model.encoding.x, undefined);
-        assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: QUANTITATIVE}, X));
+        expect(model.encoding.x).toEqual(undefined);
+        expect(localLogger.warns[0]).toEqual(log.message.emptyFieldDef({type: QUANTITATIVE}, X));
       })
     );
 
@@ -58,8 +56,8 @@ describe('UnitModel', () => {
             detail: [{field: 'a', type: 'ordinal'}, {type: 'quantitative'}]
           }
         });
-        assert.deepEqual<FieldDef<string> | FieldDef<string>[]>(model.encoding.detail, [{field: 'a', type: 'ordinal'}]);
-        assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: QUANTITATIVE}, DETAIL));
+        expect(model.encoding.detail).toEqual([{field: 'a', type: 'ordinal'}]);
+        expect(localLogger.warns[0]).toEqual(log.message.emptyFieldDef({type: QUANTITATIVE}, DETAIL));
       })
     );
   });
@@ -75,7 +73,7 @@ describe('UnitModel', () => {
         config: {axis: {domainWidth: 123}}
       });
 
-      assert.equal(model.axis(X)['domainWidth'], undefined);
+      expect(model.axis(X)['domainWidth']).toEqual(undefined);
     });
 
     it('it should have axis.offset = encode.x.axis.offset', () => {
@@ -87,7 +85,7 @@ describe('UnitModel', () => {
         }
       });
 
-      assert.equal(model.axis(X).offset, 345);
+      expect(model.axis(X).offset).toEqual(345);
     });
   });
 });

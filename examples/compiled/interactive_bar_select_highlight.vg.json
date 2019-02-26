@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar chart with highlighting on hover and selecting on click. (Inspired by Tableau's interaction style.)",
   "autosize": "pad",
   "padding": 5,
@@ -29,7 +29,7 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.2, 0.1) * x_step"
@@ -45,42 +45,35 @@
     {"name": "select", "update": "vlSelectionResolve(\"select_store\")"},
     {
       "name": "highlight_tuple",
-      "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: highlight_tuple_fields, values: [datum[\"_vgsid_\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: highlight_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
         }
       ]
     },
     {
       "name": "highlight_tuple_fields",
-      "update": "[{\"field\":\"_vgsid_\",\"type\":\"E\"}]"
+      "value": [{"field": "_vgsid_", "type": "E"}]
     },
     {
       "name": "highlight_modify",
-      "on": [
-        {
-          "events": {"signal": "highlight_tuple"},
-          "update": "modify(\"highlight_store\", highlight_tuple, true)"
-        }
-      ]
+      "update": "modify(\"highlight_store\", highlight_tuple, true)"
     },
     {
       "name": "select_tuple",
-      "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: select_tuple_fields, values: [datum[\"_vgsid_\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: select_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
         }
       ]
     },
     {
       "name": "select_tuple_fields",
-      "update": "[{\"field\":\"_vgsid_\",\"type\":\"E\"}]"
+      "value": [{"field": "_vgsid_", "type": "E"}]
     },
     {
       "name": "select_toggle",
@@ -94,12 +87,7 @@
     },
     {
       "name": "select_modify",
-      "on": [
-        {
-          "events": {"signal": "select_tuple"},
-          "update": "modify(\"select_store\", select_toggle ? null : select_tuple, select_toggle ? null : true, select_toggle ? select_tuple : null)"
-        }
-      ]
+      "update": "modify(\"select_store\", select_toggle ? null : select_tuple, select_toggle ? null : true, select_toggle ? select_tuple : null)"
     }
   ],
   "marks": [

@@ -1,14 +1,14 @@
+import {default as clone_} from 'clone';
 import deepEqual_ from 'fast-deep-equal';
-import stableStringify from 'json-stable-stringify';
+import stableStringify from 'fast-json-stable-stringify';
 import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
 
 export const deepEqual = deepEqual_;
+export const duplicate = clone_;
 
 /**
  * Creates an object composed of the picked object properties.
- *
- * Example:  (from lodash)
  *
  * var object = {'a': 1, 'b': '2', 'c': 3};
  * pick(object, ['a', 'c']);
@@ -38,12 +38,19 @@ export function omit<T extends object, K extends keyof T>(obj: T, props: K[]): O
 }
 
 /**
- * Converts any object into a string representation that can be consumed by humans.
+ * Monkey patch Set so that `stringify` produces a string representation of sets.
+ */
+Set.prototype['toJSON'] = function() {
+  return `Set(${[...this].map(stableStringify).join(',')})`;
+};
+
+/**
+ * Converts any object to a string representation that can be consumed by humans.
  */
 export const stringify = stableStringify;
 
 /**
- * Converts any object into a string of limited size, or a number.
+ * Converts any object to a string of limited size, or a number.
  */
 export function hash(a: any): string | number {
   if (isNumber(a)) {
@@ -106,8 +113,8 @@ export function every<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
   return true;
 }
 
-export function flatten(arrays: any[]) {
-  return [].concat.apply([], arrays);
+export function flatten<T>(arrays: T[][]): T[] {
+  return ([] as T[]).concat(...arrays);
 }
 
 export function fill<T>(val: T, len: number) {
@@ -176,44 +183,57 @@ export interface Dict<T> {
   [key: string]: T;
 }
 
-export type StringSet = Dict<true>;
-
 /**
  * Returns true if the two dictionaries disagree. Applies only to defined values.
  */
-export function differ<T>(dict: Dict<T>, other: Dict<T>) {
-  for (const key in dict) {
-    if (dict.hasOwnProperty(key)) {
-      if (other[key] && dict[key] && other[key] !== dict[key]) {
-        return true;
-      }
+export function isEqual<T>(dict: Dict<T>, other: Dict<T>) {
+  const dictKeys = keys(dict);
+  const otherKeys = keys(other);
+  if (dictKeys.length !== otherKeys.length) {
+    return false;
+  }
+  for (const key of dictKeys) {
+    if (dict[key] !== other[key]) {
+      return false;
     }
   }
-  return false;
+  return true;
 }
 
-export function hasIntersection(a: StringSet, b: StringSet) {
-  for (const key in a) {
-    if (key in b) {
+export function setEqual<T>(a: Set<T>, b: Set<T>) {
+  if (a.size !== b.size) {
+    return false;
+  }
+  for (const e of a) {
+    if (!b.has(e)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export function hasIntersection<T>(a: Set<T>, b: Set<T>) {
+  for (const key of a) {
+    if (b.has(key)) {
       return true;
     }
   }
   return false;
 }
 
-export function prefixGenerator(a: StringSet): StringSet {
-  const prefixes = {};
-  for (const x of keys(a)) {
+export function prefixGenerator(a: Set<string>): Set<string> {
+  const prefixes = new Set<string>();
+  for (const x of a) {
     const splitField = splitAccessPath(x);
     // Wrap every element other than the first in `[]`
     const wrappedWithAccessors = splitField.map((y, i) => (i === 0 ? y : `[${y}]`));
     const computedPrefixes = wrappedWithAccessors.map((_, i) => wrappedWithAccessors.slice(0, i + 1).join(''));
-    computedPrefixes.forEach(y => (prefixes[y] = true));
+    computedPrefixes.forEach(y => prefixes.add(y));
   }
   return prefixes;
 }
 
-export function fieldIntersection(a: StringSet, b: StringSet): boolean {
+export function fieldIntersection(a: Set<string>, b: Set<string>): boolean {
   return hasIntersection(prefixGenerator(a), prefixGenerator(b));
 }
 
@@ -272,10 +292,6 @@ export function flagKeys<S extends string>(f: Flag<S>): S[] {
   return keys(f) as S[];
 }
 
-export function duplicate<T>(obj: T): T {
-  return JSON.parse(JSON.stringify(obj));
-}
-
 export function isBoolean(b: any): b is boolean {
   return b === true || b === false;
 }
@@ -316,7 +332,7 @@ export function deleteNestedProperty(obj: any, orderedProps: string[]) {
   if (deleteNestedProperty(obj[prop], orderedProps)) {
     delete obj[prop];
   }
-  return Object.keys(obj).length === 0;
+  return keys(obj).length === 0;
 }
 
 export function titlecase(s: string) {
@@ -409,4 +425,12 @@ export function uniqueId(prefix?: string) {
  */
 export function resetIdCounter() {
   idCounter = 42;
+}
+
+export function internalField(name: string) {
+  return isInternalField(name) ? name : `__${name}`;
+}
+
+export function isInternalField(name: string) {
+  return name.indexOf('__') === 0;
 }

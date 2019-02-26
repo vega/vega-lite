@@ -1,0 +1,56 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "data": {
+    "values": [
+      {
+        "yield_error": 7.5522,
+        "yield_center": 32.4,
+        "variety": "Glabron"
+      },
+      {
+        "yield_error": 6.9775,
+        "yield_center": 30.96667,
+        "variety": "Manchuria"
+      },
+      {
+        "yield_error": 3.9167,
+        "yield_center": 33.966665,
+        "variety": "No. 457"
+      },
+      {
+        "yield_error": 11.9732,
+        "yield_center": 30.45,
+        "variety": "No. 462"
+      }
+    ]
+  },
+  "layer": [
+    {
+      "mark": "errorbar",
+      "encoding": {
+        "x": {
+          "field": "yield_center",
+          "type": "quantitative",
+          "scale": {"zero": false},
+          "title": "yield"
+        },
+        "xError": {"field": "yield_error"},
+        "y": {"field": "variety", "type": "ordinal"}
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "color": "black"
+      },
+      "encoding": {
+        "x": {
+          "field": "yield_center",
+          "type": "quantitative"
+        },
+        "y": {"field": "variety", "type": "ordinal"}
+      }
+    }
+  ]
+}

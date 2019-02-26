@@ -1,4 +1,5 @@
 import {assert} from 'chai';
+import {Page} from 'puppeteer';
 import {
   bound,
   brush,
@@ -12,12 +13,19 @@ import {
   unbound
 } from './util';
 
-[bound, unbound].forEach((bind, idx) => {
-  describe(`Translate ${bind} interval selections at runtime`, () => {
+declare const page: Page;
+// declare const jestPuppeteer: any;
+
+for (const bind of [bound, unbound]) {
+  describe(`Translate ${bind} interval selections at runtime`, async () => {
+    beforeAll(async () => {
+      await page.goto('http://0.0.0.0:8000/test-runtime/');
+    });
+
     const type = 'interval';
     const hits = hitsMaster.interval;
-    const embed = embedFn(browser);
-    const testRender = testRenderFn(browser, `interval/translate/${bind}`);
+    const embed = embedFn(page);
+    const testRender = testRenderFn(page, `interval/translate/${bind}`);
     const binding = bind === bound ? {bind: 'scales'} : {};
 
     const assertExtent = {
@@ -31,61 +39,62 @@ import {
       }
     };
 
-    it('should move back-and-forth', () => {
+    it('should move back-and-forth', async () => {
       for (let i = 0; i < hits.translate.length; i++) {
-        embed(spec('unit', i, {type, ...binding}));
-        const drag = browser.execute(brush('drag', i)).value[0];
-        testRender(`${i}-0`);
-        const translate = browser.execute(brush('translate', i, null, bind === unbound)).value[0];
+        await embed(spec('unit', i, {type, ...binding}));
+        const drag = (await page.evaluate(brush('drag', i)))[0];
+        await testRender(`${i}-0`);
+        const translate = (await page.evaluate(brush('translate', i, null, bind === unbound)))[0];
         assert[assertExtent[bind].x[i]](translate.values[0][0], drag.values[0][0]);
         assert[assertExtent[bind].x[i]](translate.values[0][1], drag.values[0][1]);
         assert[assertExtent[bind].y[i]](translate.values[1][0], drag.values[1][0]);
         assert[assertExtent[bind].y[i]](translate.values[1][1], drag.values[1][1]);
-        testRender(`${i}-1`);
+        await testRender(`${i}-1`);
       }
     });
 
-    it('should work with binned domains', () => {
+    it('should work with binned domains', async () => {
       for (let i = 0; i < hits.bins.length; i++) {
-        embed(
+        await embed(
           spec(
             'unit',
             1,
             {type, ...binding, encodings: ['y']},
             {
-              x: {aggregate: 'count', field: '*', type: 'quantitative'},
+              x: {aggregate: 'count', type: 'quantitative'},
               y: {bin: true},
               color: {value: 'steelblue', field: null, type: null}
             }
           )
         );
-        const drag = browser.execute(brush('bins', i)).value[0];
-        testRender(`bins_${i}-0`);
-        const translate = browser.execute(brush('bins_translate', i, null, bind === unbound)).value[0];
+        const drag = (await page.evaluate(brush('bins', i)))[0];
+        await testRender(`bins_${i}-0`);
+        const translate = (await page.evaluate(brush('bins_translate', i, null, bind === unbound)))[0];
         assert[assertExtent[bind].y[i]](translate.values[0][0], drag.values[0][0]);
         assert[assertExtent[bind].y[i]](translate.values[0][1], drag.values[0][1]);
-        testRender(`bins_${i}-1`);
+        await testRender(`bins_${i}-1`);
       }
     });
 
-    it('should work with temporal domains', () => {
+    it('should work with temporal domains', async () => {
+      // await jestPuppeteer.debug();
       const values = tuples.map(d => ({...d, a: new Date(2017, d.a)}));
-      const toNumber = '[0].values[0].map((d) => +d)';
+      const toNumber = (a: any) => a[0].values[0].map((d: any) => +d);
 
       for (let i = 0; i < hits.translate.length; i++) {
-        embed(spec('unit', i, {type, ...binding, encodings: ['x']}, {values, x: {type: 'temporal'}}));
-        const drag = browser.execute(brush('drag', i) + toNumber).value;
-        testRender(`temporal_${i}-0`);
-        const translate = browser.execute(brush('translate', i, null, bind === unbound) + toNumber).value;
+        await embed(spec('unit', i, {type, ...binding, encodings: ['x']}, {values, x: {type: 'temporal'}}));
+        const drag = toNumber(await page.evaluate(brush('drag', i)));
+        await testRender(`temporal_${i}-0`);
+        const translate = toNumber(await page.evaluate(brush('translate', i, null, bind === unbound)));
         assert[assertExtent[bind].x[i]](translate[0], drag[0]);
         assert[assertExtent[bind].x[i]](translate[1], drag[1]);
-        testRender(`temporal_${i}-1`);
+        await testRender(`temporal_${i}-1`);
       }
     });
 
-    it('should work with log/pow scales', () => {
+    it('should work with log/pow scales', async () => {
       for (let i = 0; i < hits.translate.length; i++) {
-        embed(
+        await embed(
           spec(
             'unit',
             i,
@@ -96,21 +105,21 @@ import {
             }
           )
         );
-        const drag = browser.execute(brush('drag', i)).value[0];
-        testRender(`logpow_${i}-0`);
-        const translate = browser.execute(brush('translate', i, null, bind === unbound)).value[0];
+        const drag = (await page.evaluate(brush('drag', i)))[0];
+        await testRender(`logpow_${i}-0`);
+        const translate = (await page.evaluate(brush('translate', i, null, bind === unbound)))[0];
         assert[assertExtent[bind].x[i]](translate.values[0][0], drag.values[0][0]);
         assert[assertExtent[bind].x[i]](translate.values[0][1], drag.values[0][1]);
         assert[assertExtent[bind].y[i]](translate.values[1][0], drag.values[1][0]);
         assert[assertExtent[bind].y[i]](translate.values[1][1], drag.values[1][1]);
-        testRender(`logpow_${i}-1`);
+        await testRender(`logpow_${i}-1`);
       }
     });
 
     if (bind === unbound) {
-      it('should work with ordinal/nominal domains', () => {
+      it('should work with ordinal/nominal domains', async () => {
         for (let i = 0; i < hits.translate.length; i++) {
-          embed(
+          await embed(
             spec(
               'unit',
               i,
@@ -121,14 +130,14 @@ import {
               }
             )
           );
-          const drag = browser.execute(brush('drag', i)).value[0];
-          testRender(`ord_${i}-0`);
-          const translate = browser.execute(brush('translate', i, null, true)).value[0];
+          const drag = (await page.evaluate(brush('drag', i)))[0];
+          await testRender(`ord_${i}-0`);
+          const translate = (await page.evaluate(brush('translate', i, null, true)))[0];
           assert[assertExtent[bind].x[i]](translate.values[0][0], drag.values[0][0]);
           assert[assertExtent[bind].x[i]](translate.values[0][1], drag.values[0][1]);
           assert[assertExtent[bind].y[i]](translate.values[1][0], drag.values[1][0]);
           assert[assertExtent[bind].y[i]](translate.values[1][1], drag.values[1][1]);
-          testRender(`ord_${i}-1`);
+          await testRender(`ord_${i}-1`);
         }
       });
     } else {
@@ -143,21 +152,21 @@ import {
             y: ['isBelow', 'isAbove', 'isBelow']
           }
         };
-        it(`should work with shared scales in ${specType} views`, () => {
+        it(`should work with shared scales in ${specType} views`, async () => {
           for (let i = 0; i < hits[specType].length; i++) {
-            embed(spec(specType, 0, {type, ...binding}, {resolve: {scale: {x: 'shared', y: 'shared'}}}));
+            await embed(spec(specType, 0, {type, ...binding}, {resolve: {scale: {x: 'shared', y: 'shared'}}}));
             const parent = parentSelector(specType, i);
-            const xscale = browser.execute('return view._runtime.scales.x.value.domain()').value;
-            const yscale = browser.execute('return view._runtime.scales.y.value.domain()').value;
-            const drag = browser.execute(brush(specType, i, parent)).value[0];
+            const xscale = await page.evaluate('view._runtime.scales.x.value.domain()');
+            const yscale = await page.evaluate('view._runtime.scales.y.value.domain()');
+            const drag = (await page.evaluate(brush(specType, i, parent)))[0];
             assert[assertExtents[specType].x[i]](drag.values[0][0], xscale[0], `iter: ${i}`);
             assert[assertExtents[specType].x[i]](drag.values[0][1], xscale[1], `iter: ${i}`);
             assert[assertExtents[specType].y[i]](drag.values[1][0], yscale[0], `iter: ${i}`);
             assert[assertExtents[specType].y[i]](drag.values[1][1], yscale[1], `iter: ${i}`);
-            testRender(`${specType}_${i}`);
+            await testRender(`${specType}_${i}`);
           }
         });
       });
     }
   });
-});
+}

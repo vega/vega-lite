@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
   "autosize": "pad",
   "padding": 5,
@@ -15,14 +15,14 @@
           "type": "aggregate",
           "groupby": ["Cylinders"],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
@@ -38,17 +38,17 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
-          "y": {"scale": "y", "field": "count_*"},
+          "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }
       }
@@ -70,7 +70,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "count_*"},
+      "domain": {"data": "data_0", "field": "__count"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -91,7 +91,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Number of Records",
+      "title": "Count of Records",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1

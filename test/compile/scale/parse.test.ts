@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import {toSet} from 'vega-util';
 import {parseScale, parseScaleCore} from '../../../src/compile/scale/parse';
 import {SELECTION_DOMAIN} from '../../../src/compile/selection/selection';
@@ -11,8 +10,7 @@ import {parseModel, parseModelWithScale, parseUnitModelWithScale} from '../../ut
 
 describe('src/compile', () => {
   it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES wihtout type, domain, and range properties', () => {
-    assert.deepEqual(
-      toSet(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES),
+    expect(toSet(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES)).toEqual(
       toSet(without(SCALE_PROPERTIES, ['type', 'domain', 'range', 'rangeStep', 'scheme']))
     );
   });
@@ -46,7 +44,7 @@ describe('src/compile', () => {
         ]
       });
       parseScaleCore(model);
-      assert.equal(model.getScaleComponent('y').explicit.type, 'log');
+      expect(model.getScaleComponent('y').explicit.type).toEqual('log');
     });
 
     it('respects explicit scale type', () => {
@@ -77,7 +75,7 @@ describe('src/compile', () => {
         ]
       });
       parseScaleCore(model);
-      assert.equal(model.getScaleComponent('y').explicit.type, 'log');
+      expect(model.getScaleComponent('y').explicit.type).toEqual('log');
     });
 
     // TODO: this actually shouldn't get merged
@@ -112,8 +110,8 @@ describe('src/compile', () => {
           ]
         });
         parseScaleCore(model);
-        assert.equal(model.getScaleComponent('y').explicit.type, 'log');
-        assert.equal(localLogger.warns[0], log.message.mergeConflictingProperty('type', 'scale', 'log', 'pow'));
+        expect(model.getScaleComponent('y').explicit.type).toEqual('log');
+        expect(localLogger.warns[0]).toEqual(log.message.mergeConflictingProperty('type', 'scale', 'log', 'pow'));
       })
     );
 
@@ -146,7 +144,7 @@ describe('src/compile', () => {
         ]
       });
       parseScaleCore(model);
-      assert.equal(model.getScaleComponent('x').implicit.type, 'band');
+      expect(model.getScaleComponent('x').implicit.type).toEqual('band');
     });
 
     it('correctly ignores x/y when lon/lat', () => {
@@ -170,8 +168,8 @@ describe('src/compile', () => {
         }
       });
       parseScaleCore(model);
-      assert.isUndefined(model.getScaleComponent('x'));
-      assert.isUndefined(model.getScaleComponent('y'));
+      expect(model.getScaleComponent('x')).toBeUndefined();
+      expect(model.getScaleComponent('y')).toBeUndefined();
     });
 
     it('correctly ignores shape when geojson', () => {
@@ -196,7 +194,7 @@ describe('src/compile', () => {
         }
       });
       parseScaleCore(model);
-      assert.isUndefined(model.getScaleComponent('shape'));
+      expect(model.getScaleComponent('shape')).toBeUndefined();
     });
   });
 
@@ -230,8 +228,8 @@ describe('src/compile', () => {
           ]
         });
         parseScale(model);
-        assert.deepEqual(model.getScaleComponent('y').explicit.range, {step: 17});
-        assert.equal(logger.warns.length, 0);
+        expect(model.getScaleComponent('y').explicit.range).toEqual({step: 17});
+        expect(logger.warns).toHaveLength(0);
       })
     );
 
@@ -244,8 +242,8 @@ describe('src/compile', () => {
           }
         });
         const scale = model.getScaleComponent('x');
-        assert.equal(scale.implicit.type, 'point');
-        assert.deepEqual(scale.implicit.range, {step: 21});
+        expect(scale.implicit.type).toEqual('point');
+        expect(scale.implicit.range).toEqual({step: 20});
       });
     });
 
@@ -257,9 +255,9 @@ describe('src/compile', () => {
         }
       });
       const scale = model.getScaleComponent('x');
-      assert.equal(scale.explicit.padding, 0.6);
-      assert.isUndefined(scale.get('paddingInner'));
-      assert.isUndefined(scale.get('paddingOuter'));
+      expect(scale.explicit.padding).toEqual(0.6);
+      expect(scale.get('paddingInner')).toBeUndefined();
+      expect(scale.get('paddingOuter')).toBeUndefined();
     });
 
     it('should output default paddingInner and paddingOuter = paddingInner/2 if none of padding properties is specified for a band scale', () => {
@@ -273,9 +271,9 @@ describe('src/compile', () => {
         }
       });
       const scale = model.getScaleComponent('x');
-      assert.equal(scale.implicit.paddingInner, 0.3);
-      assert.equal(scale.implicit.paddingOuter, 0.15);
-      assert.isUndefined(scale.get('padding'));
+      expect(scale.implicit.paddingInner).toEqual(0.3);
+      expect(scale.implicit.paddingOuter).toEqual(0.15);
+      expect(scale.get('padding')).toBeUndefined();
     });
 
     describe('nominal with color', () => {
@@ -289,16 +287,16 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('color');
 
       it('should create correct color scale', () => {
-        assert.equal(scale.implicit.name, 'color');
-        assert.equal(scale.implicit.type, 'ordinal');
-        assert.deepEqual(scale.domains, [
+        expect(scale.implicit.name).toEqual('color');
+        expect(scale.implicit.type).toEqual('ordinal');
+        expect(scale.domains).toEqual([
           {
             data: 'main',
             field: 'origin',
             sort: true
           }
         ]);
-        assert.equal(scale.implicit.range, 'category');
+        expect(scale.implicit.range).toEqual('category');
       });
     });
 
@@ -312,11 +310,11 @@ describe('src/compile', () => {
 
       const scale = model.getScaleComponent('color');
 
-      it('should create sequential color scale', () => {
-        assert.equal(scale.implicit.name, 'color');
-        assert.equal(scale.implicit.type, 'ordinal');
+      it('should create linear color scale', () => {
+        expect(scale.implicit.name).toEqual('color');
+        expect(scale.implicit.type).toEqual('ordinal');
 
-        assert.deepEqual(scale.domains, [
+        expect(scale.domains).toEqual([
           {
             data: 'main',
             field: 'origin',
@@ -337,11 +335,11 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('color');
 
       it('should create linear color scale', () => {
-        assert.equal(scale.implicit.name, 'color');
-        assert.equal(scale.implicit.type, 'sequential');
-        assert.equal(scale.implicit.range, 'ramp');
+        expect(scale.implicit.name).toEqual('color');
+        expect(scale.implicit.type).toEqual('linear');
+        expect(scale.implicit.range).toEqual('ramp');
 
-        assert.deepEqual(scale.domains, [
+        expect(scale.domains).toEqual([
           {
             data: 'main',
             field: 'origin'
@@ -361,8 +359,9 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('color');
 
       it('should add correct scales', () => {
-        assert.equal(scale.implicit.name, 'color');
-        assert.equal(scale.implicit.type, 'bin-ordinal');
+        expect(scale.implicit.name).toEqual('color');
+        expect(scale.implicit.type).toEqual('bin-ordinal');
+        expect(scale.implicit.bins).toMatchObject({signal: 'bin_maxbins_6_origin_bins'});
       });
     });
 
@@ -377,8 +376,9 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('color');
 
       it('should add correct scales', () => {
-        assert.equal(scale.implicit.name, 'color');
-        assert.equal(scale.implicit.type, 'ordinal');
+        expect(scale.implicit.name).toEqual('color');
+        expect(scale.implicit.type).toEqual('ordinal');
+        expect(scale.implicit.bins).toBeUndefined();
       });
     });
 
@@ -393,8 +393,9 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('opacity');
 
       it('should add correct scales', () => {
-        assert.equal(scale.implicit.name, 'opacity');
-        assert.equal(scale.implicit.type, 'bin-linear');
+        expect(scale.implicit.name).toEqual('opacity');
+        expect(scale.implicit.type).toEqual('linear');
+        expect(scale.implicit.bins).toMatchObject({signal: 'bin_maxbins_6_origin_bins'});
       });
     });
 
@@ -409,8 +410,9 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('size');
 
       it('should add correct scales', () => {
-        assert.equal(scale.implicit.name, 'size');
-        assert.equal(scale.implicit.type, 'bin-linear');
+        expect(scale.implicit.name).toEqual('size');
+        expect(scale.implicit.type).toEqual('linear');
+        expect(scale.implicit.bins).toMatchObject({signal: 'bin_maxbins_6_origin_bins'});
       });
     });
 
@@ -425,8 +427,8 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('color');
 
       it('should add correct scales', () => {
-        assert.equal(scale.implicit.name, 'color');
-        assert.equal(scale.implicit.type, 'sequential');
+        expect(scale.implicit.name).toEqual('color');
+        expect(scale.implicit.type).toEqual('time');
       });
     });
 
@@ -451,17 +453,11 @@ describe('src/compile', () => {
       const yscale = model.getScaleComponent('y');
 
       it('should add a raw selection domain', () => {
-        assert.property(xScale.explicit, 'domainRaw');
-        assert.propertyVal(
-          xScale.explicit.domainRaw,
-          'signal',
-          SELECTION_DOMAIN + '{"encoding":"x","selection":"brush"}'
-        );
+        expect('domainRaw' in xScale.explicit).toBeTruthy();
+        expect(xScale.explicit.domainRaw['signal']).toBe(SELECTION_DOMAIN + '{"encoding":"x","selection":"brush"}');
 
-        assert.property(yscale.explicit, 'domainRaw');
-        assert.propertyVal(
-          yscale.explicit.domainRaw,
-          'signal',
+        expect('domainRaw' in yscale.explicit).toBeTruthy();
+        expect(yscale.explicit.domainRaw['signal']).toBe(
           SELECTION_DOMAIN + '{"field":"Miles_per_Gallon","selection":"foobar"}'
         );
       });
@@ -484,7 +480,7 @@ describe('src/compile', () => {
           }
         });
 
-        assert.deepEqual(model.component.scales.x.domains, [
+        expect(model.component.scales.x.domains).toEqual([
           {
             data: 'scale_child_main',
             field: 'a'
@@ -507,7 +503,7 @@ describe('src/compile', () => {
           }
         });
 
-        assert.deepEqual(model.component.scales.x.domains, [
+        expect(model.component.scales.x.domains).toEqual([
           {
             data: 'child_main',
             field: 'a'
@@ -534,7 +530,7 @@ describe('src/compile', () => {
           }
         });
 
-        assert.deepEqual(model.children[0].component.scales.x.domains, [
+        expect(model.children[0].component.scales.x.domains).toEqual([
           {
             data: 'child_main',
             field: 'a'

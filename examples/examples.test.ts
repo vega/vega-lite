@@ -1,14 +1,12 @@
 import Ajv from 'ajv';
-import {assert} from 'chai';
-
+import fs from 'fs';
+import path from 'path';
+import {inspect} from 'util';
 import {Spec as VgSpec} from 'vega';
 import {compile} from '../src/compile/compile';
 import * as log from '../src/log';
 import {TopLevelSpec} from '../src/spec';
-
-const inspect = require('util').inspect;
-const fs = require('fs');
-const path = require('path');
+import {duplicate} from '../src/util';
 
 const vlSchema = require('../build/vega-lite-schema.json');
 const vgSchema = require('vega/build/vega-schema.json');
@@ -32,7 +30,9 @@ function validateVL(spec: TopLevelSpec) {
   if (!valid) {
     console.log(inspect(errors, {depth: 10, colors: true}));
   }
-  assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
+
+  expect(errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', ')).toBeNull();
+  expect(valid).toBe(true);
 
   expect(spec.$schema.substr(0, 42)).toBe('https://vega.github.io/schema/vega-lite/v3');
 }
@@ -43,33 +43,39 @@ function validateVega(vegaSpec: VgSpec) {
   if (!valid) {
     console.log(inspect(errors, {depth: 10, colors: true}));
   }
-  assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
+
+  expect(errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', ')).toBeNull();
+  expect(valid).toBe(true);
 }
 
 const futureSuffixLength = '_future.vl.json'.length;
 const brokenSuffixLength = '_broken.vl.json'.length;
 
 describe('Examples', () => {
-  const examples = fs.readdirSync('examples/specs');
+  const examples = fs.readdirSync('examples/specs').map(file => 'examples/specs/' + file);
+  const normalizedExamples = fs
+    .readdirSync('examples/specs/normalized')
+    .map(file => 'examples/specs/normalized/' + file);
 
-  for (const example of examples) {
+  for (const example of examples.concat(normalizedExamples)) {
     if (path.extname(example) !== '.json') {
       return;
     }
-    const jsonSpec = JSON.parse(fs.readFileSync('examples/specs/' + example));
+    const jsonSpec = JSON.parse(fs.readFileSync(example).toString());
+    const originalSpec = duplicate(jsonSpec);
 
     describe(
       example,
       log.wrap(localLogger => {
         const vegaSpec: VgSpec = compile(jsonSpec).spec;
 
+        it('should not cause any side effects', () => {
+          expect(jsonSpec).toEqual(originalSpec);
+        });
+
         it('should be valid vega-lite with proper $schema', () => {
           if (
-            // Do not validate overlay example until we have redesigned it
-            example.indexOf('overlay') >= 0 ||
-            // Also ignore boxplot examples until we support selections
-            example.indexOf('boxplot') >= 0 ||
-            // Also ignore all examples with "_future" suffix
+            // Ignore all examples with "_future" suffix
             example.lastIndexOf('_future.vl.json', example.length - futureSuffixLength) >= 0
           ) {
             return;

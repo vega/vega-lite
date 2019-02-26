@@ -6,7 +6,7 @@ git checkout $TRAVIS_BRANCH
 
 node_version=$(node --version | cut -d. -f1 | cut -c2-)
 
-if [[ $node_version != '10' ]]; then
+if [[ $node_version != '11' ]]; then
   exit 0;
 fi
 
@@ -46,17 +46,18 @@ fi
 # Commit examples if outdated
 
 # Note: we need to add all files first so that new files are included in `git diff --cached` too.
-git add ./examples/compiled/vega_version ./examples/compiled/*.vg.json ./examples/compiled/*.svg ./examples/specs/normalized/*.vl.json
+# Note: git commands need single quotes for all the files and directories with wildcards
+git add ./examples/compiled/vega_version './examples/compiled/*.vg.json' './examples/compiled/*.svg' './examples/specs/normalized/*.vl.json'
 
 if [[ $TRAVIS_BRANCH == 'master' ]]; then
   # Don't diff SVG as floating point calculation is not always consistent
-  if ! git diff --cached --word-diff=color --exit-code HEAD -- ./examples/compiled/*.vg.json ./examples/specs/normalized/*.vl.json
+  if ! git diff --cached --word-diff=color --exit-code HEAD -- './examples/compiled/*.vg.json' './examples/specs/normalized/*.vl.json'
   then
     echo "Outdated examples."
     exit 1
   fi
 else
-  if ! git diff --cached --word-diff=color --exit-code HEAD -- ./examples/compiled/vega_version ./examples/compiled/*.vg.json ./examples/compiled/*.svg ./examples/specs/normalized/*.vl.json
+  if ! git diff --cached --word-diff=color --exit-code HEAD -- ./examples/compiled/vega_version './examples/compiled/*.vg.json' './examples/compiled/*.svg' './examples/specs/normalized/*.vl.json'
   then
     git commit -m "[Travis] Update examples (build: $TRAVIS_BUILD_NUMBER)"
   fi

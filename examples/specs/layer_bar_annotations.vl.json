@@ -36,7 +36,7 @@
         "encoding": {
           "x": {"field": "Day", "type": "ordinal"},
           "y": {"field": "baseline", "type": "quantitative"},
-          "y2": {"field": "Value", "type": "quantitative"},
+          "y2": {"field": "Value"},
           "color": {"value": "#e45755"}
         }
       }

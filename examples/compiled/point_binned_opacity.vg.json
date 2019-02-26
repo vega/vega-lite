@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on opacity.",
   "autosize": "pad",
   "padding": 5,
@@ -85,11 +85,13 @@
     },
     {
       "name": "opacity",
-      "type": "bin-linear",
+      "type": "linear",
       "domain": {
-        "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
+        "signal": "[bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop]"
       },
-      "range": [0.3, 0.8]
+      "range": [0.3, 0.8],
+      "bins": {"signal": "bin_maxbins_6_Acceleration_bins"},
+      "zero": false
     }
   ],
   "axes": [
@@ -142,6 +144,7 @@
   "legends": [
     {
       "opacity": "opacity",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Acceleration (binned)",
       "encode": {
         "symbols": {

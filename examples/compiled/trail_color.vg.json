@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock prices of 5 Tech Companies over Time.",
   "autosize": "pad",
   "padding": 5,
@@ -74,7 +74,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "symbol", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     },
     {
       "name": "size",
@@ -132,9 +133,14 @@
     }
   ],
   "legends": [
-    {"fill": "color", "title": "symbol"},
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "symbol"
+    },
     {
       "size": "size",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "price",
       "encode": {
         "symbols": {

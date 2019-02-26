@@ -1,40 +1,10 @@
 /* tslint:disable:quotemark */
 
 import {WindowTransformNode} from '../../../src/compile/data/window';
-import {makeWindowFromFacet} from '../../../src/compile/data/windowfacet';
 import {Transform} from '../../../src/transform';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 describe('compile/data/window', () => {
-  it('creates correct window nodes for calculating sort field of crossed facet', () => {
-    const window = makeWindowFromFacet(null, {
-      row: {field: 'r', type: 'nominal'},
-      column: {field: 'c', type: 'nominal', sort: {op: 'median', field: 'x'}}
-    });
-
-    expect(window.assemble()).toEqual({
-      type: 'window',
-      ops: ['median'],
-      fields: ['x'],
-      params: [null],
-      as: ['median_x_by_c'],
-      frame: [null, null],
-      groupby: ['c'],
-      sort: {
-        field: [],
-        order: []
-      }
-    });
-  });
-
-  it('does not create any window nodes for crossed facet', () => {
-    expect(
-      makeWindowFromFacet(null, {
-        row: {field: 'a', type: 'nominal'}
-      })
-    ).toEqual(null);
-  });
-
   it('should return a proper vg transform', () => {
     const transform: Transform = {
       window: [
@@ -132,7 +102,7 @@ describe('compile/data/window', () => {
       frame: [null, 0]
     };
     const window = new WindowTransformNode(null, transform);
-    expect(window.producedFields()).toEqual({count_field: true, ordered_row_number: true, sum_field: true});
+    expect(window.producedFields()).toEqual(new Set(['count_field', 'ordered_row_number', 'sum_field']));
   });
 
   it('should generate the correct dependent fields', () => {
@@ -154,7 +124,7 @@ describe('compile/data/window', () => {
       frame: [null, 0]
     };
     const window = new WindowTransformNode(null, transform);
-    expect(window.dependentFields()).toEqual({g: true, f: true});
+    expect(window.dependentFields()).toEqual(new Set(['g', 'f']));
   });
 
   it('should clone to an equivalent version', () => {

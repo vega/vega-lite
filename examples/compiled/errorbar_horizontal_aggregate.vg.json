@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar chart showing the US population distribution of age groups in 2000.",
   "autosize": "pad",
   "padding": 5,
@@ -33,62 +33,27 @@
           "type": "formula",
           "expr": "toNumber(datum[\"people\"])",
           "as": "people"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_1",
-      "transform": [
+        },
         {
           "type": "aggregate",
           "groupby": ["age"],
-          "ops": ["min", "max"],
+          "ops": ["max", "min"],
           "fields": ["people", "people"],
-          "as": ["min_people", "max_people"]
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "data_1",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["age"],
-          "ops": ["min"],
-          "fields": ["people"],
-          "as": ["min_people"]
-        }
-      ]
-    },
-    {
-      "name": "data_4",
-      "source": "data_1",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["age"],
-          "ops": ["max"],
-          "fields": ["people"],
-          "as": ["max_people"]
+          "as": ["max_people", "min_people"]
         }
       ]
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 21},
-    {
-      "name": "height",
-      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
-    }
+    {"name": "y_step", "value": 20},
+    {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
   ],
   "marks": [
     {
       "name": "layer_0_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": [
@@ -99,7 +64,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"min_people\"], \"\"), \"age\": ''+datum[\"age\"], \"Max of people\": format(datum[\"max_people\"], \"\")}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"min_people\"], \"\"), \"Max of people\": format(datum[\"max_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "min_people"},
           "y": {"scale": "y", "field": "age", "band": 0.5},
@@ -111,7 +76,7 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["tick"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": [
@@ -122,7 +87,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"min_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"min_people\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "min_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},
@@ -135,7 +100,7 @@
       "name": "layer_2_marks",
       "type": "rect",
       "style": ["tick"],
-      "from": {"data": "data_4"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": [
@@ -146,7 +111,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"max_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"max_people\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "max_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},
@@ -177,7 +142,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"mean_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"mean_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "mean_people"},
           "y": {"scale": "y", "field": "age", "band": 0.5},
@@ -192,10 +157,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "min_people"},
-          {"data": "data_2", "field": "max_people"},
-          {"data": "data_3", "field": "min_people"},
-          {"data": "data_4", "field": "max_people"},
+          {"data": "data_1", "field": "min_people"},
+          {"data": "data_1", "field": "max_people"},
           {"data": "data_0", "field": "mean_people"}
         ]
       },
@@ -208,16 +171,14 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "age"},
-          {"data": "data_3", "field": "age"},
-          {"data": "data_4", "field": "age"},
+          {"data": "data_1", "field": "age"},
           {"data": "data_0", "field": "age"}
         ],
         "sort": true
       },
       "range": {"step": {"signal": "y_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     }
   ],
   "axes": [

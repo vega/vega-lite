@@ -1,22 +1,22 @@
-import {AggregateOp} from 'vega';
+import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
-import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
+import {Channel, COLUMN, FACET_CHANNELS, FacetChannel, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {FacetFieldDef, FacetMapping} from '../facet';
-import {FieldDef, FieldRefOption, normalize, title as fieldDefTitle, vgField} from '../fielddef';
+import {FieldRefOption, normalize, title as fieldDefTitle, TypedFieldDef, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
-import {EncodingSortField, isSortField, SortOrder} from '../sort';
+import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
-import {contains} from '../util';
-import {isVgRangeStep, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
+import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
+import {contains, flatten} from '../util';
+import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
 import {assembleAxis} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
 import {sortArrayIndexField} from './data/calculate';
 import {parseData} from './data/parse';
-import {getHeaderType, HeaderChannel, HeaderComponent} from './header/index';
+import {assembleLabelTitle, getHeaderType, HeaderChannel, HeaderComponent} from './header/index';
 import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
@@ -34,7 +34,7 @@ export function facetSortFieldName(
 
 export class FacetModel extends ModelWithField {
   public readonly type: 'facet' = 'facet';
-  public readonly facet: FacetMapping<string>;
+  public readonly facet: EncodingFacetMapping<string>;
 
   public readonly child: Model;
 
@@ -52,16 +52,33 @@ export class FacetModel extends ModelWithField {
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config, false);
     this.children = [this.child];
 
-    const facet: FacetMapping<string> = replaceRepeaterInFacet(spec.facet, repeater);
+    const facet = replaceRepeaterInFacet(spec.facet, repeater);
 
     this.facet = this.initFacet(facet);
+
+    const {resolve} = this.component;
+
+    if (!isFacetMapping(facet)) {
+      if (resolve.axis.x === 'shared' || resolve.axis.y === 'shared') {
+        log.warn(log.message.FACET_1D_CANNOT_SHARE_AXIS);
+      }
+
+      resolve.axis = {
+        x: 'independent',
+        y: 'independent'
+      };
+    }
   }
 
-  private initFacet(facet: FacetMapping<string>): FacetMapping<string> {
+  private initFacet(facet: FacetFieldDef<string> | FacetMapping<string>): EncodingFacetMapping<string> {
     // clone to prevent side effect to the original spec
+    if (!isFacetMapping(facet)) {
+      return {facet: normalize(facet, 'facet')};
+    }
+
     return reduce(
       facet,
-      (normalizedFacet, fieldDef: FieldDef<string>, channel: Channel) => {
+      (normalizedFacet, fieldDef: TypedFieldDef<string>, channel: Channel) => {
         if (!contains([ROW, COLUMN], channel)) {
           // Drop unsupported channel
           log.warn(log.message.incompatibleChannel(channel, 'facet'));
@@ -85,7 +102,7 @@ export class FacetModel extends ModelWithField {
     return !!this.facet[channel];
   }
 
-  public fieldDef(channel: Channel): FieldDef<string> {
+  public fieldDef(channel: Channel): TypedFieldDef<string> {
     return this.facet[channel];
   }
 
@@ -113,14 +130,15 @@ export class FacetModel extends ModelWithField {
   public parseAxisAndHeader() {
     this.child.parseAxisAndHeader();
 
-    this.parseHeader('column');
-    this.parseHeader('row');
+    for (const channel of FACET_CHANNELS) {
+      this.parseHeader(channel);
+    }
 
     this.mergeChildAxis('x');
     this.mergeChildAxis('y');
   }
 
-  private parseHeader(channel: HeaderChannel) {
+  private parseHeader(channel: FacetChannel) {
     if (this.channelHasField(channel)) {
       const fieldDef = this.facet[channel];
       let title = fieldDefTitle(fieldDef, this.config, {allowDisabling: true});
@@ -135,7 +153,7 @@ export class FacetModel extends ModelWithField {
         title,
         facetFieldDef: fieldDef,
         // TODO: support adding label to footer as well
-        header: [this.makeHeaderComponent(channel, true)]
+        header: channel === 'facet' ? [] : [this.makeHeaderComponent(channel, true)]
       };
     }
   }
@@ -176,11 +194,11 @@ export class FacetModel extends ModelWithField {
     }
   }
 
-  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
+  public assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[] {
     return this.child.assembleSelectionTopLevelSignals(signals);
   }
 
-  public assembleSelectionSignals(): VgSignal[] {
+  public assembleSelectionSignals(): NewSignal[] {
     this.child.assembleSelectionSignals();
     return [];
   }
@@ -217,20 +235,30 @@ export class FacetModel extends ModelWithField {
   }
 
   protected assembleDefaultLayout(): VgLayout {
-    const columns = this.channelHasField('column') ? this.columnDistinctSignal() : 1;
+    const {column, row} = this.facet;
 
-    // TODO: determine default align based on shared / independent scales
+    const columns = column ? this.columnDistinctSignal() : row ? 1 : undefined;
+
+    let align: LayoutAlign = 'all';
+
+    // Do not align the cells if the scale corresponding to the directin is indepent.
+    // We always align when we facet into both row and column.
+    if (!row && this.component.resolve.scale.x === 'independent') {
+      align = 'none';
+    } else if (!column && this.component.resolve.scale.y === 'independent') {
+      align = 'none';
+    }
 
     return {
       ...this.getHeaderLayoutMixins(),
 
-      columns,
+      ...(columns ? {columns} : {}),
       bounds: 'full',
-      align: 'all'
+      align
     };
   }
 
-  public assembleLayoutSignals(): VgSignal[] {
+  public assembleLayoutSignals(): NewSignal[] {
     // FIXME(https://github.com/vega/vega-lite/issues/1193): this can be incorrect if we have independent scales.
     return this.child.assembleLayoutSignals();
   }
@@ -248,7 +276,7 @@ export class FacetModel extends ModelWithField {
     }
   }
 
-  public assembleGroup(signals: VgSignal[]) {
+  public assembleGroup(signals: NewSignal[]) {
     if (this.parent && this.parent instanceof FacetModel) {
       // Provide number of columns for layout.
       // See discussion in https://github.com/vega/vega/issues/952
@@ -316,13 +344,13 @@ export class FacetModel extends ModelWithField {
     const {fields, ops, as} = this.getCardinalityAggregateForChild();
     const groupby: string[] = [];
 
-    ['row', 'column'].forEach((channel: 'row' | 'column') => {
+    for (const channel of FACET_CHANNELS) {
       const fieldDef = this.facet[channel];
       if (fieldDef) {
         groupby.push(vgField(fieldDef));
         const {sort} = fieldDef;
         if (isSortField(sort)) {
-          const {field, op} = sort;
+          const {field, op = DEFAULT_SORT_OP} = sort;
           const outputName = facetSortFieldName(fieldDef, sort);
           if (row && column) {
             // For crossed facet, use pre-calculate field as it requires a different groupby
@@ -343,7 +371,7 @@ export class FacetModel extends ModelWithField {
           as.push(outputName);
         }
       }
-    });
+    }
 
     const cross = !!row && !!column;
 
@@ -362,7 +390,7 @@ export class FacetModel extends ModelWithField {
     };
   }
 
-  private headerSortFields(channel: 'row' | 'column'): string[] {
+  private facetSortFields(channel: FacetChannel): string[] {
     const {facet} = this;
     const fieldDef = facet[channel];
 
@@ -377,7 +405,7 @@ export class FacetModel extends ModelWithField {
     return [];
   }
 
-  private headerSortOrder(channel: 'row' | 'column'): SortOrder[] {
+  private facetSortOrder(channel: FacetChannel): SortOrder[] {
     const {facet} = this;
     const fieldDef = facet[channel];
     if (fieldDef) {
@@ -389,15 +417,16 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleMarks(): VgMarkGroup[] {
-    const {child} = this;
-    const facetRoot = this.component.data.facetRoot;
-    const data = assembleFacetData(facetRoot);
+    const {child, facet, config} = this;
 
     // If we facet by two dimensions, we need to add a cross operator to the aggregation
     // so that we create all groups
-    const layoutSizeEncodeEntry = child.assembleLayoutSize();
+    const facetRoot = this.component.data.facetRoot;
+    const data = assembleFacetData(facetRoot);
 
-    const title = child.assembleTitle();
+    const encodeEntry = child.assembleGroupEncodeEntry(false);
+
+    const title = (facet.facet && assembleLabelTitle(facet.facet, 'facet', config)) || child.assembleTitle();
     const style = child.assembleGroupStyle();
 
     const markGroup = {
@@ -410,11 +439,11 @@ export class FacetModel extends ModelWithField {
       },
       // TODO: move this to after data
       sort: {
-        field: [...this.headerSortFields('row'), ...this.headerSortFields('column')],
-        order: [...this.headerSortOrder('row'), ...this.headerSortOrder('column')]
+        field: flatten(FACET_CHANNELS.map(c => this.facetSortFields(c))),
+        order: flatten(FACET_CHANNELS.map(c => this.facetSortOrder(c)))
       },
       ...(data.length > 0 ? {data: data} : {}),
-      ...(layoutSizeEncodeEntry ? {encode: {update: layoutSizeEncodeEntry}} : {}),
+      ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
       ...child.assembleGroup(assembleFacetSignals(this, []))
     };
 

@@ -14,8 +14,10 @@ First, the [`facet` operator](#facet-operator) is one of Vega-Lite's [view compo
 Second, as a shortcut you can use the [`column` or `row` encoding channels](#facet-channels).
 
 ## Documentation Overview
+
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 
@@ -23,8 +25,7 @@ Second, as a shortcut you can use the [`column` or `row` encoding channels](#fac
 
 To create a faceted view, define how the data should be faceted in `facet` and how each facet should be displayed in the `spec`.
 
-{: .suppress-error}
-```json
+```js
 {
   "facet": {
     ... // Facet definition
@@ -33,12 +34,12 @@ To create a faceted view, define how the data should be faceted in `facet` and h
 }
 ```
 
-In addition to [common properties of a view specification](spec.html#common),
-a facet specification has the following properties:
+In addition to [common properties of a view specification](spec.html#common), a facet specification has the following properties:
 
 {% include table.html props="facet,spec,align,bounds,center,spacing,resolve" source="FacetSpec" %}
 
 {:#mapping}
+
 ### Facet Mapping
 
 The `facet` property of a faceted view specification describes mappings between `row` and `column` and their field definitions:
@@ -46,6 +47,7 @@ The `facet` property of a faceted view specification describes mappings between 
 {% include table.html props="column,row" source="FacetMapping" %}
 
 {:#field-def}
+
 ### Facet Field Definition
 
 A `FacetFieldDef` is a [field definition](encoding.html#field-def) that has `header` (instead of `scale` and `axis`).
@@ -54,20 +56,18 @@ A `FacetFieldDef` is a [field definition](encoding.html#field-def) that has `hea
 
 **Note** Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode a constant `value`. In addition, you should not facet by quantitative fields unless they are [binned](bin.html), or temporal fields unless you use [`timeUnit`](timeunit.html).
 
-
 ### Example
 
 Below are three histograms for the horsepower of cars. Each chart shows the histogram for one origin (Europe, Japan, and USA).
 
 <span class="vl-example" data-dir="normalized" data-name="trellis_bar_histogram_normalized"></span>
 
-This is the same example as below but the facet operator is more flexible as it allows composition and more customization such as overriding scale, axis, and legend
-resolution.
+This is the same example as below but the facet operator is more flexible as it allows composition and more customization such as overriding scale, axis, and legend resolution.
 
 You can find more examples in the [example gallery]({{site.baseurl}}/examples/#trellis).
 
-
 {:#header}
+
 ### Facet Headers
 
 Similar to axes of position channels, a [header](header.html) of a facet channel provides guides to convey the data value that each row and column represent.
@@ -82,7 +82,6 @@ The [facet channels](encoding.html#facet) are encoding channels, which produce a
 
 {% include table.html props="row,column" source="EncodingWithFacet" %}
 
-
 ### Example
 
 <span class="vl-example" data-name="trellis_bar_histogram"></span>
@@ -90,7 +89,6 @@ The [facet channels](encoding.html#facet) are encoding channels, which produce a
 Vega-Lite translates this spec to the more flexible [spec with the facet operator above](#example).
 
 You can find more examples in the [example gallery]({{site.baseurl}}/examples/#trellis).
-
 
 ## Resolve
 

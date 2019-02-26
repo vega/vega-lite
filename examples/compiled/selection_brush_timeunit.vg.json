@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "height": 200,
@@ -56,7 +56,7 @@
     {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "bounds": "full",
     "align": "each"
   },
@@ -142,7 +142,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"seconds_date\",\"channel\":\"x\",\"type\":\"R\"}]"
+          "value": [{"field": "seconds_date", "channel": "x", "type": "R"}]
         },
         {
           "name": "brush_translate_anchor",
@@ -219,12 +219,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, true)"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, true)"
         }
       ],
       "marks": [

@@ -1,6 +1,5 @@
-import {assert} from 'chai';
 import * as log from '../../src/log';
-import {VgLayout} from '../../src/vega.schema';
+import {DEFAULT_SPACING} from '../../src/spec/base';
 import {parseConcatModel} from '../util';
 
 describe('Concat', () => {
@@ -24,8 +23,8 @@ describe('Concat', () => {
         ]
       });
 
-      assert.equal(model.children.length, 2);
-      assert(model.isVConcat);
+      expect(model.children).toHaveLength(2);
+      expect(model.isVConcat).toBeTruthy();
     });
 
     it('should instantiate all children in hconcat', () => {
@@ -47,8 +46,8 @@ describe('Concat', () => {
         ]
       });
 
-      assert.equal(model.children.length, 2);
-      assert(!model.isVConcat);
+      expect(model.children).toHaveLength(2);
+      expect(!model.isVConcat).toBeTruthy();
     });
 
     it('should create correct layout for vconcat', () => {
@@ -65,8 +64,8 @@ describe('Concat', () => {
         ]
       });
 
-      assert.deepEqual<VgLayout>(model.assembleLayout(), {
-        padding: {row: 10, column: 10},
+      expect(model.assembleLayout()).toEqual({
+        padding: {row: DEFAULT_SPACING, column: DEFAULT_SPACING},
         columns: 1,
         bounds: 'full',
         align: 'each'
@@ -87,8 +86,8 @@ describe('Concat', () => {
         ]
       });
 
-      assert.deepEqual<VgLayout>(model.assembleLayout(), {
-        padding: {row: 10, column: 10},
+      expect(model.assembleLayout()).toEqual({
+        padding: {row: DEFAULT_SPACING, column: DEFAULT_SPACING},
         bounds: 'full',
         align: 'each'
       });
@@ -107,7 +106,7 @@ describe('Concat', () => {
             }
           }
         });
-        assert.equal(localLogger.warns[0], log.message.CONCAT_CANNOT_SHARE_AXIS);
+        expect(localLogger.warns[0]).toEqual(log.message.CONCAT_CANNOT_SHARE_AXIS);
       })
     );
   });

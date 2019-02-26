@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "height": 200,
@@ -43,7 +43,7 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
@@ -79,7 +79,7 @@
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "gender"},
               "tooltip": {
-                "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+                "signal": "{\"Sum of people\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
               },
               "x": {"scale": "x", "field": "age"},
               "y": {"scale": "y", "field": "sum_people_end"},
@@ -120,7 +120,7 @@
               "stroke": {"scale": "color", "field": "gender"},
               "opacity": {"value": 0.7},
               "tooltip": {
-                "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+                "signal": "{\"Sum of people\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
               },
               "x": {"scale": "x", "field": "age"},
               "y": {"scale": "y", "field": "sum_people_end"},
@@ -156,7 +156,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "gender", "sort": true},
-      "range": ["#EA98D2", "#659CCA"]
+      "range": ["#EA98D2", "#659CCA"],
+      "interpolate": "hcl"
     }
   ],
   "axes": [
@@ -197,6 +198,7 @@
   "legends": [
     {
       "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "gender",
       "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
       "stroke": "color"

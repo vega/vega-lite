@@ -1,6 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
-  "description": "A simple bar chart with embedded data.",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "data": [
@@ -23,24 +22,18 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "window",
-          "params": [null],
+          "type": "joinaggregate",
           "as": ["median_x_by_a"],
           "ops": ["median"],
           "fields": ["x"],
-          "sort": {"field": [], "order": []},
-          "groupby": ["a"],
-          "frame": [null, null]
+          "groupby": ["a"]
         },
         {
-          "type": "window",
-          "params": [null],
+          "type": "joinaggregate",
           "as": ["median_y_by_b"],
           "ops": ["median"],
           "fields": ["y"],
-          "sort": {"field": [], "order": []},
-          "groupby": ["b"],
-          "frame": [null, null]
+          "groupby": ["b"]
         },
         {
           "type": "formula",
@@ -96,23 +89,10 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["a", "b"],
-          "ops": ["median"],
-          "fields": ["median_x_by_a"],
-          "as": ["median_median_x_by_a"]
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["a", "b"],
-          "ops": ["median"],
-          "fields": ["median_y_by_b"],
-          "as": ["median_median_y_by_b"]
+          "groupby": ["b", "a"],
+          "ops": ["median", "median"],
+          "fields": ["median_y_by_b", "median_x_by_a"],
+          "as": ["median_median_y_by_b", "median_median_x_by_a"]
         }
       ]
     }
@@ -122,7 +102,7 @@
     {"name": "child_height", "value": 50}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "offset": {"rowTitle": 10, "columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -157,6 +137,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
@@ -182,6 +163,7 @@
         "text": {"signal": "''+parent[\"a\"]"},
         "offset": 10,
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
@@ -238,22 +220,9 @@
             {
               "type": "aggregate",
               "groupby": [],
-              "ops": ["median"],
-              "fields": ["median_x_by_a"],
-              "as": ["median_median_x_by_a"]
-            }
-          ]
-        },
-        {
-          "source": "facet",
-          "name": "data_1",
-          "transform": [
-            {
-              "type": "aggregate",
-              "groupby": [],
-              "ops": ["median"],
-              "fields": ["median_y_by_b"],
-              "as": ["median_median_y_by_b"]
+              "ops": ["median", "median"],
+              "fields": ["median_y_by_b", "median_x_by_a"],
+              "as": ["median_median_y_by_b", "median_median_x_by_a"]
             }
           ]
         }
@@ -322,7 +291,7 @@
           "name": "child_layer_2_marks",
           "type": "rule",
           "style": ["rule"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "stroke": [
@@ -392,7 +361,7 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "y"},
-          {"data": "data_3", "field": "median_median_y_by_b"}
+          {"data": "data_2", "field": "median_median_y_by_b"}
         ]
       },
       "range": [{"signal": "child_height"}, 0],

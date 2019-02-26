@@ -1,8 +1,10 @@
+import {NewSignal} from 'vega';
 import {Config} from '../config';
 import {Resolve} from '../resolve';
-import {BaseSpec} from '../spec';
+import {NormalizedConcatSpec} from '../spec/concat';
+import {NormalizedRepeatSpec} from '../spec/repeat';
 import {keys} from '../util';
-import {VgData, VgSignal} from '../vega.schema';
+import {VgData} from '../vega.schema';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {Model} from './model';
@@ -10,7 +12,7 @@ import {RepeaterValue} from './repeater';
 
 export abstract class BaseConcatModel extends Model {
   constructor(
-    spec: BaseSpec,
+    spec: NormalizedConcatSpec | NormalizedRepeatSpec,
     parent: Model,
     parentGivenName: string,
     config: Config,
@@ -53,18 +55,18 @@ export abstract class BaseConcatModel extends Model {
     // TODO(#2415): support shared axes
   }
 
-  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
+  public assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[] {
     return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
   }
 
-  public assembleSelectionSignals(): VgSignal[] {
+  public assembleSelectionSignals(): NewSignal[] {
     this.children.forEach(child => child.assembleSelectionSignals());
     return [];
   }
 
-  public assembleLayoutSignals(): VgSignal[] {
+  public assembleLayoutSignals(): NewSignal[] {
     return this.children.reduce((signals, child) => {
-      return signals.concat(child.assembleLayoutSignals());
+      return [...signals, ...child.assembleLayoutSignals()];
     }, assembleLayoutSignals(this));
   }
 
@@ -77,19 +79,14 @@ export abstract class BaseConcatModel extends Model {
     return this.children.map(child => {
       const title = child.assembleTitle();
       const style = child.assembleGroupStyle();
-      const layoutSizeEncodeEntry = child.assembleLayoutSize();
+      const encodeEntry = child.assembleGroupEncodeEntry(false);
+
       return {
         type: 'group',
         name: child.getName('group'),
         ...(title ? {title} : {}),
         ...(style ? {style} : {}),
-        ...(layoutSizeEncodeEntry
-          ? {
-              encode: {
-                update: layoutSizeEncodeEntry
-              }
-            }
-          : {}),
+        ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
         ...child.assembleGroup()
       };
     });

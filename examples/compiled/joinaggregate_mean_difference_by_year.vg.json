@@ -1,0 +1,148 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Bar graph showing the best films for the year they were produced, where best is defined by at least 2.5 points above average for that year. The red point shows the average rating for a film in that year, and the bar is the rating that the film recieved.",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/movies.json",
+      "format": {"type": "json", "parse": {"Release_Date": "date:'%d-%b-%y'"}},
+      "transform": [
+        {"type": "filter", "expr": "datum.IMDB_Rating != null"},
+        {
+          "type": "formula",
+          "as": "year",
+          "expr": "datetime(year(datum[\"Release_Date\"]), 0, 1, 0, 0, 0, 0)"
+        },
+        {
+          "type": "joinaggregate",
+          "as": ["AverageYearRating"],
+          "ops": ["mean"],
+          "fields": ["IMDB_Rating"],
+          "groupby": ["year"]
+        },
+        {
+          "type": "filter",
+          "expr": "(datum.IMDB_Rating - datum.AverageYearRating) > 2.5"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 20},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rect",
+      "clip": true,
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": [
+            {
+              "test": "datum[\"IMDB_Rating\"] === null || isNaN(datum[\"IMDB_Rating\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
+          "tooltip": {
+            "signal": "{\"IMDB Rating\": format(datum[\"IMDB_Rating\"], \"\"), \"Title\": ''+datum[\"Title\"]}"
+          },
+          "x": {"scale": "x", "field": "IMDB_Rating"},
+          "x2": {"scale": "x", "value": 0},
+          "y": {"scale": "y", "field": "Title"},
+          "height": {"scale": "y", "band": true}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rect",
+      "style": ["tick"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": [
+            {
+              "test": "datum[\"AverageYearRating\"] === null || isNaN(datum[\"AverageYearRating\"])",
+              "value": null
+            },
+            {"value": "red"}
+          ],
+          "tooltip": {
+            "signal": "{\"AverageYearRating\": format(datum[\"AverageYearRating\"], \"\"), \"Title\": ''+datum[\"Title\"]}"
+          },
+          "xc": {"scale": "x", "field": "AverageYearRating"},
+          "yc": {"scale": "y", "field": "Title", "band": 0.5},
+          "height": {"value": 15},
+          "width": {"value": 1}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["IMDB_Rating", "AverageYearRating"]
+      },
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "Title", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "IMDB Rating",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Title",
+      "labelOverlap": true,
+      "zindex": 1
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
+}

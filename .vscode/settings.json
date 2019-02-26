@@ -1,21 +1,21 @@
 // Place your settings in this file to overwrite default and user settings.
 {
   "editor.tabSize": 2,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.tslint": true
+  },
   "files.exclude": {
     "coverage/**/*": true,
-    "_site/**/*": true,
+    "_site/**/*": true
   },
   "search.exclude": {
     "build": true
   },
   "files.trimTrailingWhitespace": true,
-  "tslint.autoFixOnSave": true,
   "tsimporter.filesToExclude": ["build/**"],
   "tsimporter.spaceBetweenBraces": false,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
-  "[typescript]": {
-    "editor.formatOnSave": true
-  },
+  "editor.formatOnSave": true,
   "typescript.referencesCodeLens.enabled": true
 }

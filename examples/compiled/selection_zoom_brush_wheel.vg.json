@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -140,13 +140,16 @@
             {"signal": "brush_Horsepower"},
             {"signal": "brush_Miles_per_Gallon"}
           ],
-          "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Miles_per_Gallon]} : null"
+          "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
         }
       ]
     },
     {
       "name": "brush_tuple_fields",
-      "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
+      "value": [
+        {"field": "Horsepower", "channel": "x", "type": "R"},
+        {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+      ]
     },
     {
       "name": "brush_translate_anchor",
@@ -219,12 +222,7 @@
     },
     {
       "name": "brush_modify",
-      "on": [
-        {
-          "events": {"signal": "brush_tuple"},
-          "update": "modify(\"brush_store\", brush_tuple, true)"
-        }
-      ]
+      "update": "modify(\"brush_store\", brush_tuple, true)"
     }
   ],
   "marks": [
@@ -288,7 +286,7 @@
             {"value": "grey"}
           ],
           "tooltip": {
-            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
+            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": format(datum[\"Cylinders\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
@@ -364,7 +362,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     },
     {
       "name": "size",
@@ -424,6 +423,7 @@
   "legends": [
     {
       "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Origin",
       "encode": {
         "symbols": {
@@ -433,14 +433,15 @@
     },
     {
       "size": "size",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Cylinders",
       "encode": {
         "symbols": {
           "update": {
             "fill": {"value": "grey"},
             "shape": {"value": "circle"},
-            "stroke": {"value": "transparent"},
-            "opacity": {"value": 0.7}
+            "opacity": {"value": 0.7},
+            "stroke": {"value": "transparent"}
           }
         }
       }

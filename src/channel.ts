@@ -3,25 +3,24 @@
  * such as 'x', 'y', 'color'.
  */
 
-import {isBinned} from './bin';
 import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
-import {FacetMapping} from './facet';
-import {isFieldDef} from './fielddef';
-import {CIRCLE, Mark, POINT, SQUARE, TICK} from './mark';
-import {contains, Flag, flagKeys} from './util';
+import {Mark} from './mark';
+import {EncodingFacetMapping, EncodingFacetMapping as ExtendedFacetMapping} from './spec/facet';
+import {Flag, flagKeys} from './util';
 
 export namespace Channel {
   // Facet
   export const ROW: 'row' = 'row';
   export const COLUMN: 'column' = 'column';
 
+  export const FACET: 'facet' = 'facet';
+
   // Position
   export const X: 'x' = 'x';
   export const Y: 'y' = 'y';
   export const X2: 'x2' = 'x2';
   export const Y2: 'y2' = 'y2';
-
   // Geo Position
   export const LATITUDE: 'latitude' = 'latitude';
   export const LONGITUDE: 'longitude' = 'longitude';
@@ -54,7 +53,7 @@ export namespace Channel {
   export const HREF: 'href' = 'href';
 }
 
-export type Channel = keyof Encoding<any> | keyof FacetMapping<any>;
+export type Channel = keyof Encoding<any> | keyof ExtendedFacetMapping<any>;
 
 export const X = Channel.X;
 export const Y = Channel.Y;
@@ -65,6 +64,8 @@ export const LATITUDE = Channel.LATITUDE;
 export const LATITUDE2 = Channel.LATITUDE2;
 export const LONGITUDE = Channel.LONGITUDE;
 export const LONGITUDE2 = Channel.LONGITUDE2;
+
+export const FACET = Channel.FACET;
 
 export const ROW = Channel.ROW;
 export const COLUMN = Channel.COLUMN;
@@ -137,10 +138,15 @@ export function isColorChannel(channel: Channel): channel is ColorChannel {
   return channel === 'color' || channel === 'fill' || channel === 'stroke';
 }
 
-const FACET_CHANNEL_INDEX: Flag<keyof FacetMapping<any>> = {
+export type FacetChannel = keyof EncodingFacetMapping<any>;
+
+const FACET_CHANNEL_INDEX: Flag<keyof EncodingFacetMapping<any>> = {
   row: 1,
-  column: 1
+  column: 1,
+  facet: 1
 };
+
+export const FACET_CHANNELS = flagKeys(FACET_CHANNEL_INDEX);
 
 const CHANNEL_INDEX = {
   ...UNIT_CHANNEL_INDEX,
@@ -164,7 +170,8 @@ export const SINGLE_DEF_CHANNELS: SingleDefChannel[] = flagKeys(SINGLE_DEF_CHANN
 // Using the following line leads to TypeError: Cannot read property 'elementTypes' of undefined
 // when running the schema generator
 // export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
-export type SingleDefChannel =
+
+export type SingleDefUnitChannel =
   | 'x'
   | 'y'
   | 'x2'
@@ -173,8 +180,6 @@ export type SingleDefChannel =
   | 'latitude'
   | 'longitude2'
   | 'latitude2'
-  | 'row'
-  | 'column'
   | 'color'
   | 'fill'
   | 'stroke'
@@ -189,8 +194,29 @@ export type SingleDefChannel =
   | 'href'
   | 'key';
 
+export type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column' | 'facet';
+
 export function isChannel(str: string): str is Channel {
   return !!CHANNEL_INDEX[str];
+}
+
+export function isSecondaryRangeChannel(c: Channel): c is 'x2' | 'y2' | 'latitude2' | 'longitude2' {
+  const main = getMainRangeChannel(c);
+  return main !== c;
+}
+
+export function getMainRangeChannel(channel: Channel): Channel {
+  switch (channel) {
+    case 'x2':
+      return 'x';
+    case 'y2':
+      return 'y';
+    case 'latitude2':
+      return 'latitude';
+    case 'longitude2':
+      return 'longitude';
+  }
+  return channel;
 }
 
 // CHANNELS without COLUMN, ROW
@@ -239,6 +265,27 @@ export type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
 export function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel {
   return !!NONPOSITION_CHANNEL_INDEX[channel];
 }
+
+/**
+ * @returns whether Vega supports legends for a particular channel
+ */
+export function supportLegend(channel: NonPositionScaleChannel) {
+  switch (channel) {
+    case COLOR:
+    case FILL:
+    case STROKE:
+    case SIZE:
+    case SHAPE:
+    case OPACITY:
+      return true;
+
+    case FILLOPACITY:
+    case STROKEOPACITY:
+    case STROKEWIDTH:
+      return false;
+  }
+}
+
 // Declare SCALE_CHANNEL_INDEX
 const SCALE_CHANNEL_INDEX = {
   ...POSITION_SCALE_CHANNEL_INDEX,
@@ -253,7 +300,7 @@ export function isScaleChannel(channel: Channel): channel is ScaleChannel {
   return !!SCALE_CHANNEL_INDEX[channel];
 }
 
-export type SupportedMark = {[mark in Mark]?: boolean};
+export type SupportedMark = {[mark in Mark]?: 'always' | 'binned'};
 
 /**
  * Return whether a channel supports a particular mark type.
@@ -261,27 +308,16 @@ export type SupportedMark = {[mark in Mark]?: boolean};
  * @param mark the mark type
  * @return whether the mark supports the channel
  */
-export function supportMark(encoding: Encoding<string>, channel: Channel, mark: Mark) {
-  if (contains([CIRCLE, POINT, SQUARE, TICK], mark) && contains([X2, Y2], channel)) {
-    const primaryFieldDef = encoding[channel === X2 ? X : Y];
-    // circle, point, square and tick only support x2/y2 when their corresponding x/y fieldDef
-    // has "binned" data and thus need x2/y2 to specify the bin-end field.
-    if (isFieldDef(primaryFieldDef) && isFieldDef(encoding[channel]) && isBinned(primaryFieldDef.bin)) {
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    return mark in getSupportedMark(channel);
-  }
+export function supportMark(channel: Channel, mark: Mark) {
+  return getSupportedMark(channel)[mark];
 }
 
 /**
  * Return a dictionary showing whether a channel supports mark type.
  * @param channel
- * @return A dictionary mapping mark types to boolean values.
+ * @return A dictionary mapping mark types to 'always', 'binned', or undefined
  */
-export function getSupportedMark(channel: Channel): SupportedMark {
+function getSupportedMark(channel: Channel): SupportedMark {
   switch (channel) {
     case COLOR:
     case FILL:
@@ -296,22 +332,24 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case FILLOPACITY:
     case STROKEOPACITY:
     case STROKEWIDTH:
+
+    case FACET:
     case ROW:
     case COLUMN:
       return {
         // all marks
-        point: true,
-        tick: true,
-        rule: true,
-        circle: true,
-        square: true,
-        bar: true,
-        rect: true,
-        line: true,
-        trail: true,
-        area: true,
-        text: true,
-        geoshape: true
+        point: 'always',
+        tick: 'always',
+        rule: 'always',
+        circle: 'always',
+        square: 'always',
+        bar: 'always',
+        rect: 'always',
+        line: 'always',
+        trail: 'always',
+        area: 'always',
+        text: 'always',
+        geoshape: 'always'
       };
     case X:
     case Y:
@@ -319,44 +357,48 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case LONGITUDE:
       return {
         // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
-        point: true,
-        tick: true,
-        rule: true,
-        circle: true,
-        square: true,
-        bar: true,
-        rect: true,
-        line: true,
-        trail: true,
-        area: true,
-        text: true
+        point: 'always',
+        tick: 'always',
+        rule: 'always',
+        circle: 'always',
+        square: 'always',
+        bar: 'always',
+        rect: 'always',
+        line: 'always',
+        trail: 'always',
+        area: 'always',
+        text: 'always'
       };
     case X2:
     case Y2:
     case LATITUDE2:
     case LONGITUDE2:
       return {
-        rule: true,
-        bar: true,
-        rect: true,
-        area: true
+        rule: 'always',
+        bar: 'always',
+        rect: 'always',
+        area: 'always',
+        circle: 'binned',
+        point: 'binned',
+        square: 'binned',
+        tick: 'binned'
       };
     case SIZE:
       return {
-        point: true,
-        tick: true,
-        rule: true,
-        circle: true,
-        square: true,
-        bar: true,
-        text: true,
-        line: true,
-        trail: true
+        point: 'always',
+        tick: 'always',
+        rule: 'always',
+        circle: 'always',
+        square: 'always',
+        bar: 'always',
+        text: 'always',
+        line: 'always',
+        trail: 'always'
       };
     case SHAPE:
-      return {point: true, geoshape: true};
+      return {point: 'always', geoshape: 'always'};
     case TEXT:
-      return {text: true};
+      return {text: 'always'};
   }
 }
 
@@ -372,8 +414,9 @@ export function rangeType(channel: Channel): RangeType {
     // X2 and Y2 use X and Y scales, so they similarly have continuous range.
     case X2:
     case Y2:
-      return 'continuous';
+      return undefined;
 
+    case FACET:
     case ROW:
     case COLUMN:
     case SHAPE:

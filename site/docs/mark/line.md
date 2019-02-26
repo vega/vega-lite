@@ -5,8 +5,7 @@ title: Line
 permalink: /docs/line.html
 ---
 
-{: .suppress-error}
-```json
+```js
 {
   "data": ... ,
   "mark": "line",
@@ -17,19 +16,21 @@ permalink: /docs/line.html
 
 The `line` mark represents the data points stored in a field with a line connecting all of these points. Line marks are commonly used to depict trajectories or change over time. Unlike most other marks that represent one data element per mark, one line mark represents multiple data element as a single line, akin to [`area`](area.html) and [`trail`](trail.html).
 
-__Note:__ For line segments that connect (x,y) positions to (x2,y2) positions, please use [`rule`](rule.html) marks.  For continuous lines with varying size, please use [`trail`](trail.html) marks.
+**Note:** For line segments that connect (x,y) positions to (x2,y2) positions, please use [`rule`](rule.html) marks. For continuous lines with varying size, please use [`trail`](trail.html) marks.
 
 ## Documentation Overview
+
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 
 {:#properties}
+
 ## Line Mark Properties
 
-{: .suppress-error}
-```json
+```js
 // Single View Specification
 {
   ...
@@ -45,7 +46,6 @@ __Note:__ For line segments that connect (x,y) positions to (x2,y2) positions, p
 An line mark definition can contain any [standard mark properties](mark.html#mark-def) and the following line interpolation and point overlay properties:
 
 {% include table.html props="orient,interpolate,tension,point" source="MarkDef" %}
-
 
 ## Examples
 
@@ -64,6 +64,7 @@ Adding a field to a [mark property channel](encoding.html#mark-prop) such as `co
 <span class="vl-example" data-name="line_color"></span>
 
 {:#line-detail}
+
 ### Multi-series Line Chart with the Detail Channel
 
 To group lines by a field without mapping the field to any visual properties, we can map the field to the [`detail`](encoding.html#detail) channel to create a multi-series line chart with the same color.
@@ -74,10 +75,9 @@ The same method can be used to group lines for a ranged dot plot.
 
 <span class="vl-example" data-name="layer_ranged_dot"></span>
 
-
 ### Line Chart with Point Markers
 
-By setting the `point` property of the mark definition to `true` or an object defining a property of the overlaying point marks, we can overlay point markers on top of line. Here we set the point color to `"red"` and set the line color to `"green"`.
+By setting the `point` property of the mark definition to `true` or an object defining a property of the overlaying point marks, we can overlay point markers on top of line.
 
 <span class="vl-example" data-name="line_overlay"></span>
 
@@ -86,6 +86,10 @@ This is equilvalent to adding another layer of filled point marks.
 <span class="vl-example" data-name="normalized/line_overlay_normalized"></span>
 
 Note that the overlay point marks have `opacity` = 1 by default (instead of semi-transparent like normal point marks).
+
+Here we create stroked points by setting their `\"filled\"` to `false` and their `fill` to `\"white\"`.
+
+<span class="vl-example" data-name="line_overlay_stroked"></span>
 
 ### Line Chart with Invalid Values
 
@@ -106,17 +110,18 @@ or overlay it with marker points:
 <span class="vl-example" data-name="line_skip_invalid_mid_overlay"></span>
 
 {:#connected-scatter-plot}
+
 ### Connected Scatter Plot (Line Chart with Custom Path)
 
 As shown in previous example, the line's path (order of points in the line) is determined by data values on the temporal/ordinal field by default. However, a field can be mapped to the [`order`](encoding.html#order) channel for determining a custom path.
 
-For example, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `order` channel to sort the points in the line by time field (`year`).  In this example, we also use the `point` property to overlay point marks over the line marks to highlight each data point.
+For example, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `order` channel to sort the points in the line by time field (`year`). In this example, we also use the `point` property to overlay point marks over the line marks to highlight each data point.
 
 <span class="vl-example" data-name="connected_scatterplot"></span>
 
 ### Line interpolation
 
-The `interpolate` property of a [mark definition](mark.html#mark-def) can be used to change line interpolation method.  For example, we can set `interpolate` to `"monotone"`.
+The `interpolate` property of a [mark definition](mark.html#mark-def) can be used to change line interpolation method. For example, we can set `interpolate` to `"monotone"`.
 
 <span class="vl-example" data-name="line_monotone"></span>
 
@@ -132,13 +137,11 @@ By mapping geographic coordinate data to `longitude` and `latitude` channels of 
 
 <span class="vl-example" data-name="geo_line"></span>
 
-
 {:#config}
+
 ## Line Config
 
-
-{: .suppress-error}
-```json
+```js
 // Top-level View Specification
 {
   ...
@@ -149,6 +152,6 @@ By mapping geographic coordinate data to `longitude` and `latitude` channels of 
 }
 ```
 
-The `line` property of the top-level [`config`](config.html) object sets the default properties for all line marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
+The `line` property of the top-level [`config`](config.html) object sets the default properties for all line marks. If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
 The line config can contain any [line mark properties](#properties) (except `type`, `style`, and `clip`).

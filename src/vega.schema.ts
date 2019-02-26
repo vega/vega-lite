@@ -1,16 +1,19 @@
 import {
   AggregateOp,
   Align,
+  Compare as VgCompare,
   Field as VgField,
   FlattenTransform as VgFlattenTransform,
   FoldTransform as VgFoldTransform,
-  FontStyle,
-  FontWeight,
+  FontStyle as VgFontStyle,
+  FontWeight as VgFontWeight,
+  LayoutAlign,
+  ProjectionType,
   SampleTransform as VgSampleTransform,
   SignalRef,
-  SortField,
-  TextBaseline,
-  UnionSortField
+  SortField as VgSortField,
+  TextBaseline as VgTextBaseline,
+  UnionSortField as VgUnionSortField
 } from 'vega';
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
@@ -19,7 +22,7 @@ import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
-export {SignalRef as VgSignalRef, SortField as VgSortField, UnionSortField as VgUnionSortField};
+export {VgSortField, VgUnionSortField, VgCompare, LayoutAlign, ProjectionType};
 
 export type Color = string;
 
@@ -41,14 +44,14 @@ export interface VgData {
 export interface VgDataRef {
   data: string;
   field: VgField;
-  sort?: SortField;
+  sort?: VgSortField;
 }
 
 export function isSignalRef(o: any): o is SignalRef {
   return !!o['signal'];
 }
 
-export type VgEventStream = any;
+export type EventStream = any;
 
 // TODO: add type of value (Make it VgValueRef<T> {value?:T ...})
 export interface VgValueRef {
@@ -70,49 +73,41 @@ export interface VgValueRef {
 // TODO: add vg prefix
 export interface DataRefUnionDomain {
   fields: (any[] | VgDataRef | SignalRef)[];
-  sort?: UnionSortField;
+  sort?: VgUnionSortField;
 }
 
 export interface VgFieldRefUnionDomain {
   data: string;
   fields: VgField[];
-  sort?: UnionSortField;
+  sort?: VgUnionSortField;
 }
 
-export interface VgScheme {
+export interface SchemeConfig {
   scheme: string;
   extent?: number[];
   count?: number;
 }
-export type VgRange = string | VgDataRef | (number | string | VgDataRef | SignalRef)[] | VgScheme | VgRangeStep;
 
-export interface VgRangeStep {
-  step: number | SignalRef;
-}
+export type VgRange =
+  | string
+  | VgDataRef
+  | (number | string | VgDataRef | SignalRef)[]
+  | SchemeConfig
+  | VgRangeStep
+  | SignalRef;
+
 export function isVgRangeStep(range: VgRange): range is VgRangeStep {
   return !!range['step'];
 }
 
+export interface VgRangeStep {
+  step: number | SignalRef;
+}
 // Domains that are not a union of domains
 export type VgNonUnionDomain = any[] | VgDataRef | SignalRef;
 export type VgDomain = VgNonUnionDomain | DataRefUnionDomain | VgFieldRefUnionDomain;
 
 export type VgMarkGroup = any;
-
-export type VgProjectionType =
-  | 'albers'
-  | 'albersUsa'
-  | 'azimuthalEqualArea'
-  | 'azimuthalEquidistant'
-  | 'conicConformal'
-  | 'conicEqualArea'
-  | 'conicEquidistant'
-  | 'equirectangular'
-  | 'gnomonic'
-  | 'mercator'
-  | 'orthographic'
-  | 'stereographic'
-  | 'transverseMercator';
 
 export interface VgProjection {
   /*
@@ -122,7 +117,7 @@ export interface VgProjection {
   /*
    * The type of the projection.
    */
-  type?: VgProjectionType;
+  type?: ProjectionType;
   /*
    * The clip angle of the projection.
    */
@@ -176,16 +171,18 @@ export interface VgProjection {
   tilt?: number;
 }
 
+// TODO: Eventually migrate to Vega-typings and make Vega typings take generic SR that can allow us to replace SignalRef with SignalComponent
 export interface VgScale {
   name: string;
   type: ScaleType;
-  domain: VgDomain;
+  domain?: VgDomain;
   domainRaw?: SignalRef;
+  bins?: number[] | SignalRef;
   range: VgRange;
-
   clamp?: boolean;
   base?: number;
   exponent?: number;
+  constant?: number;
   interpolate?: ScaleInterpolate | ScaleInterpolateParams;
   nice?: boolean | number | NiceTime | {interval: string; step: number};
   padding?: number;
@@ -202,8 +199,6 @@ export interface ScaleInterpolateParams {
   type: 'rgb' | 'cubehelix' | 'cubehelix-long';
   gamma?: number;
 }
-
-export type VgLayoutAlign = 'none' | 'each' | 'all';
 
 export interface RowCol<T> {
   row?: T;
@@ -227,7 +222,7 @@ export interface VgLayout {
       };
   bounds?: 'full' | 'flush';
   columns?: number | {signal: string};
-  align?: VgLayoutAlign | RowCol<VgLayoutAlign>;
+  align?: LayoutAlign | RowCol<LayoutAlign>;
 }
 
 export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain {
@@ -249,33 +244,6 @@ export function isDataRefDomain(domain: VgDomain): domain is VgDataRef {
     return 'field' in domain && 'data' in domain;
   }
   return false;
-}
-
-export function isSignalRefDomain(domain: VgDomain): domain is SignalRef {
-  if (!isArray(domain)) {
-    return 'signal' in domain;
-  }
-  return false;
-}
-
-export interface VgEventHandler {
-  events: string[] | SignalRef;
-  update?: string;
-  encode?: string;
-  force?: boolean;
-  between?: any[];
-}
-
-export interface VgSignal {
-  name: string;
-  bind?: string;
-  description?: string;
-  on?: VgEventHandler[];
-  update?: string;
-  react?: boolean;
-  value?: string | number | boolean | {} | SignalRef;
-  // only for nested signals
-  push?: string;
 }
 
 export type VgEncodeChannel =
@@ -378,7 +346,7 @@ export interface VgAggregateTransform {
 
 export interface VgCollectTransform {
   type: 'collect';
-  sort: VgSort;
+  sort: VgCompare;
 }
 
 export interface VgLookupTransform {
@@ -396,7 +364,7 @@ export interface VgStackTransform {
   offset?: StackOffset;
   groupby: string[];
   field: string;
-  sort: VgSort;
+  sort: VgCompare;
   as: string[];
 }
 
@@ -420,6 +388,7 @@ export type VgTransform =
   | VgGeoPointTransform
   | VgGeoJSONTransform
   | VgWindowTransform
+  | VgJoinAggregateTransform
   | VgFoldTransform
   | VgSampleTransform;
 
@@ -447,16 +416,6 @@ export interface VgGeoJSONTransform {
 export type VgPostEncodingTransform = VgGeoShapeTransform;
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
-
-export type VgSort =
-  | {
-      field: string;
-      order?: VgComparatorOrder;
-    }
-  | {
-      field: string[];
-      order?: (VgComparatorOrder)[];
-    };
 
 export type ImputeMethod = 'value' | 'median' | 'max' | 'min' | 'mean';
 
@@ -526,7 +485,7 @@ export type StrokeCap = 'butt' | 'round' | 'square';
 export type StrokeJoin = 'miter' | 'round' | 'bevel';
 export type Dir = 'ltr' | 'rtl';
 
-export interface VgMarkConfig {
+export interface BaseMarkConfig {
   /**
    * Default Fill Color.  This has higher precedence than `config.color`
    *
@@ -688,7 +647,7 @@ export interface VgMarkConfig {
    * __Default value:__ `"middle"`
    *
    */
-  baseline?: TextBaseline;
+  baseline?: VgTextBaseline;
 
   /**
    * The direction of the text. One of `"ltr"` (left-to-right) or `"rtl"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.
@@ -748,12 +707,12 @@ export interface VgMarkConfig {
   /**
    * The font style (e.g., `"italic"`).
    */
-  fontStyle?: FontStyle;
+  fontStyle?: VgFontStyle;
   /**
    * The font weight.
    * This can be either a string (e.g `"bold"`, `"normal"`) or a number (`100`, `200`, `300`, ..., `900` where `"normal"` = `400` and `"bold"` = `700`).
    */
-  fontWeight?: FontWeight;
+  fontWeight?: VgFontWeight;
 
   /**
    * Placeholder text if the `text` channel is not specified
@@ -787,7 +746,7 @@ export interface VgMarkConfig {
   cornerRadius?: number;
 }
 
-const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
+const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
   opacity: 1,
   fill: 1,
   fillOpacity: 1,
@@ -853,4 +812,12 @@ export interface VgWindowTransform {
   ignorePeers?: boolean;
   groupby?: string[];
   sort?: VgComparator;
+}
+
+export interface VgJoinAggregateTransform {
+  type: 'joinaggregate';
+  as?: string[];
+  ops?: AggregateOp[];
+  fields?: string[];
+  groupby?: string[];
 }

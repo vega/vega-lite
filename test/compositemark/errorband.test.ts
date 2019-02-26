@@ -1,9 +1,8 @@
 /* tslint:disable:quotemark */
-import {assert} from 'chai';
-
 import * as log from '../../src/log';
 import {isMarkDef} from '../../src/mark';
-import {isLayerSpec, isUnitSpec, normalize} from '../../src/spec';
+import {normalize} from '../../src/normalize/index';
+import {isLayerSpec, isUnitSpec} from '../../src/spec';
 import {every, some} from '../../src/util';
 import {defaultConfig} from '.././../src/config';
 
@@ -12,20 +11,9 @@ describe('normalizeErrorBand', () => {
     expect(
       normalize(
         {
-          data: {
-            url: 'data/population.json'
-          },
+          data: {url: 'data/population.json'},
           mark: 'errorband',
-          encoding: {
-            x: {
-              field: 'age',
-              type: 'ordinal'
-            },
-            y: {
-              field: 'people',
-              type: 'quantitative'
-            }
-          }
+          encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative'}}
         },
         defaultConfig
       )
@@ -78,7 +66,13 @@ describe('normalizeErrorBand', () => {
             x: {
               field: 'age',
               type: 'ordinal'
-            }
+            },
+            tooltip: [
+              {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
+              {field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative'},
+              {field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative'},
+              {field: 'age', type: 'ordinal'}
+            ]
           }
         }
       ]
@@ -97,18 +91,18 @@ describe('normalizeErrorBand', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      assert.isTrue(
+      expect(
         some(layer, unitSpec => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rect';
         })
-      );
-      assert.isTrue(
+      ).toBe(true);
+      expect(
         some(layer, unitSpec => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rule';
         })
-      );
+      ).toBe(true);
     } else {
-      assert.fail(!layer, false, 'layer should be a part of the spec');
+      expect(false).toBe(true);
     }
   });
 
@@ -127,18 +121,18 @@ describe('normalizeErrorBand', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      assert.isTrue(
+      expect(
         some(layer, unitSpec => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'area';
         })
-      );
-      assert.isTrue(
+      ).toBe(true);
+      expect(
         some(layer, unitSpec => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'line';
         })
-      );
+      ).toBe(true);
     } else {
-      assert.fail(!layer, false, 'layer should be a part of the spec');
+      expect(false).toBe(true);
     }
   });
 
@@ -157,13 +151,13 @@ describe('normalizeErrorBand', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      assert.isTrue(
+      expect(
         every(layer, unitSpec => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.interpolate === 'monotone';
         })
-      );
+      ).toBe(true);
     } else {
-      assert.fail(!layer, false, 'layer should be a part of the spec');
+      expect(false).toBe(true);
     }
   });
 
@@ -181,13 +175,13 @@ describe('normalizeErrorBand', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      assert.isTrue(
+      expect(
         every(layer, unitSpec => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && !unitSpec.mark.interpolate;
         })
-      );
+      ).toBe(true);
     } else {
-      assert.fail(!layer, false, 'layer should be a part of the spec');
+      expect(false).toBe(true);
     }
   });
 
@@ -205,7 +199,7 @@ describe('normalizeErrorBand', () => {
         defaultConfig
       );
 
-      assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('interpolate'));
+      expect(localLogger.warns[0]).toEqual(log.message.errorBand1DNotSupport('interpolate'));
     })
   );
 
@@ -223,7 +217,7 @@ describe('normalizeErrorBand', () => {
         defaultConfig
       );
 
-      assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('tension'));
+      expect(localLogger.warns[0]).toEqual(log.message.errorBand1DNotSupport('tension'));
     })
   );
 });

@@ -1,27 +1,26 @@
-import {assert} from 'chai';
 import {NameMap} from '../../src/compile/model';
-import {parseFacetModel, parseFacetModelWithScale} from '../util';
+import {parseFacetModel, parseFacetModelWithScale, parseModel} from '../util';
 
 describe('Model', () => {
   describe('NameMap', () => {
     it('should rename correctly', () => {
       const map = new NameMap();
-      assert.equal(map.get('a'), 'a');
+      expect(map.get('a')).toBe('a');
 
       map.rename('a', 'b');
-      assert.equal(map.get('a'), 'b');
-      assert.equal(map.get('b'), 'b');
+      expect(map.get('a')).toBe('b');
+      expect(map.get('b')).toBe('b');
 
       map.rename('b', 'c');
-      assert.equal(map.get('a'), 'c');
-      assert.equal(map.get('b'), 'c');
-      assert.equal(map.get('c'), 'c');
+      expect(map.get('a')).toBe('c');
+      expect(map.get('b')).toBe('c');
+      expect(map.get('c')).toBe('c');
 
       map.rename('z', 'a');
-      assert.equal(map.get('a'), 'c');
-      assert.equal(map.get('b'), 'c');
-      assert.equal(map.get('c'), 'c');
-      assert.equal(map.get('z'), 'c');
+      expect(map.get('a')).toBe('c');
+      expect(map.get('b')).toBe('c');
+      expect(map.get('c')).toBe('c');
+      expect(map.get('z')).toBe('c');
     });
   });
 
@@ -36,7 +35,7 @@ describe('Model', () => {
           }
         }
       });
-      assert(model.hasDescendantWithFieldOnChannel('x'));
+      expect(model.hasDescendantWithFieldOnChannel('x')).toBeTruthy();
     });
 
     it('should return true if a descendant plot has x', () => {
@@ -59,7 +58,7 @@ describe('Model', () => {
           ]
         }
       });
-      assert(model.hasDescendantWithFieldOnChannel('x'));
+      expect(model.hasDescendantWithFieldOnChannel('x')).toBeTruthy();
     });
 
     it('should return false if no descendant plot has a field on x', () => {
@@ -72,7 +71,7 @@ describe('Model', () => {
           }
         }
       });
-      assert(!model.hasDescendantWithFieldOnChannel('x'));
+      expect(!model.hasDescendantWithFieldOnChannel('x')).toBeTruthy();
     });
 
     it('should return false if no descendant plot has a field on x', () => {
@@ -95,7 +94,28 @@ describe('Model', () => {
           ]
         }
       });
-      assert(!model.hasDescendantWithFieldOnChannel('x'));
+      expect(!model.hasDescendantWithFieldOnChannel('x')).toBeTruthy();
+    });
+  });
+
+  describe('assembleGroupStyle', () => {
+    it('returns cell by default', () => {
+      const model = parseModel({
+        data: {values: []},
+        mark: 'point'
+      });
+
+      expect(model.assembleGroupStyle()).toEqual('cell');
+    });
+
+    it('returns the specified style', () => {
+      const model = parseModel({
+        data: {values: []},
+        mark: 'point',
+        view: {style: 'notcell'}
+      });
+
+      expect(model.assembleGroupStyle()).toEqual('notcell');
     });
   });
 
@@ -122,8 +142,23 @@ describe('Model', () => {
         }
       });
 
-      assert.deepEqual(model.child.getSizeSignalRef('width'), {
+      expect(model.child.getSizeSignalRef('width')).toEqual({
         signal: `bandspace(datum[\"distinct_b\"], 1, 0.345) * child_x_step`
+      });
+    });
+  });
+
+  describe('assembleGroupEncodeEntry', () => {
+    it('returns view background if specified', () => {
+      const model = parseModel({
+        data: {values: []},
+        mark: 'point',
+        view: {fill: 'red', stroke: 'blue'}
+      });
+
+      expect(model.assembleGroupEncodeEntry(true)).toEqual({
+        fill: {value: 'red'},
+        stroke: {value: 'blue'}
       });
     });
   });

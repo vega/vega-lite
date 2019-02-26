@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
-  "width": 21,
-  "height": 21,
+  "width": 20,
+  "height": 20,
   "style": "cell",
   "data": [{"name": "source_0", "values": [{"a": 2}]}],
   "marks": [

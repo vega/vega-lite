@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -35,8 +35,8 @@
             "bin_maxbins_10_Acceleration_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     },
@@ -71,8 +71,8 @@
             "bin_maxbins_10_Acceleration_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     }
@@ -156,7 +156,7 @@
     },
     {
       "name": "brush_tuple_fields",
-      "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"}]"
+      "value": [{"field": "Acceleration", "channel": "x", "type": "R"}]
     },
     {
       "name": "brush_translate_anchor",
@@ -229,12 +229,7 @@
     },
     {
       "name": "brush_modify",
-      "on": [
-        {
-          "events": {"signal": "brush_tuple"},
-          "update": "modify(\"brush_store\", brush_tuple, true)"
-        }
-      ]
+      "update": "modify(\"brush_store\", brush_tuple, true)"
     }
   ],
   "marks": [
@@ -285,13 +280,13 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x2": {
             "scale": "x",
@@ -299,7 +294,7 @@
             "offset": 1
           },
           "x": {"scale": "x", "field": "bin_maxbins_10_Acceleration_end"},
-          "y": {"scale": "y", "field": "count_*"},
+          "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }
       }
@@ -313,13 +308,13 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {"value": "goldenrod"}
           ],
           "tooltip": {
-            "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x2": {
             "scale": "x",
@@ -327,7 +322,7 @@
             "offset": 1
           },
           "x": {"scale": "x", "field": "bin_maxbins_10_Acceleration_end"},
-          "y": {"scale": "y", "field": "count_*"},
+          "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }
       }
@@ -381,13 +376,16 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "bin_maxbins_10_Acceleration"},
-          {"data": "data_0", "field": "bin_maxbins_10_Acceleration_end"},
-          {"data": "data_1", "field": "bin_maxbins_10_Acceleration"},
-          {"data": "data_1", "field": "bin_maxbins_10_Acceleration_end"}
+          {
+            "signal": "[layer_0_bin_maxbins_10_Acceleration_bins.start, layer_0_bin_maxbins_10_Acceleration_bins.stop]"
+          },
+          {
+            "signal": "[layer_1_bin_maxbins_10_Acceleration_bins.start, layer_1_bin_maxbins_10_Acceleration_bins.stop]"
+          }
         ]
       },
       "range": [0, {"signal": "width"}],
+      "bins": {"signal": "layer_0_bin_maxbins_10_Acceleration_bins"},
       "zero": false
     },
     {
@@ -395,8 +393,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "count_*"},
-          {"data": "data_1", "field": "count_*"}
+          {"data": "data_0", "field": "__count"},
+          {"data": "data_1", "field": "__count"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -412,17 +410,14 @@
       "title": "Acceleration (binned)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/20)"},
-      "values": {
-        "signal": "sequence(layer_0_bin_maxbins_10_Acceleration_bins.start, layer_0_bin_maxbins_10_Acceleration_bins.stop + layer_0_bin_maxbins_10_Acceleration_bins.step, layer_0_bin_maxbins_10_Acceleration_bins.step)"
-      },
+      "tickCount": {"signal": "ceil(width/10)"},
       "zindex": 1
     },
     {
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Number of Records",
+      "title": "Count of Records",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1

@@ -9,6 +9,7 @@ import {Explicit, Split} from '../split';
  * (We exclude domain as we have a special "domains" array that allow us merge them all at once in assemble.)
  */
 // TODO: also exclude domainRaw and property implement the right scaleComponent for selection domain
+
 export type ScaleComponentProps = Omit<VgScale, 'domain'>;
 
 export class ScaleComponent extends Split<ScaleComponentProps> {

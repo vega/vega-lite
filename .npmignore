@@ -21,10 +21,9 @@ codecov.yml
 CONTRIBUTING.md
 Gemfile
 Gemfile.lock
+npm-debug.log*
+rollup.config.js
 tsconfig.json
 tslint.json
-vl.sublime-project
-wdio.conf.js
-npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

@@ -8,13 +8,14 @@ import {
   isFlatten,
   isFold,
   isImpute,
+  isJoinAggregate,
   isLookup,
   isSample,
   isStack,
   isTimeUnit,
   isWindow
 } from '../../transform';
-import {deepEqual, keys, mergeDeep} from '../../util';
+import {deepEqual, mergeDeep} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
 import {AggregateNode} from './aggregate';
@@ -31,13 +32,14 @@ import {GeoPointNode} from './geopoint';
 import {IdentifierNode} from './identifier';
 import {ImputeNode} from './impute';
 import {AncestorParse, DataComponent} from './index';
+import {JoinAggregateTransformNode} from './joinaggregate';
+import {makeJoinAggregateFromFacet} from './joinaggregatefacet';
 import {LookupNode} from './lookup';
 import {SampleTransformNode} from './sample';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
-import {makeWindowFromFacet} from './windowfacet';
 
 export function findSource(data: Data, sources: SourceNode[]) {
   for (const other of sources) {
@@ -52,8 +54,8 @@ export function findSource(data: Data, sources: SourceNode[]) {
       if (data.url === otherData.url) {
         return other;
       }
-    } else if (isNamedData(data) && isNamedData(otherData)) {
-      if (data.name === otherData.name) {
+    } else if (isNamedData(data)) {
+      if (data.name === other.dataName) {
         return other;
       }
     }
@@ -90,7 +92,7 @@ function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
 export function parseTransformArray(head: DataFlowNode, model: Model, ancestorParse: AncestorParse): DataFlowNode {
   let lookupCounter = 0;
 
-  model.transforms.forEach(t => {
+  for (const t of model.transforms) {
     let derivedType: ParseValue = undefined;
     let transformNode: DataFlowNode;
 
@@ -126,6 +128,9 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
     } else if (isWindow(t)) {
       transformNode = head = new WindowTransformNode(head, t);
       derivedType = 'number';
+    } else if (isJoinAggregate(t)) {
+      transformNode = head = new JoinAggregateTransformNode(head, t);
+      derivedType = 'number';
     } else if (isStack(t)) {
       transformNode = head = StackNode.makeFromTransform(head, t);
       derivedType = 'derived';
@@ -142,15 +147,15 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       derivedType = 'derived';
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
-      return;
+      continue;
     }
 
     if (transformNode && derivedType !== undefined) {
-      for (const field of keys(transformNode.producedFields())) {
+      for (const field of transformNode.producedFields()) {
         ancestorParse.set(field, derivedType, false);
       }
     }
-  });
+  }
 
   return head;
 }
@@ -295,10 +300,9 @@ export function parseData(model: Model): DataComponent {
     // Derive new sort index field for facet's sort array
     head = CalculateNode.parseAllForSortIndex(head, model);
 
-    // Derive new aggregate (via window) for facet's sort field
-    // TODO: use JoinAggregate once we have it
+    // Derive new aggregate for facet's sort field
     // augment data source with new fields for crossed facet
-    head = makeWindowFromFacet(head, model.facet) || head;
+    head = makeJoinAggregateFromFacet(head, model.facet) || head;
 
     facetRoot = new FacetNode(head, model, facetName, main.getSource());
     outputNodes[facetName] = facetRoot;

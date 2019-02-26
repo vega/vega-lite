@@ -1,12 +1,10 @@
 /* tslint:disable:quotemark */
-import {assert} from 'chai';
 import {AggregateOp} from 'vega';
-
 import {DETAIL, X, Y} from '../src/channel';
 import * as log from '../src/log';
 import {AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
 import {ScaleType} from '../src/scale';
-import {isStacked, NormalizedUnitSpec, TopLevel} from '../src/spec';
+import {NormalizedUnitSpec, TopLevel} from '../src/spec';
 import {stack, STACK_BY_DEFAULT_MARKS, STACKABLE_MARKS, StackOffset} from '../src/stack';
 
 describe('stack', () => {
@@ -27,8 +25,7 @@ describe('stack', () => {
             stack: stacked
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
-        assert.isFalse(isStacked(spec));
+        expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
       });
     }
   });
@@ -45,8 +42,7 @@ describe('stack', () => {
         }
       };
       const stackProps = stack(spec.mark, spec.encoding, undefined);
-      assert.equal(stackProps.fieldChannel, 'x');
-      assert.isTrue(isStacked(spec));
+      expect(stackProps.fieldChannel).toEqual('x');
     });
   });
 
@@ -62,8 +58,7 @@ describe('stack', () => {
         }
       };
       const stackProps = stack(spec.mark, spec.encoding, undefined);
-      assert.equal(stackProps.fieldChannel, 'x');
-      assert.isTrue(isStacked(spec));
+      expect(stackProps.fieldChannel).toEqual('x');
     });
   });
 
@@ -81,8 +76,7 @@ describe('stack', () => {
             stack: stacked
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
-        assert.isFalse(isStacked(spec));
+        expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
       });
     }
   });
@@ -102,8 +96,7 @@ describe('stack', () => {
             stack: stacked
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
-        assert.isFalse(isStacked(spec));
+        expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
       });
     }
   });
@@ -123,8 +116,7 @@ describe('stack', () => {
             stack: stacked
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
-        assert.isFalse(isStacked(spec));
+        expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
       });
     }
   });
@@ -147,9 +139,9 @@ describe('stack', () => {
           }
         };
         const _stack = stack(spec.mark, spec.encoding, spec.config.stack);
-        assert.isOk(_stack);
-        assert.isTrue(isStacked(spec));
-        assert.equal(_stack.stackBy[0].channel, DETAIL);
+        expect(_stack).toBeTruthy();
+
+        expect(_stack.stackBy[0].channel).toEqual(DETAIL);
       });
     }
   });
@@ -170,10 +162,30 @@ describe('stack', () => {
         };
 
         const _stack = stack(spec.mark, spec.encoding, undefined);
-        assert.isOk(_stack);
-        assert.isTrue(isStacked(spec));
-        assert.equal(_stack.stackBy[0].channel, DETAIL);
+        expect(_stack).toBeTruthy();
+
+        expect(_stack.stackBy[0].channel).toEqual(DETAIL);
       });
+    }
+  });
+
+  it('should not include tooltip in stackBy', () => {
+    const spec: TopLevel<NormalizedUnitSpec> = {
+      data: {url: 'data/barley.json'},
+      mark: 'bar',
+      encoding: {
+        x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
+        y: {field: 'variety', type: 'nominal'},
+        detail: {field: 'site', type: 'nominal'},
+        tooltip: {field: 'total_yield', type: 'nominal'}
+      }
+    };
+
+    const _stack = stack(spec.mark, spec.encoding, undefined);
+    expect(_stack).toBeTruthy();
+
+    for (const stackBy of _stack.stackBy) {
+      expect(stackBy.channel).not.toEqual('tooltip');
     }
   });
 
@@ -192,8 +204,7 @@ describe('stack', () => {
             stack: stacked
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
-        assert.isFalse(isStacked(spec));
+        expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
       });
     }
   });
@@ -213,8 +224,7 @@ describe('stack', () => {
             stack: stacked
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
-        assert.isFalse(isStacked(spec));
+        expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
       });
     }
   });
@@ -235,8 +245,7 @@ describe('stack', () => {
             stack: stacked
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
-        assert.isFalse(isStacked(spec));
+        expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
       });
     }
   });
@@ -257,8 +266,7 @@ describe('stack', () => {
             stack: stacked
           }
         };
-        assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
-        assert.isFalse(isStacked(spec));
+        expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
       });
     }
   });
@@ -282,10 +290,10 @@ describe('stack', () => {
                 stack: stacked
               }
             };
-            assert.isNotNull(stack(spec.mark, spec.encoding, spec.config.stack));
-            assert.isTrue(isStacked(spec));
+            expect(stack(spec.mark, spec.encoding, spec.config.stack)).not.toBeNull();
+
             const warns = localLogger.warns;
-            assert.equal(warns[warns.length - 1], log.message.cannotStackNonLinearScale(scaleType));
+            expect(warns[warns.length - 1]).toEqual(log.message.cannotStackNonLinearScale(scaleType));
           });
         });
       }
@@ -313,9 +321,11 @@ describe('stack', () => {
                 color: {field: 'site', type: 'nominal'}
               }
             };
-            assert.isTrue(isStacked(spec));
+
+            stack(spec.mark, spec.encoding, undefined);
+
             const warns = localLogger.warns;
-            assert.equal(warns[warns.length - 1], log.message.stackNonSummativeAggregate(aggregate));
+            expect(warns[warns.length - 1]).toEqual(log.message.stackNonSummativeAggregate(aggregate));
           });
         }
       }
@@ -335,9 +345,8 @@ describe('stack', () => {
           }
         };
         const _stack = stack(spec.mark, spec.encoding, undefined);
-        assert.equal(_stack.fieldChannel, X);
-        assert.equal(_stack.groupbyChannel, Y);
-        assert.isTrue(isStacked(spec));
+        expect(_stack.fieldChannel).toBe(X);
+        expect(_stack.groupbyChannel).toBe(Y);
       });
     });
 
@@ -352,9 +361,8 @@ describe('stack', () => {
           }
         };
         const _stack = stack(spec.mark, spec.encoding, undefined);
-        assert.equal(_stack.fieldChannel, X);
-        assert.equal(_stack.groupbyChannel, null);
-        assert.isTrue(isStacked(spec));
+        expect(_stack.fieldChannel).toBe(X);
+        expect(_stack.groupbyChannel).toBeUndefined();
       });
     });
 
@@ -370,9 +378,8 @@ describe('stack', () => {
           }
         };
         const _stack = stack(spec.mark, spec.encoding, undefined);
-        assert.equal(_stack.fieldChannel, Y);
-        assert.equal(_stack.groupbyChannel, X);
-        assert.isTrue(isStacked(spec));
+        expect(_stack.fieldChannel).toBe(Y);
+        expect(_stack.groupbyChannel).toBe(X);
       });
     });
 
@@ -387,9 +394,8 @@ describe('stack', () => {
           }
         };
         const _stack = stack(spec.mark, spec.encoding, undefined);
-        assert.equal(_stack.fieldChannel, Y);
-        assert.equal(_stack.groupbyChannel, null);
-        assert.isTrue(isStacked(spec));
+        expect(_stack.fieldChannel).toBe(Y);
+        expect(_stack.groupbyChannel).toBeUndefined();
       });
     });
   });
@@ -406,8 +412,7 @@ describe('stack', () => {
             color: {field: 'site', type: 'nominal'}
           }
         };
-        assert.equal(stack(spec.mark, spec.encoding, undefined).offset, 'zero');
-        assert.isTrue(isStacked(spec));
+        expect(stack(spec.mark, spec.encoding, undefined).offset).toBe('zero');
       });
     });
 
@@ -426,8 +431,7 @@ describe('stack', () => {
               stack: stacked
             }
           };
-          assert.equal(stack(spec.mark, spec.encoding, spec.config.stack).offset, stacked);
-          assert.equal(isStacked(spec), true);
+          expect(stack(spec.mark, spec.encoding, spec.config.stack).offset).toEqual(stacked);
         });
       }
     });

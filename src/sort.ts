@@ -1,9 +1,9 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
+import {SingleDefUnitChannel} from './channel';
 import {DateTime} from './datetime';
-import {VgComparatorOrder} from './vega.schema';
 
-export type SortOrder = VgComparatorOrder | null;
+export type SortOrder = 'ascending' | 'descending';
 
 /**
  * A sort definition for transform
@@ -15,10 +15,17 @@ export interface SortField {
   field: string;
 
   /**
-   * Whether to sort the field in ascending or descending order.
+   * Whether to sort the field in ascending or descending order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
    */
-  order?: VgComparatorOrder;
+  order?: SortOrder | null;
 }
+
+export interface SortFields {
+  field: string[];
+  order?: (SortOrder)[];
+}
+
+export const DEFAULT_SORT_OP = 'mean';
 
 /**
  * A sort definition for sorting a discrete scale in an encoding field definition.
@@ -33,25 +40,45 @@ export interface EncodingSortField<F> {
   field?: F;
   /**
    * An [aggregate operation](https://vega.github.io/vega-lite/docs/aggregate.html#ops) to perform on the field prior to sorting (e.g., `"count"`, `"mean"` and `"median"`).
-   * This property is required in cases where the sort field and the data reference field do not match.
+   * An aggregation is required when there are multiple values of the sort field for each encoded data field.
    * The input data objects will be aggregated, grouped by the encoded data field.
    *
    * For a full list of operations, please see the documentation for [aggregate](https://vega.github.io/vega-lite/docs/aggregate.html#ops).
+   *
+   * __Default value:__ `"sum"` for stacked plots. Otherwise, `"mean"`.
    */
-  op: AggregateOp;
+  op?: AggregateOp;
 
   /**
    * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
    */
-  order?: SortOrder;
+  order?: SortOrder | null;
 }
 
-export type Sort<F> = number[] | string[] | boolean[] | DateTime[] | SortOrder | EncodingSortField<F> | null;
+export interface SortByEncoding {
+  /**
+   * The [encoding channel](https://vega.github.io/vega-lite/docs/encoding.html#channels) to sort by (e.g., `"x"`, `"y"`)
+   */
+  encoding: SingleDefUnitChannel;
+
+  /**
+   * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
+   */
+  order?: SortOrder | null;
+}
+
+export type SortArray = number[] | string[] | boolean[] | DateTime[];
+
+export type Sort<F> = SortArray | SortOrder | EncodingSortField<F> | SortByEncoding | null;
+
+export function isSortByEncoding<F>(sort: Sort<F>): sort is SortByEncoding {
+  return !!sort && !!sort['encoding'];
+}
 
 export function isSortField<F>(sort: Sort<F>): sort is EncodingSortField<F> {
-  return !!sort && (sort['op'] === 'count' || !!sort['field']) && !!sort['op'];
+  return !!sort && (sort['op'] === 'count' || !!sort['field']);
 }
 
-export function isSortArray<F>(sort: Sort<F>): sort is number[] | string[] | boolean[] | DateTime[] {
+export function isSortArray<F>(sort: Sort<F>): sort is SortArray {
   return !!sort && isArray(sort);
 }

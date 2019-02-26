@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A population pyramid for the US in 2000.",
   "autosize": "pad",
   "padding": 5,
@@ -64,34 +64,30 @@
   ],
   "signals": [
     {"name": "concat_0_width", "value": 200},
-    {"name": "concat_0_y_step", "value": 21},
+    {"name": "concat_0_y_step", "value": 20},
     {
       "name": "concat_0_height",
       "update": "bandspace(domain('concat_0_y').length, 0.1, 0.05) * concat_0_y_step"
     },
     {"name": "concat_1_width", "value": 20},
-    {"name": "concat_1_y_step", "value": 21},
+    {"name": "concat_1_y_step", "value": 20},
     {
       "name": "concat_1_height",
       "update": "bandspace(domain('concat_1_y').length, 1, 0.5) * concat_1_y_step"
     },
     {"name": "concat_2_width", "value": 200},
-    {"name": "concat_2_y_step", "value": 21},
+    {"name": "concat_2_y_step", "value": 20},
     {
       "name": "concat_2_height",
       "update": "bandspace(domain('concat_2_y').length, 0.1, 0.05) * concat_2_y_step"
     }
   ],
-  "layout": {
-    "padding": {"row": 10, "column": 10},
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 10, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
       "name": "concat_0_group",
-      "title": {"text": "Female"},
+      "title": {"text": "Female", "frame": "group"},
       "style": "cell",
       "encode": {
         "update": {
@@ -115,7 +111,7 @@
                 {"scale": "color", "field": "gender"}
               ],
               "tooltip": {
-                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
+                "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
               },
               "x": {"scale": "concat_0_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_0_x", "field": "sum_people_start"},
@@ -158,7 +154,8 @@
       "encode": {
         "update": {
           "width": {"signal": "concat_1_width"},
-          "height": {"signal": "concat_1_height"}
+          "height": {"signal": "concat_1_height"},
+          "stroke": {"value": null}
         }
       },
       "marks": [
@@ -183,7 +180,7 @@
     {
       "type": "group",
       "name": "concat_2_group",
-      "title": {"text": "Male"},
+      "title": {"text": "Male", "frame": "group"},
       "style": "cell",
       "encode": {
         "update": {
@@ -207,7 +204,7 @@
                 {"scale": "color", "field": "gender"}
               ],
               "tooltip": {
-                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
+                "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
               },
               "x": {"scale": "concat_2_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_2_x", "field": "sum_people_start"},
@@ -255,7 +252,8 @@
         ],
         "sort": true
       },
-      "range": ["#e377c2", "#1f77b4"]
+      "range": ["#e377c2", "#1f77b4"],
+      "interpolate": "hcl"
     },
     {
       "name": "concat_0_x",

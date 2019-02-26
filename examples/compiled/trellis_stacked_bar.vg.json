@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "data": [
@@ -33,14 +33,14 @@
   ],
   "signals": [
     {"name": "child_width", "value": 200},
-    {"name": "y_step", "value": 21},
+    {"name": "y_step", "value": 20},
     {
       "name": "child_height",
       "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
     }
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "offset": {"columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -78,6 +78,7 @@
         "text": {"signal": "''+parent[\"year\"]"},
         "offset": 10,
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
@@ -183,12 +184,14 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "site", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     }
   ],
   "legends": [
     {
       "fill": "color",
+      "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
       "title": "site",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }

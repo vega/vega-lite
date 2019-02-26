@@ -1,11 +1,8 @@
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
-/* tslint:disable:quotemark */
-
-import {assert} from 'chai';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {ModelWithField} from '../../../src/compile/model';
 import {TimeUnitTransform} from '../../../src/transform';
 import {parseUnitModel} from '../../util';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 function assembleFromEncoding(model: ModelWithField) {
   return TimeUnitNode.makeFromEncoding(null, model).assemble();
@@ -26,7 +23,7 @@ describe('compile/data/timeunit', () => {
         }
       });
 
-      assert.deepEqual(assembleFromEncoding(model), [
+      expect(assembleFromEncoding(model)).toEqual([
         {
           type: 'formula',
           as: 'month_a',
@@ -38,7 +35,7 @@ describe('compile/data/timeunit', () => {
     it('should return a dictionary of formula transform from transform array', () => {
       const t: TimeUnitTransform = {field: 'date', as: 'month_date', timeUnit: 'month'};
 
-      assert.deepEqual(assembleFromTransform(t), [
+      expect(assembleFromTransform(t)).toEqual([
         {
           type: 'formula',
           as: 'month_date',
@@ -58,7 +55,7 @@ describe('compile/data/timeunit', () => {
         }
       });
       const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
-      assert.deepEqual(timeUnitNode.hash(), 'TimeUnit {"month_a":{"as":"month_a","field":"a","timeUnit":"month"}}');
+      expect(timeUnitNode.hash()).toEqual('TimeUnit {"month_a":{"as":"month_a","field":"a","timeUnit":"month"}}');
     });
   });
 

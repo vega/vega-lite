@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "data": [
@@ -29,8 +29,8 @@
             "Origin"
           ],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     },
@@ -45,7 +45,7 @@
     {"name": "child_height", "value": 200}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "offset": {"rowTitle": 10},
     "columns": 1,
     "bounds": "full",
@@ -74,6 +74,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
@@ -82,7 +83,7 @@
           "scale": "y",
           "orient": "left",
           "grid": false,
-          "title": "Number of Records",
+          "title": "Count of Records",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
           "zindex": 1
@@ -102,10 +103,7 @@
           "title": "Horsepower (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/20)"},
-          "values": {
-            "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
-          },
+          "tickCount": {"signal": "ceil(child_width/10)"},
           "zindex": 1
         }
       ]
@@ -134,13 +132,13 @@
             "update": {
               "fill": [
                 {
-                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
                 {"value": "#4c78a8"}
               ],
               "tooltip": {
-                "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_15_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_15_Horsepower_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+                "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_15_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_15_Horsepower_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
               "x2": {
                 "scale": "x",
@@ -148,7 +146,7 @@
                 "offset": 1
               },
               "x": {"scale": "x", "field": "bin_maxbins_15_Horsepower_end"},
-              "y": {"scale": "y", "field": "count_*"},
+              "y": {"scale": "y", "field": "__count"},
               "y2": {"scale": "y", "value": 0}
             }
           }
@@ -176,16 +174,16 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "data": "source_0",
-        "fields": ["bin_maxbins_15_Horsepower", "bin_maxbins_15_Horsepower_end"]
+        "signal": "[child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop]"
       },
       "range": [0, {"signal": "child_width"}],
+      "bins": {"signal": "child_bin_maxbins_15_Horsepower_bins"},
       "zero": false
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "count_*"},
+      "domain": {"data": "source_0", "field": "__count"},
       "range": [{"signal": "child_height"}, 0],
       "nice": true,
       "zero": true

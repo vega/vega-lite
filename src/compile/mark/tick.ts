@@ -47,6 +47,6 @@ function defaultSize(model: UnitModel): number {
       // FIXME consolidate this log
       throw new Error('Function does not handle non-numeric rangeStep');
     }
-    return rangeStep / 1.5;
+    return (rangeStep * 3) / 4;
   }
 }

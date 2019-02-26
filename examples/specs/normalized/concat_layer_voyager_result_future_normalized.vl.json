@@ -32,17 +32,10 @@
       }
     ]
   },
-  "config": {
-    "view": {"stroke": "transparent"},
-    "style": {
-      "arrow-label": {"dy": 16, "fontSize": 9.5},
-      "arrow-label2": {"dy": 28, "fontSize": 9.5}
-    },
-    "title": {"fontSize": 12}
-  },
+  "spacing": 10,
   "vconcat": [
     {
-      "title": "Mean of Subject Ratings (95% CIs)",
+      "title": {"text": "Mean of Subject Ratings (95% CIs)", "frame": "bounds"},
       "layer": [
         {
           "mark": "rule",
@@ -78,7 +71,7 @@
                 }
               }
             },
-            "x2": {"field": "hi", "type": "quantitative"}
+            "x2": {"field": "hi"}
           }
         },
         {
@@ -123,7 +116,7 @@
               "scale": {"zero": false},
               "axis": null
             },
-            "x2": {"field": "to", "type": "quantitative"}
+            "x2": {"field": "to"}
           }
         },
         {
@@ -175,5 +168,13 @@
         }
       ]
     }
-  ]
+  ],
+  "config": {
+    "view": {"stroke": "transparent"},
+    "style": {
+      "arrow-label": {"dy": 16, "fontSize": 9.5},
+      "arrow-label2": {"dy": 28, "fontSize": 9.5}
+    },
+    "title": {"fontSize": 12}
+  }
 }

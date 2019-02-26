@@ -284,7 +284,7 @@ function dateMethods(singleUnit: SingleTimeUnit, isUtc: boolean) {
 export function getTimeUnitParts(timeUnit: TimeUnit) {
   return TIMEUNIT_PARTS.reduce((parts, part) => {
     if (containsTimeUnit(timeUnit, part)) {
-      return parts.concat(part);
+      return [...parts, part];
     }
     return parts;
   }, []);

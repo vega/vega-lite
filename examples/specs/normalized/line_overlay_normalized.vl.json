@@ -1,21 +1,22 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-  "description": "Google's stock price over time.",
+  "description": "Stock prices of 5 Tech Companies over Time.",
   "data": {"url": "data/stocks.csv"},
-  "transform": [{"filter": "datum.symbol==='GOOG'"}],
   "layer": [
     {
-      "mark": {"type": "line", "color": "green"},
+      "mark": "line",
       "encoding": {
-        "x": {"field": "date", "type": "temporal"},
-        "y": {"field": "price", "type": "quantitative"}
+        "x": {"timeUnit": "year", "field": "date", "type": "temporal"},
+        "y": {"aggregate": "mean", "field": "price", "type": "quantitative"},
+        "color": {"field": "symbol", "type": "nominal"}
       }
     },
     {
-      "mark": {"type": "point", "opacity": 1, "filled": true, "color": "red"},
+      "mark": {"type": "point", "opacity": 1, "filled": true},
       "encoding": {
-        "x": {"field": "date", "type": "temporal"},
-        "y": {"field": "price", "type": "quantitative"}
+        "x": {"timeUnit": "year", "field": "date", "type": "temporal"},
+        "y": {"aggregate": "mean", "field": "price", "type": "quantitative"},
+        "color": {"field": "symbol", "type": "nominal"}
       }
     }
   ]

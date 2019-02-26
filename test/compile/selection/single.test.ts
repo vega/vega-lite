@@ -1,6 +1,4 @@
 /* tslint:disable quotemark */
-import {assert} from 'chai';
-
 import * as selection from '../../../src/compile/selection/selection';
 import single from '../../../src/compile/selection/single';
 import {parseUnitModelWithScale} from '../../util';
@@ -25,20 +23,29 @@ describe('Single Selection', () => {
       on: 'mouseover',
       encodings: ['y', 'color'],
       resolve: 'intersect'
+    },
+    'thr-ee': {
+      type: 'single',
+      fields: ['Horsepower'],
+      init: {Horsepower: 50}
+    },
+    four: {
+      type: 'single',
+      encodings: ['x', 'color'],
+      init: {x: 50, Origin: 'Japan'}
     }
   }));
 
   it('builds tuple signals', () => {
     const oneSg = single.signals(model, selCmpts['one']);
-    assert.sameDeepMembers(oneSg, [
+    expect(oneSg).toEqual([
       {
         name: 'one_tuple',
-        value: {},
         on: [
           {
             events: selCmpts['one'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: one_tuple_fields, values: [datum["_vgsid_"]]} : null',
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: one_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
             force: true
           }
         ]
@@ -46,10 +53,9 @@ describe('Single Selection', () => {
     ]);
 
     const twoSg = single.signals(model, selCmpts['two']);
-    assert.sameDeepMembers(twoSg, [
+    expect(twoSg).toEqual([
       {
         name: 'two_tuple',
-        value: {},
         on: [
           {
             events: selCmpts['two'].events,
@@ -61,70 +67,104 @@ describe('Single Selection', () => {
       }
     ]);
 
+    const threeSg = single.signals(model, selCmpts['thr_ee']);
+    expect(threeSg).toEqual([
+      {
+        name: 'thr_ee_tuple',
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update:
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: thr_ee_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"]]} : null',
+            force: true
+          }
+        ]
+      },
+      {
+        name: 'thr_ee_init',
+        init: 'modify("thr_ee_store", [{unit: "", fields: thr_ee_tuple_fields, values: [50]}])'
+      }
+    ]);
+
+    const fourSg = single.signals(model, selCmpts['four']);
+    expect(fourSg).toEqual([
+      {
+        name: 'four_tuple',
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update:
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: four_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+            force: true
+          }
+        ]
+      },
+      {
+        name: 'four_init',
+        init: 'modify("four_store", [{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}])'
+      }
+    ]);
+
     const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, oneSg.concat(twoSg));
+    expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg]));
   });
 
   it('builds modify signals', () => {
     const oneExpr = single.modifyExpr(model, selCmpts['one']);
-    assert.equal(oneExpr, 'one_tuple, true');
+    expect(oneExpr).toEqual('one_tuple, true');
 
     const twoExpr = single.modifyExpr(model, selCmpts['two']);
-    assert.equal(twoExpr, 'two_tuple, {unit: ""}');
+    expect(twoExpr).toEqual('two_tuple, {unit: ""}');
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, [
-      {
-        name: 'one_modify',
-        on: [
-          {
-            events: {signal: 'one_tuple'},
-            update: `modify(\"one_store\", ${oneExpr})`
-          }
-        ]
-      },
-      {
-        name: 'two_modify',
-        on: [
-          {
-            events: {signal: 'two_tuple'},
-            update: `modify(\"two_store\", ${twoExpr})`
-          }
-        ]
-      }
-    ]);
+    expect(signals).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'one_modify',
+          update: `modify(\"one_store\", ${oneExpr})`
+        },
+        {
+          name: 'two_modify',
+          update: `modify(\"two_store\", ${twoExpr})`
+        }
+      ])
+    );
   });
 
   it('builds top-level signals', () => {
     const signals = selection.assembleTopLevelSignals(model, []);
-    assert.includeDeepMembers(signals, [
-      {
-        name: 'one',
-        update: 'vlSelectionResolve("one_store")'
-      },
-      {
-        name: 'two',
-        update: 'vlSelectionResolve("two_store", "intersect")'
-      },
-      {
-        name: 'unit',
-        value: {},
-        on: [{events: 'mousemove', update: 'isTuple(group()) ? group() : unit'}]
-      }
-    ]);
+    expect(signals).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'one',
+          update: 'vlSelectionResolve("one_store")'
+        },
+        {
+          name: 'two',
+          update: 'vlSelectionResolve("two_store", "intersect")'
+        },
+        {
+          name: 'unit',
+          value: {},
+          on: [{events: 'mousemove', update: 'isTuple(group()) ? group() : unit'}]
+        }
+      ])
+    );
   });
 
   it('builds unit datasets', () => {
     const data: any[] = [];
-    assert.sameDeepMembers(selection.assembleUnitSelectionData(model, data), [
+    expect(selection.assembleUnitSelectionData(model, data)).toEqual([
       {name: 'one_store'},
-      {name: 'two_store'}
+      {name: 'two_store'},
+      {name: 'thr_ee_store'},
+      {name: 'four_store'}
     ]);
   });
 
   it('leaves marks alone', () => {
     const marks: any[] = [];
     model.component.selection = {one: selCmpts['one']};
-    assert.equal(selection.assembleUnitSelectionMarks(model, marks), marks);
+    expect(selection.assembleUnitSelectionMarks(model, marks)).toEqual(marks);
   });
 });

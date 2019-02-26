@@ -1,30 +1,37 @@
-import {assert} from 'chai';
-import {isScaleChannel, rangeType, SINGLE_DEF_CHANNELS, supportMark, X2, Y2} from '../src/channel';
-import {CHANNELS, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, UNIT_CHANNELS} from '../src/channel';
-import {Encoding} from '../src/encoding';
-import {CIRCLE, POINT, SQUARE, TICK} from '../src/mark';
+import {
+  CHANNELS,
+  isScaleChannel,
+  NONPOSITION_SCALE_CHANNELS,
+  rangeType,
+  SCALE_CHANNELS,
+  SINGLE_DEF_CHANNELS,
+  UNIT_CHANNELS
+} from '../src/channel';
 import {without} from '../src/util';
 
 describe('channel', () => {
   describe('UNIT_CHANNELS', () => {
     it('should be CHANNELS without row and column', () => {
-      assert.deepEqual(UNIT_CHANNELS, without(CHANNELS, ['row', 'column']));
+      expect(UNIT_CHANNELS).toEqual(without(CHANNELS, ['row', 'column', 'facet']));
     });
   });
 
   describe('SINGLE_DEF_CHANNELS', () => {
     it('should be CHANNELS without detail and order', () => {
-      assert.deepEqual(SINGLE_DEF_CHANNELS, without(CHANNELS, ['detail', 'order']));
+      expect(SINGLE_DEF_CHANNELS).toEqual(without(CHANNELS, ['detail', 'order']));
     });
   });
 
   describe('SCALE_CHANNELS', () => {
     it('should be UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, LABEL, TOOLTIP', () => {
-      assert.deepEqual(
-        SCALE_CHANNELS,
+      expect(SCALE_CHANNELS).toEqual(
         without(UNIT_CHANNELS, [
           'x2',
           'y2',
+          'xError',
+          'yError',
+          'xError2',
+          'yError2',
           'latitude',
           'longitude',
           'latitude2',
@@ -43,14 +50,14 @@ describe('channel', () => {
 
   describe('NONPOSITION_SCALE_CHANNELS', () => {
     it('should be SCALE_CHANNELS without x, y, x2, y2', () => {
-      assert.deepEqual(NONPOSITION_SCALE_CHANNELS, without(SCALE_CHANNELS, ['x', 'y']));
+      expect(NONPOSITION_SCALE_CHANNELS).toEqual(without(SCALE_CHANNELS, ['x', 'y']));
     });
   });
 
   describe('isScaleChannel', () => {
     it('should return true for all scale channel', () => {
       for (const channel of SCALE_CHANNELS) {
-        assert(isScaleChannel(channel));
+        expect(isScaleChannel(channel)).toBeTruthy();
       }
     });
   });
@@ -58,110 +65,10 @@ describe('channel', () => {
   describe('rangeType', () => {
     it('should be defined for all channels (no error).', () => {
       for (const c of CHANNELS) {
-        assert.doesNotThrow(() => {
+        expect(() => {
           rangeType(c);
-        });
+        }).not.toThrow();
       }
-    });
-  });
-
-  describe('supportMark', () => {
-    it('should support x2 for circle, point, square and tick mark with binned data', () => {
-      const encoding: Encoding<string> = {
-        x: {
-          field: 'bin_start',
-          bin: 'binned',
-          type: 'quantitative',
-          axis: {
-            tickStep: 2
-          }
-        },
-        x2: {
-          field: 'bin_end',
-          type: 'quantitative'
-        },
-        y: {
-          field: 'count',
-          type: 'quantitative'
-        }
-      };
-      assert.isTrue(supportMark(encoding, X2, CIRCLE));
-      assert.isTrue(supportMark(encoding, X2, POINT));
-      assert.isTrue(supportMark(encoding, X2, SQUARE));
-      assert.isTrue(supportMark(encoding, X2, TICK));
-    });
-
-    it('should support y2 for circle, point, square and tick mark with binned data', () => {
-      const encoding: Encoding<string> = {
-        y: {
-          field: 'bin_start',
-          bin: 'binned',
-          type: 'quantitative',
-          axis: {
-            tickStep: 2
-          }
-        },
-        y2: {
-          field: 'bin_end',
-          type: 'quantitative'
-        },
-        x: {
-          field: 'count',
-          type: 'quantitative'
-        }
-      };
-      assert.isTrue(supportMark(encoding, Y2, CIRCLE));
-      assert.isTrue(supportMark(encoding, Y2, POINT));
-      assert.isTrue(supportMark(encoding, Y2, SQUARE));
-      assert.isTrue(supportMark(encoding, Y2, TICK));
-    });
-
-    it('should not support x2 for circle, point, square and tick mark without binned data', () => {
-      const encoding: Encoding<string> = {
-        x: {
-          field: 'bin_start',
-          type: 'quantitative',
-          axis: {
-            tickStep: 2
-          }
-        },
-        x2: {
-          field: 'bin_end',
-          type: 'quantitative'
-        },
-        y: {
-          field: 'count',
-          type: 'quantitative'
-        }
-      };
-      assert.isFalse(supportMark(encoding, X2, CIRCLE));
-      assert.isFalse(supportMark(encoding, X2, POINT));
-      assert.isFalse(supportMark(encoding, X2, SQUARE));
-      assert.isFalse(supportMark(encoding, X2, TICK));
-    });
-
-    it('should not support y2 for circle, point, square and tick mark with binned data', () => {
-      const encoding: Encoding<string> = {
-        y: {
-          field: 'bin_start',
-          type: 'quantitative',
-          axis: {
-            tickStep: 2
-          }
-        },
-        y2: {
-          field: 'bin_end',
-          type: 'quantitative'
-        },
-        x: {
-          field: 'count',
-          type: 'quantitative'
-        }
-      };
-      assert.isFalse(supportMark(encoding, Y2, CIRCLE));
-      assert.isFalse(supportMark(encoding, Y2, POINT));
-      assert.isFalse(supportMark(encoding, Y2, SQUARE));
-      assert.isFalse(supportMark(encoding, Y2, TICK));
     });
   });
 });

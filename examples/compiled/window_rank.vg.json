@@ -1,8 +1,8 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
-  "title": {"text": "World Cup 2018: Group F Rankings"},
+  "title": {"text": "World Cup 2018: Group F Rankings", "frame": "bounds"},
   "style": "cell",
   "data": [
     {
@@ -42,12 +42,12 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
     },
-    {"name": "y_step", "value": 21},
+    {"name": "y_step", "value": 20},
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
@@ -110,7 +110,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": ["Germany", "Mexico", "South Korea", "Sweden"],
-      "range": ["black", "#127153", "#C91A3C", "#0C71AB"]
+      "range": ["black", "#127153", "#C91A3C", "#0C71AB"],
+      "interpolate": "hcl"
     }
   ],
   "axes": [
@@ -134,6 +135,12 @@
       "zindex": 1
     }
   ],
-  "legends": [{"stroke": "color", "title": "team"}],
+  "legends": [
+    {
+      "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "team"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

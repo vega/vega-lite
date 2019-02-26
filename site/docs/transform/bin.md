@@ -9,18 +9,18 @@ Binning discretizes numeric values into a set of bins. A common use case is to [
 There are two ways to define binning in Vega-Lite: [the `bin` property in encoding field definitions](#encoding) and [the `bin` transform](#transform).
 
 ## Documentation Overview
+
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 
-
 {:#encoding}
+
 ## Binning in Encoding Field Definition
 
-
-{: .suppress-error}
-```json
+```js
 // A Single View Specification
 {
   "data": ... ,
@@ -44,14 +44,15 @@ You can directly bin an `encoding` field by using the `bin` property in a [field
 {% include table.html props="bin" source="PositionFieldDef" %}
 
 {:#histogram}
+
 ### Example: Histogram
 
 Mapping binned values and its count to a `bar` mark produces a histogram.
 
 <div class="vl-example" data-name="histogram"></div>
 
-
 {:#histogram-ordinal}
+
 ### Example: Histogram with Ordinal Scale
 
 Setting the binned field's `type` to `"ordinal"` produces a histogram with an ordinal scale.
@@ -65,19 +66,18 @@ You can use binning to discretize color scales. Vega-Lite automatically creates 
 <div class="vl-example" data-name="point_binned_color"></div>
 
 {:#binned}
+
 ### Example: Using Vega-Lite with Binned data
 
-If you have data that is already binned outside of Vega-Lite, setting the `bin` property to `"binned"` will trigger Vega-Lite to render scales and axes similar to setting the `bin` property in encoding field definitions.
-Note that you have to specify field names that encode the start and end of each bin. To adjust the axis ticks based on the bin step, you can set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
+If you have data that is already binned outside of Vega-Lite, setting the `bin` property to `"binned"` will trigger Vega-Lite to render scales and axes similar to setting the `bin` property in encoding field definitions. Note that you have to specify field names that encode the start and end of each bin. To adjust the axis ticks based on the bin step, you can set `bin` to e.g. `{"binned": true, "step": 2}`.
 
 <div class="vl-example" data-name="bar_binned_data"></div>
 
-
 {:#transform}
+
 ## Bin Transform
 
-{: .suppress-error}
-```json
+```js
 // Any View Specification
 {
   ...
@@ -95,13 +95,11 @@ The `bin` transform in the `transform` array has the following properties:
 
 ### Example: Histogram with Bin Transform
 
-Instead of using the `bin` property of a field definition, you can also use a bin transform
-to derive a new field (e.g., `bin_IMDB_Rating`), and encode the new field with bin property of a field definition set to `binned` instead.
+Instead of using the `bin` property of a field definition, you can also use a bin transform to derive a new field (e.g., `bin_IMDB_Rating`), and encode the new field with bin property of a field definition set to `binned` instead.
 
 <div class="vl-example" data-name="histogram_bin_transform"></div>
 
-While binning in `transform` is more verbose than in `encoding`, it can be useful if you want to perform additional
-calculation before encoding the data.
+While binning in `transform` is more verbose than in `encoding`, it can be useful if you want to perform additional calculation before encoding the data.
 
 ## Bin Parameters
 

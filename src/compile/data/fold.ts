@@ -13,15 +13,13 @@ export class FoldTransformNode extends DataFlowNode {
 
   constructor(parent: DataFlowNode, private transform: FoldTransform) {
     super(parent);
+    this.transform = duplicate(transform); // duplicate to prevent side effects
     const specifiedAs = this.transform.as || [undefined, undefined];
     this.transform.as = [specifiedAs[0] || 'key', specifiedAs[1] || 'value'];
   }
 
   public producedFields() {
-    return this.transform.as.reduce((result, item) => {
-      result[item] = true;
-      return result;
-    }, {});
+    return new Set(this.transform.as);
   }
 
   public hash() {

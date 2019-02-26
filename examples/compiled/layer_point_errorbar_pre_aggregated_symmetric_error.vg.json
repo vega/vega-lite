@@ -1,0 +1,158 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"yield_error": 7.5522, "yield_center": 32.4, "variety": "Glabron"},
+        {
+          "yield_error": 6.9775,
+          "yield_center": 30.96667,
+          "variety": "Manchuria"
+        },
+        {
+          "yield_error": 3.9167,
+          "yield_center": 33.966665,
+          "variety": "No. 457"
+        },
+        {"yield_error": 11.9732, "yield_center": 30.45, "variety": "No. 462"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum.yield_center + datum.yield_error",
+          "as": "upper_yield_center"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.yield_center - datum.yield_error",
+          "as": "lower_yield_center"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 20},
+    {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
+  ],
+  "marks": [
+    {
+      "name": "layer_0_layer_0_marks",
+      "type": "rule",
+      "style": ["rule", "errorbar-rule"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "stroke": [
+            {
+              "test": "datum[\"lower_yield_center\"] === null || isNaN(datum[\"lower_yield_center\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
+          "tooltip": {
+            "signal": "{\"yield_center\": format(datum[\"yield_center\"], \"\"), \"yield_center + yield_error\": format(datum[\"upper_yield_center\"], \"\"), \"yield_center - yield_error\": format(datum[\"lower_yield_center\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+          },
+          "x": {"scale": "x", "field": "lower_yield_center"},
+          "y": {"scale": "y", "field": "variety", "band": 0.5},
+          "x2": {"scale": "x", "field": "upper_yield_center"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": [
+            {
+              "test": "datum[\"yield_center\"] === null || isNaN(datum[\"yield_center\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
+          "tooltip": {
+            "signal": "{\"yield_center\": format(datum[\"yield_center\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+          },
+          "x": {"scale": "x", "field": "yield_center"},
+          "y": {"scale": "y", "field": "variety", "band": 0.5}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "lower_yield_center"},
+          {"data": "data_1", "field": "upper_yield_center"},
+          {"data": "source_0", "field": "yield_center"}
+        ]
+      },
+      "range": [0, {"signal": "width"}],
+      "zero": false,
+      "nice": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "variety"},
+          {"data": "source_0", "field": "variety"}
+        ],
+        "sort": true
+      },
+      "range": {"step": {"signal": "y_step"}},
+      "paddingInner": 0,
+      "paddingOuter": 0
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "yield",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "variety",
+      "labelOverlap": true,
+      "zindex": 1
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
+}

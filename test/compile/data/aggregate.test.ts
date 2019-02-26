@@ -1,33 +1,29 @@
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
-/* tslint:disable:quotemark */
-
-import {assert} from 'chai';
 import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {AggregateTransform} from '../../../src/transform';
-import {StringSet} from '../../../src/util';
-import {VgAggregateTransform} from '../../../src/vega.schema';
+import {internalField} from '../../../src/util';
 import {parseUnitModel} from '../../util';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 describe('compile/data/summary', () => {
   describe('clone', () => {
     it('should have correct type', () => {
-      const agg = new AggregateNode(null, {}, {});
-      assert(agg instanceof AggregateNode);
+      const agg = new AggregateNode(null, new Set(), {});
+      expect(agg instanceof AggregateNode).toBeTruthy();
       const clone = agg.clone();
-      assert(clone instanceof AggregateNode);
+      expect(clone instanceof AggregateNode).toBeTruthy();
     });
 
     it('should have made a deep copy', () => {
-      const agg = new AggregateNode(null, {foo: true}, {});
+      const agg = new AggregateNode(null, new Set(['foo']), {});
       const clone = agg.clone();
       clone.addDimensions(['bar']);
-      assert.deepEqual<StringSet>(clone.dependentFields(), {foo: true, bar: true});
-      assert.deepEqual<StringSet>(agg.dependentFields(), {foo: true});
+      expect(clone.dependentFields()).toEqual(new Set(['foo', 'bar']));
+      expect(agg.dependentFields()).toEqual(new Set(['foo']));
     });
 
     it('should never clone parent', () => {
       const parent = new DataFlowNode(null);
-      const aggregate = new AggregateNode(parent, {}, {});
+      const aggregate = new AggregateNode(parent, new Set(), {});
       expect(aggregate.clone().parent).toBeNull();
     });
   });
@@ -51,9 +47,10 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      assert.deepEqual(
-        agg.hash(),
-        'Aggregate {"dimensions":{"Origin":true},"measures":{"*":{"count":"count_*"},"Acceleration":{"sum":"sum_Acceleration"}}}'
+      expect(agg.hash()).toBe(
+        `Aggregate {"dimensions":"Set(\\"Origin\\")","measures":{"*":{"count":"Set(\\"${internalField(
+          'count'
+        )}\\")"},"Acceleration":{"sum":"Set(\\"sum_Acceleration\\")"}}}`
       );
     });
   });
@@ -77,12 +74,12 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: ['Origin'],
         ops: ['sum', 'count'],
-        fields: ['Acceleration', '*'],
-        as: ['sum_Acceleration', 'count_*']
+        fields: ['Acceleration', null],
+        as: ['sum_Acceleration', internalField('count')]
       });
     });
 
@@ -96,7 +93,7 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: ['Origin', 'Cylinders'],
         ops: ['mean'],
@@ -118,7 +115,7 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: ['Origin'],
         ops: ['mean'],
@@ -136,7 +133,7 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: [],
         ops: ['mean', 'min', 'max'],
@@ -156,7 +153,7 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: [
           'bin_maxbins_10_Displacement',
@@ -166,8 +163,8 @@ describe('compile/data/summary', () => {
           'bin_maxbins_10_Acceleration_range'
         ],
         ops: ['count'],
-        fields: ['*'],
-        as: ['count_*']
+        fields: [null],
+        as: [internalField('count')]
       });
     });
 
@@ -181,7 +178,7 @@ describe('compile/data/summary', () => {
       };
 
       const agg = AggregateNode.makeFromTransform(null, t);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: ['Group'],
         ops: ['mean', 'sum'],
@@ -201,7 +198,7 @@ describe('compile/data/summary', () => {
       };
 
       const agg = AggregateNode.makeFromTransform(null, t);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: ['Group'],
         ops: ['mean', 'max', 'sum'],
@@ -222,10 +219,25 @@ describe('compile/data/summary', () => {
       };
 
       const agg = AggregateNode.makeFromTransform(null, t);
-      expect(agg.producedFields()).toEqual({
-        AvgDisplacement: true,
-        Acceleration_sum: true
-      });
+      expect(agg.producedFields()).toEqual(new Set(['AvgDisplacement', 'Acceleration_sum']));
+    });
+  });
+
+  describe('merge', () => {
+    it('should not merge AggregateNodes with different dimensions', () => {
+      const parent = new DataFlowNode(null);
+      const agg1 = new AggregateNode(parent, new Set(['a', 'b']), {});
+      const agg2 = new AggregateNode(parent, new Set(['a']), {});
+
+      expect(agg1.merge(agg2)).toBe(false);
+    });
+    it('should merge AggregateNodes with same dimensions', () => {
+      const parent = new DataFlowNode(null);
+      const agg1 = new AggregateNode(parent, new Set(['a', 'b']), {a: {mean: new Set(['a_mean'])}});
+      const agg2 = new AggregateNode(parent, new Set(['a', 'b']), {b: {mean: new Set(['b_mean'])}});
+
+      expect(agg1.merge(agg2)).toBe(true);
+      expect(agg1.producedFields()).toEqual(new Set(['a_mean', 'b_mean']));
     });
   });
 });

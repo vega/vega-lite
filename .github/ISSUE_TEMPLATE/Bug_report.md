@@ -1,10 +1,10 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-
 ---
 
 Please:
+
 - [ ] Check for duplicate issues. Please file separate requests as separate issues on GitHub.
 - [ ] Describe how to reproduce the bug / the goal of the feature request.
 - [ ] Use the latest versions of Vega and Vega-Lite.

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-set -x
-set -e
+set -ex
 
 scripts/pre-deploy.sh
 
@@ -12,11 +11,12 @@ git merge master --no-edit
 # build
 yarn presite
 cp build/vega-lite-schema.json _data/  # the latest schema may not have been copied
-git add data/* -f
-git add build/** -f
-git add _data/* -f
-git add examples/compiled/*.png -f
-git add site/examples/* -f
+# Note: git commands need single quotes for all the files and directories with wildcards
+git add 'data/*' -f
+git add 'build/**' -f
+git add '_data/*' -f
+git add 'examples/compiled/*.png' -f
+git add 'site/examples/*' -f
 
 # commit if things changed
 if [ -n "$(git status --porcelain)" ]; then

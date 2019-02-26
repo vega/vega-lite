@@ -10,8 +10,10 @@ To place views side-by-side, Vega-Lite's [view composition](composition.html) pr
 If you concatenate similar views where the only difference is the field that is used in an encoding, use the [`repeat` operator](repeat.html).
 
 ## Documentation Overview
+
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 
@@ -19,8 +21,7 @@ If you concatenate similar views where the only difference is the field that is 
 
 Put multiple views into a row by putting the specs for each view into an array and assign it to the `hconcat` property.
 
-{: .suppress-error}
-```json
+```js
 {
   "hconcat": [
     ...  // Specifications
@@ -28,8 +29,7 @@ Put multiple views into a row by putting the specs for each view into an array a
 }
 ```
 
-In addition to [common properties of a view specification](spec.html#common),
-a horizontal concatenation specification has the following properties:
+In addition to [common properties of a view specification](spec.html#common), a horizontal concatenation specification has the following properties:
 
 {% include table.html props="hconcat,bounds,center,spacing,resolve" source="HConcatSpec" %}
 
@@ -41,8 +41,7 @@ a horizontal concatenation specification has the following properties:
 
 Put multiple views into a column by putting the specs for each view into an array and assign it to the `vconcat` property.
 
-{: .suppress-error}
-```json
+```js
 {
   "vconcat": [
     ...  // Specifications
@@ -50,8 +49,7 @@ Put multiple views into a column by putting the specs for each view into an arra
 }
 ```
 
-In addition to [common properties of a view specification](spec.html#common),
-a vertical concatenation specification has the following properties:
+In addition to [common properties of a view specification](spec.html#common), a vertical concatenation specification has the following properties:
 
 {% include table.html props="vconcat,bounds,center,spacing,resolve" source="VConcatSpec" %}
 

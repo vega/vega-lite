@@ -1,7 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-  "description":
-    "A diverging stacked bar chart for sentiments towards a set of eight questions, displayed as percentages with neutral responses straddling the 0% mark",
+  "description": "A diverging stacked bar chart for sentiments towards a set of eight questions, displayed as percentages with neutral responses straddling the 0% mark",
   "data": {
     "values": [
       {"question": "Question 1", "type": "Strongly disagree", "value": 24, "percentage": 0.7},
@@ -47,25 +46,24 @@
     ]
   },
   "transform": [
-    {"calculate":
-        "if(datum.type === 'Strongly disagree',-2,0) + if(datum.type==='Disagree',-1,0) + if(datum.type =='Neither agree nor disagree',0,0) + if(datum.type ==='Agree',1,0) + if(datum.type ==='Strongly agree',2,0)",
+    {
+      "calculate": "if(datum.type === 'Strongly disagree',-2,0) + if(datum.type==='Disagree',-1,0) + if(datum.type =='Neither agree nor disagree',0,0) + if(datum.type ==='Agree',1,0) + if(datum.type ==='Strongly agree',2,0)",
       "as": "q_order"
     },
-    {"calculate":
-        "if(datum.type === 'Disagree' || datum.type === 'Strongly disagree', datum.percentage,0) + if(datum.type === 'Neither agree nor disagree', datum.percentage / 2,0)",
+    {
+      "calculate": "if(datum.type === 'Disagree' || datum.type === 'Strongly disagree', datum.percentage,0) + if(datum.type === 'Neither agree nor disagree', datum.percentage / 2,0)",
       "as": "signed_percentage"
     },
     {"stack": "percentage", "as": ["v1", "v2"], "groupby": ["question"]},
     {
-      "window": [
+      "joinaggregate": [
         {
           "field": "signed_percentage",
           "op": "sum",
           "as": "offset"
         }
       ],
-      "groupby": ["question"],
-      "frame": [null, null]
+      "groupby": ["question"]
     },
     {"calculate": "datum.v1 - datum.offset", "as": "nx"},
     {"calculate": "datum.v2 - datum.offset", "as": "nx2"}
@@ -79,7 +77,7 @@
         "title": "Percentage"
       }
     },
-    "x2": {"field": "nx2","type": "quantitative"},
+    "x2": {"field": "nx2"},
     "y": {
       "field": "question",
       "type": "nominal",
@@ -98,13 +96,7 @@
         "title": "Response"
       },
       "scale": {
-        "domain": [
-          "Strongly disagree",
-          "Disagree",
-          "Neither agree nor disagree",
-          "Agree",
-          "Strongly agree"
-        ],
+        "domain": ["Strongly disagree", "Disagree", "Neither agree nor disagree", "Agree", "Strongly agree"],
         "range": ["#c30d24", "#f3a583", "#cccccc", "#94c6da", "#1770ab"],
         "type": "ordinal"
       }
