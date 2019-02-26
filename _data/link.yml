@@ -279,8 +279,8 @@ Color:
 # Others
 FontWeight:
   name: "String | Number"
-Repeat:
-  link: "repeat.html#repeat"
+RepeatMapping:
+  link: "repeat.html#repeat-mapping"
 Padding:
   name: "Number | Object"
 TextBaseline:
