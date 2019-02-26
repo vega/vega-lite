@@ -2,8 +2,8 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 150,
+  "height": 150,
   "data": [
     {"name": "source_0", "url": "data/iris.json", "format": {"type": "json"}}
   ],
