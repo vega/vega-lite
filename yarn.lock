@@ -6640,10 +6640,10 @@ vega-transforms@^4.0.1:
     vega-statistics "^1.2.5"
     vega-util "^1.8.0"
 
-vega-typings@*, vega-typings@0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.5.1.tgz#e206d6e811376621d7575f2b1ea75bf837c19c06"
-  integrity sha512-sc2XVHF8zl9zPuXHHcM0z5JlBJntKrogZUXkPQ+JzSGA0zrE5E0BvBARzLWCwuBG1pON1R1rxFF7sOnn4U8F2Q==
+vega-typings@*, vega-typings@0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.5.2.tgz#fb8eb3a59b35567283e7f5ad2ab7f6adea273cd1"
+  integrity sha512-ednK0oLjc7cuUxYMos6qcbzXpRwTrENAkKsZDjZdkAJ0qBKl0Xz4lIfaf1FjnxxWWDBkc3/evUzs8NTAz9VmeA==
   dependencies:
     vega-util "^1.9.0"
 
