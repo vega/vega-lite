@@ -8,6 +8,7 @@ import {
   FontStyle as VgFontStyle,
   FontWeight as VgFontWeight,
   LayoutAlign,
+  Orientation,
   ProjectionType,
   SampleTransform as VgSampleTransform,
   SignalRef,
@@ -443,7 +444,6 @@ export type Interpolate =
   | 'cardinal-closed'
   | 'bundle'
   | 'monotone';
-export type Orient = 'horizontal' | 'vertical';
 export type Cursor =
   | 'auto'
   | 'default'
@@ -582,7 +582,7 @@ export interface BaseMarkConfig {
    * For stacked charts, this is always determined by the orientation of the stack;
    * therefore explicitly specified value will be ignored.
    */
-  orient?: Orient;
+  orient?: Orientation;
 
   // ---------- Interpolation: Line / area ----------
   /**
