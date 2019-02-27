@@ -143,11 +143,7 @@ _Note:_ For a selection to manipulate the scales of its own view, use the [bind]
 
 So far, we have only considered how to use one selection at a time. Vega-Lite also supports combining multiple selections using the `not`, `or`, and `and` logical composition operators.
 
-For example, we had previously seen how we could setup two interval selections for our users Alex and Morgan. Now, we color the rectangles when they fall within Alex's <select onchange="changeSpec('selection_composition', 'selection_composition_' + this.value)">
-
-  <option>and</option>
-  <option>or</option>
-</select> Morgan's selections.
+For example, we had previously seen how we could setup two interval selections for our users Alex and Morgan. Now, we color the rectangles when they fall within Alex's <select onchange="changeSpec('selection_composition', 'selection_composition_' + this.value)"><option>and</option><option>or</option></select> Morgan's selections.
 
 <div id="selection_composition" class="vl-example" data-name="selection_composition_and"></div>
 
