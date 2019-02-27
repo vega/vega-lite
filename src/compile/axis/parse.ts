@@ -201,6 +201,12 @@ function isExplicit<T extends string | number | object | boolean>(
       if (value === getFieldDefTitle(model, channel)) {
         return true;
       }
+      break;
+    case 'labelAngle':
+      if (value !== undefined) {
+        return value === ((axis.labelAngle % 360) + 360) % 360;
+      }
+      break;
   }
   // Otherwise, things are explicit if the returned value matches the specified property
   return value === axis[property];
