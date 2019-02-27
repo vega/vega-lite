@@ -55,3 +55,4 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 - [Image Pixel Render](https://beta.observablehq.com/@amitkaps/image-pixel-render-with-vega-lite) by @amitkaps
 - [Playfair's Wheat and Wages](https://beta.observablehq.com/@manzt/wheat-and-wages-in-vega-lite) by @manzt
 - [Top-K Plot with Others](https://beta.observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example) by @manzt
+- [Trafford Data Lab's Vega-Lite graphics companion](https://www.trafforddatalab.io/interactive_graphics_companion/) by @trafforddatalab
