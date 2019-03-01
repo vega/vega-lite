@@ -2,7 +2,7 @@
  * Utility files for producing Vega ValueRef for marks
  */
 import {SignalRef} from 'vega';
-import {isArray, isFunction, isString, stringValue} from 'vega-util';
+import {isFunction, isString, stringValue} from 'vega-util';
 import {isCountingAggregateOp} from '../../aggregate';
 import {isBinned, isBinning} from '../../bin';
 import {Channel, getMainRangeChannel, X, X2, Y, Y2} from '../../channel';
@@ -30,7 +30,7 @@ import {isPathMark, Mark, MarkDef} from '../../mark';
 import {hasDiscreteDomain, isContinuousToContinuous, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
-import {contains, some} from '../../util';
+import {contains} from '../../util';
 import {VgValueRef} from '../../vega.schema';
 import {formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';
@@ -390,20 +390,6 @@ export function mid(sizeRef: SignalRef): VgValueRef {
   return {...sizeRef, mult: 0.5};
 }
 
-/**
- * Whether the scale definitely includes zero in the domain
- */
-function domainDefinitelyIncludeZero(scale: ScaleComponent) {
-  if (scale.get('zero') !== false) {
-    return true;
-  }
-  const domains = scale.domains;
-  if (isArray(domains)) {
-    return some(domains, d => isArray(d) && d.length === 2 && d[0] <= 0 && d[1] >= 0);
-  }
-  return false;
-}
-
 export function getDefaultRef({
   defaultRef,
   channel,
@@ -432,7 +418,7 @@ export function getDefaultRef({
             log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, channel, {scaleType}));
           }
         } else {
-          if (domainDefinitelyIncludeZero(scale)) {
+          if (scale.domainDefinitelyIncludesZero) {
             return {
               scale: scaleName,
               value: 0
