@@ -41,13 +41,11 @@ function midPointWithPositionInvalidTest(
     mark: Mark;
   }
 ) {
-  const {channel, channelDef, scaleName, mark, scale} = params;
+  const {channel, channelDef, mark, scale} = params;
   const ref = midPoint(params);
 
   // Wrap to check if the positional value is invalid, if so, plot the point on the min value
   if (
-    // Only do this for non-path mark (as path marks will already use "defined" to skip points)
-    !isPathMark(mark) &&
     // Only this for field def without counting aggregate (as count wouldn't be null)
     isFieldDef(channelDef) &&
     !isCountingAggregateOp(channelDef.aggregate) &&
@@ -56,27 +54,45 @@ function midPointWithPositionInvalidTest(
     isContinuousToContinuous(scale.get('type')) &&
     scale.get('zero') === false
   ) {
-    // FIXME: this might not work correctly for the following cases yet:
-    // 2) ranged mark
-    // 3) geo
-
-    const test = fieldInvalidPredicate(channelDef, true);
-    const zeroValueRef = getDefaultRef({
-      defaultRef: 'zeroOrMin',
-      channel: getMainRangeChannel(channel) as 'x' | 'y',
-      scaleName,
-      scale,
+    return wrapPositionInvalidTest({
+      fieldDef: channelDef,
+      channel,
       mark,
-      checkBarAreaWithoutZero: false
-    })();
-    return [{test, ...zeroValueRef}, ref];
+      ref
+    });
   }
   return ref;
 }
 
+function wrapPositionInvalidTest({
+  fieldDef,
+  channel,
+  mark,
+  ref
+}: {
+  fieldDef: FieldDef<string>;
+  channel: 'x' | 'y' | 'x2' | 'y2';
+  mark: Mark;
+  ref: VgValueRef;
+}): VgValueRef | VgValueRef[] {
+  if (!isPathMark(mark)) {
+    // Only do this for non-path mark (as path marks will already use "defined" to skip points)
+
+    return [fieldInvalidTestValueRef(fieldDef, channel), ref];
+  }
+  return ref;
+}
+
+export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: 'x' | 'y' | 'x2' | 'y2') {
+  const test = fieldInvalidPredicate(fieldDef, true);
+  const mainChannel = getMainRangeChannel(channel) as 'x' | 'y';
+  const zeroValueRef = mainChannel === 'x' ? {value: 0} : {field: {group: 'height'}};
+
+  return {test, ...zeroValueRef};
+}
+
 export function fieldInvalidPredicate(field: string | FieldDef<string>, invalid = true) {
   field = isString(field) ? field : vgField(field, {expr: 'datum'});
-
   const op = invalid ? '||' : '&&';
   const eq = invalid ? '===' : '!==';
   return `${field} ${eq} null ${op} ${invalid ? '' : '!'}isNaN(${field})`;
@@ -156,9 +172,30 @@ export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef) {
 /**
  * Value Ref for binned fields
  */
-export function bin(fieldDef: TypedFieldDef<string>, scaleName: string, side: 'start' | 'end', offset?: number) {
+export function bin({
+  channel,
+  fieldDef,
+  scaleName,
+  mark,
+  side,
+  offset
+}: {
+  channel: 'x' | 'y' | 'x2' | 'y2';
+  fieldDef: TypedFieldDef<string>;
+  scaleName: string;
+  mark: Mark;
+  side: 'start' | 'end';
+  offset?: number;
+}) {
   const binSuffix = side === 'start' ? undefined : 'end';
-  return fieldRef(fieldDef, scaleName, {binSuffix}, offset ? {offset} : {});
+  const ref = fieldRef(fieldDef, scaleName, {binSuffix}, offset ? {offset} : {});
+
+  return wrapPositionInvalidTest({
+    fieldDef,
+    channel,
+    mark,
+    ref
+  });
 }
 
 export function fieldRef(

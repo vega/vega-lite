@@ -12,7 +12,7 @@ import {
   ValueDef
 } from '../../fielddef';
 import * as log from '../../log';
-import {isPathMark, MarkDef} from '../../mark';
+import {isPathMark, Mark, MarkDef} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
 import {contains, Dict, getFirstDefined, keys} from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
@@ -358,6 +358,7 @@ export function binPosition({
   fieldDef2,
   channel,
   scaleName,
+  mark,
   spacing = 0,
   reverse
 }: {
@@ -365,6 +366,7 @@ export function binPosition({
   fieldDef2?: ValueDef | SecondaryFieldDef<string>;
   channel: 'x' | 'y';
   scaleName: string;
+  mark: Mark;
   spacing?: number;
   reverse: boolean;
 }) {
@@ -377,8 +379,15 @@ export function binPosition({
   const channel2 = channel === X ? X2 : Y2;
   if (isBinning(fieldDef.bin)) {
     return {
-      [channel2]: ref.bin(fieldDef, scaleName, 'start', binSpacing[`${channel}2`]),
-      [channel]: ref.bin(fieldDef, scaleName, 'end', binSpacing[channel])
+      [channel2]: ref.bin({
+        channel,
+        fieldDef,
+        scaleName,
+        mark,
+        side: 'start',
+        offset: binSpacing[`${channel}2`]
+      }),
+      [channel]: ref.bin({channel, fieldDef, scaleName, mark, side: 'end', offset: binSpacing[channel]})
     };
   } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
     return {
