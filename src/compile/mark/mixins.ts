@@ -354,14 +354,21 @@ export function centeredBandPosition(
   };
 }
 
-export function binPosition(
-  fieldDef: TypedFieldDef<string>,
-  fieldDef2: ValueDef | SecondaryFieldDef<string>,
-  channel: 'x' | 'y',
-  scaleName: string,
-  spacing: number,
-  reverse: boolean
-) {
+export function binPosition({
+  fieldDef,
+  fieldDef2,
+  channel,
+  scaleName,
+  spacing = 0,
+  reverse
+}: {
+  fieldDef: TypedFieldDef<string>;
+  fieldDef2?: ValueDef | SecondaryFieldDef<string>;
+  channel: 'x' | 'y';
+  scaleName: string;
+  spacing?: number;
+  reverse: boolean;
+}) {
   const binSpacing = {
     x: reverse ? spacing : 0,
     x2: reverse ? 0 : spacing,

@@ -43,7 +43,7 @@ function barPosition(model: UnitModel, channel: 'x' | 'y'): VgEncodeEntry {
 
   // x, x2, and width -- we must specify two of these in all conditions
   if (isFieldDef(fieldDef) && isBinned(fieldDef.bin)) {
-    return mixins.binPosition(fieldDef, fieldDef2, channel, scaleName, spacing, reverse);
+    return mixins.binPosition({fieldDef, fieldDef2, channel, scaleName, spacing, reverse});
   } else if (isBarLength || fieldDef2) {
     return {
       ...mixins.pointPosition(channel, model, 'zeroOrMin'),
@@ -54,7 +54,7 @@ function barPosition(model: UnitModel, channel: 'x' | 'y'): VgEncodeEntry {
     if (isFieldDef(fieldDef)) {
       const scaleType = scale.get('type');
       if (isBinning(fieldDef.bin) && !sizeDef && !hasDiscreteDomain(scaleType)) {
-        return mixins.binPosition(fieldDef, undefined, channel, scaleName, spacing, reverse);
+        return mixins.binPosition({fieldDef, channel, scaleName, spacing, reverse});
       } else {
         if (scaleType === ScaleType.BAND) {
           return mixins.bandPosition(fieldDef, channel, model);
