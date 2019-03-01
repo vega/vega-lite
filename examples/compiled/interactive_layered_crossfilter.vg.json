@@ -429,15 +429,27 @@
               "tooltip": {
                 "signal": "{\"distance (binned)\": datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_20_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_distance_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
-              "x2": {
-                "scale": "child__repeat_column_distance_x",
-                "field": "bin_maxbins_20_distance",
-                "offset": 1
-              },
-              "x": {
-                "scale": "child__repeat_column_distance_x",
-                "field": "bin_maxbins_20_distance_end"
-              },
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_distance_x",
+                  "field": "bin_maxbins_20_distance",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_distance_x",
+                  "field": "bin_maxbins_20_distance_end"
+                }
+              ],
               "y": {
                 "scale": "child__repeat_column_distance_y",
                 "field": "__count"
@@ -463,15 +475,27 @@
               "tooltip": {
                 "signal": "{\"distance (binned)\": datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_20_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_distance_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
-              "x2": {
-                "scale": "child__repeat_column_distance_x",
-                "field": "bin_maxbins_20_distance",
-                "offset": 1
-              },
-              "x": {
-                "scale": "child__repeat_column_distance_x",
-                "field": "bin_maxbins_20_distance_end"
-              },
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_distance_x",
+                  "field": "bin_maxbins_20_distance",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_distance_x",
+                  "field": "bin_maxbins_20_distance_end"
+                }
+              ],
               "y": {
                 "scale": "child__repeat_column_distance_y",
                 "field": "__count"
@@ -775,15 +799,27 @@
               "tooltip": {
                 "signal": "{\"delay (binned)\": datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_20_delay\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_delay_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
-              "x2": {
-                "scale": "child__repeat_column_delay_x",
-                "field": "bin_maxbins_20_delay",
-                "offset": 1
-              },
-              "x": {
-                "scale": "child__repeat_column_delay_x",
-                "field": "bin_maxbins_20_delay_end"
-              },
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_delay_x",
+                  "field": "bin_maxbins_20_delay",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_delay_x",
+                  "field": "bin_maxbins_20_delay_end"
+                }
+              ],
               "y": {
                 "scale": "child__repeat_column_delay_y",
                 "field": "__count"
@@ -809,15 +845,27 @@
               "tooltip": {
                 "signal": "{\"delay (binned)\": datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_20_delay\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_delay_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
-              "x2": {
-                "scale": "child__repeat_column_delay_x",
-                "field": "bin_maxbins_20_delay",
-                "offset": 1
-              },
-              "x": {
-                "scale": "child__repeat_column_delay_x",
-                "field": "bin_maxbins_20_delay_end"
-              },
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_delay_x",
+                  "field": "bin_maxbins_20_delay",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_delay_x",
+                  "field": "bin_maxbins_20_delay_end"
+                }
+              ],
               "y": {
                 "scale": "child__repeat_column_delay_y",
                 "field": "__count"
@@ -1121,15 +1169,27 @@
               "tooltip": {
                 "signal": "{\"time (binned)\": datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) ? \"null\" : format(datum[\"bin_maxbins_20_time\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_time_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
-              "x2": {
-                "scale": "child__repeat_column_time_x",
-                "field": "bin_maxbins_20_time",
-                "offset": 1
-              },
-              "x": {
-                "scale": "child__repeat_column_time_x",
-                "field": "bin_maxbins_20_time_end"
-              },
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_time_x",
+                  "field": "bin_maxbins_20_time",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_time_x",
+                  "field": "bin_maxbins_20_time_end"
+                }
+              ],
               "y": {"scale": "child__repeat_column_time_y", "field": "__count"},
               "y2": {"scale": "child__repeat_column_time_y", "value": 0}
             }
@@ -1152,15 +1212,27 @@
               "tooltip": {
                 "signal": "{\"time (binned)\": datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) ? \"null\" : format(datum[\"bin_maxbins_20_time\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_time_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
-              "x2": {
-                "scale": "child__repeat_column_time_x",
-                "field": "bin_maxbins_20_time",
-                "offset": 1
-              },
-              "x": {
-                "scale": "child__repeat_column_time_x",
-                "field": "bin_maxbins_20_time_end"
-              },
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_time_x",
+                  "field": "bin_maxbins_20_time",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_time_x",
+                  "field": "bin_maxbins_20_time_end"
+                }
+              ],
               "y": {"scale": "child__repeat_column_time_y", "field": "__count"},
               "y2": {"scale": "child__repeat_column_time_y", "value": 0}
             }

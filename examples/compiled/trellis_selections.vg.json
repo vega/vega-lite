@@ -447,8 +447,20 @@
               "tooltip": {
                 "signal": "{\"X\": format(datum[\"X\"], \"\"), \"Y\": format(datum[\"Y\"], \"\")}"
               },
-              "x": {"scale": "x", "field": "X"},
-              "y": {"scale": "y", "field": "Y"},
+              "x": [
+                {
+                  "test": "datum[\"X\"] === null || isNaN(datum[\"X\"])",
+                  "value": 0
+                },
+                {"scale": "x", "field": "X"}
+              ],
+              "y": [
+                {
+                  "test": "datum[\"Y\"] === null || isNaN(datum[\"Y\"])",
+                  "field": {"group": "height"}
+                },
+                {"scale": "y", "field": "Y"}
+              ],
               "size": [
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum, \"intersect\"))",

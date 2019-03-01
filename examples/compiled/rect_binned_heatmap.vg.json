@@ -80,16 +80,34 @@
           "tooltip": {
             "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_60_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_60_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_60_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_60_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
-          "x2": {"scale": "x", "field": "bin_maxbins_60_IMDB_Rating"},
-          "x": {"scale": "x", "field": "bin_maxbins_60_IMDB_Rating_end"},
-          "y2": {
-            "scale": "y",
-            "field": "bin_maxbins_40_Rotten_Tomatoes_Rating"
-          },
-          "y": {
-            "scale": "y",
-            "field": "bin_maxbins_40_Rotten_Tomatoes_Rating_end"
-          }
+          "x2": [
+            {
+              "test": "datum[\"bin_maxbins_60_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_60_IMDB_Rating\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "bin_maxbins_60_IMDB_Rating"}
+          ],
+          "x": [
+            {
+              "test": "datum[\"bin_maxbins_60_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_60_IMDB_Rating\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "bin_maxbins_60_IMDB_Rating_end"}
+          ],
+          "y2": [
+            {
+              "test": "datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "bin_maxbins_40_Rotten_Tomatoes_Rating"}
+          ],
+          "y": [
+            {
+              "test": "datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "bin_maxbins_40_Rotten_Tomatoes_Rating_end"}
+          ]
         }
       }
     }

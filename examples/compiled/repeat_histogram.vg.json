@@ -220,15 +220,27 @@
               "tooltip": {
                 "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
-              "x2": {
-                "scale": "child__repeat_repeat_Horsepower_x",
-                "field": "bin_maxbins_10_Horsepower",
-                "offset": 1
-              },
-              "x": {
-                "scale": "child__repeat_repeat_Horsepower_x",
-                "field": "bin_maxbins_10_Horsepower_end"
-              },
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_repeat_Horsepower_x",
+                  "field": "bin_maxbins_10_Horsepower",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_repeat_Horsepower_x",
+                  "field": "bin_maxbins_10_Horsepower_end"
+                }
+              ],
               "y": {
                 "scale": "child__repeat_repeat_Horsepower_y",
                 "field": "__count_end"
@@ -301,15 +313,27 @@
               "tooltip": {
                 "signal": "{\"Miles_per_Gallon (binned)\": datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Miles_per_Gallon\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Miles_per_Gallon_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
-              "x2": {
-                "scale": "child__repeat_repeat_Miles_per_Gallon_x",
-                "field": "bin_maxbins_10_Miles_per_Gallon",
-                "offset": 1
-              },
-              "x": {
-                "scale": "child__repeat_repeat_Miles_per_Gallon_x",
-                "field": "bin_maxbins_10_Miles_per_Gallon_end"
-              },
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_repeat_Miles_per_Gallon_x",
+                  "field": "bin_maxbins_10_Miles_per_Gallon",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_repeat_Miles_per_Gallon_x",
+                  "field": "bin_maxbins_10_Miles_per_Gallon_end"
+                }
+              ],
               "y": {
                 "scale": "child__repeat_repeat_Miles_per_Gallon_y",
                 "field": "__count_end"
@@ -382,15 +406,27 @@
               "tooltip": {
                 "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
-              "x2": {
-                "scale": "child__repeat_repeat_Acceleration_x",
-                "field": "bin_maxbins_10_Acceleration",
-                "offset": 1
-              },
-              "x": {
-                "scale": "child__repeat_repeat_Acceleration_x",
-                "field": "bin_maxbins_10_Acceleration_end"
-              },
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_repeat_Acceleration_x",
+                  "field": "bin_maxbins_10_Acceleration",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_repeat_Acceleration_x",
+                  "field": "bin_maxbins_10_Acceleration_end"
+                }
+              ],
               "y": {
                 "scale": "child__repeat_repeat_Acceleration_y",
                 "field": "__count_end"
@@ -463,15 +499,27 @@
               "tooltip": {
                 "signal": "{\"Displacement (binned)\": datum[\"bin_maxbins_10_Displacement\"] === null || isNaN(datum[\"bin_maxbins_10_Displacement\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Displacement\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Displacement_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
-              "x2": {
-                "scale": "child__repeat_repeat_Displacement_x",
-                "field": "bin_maxbins_10_Displacement",
-                "offset": 1
-              },
-              "x": {
-                "scale": "child__repeat_repeat_Displacement_x",
-                "field": "bin_maxbins_10_Displacement_end"
-              },
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_10_Displacement\"] === null || isNaN(datum[\"bin_maxbins_10_Displacement\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_repeat_Displacement_x",
+                  "field": "bin_maxbins_10_Displacement",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_10_Displacement\"] === null || isNaN(datum[\"bin_maxbins_10_Displacement\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_repeat_Displacement_x",
+                  "field": "bin_maxbins_10_Displacement_end"
+                }
+              ],
               "y": {
                 "scale": "child__repeat_repeat_Displacement_y",
                 "field": "__count_end"

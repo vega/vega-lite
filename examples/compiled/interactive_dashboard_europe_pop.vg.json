@@ -1249,14 +1249,26 @@
               "tooltip": {
                 "signal": "{\"Population_ages_15_64_of_total\": format(datum[\"Population_ages_15_64_of_total\"], \"\"), \"Population_ages_65_and_above_of_total\": format(datum[\"Population_ages_65_and_above_of_total\"], \"\")}"
               },
-              "x": {
-                "scale": "concat_2_x",
-                "field": "Population_ages_65_and_above_of_total"
-              },
-              "y": {
-                "scale": "concat_2_y",
-                "field": "Population_ages_15_64_of_total"
-              }
+              "x": [
+                {
+                  "test": "datum[\"Population_ages_65_and_above_of_total\"] === null || isNaN(datum[\"Population_ages_65_and_above_of_total\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "concat_2_x",
+                  "field": "Population_ages_65_and_above_of_total"
+                }
+              ],
+              "y": [
+                {
+                  "test": "datum[\"Population_ages_15_64_of_total\"] === null || isNaN(datum[\"Population_ages_15_64_of_total\"])",
+                  "field": {"group": "height"}
+                },
+                {
+                  "scale": "concat_2_y",
+                  "field": "Population_ages_15_64_of_total"
+                }
+              ]
             }
           }
         },

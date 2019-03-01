@@ -93,8 +93,20 @@
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
-          "y": {"scale": "y", "field": "record\\.low"},
-          "y2": {"scale": "y", "field": "record\\.high"}
+          "y": [
+            {
+              "test": "datum[\"record.low\"] === null || isNaN(datum[\"record.low\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "record\\.low"}
+          ],
+          "y2": [
+            {
+              "test": "datum[\"record.high\"] === null || isNaN(datum[\"record.high\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "record\\.high"}
+          ]
         }
       }
     },
@@ -117,8 +129,20 @@
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
-          "y": {"scale": "y", "field": "normal\\.low"},
-          "y2": {"scale": "y", "field": "normal\\.high"}
+          "y": [
+            {
+              "test": "datum[\"normal.low\"] === null || isNaN(datum[\"normal.low\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "normal\\.low"}
+          ],
+          "y2": [
+            {
+              "test": "datum[\"normal.high\"] === null || isNaN(datum[\"normal.high\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "normal\\.high"}
+          ]
         }
       }
     },
@@ -141,8 +165,20 @@
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
-          "y": {"scale": "y", "field": "actual\\.low"},
-          "y2": {"scale": "y", "field": "actual\\.high"}
+          "y": [
+            {
+              "test": "datum[\"actual.low\"] === null || isNaN(datum[\"actual.low\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "actual\\.low"}
+          ],
+          "y2": [
+            {
+              "test": "datum[\"actual.high\"] === null || isNaN(datum[\"actual.high\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "actual\\.high"}
+          ]
         }
       }
     },
@@ -165,8 +201,20 @@
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
-          "y": {"scale": "y", "field": "forecast\\.low\\.low"},
-          "y2": {"scale": "y", "field": "forecast\\.low\\.high"}
+          "y": [
+            {
+              "test": "datum[\"forecast.low.low\"] === null || isNaN(datum[\"forecast.low.low\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "forecast\\.low\\.low"}
+          ],
+          "y2": [
+            {
+              "test": "datum[\"forecast.low.high\"] === null || isNaN(datum[\"forecast.low.high\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "forecast\\.low\\.high"}
+          ]
         }
       }
     },
@@ -189,8 +237,20 @@
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 3},
-          "y": {"scale": "y", "field": "forecast\\.low\\.high"},
-          "y2": {"scale": "y", "field": "forecast\\.high\\.low"}
+          "y": [
+            {
+              "test": "datum[\"forecast.low.high\"] === null || isNaN(datum[\"forecast.low.high\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "forecast\\.low\\.high"}
+          ],
+          "y2": [
+            {
+              "test": "datum[\"forecast.high.low\"] === null || isNaN(datum[\"forecast.high.low\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "forecast\\.high\\.low"}
+          ]
         }
       }
     },
@@ -213,8 +273,20 @@
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
-          "y": {"scale": "y", "field": "forecast\\.high\\.low"},
-          "y2": {"scale": "y", "field": "forecast\\.high\\.high"}
+          "y": [
+            {
+              "test": "datum[\"forecast.high.low\"] === null || isNaN(datum[\"forecast.high.low\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "forecast\\.high\\.low"}
+          ],
+          "y2": [
+            {
+              "test": "datum[\"forecast.high.high\"] === null || isNaN(datum[\"forecast.high.high\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "forecast\\.high\\.high"}
+          ]
         }
       }
     },
