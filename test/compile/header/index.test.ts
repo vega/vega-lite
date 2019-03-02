@@ -1,4 +1,11 @@
-import {assembleHeaderGroups, assembleTitleGroup, labelAlign, labelBaseline} from '../../../src/compile/header';
+import {
+  assembleHeaderGroups,
+  assembleTitleGroup,
+  getLayoutTitleBand,
+  labelAlign,
+  labelBaseline,
+  titleAlign
+} from '../../../src/compile/header';
 import {getHeaderProperties} from '../../../src/compile/header/index';
 import {
   HEADER_LABEL_PROPERTIES,
@@ -9,10 +16,22 @@ import {
 import {parseFacetModel} from '../../util';
 
 describe('compile/header/index', () => {
-  describe('label aligns correctly according to angle', () => {
-    expect(labelAlign(23)).toEqual({align: {value: 'right'}});
-    expect(labelAlign(135)).toEqual({align: {value: 'left'}});
-    expect(labelAlign(50)).toEqual({align: {value: 'right'}});
+  describe('titleAlign', () => {
+    it('should return left for anchor=start', () => {
+      expect(titleAlign('start')).toEqual({align: 'left'});
+    });
+
+    it('should return right for anchor=start', () => {
+      expect(titleAlign('end')).toEqual({align: 'right'});
+    });
+  });
+
+  describe('labelAlign', () => {
+    it('label aligns correctly according to angle', () => {
+      expect(labelAlign(23)).toEqual({align: {value: 'right'}});
+      expect(labelAlign(135)).toEqual({align: {value: 'left'}});
+      expect(labelAlign(50)).toEqual({align: {value: 'right'}});
+    });
   });
 
   describe('label baseline adjusted according to angle', () => {
@@ -64,6 +83,16 @@ describe('compile/header/index', () => {
 
       const rowHeaderGroups = assembleHeaderGroups(model, 'row');
       expect(rowHeaderGroups[0].sort.field).toEqual('datum["min_d"]');
+    });
+  });
+
+  describe('getLayoutTitleBand', () => {
+    it('should return 0 for start', () => {
+      expect(getLayoutTitleBand('start')).toEqual(0);
+    });
+
+    it('should return 1 for end', () => {
+      expect(getLayoutTitleBand('end')).toEqual(1);
     });
   });
 
