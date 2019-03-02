@@ -20,13 +20,8 @@ import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
 import {DataComponent} from './data';
 import {FacetModel} from './facet';
-import {
-  assembleHeaderGroups,
-  assembleLayoutTitleBand,
-  assembleTitleGroup,
-  HEADER_CHANNELS,
-  LayoutHeaderComponent
-} from './header/component/assemble';
+import {assembleHeaderGroups, assembleLayoutTitleBand, assembleTitleGroup} from './header/assemble';
+import {HEADER_CHANNELS, LayoutHeaderComponent} from './header/component';
 import {LayerModel} from './layer';
 import {sizeExpr} from './layoutsize/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';

@@ -4,16 +4,16 @@ import {
   Channel,
   GEOPOSITION_CHANNELS,
   NONPOSITION_SCALE_CHANNELS,
-  ScaleChannel,
   SCALE_CHANNELS,
+  ScaleChannel,
   SingleDefChannel,
   supportLegend,
   X,
   Y
 } from '../channel';
 import {Config} from '../config';
-import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
+import * as vlEncoding from '../encoding';
 import {getTypedFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';

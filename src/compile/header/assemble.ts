@@ -1,7 +1,7 @@
 /**
  * Utility for generating row / column headers
  */
-import {AxisOrient, TitleAnchor, TitleConfig} from 'vega';
+import {TitleAnchor, TitleConfig} from 'vega';
 import {isArray} from 'vega-util';
 import {FACET_CHANNELS, FacetChannel} from '../../channel';
 import {Config} from '../../config';
@@ -28,13 +28,6 @@ import {
   LayoutHeaderComponent,
   LayoutHeaderComponentIndex
 } from './component';
-
-export function getHeaderType(orient: AxisOrient) {
-  if (orient === 'top' || orient === 'left') {
-    return 'header';
-  }
-  return 'footer';
-}
 
 export function assembleTitleGroup(model: Model, channel: FacetChannel) {
   const title = model.component.layoutHeaders[channel].title;

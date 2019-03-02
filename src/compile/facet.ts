@@ -1,9 +1,9 @@
 import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
-import {Channel, COLUMN, FacetChannel, FACET_CHANNELS, ROW, ScaleChannel} from '../channel';
+import {Channel, COLUMN, FACET_CHANNELS, FacetChannel, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {FieldRefOption, normalize, title as fieldDefTitle, TypedFieldDef, vgField} from '../fielddef';
+import {FieldRefOption, normalize, TypedFieldDef, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
@@ -11,16 +11,15 @@ import {NormalizedFacetSpec} from '../spec';
 import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
 import {contains, flatten} from '../util';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
-import {assembleAxis} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
 import {sortArrayIndexField} from './data/calculate';
 import {parseData} from './data/parse';
-import {assembleLabelTitle, getHeaderType, HeaderChannel, HeaderComponent} from './header/component/assemble';
+import {assembleLabelTitle} from './header/assemble';
+import {parseFacetHeaders} from './header/parse';
 import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
-import {parseGuideResolve} from './resolve';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
 import {assembleFacetSignals} from './selection/selection';
 
@@ -129,68 +128,7 @@ export class FacetModel extends ModelWithField {
   public parseAxesAndHeaders() {
     this.child.parseAxesAndHeaders();
 
-    for (const channel of FACET_CHANNELS) {
-      this.parseHeader(channel);
-    }
-
-    this.mergeChildAxis('x');
-    this.mergeChildAxis('y');
-  }
-
-  private parseHeader(channel: FacetChannel) {
-    if (this.channelHasField(channel)) {
-      const fieldDef = this.facet[channel];
-      let title = fieldDefTitle(fieldDef, this.config, {allowDisabling: true});
-
-      if (this.child.component.layoutHeaders[channel].title) {
-        // merge title with child to produce "Title / Subtitle / Sub-subtitle"
-        title += ' / ' + this.child.component.layoutHeaders[channel].title;
-        this.child.component.layoutHeaders[channel].title = null;
-      }
-
-      this.component.layoutHeaders[channel] = {
-        title,
-        facetFieldDef: fieldDef,
-        // TODO: support adding label to footer as well
-        header: channel === 'facet' ? [] : [this.makeHeaderComponent(channel, true)]
-      };
-    }
-  }
-
-  private makeHeaderComponent(channel: HeaderChannel, labels: boolean): HeaderComponent {
-    const sizeType = channel === 'row' ? 'height' : 'width';
-
-    return {
-      labels,
-      sizeSignal: this.child.component.layoutSize.get(sizeType) ? this.child.getSizeSignalRef(sizeType) : undefined,
-      axes: []
-    };
-  }
-
-  private mergeChildAxis(channel: 'x' | 'y') {
-    const {child} = this;
-    if (child.component.axes[channel]) {
-      const {layoutHeaders, resolve} = this.component;
-      resolve.axis[channel] = parseGuideResolve(resolve, channel);
-
-      if (resolve.axis[channel] === 'shared') {
-        // For shared axis, move the axes to facet's header or footer
-        const headerChannel = channel === 'x' ? 'column' : 'row';
-
-        const layoutHeader = layoutHeaders[headerChannel];
-        for (const axisComponent of child.component.axes[channel]) {
-          const headerType = getHeaderType(axisComponent.get('orient'));
-          layoutHeader[headerType] = layoutHeader[headerType] || [this.makeHeaderComponent(headerChannel, false)];
-
-          const mainAxis = assembleAxis(axisComponent, 'main', this.config, {header: true});
-          // LayoutHeader no longer keep track of property precedence, thus let's combine.
-          layoutHeader[headerType][0].axes.push(mainAxis);
-          axisComponent.mainExtracted = true;
-        }
-      } else {
-        // Otherwise do nothing for independent axes
-      }
-    }
+    parseFacetHeaders(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[] {
