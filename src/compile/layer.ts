@@ -92,9 +92,9 @@ export class LayerModel extends Model {
   }
 
   // TODO: Support same named selections across children.
-  public assembleSelectionSignals(): NewSignal[] {
+  public assembleSignals(): NewSignal[] {
     return this.children.reduce((signals, child) => {
-      return signals.concat(child.assembleSelectionSignals());
+      return signals.concat(child.assembleSignals());
     }, []);
   }
 

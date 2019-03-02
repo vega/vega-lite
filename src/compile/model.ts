@@ -281,7 +281,7 @@ export abstract class Model {
   }
 
   public abstract assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
-  public abstract assembleSelectionSignals(): NewSignal[];
+  public abstract assembleSignals(): NewSignal[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
 
@@ -418,7 +418,7 @@ export abstract class Model {
   public assembleGroup(signals: NewSignal[] = []) {
     const group: VgMarkGroup = {};
 
-    signals = signals.concat(this.assembleSelectionSignals());
+    signals = signals.concat(this.assembleSignals());
 
     if (signals.length > 0) {
       group.signals = signals;

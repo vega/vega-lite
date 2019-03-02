@@ -1,6 +1,6 @@
 import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
-import {Channel, COLUMN, FACET_CHANNELS, FacetChannel, ROW, ScaleChannel} from '../channel';
+import {Channel, COLUMN, FacetChannel, FACET_CHANNELS, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {FieldRefOption, normalize, title as fieldDefTitle, TypedFieldDef, vgField} from '../fielddef';
@@ -198,8 +198,8 @@ export class FacetModel extends ModelWithField {
     return this.child.assembleSelectionTopLevelSignals(signals);
   }
 
-  public assembleSelectionSignals(): NewSignal[] {
-    this.child.assembleSelectionSignals();
+  public assembleSignals(): NewSignal[] {
+    this.child.assembleSignals();
     return [];
   }
 

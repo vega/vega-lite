@@ -216,7 +216,7 @@ export class UnitModel extends ModelWithField {
     return assembleTopLevelSignals(this, signals);
   }
 
-  public assembleSelectionSignals(): NewSignal[] {
+  public assembleSignals(): NewSignal[] {
     return assembleUnitSelectionSignals(this, []);
   }
 
