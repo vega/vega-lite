@@ -39,12 +39,7 @@
       "update": "bandspace(domain('concat_2_y').length, 1, 0.5) * concat_2_y_step"
     }
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "bounds": "full",
-    "align": "each",
-    "columns": 2
-  },
+  "layout": {"padding": 20, "bounds": "full", "align": "each", "columns": 2},
   "marks": [
     {
       "type": "group",

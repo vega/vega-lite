@@ -188,12 +188,7 @@
       ]
     }
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "bounds": "full",
-    "align": "all",
-    "columns": 2
-  },
+  "layout": {"padding": 20, "bounds": "full", "align": "all", "columns": 2},
   "marks": [
     {
       "type": "group",

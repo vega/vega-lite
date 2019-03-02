@@ -65,7 +65,7 @@ describe('Concat', () => {
       });
 
       expect(model.assembleLayout()).toEqual({
-        padding: {row: DEFAULT_SPACING, column: DEFAULT_SPACING},
+        padding: DEFAULT_SPACING,
         columns: 1,
         bounds: 'full',
         align: 'each'
@@ -87,7 +87,7 @@ describe('Concat', () => {
       });
 
       expect(model.assembleLayout()).toEqual({
-        padding: {row: DEFAULT_SPACING, column: DEFAULT_SPACING},
+        padding: DEFAULT_SPACING,
         bounds: 'full',
         align: 'each'
       });

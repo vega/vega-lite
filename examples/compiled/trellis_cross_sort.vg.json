@@ -96,7 +96,7 @@
     {"name": "child_height", "value": 50}
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 20,
     "offset": {"rowTitle": 10, "columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",

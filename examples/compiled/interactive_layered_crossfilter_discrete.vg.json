@@ -205,12 +205,7 @@
     },
     {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 3,
-    "bounds": "full",
-    "align": "all"
-  },
+  "layout": {"padding": 20, "columns": 3, "bounds": "full", "align": "all"},
   "marks": [
     {
       "type": "group",

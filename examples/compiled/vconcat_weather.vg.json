@@ -84,12 +84,7 @@
     {"name": "concat_1_width", "value": 200},
     {"name": "concat_1_height", "value": 200}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 1,
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
