@@ -101,7 +101,7 @@ export function assembleTitleGroup(model: Model, channel: FacetChannel) {
   };
 }
 
-function titleAlign(titleAnchor: TitleAnchor) {
+export function titleAlign(titleAnchor: TitleAnchor) {
   switch (titleAnchor) {
     case 'start':
       return {align: 'left'};
@@ -239,6 +239,15 @@ export function assembleHeaderGroup(
   return null;
 }
 
+export function getLayoutTitleBand(titleAnchor: TitleAnchor) {
+  if (titleAnchor === 'start') {
+    return 0;
+  } else if (titleAnchor === 'end') {
+    return 1;
+  }
+  return undefined;
+}
+
 export function assembleLayoutTitleBand(headerComponentIndex: LayoutHeaderComponentIndex): RowCol<number> {
   const titleBand = {};
 
@@ -246,10 +255,9 @@ export function assembleLayoutTitleBand(headerComponentIndex: LayoutHeaderCompon
     const headerComponent = headerComponentIndex[channel];
     if (headerComponent && headerComponent.facetFieldDef && headerComponent.facetFieldDef.header) {
       const {titleAnchor} = headerComponent.facetFieldDef.header;
-      if (titleAnchor === 'start') {
-        titleBand[channel === 'facet' ? 'column' : channel] = 0;
-      } else if (titleAnchor === 'end') {
-        titleBand[channel === 'facet' ? 'column' : channel] = 1;
+      const band = getLayoutTitleBand(titleAnchor);
+      if (band !== undefined) {
+        titleBand[channel === 'facet' ? 'column' : channel] = band;
       }
     }
   }
