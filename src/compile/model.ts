@@ -339,7 +339,7 @@ export abstract class Model {
       return undefined;
     }
 
-    const {spacing = {}, ...layout} = this.layout;
+    const {spacing = DEFAULT_SPACING, ...layout} = this.layout;
 
     const titleBand = assembleLayoutTitleBand(this.component.layoutHeaders);
 

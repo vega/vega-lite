@@ -220,7 +220,7 @@ describe('FacetModel', () => {
       });
       const layout = model.assembleLayout();
       expect(layout).toEqual({
-        padding: {row: DEFAULT_SPACING, column: DEFAULT_SPACING},
+        padding: DEFAULT_SPACING,
         columns: {
           signal: "length(data('column_domain'))"
         },
@@ -248,7 +248,7 @@ describe('FacetModel', () => {
       });
       const layout = model.assembleLayout();
       expect(layout).toEqual({
-        padding: {row: DEFAULT_SPACING, column: DEFAULT_SPACING},
+        padding: DEFAULT_SPACING,
         columns: {
           signal: "length(data('column_domain'))"
         },
@@ -276,7 +276,7 @@ describe('FacetModel', () => {
       });
       const layout = model.assembleLayout();
       expect(layout).toEqual({
-        padding: {row: DEFAULT_SPACING, column: DEFAULT_SPACING},
+        padding: DEFAULT_SPACING,
         columns: 1,
         bounds: 'full',
         align: 'none'
