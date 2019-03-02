@@ -4,16 +4,16 @@ import {
   Channel,
   GEOPOSITION_CHANNELS,
   NONPOSITION_SCALE_CHANNELS,
-  SCALE_CHANNELS,
   ScaleChannel,
+  SCALE_CHANNELS,
   SingleDefChannel,
   supportLegend,
   X,
   Y
 } from '../channel';
 import {Config} from '../config';
-import {Encoding, normalizeEncoding} from '../encoding';
 import * as vlEncoding from '../encoding';
+import {Encoding, normalizeEncoding} from '../encoding';
 import {getTypedFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
@@ -24,6 +24,7 @@ import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
+import {assembleAxisSignals} from './axis/assemble';
 import {AxisIndex} from './axis/component';
 import {parseUnitAxis} from './axis/parse';
 import {parseData} from './data/parse';
@@ -217,7 +218,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public assembleSignals(): NewSignal[] {
-    return assembleUnitSelectionSignals(this, []);
+    return [...assembleAxisSignals(this), ...assembleUnitSelectionSignals(this, [])];
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {

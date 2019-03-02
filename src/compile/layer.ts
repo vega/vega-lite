@@ -4,6 +4,7 @@ import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec';
 import {flatten, keys} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
+import {assembleAxisSignals} from './axis/assemble';
 import {parseLayerAxis} from './axis/parse';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
@@ -95,7 +96,7 @@ export class LayerModel extends Model {
   public assembleSignals(): NewSignal[] {
     return this.children.reduce((signals, child) => {
       return signals.concat(child.assembleSignals());
-    }, []);
+    }, assembleAxisSignals(this));
   }
 
   public assembleLayoutSignals(): NewSignal[] {
