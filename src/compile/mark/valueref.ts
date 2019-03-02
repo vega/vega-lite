@@ -5,7 +5,7 @@ import {SignalRef} from 'vega';
 import {isFunction, isString, stringValue} from 'vega-util';
 import {isCountingAggregateOp} from '../../aggregate';
 import {isBinned, isBinning} from '../../bin';
-import {Channel, getMainRangeChannel, X, X2, Y, Y2} from '../../channel';
+import {Channel, getMainRangeChannel, PositionChannel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {Encoding, forEach} from '../../encoding';
 import {
@@ -37,7 +37,7 @@ import {ScaleComponent} from '../scale/component';
 
 function midPointWithPositionInvalidTest(
   params: MidPointParams & {
-    channel: 'x' | 'y' | 'x2' | 'y2';
+    channel: PositionChannel;
     mark: Mark;
   }
 ) {
@@ -71,7 +71,7 @@ function wrapPositionInvalidTest({
   ref
 }: {
   fieldDef: FieldDef<string>;
-  channel: 'x' | 'y' | 'x2' | 'y2';
+  channel: PositionChannel;
   mark: Mark;
   ref: VgValueRef;
 }): VgValueRef | VgValueRef[] {
@@ -83,7 +83,7 @@ function wrapPositionInvalidTest({
   return ref;
 }
 
-export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: 'x' | 'y' | 'x2' | 'y2') {
+export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: PositionChannel) {
   const test = fieldInvalidPredicate(fieldDef, true);
   const mainChannel = getMainRangeChannel(channel) as 'x' | 'y';
   const zeroValueRef = mainChannel === 'x' ? {value: 0} : {field: {group: 'height'}};
@@ -157,7 +157,7 @@ export function position2({
   });
 }
 
-export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef) {
+export function getOffset(channel: PositionChannel, markDef: MarkDef) {
   const offsetChannel = (channel + 'Offset') as 'xOffset' | 'yOffset' | 'x2Offset' | 'y2Offset'; // Need to cast as the type can't be inferred automatically
 
   // TODO: in the future read from encoding channel too
@@ -180,7 +180,7 @@ export function bin({
   side,
   offset
 }: {
-  channel: 'x' | 'y' | 'x2' | 'y2';
+  channel: PositionChannel;
   fieldDef: TypedFieldDef<string>;
   scaleName: string;
   mark: Mark;
@@ -403,7 +403,7 @@ export function positionDefault({
   markDef: MarkDef;
   config: Config;
   defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax';
-  channel: 'x' | 'y' | 'x2' | 'y2';
+  channel: PositionChannel;
   scaleName: string;
   scale: ScaleComponent;
   mark: Mark;
