@@ -20,7 +20,13 @@ import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
 import {DataComponent} from './data';
 import {FacetModel} from './facet';
-import {assembleHeaderGroups, assembleTitleGroup, HEADER_CHANNELS, LayoutHeaderComponent} from './header/index';
+import {
+  assembleHeaderGroups,
+  assembleLayoutTitleBand,
+  assembleTitleGroup,
+  HEADER_CHANNELS,
+  LayoutHeaderComponent
+} from './header/index';
 import {LayerModel} from './layer';
 import {sizeExpr} from './layoutsize/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';
@@ -335,6 +341,8 @@ export abstract class Model {
 
     const {spacing = {}, ...layout} = this.layout;
 
+    const titleBand = assembleLayoutTitleBand(this.component.layoutHeaders);
+
     return {
       padding: isNumber(spacing)
         ? spacing
@@ -343,7 +351,8 @@ export abstract class Model {
             column: spacing.column || DEFAULT_SPACING
           },
       ...this.assembleDefaultLayout(),
-      ...layout
+      ...layout,
+      ...(titleBand ? {titleBand} : {})
     };
   }
 

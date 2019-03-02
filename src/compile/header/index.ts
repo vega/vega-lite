@@ -1,9 +1,9 @@
 /**
  * Utility for generating row / column headers
  */
-import {Axis as VgAxis, AxisOrient, TitleConfig} from 'vega';
+import {Axis as VgAxis, AxisOrient, TitleAnchor, TitleConfig} from 'vega';
 import {isArray} from 'vega-util';
-import {FacetChannel} from '../../channel';
+import {FACET_CHANNELS, FacetChannel} from '../../channel';
 import {Config} from '../../config';
 import {vgField} from '../../fielddef';
 import {
@@ -16,7 +16,7 @@ import {
 import {isSortField} from '../../sort';
 import {FacetFieldDef} from '../../spec/facet';
 import {keys} from '../../util';
-import {VgComparator, VgMarkGroup} from '../../vega.schema';
+import {RowCol, VgComparator, VgMarkGroup} from '../../vega.schema';
 import {formatSignalRef} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
 import {Model} from '../model';
@@ -26,6 +26,12 @@ export const HEADER_CHANNELS: HeaderChannel[] = ['row', 'column'];
 
 export type HeaderType = 'header' | 'footer';
 export const HEADER_TYPES: HeaderType[] = ['header', 'footer'];
+
+export interface LayoutHeaderComponentIndex {
+  row?: LayoutHeaderComponent;
+  column?: LayoutHeaderComponent;
+  facet?: LayoutHeaderComponent;
+}
 
 /**
  * A component that represents all header, footers and title of a Vega group with layout directive.
@@ -78,6 +84,8 @@ export function assembleTitleGroup(model: Model, channel: FacetChannel) {
     ? model.component.layoutHeaders[channel].facetFieldDef
     : undefined;
 
+  const titleAnchor = (facetFieldDef && facetFieldDef.header && facetFieldDef.header.titleAnchor) || undefined;
+
   return {
     name: `${channel}-title`,
     type: 'group',
@@ -87,9 +95,21 @@ export function assembleTitleGroup(model: Model, channel: FacetChannel) {
       offset: 10,
       ...(channel === 'row' ? {orient: 'left'} : {}),
       style: 'guide-title',
+      ...titleAlign(titleAnchor),
       ...getHeaderProperties(config, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP)
     }
   };
+}
+
+function titleAlign(titleAnchor: TitleAnchor) {
+  switch (titleAnchor) {
+    case 'start':
+      return {align: 'left'};
+    case 'end':
+      return {align: 'right'};
+  }
+  // TODO: take TitleAngle into account for the "middle" case
+  return {};
 }
 
 export function assembleHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGroup[] {
@@ -219,6 +239,24 @@ export function assembleHeaderGroup(
   return null;
 }
 
+export function assembleLayoutTitleBand(headerComponentIndex: LayoutHeaderComponentIndex): RowCol<number> {
+  const titleBand = {};
+
+  for (const channel of FACET_CHANNELS) {
+    const headerComponent = headerComponentIndex[channel];
+    if (headerComponent && headerComponent.facetFieldDef && headerComponent.facetFieldDef.header) {
+      const {titleAnchor} = headerComponent.facetFieldDef.header;
+      if (titleAnchor === 'start') {
+        titleBand[channel === 'facet' ? 'column' : channel] = 0;
+      } else if (titleAnchor === 'end') {
+        titleBand[channel === 'facet' ? 'column' : channel] = 1;
+      }
+    }
+  }
+
+  return keys(titleBand).length > 0 ? titleBand : undefined;
+}
+
 export function getHeaderProperties(
   config: Config,
   facetFieldDef: FacetFieldDef<string>,
@@ -227,6 +265,9 @@ export function getHeaderProperties(
 ) {
   const props = {};
   for (const prop of properties) {
+    if (!propertiesMap[prop]) {
+      continue;
+    }
     if (config && config.header) {
       if (config.header[prop]) {
         props[propertiesMap[prop]] = config.header[prop];
