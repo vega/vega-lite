@@ -21,6 +21,9 @@ permalink: /docs/config.html
     "selection" : { ... },   // - Selection Configuration
     "title"     : { ... },   // - title Configuration
     "view"      : { ... }    // - View Configuration
+    "concat"      : { ... }  // - Concat Configuration
+    "facet"      : { ... }   // - Facet Configuration
+    "repeat"      : { ... }  // - Repeat Configuration
   }
 }
 ```
@@ -101,6 +104,12 @@ In addition to the default mark properties above, default values can be further 
 
 {% include table.html props="title" source="Config" %}
 
-## View Configuration
+{#view-config}
 
-{% include table.html props="view" source="Config" %}
+## View & View Composition Configuration
+
+{% include table.html props="view,concat,facet,repeat" source="Config" %}
+
+Each of the view composition configuration (`concat`, `facet`, `repeat`) supports the following properties:
+
+{% include table.html props="columns,spacing" source="CompositionConfig" %}

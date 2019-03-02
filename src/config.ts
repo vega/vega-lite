@@ -15,7 +15,7 @@ import {
 import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
-import {BaseViewBackground} from './spec/base';
+import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING} from './spec/base';
 import {TopLevelProperties} from './spec/toplevel';
 import {StackOffset} from './stack';
 import {extractTitleConfig, TitleConfig} from './title';
@@ -152,7 +152,8 @@ export interface Config
     VLOnlyConfig,
     MarkConfigMixins,
     CompositeMarkConfigMixins,
-    AxisConfigMixins {
+    AxisConfigMixins,
+    CompositionConfigMixins {
   /**
    * CSS color property to use as the background of the whole Vega-Lite view
    *
@@ -253,7 +254,11 @@ export const defaultConfig: Config = {
   selection: defaultSelectionConfig,
   style: {},
 
-  title: {}
+  title: {},
+
+  facet: {spacing: DEFAULT_SPACING},
+  repeat: {spacing: DEFAULT_SPACING},
+  concat: {spacing: DEFAULT_SPACING}
 };
 
 export function initConfig(config: Config) {
@@ -264,6 +269,9 @@ const MARK_STYLES = ['view', ...PRIMITIVE_MARKS] as ('view' | Mark)[];
 
 const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'padding',
+  'facet',
+  'concat',
+  'repeat',
   'numberFormat',
   'timeFormat',
   'countTitle',

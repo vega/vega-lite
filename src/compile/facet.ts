@@ -33,7 +33,6 @@ export function facetSortFieldName(
 }
 
 export class FacetModel extends ModelWithField {
-  public readonly type: 'facet' = 'facet';
   public readonly facet: EncodingFacetMapping<string>;
 
   public readonly child: Model;
@@ -47,7 +46,7 @@ export class FacetModel extends ModelWithField {
     repeater: RepeaterValue,
     config: Config
   ) {
-    super(spec, parent, parentGivenName, config, repeater, spec.resolve);
+    super(spec, 'facet', parent, parentGivenName, config, repeater, spec.resolve);
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config, false);
     this.children = [this.child];

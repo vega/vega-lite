@@ -12,8 +12,8 @@ import {
   Y
 } from '../channel';
 import {Config} from '../config';
-import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
+import * as vlEncoding from '../encoding';
 import {getTypedFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
@@ -48,7 +48,6 @@ import {
  * Internal model of Vega-Lite specification for the compiler.
  */
 export class UnitModel extends ModelWithField {
-  public readonly type: 'unit' = 'unit';
   public readonly markDef: MarkDef;
   public readonly encoding: Encoding<string>;
 
@@ -74,7 +73,7 @@ export class UnitModel extends ModelWithField {
     config: Config,
     public fit: boolean
   ) {
-    super(spec, parent, parentGivenName, config, repeater, undefined, spec.view);
+    super(spec, 'unit', parent, parentGivenName, config, repeater, undefined, spec.view);
 
     this.initSize({
       ...parentGivenSize,

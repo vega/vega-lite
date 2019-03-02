@@ -1,9 +1,16 @@
+import {isArray} from 'vega';
+import {isNumber} from 'vega-util';
+import {Config} from '../config';
 import {Data} from '../data';
 import {Resolve} from '../resolve';
 import {TitleParams} from '../title';
 import {Transform} from '../transform';
 import {Flag, flagKeys} from '../util';
 import {BaseMarkConfig, LayoutAlign, RowCol} from '../vega.schema';
+import {isConcatSpec} from './concat';
+import {isFacetMapping, isFacetSpec} from './facet';
+import {NormalizedSpec} from './index';
+import {isRepeatSpec} from './repeat';
 
 export {TopLevel} from './toplevel';
 
@@ -184,14 +191,14 @@ export interface GenericCompositionLayout extends BoundsMixins {
    * An object of the form `{"row": number, "column": number}` can be used to set
    * different spacing values for rows and columns.
    *
-   * __Default value__: `20`
+   * __Default value__: Depending on `"spacing"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)
    */
   spacing?: number | RowCol<number>;
 }
 
 export const DEFAULT_SPACING = 20;
 
-export interface GenericCompositionLayoutWithColumns extends GenericCompositionLayout {
+export interface ColumnMixins {
   /**
    * The number of columns to include in the view composition layout.
    *
@@ -209,6 +216,28 @@ export interface GenericCompositionLayoutWithColumns extends GenericCompositionL
   columns?: number;
 }
 
+export type GenericCompositionLayoutWithColumns = GenericCompositionLayout & ColumnMixins;
+
+export type CompositionConfig = ColumnMixins & {
+  /**
+   * The default spacing in pixels between sub-views of the composition operator.
+   *
+   * __Default value__: `20`
+   */
+  spacing?: number;
+};
+
+export interface CompositionConfigMixins {
+  /** Default configuration for the `facet` view composition operator */
+  facet?: CompositionConfig;
+
+  /** Default configuration for all concatenation view composition operators (`concat`, `hconcat`, and `vconcat`) */
+  concat?: CompositionConfig;
+
+  /** Default configuration for the r`epeat` view composition operator */
+  repeat?: CompositionConfig;
+}
+
 const COMPOSITION_LAYOUT_INDEX: Flag<keyof GenericCompositionLayoutWithColumns> = {
   align: 1,
   bounds: 1,
@@ -216,17 +245,53 @@ const COMPOSITION_LAYOUT_INDEX: Flag<keyof GenericCompositionLayoutWithColumns> 
   columns: 1,
   spacing: 1
 };
+
 const COMPOSITION_LAYOUT_PROPERTIES = flagKeys(COMPOSITION_LAYOUT_INDEX);
 
+export type SpecType = 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
+
 export function extractCompositionLayout(
-  spec: GenericCompositionLayoutWithColumns
+  spec: NormalizedSpec,
+  specType: SpecType,
+  config: Config
 ): GenericCompositionLayoutWithColumns {
-  const layout = {};
+  const compositionConfig = config[specType];
+  const layout: GenericCompositionLayoutWithColumns = {};
+
+  // Apply config first
+  const {spacing: spacingConfig, columns} = compositionConfig;
+  if (spacingConfig !== undefined) {
+    layout.spacing = spacingConfig;
+  }
+
+  if (columns !== undefined) {
+    if (
+      (isFacetSpec(spec) && !isFacetMapping(spec.facet)) ||
+      (isRepeatSpec(spec) && isArray(spec.repeat)) ||
+      isConcatSpec(spec)
+    ) {
+      layout.columns = columns;
+    }
+  }
+
+  // Then copy properties from the spec
 
   for (const prop of COMPOSITION_LAYOUT_PROPERTIES) {
     if (spec[prop] !== undefined) {
-      layout[prop] = spec[prop];
+      if (prop === 'spacing') {
+        const spacing = spec[prop];
+
+        layout[prop] = isNumber(spacing)
+          ? spacing
+          : {
+              row: spacing.row || spacingConfig,
+              column: spacing.column || spacingConfig
+            };
+      } else {
+        layout[prop] = spec[prop];
+      }
     }
   }
+
   return layout;
 }
