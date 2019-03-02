@@ -37,6 +37,7 @@
       ]
     }
   ],
+  "signals": [{"name": "width", "update": "width"}],
   "marks": [
     {
       "name": "layer_0_layer_0_marks",

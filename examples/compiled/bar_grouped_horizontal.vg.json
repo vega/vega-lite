@@ -104,6 +104,7 @@
           "height": {"signal": "child_height"}
         }
       },
+      "signals": [{"name": "height", "update": "child_height"}],
       "marks": [
         {
           "name": "child_marks",

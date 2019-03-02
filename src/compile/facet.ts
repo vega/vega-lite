@@ -198,8 +198,8 @@ export class FacetModel extends ModelWithField {
     return this.child.assembleSelectionTopLevelSignals(signals);
   }
 
-  public assembleSelectionSignals(): NewSignal[] {
-    this.child.assembleSelectionSignals();
+  public assembleSignals(): NewSignal[] {
+    this.child.assembleSignals();
     return [];
   }
 
