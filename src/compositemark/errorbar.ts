@@ -1,4 +1,5 @@
 import {AggregateOp} from 'vega';
+import {PositionChannel} from '../channel';
 import {Config} from '../config';
 import {Data} from '../data';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
@@ -71,10 +72,7 @@ export interface ErrorExtraEncoding<F extends Field> {
   yError2?: SecondaryFieldDef<F> | ValueDef<number>;
 }
 
-export type ErrorEncoding<F extends Field> = Pick<
-  Encoding<F>,
-  'x' | 'y' | 'x2' | 'y2' | 'color' | 'detail' | 'opacity'
-> &
+export type ErrorEncoding<F extends Field> = Pick<Encoding<F>, PositionChannel | 'color' | 'detail' | 'opacity'> &
   ErrorExtraEncoding<F>;
 
 export const ERRORBAR_PARTS = keys(ERRORBAR_PART_INDEX);
