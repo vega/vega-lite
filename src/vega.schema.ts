@@ -488,6 +488,26 @@ export type Dir = 'ltr' | 'rtl';
 
 export interface BaseMarkConfig {
   /**
+   * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without `x2`.
+   */
+  x?: number;
+
+  /**
+   * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without `y2`
+   */
+  y?: number;
+
+  /**
+   * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   */
+  x2?: number;
+
+  /**
+   * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   */
+  y2?: number;
+
+  /**
    * Default Fill Color.  This has higher precedence than `config.color`
    *
    * __Default value:__ (None)
@@ -782,9 +802,14 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
   cursor: 1,
   href: 1,
   tooltip: 1,
-  cornerRadius: 1
+  cornerRadius: 1,
+  x: 1,
+  y: 1,
+  x2: 1,
+  y2: 1
+
   // commented below are vg channel that do not have mark config.
-  // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
+  // xc'|'width'|'yc'|'height'
   // clip: 1,
   // endAngle: 1,
   // innerRadius: 1,
