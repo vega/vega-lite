@@ -7,12 +7,7 @@
   "data": [
     {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 2,
-    "bounds": "full",
-    "align": "all"
-  },
+  "layout": {"padding": 20, "columns": 2, "bounds": "full", "align": "all"},
   "marks": [
     {
       "type": "group",

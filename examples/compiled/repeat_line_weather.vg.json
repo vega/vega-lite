@@ -25,11 +25,7 @@
       ]
     }
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "bounds": "full",
-    "align": "all"
-  },
+  "layout": {"padding": 20, "bounds": "full", "align": "all"},
   "marks": [
     {
       "type": "group",

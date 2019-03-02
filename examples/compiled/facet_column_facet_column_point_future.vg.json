@@ -15,7 +15,7 @@
     {"name": "child_child_height", "value": 200}
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 20,
     "headerBand": {"column": 0.5},
     "offset": {"columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
@@ -71,11 +71,7 @@
         }
       ],
       "encode": {"update": {"columns": {"field": "distinct_Cylinders"}}},
-      "layout": {
-        "padding": {"row": 20, "column": 20},
-        "bounds": "full",
-        "align": "all"
-      },
+      "layout": {"padding": 20, "bounds": "full", "align": "all"},
       "marks": [
         {
           "name": "child_row_header",

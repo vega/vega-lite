@@ -15,11 +15,7 @@
     {"name": "concat_0_width", "value": 200},
     {"name": "concat_1_width", "value": 200}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 20, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
