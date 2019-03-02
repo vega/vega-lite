@@ -16,7 +16,7 @@ import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
 import {sortArrayIndexField} from './data/calculate';
 import {parseData} from './data/parse';
-import {assembleLabelTitle, getHeaderType, HeaderChannel, HeaderComponent} from './header/index';
+import {assembleLabelTitle, getHeaderType, HeaderChannel, HeaderComponent} from './header/component/assemble';
 import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';

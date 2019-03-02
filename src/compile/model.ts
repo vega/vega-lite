@@ -26,7 +26,7 @@ import {
   assembleTitleGroup,
   HEADER_CHANNELS,
   LayoutHeaderComponent
-} from './header/index';
+} from './header/component/assemble';
 import {LayerModel} from './layer';
 import {sizeExpr} from './layoutsize/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';

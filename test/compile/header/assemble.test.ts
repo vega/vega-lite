@@ -1,12 +1,12 @@
 import {
   assembleHeaderGroups,
   assembleTitleGroup,
+  getHeaderProperties,
   getLayoutTitleBand,
   labelAlign,
   labelBaseline,
   titleAlign
-} from '../../../src/compile/header';
-import {getHeaderProperties} from '../../../src/compile/header/index';
+} from '../../../src/compile/header/assemble';
 import {
   HEADER_LABEL_PROPERTIES,
   HEADER_LABEL_PROPERTIES_MAP,
