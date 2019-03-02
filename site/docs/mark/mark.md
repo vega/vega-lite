@@ -67,9 +67,9 @@ Note: If [mark property encoding channels](encoding.html#mark-prop) are specifie
 
 {:#offset}
 
-### Offset Properties
+### Position and Offset Properties
 
-{% include table.html props="xOffset,x2Offset,yOffset,y2Offset" source="MarkDef" %}
+{% include table.html props="x,x2,y,y2,xOffset,x2Offset,yOffset,y2Offset" source="MarkDef" %}
 
 {:#color}
 

@@ -411,7 +411,7 @@ export function pointPosition(
 ) {
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-  const {encoding, mark, stack} = model;
+  const {encoding, mark, markDef, config, stack} = model;
 
   const channelDef = encoding[channel];
   const channel2Def = encoding[channel === X ? X2 : Y2];
@@ -433,7 +433,9 @@ export function pointPosition(
           stack,
           mark,
           offset,
-          defaultRef: ref.getDefaultRef({
+          defaultRef: ref.positionDefault({
+            markDef,
+            config,
             defaultRef,
             channel,
             scaleName,
@@ -453,7 +455,7 @@ export function pointPosition(
  * If channel is not specified, return one channel based on orientation.
  */
 export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel: 'x2' | 'y2') {
-  const {encoding, mark, stack} = model;
+  const {encoding, mark, markDef, stack, config} = model;
 
   const baseChannel = channel === 'x2' ? 'x' : 'y';
   const channelDef = encoding[baseChannel];
@@ -475,9 +477,11 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
           stack,
           mark,
           offset,
-          defaultRef: ref.getDefaultRef({
+          defaultRef: ref.positionDefault({
+            markDef,
+            config,
             defaultRef,
-            channel: baseChannel,
+            channel,
             scaleName,
             scale,
             mark,

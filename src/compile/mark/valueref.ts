@@ -30,9 +30,9 @@ import {isPathMark, Mark, MarkDef} from '../../mark';
 import {hasDiscreteDomain, isContinuousToContinuous, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
-import {contains} from '../../util';
+import {contains, getFirstDefined} from '../../util';
 import {VgValueRef} from '../../vega.schema';
-import {formatSignalRef} from '../common';
+import {formatSignalRef, getMarkConfig} from '../common';
 import {ScaleComponent} from '../scale/component';
 
 function midPointWithPositionInvalidTest(
@@ -390,7 +390,9 @@ export function mid(sizeRef: SignalRef): VgValueRef {
   return {...sizeRef, mult: 0.5};
 }
 
-export function getDefaultRef({
+export function positionDefault({
+  markDef,
+  config,
   defaultRef,
   channel,
   scaleName,
@@ -398,14 +400,23 @@ export function getDefaultRef({
   mark,
   checkBarAreaWithoutZero: checkBarAreaWithZero
 }: {
+  markDef: MarkDef;
+  config: Config;
   defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax';
-  channel: 'x' | 'y';
+  channel: 'x' | 'y' | 'x2' | 'y2';
   scaleName: string;
   scale: ScaleComponent;
   mark: Mark;
   checkBarAreaWithoutZero: boolean;
 }) {
   return () => {
+    const mainChannel = getMainRangeChannel(channel);
+
+    const definedValueOrConfig = getFirstDefined(markDef[channel], getMarkConfig(channel, markDef, config));
+    if (definedValueOrConfig !== undefined) {
+      return {value: definedValueOrConfig};
+    }
+
     if (isString(defaultRef)) {
       if (scaleName) {
         const scaleType = scale.get('type');
@@ -415,7 +426,7 @@ export function getDefaultRef({
           // (Time is an interval level of measurement, not ratio).
           // See https://en.wikipedia.org/wiki/Level_of_measurement for more info.
           if (checkBarAreaWithZero && (mark === 'bar' || mark === 'area')) {
-            log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, channel, {scaleType}));
+            log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, mainChannel, {scaleType}));
           }
         } else {
           if (scale.domainDefinitelyIncludesZero) {
@@ -426,17 +437,17 @@ export function getDefaultRef({
           }
           if (checkBarAreaWithZero && (mark === 'bar' || mark === 'area')) {
             log.warn(
-              log.message.nonZeroScaleUsedWithLengthMark(mark, channel, {zeroFalse: scale.explicit.zero === false})
+              log.message.nonZeroScaleUsedWithLengthMark(mark, mainChannel, {zeroFalse: scale.explicit.zero === false})
             );
           }
         }
       }
 
       if (defaultRef === 'zeroOrMin') {
-        return channel === 'x' ? {value: 0} : {field: {group: 'height'}};
+        return mainChannel === 'x' ? {value: 0} : {field: {group: 'height'}};
       } else {
         // zeroOrMax
-        return channel === 'x' ? {field: {group: 'width'}} : {value: 0};
+        return mainChannel === 'x' ? {field: {group: 'width'}} : {value: 0};
       }
     }
     return defaultRef;
