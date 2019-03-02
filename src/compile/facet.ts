@@ -38,6 +38,8 @@ export class FacetModel extends ModelWithField {
 
   public readonly children: Model[];
 
+  public readonly is1DFacet: boolean;
+
   constructor(
     spec: NormalizedFacetSpec,
     parent: Model,
@@ -54,18 +56,7 @@ export class FacetModel extends ModelWithField {
 
     this.facet = this.initFacet(facet);
 
-    const {resolve} = this.component;
-
-    if (!isFacetMapping(facet)) {
-      if (resolve.axis.x === 'shared' || resolve.axis.y === 'shared') {
-        log.warn(log.message.FACET_1D_CANNOT_SHARE_AXIS);
-      }
-
-      resolve.axis = {
-        x: 'independent',
-        y: 'independent'
-      };
-    }
+    this.is1DFacet = !isFacetMapping(facet);
   }
 
   private initFacet(facet: FacetFieldDef<string> | FacetMapping<string>): EncodingFacetMapping<string> {

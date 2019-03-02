@@ -392,7 +392,15 @@ export type VgTransform =
   | VgWindowTransform
   | VgJoinAggregateTransform
   | VgFoldTransform
-  | VgSampleTransform;
+  | VgSampleTransform
+  | VgSequenceTransform;
+
+export interface VgSequenceTransform {
+  type: 'sequence';
+  start: number | SignalRef;
+  stop: number | SignalRef;
+  step: number | SignalRef;
+}
 
 export interface VgGeoPointTransform {
   type: 'geopoint';

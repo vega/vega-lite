@@ -56,7 +56,7 @@ function mergeChildAxis(model: FacetModel, channel: 'x' | 'y') {
   const {child} = model;
   if (child.component.axes[channel]) {
     const {layoutHeaders, resolve} = model.component;
-    resolve.axis[channel] = parseGuideResolve(resolve, channel);
+    resolve.axis[channel] = parseGuideResolve(resolve, channel, model.is1DFacet);
 
     if (resolve.axis[channel] === 'shared') {
       // For shared axis, move the axes to facet's header or footer

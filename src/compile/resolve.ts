@@ -14,7 +14,7 @@ export function defaultScaleResolve(channel: ScaleChannel, model: Model): Resolv
   throw new Error('invalid model type for resolve');
 }
 
-export function parseGuideResolve(resolve: Resolve, channel: ScaleChannel): ResolveMode {
+export function parseGuideResolve(resolve: Resolve, channel: ScaleChannel, is1DFacet: boolean = false): ResolveMode {
   const channelScaleResolve = resolve.scale[channel];
   const guide = contains(POSITION_SCALE_CHANNELS, channel) ? 'axis' : 'legend';
 
@@ -25,5 +25,5 @@ export function parseGuideResolve(resolve: Resolve, channel: ScaleChannel): Reso
     return 'independent';
   }
 
-  return resolve[guide][channel] || 'shared';
+  return resolve[guide][channel] || (is1DFacet ? 'independent' : 'shared');
 }

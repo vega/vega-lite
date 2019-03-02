@@ -9,6 +9,7 @@ import {DEFAULT_SORT_OP, EncodingSortField, isSortField} from '../../sort';
 import {hash} from '../../util';
 import {isVgRangeStep, VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
+import {HEADER_CHANNELS, HEADER_TYPES} from '../header/component';
 import {Model} from '../model';
 import {assembleDomain, getFieldFromDomain} from '../scale/domain';
 import {sortArrayIndexField} from './calculate';
@@ -106,6 +107,7 @@ export class FacetNode extends DataFlowNode {
     for (const channel of ['x', 'y'] as ScaleChannel[]) {
       const childScaleComponent = this.childModel.component.scales[channel];
       if (childScaleComponent && !childScaleComponent.merged) {
+        // independent scale
         const type = childScaleComponent.get('type');
         const range = childScaleComponent.get('range');
 
@@ -124,18 +126,18 @@ export class FacetNode extends DataFlowNode {
     return childIndependentFieldsWithStep;
   }
 
-  private assembleRowColumnData(
-    channel: 'row' | 'column',
+  private assembleRowColumnHeaderData(
+    channel: 'row' | 'column' | 'facet',
     crossedDataName: string,
     childIndependentFieldsWithStep: ChildIndependentFieldsWithStep
   ): VgData {
-    const childChannel = channel === 'row' ? 'y' : 'x';
+    const childChannel = {row: 'y', column: 'x'}[channel];
 
     const fields: string[] = [];
     const ops: AggregateOp[] = [];
     const as: string[] = [];
 
-    if (childIndependentFieldsWithStep[childChannel]) {
+    if (childIndependentFieldsWithStep && childIndependentFieldsWithStep[childChannel]) {
       if (crossedDataName) {
         // If there is a crossed data, calculate max
         fields.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
@@ -182,12 +184,65 @@ export class FacetNode extends DataFlowNode {
     };
   }
 
+  private assembleFacetHeaderData(childIndependentFieldsWithStep: ChildIndependentFieldsWithStep) {
+    const {columns} = this.model.layout;
+    const {layoutHeaders} = this.model.component;
+    const data: VgData[] = [];
+
+    const hasSharedAxis: {row?: true; column?: true} = {};
+    for (const headerChannel of HEADER_CHANNELS) {
+      for (const headerType of HEADER_TYPES) {
+        const headers = (layoutHeaders[headerChannel] && layoutHeaders[headerChannel][headerType]) || [];
+        for (const header of headers) {
+          if (header.axes && header.axes.length > 0) {
+            hasSharedAxis[headerChannel] = true;
+            break;
+          }
+        }
+      }
+
+      if (hasSharedAxis[headerChannel]) {
+        const cardinality = `length(data("${this.facet.name}"))`;
+
+        const stop =
+          headerChannel === 'row'
+            ? columns
+              ? {signal: `ceil(${cardinality} / ${columns})`}
+              : 1
+            : columns
+            ? {signal: `min(${cardinality}, ${columns})`}
+            : {signal: cardinality};
+
+        data.push({
+          name: `${this.facet.name}_${headerChannel}`,
+          transform: [
+            {
+              type: 'sequence',
+              start: 0,
+              stop
+            } as any // TODO: typing is wrong
+          ]
+        });
+      }
+    }
+
+    const {row, column} = hasSharedAxis;
+
+    if (row || column) {
+      data.unshift(this.assembleRowColumnHeaderData('facet', null, childIndependentFieldsWithStep));
+    }
+
+    return data;
+  }
+
   public assemble() {
     const data: VgData[] = [];
     let crossedDataName = null;
     const childIndependentFieldsWithStep = this.getChildIndependentFieldsWithStep();
 
-    if (this.column && this.row && (childIndependentFieldsWithStep.x || childIndependentFieldsWithStep.y)) {
+    const {column, row, facet} = this;
+
+    if (column && row && (childIndependentFieldsWithStep.x || childIndependentFieldsWithStep.y)) {
       // Need to create a cross dataset to correctly calculate cardinality
       crossedDataName = `cross_${this.column.name}_${this.row.name}`;
 
@@ -213,7 +268,14 @@ export class FacetNode extends DataFlowNode {
 
     for (const channel of [COLUMN, ROW]) {
       if (this[channel]) {
-        data.push(this.assembleRowColumnData(channel, crossedDataName, childIndependentFieldsWithStep));
+        data.push(this.assembleRowColumnHeaderData(channel, crossedDataName, childIndependentFieldsWithStep));
+      }
+    }
+
+    if (facet) {
+      const facetData = this.assembleFacetHeaderData(childIndependentFieldsWithStep);
+      if (facetData) {
+        data.push(...facetData);
       }
     }
 
