@@ -144,6 +144,7 @@
           "height": {"signal": "concat_0_height"}
         }
       },
+      "signals": [{"name": "width", "update": "concat_0_width"}],
       "marks": [
         {
           "name": "concat_0_marks",
@@ -286,6 +287,7 @@
               "height": {"signal": "concat_1_height"}
             }
           },
+          "signals": [{"name": "height", "update": "concat_1_height"}],
           "marks": [
             {
               "name": "concat_1_concat_1_marks",

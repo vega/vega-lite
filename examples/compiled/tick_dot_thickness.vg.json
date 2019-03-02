@@ -8,6 +8,7 @@
   "data": [
     {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
+  "signals": [{"name": "height", "update": "height"}],
   "marks": [
     {
       "name": "marks",
