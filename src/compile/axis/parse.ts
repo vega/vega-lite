@@ -15,7 +15,7 @@ import {getAxisConfig} from './config';
 import * as encode from './encode';
 import * as properties from './properties';
 
-export function parseUnitAxis(model: UnitModel): AxisComponentIndex {
+export function parseUnitAxes(model: UnitModel): AxisComponentIndex {
   return POSITION_SCALE_CHANNELS.reduce(
     (axis, channel) => {
       if (model.component.scales[channel] && model.axis(channel)) {
@@ -34,7 +34,7 @@ const OPPOSITE_ORIENT: {[K in AxisOrient]: AxisOrient} = {
   right: 'left'
 };
 
-export function parseLayerAxis(model: LayerModel) {
+export function parseLayerAxes(model: LayerModel) {
   const {axes, resolve} = model.component;
   const axisCount: {
     // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
@@ -42,7 +42,7 @@ export function parseLayerAxis(model: LayerModel) {
   } = {top: 0, bottom: 0, right: 0, left: 0};
 
   for (const child of model.children) {
-    child.parseAxisAndHeader();
+    child.parseAxesAndHeaders();
 
     for (const channel of keys(child.component.axes)) {
       resolve.axis[channel] = parseGuideResolve(model.component.resolve, channel);

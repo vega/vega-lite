@@ -56,7 +56,7 @@ describe('compile/header/index', () => {
       });
       model.parseScale();
       model.parseLayoutSize();
-      model.parseAxisAndHeader();
+      model.parseAxesAndHeaders();
 
       const rowHeaderGroups = assembleHeaderGroups(model, 'row');
       const columnHeaderGroups = assembleHeaderGroups(model, 'column');
@@ -79,7 +79,7 @@ describe('compile/header/index', () => {
       });
       model.parseScale();
       model.parseLayoutSize();
-      model.parseAxisAndHeader();
+      model.parseAxesAndHeaders();
 
       const rowHeaderGroups = assembleHeaderGroups(model, 'row');
       expect(rowHeaderGroups[0].sort.field).toEqual('datum["min_d"]');
@@ -112,7 +112,7 @@ describe('compile/header/index', () => {
     });
     model.parseScale();
     model.parseLayoutSize();
-    model.parseAxisAndHeader();
+    model.parseAxesAndHeaders();
 
     describe('for column', () => {
       const columnLabelGroup = assembleTitleGroup(model, 'column');
@@ -173,7 +173,7 @@ describe('compile/header/index', () => {
       });
       titleSpec.parseScale();
       titleSpec.parseLayoutSize();
-      titleSpec.parseAxisAndHeader();
+      titleSpec.parseAxesAndHeaders();
       const config = titleSpec.config;
       const facetFieldDef = titleSpec.component.layoutHeaders['row'].facetFieldDef;
 
@@ -224,7 +224,7 @@ describe('compile/header/index', () => {
       });
       labelSpec.parseScale();
       labelSpec.parseLayoutSize();
-      labelSpec.parseAxisAndHeader();
+      labelSpec.parseAxesAndHeaders();
       const config = labelSpec.config;
       const facetFieldDef = labelSpec.component.layoutHeaders['row'].facetFieldDef;
 

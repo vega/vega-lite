@@ -41,7 +41,7 @@ import {RepeaterValue} from './repeater';
 import {assembleScales} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
-import {parseScale} from './scale/parse';
+import {parseScales} from './scale/parse';
 import {SelectionComponent} from './selection/selection';
 import {Split} from './split';
 import {UnitModel} from './unit';
@@ -242,20 +242,20 @@ export abstract class Model {
     this.parseLayoutSize(); // depends on scale
     this.renameTopLevelLayoutSizeSignal();
 
-    this.parseSelection();
+    this.parseSelections();
     this.parseProjection();
     this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections; depends on projection because some transforms require the finalized projection name.
-    this.parseAxisAndHeader(); // depends on scale and layout size
-    this.parseLegend(); // depends on scale, markDef
+    this.parseAxesAndHeaders(); // depends on scale and layout size
+    this.parseLegends(); // depends on scale, markDef
     this.parseMarkGroup(); // depends on data name, scale, layout size, axisGroup, and children's scale, axis, legend and mark.
   }
 
   public abstract parseData(): void;
 
-  public abstract parseSelection(): void;
+  public abstract parseSelections(): void;
 
   public parseScale() {
-    parseScale(this);
+    parseScales(this);
   }
 
   public parseProjection() {
@@ -280,9 +280,9 @@ export abstract class Model {
 
   public abstract parseMarkGroup(): void;
 
-  public abstract parseAxisAndHeader(): void;
+  public abstract parseAxesAndHeaders(): void;
 
-  public parseLegend() {
+  public parseLegends() {
     parseLegend(this);
   }
 

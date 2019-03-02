@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 
 import {Y} from '../../../src/channel';
-import {parseLayerAxis, parseUnitAxis} from '../../../src/compile/axis/parse';
+import {parseLayerAxes, parseUnitAxes} from '../../../src/compile/axis/parse';
 import {parseLayerModel, parseUnitModelWithScale} from '../../util';
 
 describe('Axis', () => {
@@ -38,7 +38,7 @@ describe('Axis', () => {
           }
         }
       });
-      const axisComponent = parseUnitAxis(model);
+      const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
       expect(axisComponent['x'][0].explicit.grid).toEqual(true);
     });
@@ -54,7 +54,7 @@ describe('Axis', () => {
         },
         config: {axisX: {grid: true}}
       });
-      const axisComponent = parseUnitAxis(model);
+      const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
       expect(axisComponent['x'][0].implicit.grid).toEqual(true);
     });
@@ -70,7 +70,7 @@ describe('Axis', () => {
           }
         }
       });
-      const axisComponent = parseUnitAxis(model);
+      const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
       expect(axisComponent['x'][0].explicit.grid).toEqual(false);
     });
@@ -89,7 +89,7 @@ describe('Axis', () => {
           }
         }
       });
-      const axisComponent = parseUnitAxis(model);
+      const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).not.toBeDefined();
       expect(axisComponent['y']).not.toBeDefined();
     });
@@ -105,7 +105,7 @@ describe('Axis', () => {
         },
         config: {axisX: {grid: false}}
       });
-      const axisComponent = parseUnitAxis(model);
+      const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
       expect(axisComponent['x'][0].explicit.grid).toEqual(undefined);
     });
@@ -121,7 +121,7 @@ describe('Axis', () => {
         },
         config: {axis: {grid: false}}
       });
-      const axisComponent = parseUnitAxis(model);
+      const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
       expect(axisComponent['x'][0].explicit.grid).toEqual(undefined);
     });
@@ -138,7 +138,7 @@ describe('Axis', () => {
             }
           }
         });
-        const axisComponent = parseUnitAxis(model);
+        const axisComponent = parseUnitAxes(model);
         expect(axisComponent['x'].length).toEqual(1);
         expect(axisComponent['x'][0].explicit.title).toEqual(val as any);
       }
@@ -156,7 +156,7 @@ describe('Axis', () => {
             }
           }
         });
-        const axisComponent = parseUnitAxis(model);
+        const axisComponent = parseUnitAxes(model);
         expect(axisComponent['x'].length).toEqual(1);
         expect(axisComponent['x'][0].explicit.title).toEqual(val as any);
       }
@@ -173,7 +173,7 @@ describe('Axis', () => {
           }
         }
       });
-      const axisComponent = parseUnitAxis(model);
+      const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
       expect(axisComponent['x'][0].explicit.title).toEqual('foo');
     });
@@ -194,7 +194,7 @@ describe('Axis', () => {
           }
         }
       });
-      const axisComponent = parseUnitAxis(model);
+      const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
       expect(axisComponent['x'][0].explicit.title).toEqual('foo, bar');
     });
@@ -214,7 +214,7 @@ describe('Axis', () => {
           }
         }
       });
-      const axisComponent = parseUnitAxis(model);
+      const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
       expect(axisComponent['x'][0].explicit.title).toEqual('bar');
     });
@@ -227,7 +227,7 @@ describe('Axis', () => {
           x2: {field: 'a2', type: 'quantitative'}
         }
       });
-      const axisComponent = parseUnitAxis(model);
+      const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
       expect(axisComponent['x'][0].get('title')).toEqual([{field: 'a'}, {field: 'a2'}]);
     });
@@ -265,7 +265,7 @@ describe('Axis', () => {
     });
     globalRuleOverlay.parseScale();
     globalRuleOverlay.parseLayoutSize();
-    parseLayerAxis(globalRuleOverlay);
+    parseLayerAxes(globalRuleOverlay);
 
     it('correctly merges gridScale if one layer does not have one of the axis', () => {
       const axisComponents = globalRuleOverlay.component.axes;
@@ -310,7 +310,7 @@ describe('Axis', () => {
         ]
       });
       model.parseScale();
-      parseLayerAxis(model);
+      parseLayerAxes(model);
       const axisComponents = model.component.axes;
 
       expect(axisComponents.y[0].get('title')).toEqual([

@@ -30,13 +30,13 @@ export abstract class BaseConcatModel extends Model {
       child.parseData();
     });
   }
-  public parseSelection() {
+  public parseSelections() {
     // Merge selections up the hierarchy so that they may be referenced
     // across unit specs. Persist their definitions within each child
     // to assemble signals which remain within output Vega unit groups.
     this.component.selection = {};
     for (const child of this.children) {
-      child.parseSelection();
+      child.parseSelections();
       keys(child.component.selection).forEach(key => {
         this.component.selection[key] = child.component.selection[key];
       });
@@ -49,9 +49,9 @@ export abstract class BaseConcatModel extends Model {
     }
   }
 
-  public parseAxisAndHeader() {
+  public parseAxesAndHeaders() {
     for (const child of this.children) {
-      child.parseAxisAndHeader();
+      child.parseAxesAndHeaders();
     }
 
     // TODO(#2415): support shared axes

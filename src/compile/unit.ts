@@ -4,16 +4,16 @@ import {
   Channel,
   GEOPOSITION_CHANNELS,
   NONPOSITION_SCALE_CHANNELS,
-  SCALE_CHANNELS,
   ScaleChannel,
+  SCALE_CHANNELS,
   SingleDefChannel,
   supportLegend,
   X,
   Y
 } from '../channel';
 import {Config} from '../config';
-import {Encoding, normalizeEncoding} from '../encoding';
 import * as vlEncoding from '../encoding';
+import {Encoding, normalizeEncoding} from '../encoding';
 import {getTypedFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
@@ -26,13 +26,13 @@ import {Dict, duplicate} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
 import {AxisIndex} from './axis/component';
-import {parseUnitAxis} from './axis/parse';
+import {parseUnitAxes} from './axis/parse';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {parseUnitLayoutSize} from './layoutsize/parse';
 import {LegendIndex} from './legend/component';
 import {normalizeMarkDef} from './mark/init';
-import {parseMarkGroup} from './mark/mark';
+import {parseMarkGroups} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
 import {ScaleIndex} from './scale/component';
@@ -200,16 +200,16 @@ export class UnitModel extends ModelWithField {
     parseUnitLayoutSize(this);
   }
 
-  public parseSelection() {
+  public parseSelections() {
     this.component.selection = parseUnitSelection(this, this.selection);
   }
 
   public parseMarkGroup() {
-    this.component.mark = parseMarkGroup(this);
+    this.component.mark = parseMarkGroups(this);
   }
 
-  public parseAxisAndHeader() {
-    this.component.axes = parseUnitAxis(this);
+  public parseAxesAndHeaders() {
+    this.component.axes = parseUnitAxes(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: any[]): NewSignal[] {

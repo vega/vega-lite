@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 
 import {toSet} from 'vega-util';
-import {parseScale, parseScaleCore} from '../../../src/compile/scale/parse';
+import {parseScaleCore, parseScales} from '../../../src/compile/scale/parse';
 import {SELECTION_DOMAIN} from '../../../src/compile/selection/selection';
 import * as log from '../../../src/log';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale';
@@ -227,7 +227,7 @@ describe('src/compile', () => {
             }
           ]
         });
-        parseScale(model);
+        parseScales(model);
         expect(model.getScaleComponent('y').explicit.range).toEqual({step: 17});
         expect(logger.warns).toHaveLength(0);
       })

@@ -1,6 +1,6 @@
 import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
-import {Channel, COLUMN, FACET_CHANNELS, FacetChannel, ROW, ScaleChannel} from '../channel';
+import {Channel, COLUMN, FacetChannel, FACET_CHANNELS, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {FieldRefOption, normalize, title as fieldDefTitle, TypedFieldDef, vgField} from '../fielddef';
@@ -114,11 +114,11 @@ export class FacetModel extends ModelWithField {
     parseChildrenLayoutSize(this);
   }
 
-  public parseSelection() {
+  public parseSelections() {
     // As a facet has a single child, the selection components are the same.
     // The child maintains its selections to assemble signals, which remain
     // within its unit.
-    this.child.parseSelection();
+    this.child.parseSelections();
     this.component.selection = this.child.component.selection;
   }
 
@@ -126,8 +126,8 @@ export class FacetModel extends ModelWithField {
     this.child.parseMarkGroup();
   }
 
-  public parseAxisAndHeader() {
-    this.child.parseAxisAndHeader();
+  public parseAxesAndHeaders() {
+    this.child.parseAxesAndHeaders();
 
     for (const channel of FACET_CHANNELS) {
       this.parseHeader(channel);

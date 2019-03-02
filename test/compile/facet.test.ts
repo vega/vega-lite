@@ -62,7 +62,7 @@ describe('FacetModel', () => {
           }
         }
       });
-      model.parseAxisAndHeader();
+      model.parseAxesAndHeaders();
       const headerMarks = model.assembleHeaderMarks();
       const columnHeader = headerMarks.filter(d => {
         return d.name === 'column_header';
@@ -84,7 +84,7 @@ describe('FacetModel', () => {
           }
         }
       });
-      model.parseAxisAndHeader();
+      model.parseAxesAndHeaders();
       const headerMarks = model.assembleHeaderMarks();
       const columnHeader = headerMarks.filter(d => {
         return d.name === 'column_header';
@@ -106,7 +106,7 @@ describe('FacetModel', () => {
           }
         }
       });
-      model.parseAxisAndHeader();
+      model.parseAxesAndHeaders();
       const headerMarks = model.assembleHeaderMarks();
       const columnHeader = headerMarks.filter(d => {
         return d.name === 'column_header';
@@ -169,7 +169,7 @@ describe('FacetModel', () => {
           }
         }
       });
-      model.parseAxisAndHeader();
+      model.parseAxesAndHeaders();
 
       const headerMarks = model.assembleHeaderMarks();
       const columnHeader = headerMarks.filter(d => {
@@ -344,7 +344,7 @@ describe('FacetModel', () => {
         // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
       } as any);
       model.parseLayoutSize();
-      model.parseAxisAndHeader();
+      model.parseAxesAndHeaders();
       const layout = model.assembleLayout();
       expect(layout.headerBand).toEqual({row: 0.5});
     });

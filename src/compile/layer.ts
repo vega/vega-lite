@@ -5,7 +5,7 @@ import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '..
 import {flatten, keys} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
-import {parseLayerAxis} from './axis/parse';
+import {parseLayerAxes} from './axis/parse';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {parseLayerLayoutSize} from './layoutsize/parse';
@@ -63,13 +63,13 @@ export class LayerModel extends Model {
     parseLayerLayoutSize(this);
   }
 
-  public parseSelection() {
+  public parseSelections() {
     // Merge selections up the hierarchy so that they may be referenced
     // across unit specs. Persist their definitions within each child
     // to assemble signals which remain within output Vega unit groups.
     this.component.selection = {};
     for (const child of this.children) {
-      child.parseSelection();
+      child.parseSelections();
       keys(child.component.selection).forEach(key => {
         this.component.selection[key] = child.component.selection[key];
       });
@@ -82,8 +82,8 @@ export class LayerModel extends Model {
     }
   }
 
-  public parseAxisAndHeader() {
-    parseLayerAxis(this);
+  public parseAxesAndHeaders() {
+    parseLayerAxes(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[] {
