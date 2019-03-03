@@ -220,7 +220,7 @@ export type GenericCompositionLayoutWithColumns = GenericCompositionLayout & Col
 
 export type CompositionConfig = ColumnMixins & {
   /**
-   * The default spacing in pixels between sub-views of the composition operator.
+   * The default spacing in pixels between composed sub-views.
    *
    * __Default value__: `20`
    */
