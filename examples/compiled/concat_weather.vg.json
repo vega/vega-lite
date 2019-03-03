@@ -3,7 +3,6 @@
   "description": "Two horizonally concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature.",
   "autosize": "pad",
   "padding": 5,
-  "height": 200,
   "data": [
     {
       "name": "source_0",
@@ -81,12 +80,15 @@
       "name": "concat_0_width",
       "update": "bandspace(domain('concat_0_x').length, 0.1, 0.05) * concat_0_x_step"
     },
+    {"name": "concat_0_height", "value": 200},
     {"name": "concat_1_x_step", "value": 20},
     {
       "name": "concat_1_width",
       "update": "bandspace(domain('concat_1_x').length, 0.1, 0.05) * concat_1_x_step"
     },
-    {"name": "concat_2_width", "value": 200}
+    {"name": "concat_1_height", "value": 200},
+    {"name": "concat_2_width", "value": 200},
+    {"name": "concat_2_height", "value": 200}
   ],
   "layout": {"padding": 20, "bounds": "full", "align": "each", "columns": 2},
   "marks": [
@@ -97,7 +99,7 @@
       "encode": {
         "update": {
           "width": {"signal": "concat_0_width"},
-          "height": {"signal": "height"}
+          "height": {"signal": "concat_0_height"}
         }
       },
       "marks": [
@@ -149,7 +151,7 @@
           "grid": false,
           "title": "Mean of precipitation",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
           "zindex": 1
         },
         {
@@ -157,7 +159,7 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -174,7 +176,7 @@
       "encode": {
         "update": {
           "width": {"signal": "concat_1_width"},
-          "height": {"signal": "height"}
+          "height": {"signal": "concat_1_height"}
         }
       },
       "marks": [
@@ -226,7 +228,7 @@
           "grid": false,
           "title": "Median of precipitation",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
           "zindex": 1
         },
         {
@@ -234,7 +236,7 @@
           "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -251,7 +253,7 @@
       "encode": {
         "update": {
           "width": {"signal": "concat_2_width"},
-          "height": {"signal": "height"}
+          "height": {"signal": "concat_2_height"}
         }
       },
       "marks": [
@@ -319,7 +321,7 @@
           "grid": false,
           "title": "temp_max (binned)",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/10)"},
+          "tickCount": {"signal": "ceil(concat_2_height/10)"},
           "zindex": 1
         }
       ]
@@ -333,7 +335,7 @@
       "range": [
         0,
         {
-          "signal": "pow(0.95 * min(concat_2_width / ((concat_2_bin_maxbins_10_temp_min_bins.stop - concat_2_bin_maxbins_10_temp_min_bins.start) / concat_2_bin_maxbins_10_temp_min_bins.step), height / ((concat_2_bin_maxbins_10_temp_max_bins.stop - concat_2_bin_maxbins_10_temp_max_bins.start) / concat_2_bin_maxbins_10_temp_max_bins.step)), 2)"
+          "signal": "pow(0.95 * min(concat_2_width / ((concat_2_bin_maxbins_10_temp_min_bins.stop - concat_2_bin_maxbins_10_temp_min_bins.start) / concat_2_bin_maxbins_10_temp_min_bins.step), concat_2_height / ((concat_2_bin_maxbins_10_temp_max_bins.stop - concat_2_bin_maxbins_10_temp_max_bins.start) / concat_2_bin_maxbins_10_temp_max_bins.step)), 2)"
         }
       ],
       "zero": true
@@ -350,7 +352,7 @@
       "name": "concat_0_y",
       "type": "linear",
       "domain": {"data": "data_1", "field": "mean_precipitation"},
-      "range": [{"signal": "height"}, 0],
+      "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -366,7 +368,7 @@
       "name": "concat_1_y",
       "type": "linear",
       "domain": {"data": "data_1", "field": "median_precipitation"},
-      "range": [{"signal": "height"}, 0],
+      "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -386,7 +388,7 @@
       "domain": {
         "signal": "[concat_2_bin_maxbins_10_temp_max_bins.start, concat_2_bin_maxbins_10_temp_max_bins.stop]"
       },
-      "range": [{"signal": "height"}, 0],
+      "range": [{"signal": "concat_2_height"}, 0],
       "bins": {"signal": "concat_2_bin_maxbins_10_temp_max_bins"},
       "zero": false
     }
@@ -394,7 +396,7 @@
   "legends": [
     {
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "gradientLength": {"signal": "clamp(concat_2_height, 64, 200)"},
       "title": "Count of Records",
       "encode": {
         "symbols": {

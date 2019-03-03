@@ -109,6 +109,8 @@ TitleConfig:
   link: "title.html#config"
 ViewConfig:
   link: "spec.html#config"
+CompositionConfig:
+  link: "config.html#composition-config"
 
 # Encoding
 EncodingWithFacet:

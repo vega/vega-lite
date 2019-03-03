@@ -185,6 +185,7 @@
     "view": {
       "stroke": ""
     },
+    "concat": {"spacing": 10},
     "axis": {
       "domain": false,
       "ticks": false,

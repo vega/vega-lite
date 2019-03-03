@@ -1,6 +1,7 @@
 import {NewSignal} from 'vega';
 import {Config} from '../config';
 import {Resolve} from '../resolve';
+import {SpecType} from '../spec/base';
 import {NormalizedConcatSpec} from '../spec/concat';
 import {NormalizedRepeatSpec} from '../spec/repeat';
 import {keys} from '../util';
@@ -13,13 +14,14 @@ import {RepeaterValue} from './repeater';
 export abstract class BaseConcatModel extends Model {
   constructor(
     spec: NormalizedConcatSpec | NormalizedRepeatSpec,
+    specType: SpecType,
     parent: Model,
     parentGivenName: string,
     config: Config,
     repeater: RepeaterValue,
     resolve: Resolve
   ) {
-    super(spec, parent, parentGivenName, config, repeater, resolve);
+    super(spec, specType, parent, parentGivenName, config, repeater, resolve);
   }
 
   public parseData() {

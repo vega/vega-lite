@@ -11,7 +11,6 @@ import {Model} from './model';
 import {RepeaterValue} from './repeater';
 
 export class RepeatModel extends BaseConcatModel {
-  public readonly type: 'repeat' = 'repeat';
   public readonly repeat: RepeatMapping | string[];
 
   public readonly children: Model[];
@@ -23,7 +22,7 @@ export class RepeatModel extends BaseConcatModel {
     repeatValues: RepeaterValue,
     config: Config
   ) {
-    super(spec, parent, parentGivenName, config, repeatValues, spec.resolve);
+    super(spec, 'repeat', parent, parentGivenName, config, repeatValues, spec.resolve);
 
     if (spec.resolve && spec.resolve.axis && (spec.resolve.axis.x === 'shared' || spec.resolve.axis.y === 'shared')) {
       log.warn(log.message.REPEAT_CANNOT_SHARE_AXIS);
