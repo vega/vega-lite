@@ -110,6 +110,6 @@ In addition to the default mark properties above, default values can be further 
 
 {% include table.html props="view,concat,facet,repeat" source="Config" %}
 
-Each of the view composition configuration (`concat`, `facet`, `repeat`) supports the following properties:
+Each of the view composition configurations (`concat`, `facet`, `repeat`) supports the following properties:
 
 {% include table.html props="columns,spacing" source="CompositionConfig" %}
