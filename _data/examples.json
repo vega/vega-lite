@@ -269,6 +269,12 @@
         "style": "background-size: 110%"
       },
       {
+        "name": "window_top_k_others",
+        "title": "Top-K plot with Others",
+        "description": "By [Trevor Manz](github.com/manzt), adapted from https://observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example.",
+        "style": "background-size: 110%"
+      },
+      {
         "name": "lookup",
         "title": "Using the lookup transform to combine data",
         "style": "background-size: 75%; background-position-x: center;"
