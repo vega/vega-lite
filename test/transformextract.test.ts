@@ -105,6 +105,7 @@ describe('extractTransforms()', () => {
     'trellis_bar_histogram.vl.json',
     'trellis_barley_layer_median.vl.json',
     'trellis_barley.vl.json',
+    'trellis_barley_shared.vl.json',
     'trellis_column_year.vl.json',
     'trellis_cross_sort_array.vl.json',
     'trellis_cross_sort.vl.json',

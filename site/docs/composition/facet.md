@@ -113,7 +113,11 @@ Under the hood, Vega-Lite translates this spec with `"facet"` channel to the mor
 
 ## Resolve
 
-The default [resolutions](resolve.html) for row/column facet are shared scales, axes, and legends. Meanwhile, the general (wrappable) facet uses independent axes as Vega-Lite currently does not support shared axes for the general facet operator.)
+The default [resolutions](resolve.html) for row/column facet are shared scales, axes, and legends. Meanwhile, the general (wrappable) facet uses independent axes by default.
+
+However, axis `resolve` can be set to `"independent"`:
+
+<span class="vl-example" data-name="trellis_barley_shared"></span>
 
 ## Facet Configuration
 
