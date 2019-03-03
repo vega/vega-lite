@@ -2441,7 +2441,7 @@
           "type": "number"
         },
         "spacing": {
-          "description": "The default spacing in pixels between sub-views of the composition operator.\n\n__Default value__: `20`",
+          "description": "The default spacing in pixels between composed sub-views.\n\n__Default value__: `20`",
           "type": "number"
         }
       },
@@ -3618,7 +3618,7 @@
         },
         "repeat": {
           "$ref": "#/definitions/CompositionConfig",
-          "description": "Default configuration for the r`epeat` view composition operator"
+          "description": "Default configuration for the `repeat` view composition operator"
         },
         "rule": {
           "$ref": "#/definitions/MarkConfig",
@@ -4627,7 +4627,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depending on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "title": {
           "anyOf": [
@@ -5651,7 +5651,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depending on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "title": {
           "anyOf": [
@@ -5751,7 +5751,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depending on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "spec": {
           "anyOf": [
@@ -5933,7 +5933,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depending on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "spec": {
           "$ref": "#/definitions/Spec",
@@ -11522,7 +11522,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depending on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "title": {
           "anyOf": [
@@ -11762,7 +11762,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depending on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "spec": {
           "$ref": "#/definitions/Spec",
@@ -12117,7 +12117,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depending on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "spec": {
           "anyOf": [
@@ -12303,7 +12303,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depending on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "title": {
           "anyOf": [
