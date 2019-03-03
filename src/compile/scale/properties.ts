@@ -1,4 +1,4 @@
-import {isArray} from 'util';
+import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
 import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
 import {Config} from '../../config';
