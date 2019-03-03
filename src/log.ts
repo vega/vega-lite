@@ -126,8 +126,9 @@ export namespace message {
     return `Unknown repeated value "${field}".`;
   }
 
-  export const COLUMNS_NOT_SUPPORTED_BY_REPEAT_ROWCOL =
-    'The "columns" property cannot be used when "repeat" has nested row/column.';
+  export function columnsNotSupportByRowCol(type: 'facet' | 'repeat') {
+    return `The "columns" property cannot be used when "${type}" has nested row/column.`;
+  }
 
   // CONCAT
   export const CONCAT_CANNOT_SHARE_AXIS =

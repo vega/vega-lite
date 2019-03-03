@@ -290,8 +290,20 @@
           "tooltip": {
             "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": format(datum[\"Cylinders\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
           },
-          "x": {"scale": "x", "field": "Horsepower"},
-          "y": {"scale": "y", "field": "Miles_per_Gallon"},
+          "x": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "Horsepower"}
+          ],
+          "y": [
+            {
+              "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "Miles_per_Gallon"}
+          ],
           "size": {"scale": "size", "field": "Cylinders"},
           "shape": {"value": "circle"}
         }

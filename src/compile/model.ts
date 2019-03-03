@@ -20,7 +20,13 @@ import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
 import {DataComponent} from './data';
 import {FacetModel} from './facet';
-import {assembleHeaderGroups, assembleTitleGroup, HEADER_CHANNELS, LayoutHeaderComponent} from './header/index';
+import {
+  assembleHeaderGroups,
+  assembleLayoutTitleBand,
+  assembleTitleGroup,
+  HEADER_CHANNELS,
+  LayoutHeaderComponent
+} from './header/index';
 import {LayerModel} from './layer';
 import {sizeExpr} from './layoutsize/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';
@@ -281,7 +287,7 @@ export abstract class Model {
   }
 
   public abstract assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
-  public abstract assembleSelectionSignals(): NewSignal[];
+  public abstract assembleSignals(): NewSignal[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
 
@@ -333,7 +339,9 @@ export abstract class Model {
       return undefined;
     }
 
-    const {spacing = {}, ...layout} = this.layout;
+    const {spacing = DEFAULT_SPACING, ...layout} = this.layout;
+
+    const titleBand = assembleLayoutTitleBand(this.component.layoutHeaders);
 
     return {
       padding: isNumber(spacing)
@@ -343,7 +351,8 @@ export abstract class Model {
             column: spacing.column || DEFAULT_SPACING
           },
       ...this.assembleDefaultLayout(),
-      ...layout
+      ...layout,
+      ...(titleBand ? {titleBand} : {})
     };
   }
 
@@ -418,7 +427,7 @@ export abstract class Model {
   public assembleGroup(signals: NewSignal[] = []) {
     const group: VgMarkGroup = {};
 
-    signals = signals.concat(this.assembleSelectionSignals());
+    signals = signals.concat(this.assembleSignals());
 
     if (signals.length > 0) {
       group.signals = signals;

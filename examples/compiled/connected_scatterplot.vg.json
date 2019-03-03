@@ -52,8 +52,20 @@
           "tooltip": {
             "signal": "{\"miles\": format(datum[\"miles\"], \"\"), \"gas\": format(datum[\"gas\"], \"\"), \"year\": timeFormat(datum[\"year\"], '%b %d, %Y')}"
           },
-          "x": {"scale": "x", "field": "miles"},
-          "y": {"scale": "y", "field": "gas"}
+          "x": [
+            {
+              "test": "datum[\"miles\"] === null || isNaN(datum[\"miles\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "miles"}
+          ],
+          "y": [
+            {
+              "test": "datum[\"gas\"] === null || isNaN(datum[\"gas\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "gas"}
+          ]
         }
       }
     }

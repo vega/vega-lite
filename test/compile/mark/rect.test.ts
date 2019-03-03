@@ -1,5 +1,7 @@
 /* tslint:disable quotemark */
 import {rect} from '../../../src/compile/mark/rect';
+import {fieldInvalidTestValueRef} from '../../../src/compile/mark/valueref';
+import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
@@ -72,37 +74,39 @@ describe('Mark: Rect', () => {
   });
 
   describe('horizontal bin', () => {
+    const y: PositionFieldDef<string> = {bin: true, field: 'Horsepower', type: 'quantitative'};
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
       mark: 'rect',
       encoding: {
-        y: {bin: true, field: 'Horsepower', type: 'quantitative'},
+        y,
         x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
       }
     });
     const props = rect.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      expect(props.y2).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower'});
-      expect(props.y).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
+      expect(props.y2).toEqual([fieldInvalidTestValueRef(y, 'y'), {scale: 'y', field: 'bin_maxbins_10_Horsepower'}]);
+      expect(props.y).toEqual([fieldInvalidTestValueRef(y, 'y'), {scale: 'y', field: 'bin_maxbins_10_Horsepower_end'}]);
       expect(props.height).toBeUndefined();
     });
   });
 
   describe('vertical bin', () => {
+    const x: PositionFieldDef<string> = {bin: true, field: 'Horsepower', type: 'quantitative'};
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
       mark: 'rect',
       encoding: {
-        x: {bin: true, field: 'Horsepower', type: 'quantitative'},
+        x,
         y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
       }
     });
     const props = rect.encodeEntry(model);
 
     it('should draw bar with x and x2', () => {
-      expect(props.x2).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower'});
-      expect(props.x).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower_end'});
+      expect(props.x2).toEqual([fieldInvalidTestValueRef(x, 'x'), {scale: 'x', field: 'bin_maxbins_10_Horsepower'}]);
+      expect(props.x).toEqual([fieldInvalidTestValueRef(x, 'x'), {scale: 'x', field: 'bin_maxbins_10_Horsepower_end'}]);
       expect(props.width).toBeUndefined();
     });
   });

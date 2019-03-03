@@ -49,14 +49,14 @@ import {keys, some} from './util';
 
 export interface Encoding<F extends Field> {
   /**
-   * X coordinates of the marks, or width of horizontal `"bar"` and `"area"`.
+   * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without `x2`.
    *
    * The `value` of this channel can be a number or a string `"width"`.
    */
   x?: PositionFieldDef<F> | ValueDef<number | 'width'>;
 
   /**
-   * Y coordinates of the marks, or height of vertical `"bar"` and `"area"`.
+   * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without `y2`
    *
    * The `value` of this channel can be a number or a string `"height"`.
    */

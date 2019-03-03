@@ -107,8 +107,20 @@
           "tooltip": {
             "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": ''+datum[\"year\"]}"
           },
-          "x": {"scale": "x", "field": "scaled_date"},
-          "y": {"scale": "y", "field": "CO2"},
+          "x": [
+            {
+              "test": "datum[\"scaled_date\"] === null || isNaN(datum[\"scaled_date\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "scaled_date"}
+          ],
+          "y": [
+            {
+              "test": "datum[\"CO2\"] === null || isNaN(datum[\"CO2\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "CO2"}
+          ],
           "text": {"signal": "''+datum[\"year\"]"}
         }
       }
@@ -131,8 +143,20 @@
           "tooltip": {
             "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": ''+datum[\"year\"]}"
           },
-          "x": {"scale": "x", "field": "scaled_date"},
-          "y": {"scale": "y", "field": "CO2"},
+          "x": [
+            {
+              "test": "datum[\"scaled_date\"] === null || isNaN(datum[\"scaled_date\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "scaled_date"}
+          ],
+          "y": [
+            {
+              "test": "datum[\"CO2\"] === null || isNaN(datum[\"CO2\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "CO2"}
+          ],
           "text": {"signal": "''+datum[\"year\"]"}
         }
       }

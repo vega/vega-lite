@@ -216,9 +216,21 @@
               "tooltip": {
                 "signal": "{\"from\": format(datum[\"from\"], \"\"), \"to\": format(datum[\"to\"], \"\")}"
               },
-              "x": {"scale": "concat_1_x", "field": "from"},
+              "x": [
+                {
+                  "test": "datum[\"from\"] === null || isNaN(datum[\"from\"])",
+                  "value": 0
+                },
+                {"scale": "concat_1_x", "field": "from"}
+              ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "x2": {"scale": "concat_1_x", "field": "to"}
+              "x2": [
+                {
+                  "test": "datum[\"to\"] === null || isNaN(datum[\"to\"])",
+                  "value": 0
+                },
+                {"scale": "concat_1_x", "field": "to"}
+              ]
             }
           }
         },
@@ -239,7 +251,13 @@
               ],
               "size": {"value": 60},
               "tooltip": {"signal": "{\"to\": format(datum[\"to\"], \"\")}"},
-              "x": {"scale": "concat_1_x", "field": "to"},
+              "x": [
+                {
+                  "test": "datum[\"to\"] === null || isNaN(datum[\"to\"])",
+                  "value": 0
+                },
+                {"scale": "concat_1_x", "field": "to"}
+              ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "shape": [
                 {"test": "datum.to > 0", "value": "triangle-right"},
@@ -266,7 +284,13 @@
               "tooltip": {
                 "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": ''+datum[\"label\"]}"
               },
-              "x": {"scale": "concat_1_x", "field": "from"},
+              "x": [
+                {
+                  "test": "datum[\"from\"] === null || isNaN(datum[\"from\"])",
+                  "value": 0
+                },
+                {"scale": "concat_1_x", "field": "from"}
+              ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "text": {"signal": "''+datum[\"label\"]"},
               "fontSize": {"value": 9.5}
@@ -291,7 +315,13 @@
               "tooltip": {
                 "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": ''+datum[\"label\"]}"
               },
-              "x": {"scale": "concat_1_x", "field": "from"},
+              "x": [
+                {
+                  "test": "datum[\"from\"] === null || isNaN(datum[\"from\"])",
+                  "value": 0
+                },
+                {"scale": "concat_1_x", "field": "from"}
+              ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "text": {"signal": "''+datum[\"label\"]"},
               "fontSize": {"value": 9.5}
@@ -316,7 +346,13 @@
               "tooltip": {
                 "signal": "{\"from\": format(datum[\"from\"], \"\")}"
               },
-              "x": {"scale": "concat_1_x", "field": "from"},
+              "x": [
+                {
+                  "test": "datum[\"from\"] === null || isNaN(datum[\"from\"])",
+                  "value": 0
+                },
+                {"scale": "concat_1_x", "field": "from"}
+              ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "text": {"value": "more valuable"},
               "fontSize": {"value": 9.5}
@@ -341,7 +377,13 @@
               "tooltip": {
                 "signal": "{\"from\": format(datum[\"from\"], \"\")}"
               },
-              "x": {"scale": "concat_1_x", "field": "from"},
+              "x": [
+                {
+                  "test": "datum[\"from\"] === null || isNaN(datum[\"from\"])",
+                  "value": 0
+                },
+                {"scale": "concat_1_x", "field": "from"}
+              ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "text": {"value": "more valuable"},
               "fontSize": {"value": 9.5}
@@ -365,7 +407,7 @@
       "domain": {"fields": [[-3, 3], {"data": "source_0", "field": "mean"}]},
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": false
+      "zero": true
     },
     {
       "name": "concat_0_y",

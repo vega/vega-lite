@@ -89,6 +89,8 @@ export const STROKEWIDTH = Channel.STROKEWIDTH;
 export const TOOLTIP = Channel.TOOLTIP;
 export const HREF = Channel.HREF;
 
+export type PositionChannel = 'x' | 'y' | 'x2' | 'y2';
+
 export type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
 
 export const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel> = {

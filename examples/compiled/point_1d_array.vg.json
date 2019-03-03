@@ -25,7 +25,8 @@
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
-    }
+    },
+    {"name": "height", "update": "height"}
   ],
   "marks": [
     {

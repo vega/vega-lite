@@ -55,12 +55,7 @@
     {"name": "child_width", "value": 800},
     {"name": "child_height", "value": 200}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 1,
-    "bounds": "full",
-    "align": "all"
-  },
+  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "all"},
   "marks": [
     {
       "name": "row_header",

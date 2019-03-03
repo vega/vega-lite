@@ -12,8 +12,8 @@ import {
   Y
 } from '../channel';
 import {Config} from '../config';
-import {Encoding, normalizeEncoding} from '../encoding';
 import * as vlEncoding from '../encoding';
+import {Encoding, normalizeEncoding} from '../encoding';
 import {getTypedFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
@@ -24,6 +24,7 @@ import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
+import {assembleAxisSignals} from './axis/assemble';
 import {AxisIndex} from './axis/component';
 import {parseUnitAxis} from './axis/parse';
 import {parseData} from './data/parse';
@@ -216,8 +217,8 @@ export class UnitModel extends ModelWithField {
     return assembleTopLevelSignals(this, signals);
   }
 
-  public assembleSelectionSignals(): NewSignal[] {
-    return assembleUnitSelectionSignals(this, []);
+  public assembleSignals(): NewSignal[] {
+    return [...assembleAxisSignals(this), ...assembleUnitSelectionSignals(this, [])];
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {

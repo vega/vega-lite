@@ -39,11 +39,7 @@
       "update": "bandspace(domain('concat_2_y').length, 1, 0.5) * concat_2_y_step"
     }
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 20, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
@@ -55,6 +51,7 @@
           "height": {"signal": "concat_0_height"}
         }
       },
+      "signals": [{"name": "width", "update": "concat_0_width"}],
       "marks": [
         {
           "name": "concat_0_marks",
@@ -119,6 +116,7 @@
           "height": {"signal": "concat_1_height"}
         }
       },
+      "signals": [{"name": "width", "update": "concat_1_width"}],
       "marks": [
         {
           "name": "concat_1_marks",
@@ -185,6 +183,7 @@
           "height": {"signal": "concat_2_height"}
         }
       },
+      "signals": [{"name": "width", "update": "concat_2_width"}],
       "marks": [
         {
           "name": "concat_2_marks",

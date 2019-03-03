@@ -73,9 +73,21 @@
           "tooltip": {
             "signal": "{\"lower_yield\": format(datum[\"upper_upper_yield\"], \"\"), \"upper_yield\": format(datum[\"lower_upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
-          "x": {"scale": "x", "field": "lower_upper_yield"},
+          "x": [
+            {
+              "test": "datum[\"lower_upper_yield\"] === null || isNaN(datum[\"lower_upper_yield\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "lower_upper_yield"}
+          ],
           "y": {"scale": "y", "field": "variety", "band": 0.5},
-          "x2": {"scale": "x", "field": "upper_upper_yield"}
+          "x2": [
+            {
+              "test": "datum[\"upper_upper_yield\"] === null || isNaN(datum[\"upper_upper_yield\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "upper_upper_yield"}
+          ]
         }
       }
     },
@@ -97,7 +109,13 @@
           "tooltip": {
             "signal": "{\"center\": format(datum[\"center\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
-          "x": {"scale": "x", "field": "center"},
+          "x": [
+            {
+              "test": "datum[\"center\"] === null || isNaN(datum[\"center\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "center"}
+          ],
           "y": {"scale": "y", "field": "variety", "band": 0.5}
         }
       }

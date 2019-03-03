@@ -59,8 +59,8 @@ export abstract class BaseConcatModel extends Model {
     return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
   }
 
-  public assembleSelectionSignals(): NewSignal[] {
-    this.children.forEach(child => child.assembleSelectionSignals());
+  public assembleSignals(): NewSignal[] {
+    this.children.forEach(child => child.assembleSignals());
     return [];
   }
 

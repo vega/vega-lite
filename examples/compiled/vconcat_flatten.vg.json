@@ -80,12 +80,7 @@
     },
     {"name": "pts", "update": "vlSelectionResolve(\"pts_store\")"}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 1,
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
@@ -148,7 +143,13 @@
               "tooltip": {
                 "signal": "{\"ra\": format(datum[\"ra\"], \"\"), \"dec\": format(datum[\"dec\"], \"\")}"
               },
-              "x": {"scale": "concat_0_x", "field": "ra"},
+              "x": [
+                {
+                  "test": "datum[\"ra\"] === null || isNaN(datum[\"ra\"])",
+                  "value": 0
+                },
+                {"scale": "concat_0_x", "field": "ra"}
+              ],
               "y": {"scale": "concat_0_y", "field": "dec"},
               "size": {"value": 100},
               "shape": {"value": "circle"}

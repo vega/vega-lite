@@ -6666,6 +6666,11 @@ vega-util@^1.7.0, vega-util@^1.7.1, vega-util@^1.8.0, vega-util@^1.9.0:
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.9.0.tgz#96d7b954a444a16461d708249b8fe43ec4277144"
   integrity sha512-nNyGsCx7Ei4J3/HJn7yCshyIWIepY1kXWcAY6pZBziVUlicJLbp44KT1qx6qtX9t9rsWOVQFJcO+zNvuS6h04Q==
 
+vega-util@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.9.0.tgz#96d7b954a444a16461d708249b8fe43ec4277144"
+  integrity sha512-nNyGsCx7Ei4J3/HJn7yCshyIWIepY1kXWcAY6pZBziVUlicJLbp44KT1qx6qtX9t9rsWOVQFJcO+zNvuS6h04Q==
+
 vega-view-transforms@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/vega-view-transforms/-/vega-view-transforms-2.0.3.tgz#9999f83301efbe65ed1971018f538f5aeb62a16e"

@@ -95,6 +95,7 @@
           "height": {"signal": "concat_0_height"}
         }
       },
+      "signals": [{"name": "height", "update": "concat_0_height"}],
       "marks": [
         {
           "name": "concat_0_marks",
@@ -188,6 +189,7 @@
           "height": {"signal": "concat_2_height"}
         }
       },
+      "signals": [{"name": "height", "update": "concat_2_height"}],
       "marks": [
         {
           "name": "concat_2_marks",

@@ -58,7 +58,13 @@
           "tooltip": {
             "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\")}"
           },
-          "x": {"scale": "x", "field": "x"},
+          "x": [
+            {
+              "test": "datum[\"x\"] === null || isNaN(datum[\"x\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "x"}
+          ],
           "y": {"scale": "y", "field": "y"}
         }
       }

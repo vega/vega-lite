@@ -8,6 +8,7 @@
   "data": [
     {"name": "source_0", "values": "a\n1\n2\n3\n4", "format": {"type": "csv"}}
   ],
+  "signals": [{"name": "width", "update": "width"}],
   "marks": [
     {
       "name": "marks",
