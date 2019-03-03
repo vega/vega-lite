@@ -191,7 +191,7 @@ export interface GenericCompositionLayout extends BoundsMixins {
    * An object of the form `{"row": number, "column": number}` can be used to set
    * different spacing values for rows and columns.
    *
-   * __Default value__: Depending on `"spacing"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)
+   * __Default value__: Depends on `"spacing"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)
    */
   spacing?: number | RowCol<number>;
 }
