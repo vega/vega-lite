@@ -1202,6 +1202,64 @@
       },
       "type": "object"
     },
+    "BaseLegendLayout": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor point for legend orient group layout."
+        },
+        "bounds": {
+          "$ref": "#/definitions/LayoutBounds",
+          "description": "The bounds calculation to use for legend orient group layout."
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "A flag to center legends within a shared orient group."
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Orientation"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The layout direction for legend orient group layout."
+        },
+        "margin": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The pixel margin between legends within a orient group."
+        },
+        "offset": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The pixel offset from the chart body for a legend orient group."
+        }
+      },
+      "type": "object"
+    },
     "BaseMarkConfig": {
       "additionalProperties": false,
       "properties": {
@@ -6779,6 +6837,25 @@
       ],
       "type": "string"
     },
+    "LayoutBounds": {
+      "anyOf": [
+        {
+          "enum": [
+            "full"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "flush"
+          ],
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/SignalRef"
+        }
+      ]
+    },
     "Legend": {
       "additionalProperties": false,
       "description": "Properties of a legend or boolean flag for determining whether to show it.",
@@ -7180,6 +7257,10 @@
           "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
           "type": "number"
         },
+        "layout": {
+          "$ref": "#/definitions/LegendLayout",
+          "description": "Legend orient group layout parameters."
+        },
         "offset": {
           "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
           "type": "number"
@@ -7316,6 +7397,88 @@
         "titlePadding": {
           "description": "The padding, in pixels, between title and legend.\n\n__Default value:__ `5`.",
           "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "LegendLayout": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor point for legend orient group layout."
+        },
+        "bottom": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "bottom-left": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "bottom-right": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "bounds": {
+          "$ref": "#/definitions/LayoutBounds",
+          "description": "The bounds calculation to use for legend orient group layout."
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "A flag to center legends within a shared orient group."
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Orientation"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The layout direction for legend orient group layout."
+        },
+        "left": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "margin": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The pixel margin between legends within a orient group."
+        },
+        "offset": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The pixel offset from the chart body for a legend orient group."
+        },
+        "right": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "top": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "top-left": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "top-right": {
+          "$ref": "#/definitions/BaseLegendLayout"
         }
       },
       "type": "object"
