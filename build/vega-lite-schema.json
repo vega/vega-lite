@@ -890,6 +890,10 @@
           "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
           "type": "boolean"
         },
+        "title": {
+          "description": "Set to null to disable title for the axis or legend",
+          "type": "null"
+        },
         "titleAlign": {
           "$ref": "#/definitions/Align",
           "description": "Horizontal text alignment of axis titles."
@@ -7374,6 +7378,10 @@
         "symbolType": {
           "$ref": "#/definitions/SymbolShape",
           "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   * In addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n   *\n   * __Default value:__ `\"circle\"`.\n   *"
+        },
+        "title": {
+          "description": "Set to null to disable title for the axis or legend",
+          "type": "null"
         },
         "titleAlign": {
           "$ref": "#/definitions/Align",
