@@ -234,7 +234,7 @@ export interface CompositionConfigMixins {
   /** Default configuration for all concatenation view composition operators (`concat`, `hconcat`, and `vconcat`) */
   concat?: CompositionConfig;
 
-  /** Default configuration for the r`epeat` view composition operator */
+  /** Default configuration for the `repeat` view composition operator */
   repeat?: CompositionConfig;
 }
 
