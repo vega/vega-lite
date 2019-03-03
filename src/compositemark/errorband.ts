@@ -1,3 +1,4 @@
+import {Orientation} from 'vega';
 import {Encoding} from '../encoding';
 import {Field} from '../fielddef';
 import * as log from '../log';
@@ -5,7 +6,7 @@ import {MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize/index';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {Flag, keys} from '../util';
-import {Interpolate, Orient} from '../vega.schema';
+import {Interpolate} from '../vega.schema';
 import {CompositeMarkNormalizer} from './base';
 import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins} from './common';
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './errorbar';
@@ -83,7 +84,7 @@ export type ErrorBandDef = GenericCompositeMarkDef<ErrorBand> &
     /**
      * Orientation of the error band. This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
      */
-    orient?: Orient;
+    orient?: Orientation;
   };
 
 export interface ErrorBandConfigMixins {

@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import {AggregateOp, Orientation} from 'vega';
 import {PositionChannel} from '../channel';
 import {Config} from '../config';
 import {Data} from '../data';
@@ -20,7 +20,6 @@ import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {TitleParams} from '../title';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys, titlecase} from '../util';
-import {Orient} from '../vega.schema';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -109,7 +108,7 @@ export type ErrorBarDef = GenericCompositeMarkDef<ErrorBar> &
     /**
      * Orientation of the error bar.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
      */
-    orient?: Orient;
+    orient?: Orientation;
   };
 
 export interface ErrorBarConfigMixins {
@@ -177,7 +176,7 @@ function errorBarOrientAndInputType(
   spec: GenericUnitSpec<ErrorEncoding<Field>, ErrorBar | ErrorBand | ErrorBarDef | ErrorBandDef>,
   compositeMark: ErrorBar | ErrorBand
 ): {
-  orient: Orient;
+  orient: Orientation;
   inputType: ErrorInputType;
 } {
   const {encoding} = spec;
@@ -306,7 +305,7 @@ export function errorBarParams<
   continuousAxisChannelDef: PositionFieldDef<string>;
   continuousAxis: 'x' | 'y';
   encodingWithoutContinuousAxis: ErrorEncoding<string>;
-  ticksOrient: Orient;
+  ticksOrient: Orientation;
   markDef: MD;
   outerSpec: {
     data?: Data;
