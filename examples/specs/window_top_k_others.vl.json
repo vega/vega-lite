@@ -1,10 +1,10 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "description": "Top-K plot with \"others\" by Trevor Manz, adapted from https://observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example.",
+  "title": "Top Directors by Average Worldwide Gross",
   "data": {"url": "data/movies.json"},
-  "mark": { "type":"bar", "tooltip": null},
+  "mark": "bar",
   "transform": [
-    {"filter": "datum.Director != null && datum.Worldwide_Gross != null"},
     {
       "aggregate": [{"op": "mean", "field": "Worldwide_Gross", "as": "aggregate_gross"}],
       "groupby": ["Director"]
@@ -22,13 +22,13 @@
       "aggregate": "mean",
       "field": "aggregate_gross",
       "type": "quantitative",
-      "axis": {"title": null}
+      "title": null
     },
     "y": {
       "sort": {"op": "mean", "field": "aggregate_gross", "order": "descending"},
       "field": "ranked_director",
       "type": "ordinal",
-      "axis": {"title": null}
+      "title": null
     }
   }
 }
