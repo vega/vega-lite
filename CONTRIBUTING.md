@@ -183,6 +183,8 @@ We use the [Visual Studio Code](https://code.visualstudio.com/) editor.
 
 To manually test your changes locally, you should have a local instance of [Vega Editor](https://github.com/vega/editor) and link Vega-Lite to the editor (See [Vega Editor's README](https://github.com/vega/editor#local-testing--debugging) for instructions).
 
+For development purposes, run the command `yarn tsc -w` in another window. This will automatically recompile Typescript into Javascript whenever you make changes. 
+
 ## Pull Requests and Travis
 
 All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `yarn test`, generate vega specs and SVG files from your updated code, compare them with the existing compiled outputs in `examples/compiled/`, and check code coverage of your code. (See `.travis.yml` for the commands it executes.) If you don't want your PR reviewed until Travis checks pass, just add the ":construction: WIP" label. Once you're ready for review, remove the label and comment that the PR is ready for review.
