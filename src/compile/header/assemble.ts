@@ -79,16 +79,26 @@ export function assembleHeaderGroups(model: Model, channel: HeaderChannel): VgMa
 
 // 0, (0,90), 90, (90, 180), 180, (180, 270), 270, (270, 0)
 
-export function labelAlign(angle: number) {
+export function labelAlign(angle: number, channel: FacetChannel) {
   // to keep angle in [0, 360)
   angle = ((angle % 360) + 360) % 360;
-  if ((angle + 90) % 180 === 0) {
-    // for 90 and 270
-    return {}; // default center
-  } else if (angle < 90 || 270 < angle) {
-    return {align: {value: 'right'}};
-  } else if (135 <= angle && angle < 225) {
-    return {align: {value: 'left'}};
+  if (channel === 'row') {
+    if ((angle + 90) % 180 === 0) {
+      // for 90 and 270
+      return {}; // default center
+    } else if (angle < 90 || 270 < angle) {
+      return {align: {value: 'right'}};
+    } else if (135 <= angle && angle < 225) {
+      return {align: {value: 'left'}};
+    }
+  } else if (channel === 'column') {
+    if (angle % 180 === 0) {
+      return {};
+    } else if (0 < angle && angle < 180) {
+      return {align: {value: 'right'}};
+    } else {
+      return {align: {value: 'left'}};
+    }
   }
   return {};
 }
@@ -127,7 +137,7 @@ export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel
   const {format, labelAngle} = header;
 
   const update = {
-    ...labelAlign(labelAngle)
+    ...labelAlign(labelAngle, channel)
   };
 
   return {
