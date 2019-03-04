@@ -183,7 +183,7 @@ We use the [Visual Studio Code](https://code.visualstudio.com/) editor.
 
 To manually test your changes locally, you should have a local instance of [Vega Editor](https://github.com/vega/editor) and link Vega-Lite to the editor (See [Vega Editor's README](https://github.com/vega/editor#local-testing--debugging) for instructions).
 
-For development purposes, run the command `yarn tsc -w` in another window. This will automatically recompile Typescript into Javascript whenever you make changes. 
+To update the Vega-Lite code in the editor, you need to compile TypeScript to JavaScript. The easiest way is to run `yarn tsc -w` in the Vega-Lite directory. This command will automatically recompile the code whenever you make changes.
 
 ## Pull Requests and Travis
 
