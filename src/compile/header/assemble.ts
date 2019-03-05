@@ -14,12 +14,12 @@ import {
   HeaderConfig
 } from '../../header';
 import {isSortField} from '../../sort';
-import {FacetFieldDef} from '../../spec/facet';
+import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
 import {keys} from '../../util';
 import {RowCol, VgComparator, VgMarkGroup} from '../../vega.schema';
 import {formatSignalRef} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
-import {Model} from '../model';
+import {isFacetModel, Model} from '../model';
 import {
   HEADER_TYPES,
   HeaderChannel,
@@ -29,6 +29,7 @@ import {
   LayoutHeaderComponentIndex
 } from './component';
 
+// TODO: rename to assembleHeaderTitleGroup
 export function assembleTitleGroup(model: Model, channel: FacetChannel) {
   const title = model.component.layoutHeaders[channel].title;
   const config = model.config ? model.config : undefined;
@@ -158,6 +159,8 @@ export function assembleHeaderGroup(
       title = assembleLabelTitle(facetFieldDef, channel, config);
     }
 
+    const isFacetWithoutRowCol = isFacetModel(model) && !isFacetMapping(model.facet);
+
     const axes = headerCmpt.axes;
 
     const hasAxes = axes && axes.length > 0;
@@ -168,12 +171,19 @@ export function assembleHeaderGroup(
         name: model.getName(`${channel}_${headerType}`),
         type: 'group',
         role: `${channel}-${headerType}`,
+
         ...(layoutHeader.facetFieldDef
           ? {
               from: {data: model.getName(channel + '_domain')},
               sort: getSort(facetFieldDef, channel)
             }
           : {}),
+        ...(hasAxes && isFacetWithoutRowCol
+          ? {
+              from: {data: model.getName(`facet_domain_${channel}`)}
+            }
+          : {}),
+
         ...(title ? {title} : {}),
         ...(headerCmpt.sizeSignal
           ? {

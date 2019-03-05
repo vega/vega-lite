@@ -53,19 +53,6 @@ export class FacetModel extends ModelWithField {
     const facet = replaceRepeaterInFacet(spec.facet, repeater);
 
     this.facet = this.initFacet(facet);
-
-    const {resolve} = this.component;
-
-    if (!isFacetMapping(facet)) {
-      if (resolve.axis.x === 'shared' || resolve.axis.y === 'shared') {
-        log.warn(log.message.FACET_1D_CANNOT_SHARE_AXIS);
-      }
-
-      resolve.axis = {
-        x: 'independent',
-        y: 'independent'
-      };
-    }
   }
 
   private initFacet(facet: FacetFieldDef<string> | FacetMapping<string>): EncodingFacetMapping<string> {
@@ -178,7 +165,7 @@ export class FacetModel extends ModelWithField {
 
     let align: LayoutAlign = 'all';
 
-    // Do not align the cells if the scale corresponding to the directin is indepent.
+    // Do not align the cells if the scale corresponding to the direction is indepent.
     // We always align when we facet into both row and column.
     if (!row && this.component.resolve.scale.x === 'independent') {
       align = 'none';

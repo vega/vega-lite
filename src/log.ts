@@ -138,10 +138,6 @@ export namespace message {
   export const REPEAT_CANNOT_SHARE_AXIS =
     'Axes cannot be shared in repeated views yet (https://github.com/vega/vega-lite/issues/2415).';
 
-  // REPEAT
-  export const FACET_1D_CANNOT_SHARE_AXIS =
-    'Axes cannot be shared in facet views without row/column yet (https://github.com/vega/vega-lite/issues/4543).';
-
   // TITLE
   export function cannotSetTitleAnchor(type: string) {
     return `Cannot set title "anchor" for a ${type} spec`;
