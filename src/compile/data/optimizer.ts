@@ -57,7 +57,7 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
   public abstract run(node: DataFlowNode): OptimizerFlags;
 
   public reset(): void {
-    return;
+    // do nothing
   }
 
   public optimizeNextFromLeaves(node: DataFlowNode): boolean {

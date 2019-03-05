@@ -381,7 +381,11 @@ export class MergeBins extends BottomUpOptimizer {
         promotedBin.merge(bin, this.model);
       }
       this.setMutated();
-      promotedBin.swapWithParent();
+      if (parent instanceof BinNode) {
+        parent.merge(promotedBin, this.model);
+      } else {
+        promotedBin.swapWithParent();
+      }
     }
     if (remainingBins.length > 1) {
       const remainingBin = remainingBins.pop();

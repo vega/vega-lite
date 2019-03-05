@@ -3,6 +3,7 @@
 import {ScaleChannel} from '../../../src/channel';
 import {domainSort, mergeDomains, parseDomainForChannel} from '../../../src/compile/scale/domain';
 import {parseScaleCore} from '../../../src/compile/scale/parse';
+import {SignalRefWrapper} from '../../../src/compile/signal';
 import {UnitModel} from '../../../src/compile/unit';
 import {MAIN} from '../../../src/data';
 import {PositionFieldDef} from '../../../src/fielddef';
@@ -125,12 +126,8 @@ describe('compile/scale', () => {
               y: fieldDef
             }
           });
-
-          expect(testParseDomainForChannel(model, 'y')).toEqual([
-            {
-              signal: '[bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop]'
-            }
-          ]);
+          const domain = testParseDomainForChannel(model, 'y')[0] as SignalRefWrapper;
+          expect(domain.signal).toEqual('[bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop]');
 
           expect(localLogger.warns[0]).toEqual(log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
         })

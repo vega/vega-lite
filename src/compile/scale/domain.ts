@@ -27,9 +27,9 @@ import {sortArrayIndexField} from '../data/calculate';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection/selection';
+import {SignalRefWrapper} from '../signal';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
-import {SignalRefWrapper} from '../signal';
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {
