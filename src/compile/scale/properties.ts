@@ -178,8 +178,9 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
 export function bins(model: Model, fieldDef: TypedFieldDef<string>, channel: Channel) {
   const bin = fieldDef.bin;
   if (isBinning(bin)) {
+    const signal = model.getName(vgField(fieldDef, {suffix: 'bins'}));
     return new SignalRefWrapper(() => {
-      return model.getName(vgField(fieldDef, {suffix: 'bins'}));
+      return model.getSignalName(signal);
     });
   } else if (isBinned(bin) && isBinParams(bin) && bin.step !== undefined) {
     // start and stop will be determined from the scale domain

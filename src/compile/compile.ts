@@ -100,8 +100,6 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     // 5. Optimize the dataflow.  This will modify the data component of the model.
     optimizeDataflow(model.component.data, model);
 
-    model.parseAxisAndHeader();
-
     // 6. Assemble: convert model components --> Vega Spec.
     return assembleTopLevelModel(
       model,

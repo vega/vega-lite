@@ -116,10 +116,13 @@ function getRangeStep(model: UnitModel, channel: 'x' | 'y'): number | SignalRef 
       const binSignal = model.getName(vgField(fieldDef, {suffix: 'bins'}));
 
       // TODO: extract this to be range step signal
-      const binCount = `(${binSignal}.stop - ${binSignal}.start) / ${binSignal}.step`;
       const sizeType = getSizeType(channel);
       const sizeSignal = model.getName(sizeType);
-      return new SignalRefWrapper(() => `${model.getSignalName(sizeSignal)} / (${model.getSignalName(binCount)})`);
+      return new SignalRefWrapper(() => {
+        const signalName = model.getSignalName(binSignal);
+        const binCount = `(${signalName}.stop - ${signalName}.start) / ${signalName}.step`;
+        return `${model.getSignalName(sizeSignal)} / (${binCount})`;
+      });
     }
     // TODO: handle binned case
   }

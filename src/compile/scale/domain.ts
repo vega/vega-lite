@@ -29,6 +29,7 @@ import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection/selection';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
+import {SignalRefWrapper} from '../signal';
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {
@@ -279,7 +280,12 @@ function parseSingleChannelDomain(
       // continuous scales
       if (isBinning(fieldDef.bin)) {
         const signalName = model.getName(vgField(fieldDef, {suffix: 'bins'}));
-        return [{signal: `[${signalName}.start, ${signalName}.stop]`}];
+        return [
+          new SignalRefWrapper(() => {
+            const signal = model.getSignalName(signalName);
+            return `[${signal}.start, ${signal}.stop]`;
+          })
+        ];
       } else {
         return [
           {

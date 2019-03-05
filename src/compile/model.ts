@@ -238,7 +238,7 @@ export abstract class Model {
     this.parseSelection();
     this.parseProjection();
     this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections; depends on projection because some transforms require the finalized projection name.
-    // this.parseAxisAndHeader(); // depends on scale and layout size
+    this.parseAxisAndHeader(); // depends on scale and layout size
     this.parseLegend(); // depends on scale, markDef
     this.parseMarkGroup(); // depends on data name, scale, layout size, axisGroup, and children's scale, axis, legend and mark.
   }
