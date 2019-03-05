@@ -434,3 +434,10 @@ export function internalField(name: string) {
 export function isInternalField(name: string) {
   return name.indexOf('__') === 0;
 }
+
+/**
+ * Normalize angle to be within [0,360).
+ */
+export function normalizeAngle(angle: number) {
+  return ((angle % 360) + 360) % 360;
+}
