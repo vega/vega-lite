@@ -119,6 +119,7 @@
     "yargs": "^13.2.1"
   },
   "jest": {
+    "testEnvironment": "node",
     "preset": "jest-puppeteer",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
