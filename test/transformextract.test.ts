@@ -28,6 +28,7 @@ describe('extractTransforms()', () => {
     'circle_github_punchcard.vl.json',
     'concat_bar_layer_circle.vl.json',
     'concat_marginal_histograms.vl.json',
+    'concat_weather.vl.json',
     'errorbar_aggregate.vl.json',
     'errorbar_horizontal_aggregate.vl.json',
     'facet_independent_scale_layer_broken.vl.json',
@@ -109,7 +110,7 @@ describe('extractTransforms()', () => {
     'trellis_cross_sort.vl.json',
     'trellis_line_quarter.vl.json',
     'vconcat_weather.vl.json',
-    'window_mean_difference.vl.json'
+    'window_top_k_others.vl.json'
   ]);
   for (const file of fs.readdirSync(specsDir)) {
     const filepath = specsDir + file;
@@ -122,8 +123,8 @@ describe('extractTransforms()', () => {
         const extractSpec = extractTransforms(normalize(spec, config), config) as TopLevelSpec;
 
         // convert to JSON to resolve `SignalRefWrapper`s that are lazily evaluated
-        const originalCompiled = JSON.parse(JSON.stringify(compile(spec)));
-        const transformCompiled = JSON.parse(JSON.stringify(compile(extractSpec)));
+        const originalCompiled = compile(spec);
+        const transformCompiled = compile(extractSpec);
 
         if (failsList.has(file)) {
           expect(transformCompiled).not.toEqual(originalCompiled);

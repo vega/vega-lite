@@ -1,76 +1,152 @@
 /* tslint:disable:quotemark */
+import {COLUMN, FACET_CHANNELS, ROW} from '../../src/channel';
 import {defaultConfig, initConfig} from '../../src/config';
 import * as log from '../../src/log';
 import {LocalLogger} from '../../src/log';
 import {normalize} from '../../src/normalize/index';
+import {TopLevelSpec} from '../../src/spec/index';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
 describe('normalize()', () => {
+  describe('normalizeRepeat', () => {
+    it(
+      'should drop columns from repeat with row/column',
+      log.wrap((localLogger: LocalLogger) => {
+        const spec: TopLevelSpec = {
+          $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+          repeat: {column: ['Horsepower', 'Miles_per_Gallon', 'Acceleration', 'Displacement']},
+          columns: 2,
+          spec: {
+            data: {url: 'data/cars.json'},
+            mark: 'bar',
+            encoding: {
+              x: {
+                field: {repeat: 'column'},
+                bin: true,
+                type: 'quantitative'
+              },
+              y: {aggregate: 'count', type: 'quantitative'},
+              color: {field: 'Origin', type: 'nominal'}
+            }
+          }
+        };
+        const normalized = normalize(spec);
+        expect(normalized['columns']).toBeUndefined();
+        expect(localLogger.warns[0]).toEqual(log.message.columnsNotSupportByRowCol('repeat'));
+      })
+    );
+  });
+
   describe('normalizeFacetedUnit', () => {
-    it('should convert single extended spec with column into a composite spec', () => {
-      const spec: any = {
-        name: 'faceted',
-        width: 123,
-        height: 234,
-        description: 'faceted spec',
-        data: {url: 'data/movies.json'},
-        mark: 'point',
-        encoding: {
-          column: {field: 'MPAA_Rating', type: 'ordinal'},
-          x: {field: 'Worldwide_Gross', type: 'quantitative'},
-          y: {field: 'US_DVD_Sales', type: 'quantitative'}
-        }
-      };
-      const config = initConfig(spec.config);
-      expect(normalize(spec, config)).toEqual({
-        name: 'faceted',
-        description: 'faceted spec',
-        data: {url: 'data/movies.json'},
-        facet: {
-          column: {field: 'MPAA_Rating', type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
+    for (const channel of FACET_CHANNELS) {
+      it(`should convert single extended spec with ${channel} into a composite spec`, () => {
+        const fieldDef = {field: 'MPAA_Rating', type: 'ordinal'};
+        const spec: any = {
+          name: 'faceted',
           width: 123,
           height: 234,
-          encoding: {
-            x: {field: 'Worldwide_Gross', type: 'quantitative'},
-            y: {field: 'US_DVD_Sales', type: 'quantitative'}
-          }
-        }
-      });
-    });
-
-    it('should convert single extended spec with row into a composite spec', () => {
-      const spec: any = {
-        data: {url: 'data/movies.json'},
-        mark: 'point',
-        encoding: {
-          row: {field: 'MPAA_Rating', type: 'ordinal'},
-          x: {field: 'Worldwide_Gross', type: 'quantitative'},
-          y: {field: 'US_DVD_Sales', type: 'quantitative'}
-        }
-      };
-
-      const config = initConfig(spec.config);
-      expect(normalize(spec, config)).toEqual({
-        data: {url: 'data/movies.json'},
-        facet: {
-          row: {field: 'MPAA_Rating', type: 'ordinal'}
-        },
-        spec: {
+          description: 'faceted spec',
+          data: {url: 'data/movies.json'},
+          spacing: 20,
           mark: 'point',
           encoding: {
+            [channel]: fieldDef,
             x: {field: 'Worldwide_Gross', type: 'quantitative'},
             y: {field: 'US_DVD_Sales', type: 'quantitative'}
           }
-        }
+        };
+
+        const config = initConfig(spec.config);
+        const expectedFacet =
+          channel === 'facet'
+            ? fieldDef
+            : {
+                [channel]: fieldDef
+              };
+
+        expect(normalize(spec, config)).toEqual({
+          name: 'faceted',
+          description: 'faceted spec',
+          data: {url: 'data/movies.json'},
+          spacing: 20,
+          facet: expectedFacet,
+          spec: {
+            mark: 'point',
+            width: 123,
+            height: 234,
+            encoding: {
+              x: {field: 'Worldwide_Gross', type: 'quantitative'},
+              y: {field: 'US_DVD_Sales', type: 'quantitative'}
+            }
+          }
+        });
       });
-    });
+    }
+
+    for (const channel of [ROW, COLUMN]) {
+      it(
+        `should drop facet if ${channel} is also specified`,
+        log.wrap(localLogger => {
+          const spec: any = {
+            data: {url: 'data/movies.json'},
+            mark: 'point',
+            encoding: {
+              [channel]: {field: 'MPAA_Rating', type: 'ordinal'},
+              facet: {field: 'todrop', type: 'ordinal'},
+              x: {field: 'Worldwide_Gross', type: 'quantitative'},
+              y: {field: 'US_DVD_Sales', type: 'quantitative'}
+            }
+          };
+
+          const config = initConfig(spec.config);
+          expect(normalize(spec, config)).toEqual({
+            data: {url: 'data/movies.json'},
+            facet: {
+              [channel]: {field: 'MPAA_Rating', type: 'ordinal'}
+            },
+            spec: {
+              mark: 'point',
+              encoding: {
+                x: {field: 'Worldwide_Gross', type: 'quantitative'},
+                y: {field: 'US_DVD_Sales', type: 'quantitative'}
+              }
+            }
+          });
+          expect(localLogger.warns[0]).toEqual(log.message.facetChannelDropped([channel]));
+        })
+      );
+    }
   });
 
   describe('normalizeFacet', () => {
+    it(
+      'should drop columns from facet with row/column',
+      log.wrap((localLogger: LocalLogger) => {
+        const spec: TopLevelSpec = {
+          $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+          data: {url: 'data/cars.json'},
+          facet: {column: {field: 'a', type: 'nominal'}},
+          columns: 2,
+          spec: {
+            mark: 'bar',
+            encoding: {
+              x: {
+                field: {repeat: 'column'},
+                bin: true,
+                type: 'quantitative'
+              },
+              y: {aggregate: 'count', type: 'quantitative'},
+              color: {field: 'Origin', type: 'nominal'}
+            }
+          }
+        };
+        const normalized = normalize(spec);
+        expect(normalized['columns']).toBeUndefined();
+        expect(localLogger.warns[0]).toEqual(log.message.columnsNotSupportByRowCol('facet'));
+      })
+    );
+
     it('should produce correct layered specs for mean point and vertical error bar', () => {
       expect(
         normalize(

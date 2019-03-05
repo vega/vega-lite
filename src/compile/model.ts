@@ -1,6 +1,6 @@
 import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
-import {isNumber, isString} from 'vega-util';
-import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
+import {isString} from 'vega-util';
+import {Channel, FACET_CHANNELS, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
@@ -8,8 +8,9 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../fie
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
-import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec, TopLevelFacetSpec} from '../spec';
-import {extractCompositionLayout, GenericCompositionLayout, ViewBackground} from '../spec/base';
+import {isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
+import {extractCompositionLayout, GenericCompositionLayout, SpecType, ViewBackground} from '../spec/base';
+import {NormalizedSpec} from '../spec/index';
 import {extractTitleConfig, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
@@ -19,7 +20,8 @@ import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
 import {DataComponent} from './data';
 import {FacetModel} from './facet';
-import {assembleHeaderGroups, assembleTitleGroup, HEADER_CHANNELS, LayoutHeaderComponent} from './header/index';
+import {assembleHeaderGroups, assembleLayoutTitleBand, assembleTitleGroup} from './header/assemble';
+import {HEADER_CHANNELS, LayoutHeaderComponent} from './header/component';
 import {LayerModel} from './layer';
 import {sizeExpr} from './layoutsize/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';
@@ -34,7 +36,7 @@ import {RepeaterValue} from './repeater';
 import {assembleScales} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
-import {parseScale} from './scale/parse';
+import {parseScales} from './scale/parse';
 import {SelectionComponent} from './selection/selection';
 import {Split} from './split';
 import {UnitModel} from './unit';
@@ -54,6 +56,7 @@ export interface Component {
   layoutHeaders: {
     row?: LayoutHeaderComponent;
     column?: LayoutHeaderComponent;
+    facet?: LayoutHeaderComponent;
   };
 
   mark: VgMarkGroup[];
@@ -133,7 +136,6 @@ export function isLayerModel(model: Model): model is LayerModel {
 }
 
 export abstract class Model {
-  public abstract readonly type: 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
   public readonly name: string;
 
   public readonly title: TitleParams;
@@ -157,7 +159,8 @@ export abstract class Model {
   public abstract readonly children: Model[] = [];
 
   constructor(
-    spec: BaseSpec,
+    spec: NormalizedSpec,
+    public readonly type: SpecType,
     public readonly parent: Model,
     parentGivenName: string,
     public readonly config: Config,
@@ -182,8 +185,7 @@ export abstract class Model {
 
     this.description = spec.description;
     this.transforms = normalizeTransform(spec.transform || []);
-    this.layout =
-      isUnitSpec(spec) || isLayerSpec(spec) ? undefined : extractCompositionLayout(spec as TopLevelFacetSpec);
+    this.layout = isUnitSpec(spec) || isLayerSpec(spec) ? {} : extractCompositionLayout(spec, type, config);
 
     this.component = {
       data: {
@@ -194,7 +196,7 @@ export abstract class Model {
         isFaceted: isFacetSpec(spec) || (parent && parent.component.data.isFaceted && !spec.data)
       },
       layoutSize: new Split<LayoutSizeIndex>(),
-      layoutHeaders: {row: {}, column: {}},
+      layoutHeaders: {row: {}, column: {}, facet: {}},
       mark: null,
       resolve: {
         scale: {},
@@ -235,20 +237,20 @@ export abstract class Model {
     this.parseLayoutSize(); // depends on scale
     this.renameTopLevelLayoutSizeSignal();
 
-    this.parseSelection();
+    this.parseSelections();
     this.parseProjection();
     this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections; depends on projection because some transforms require the finalized projection name.
-    this.parseAxisAndHeader(); // depends on scale and layout size
-    this.parseLegend(); // depends on scale, markDef
+    this.parseAxesAndHeaders(); // depends on scale and layout size
+    this.parseLegends(); // depends on scale, markDef
     this.parseMarkGroup(); // depends on data name, scale, layout size, axisGroup, and children's scale, axis, legend and mark.
   }
 
   public abstract parseData(): void;
 
-  public abstract parseSelection(): void;
+  public abstract parseSelections(): void;
 
   public parseScale() {
-    parseScale(this);
+    parseScales(this);
   }
 
   public parseProjection() {
@@ -273,14 +275,14 @@ export abstract class Model {
 
   public abstract parseMarkGroup(): void;
 
-  public abstract parseAxisAndHeader(): void;
+  public abstract parseAxesAndHeaders(): void;
 
-  public parseLegend() {
+  public parseLegends() {
     parseLegend(this);
   }
 
   public abstract assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
-  public abstract assembleSelectionSignals(): NewSignal[];
+  public abstract assembleSignals(): NewSignal[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
 
@@ -332,19 +334,15 @@ export abstract class Model {
       return undefined;
     }
 
-    const {align, bounds, center, spacing = {}} = this.layout;
+    const {spacing, ...layout} = this.layout;
+
+    const titleBand = assembleLayoutTitleBand(this.component.layoutHeaders);
 
     return {
-      padding: isNumber(spacing)
-        ? spacing
-        : {
-            row: spacing.row || 10,
-            column: spacing.column || 10
-          },
+      padding: spacing,
       ...this.assembleDefaultLayout(),
-      ...(align ? {align} : {}),
-      ...(bounds ? {bounds} : {}),
-      ...(center ? {center} : {})
+      ...layout,
+      ...(titleBand ? {titleBand} : {})
     };
   }
 
@@ -358,7 +356,7 @@ export abstract class Model {
     const {layoutHeaders} = this.component;
     let headerMarks = [];
 
-    for (const channel of HEADER_CHANNELS) {
+    for (const channel of FACET_CHANNELS) {
       if (layoutHeaders[channel].title) {
         headerMarks.push(assembleTitleGroup(this, channel));
       }
@@ -419,7 +417,7 @@ export abstract class Model {
   public assembleGroup(signals: NewSignal[] = []) {
     const group: VgMarkGroup = {};
 
-    signals = signals.concat(this.assembleSelectionSignals());
+    signals = signals.concat(this.assembleSignals());
 
     if (signals.length > 0) {
       group.signals = signals;

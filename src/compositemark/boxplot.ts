@@ -1,3 +1,4 @@
+import {Orientation} from 'vega';
 import {isNumber, isObject} from 'vega-util';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
@@ -8,7 +9,6 @@ import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
 import {Flag, getFirstDefined, keys} from '../util';
-import {Orient} from '../vega.schema';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -64,7 +64,7 @@ export type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> &
      *
      * __Default value:__ `"vertical"`.
      */
-    orient?: Orient;
+    orient?: Orientation;
   };
 
 export interface BoxPlotConfigMixins {
@@ -334,7 +334,7 @@ function boxParams(
   continuousAxisChannelDef: PositionFieldDef<string>;
   continuousAxis: 'x' | 'y';
   encodingWithoutContinuousAxis: Encoding<string>;
-  ticksOrient: Orient;
+  ticksOrient: Orientation;
 } {
   const orient = compositeMarkOrient(spec, BOXPLOT);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, BOXPLOT);
@@ -387,7 +387,7 @@ function boxParams(
     config
   );
 
-  const ticksOrient: Orient = orient === 'vertical' ? 'horizontal' : 'vertical';
+  const ticksOrient: Orientation = orient === 'vertical' ? 'horizontal' : 'vertical';
 
   return {
     transform: [

@@ -1,6 +1,7 @@
+import {isArray} from 'vega';
 import {ScaleChannel} from '../../channel';
 import {Scale, ScaleType} from '../../scale';
-import {Omit} from '../../util';
+import {Omit, some} from '../../util';
 import {VgNonUnionDomain, VgScale} from '../../vega.schema';
 import {Explicit, Split} from '../split';
 
@@ -23,6 +24,20 @@ export class ScaleComponent extends Split<ScaleComponentProps> {
       {name} // name as initial implicit property
     );
     this.setWithExplicit('type', typeWithExplicit);
+  }
+
+  /**
+   * Whether the scale definitely includes zero in the domain
+   */
+  public get domainDefinitelyIncludesZero() {
+    if (this.get('zero') !== false) {
+      return true;
+    }
+    const domains = this.domains;
+    if (isArray(domains)) {
+      return some(domains, d => isArray(d) && d.length === 2 && d[0] <= 0 && d[1] >= 0);
+    }
+    return false;
   }
 }
 

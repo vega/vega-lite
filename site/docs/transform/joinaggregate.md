@@ -17,9 +17,7 @@ The joinaggregate transform extends the input data objects with aggregate values
 
 ## Join Aggregate Field Definition
 
-{: .suppress-error}
-
-```json
+```js
 // A View Specification
 {
   ...

@@ -7,9 +7,7 @@ permalink: /docs/encoding.html
 
 An integral part of the data visualization process is encoding data with visual properties of graphical marks. The `encoding` property of a single view specification represents the mapping between [encoding channels](#channels) (such as `x`, `y`, or `color`) and [data fields](#field-def) or [constant values](#value-def).
 
-{: .suppress-error}
-
-```json
+```js
 // Specification of a Single View
 {
   "data": ... ,
@@ -52,6 +50,7 @@ An integral part of the data visualization process is encoding data with visual 
     "detail": ...,
 
     // Facet Channels
+    "facet": ...,
     "row": ...,
     "column": ...
   },
@@ -73,7 +72,7 @@ The keys in the `encoding` object are encoding channels. Vega-lite supports the 
 - [Level of Detail Channel](#detail): `detail`
 - [Key Channel](#key): `key`
 - [Order Channel](#order): `order`
-- [Facet Channels](#facet): `row`, `column`
+- [Facet Channels](#facet): `facet`, `row`, `column`
 
 ## Channel Definition
 
@@ -83,9 +82,7 @@ Each channel definition object is either a [field definition](<(#field-def)>), w
 
 ### Field Definition
 
-{: .suppress-error}
-
-```json
+```js
 // Specification of a Single View
 {
   ...,
@@ -129,9 +126,7 @@ To see a list of additional properties for each type of encoding channels, pleas
 
 ### Value Definition
 
-{: .suppress-error}
-
-```json
+```js
 // Specification of a Single View
 {
   ...,
@@ -315,10 +310,8 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 ## Facet Channels
 
-`row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).
+`facet`, `row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).
 
-{% include table.html props="row,column" source="EncodingWithFacet" %}
+{% include table.html props="facet,row,column" source="FacetedEncoding" %}
 
 For more information, read the [facet documentation](facet.html).
-
-{:#def}

@@ -6,33 +6,27 @@
  */
 
 import {DataMixins} from './base';
-import {GenericHConcatSpec, GenericVConcatSpec} from './concat';
+import {GenericConcatSpec, GenericHConcatSpec, GenericVConcatSpec} from './concat';
 import {GenericFacetSpec} from './facet';
-import {ExtendedLayerSpec, GenericLayerSpec, NormalizedLayerSpec} from './layer';
+import {GenericLayerSpec, LayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericRepeatSpec} from './repeat';
 import {TopLevel} from './toplevel';
-import {FacetedCompositeUnitSpec, GenericUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec} from './unit';
+import {FacetedUnitSpec, GenericUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec} from './unit';
 
 export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
 export {
   GenericHConcatSpec,
   GenericVConcatSpec,
-  isConcatSpec,
+  isAnyConcatSpec,
   isHConcatSpec,
   isVConcatSpec,
   NormalizedConcatSpec
 } from './concat';
 export {GenericFacetSpec, isFacetSpec, NormalizedFacetSpec} from './facet';
-export {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
+export {GenericLayerSpec, isLayerSpec, LayerSpec as ExtendedLayerSpec, NormalizedLayerSpec} from './layer';
 export {GenericRepeatSpec, isRepeatSpec, NormalizedRepeatSpec} from './repeat';
 export {TopLevel} from './toplevel';
-export {
-  CompositeUnitSpec as ExtendedUnitSpec,
-  FacetedCompositeUnitSpec as FacetedExtendedUnitSpec,
-  GenericUnitSpec,
-  isUnitSpec,
-  NormalizedUnitSpec
-} from './unit';
+export {FacetedUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
 
 /**
  * Any specification in Vega-Lite.
@@ -42,6 +36,7 @@ export type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLa
   | L
   | GenericFacetSpec<U, L>
   | GenericRepeatSpec<U, L>
+  | GenericConcatSpec<U, L>
   | GenericVConcatSpec<U, L>
   | GenericHConcatSpec<U, L>;
 
@@ -50,7 +45,7 @@ export type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLa
  */
 export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
-export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> & DataMixins;
+export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedUnitSpec, LayerSpec>> & DataMixins;
 
 /**
  * A Vega-Lite top-level specification.
@@ -60,7 +55,8 @@ export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedCompositeUnitSp
 export type TopLevelSpec =
   | TopLevelUnitSpec
   | TopLevelFacetSpec
-  | TopLevel<ExtendedLayerSpec>
-  | TopLevel<GenericRepeatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
-  | TopLevel<GenericVConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
-  | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
+  | TopLevel<LayerSpec>
+  | TopLevel<GenericRepeatSpec<FacetedUnitSpec, LayerSpec>>
+  | TopLevel<GenericConcatSpec<FacetedUnitSpec, LayerSpec>>
+  | TopLevel<GenericVConcatSpec<FacetedUnitSpec, LayerSpec>>
+  | TopLevel<GenericHConcatSpec<FacetedUnitSpec, LayerSpec>>;

@@ -139,7 +139,7 @@ describe('encoding', () => {
         groupby: ['bin_maxbins_10_a_end', 'bin_maxbins_10_a_range', 'bin_maxbins_10_a'],
         encoding: {
           x: {field: 'bin_maxbins_10_a', type: 'quantitative', title: 'a (binned)', bin: 'binned'},
-          x2: {field: 'bin_maxbins_10_a_end', type: 'quantitative'},
+          x2: {field: 'bin_maxbins_10_a_end'},
           y: {field: internalField('count'), type: 'quantitative', title: 'Count of Records'}
         }
       });

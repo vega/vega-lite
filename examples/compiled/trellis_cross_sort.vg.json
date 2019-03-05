@@ -83,7 +83,7 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["a", "b"],
+          "groupby": ["b", "a"],
           "ops": ["median", "median"],
           "fields": ["median_y_by_b", "median_x_by_a"],
           "as": ["median_median_y_by_b", "median_median_x_by_a"]
@@ -96,7 +96,7 @@
     {"name": "child_height", "value": 50}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": 20,
     "offset": {"rowTitle": 10, "columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -131,6 +131,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
@@ -156,6 +157,7 @@
         "text": {"signal": "''+parent[\"a\"]"},
         "offset": 10,
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}

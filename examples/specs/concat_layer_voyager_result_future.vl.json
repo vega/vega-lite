@@ -32,6 +32,7 @@
       }
     ]
   },
+  "spacing": 10,
   "vconcat": [
     {
       "title": {

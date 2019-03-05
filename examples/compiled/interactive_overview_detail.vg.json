@@ -23,12 +23,7 @@
     },
     {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
   ],
-  "layout": {
-    "padding": {"row": 10, "column": 10},
-    "columns": 1,
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",

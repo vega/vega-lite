@@ -4,9 +4,7 @@ perl -pi -e s,'<Field\,','<',g build/vega-lite-schema.json
 perl -pi -e s,'<StandardType>','',g build/vega-lite-schema.json
 
 perl -pi -e s,'CompositeEncoding','Encoding',g build/vega-lite-schema.json
-perl -pi -e s,'FacetedCompositeUnitSpec','FacetedUnitSpec',g build/vega-lite-schema.json
-perl -pi -e s,'ExtendedLayerSpec','LayerSpec',g build/vega-lite-schema.json
-perl -pi -e s,'GenericLayerSpec<CompositeUnitSpec>','LayerSpec',g build/vega-lite-schema.json
+perl -pi -e s,'GenericLayerSpec<UnitSpec>','LayerSpec',g build/vega-lite-schema.json
 perl -pi -e s,'Generic(.*)<FacetedUnitSpec\,LayerSpec>','\1',g build/vega-lite-schema.json
 
 perl -pi -e s,'FieldDefWithoutScale','FieldDef',g build/vega-lite-schema.json

@@ -1,6 +1,8 @@
 # Use "" if there is a # in the url
 
 # Spec
+Spec:
+  link: spec.html
 CompositeUnitSpec:
   name: SingleViewSpec
   link: "spec.html#single"
@@ -83,9 +85,6 @@ Config:
   link: "config.html"
 AxisConfig:
   link: "axis.html#config"
-VgAxisConfig:
-  name: AxisConfig
-  link: "axis.html#config"
 LegendConfig:
   link: "legend.html#config"
 MarkConfig:
@@ -106,12 +105,12 @@ TextConfig:
   link: "text.html#config"
 TickConfig:
   link: "tick.html#config"
-VgTitleConfig:
-  name: TitleConfig
+TitleConfig:
   link: "title.html#config"
 ViewConfig:
-  name: ViewConfig
   link: "spec.html#config"
+CompositionConfig:
+  link: "config.html#composition-config"
 
 # Encoding
 EncodingWithFacet:
@@ -237,7 +236,7 @@ SelectionDomain:
   link: "selection.html#scale-domains"
 InterpolateParams:
   name: Object
-VgScheme:
+Scheme:
   link: "https://vega.github.io/vega/docs/schemes/#scheme-properties"
 
 Resolve:
@@ -262,7 +261,7 @@ IntervalSelectionConfig:
 BrushConfig:
   name: Mark
   link: "selection.html#interval-mark"
-VgEventStream:
+EventStream:
   name: "Vega Event Stream"
   link: "https://vega.github.io/vega/docs/event-streams/"
 SelectionResolution:
@@ -277,8 +276,8 @@ Color:
 # Others
 FontWeight:
   name: "String | Number"
-Repeat:
-  link: "repeat.html#repeat"
+RepeatMapping:
+  link: "repeat.html#repeat-mapping"
 Padding:
   name: "Number | Object"
 TextBaseline:

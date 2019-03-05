@@ -80,12 +80,5 @@
       "color": "independent",
       "size": "independent"
     }
-  },
-  "config": {
-    "range": {
-      "heatmap": {
-        "scheme": "greenblue"
-      }
-    }
   }
 }

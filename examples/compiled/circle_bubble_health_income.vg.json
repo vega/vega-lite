@@ -140,7 +140,13 @@
             "signal": "{\"health\": format(datum[\"health\"], \"\"), \"income\": format(datum[\"income\"], \"\"), \"population\": format(datum[\"population\"], \"\")}"
           },
           "x": {"scale": "x", "field": "income"},
-          "y": {"scale": "y", "field": "health"},
+          "y": [
+            {
+              "test": "datum[\"health\"] === null || isNaN(datum[\"health\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "health"}
+          ],
           "size": {"scale": "size", "field": "population"},
           "shape": {"value": "circle"}
         }

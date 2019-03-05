@@ -1,5 +1,12 @@
-import {assembleHeaderGroups, assembleTitleGroup, labelAlign, labelBaseline} from '../../../src/compile/header';
-import {getHeaderProperties} from '../../../src/compile/header/index';
+import {
+  assembleHeaderGroups,
+  assembleTitleGroup,
+  getHeaderProperties,
+  getLayoutTitleBand,
+  labelAlign,
+  labelBaseline,
+  titleAlign
+} from '../../../src/compile/header/assemble';
 import {
   HEADER_LABEL_PROPERTIES,
   HEADER_LABEL_PROPERTIES_MAP,
@@ -9,10 +16,22 @@ import {
 import {parseFacetModel} from '../../util';
 
 describe('compile/header/index', () => {
-  describe('label aligns correctly according to angle', () => {
-    expect(labelAlign(23)).toEqual({align: {value: 'right'}});
-    expect(labelAlign(135)).toEqual({align: {value: 'left'}});
-    expect(labelAlign(50)).toEqual({align: {value: 'right'}});
+  describe('titleAlign', () => {
+    it('should return left for anchor=start', () => {
+      expect(titleAlign('start')).toEqual({align: 'left'});
+    });
+
+    it('should return right for anchor=start', () => {
+      expect(titleAlign('end')).toEqual({align: 'right'});
+    });
+  });
+
+  describe('labelAlign', () => {
+    it('label aligns correctly according to angle', () => {
+      expect(labelAlign(23)).toEqual({align: {value: 'right'}});
+      expect(labelAlign(135)).toEqual({align: {value: 'left'}});
+      expect(labelAlign(50)).toEqual({align: {value: 'right'}});
+    });
   });
 
   describe('label baseline adjusted according to angle', () => {
@@ -37,7 +56,7 @@ describe('compile/header/index', () => {
       });
       model.parseScale();
       model.parseLayoutSize();
-      model.parseAxisAndHeader();
+      model.parseAxesAndHeaders();
 
       const rowHeaderGroups = assembleHeaderGroups(model, 'row');
       const columnHeaderGroups = assembleHeaderGroups(model, 'column');
@@ -60,10 +79,20 @@ describe('compile/header/index', () => {
       });
       model.parseScale();
       model.parseLayoutSize();
-      model.parseAxisAndHeader();
+      model.parseAxesAndHeaders();
 
       const rowHeaderGroups = assembleHeaderGroups(model, 'row');
       expect(rowHeaderGroups[0].sort.field).toEqual('datum["min_d"]');
+    });
+  });
+
+  describe('getLayoutTitleBand', () => {
+    it('should return 0 for start', () => {
+      expect(getLayoutTitleBand('start')).toEqual(0);
+    });
+
+    it('should return 1 for end', () => {
+      expect(getLayoutTitleBand('end')).toEqual(1);
     });
   });
 
@@ -83,7 +112,7 @@ describe('compile/header/index', () => {
     });
     model.parseScale();
     model.parseLayoutSize();
-    model.parseAxisAndHeader();
+    model.parseAxesAndHeaders();
 
     describe('for column', () => {
       const columnLabelGroup = assembleTitleGroup(model, 'column');
@@ -144,7 +173,7 @@ describe('compile/header/index', () => {
       });
       titleSpec.parseScale();
       titleSpec.parseLayoutSize();
-      titleSpec.parseAxisAndHeader();
+      titleSpec.parseAxesAndHeaders();
       const config = titleSpec.config;
       const facetFieldDef = titleSpec.component.layoutHeaders['row'].facetFieldDef;
 
@@ -195,7 +224,7 @@ describe('compile/header/index', () => {
       });
       labelSpec.parseScale();
       labelSpec.parseLayoutSize();
-      labelSpec.parseAxisAndHeader();
+      labelSpec.parseAxesAndHeaders();
       const config = labelSpec.config;
       const facetFieldDef = labelSpec.component.layoutHeaders['row'].facetFieldDef;
 

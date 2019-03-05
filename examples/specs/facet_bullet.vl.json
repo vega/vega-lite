@@ -15,6 +15,7 @@
       "header": {"labelAngle": 0, "title": ""}
     }
   },
+  "spacing": 10,
   "spec": {
     "layer": [{
       "mark": {"type": "bar", "color": "#eee"},

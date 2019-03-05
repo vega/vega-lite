@@ -33,9 +33,7 @@ If multiple channels encode the same fields, Vega-lite automatically combines th
 
 ## Legend Properties
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -96,9 +94,7 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ## Legend Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...
@@ -110,7 +106,7 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 }
 ```
 
-To provide themes for all legends, the legend config (`config: {legend: {...}}`) supports all [legend properties](#properties) except `direction` (there are legend-specific `gradientDirection` and `symbolDirection` instead), `format`, `tickCount`, `title`, `values`, and `zindex`.
+To provide themes for all legends, the legend config (`config: {legend: {...}}`) supports all [legend properties](#properties) except `direction` (there are legend-specific `gradientDirection` and `symbolDirection` instead), `format`, `tickCount`, `values`, and `zindex`.
 
 The legend configuration also supports the following properties:
 

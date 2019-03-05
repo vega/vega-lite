@@ -49,7 +49,7 @@
     {"name": "xenc", "update": "vlSelectionResolve(\"xenc_store\")"}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": 20,
     "offset": {"columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -89,6 +89,7 @@
         "text": {"signal": "''+parent[\"Series\"]"},
         "offset": 10,
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
@@ -446,8 +447,20 @@
               "tooltip": {
                 "signal": "{\"X\": format(datum[\"X\"], \"\"), \"Y\": format(datum[\"Y\"], \"\")}"
               },
-              "x": {"scale": "x", "field": "X"},
-              "y": {"scale": "y", "field": "Y"},
+              "x": [
+                {
+                  "test": "datum[\"X\"] === null || isNaN(datum[\"X\"])",
+                  "value": 0
+                },
+                {"scale": "x", "field": "X"}
+              ],
+              "y": [
+                {
+                  "test": "datum[\"Y\"] === null || isNaN(datum[\"Y\"])",
+                  "field": {"group": "height"}
+                },
+                {"scale": "y", "field": "Y"}
+              ],
               "size": [
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum, \"intersect\"))",
@@ -464,7 +477,7 @@
           "type": "path",
           "from": {"data": "child_marks"},
           "encode": {
-            "enter": {
+            "update": {
               "fill": {"value": "transparent"},
               "strokeWidth": {"value": 0.35},
               "stroke": {"value": "transparent"},

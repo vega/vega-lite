@@ -58,12 +58,20 @@
           "tooltip": {
             "signal": "{\"precipitation (binned)\": datum[\"bin_maxbins_10_precipitation\"] === null || isNaN(datum[\"bin_maxbins_10_precipitation\"]) ? \"null\" : format(datum[\"bin_maxbins_10_precipitation\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_precipitation_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
-          "x2": {
-            "scale": "x",
-            "field": "bin_maxbins_10_precipitation",
-            "offset": 1
-          },
-          "x": {"scale": "x", "field": "bin_maxbins_10_precipitation_end"},
+          "x2": [
+            {
+              "test": "datum[\"bin_maxbins_10_precipitation\"] === null || isNaN(datum[\"bin_maxbins_10_precipitation\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "bin_maxbins_10_precipitation", "offset": 1}
+          ],
+          "x": [
+            {
+              "test": "datum[\"bin_maxbins_10_precipitation\"] === null || isNaN(datum[\"bin_maxbins_10_precipitation\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "bin_maxbins_10_precipitation_end"}
+          ],
           "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }

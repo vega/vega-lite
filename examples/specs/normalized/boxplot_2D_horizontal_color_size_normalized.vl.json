@@ -129,7 +129,7 @@
             "x2": {"field": "upper_box_people", "type": "quantitative"},
             "y": {"field": "age", "type": "ordinal"},
             "size": {"value": 5},
-            "color": {"value": "blue"},
+            "color": {"value": "teal"},
             "tooltip": [
               {
                 "field": "max_people",

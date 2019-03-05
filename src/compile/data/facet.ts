@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../../bin';
-import {COLUMN, ROW, ScaleChannel} from '../../channel';
+import {COLUMN, FACET_CHANNELS, ROW, ScaleChannel} from '../../channel';
 import {vgField} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain} from '../../scale';
@@ -35,6 +35,8 @@ export class FacetNode extends DataFlowNode {
 
   private readonly row: FacetChannelInfo;
 
+  private readonly facet: FacetChannelInfo;
+
   private readonly childModel: Model;
 
   /**
@@ -50,7 +52,7 @@ export class FacetNode extends DataFlowNode {
   ) {
     super(parent);
 
-    for (const channel of [COLUMN, ROW]) {
+    for (const channel of FACET_CHANNELS) {
       const fieldDef = model.facet[channel];
       if (fieldDef) {
         const {bin, sort} = fieldDef;
@@ -71,19 +73,24 @@ export class FacetNode extends DataFlowNode {
   public hash() {
     let out = `Facet`;
 
-    if (this.column) {
-      out += ` c:${hash(this.column)}`;
-    }
-
-    if (this.row) {
-      out += ` r:${hash(this.row)}`;
+    for (const channel of FACET_CHANNELS) {
+      if (this[channel]) {
+        out += ` ${channel.charAt(0)}:${hash(this[channel])}`;
+      }
     }
 
     return out;
   }
 
   get fields() {
-    return [...((this.column && this.column.fields) || []), ...((this.row && this.row.fields) || [])];
+    const f: string[] = [];
+
+    for (const channel of FACET_CHANNELS) {
+      if (this[channel] && this[channel].fields) {
+        f.push(...this[channel].fields);
+      }
+    }
+    return f;
   }
 
   /**
@@ -196,7 +203,7 @@ export class FacetNode extends DataFlowNode {
         transform: [
           {
             type: 'aggregate',
-            groupby: [...this.column.fields, ...this.row.fields],
+            groupby: this.fields,
             fields,
             ops
           }

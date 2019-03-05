@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 
 import {toSet} from 'vega-util';
-import {parseScale, parseScaleCore} from '../../../src/compile/scale/parse';
+import {parseScaleCore, parseScales} from '../../../src/compile/scale/parse';
 import {SELECTION_DOMAIN} from '../../../src/compile/selection/selection';
 import * as log from '../../../src/log';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale';
@@ -227,7 +227,7 @@ describe('src/compile', () => {
             }
           ]
         });
-        parseScale(model);
+        parseScales(model);
         expect(model.getScaleComponent('y').explicit.range).toEqual({step: 17});
         expect(logger.warns).toHaveLength(0);
       })
@@ -361,7 +361,7 @@ describe('src/compile', () => {
       it('should add correct scales', () => {
         expect(scale.implicit.name).toEqual('color');
         expect(scale.implicit.type).toEqual('bin-ordinal');
-        expect(scale.implicit.bins).toMatchObject({signal: 'bin_maxbins_6_origin_bins'});
+        expect(scale.implicit.bins).toEqual({signal: 'bin_maxbins_6_origin_bins'});
       });
     });
 
@@ -395,7 +395,7 @@ describe('src/compile', () => {
       it('should add correct scales', () => {
         expect(scale.implicit.name).toEqual('opacity');
         expect(scale.implicit.type).toEqual('linear');
-        expect(scale.implicit.bins).toMatchObject({signal: 'bin_maxbins_6_origin_bins'});
+        expect(scale.implicit.bins).toEqual({signal: 'bin_maxbins_6_origin_bins'});
       });
     });
 
@@ -412,7 +412,7 @@ describe('src/compile', () => {
       it('should add correct scales', () => {
         expect(scale.implicit.name).toEqual('size');
         expect(scale.implicit.type).toEqual('linear');
-        expect(scale.implicit.bins).toMatchObject({signal: 'bin_maxbins_6_origin_bins'});
+        expect(scale.implicit.bins).toEqual({signal: 'bin_maxbins_6_origin_bins'});
       });
     });
 

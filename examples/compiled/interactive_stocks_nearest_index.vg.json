@@ -126,7 +126,7 @@
       "type": "path",
       "from": {"data": "layer_1_marks"},
       "encode": {
-        "enter": {
+        "update": {
           "fill": {"value": "transparent"},
           "strokeWidth": {"value": 0.35},
           "stroke": {"value": "transparent"},

@@ -123,7 +123,7 @@ describe('compile/scale/assemble', () => {
 
       expect(
         assembleScaleRange([0, SignalRefWrapper.fromName(model.getSignalName.bind(model), 'width')], 'x', 'x')
-      ).toMatchObject([0, {signal: 'new_width'}]);
+      ).toEqual([0, {signal: 'new_width'}]);
     });
 
     it('updates height signal when renamed.', () => {
@@ -139,7 +139,7 @@ describe('compile/scale/assemble', () => {
 
       expect(
         assembleScaleRange([0, SignalRefWrapper.fromName(model.getSignalName.bind(model), 'height')], 'x', 'x')
-      ).toMatchObject([0, {signal: 'new_height'}]);
+      ).toEqual([0, {signal: 'new_height'}]);
     });
   });
 });

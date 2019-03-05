@@ -3,6 +3,7 @@ _site
 _data/vega-lite-schema.json
 data/*
 .idea
+.DS_Store
 
 npm-debug.log*
 yarn-debug.log*

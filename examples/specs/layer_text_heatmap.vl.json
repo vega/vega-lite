@@ -28,7 +28,7 @@
       "encoding": {
         "text": {"field": "num_cars", "type": "quantitative"},
         "color": {
-          "condition": {"test": "datum['num_cars'] > 100", "value": "black"},
+          "condition": {"test": "datum['num_cars'] < 40", "value": "black"},
           "value": "white"
         }
       }

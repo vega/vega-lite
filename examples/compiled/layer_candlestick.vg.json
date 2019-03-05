@@ -242,8 +242,20 @@
             "signal": "{\"Date in 2009\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"low\": format(datum[\"low\"], \"\"), \"high\": format(datum[\"high\"], \"\")}"
           },
           "x": {"scale": "x", "field": "date"},
-          "y": {"scale": "y", "field": "low"},
-          "y2": {"scale": "y", "field": "high"}
+          "y": [
+            {
+              "test": "datum[\"low\"] === null || isNaN(datum[\"low\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "low"}
+          ],
+          "y2": [
+            {
+              "test": "datum[\"high\"] === null || isNaN(datum[\"high\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "high"}
+          ]
         }
       }
     },
@@ -267,8 +279,20 @@
           },
           "xc": {"scale": "x", "field": "date"},
           "width": {"value": 5},
-          "y": {"scale": "y", "field": "open"},
-          "y2": {"scale": "y", "field": "close"}
+          "y": [
+            {
+              "test": "datum[\"open\"] === null || isNaN(datum[\"open\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "open"}
+          ],
+          "y2": [
+            {
+              "test": "datum[\"close\"] === null || isNaN(datum[\"close\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "close"}
+          ]
         }
       }
     }

@@ -7,9 +7,11 @@ import {
   Legend as VgLegend,
   LegendConfig as VgLegendConfig,
   LegendOrient,
+  Orient,
   Orientation,
   SymbolShape,
-  TextBaseline
+  TextBaseline,
+  TitleAnchor
 } from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
@@ -29,7 +31,10 @@ export type LegendConfig = LegendMixins &
     TextBaseline,
     LayoutAlign,
     LabelOverlap,
-    SymbolShape
+    SymbolShape,
+    number[],
+    Orient,
+    TitleAnchor
   > & {
     /**
      * Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
@@ -228,6 +233,8 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   padding: 1,
   rowPadding: 1,
   strokeColor: 1,
+  symbolDash: 1,
+  symbolDashOffset: 1,
   symbolFillColor: 1,
   symbolOffset: 1,
   symbolOpacity: 1,
@@ -239,6 +246,7 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   tickMinStep: 1,
   title: 1,
   titleAlign: 1,
+  titleAnchor: 1,
   titleBaseline: 1,
   titleColor: 1,
   titleFont: 1,
@@ -247,6 +255,7 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   titleFontWeight: 1,
   titleLimit: 1,
   titleOpacity: 1,
+  titleOrient: 1,
   titlePadding: 1,
   type: 1,
   values: 1,

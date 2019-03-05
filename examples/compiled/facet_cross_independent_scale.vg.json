@@ -18,7 +18,7 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["c", "r"],
+          "groupby": ["r", "c"],
           "fields": ["a", "b"],
           "ops": ["distinct", "distinct"]
         }
@@ -56,7 +56,7 @@
     {"name": "child_y_step", "value": 20}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": 20,
     "offset": {"rowTitle": 10, "columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -91,6 +91,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {
@@ -111,6 +112,7 @@
         "text": {"signal": "''+parent[\"c\"]"},
         "offset": 10,
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {

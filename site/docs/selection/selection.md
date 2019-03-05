@@ -5,9 +5,7 @@ title: Interactive Plots with Selections
 permalink: /docs/selection.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Specification of a Single View
 {
   ...,
@@ -121,9 +119,7 @@ With multiview displays, selections can also be used to determine the domains of
 
 An alternate way to construct this technique would be to filter out the input data to the top (detail) view like so:
 
-{: .suppress-error}
-
-```json
+```js
 {
   "vconcat": [{
     "transform": [{"filter": {"selection": "brush"}}],
@@ -147,11 +143,7 @@ _Note:_ For a selection to manipulate the scales of its own view, use the [bind]
 
 So far, we have only considered how to use one selection at a time. Vega-Lite also supports combining multiple selections using the `not`, `or`, and `and` logical composition operators.
 
-For example, we had previously seen how we could setup two interval selections for our users Alex and Morgan. Now, we color the rectangles when they fall within Alex's <select onchange="changeSpec('selection_composition', 'selection_composition_' + this.value)">
-
-  <option>and</option>
-  <option>or</option>
-</select> Morgan's selections.
+For example, we had previously seen how we could setup two interval selections for our users Alex and Morgan. Now, we color the rectangles when they fall within Alex's <select onchange="changeSpec('selection_composition', 'selection_composition_' + this.value)"><option>and</option><option>or</option></select> Morgan's selections.
 
 <div id="selection_composition" class="vl-example" data-name="selection_composition_and"></div>
 
@@ -186,9 +178,7 @@ The aptly named `resolve` property addresses this ambiguity, and can be set to o
 
 ## Selection Configuration
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...,

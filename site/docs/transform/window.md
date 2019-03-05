@@ -17,9 +17,7 @@ The window transform performs calculations over sorted groups of data objects. T
 
 ## Window Field Definition
 
-{: .suppress-error}
-
-```json
+```js
 // A View Specification
 {
   ...
@@ -106,6 +104,8 @@ We can also use `rank` operator to calculate ranks over time.
 Here we use window transform to derive the total number of students along with the rank of the current student to determine the top K students and display their score.
 
 <div class="vl-example" data-name="window_top_k"></div>
+
+Also see [this example](https://vega.github.io/vega-lite/examples/window_top_k_others.html) for a top-K plot with "others".
 
 ### Cumulative Running Average
 

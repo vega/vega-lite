@@ -62,8 +62,20 @@
           "tooltip": {
             "signal": "{\"IMDB Rating\": format(datum[\"bin_IMDB_Rating\"], \"\"), \"bin_IMDB_Rating_end\": format(datum[\"bin_IMDB_Rating_end\"], \"\"), \"cumulative_count\": format(datum[\"cumulative_count\"], \"\")}"
           },
-          "x": {"scale": "x", "field": "bin_IMDB_Rating"},
-          "x2": {"scale": "x", "field": "bin_IMDB_Rating_end"},
+          "x": [
+            {
+              "test": "datum[\"bin_IMDB_Rating\"] === null || isNaN(datum[\"bin_IMDB_Rating\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "bin_IMDB_Rating"}
+          ],
+          "x2": [
+            {
+              "test": "datum[\"bin_IMDB_Rating_end\"] === null || isNaN(datum[\"bin_IMDB_Rating_end\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "bin_IMDB_Rating_end"}
+          ],
           "y": {"scale": "y", "field": "cumulative_count"},
           "y2": {"scale": "y", "value": 0}
         }
@@ -87,8 +99,20 @@
           "tooltip": {
             "signal": "{\"IMDB Rating\": format(datum[\"bin_IMDB_Rating\"], \"\"), \"bin_IMDB_Rating_end\": format(datum[\"bin_IMDB_Rating_end\"], \"\"), \"count\": format(datum[\"count\"], \"\")}"
           },
-          "x": {"scale": "x", "field": "bin_IMDB_Rating"},
-          "x2": {"scale": "x", "field": "bin_IMDB_Rating_end"},
+          "x": [
+            {
+              "test": "datum[\"bin_IMDB_Rating\"] === null || isNaN(datum[\"bin_IMDB_Rating\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "bin_IMDB_Rating"}
+          ],
+          "x2": [
+            {
+              "test": "datum[\"bin_IMDB_Rating_end\"] === null || isNaN(datum[\"bin_IMDB_Rating_end\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "bin_IMDB_Rating_end"}
+          ],
           "y": {"scale": "y", "field": "count"},
           "y2": {"scale": "y", "value": 0}
         }

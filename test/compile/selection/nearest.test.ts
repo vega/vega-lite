@@ -40,7 +40,7 @@ function voronoiMark(x?: string | {expr: string}, y?: string | {expr: string}) {
       type: 'path',
       from: {data: 'marks'},
       encode: {
-        enter: {
+        update: {
           fill: {value: 'transparent'},
           strokeWidth: {value: 0.35},
           stroke: {value: 'transparent'},
