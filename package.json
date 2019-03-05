@@ -48,13 +48,13 @@
     "prettierbase": "prettier '{src,test,test-runtime,site,typings}/**/*.{ts,md,css}'",
     "format": "tslint -p . --fix -e 'package.json' && npm run prettierbase -- --write",
     "lint": "tslint -p . -e 'package.json' && npm run prettierbase -- --check",
-    "test": "jest test/ && npm run lint && npm run schema && jest examples/ && npm run test:runtime",
-    "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test",
-    "test:runtime": "TZ=America/Los_Angeles jest test-runtime/",
+    "test": "jest --env=node test/ && npm run lint && npm run schema && jest --env=node examples/ && npm run test:runtime",
+    "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test/",
+    "test:runtime": "TZ=America/Los_Angeles jest --config=jest.config.browser.js test-runtime/",
     "test:runtime:generate": "rm -Rf test-runtime/resources && VL_GENERATE_TESTS=true npm run test:runtime",
     "watch:build": "npm run build:only && concurrently --kill-others -n Typescript,Rollup 'tsc -w' 'rollup -c -w'",
     "watch:site": "concurrently --kill-others -n Typescript,Webpack 'tsc -p site --watch' 'webpack --config site/webpack.config.js --mode development --watch'",
-    "watch:test": "jest --watch"
+    "watch:test": "jest --watch test/"
   },
   "repository": {
     "type": "git",
@@ -117,29 +117,5 @@
     "vega-typings": "0.5.3",
     "vega-util": "^1.9.0",
     "yargs": "^13.2.1"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "preset": "jest-puppeteer",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "testPathIgnorePatterns": [
-      "node_modules",
-      "<rootDir>/build",
-      "_site",
-      "src"
-    ],
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": false
   }
 }
