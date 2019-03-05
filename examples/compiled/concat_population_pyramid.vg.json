@@ -303,6 +303,5 @@
       "paddingInner": 0.1,
       "paddingOuter": 0.05
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

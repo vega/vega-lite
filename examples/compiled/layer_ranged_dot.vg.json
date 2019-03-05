@@ -164,6 +164,5 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "encode": {"symbols": {"update": {"opacity": {"value": 1}}}}
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

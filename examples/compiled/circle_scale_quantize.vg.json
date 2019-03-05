@@ -103,6 +103,5 @@
       },
       "size": "size"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

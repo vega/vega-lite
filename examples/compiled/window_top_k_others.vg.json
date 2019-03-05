@@ -140,6 +140,5 @@
       "labelOverlap": true,
       "zindex": 1
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

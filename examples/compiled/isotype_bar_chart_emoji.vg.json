@@ -147,5 +147,5 @@
       "padding": 0.5
     }
   ],
-  "config": {"axisY": {"minExtent": 30}, "style": {"cell": {"stroke": ""}}}
+  "config": {"style": {"cell": {"stroke": ""}}}
 }

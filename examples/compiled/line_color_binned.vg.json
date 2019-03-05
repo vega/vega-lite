@@ -162,6 +162,5 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Acceleration (binned)"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

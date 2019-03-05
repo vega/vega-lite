@@ -271,8 +271,5 @@
       "title": "symbol"
     }
   ],
-  "config": {
-    "axisY": {"minExtent": 30},
-    "style": {"text": {"align": "right", "dx": -5, "dy": 5}}
-  }
+  "config": {"style": {"text": {"align": "right", "dx": -5, "dy": 5}}}
 }
