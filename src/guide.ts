@@ -34,6 +34,11 @@ export interface VlOnlyGuideConfig {
    * __Default value:__  `false`
    */
   shortTimeLabels?: boolean;
+
+  /**
+   * Set to null to disable title for the axis or legend
+   */
+  title?: null;
 }
 
 export type GuideEncodingEntry = {[k in VgEncodeChannel]?: ValueDef & ConditionValueDefMixins};

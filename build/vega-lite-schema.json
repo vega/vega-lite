@@ -339,9 +339,6 @@
       },
       "type": "object"
     },
-    "ArrayValueRef": {
-      "$ref": "#/definitions/ScaledValueRef<any[]>"
-    },
     "AutoSizeParams": {
       "additionalProperties": false,
       "properties": {
@@ -889,6 +886,10 @@
         "ticks": {
           "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
           "type": "boolean"
+        },
+        "title": {
+          "description": "Set to null to disable title for the axis or legend",
+          "type": "null"
         },
         "titleAlign": {
           "$ref": "#/definitions/Align",
@@ -1497,59 +1498,6 @@
       },
       "type": "object"
     },
-    "BaseValueRef<Orient>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/SignalRef"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "value": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Orient"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            }
-          },
-          "required": [
-            "value"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "field": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "field"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "range": {
-              "type": [
-                "number",
-                "boolean"
-              ]
-            }
-          },
-          "required": [
-            "range"
-          ],
-          "type": "object"
-        }
-      ]
-    },
     "BaseValueRef<TitleAnchor>": {
       "anyOf": [
         {
@@ -1562,61 +1510,6 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TitleAnchor"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            }
-          },
-          "required": [
-            "value"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "field": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "field"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "range": {
-              "type": [
-                "number",
-                "boolean"
-              ]
-            }
-          },
-          "required": [
-            "range"
-          ],
-          "type": "object"
-        }
-      ]
-    },
-    "BaseValueRef<any[]>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/SignalRef"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "value": {
-              "anyOf": [
-                {
-                  "items": {
-                  },
-                  "type": "array"
                 },
                 {
                   "type": "null"
@@ -3736,19 +3629,6 @@
         "grabbing"
       ],
       "type": "string"
-    },
-    "DashArrayValue": {
-      "anyOf": [
-        {
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        {
-          "$ref": "#/definitions/ArrayValueRef"
-        }
-      ]
     },
     "Data": {
       "anyOf": [
@@ -7015,8 +6895,11 @@
           "description": "Border stroke color for the full legend."
         },
         "symbolDash": {
-          "$ref": "#/definitions/DashArrayValue",
-          "description": "An array of alternating [stroke, space] lengths for dashed symbol strokes."
+          "description": "An array of alternating [stroke, space] lengths for dashed symbol strokes.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
         },
         "symbolDashOffset": {
           "description": "The pixel offset at which to start drawing with the symbol stroke dash array.",
@@ -7072,7 +6955,7 @@
           "description": "Horizontal text alignment for legend titles.\n\n__Default value:__ `\"left\"`."
         },
         "titleAnchor": {
-          "$ref": "#/definitions/AnchorValue",
+          "$ref": "#/definitions/TitleAnchor",
           "description": "Text anchor position for placing legend titles."
         },
         "titleBaseline": {
@@ -7109,7 +6992,7 @@
           "type": "number"
         },
         "titleOrient": {
-          "$ref": "#/definitions/OrientValue",
+          "$ref": "#/definitions/Orient",
           "description": "Orientation of the legend title."
         },
         "titlePadding": {
@@ -7374,6 +7257,10 @@
         "symbolType": {
           "$ref": "#/definitions/SymbolShape",
           "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   * In addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n   *\n   * __Default value:__ `\"circle\"`.\n   *"
+        },
+        "title": {
+          "description": "Set to null to disable title for the axis or legend",
+          "type": "null"
         },
         "titleAlign": {
           "$ref": "#/definitions/Align",
@@ -8717,19 +8604,6 @@
       ],
       "type": "string"
     },
-    "OrientValue": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/Orient"
-        },
-        {
-          "$ref": "#/definitions/OrientValueRef"
-        }
-      ]
-    },
-    "OrientValueRef": {
-      "$ref": "#/definitions/ScaledValueRef<Orient>"
-    },
     "Orientation": {
       "enum": [
         "horizontal",
@@ -10008,86 +9882,10 @@
       ],
       "type": "string"
     },
-    "ScaledValueRef<Orient>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/BaseValueRef<Orient>"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "scale": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "scale"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "band": {
-              "type": [
-                "boolean",
-                "number"
-              ]
-            },
-            "scale": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "scale",
-            "band"
-          ],
-          "type": "object"
-        }
-      ]
-    },
     "ScaledValueRef<TitleAnchor>": {
       "anyOf": [
         {
           "$ref": "#/definitions/BaseValueRef<TitleAnchor>"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "scale": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "scale"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "band": {
-              "type": [
-                "boolean",
-                "number"
-              ]
-            },
-            "scale": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "scale",
-            "band"
-          ],
-          "type": "object"
-        }
-      ]
-    },
-    "ScaledValueRef<any[]>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/BaseValueRef<any[]>"
         },
         {
           "additionalProperties": false,

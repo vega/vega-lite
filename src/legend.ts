@@ -34,7 +34,8 @@ export type LegendConfig = LegendMixins &
     SymbolShape,
     number[],
     Orient,
-    TitleAnchor
+    TitleAnchor,
+    LegendOrient
   > & {
     /**
      * Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
@@ -93,7 +94,11 @@ export interface Legend
       TextBaseline,
       LayoutAlign,
       LabelOverlap,
-      SymbolShape
+      SymbolShape,
+      number[],
+      Orient,
+      TitleAnchor,
+      LegendOrient
     >,
     LegendMixins,
     Guide {

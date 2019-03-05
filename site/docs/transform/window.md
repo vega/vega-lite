@@ -105,6 +105,8 @@ Here we use window transform to derive the total number of students along with t
 
 <div class="vl-example" data-name="window_top_k"></div>
 
+Also see [this example](https://vega.github.io/vega-lite/examples/window_top_k_others.html) for a top-K plot with "others".
+
 ### Cumulative Running Average
 
 Here we use window transform to visualize how the average MPG for vehicles have changed over the years.
