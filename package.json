@@ -1,11 +1,12 @@
 {
   "name": "vega-lite",
-  "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
+  "author": "Dominik Moritz, Kanit \"Ham\" Wongsuphasawat, Arvind Satyanarayan, Jeffrey Heer",
   "version": "3.0.0-rc13",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
-    "Jeffrey Heer <jheer@uw.edu> (http://jheer.org)"
+    "Arvind Satyanarayan (https://arvindsatya.com/)",
+    "Jeffrey Heer (https://jheer.org)"
   ],
   "homepage": "https://vega.github.io/vega-lite/",
   "description": "Vega-Lite is a concise high-level language for interactive visualization.",
