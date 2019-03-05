@@ -56,6 +56,9 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
 
   public abstract run(node: DataFlowNode): OptimizerFlags;
 
+  /**
+   * Reset the state of the optimizer after it has completed a run from the bottom of the tree to the top.
+   */
   public reset(): void {
     // do nothing
   }
