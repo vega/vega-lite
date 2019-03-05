@@ -7,15 +7,15 @@
   "style": "cell",
   "data": [
     {"name": "brush_store"},
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
     {
-      "name": "data_0",
-      "source": "source_0",
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "extent",
           "field": "Acceleration",
-          "signal": "layer_0_bin_maxbins_10_Acceleration_extent"
+          "signal": "layer_1_bin_maxbins_10_Acceleration_extent"
         },
         {
           "type": "bin",
@@ -24,9 +24,19 @@
             "bin_maxbins_10_Acceleration",
             "bin_maxbins_10_Acceleration_end"
           ],
-          "signal": "layer_0_bin_maxbins_10_Acceleration_bins",
+          "signal": "layer_1_bin_maxbins_10_Acceleration_bins",
           "maxbins": 10,
-          "extent": {"signal": "layer_0_bin_maxbins_10_Acceleration_extent"}
+          "extent": {"signal": "layer_1_bin_maxbins_10_Acceleration_extent"}
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -44,26 +54,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "extent",
-          "field": "Acceleration",
-          "signal": "layer_1_bin_maxbins_10_Acceleration_extent"
-        },
-        {
-          "type": "bin",
-          "field": "Acceleration",
-          "as": [
-            "bin_maxbins_10_Acceleration",
-            "bin_maxbins_10_Acceleration_end"
-          ],
-          "signal": "layer_1_bin_maxbins_10_Acceleration_bins",
-          "maxbins": 10,
-          "extent": {"signal": "layer_1_bin_maxbins_10_Acceleration_extent"}
-        },
-        {
-          "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
-        },
         {
           "type": "aggregate",
           "groupby": [
@@ -275,7 +265,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": [
@@ -303,7 +293,7 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": [
@@ -375,17 +365,10 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {
-            "signal": "[layer_0_bin_maxbins_10_Acceleration_bins.start, layer_0_bin_maxbins_10_Acceleration_bins.stop]"
-          },
-          {
-            "signal": "[layer_1_bin_maxbins_10_Acceleration_bins.start, layer_1_bin_maxbins_10_Acceleration_bins.stop]"
-          }
-        ]
+        "signal": "[layer_1_bin_maxbins_10_Acceleration_bins.start, layer_1_bin_maxbins_10_Acceleration_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
-      "bins": {"signal": "layer_0_bin_maxbins_10_Acceleration_bins"},
+      "bins": {"signal": "layer_1_bin_maxbins_10_Acceleration_bins"},
       "zero": false
     },
     {
@@ -393,8 +376,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "__count"},
-          {"data": "data_1", "field": "__count"}
+          {"data": "data_1", "field": "__count"},
+          {"data": "data_0", "field": "__count"}
         ]
       },
       "range": [{"signal": "height"}, 0],
