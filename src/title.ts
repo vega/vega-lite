@@ -1,4 +1,14 @@
-import {Align, BaseTitle, FontStyle, FontWeight, TextBaseline, TextEncodeEntry, TitleAnchor, TitleFrame, TitleOrient} from 'vega';
+import {
+  Align,
+  BaseTitle,
+  FontStyle,
+  FontWeight,
+  TextBaseline,
+  TextEncodeEntry,
+  TitleAnchor,
+  TitleFrame,
+  TitleOrient
+} from 'vega';
 import {BaseMarkConfig, Color} from './vega.schema';
 type BaseTitleNoSignals = BaseTitle<
   number,
