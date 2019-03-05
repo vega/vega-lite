@@ -38,8 +38,6 @@ export class FacetModel extends ModelWithField {
 
   public readonly children: Model[];
 
-  public readonly is1DFacet: boolean;
-
   constructor(
     spec: NormalizedFacetSpec,
     parent: Model,
@@ -55,8 +53,6 @@ export class FacetModel extends ModelWithField {
     const facet = replaceRepeaterInFacet(spec.facet, repeater);
 
     this.facet = this.initFacet(facet);
-
-    this.is1DFacet = !isFacetMapping(facet);
   }
 
   private initFacet(facet: FacetFieldDef<string> | FacetMapping<string>): EncodingFacetMapping<string> {
@@ -169,7 +165,7 @@ export class FacetModel extends ModelWithField {
 
     let align: LayoutAlign = 'all';
 
-    // Do not align the cells if the scale corresponding to the directin is indepent.
+    // Do not align the cells if the scale corresponding to the direction is indepent.
     // We always align when we facet into both row and column.
     if (!row && this.component.resolve.scale.x === 'independent') {
       align = 'none';

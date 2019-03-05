@@ -25,5 +25,7 @@
     },
     "color": {"field": "year", "type": "nominal"}
   },
-  "resolve": {"axis": {"x": "shared", "y": "shared"}}
+  "resolve": {
+    "resolve": {"axis": {"x": "independent", "y": "independent"}}
+  }
 }

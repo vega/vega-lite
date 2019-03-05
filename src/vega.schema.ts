@@ -399,7 +399,7 @@ export interface VgSequenceTransform {
   type: 'sequence';
   start: number | SignalRef;
   stop: number | SignalRef;
-  step: number | SignalRef;
+  step?: number | SignalRef;
 }
 
 export interface VgGeoPointTransform {

@@ -220,7 +220,7 @@ export class FacetNode extends DataFlowNode {
               type: 'sequence',
               start: 0,
               stop
-            } as any // TODO: typing is wrong
+            }
           ]
         });
       }
