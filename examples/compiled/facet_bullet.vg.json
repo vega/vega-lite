@@ -105,7 +105,7 @@
         "frame": "group",
         "angle": 0,
         "baseline": "middle",
-        "encode": {"update": {"align": {"value": "right"}}}
+        "align": "right"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}}
     },
