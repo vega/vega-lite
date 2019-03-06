@@ -1916,5 +1916,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"axis": {"minExtent": 50}}
 }

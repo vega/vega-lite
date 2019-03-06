@@ -240,5 +240,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"axis": {"minExtent": 30}}
 }
