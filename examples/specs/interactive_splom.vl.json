@@ -35,5 +35,6 @@
         "value": "grey"
       }
     }
-  }
+  },
+  "config": {"axis": {"minExtent": 30}}
 }

@@ -17,5 +17,6 @@
       "y": {"field": {"repeat": "row"}, "type": "quantitative"},
       "color": {"field": "Origin", "type": "nominal"}
     }
-  }
+  },
+  "config": {"axis": {"minExtent": 50}}
 }

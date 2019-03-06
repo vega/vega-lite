@@ -22,5 +22,6 @@
     },
     "size": {"field": "population","type": "quantitative"},
     "color": {"value": "#000"}
-  }
+  },
+  "config": {"axis": {"minExtent": 30}}
 }
