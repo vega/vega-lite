@@ -1,5 +1,5 @@
 import * as log from '../log';
-import { isConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec } from '../spec';
+import { isAnyConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec } from '../spec';
 import { ConcatModel } from './concat';
 import { FacetModel } from './facet';
 import { LayerModel } from './layer';
@@ -18,7 +18,7 @@ export function buildModel(spec, parent, parentGivenName, unitSize, repeater, co
     if (isRepeatSpec(spec)) {
         return new RepeatModel(spec, parent, parentGivenName, repeater, config);
     }
-    if (isConcatSpec(spec)) {
+    if (isAnyConcatSpec(spec)) {
         return new ConcatModel(spec, parent, parentGivenName, repeater, config);
     }
     throw new Error(log.message.INVALID_SPEC);

@@ -1,6 +1,6 @@
-import { Align, BaseTitle, FontWeight, TextBaseline, TextEncodeEntry, TitleAnchor, TitleFrame } from 'vega';
+import { Align, BaseTitle, FontStyle, FontWeight, TextBaseline, TextEncodeEntry, TitleAnchor, TitleFrame, TitleOrient } from 'vega';
 import { BaseMarkConfig, Color } from './vega.schema';
-declare type BaseTitleNoSignals = BaseTitle<number, string, Color, FontWeight, Align, TextBaseline, TitleFrame, TitleAnchor>;
+declare type BaseTitleNoSignals = BaseTitle<number, string, Color, FontWeight, FontStyle, Align, TextBaseline, TitleFrame, TitleAnchor, TitleOrient>;
 export declare type TitleConfig = BaseTitleNoSignals;
 export interface TitleBase extends BaseTitleNoSignals {
     /**

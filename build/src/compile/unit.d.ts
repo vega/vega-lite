@@ -23,7 +23,6 @@ import { ScaleIndex } from './scale/component';
  */
 export declare class UnitModel extends ModelWithField {
     fit: boolean;
-    readonly type: 'unit';
     readonly markDef: MarkDef;
     readonly encoding: Encoding<string>;
     readonly specifiedScales: ScaleIndex;
@@ -47,11 +46,11 @@ export declare class UnitModel extends ModelWithField {
     private initLegend;
     parseData(): void;
     parseLayoutSize(): void;
-    parseSelection(): void;
+    parseSelections(): void;
     parseMarkGroup(): void;
-    parseAxisAndHeader(): void;
+    parseAxesAndHeaders(): void;
     assembleSelectionTopLevelSignals(signals: any[]): NewSignal[];
-    assembleSelectionSignals(): NewSignal[];
+    assembleSignals(): NewSignal[];
     assembleSelectionData(data: VgData[]): VgData[];
     assembleLayout(): VgLayout;
     assembleLayoutSignals(): NewSignal[];
@@ -60,5 +59,5 @@ export declare class UnitModel extends ModelWithField {
     toSpec(excludeConfig?: any, excludeData?: any): any;
     readonly mark: Mark;
     channelHasField(channel: Channel): boolean;
-    fieldDef(channel: SingleDefChannel): TypedFieldDef<string, import("vega-lite/build/src/type").Type>;
+    fieldDef(channel: SingleDefChannel): TypedFieldDef<string, import("../type").Type>;
 }

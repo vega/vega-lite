@@ -1,12 +1,11 @@
-import { Encoding, EncodingWithFacet } from '../encoding';
-import { RepeatRef } from '../fielddef';
+import { CompositeEncoding, FacetedCompositeEncoding } from '../compositemark/index';
+import { Encoding } from '../encoding';
+import { Field } from '../fielddef';
 import { AnyMark, Mark, MarkDef } from '../mark';
 import { Projection } from '../projection';
 import { SelectionDef } from '../selection';
-import { BaseSpec, LayerUnitMixins } from './base';
-export { normalizeTopLevelSpec as normalize } from '../normalize';
-export { BaseSpec, DataMixins, LayoutSizeMixins } from './base';
-export { TopLevel } from './toplevel';
+import { BaseSpec, DataMixins, GenericCompositionLayoutWithColumns, LayerUnitMixins, ResolveMixins } from './base';
+import { TopLevel } from './toplevel';
 /**
  * Base interface for a unit (single-view) specification.
  */
@@ -35,13 +34,14 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
 /**
  * A unit specification without any shortcut/expansion syntax.
  */
-export declare type NormalizedUnitSpec = GenericUnitSpec<Encoding<string | RepeatRef>, Mark | MarkDef>;
+export declare type NormalizedUnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef>;
 /**
- * Unit spec that can have a composite mark.
+ * A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types).
  */
-export declare type CompositeUnitSpec = GenericUnitSpec<Encoding<string | RepeatRef>, AnyMark>;
+export declare type UnitSpec = GenericUnitSpec<CompositeEncoding, AnyMark>;
 /**
- * Unit spec that can have a composite mark and row or column channels.
+ * Unit spec that can have a composite mark and row or column channels (shorthand for a facet spec).
  */
-export declare type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<string | RepeatRef>, AnyMark>;
-export declare function isUnitSpec(spec: BaseSpec): spec is FacetedCompositeUnitSpec | NormalizedUnitSpec;
+export declare type FacetedUnitSpec = GenericUnitSpec<FacetedCompositeEncoding, AnyMark> & GenericCompositionLayoutWithColumns & ResolveMixins;
+export declare type TopLevelUnitSpec = TopLevel<FacetedUnitSpec> & DataMixins;
+export declare function isUnitSpec(spec: BaseSpec): spec is FacetedUnitSpec | NormalizedUnitSpec;

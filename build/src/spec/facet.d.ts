@@ -1,8 +1,7 @@
-import { ChannelDef, Field, FieldDef, RepeatRef, TypedFieldDef } from '../fielddef';
+import { ChannelDef, Field, FieldDef, TypedFieldDef } from '../fielddef';
 import { Header } from '../header';
-import { Resolve } from '../resolve';
 import { EncodingSortField, SortArray, SortOrder } from '../sort';
-import { BaseSpec, GenericCompositionLayout } from './base';
+import { BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins } from './base';
 import { FacetMapping } from './facet';
 import { GenericLayerSpec, NormalizedLayerSpec } from './layer';
 import { GenericUnitSpec, NormalizedUnitSpec } from './unit';
@@ -30,31 +29,41 @@ export interface FacetFieldDef<F extends Field> extends TypedFieldDef<F> {
 }
 export interface FacetMapping<F extends Field> {
     /**
-     * Vertical facets for trellis plots.
+     * A field definition for the vertical facet of trellis plots.
      */
     row?: FacetFieldDef<F>;
     /**
-     * Horizontal facets for trellis plots.
+     * A field definition for the horizontal facet of trellis plots.
      */
     column?: FacetFieldDef<F>;
+}
+export declare function isFacetMapping<F extends Field>(f: FacetFieldDef<F> | FacetMapping<F>): f is FacetMapping<F>;
+/**
+ * Facet mapping for encoding macro
+ */
+export interface EncodingFacetMapping<F extends Field> extends FacetMapping<F> {
+    /**
+     * A field definition for the (flexible) facet of trellis plots.
+     *
+     * If either `row` or `column` is specified, this channel will be ignored.
+     */
+    facet?: FacetFieldDef<F>;
 }
 export declare function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is FacetFieldDef<F>;
 /**
  * Base interface for a facet specification.
  */
-export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> extends BaseSpec, GenericCompositionLayout {
+export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {
     /**
-     * An object that describes mappings between `row` and `column` channels and their field definitions.
+     * Definition for how to facet the data.  One of:
+     * 1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)
+     * 2) [An object that maps `row` and `column` channels to their field definitions](https://vega.github.io/vega-lite/docs/facet.html#mapping)
      */
-    facet: FacetMapping<string | RepeatRef>;
+    facet: FacetFieldDef<Field> | FacetMapping<Field>;
     /**
      * A specification of the view that gets faceted.
      */
     spec: L | U;
-    /**
-     * Scale, axis, and legend resolutions for facets.
-     */
-    resolve?: Resolve;
 }
 /**
  * A facet specification without any shortcut / expansion syntax

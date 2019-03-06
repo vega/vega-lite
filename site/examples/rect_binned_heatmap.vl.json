@@ -27,11 +27,6 @@
     }
   },
   "config": {
-    "range": {
-      "heatmap": {
-        "scheme": "greenblue"
-      }
-    },
     "view": {
       "stroke": "transparent"
     }

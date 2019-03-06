@@ -1,11 +1,11 @@
+import { isArray } from 'vega';
 import * as log from '../log';
 import { BaseConcatModel } from './baseconcat';
 import { buildModel } from './buildmodel';
 import { parseRepeatLayoutSize } from './layoutsize/parse';
 export class RepeatModel extends BaseConcatModel {
     constructor(spec, parent, parentGivenName, repeatValues, config) {
-        super(spec, parent, parentGivenName, config, repeatValues, spec.resolve);
-        this.type = 'repeat';
+        super(spec, 'repeat', parent, parentGivenName, config, repeatValues, spec.resolve);
         if (spec.resolve && spec.resolve.axis && (spec.resolve.axis.x === 'shared' || spec.resolve.axis.y === 'shared')) {
             log.warn(log.message.REPEAT_CANNOT_SHARE_AXIS);
         }
@@ -14,17 +14,23 @@ export class RepeatModel extends BaseConcatModel {
     }
     _initChildren(spec, repeat, repeater, config) {
         const children = [];
-        const row = repeat.row || [repeater ? repeater.row : null];
-        const column = repeat.column || [repeater ? repeater.column : null];
+        const row = (!isArray(repeat) && repeat.row) || [repeater ? repeater.row : null];
+        const column = (!isArray(repeat) && repeat.column) || [repeater ? repeater.column : null];
+        const repeatValues = (isArray(repeat) && repeat) || [repeater ? repeater.repeat : null];
         // cross product
-        for (const rowField of row) {
-            for (const columnField of column) {
-                const name = (rowField ? '_' + rowField : '') + (columnField ? '_' + columnField : '');
-                const childRepeat = {
-                    row: rowField,
-                    column: columnField
-                };
-                children.push(buildModel(spec.spec, this, this.getName('child' + name), undefined, childRepeat, config, false));
+        for (const repeatValue of repeatValues) {
+            for (const rowValue of row) {
+                for (const columnValue of column) {
+                    const name = (repeatValue ? `__repeat_repeat_${repeatValue}` : '') +
+                        (rowValue ? `__repeat_row_${rowValue}` : '') +
+                        (columnValue ? `__repeat_column_${columnValue}` : '');
+                    const childRepeat = {
+                        repeat: repeatValue,
+                        row: rowValue,
+                        column: columnValue
+                    };
+                    children.push(buildModel(spec.spec, this, this.getName('child' + name), undefined, childRepeat, config, false));
+                }
             }
         }
         return children;
@@ -33,11 +39,9 @@ export class RepeatModel extends BaseConcatModel {
         parseRepeatLayoutSize(this);
     }
     assembleDefaultLayout() {
-        return {
-            columns: this.repeat && this.repeat.column ? this.repeat.column.length : 1,
-            bounds: 'full',
-            align: 'all'
-        };
+        const { repeat } = this;
+        const columns = isArray(repeat) ? undefined : repeat.column ? repeat.column.length : 1;
+        return Object.assign({}, (columns ? { columns } : {}), { bounds: 'full', align: 'all' });
     }
 }
 //# sourceMappingURL=repeat.js.map

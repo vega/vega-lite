@@ -32,7 +32,7 @@ export declare const CIRCLE: "circle";
 export declare const SQUARE: "square";
 export declare function isMark(m: string): m is Mark;
 export declare function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'trail';
-export declare const PRIMITIVE_MARKS: import("vega-lite/build/src/mark").Mark[];
+export declare const PRIMITIVE_MARKS: Mark[];
 export interface ColorMixins {
     /**
      * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
@@ -61,8 +61,9 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
      *
      * - If `tooltip` is `{"content": "encoding"}`, then all fields from `encoding` will be used.
      * - If `tooltip` is `{"content": "data"}`, then all fields that appear in the highlighted data point will be used.
+     * - If set to `null`, then no tooltip will be used.
      */
-    tooltip?: string | TooltipContent;
+    tooltip?: string | TooltipContent | null;
     /**
      * Default size for marks.
      * - For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.
@@ -86,8 +87,8 @@ export interface BarBinSpacingMixins {
     binSpacing?: number;
 }
 export declare type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
-export declare function isMarkDef(mark: AnyMark): mark is MarkDef | CompositeMarkDef;
-export declare function isPrimitiveMark(mark: CompositeMark | CompositeMarkDef | Mark | MarkDef): mark is Mark;
+export declare function isMarkDef(mark: string | GenericMarkDef<any>): mark is GenericMarkDef<any>;
+export declare function isPrimitiveMark(mark: AnyMark): mark is Mark;
 export declare const STROKE_CONFIG: string[];
 export declare const FILL_CONFIG: string[];
 export declare const FILL_STROKE_CONFIG: any[];
@@ -219,13 +220,7 @@ export interface MarkDefMixins {
      */
     y2Offset?: number;
 }
-export interface MarkDef extends GenericMarkDef<Mark>, BarBinSpacingMixins, MarkConfig, PointOverlayMixins, LineOverlayMixins, TickThicknessMixins, MarkDefMixins {
-    /**
-     * The mark type.
-     * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-     * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`.
-     */
-    type: Mark;
+export interface MarkDef<M extends string | Mark = Mark> extends GenericMarkDef<M>, BarBinSpacingMixins, MarkConfig, PointOverlayMixins, LineOverlayMixins, TickThicknessMixins, MarkDefMixins {
 }
 export declare const defaultBarConfig: BarConfig;
 export interface TextConfig extends MarkConfig {
@@ -244,3 +239,4 @@ export interface TickConfig extends MarkConfig, TickThicknessMixins {
     bandSize?: number;
 }
 export declare const defaultTickConfig: TickConfig;
+export declare function getMarkType(m: string | GenericMarkDef<any>): any;

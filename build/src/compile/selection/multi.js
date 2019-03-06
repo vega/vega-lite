@@ -1,7 +1,8 @@
+import { stringValue } from 'vega-util';
 import { accessPathWithDatum } from '../../util';
-import { TUPLE, unitName } from './selection';
+import { assembleInit, STORE, TUPLE, unitName } from './selection';
 import { TUPLE_FIELDS } from './transforms/project';
-export function signals(model, selCmpt) {
+export function singleOrMultiSignals(model, selCmpt) {
     const name = selCmpt.name;
     const fieldsSg = name + TUPLE + TUPLE_FIELDS;
     const proj = selCmpt.project;
@@ -23,23 +24,33 @@ export function signals(model, selCmpt) {
     // for constant null states but varying toggles (e.g., shift-click in
     // whitespace followed by a click in whitespace; the store should only
     // be cleared on the second click).
-    return [
+    const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
+    const signals = [
         {
             name: name + TUPLE,
-            value: {},
             on: [
                 {
                     events: selCmpt.events,
-                    update: `datum && item().mark.marktype !== 'group' ? ` +
-                        `{unit: ${unitName(model)}, fields: ${fieldsSg}, values: [${values}]} : null`,
+                    update: `datum && item().mark.marktype !== 'group' ? {${update}: [${values}]} : null`,
                     force: true
                 }
             ]
         }
     ];
+    if (selCmpt.init) {
+        const insert = selCmpt.init.map((i) => {
+            const str = assembleInit(i);
+            return `{${update}: ${str}}`;
+        });
+        signals.push({
+            name: `${name}_init`,
+            init: `modify(${stringValue(selCmpt.name + STORE)}, [${insert}])`
+        });
+    }
+    return signals;
 }
 const multi = {
-    signals: signals,
+    signals: singleOrMultiSignals,
     modifyExpr: (model, selCmpt) => {
         const tpl = selCmpt.name + TUPLE;
         return tpl + ', ' + (selCmpt.resolve === 'global' ? 'null' : `{unit: ${unitName(model)}}`);

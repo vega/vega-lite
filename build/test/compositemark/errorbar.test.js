@@ -2,7 +2,8 @@ import { defaultConfig } from '../../src/config';
 import { isFieldDef } from '../../src/fielddef';
 import * as log from '../../src/log';
 import { isMarkDef } from '../../src/mark';
-import { isLayerSpec, isUnitSpec, normalize } from '../../src/spec';
+import { normalize } from '../../src/normalize/index';
+import { isLayerSpec, isUnitSpec } from '../../src/spec';
 import { isAggregate, isCalculate } from '../../src/transform';
 import { some } from '../../src/util';
 describe('normalizeErrorBar with raw data input', () => {
@@ -512,13 +513,13 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
                     ' that ' +
                     warningMessage[k](center, extent, type);
                 it(testMsg, log.wrap(localLogger => {
-                    normalize(spec, defaultConfig);
+                    normalize(spec);
                     expect(warningOutput[k]).toEqual(some(localLogger.warns, message => {
                         return message === warningMessage[k](center, extent, type);
                     }));
                 }));
             }
-            const outputSpec = normalize(spec, defaultConfig);
+            const outputSpec = normalize(spec);
             const aggregateTransform = outputSpec.transform[0];
             const testMsg = 'should produce a correct layer spec if center is ' +
                 (center ? center : 'not specified') +
@@ -707,20 +708,6 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
             }
         }, defaultConfig);
         expect(localLogger.warns[0]).toEqual(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, mark));
-    }));
-    it('should produce a warning if there is an unsupported channel in encoding', log.wrap(localLogger => {
-        const size = 'size';
-        normalize({
-            data,
-            mark,
-            encoding: {
-                x: { field: 'age', type: 'ordinal' },
-                y: { field: 'people', type: 'quantitative' },
-                y2: { field: 'people2', type: 'quantitative', aggregate: 'min' },
-                size: { value: 10 }
-            }
-        }, defaultConfig);
-        expect(localLogger.warns[0]).toEqual(log.message.incompatibleChannel(size, mark));
     }));
     it('should produce a correct tooltip title for ranged errorbar', () => {
         const outputSpec = normalize({

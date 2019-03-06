@@ -1,9 +1,18 @@
 import { Binding } from 'vega';
 import { SingleDefChannel } from './channel';
+import { DateTime } from './datetime';
 import { EventStream } from './vega.schema';
 export declare const SELECTION_ID = "_vgsid_";
 export declare type SelectionType = 'single' | 'multi' | 'interval';
 export declare type SelectionResolution = 'global' | 'union' | 'intersect';
+export declare type SelectionInit = boolean | number | string | DateTime;
+export declare type SelectionInitArray = boolean[] | number[] | string[] | DateTime[];
+export interface SelectionInitMapping {
+    [key: string]: SelectionInit;
+}
+export interface SelectionInitArrayMapping {
+    [key: string]: SelectionInitArray;
+}
 export interface BaseSelectionDef {
     /**
      * A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.
@@ -52,6 +61,10 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
      * See the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.
      */
     nearest?: boolean;
+    /**
+     * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.
+     */
+    init?: SelectionInitMapping;
 }
 export interface MultiSelectionConfig extends BaseSelectionDef {
     /**
@@ -72,6 +85,11 @@ export interface MultiSelectionConfig extends BaseSelectionDef {
      * See the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.
      */
     nearest?: boolean;
+    /**
+     * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial
+     * value (or array of values).
+     */
+    init?: SelectionInitMapping | SelectionInitMapping[];
 }
 export interface BrushConfig {
     /**
@@ -145,6 +163,11 @@ export interface IntervalSelectionConfig extends BaseSelectionDef {
      * appearance of the mark.
      */
     mark?: BrushConfig;
+    /**
+     * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of
+     * initial values.
+     */
+    init?: SelectionInitArrayMapping;
 }
 export interface SingleSelection extends SingleSelectionConfig {
     type: 'single';
@@ -156,6 +179,7 @@ export interface IntervalSelection extends IntervalSelectionConfig {
     type: 'interval';
 }
 export declare type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
+export declare function isIntervalSelection(s: SelectionDef): s is IntervalSelection;
 export interface SelectionConfig {
     /**
      * The default definition for a [`single`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations

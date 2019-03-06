@@ -36,7 +36,7 @@ function voronoiMark(x, y) {
             type: 'path',
             from: { data: 'marks' },
             encode: {
-                enter: {
+                update: {
                     fill: { value: 'transparent' },
                     strokeWidth: { value: 0.35 },
                     stroke: { value: 'transparent' },

@@ -1,7 +1,8 @@
 /* tslint:disable:quotemark */
 import * as log from '../../src/log';
 import { isMarkDef } from '../../src/mark';
-import { isLayerSpec, isUnitSpec, normalize } from '../../src/spec';
+import { normalize } from '../../src/normalize/index';
+import { isLayerSpec, isUnitSpec } from '../../src/spec';
 import { every, some } from '../../src/util';
 import { defaultConfig } from '.././../src/config';
 describe('normalizeErrorBand', () => {

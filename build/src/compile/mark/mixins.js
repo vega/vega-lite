@@ -11,6 +11,7 @@ import { getMarkConfig } from '../common';
 import { expression } from '../predicate';
 import { selectionPredicate } from '../selection/selection';
 import * as ref from './valueref';
+import { fieldInvalidPredicate } from './valueref';
 function isVisible(c) {
     return c !== 'transparent' && c !== null && c !== undefined;
 }
@@ -70,14 +71,14 @@ export function color(model) {
 }
 export function baseEncodeEntry(model, ignore) {
     const { fill, stroke } = color(model);
-    return Object.assign({}, markDefProperties(model.markDef, ignore), wrapInvalid(model, 'fill', fill), wrapInvalid(model, 'stroke', stroke), nonPosition('opacity', model), nonPosition('fillOpacity', model), nonPosition('strokeOpacity', model), nonPosition('strokeWidth', model), tooltip(model), text(model, 'href'));
+    return Object.assign({}, markDefProperties(model.markDef, ignore), wrapAllFieldsInvalid(model, 'fill', fill), wrapAllFieldsInvalid(model, 'stroke', stroke), nonPosition('opacity', model), nonPosition('fillOpacity', model), nonPosition('strokeOpacity', model), nonPosition('strokeWidth', model), tooltip(model), text(model, 'href'));
 }
-function wrapInvalid(model, channel, valueRef) {
+function wrapAllFieldsInvalid(model, channel, valueRef) {
     const { config, mark } = model;
     if (config.invalidValues && valueRef && !isPathMark(mark)) {
         // For non-path marks, we have to exclude invalid values (null and NaN) for scales with continuous domains.
         // For path marks, we will use "defined" property and skip these values instead.
-        const test = validPredicate(model, { invalid: true, channels: SCALE_CHANNELS });
+        const test = allFieldsInvalidPredicate(model, { invalid: true, channels: SCALE_CHANNELS });
         if (test) {
             return {
                 [channel]: [
@@ -105,7 +106,7 @@ export function valueIfDefined(prop, value) {
     }
     return undefined;
 }
-function validPredicate(model, { invalid = false, channels }) {
+function allFieldsInvalidPredicate(model, { invalid = false, channels }) {
     const filterIndex = channels.reduce((aggregator, channel) => {
         const scaleComponent = model.getScaleComponent(channel);
         if (scaleComponent) {
@@ -121,18 +122,13 @@ function validPredicate(model, { invalid = false, channels }) {
     const fields = keys(filterIndex);
     if (fields.length > 0) {
         const op = invalid ? '||' : '&&';
-        return fields
-            .map(field => {
-            const eq = invalid ? '===' : '!==';
-            return `${field} ${eq} null ${op} ${invalid ? '' : '!'}isNaN(${field})`;
-        })
-            .join(` ${op} `);
+        return fields.map(field => fieldInvalidPredicate(field, invalid)).join(` ${op} `);
     }
     return undefined;
 }
 export function defined(model) {
     if (model.config.invalidValues === 'filter') {
-        const signal = validPredicate(model, { channels: ['x', 'y'] });
+        const signal = allFieldsInvalidPredicate(model, { channels: ['x', 'y'] });
         if (signal) {
             return { defined: { signal } };
         }
@@ -149,8 +145,14 @@ export function nonPosition(channel, model, opt = {}) {
     const defaultRef = opt.defaultRef || (defaultValue !== undefined ? { value: defaultValue } : undefined);
     const channelDef = encoding[channel];
     return wrapCondition(model, channelDef, vgChannel, cDef => {
-        return ref.midPoint(channel, cDef, undefined, model.scaleName(channel), model.getScaleComponent(channel), null, // No need to provide stack for non-position as it does not affect mid point
-        defaultRef);
+        return ref.midPoint({
+            channel,
+            channelDef: cDef,
+            scaleName: model.scaleName(channel),
+            scale: model.getScaleComponent(channel),
+            stack: null,
+            defaultRef
+        });
     });
 }
 /**
@@ -240,7 +242,8 @@ export function bandPosition(fieldDef, channel, model) {
         }
     }
     return {
-        [channel]: ref.fieldRef(fieldDef, scaleName, { binSuffix: 'range' }),
+        // FIXME: make offset works correctly here when we support group bar (https://github.com/vega/vega-lite/issues/396)
+        [channel]: ref.fieldRef(fieldDef, scaleName, { binSuffix: 'range' }, {}),
         [sizeChannel]: ref.bandRef(scaleName)
     };
 }
@@ -249,7 +252,7 @@ export function centeredBandPosition(channel, model, defaultPosRef, defaultSizeR
     const sizeChannel = channel === 'x' ? 'width' : 'height';
     return Object.assign({}, pointPosition(channel, model, defaultPosRef, centerChannel), nonPosition('size', model, { defaultRef: defaultSizeRef, vgChannel: sizeChannel }));
 }
-export function binPosition(fieldDef, fieldDef2, channel, scaleName, spacing, reverse) {
+export function binPosition({ fieldDef, fieldDef2, channel, scaleName, mark, spacing = 0, reverse }) {
     const binSpacing = {
         x: reverse ? spacing : 0,
         x2: reverse ? 0 : spacing,
@@ -259,8 +262,15 @@ export function binPosition(fieldDef, fieldDef2, channel, scaleName, spacing, re
     const channel2 = channel === X ? X2 : Y2;
     if (isBinning(fieldDef.bin)) {
         return {
-            [channel2]: ref.bin(fieldDef, scaleName, 'start', binSpacing[`${channel}2`]),
-            [channel]: ref.bin(fieldDef, scaleName, 'end', binSpacing[channel])
+            [channel2]: ref.bin({
+                channel,
+                fieldDef,
+                scaleName,
+                mark,
+                side: 'start',
+                offset: binSpacing[`${channel}2`]
+            }),
+            [channel]: ref.bin({ channel, fieldDef, scaleName, mark, side: 'end', offset: binSpacing[channel] })
         };
     }
     else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
@@ -279,7 +289,7 @@ export function binPosition(fieldDef, fieldDef2, channel, scaleName, spacing, re
  */
 export function pointPosition(channel, model, defaultRef, vgChannel) {
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
-    const { encoding, mark, stack } = model;
+    const { encoding, mark, markDef, config, stack } = model;
     const channelDef = encoding[channel];
     const channel2Def = encoding[channel === X ? X2 : Y2];
     const scaleName = model.scaleName(channel);
@@ -288,7 +298,26 @@ export function pointPosition(channel, model, defaultRef, vgChannel) {
     const valueRef = !channelDef && (encoding.latitude || encoding.longitude)
         ? // use geopoint output if there are lat/long and there is no point position overriding lat/long.
             { field: model.getName(channel) }
-        : Object.assign({}, ref.position(channel, channelDef, channel2Def, scaleName, scale, stack, ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)), (offset ? { offset } : {}));
+        : ref.position({
+            channel,
+            channelDef,
+            channel2Def,
+            scaleName,
+            scale,
+            stack,
+            mark,
+            offset,
+            defaultRef: ref.positionDefault({
+                markDef,
+                config,
+                defaultRef,
+                channel,
+                scaleName,
+                scale,
+                mark,
+                checkBarAreaWithoutZero: !channel2Def // only check for non-ranged marks
+            })
+        });
     return {
         [vgChannel || channel]: valueRef
     };
@@ -298,7 +327,7 @@ export function pointPosition(channel, model, defaultRef, vgChannel) {
  * If channel is not specified, return one channel based on orientation.
  */
 export function pointPosition2(model, defaultRef, channel) {
-    const { encoding, mark, stack } = model;
+    const { encoding, mark, markDef, stack, config } = model;
     const baseChannel = channel === 'x2' ? 'x' : 'y';
     const channelDef = encoding[baseChannel];
     const scaleName = model.scaleName(baseChannel);
@@ -307,7 +336,26 @@ export function pointPosition2(model, defaultRef, channel) {
     const valueRef = !channelDef && (encoding.latitude || encoding.longitude)
         ? // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
             { field: model.getName(channel) }
-        : Object.assign({}, ref.position2(channel, channelDef, encoding[channel], scaleName, scale, stack, ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)), (offset ? { offset } : {}));
+        : ref.position2({
+            channel,
+            channelDef,
+            channel2Def: encoding[channel],
+            scaleName,
+            scale,
+            stack,
+            mark,
+            offset,
+            defaultRef: ref.positionDefault({
+                markDef,
+                config,
+                defaultRef,
+                channel,
+                scaleName,
+                scale,
+                mark,
+                checkBarAreaWithoutZero: !encoding[channel] // only check for non-ranged marks
+            })
+        });
     return { [channel]: valueRef };
 }
 //# sourceMappingURL=mixins.js.map

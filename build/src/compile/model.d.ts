@@ -4,8 +4,8 @@ import { Config } from '../config';
 import { Data, DataSourceType } from '../data';
 import { FieldDef, FieldRefOption } from '../fielddef';
 import { Resolve } from '../resolve';
-import { BaseSpec } from '../spec';
-import { GenericCompositionLayout, ViewBackground } from '../spec/base';
+import { GenericCompositionLayoutWithColumns, SpecType, ViewBackground } from '../spec/base';
+import { NormalizedSpec } from '../spec/index';
 import { TitleParams } from '../title';
 import { Transform } from '../transform';
 import { Dict } from '../util';
@@ -14,7 +14,7 @@ import { AxisComponentIndex } from './axis/component';
 import { ConcatModel } from './concat';
 import { DataComponent } from './data';
 import { FacetModel } from './facet';
-import { LayoutHeaderComponent } from './header/index';
+import { LayoutHeaderComponent } from './header/component';
 import { LayerModel } from './layer';
 import { LayoutSizeComponent, LayoutSizeIndex } from './layoutsize/component';
 import { LegendComponentIndex } from './legend/component';
@@ -37,6 +37,7 @@ export interface Component {
     layoutHeaders: {
         row?: LayoutHeaderComponent;
         column?: LayoutHeaderComponent;
+        facet?: LayoutHeaderComponent;
     };
     mark: VgMarkGroup[];
     scales: ScaleComponentIndex;
@@ -66,17 +67,17 @@ export declare function isRepeatModel(model: Model): model is RepeatModel;
 export declare function isConcatModel(model: Model): model is ConcatModel;
 export declare function isLayerModel(model: Model): model is LayerModel;
 export declare abstract class Model {
+    readonly type: SpecType;
     readonly parent: Model;
     readonly config: Config;
     readonly repeater: RepeaterValue;
     readonly view?: ViewBackground;
-    abstract readonly type: 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
     readonly name: string;
     readonly title: TitleParams;
     readonly description: string;
     readonly data: Data;
     readonly transforms: Transform[];
-    readonly layout: GenericCompositionLayout;
+    readonly layout: GenericCompositionLayoutWithColumns;
     /** Name map for scales, which can be renamed by a model's parent. */
     protected scaleNameMap: NameMapInterface;
     /** Name map for projections, which can be renamed by a model's parent. */
@@ -85,13 +86,13 @@ export declare abstract class Model {
     protected signalNameMap: NameMapInterface;
     readonly component: Component;
     abstract readonly children: Model[];
-    constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, repeater: RepeaterValue, resolve: Resolve, view?: ViewBackground);
+    constructor(spec: NormalizedSpec, type: SpecType, parent: Model, parentGivenName: string, config: Config, repeater: RepeaterValue, resolve: Resolve, view?: ViewBackground);
     readonly width: SignalRef;
     readonly height: SignalRef;
     protected initSize(size: LayoutSizeIndex): void;
     parse(): void;
     abstract parseData(): void;
-    abstract parseSelection(): void;
+    abstract parseSelections(): void;
     parseScale(): void;
     parseProjection(): void;
     abstract parseLayoutSize(): void;
@@ -102,10 +103,10 @@ export declare abstract class Model {
      */
     private renameTopLevelLayoutSizeSignal;
     abstract parseMarkGroup(): void;
-    abstract parseAxisAndHeader(): void;
-    parseLegend(): void;
+    abstract parseAxesAndHeaders(): void;
+    parseLegends(): void;
     abstract assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
-    abstract assembleSelectionSignals(): NewSignal[];
+    abstract assembleSignals(): NewSignal[];
     abstract assembleSelectionData(data: VgData[]): VgData[];
     assembleGroupStyle(): string;
     private assembleEncodeFromView;

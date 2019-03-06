@@ -1,18 +1,10 @@
-import clone_ from 'clone';
+import { default as clone_ } from 'clone';
 import deepEqual_ from 'fast-deep-equal';
 import stableStringify from 'fast-json-stable-stringify';
 import { isArray, isNumber, isString, splitAccessPath, stringValue } from 'vega-util';
 import { isLogicalAnd, isLogicalNot, isLogicalOr } from './logical';
 export const deepEqual = deepEqual_;
 export const duplicate = clone_;
-/**
- * Make a regular expression that matches a whole word of the given string
- */
-export function globalWholeWordRegExp(word) {
-    // `\b` = word boundary
-    // https://stackoverflow.com/questions/2232934/whole-word-match-in-javascript
-    return new RegExp(`\\b${word}\\b`, 'g');
-}
 /**
  * Creates an object composed of the picked object properties.
  *
@@ -374,5 +366,11 @@ export function uniqueId(prefix) {
  */
 export function resetIdCounter() {
     idCounter = 42;
+}
+export function internalField(name) {
+    return isInternalField(name) ? name : `__${name}`;
+}
+export function isInternalField(name) {
+    return name.indexOf('__') === 0;
 }
 //# sourceMappingURL=util.js.map

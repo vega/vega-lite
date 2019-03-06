@@ -88,7 +88,7 @@ describe('compile/data/facet', () => {
                 transform: [
                     {
                         type: 'aggregate',
-                        groupby: ['c', 'r'],
+                        groupby: ['r', 'c'],
                         fields: ['a', 'b'],
                         ops: ['distinct', 'distinct']
                     }
@@ -236,7 +236,7 @@ describe('compile/data/facet', () => {
                 }
             });
             const facetNode = new FacetNode(null, model, 'facetName', 'dataName');
-            expect(facetNode.hash()).toEqual('Facet c:{"fields":["c"],"name":"column_domain","sortField":{"field":"a","op":"median"}} r:{"fields":["r"],"name":"row_domain","sortField":{"field":"b","op":"median"}}');
+            expect(facetNode.hash()).toEqual('Facet r:{"fields":["r"],"name":"row_domain","sortField":{"field":"b","op":"median"}} c:{"fields":["c"],"name":"column_domain","sortField":{"field":"a","op":"median"}}');
         });
     });
 });

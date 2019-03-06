@@ -1,10 +1,14 @@
+import { isArray } from 'vega-util';
+import { isBinned, isBinning, isBinParams } from '../../bin';
 import { COLOR, FILL, STROKE, X, Y } from '../../channel';
+import { vgField } from '../../fielddef';
 import * as log from '../../log';
 import { channelScalePropertyIncompatability, hasContinuousDomain, isContinuousToContinuous, isContinuousToDiscrete, ScaleType, scaleTypeSupportProperty } from '../../scale';
 import * as util from '../../util';
 import { contains, getFirstDefined, keys } from '../../util';
 import { isUnitModel } from '../model';
 import { mergeValuesWithExplicit, tieBreakByComparing } from '../split';
+import { SignalRefWrapper } from './../signal';
 import { parseUnitScaleRange } from './range';
 export function parseScaleProperty(model, property) {
     if (isUnitModel(model)) {
@@ -38,11 +42,11 @@ function parseUnitScaleProperty(model, property) {
         }
         if (supportedByScaleType && channelIncompatability === undefined) {
             if (specifiedValue !== undefined) {
-                // copyKeyFromObject ensure type safety
+                // copyKeyFromObject ensures type safety
                 localScaleCmpt.copyKeyFromObject(property, specifiedScale);
             }
             else {
-                const value = getDefaultValue(property, channel, fieldDef, mergedScaleCmpt.get('type'), mergedScaleCmpt.get('padding'), mergedScaleCmpt.get('paddingInner'), specifiedScale.domain, model.markDef, config);
+                const value = getDefaultValue(property, model, channel, fieldDef, mergedScaleCmpt.get('type'), mergedScaleCmpt.get('padding'), mergedScaleCmpt.get('paddingInner'), specifiedScale.domain, model.markDef, config);
                 if (value !== undefined) {
                     localScaleCmpt.set(property, value, false);
                 }
@@ -51,12 +55,14 @@ function parseUnitScaleProperty(model, property) {
     });
 }
 // Note: This method is used in Voyager.
-export function getDefaultValue(property, channel, fieldDef, scaleType, scalePadding, scalePaddingInner, specifiedDomain, markDef, config) {
+export function getDefaultValue(property, model, channel, fieldDef, scaleType, scalePadding, scalePaddingInner, specifiedDomain, markDef, config) {
     const scaleConfig = config.scale;
     // If we have default rule-base, determine default value first
     switch (property) {
+        case 'bins':
+            return bins(model, fieldDef, channel);
         case 'interpolate':
-            return interpolate(channel, scaleType);
+            return interpolate(channel);
         case 'nice':
             return nice(scaleType, channel, fieldDef);
         case 'padding':
@@ -115,8 +121,23 @@ export function parseNonUnitScaleProperty(model, property) {
         localScaleComponents[channel].setWithExplicit(property, valueWithExplicit);
     });
 }
-export function interpolate(channel, scaleType) {
-    if (contains([COLOR, FILL, STROKE], channel) && isContinuousToContinuous(scaleType)) {
+export function bins(model, fieldDef, channel) {
+    const bin = fieldDef.bin;
+    if (isBinning(bin)) {
+        return new SignalRefWrapper(() => {
+            return model.getName(vgField(fieldDef, { suffix: 'bins' }));
+        });
+    }
+    else if (isBinned(bin) && isBinParams(bin) && bin.step !== undefined) {
+        // start and stop will be determined from the scale domain
+        return {
+            step: bin.step
+        };
+    }
+    return undefined;
+}
+export function interpolate(channel) {
+    if (contains([COLOR, FILL, STROKE], channel)) {
         return 'hcl';
     }
     return undefined;
@@ -188,11 +209,21 @@ export function reverse(scaleType, sort) {
     }
     return undefined;
 }
-export function zero(channel, fieldDef, specifiedScale, markDef, scaleType) {
+export function zero(channel, fieldDef, specifiedDomain, markDef, scaleType) {
     // If users explicitly provide a domain range, we should not augment zero as that will be unexpected.
-    const hasCustomDomain = !!specifiedScale && specifiedScale !== 'unaggregated';
+    const hasCustomDomain = !!specifiedDomain && specifiedDomain !== 'unaggregated';
     if (hasCustomDomain) {
-        return false;
+        if (hasContinuousDomain(scaleType)) {
+            if (isArray(specifiedDomain)) {
+                const first = specifiedDomain[0];
+                const last = specifiedDomain[specifiedDomain.length - 1];
+                if (first <= 0 && last >= 0) {
+                    // if the domain includes zero, make zero remains true
+                    return true;
+                }
+            }
+            return false;
+        }
     }
     // If there is no custom domain, return true only for the following cases:
     // 1) using quantitative field with size

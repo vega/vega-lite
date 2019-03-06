@@ -1,6 +1,7 @@
 /* tslint:disable quotemark */
 import { COLOR, X, Y } from '../../../src/channel';
 import { area } from '../../../src/compile/mark/area';
+import { internalField } from '../../../src/util';
 import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
 describe('Mark: Area', () => {
     function verticalArea(moreEncoding = {}) {
@@ -66,7 +67,7 @@ describe('Mark: Area', () => {
             expect(props.x).toEqual({ scale: X, field: 'year_Year' });
         });
         it('should have scale for y', () => {
-            expect(props.y).toEqual({ scale: Y, field: 'count_*' });
+            expect(props.y).toEqual({ scale: Y, field: internalField('count') });
         });
         it('should have the correct value for y2', () => {
             expect(props.y2).toEqual({ scale: 'y', value: 0 });
@@ -79,7 +80,7 @@ describe('Mark: Area', () => {
             expect(props.x).toEqual({ scale: X, field: 'year_Year' });
         });
         it('should have scale for y', () => {
-            expect(props.y).toEqual({ scale: Y, field: 'count_*' });
+            expect(props.y).toEqual({ scale: Y, field: internalField('count') });
         });
         it('should have the correct value for y2', () => {
             expect(props.y2).toEqual({ scale: 'y', value: 0 });
@@ -91,8 +92,8 @@ describe('Mark: Area', () => {
         }));
         const props = area.encodeEntry(model);
         it('should have the correct value for y and y2', () => {
-            expect(props.y).toEqual({ scale: 'y', field: 'count_*_end' });
-            expect(props.y2).toEqual({ scale: 'y', field: 'count_*_start' });
+            expect(props.y).toEqual({ scale: 'y', field: internalField('count_end') });
+            expect(props.y2).toEqual({ scale: 'y', field: internalField('count_start') });
         });
         it('should have correct orient', () => {
             expect(props.orient).toEqual({ value: 'vertical' });
@@ -115,7 +116,7 @@ describe('Mark: Area', () => {
             expect(props.y).toEqual({ scale: Y, field: 'year_Year' });
         });
         it('should have scale for x', () => {
-            expect(props.x).toEqual({ scale: X, field: 'count_*' });
+            expect(props.x).toEqual({ scale: X, field: internalField('count') });
         });
         it('should have the correct value for x2', () => {
             expect(props.x2).toEqual({ scale: 'x', value: 0 });
@@ -161,8 +162,8 @@ describe('Mark: Area', () => {
         }));
         const props = area.encodeEntry(model);
         it('should have the correct value for x and x2', () => {
-            expect(props.x).toEqual({ scale: 'x', field: 'count_*_end' });
-            expect(props.x2).toEqual({ scale: 'x', field: 'count_*_start' });
+            expect(props.x).toEqual({ scale: 'x', field: internalField('count_end') });
+            expect(props.x2).toEqual({ scale: 'x', field: internalField('count_start') });
         });
         it('should have correct orient', () => {
             expect(props.orient).toEqual({ value: 'horizontal' });

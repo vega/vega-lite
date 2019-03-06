@@ -6,6 +6,7 @@ import { LogicalOperand } from './logical';
 import { Predicate } from './predicate';
 import { SortField } from './sort';
 import { TimeUnit } from './timeunit';
+import { JoinAggregateTransform } from './transform';
 export interface FilterTransform {
     /**
      * The `filter` property must be one of the predicate definitions:
@@ -79,7 +80,7 @@ export interface AggregateTransform {
 }
 export interface AggregatedFieldDef {
     /**
-     * The aggregation operations to apply to the fields, such as sum, average or count.
+     * The aggregation operation to apply to the fields (e.g., sum, average or count).
      * See the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops)
      * for more information.
      */
@@ -122,7 +123,7 @@ export interface StackTransform {
 export declare type WindowOnlyOp = 'row_number' | 'rank' | 'dense_rank' | 'percent_rank' | 'cume_dist' | 'ntile' | 'lag' | 'lead' | 'first_value' | 'last_value' | 'nth_value';
 export interface WindowFieldDef {
     /**
-     * The window or aggregation operations to apply within a window, including `rank`, `lead`, `sum`, `average` or `count`. See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops).
+     * The window or aggregation operation to apply within a window (e.g.,`rank`, `lead`, `sum`, `average` or `count`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops).
      */
     op: AggregateOp | WindowOnlyOp;
     /**
@@ -146,25 +147,49 @@ export interface WindowTransform {
      */
     window: WindowFieldDef[];
     /**
-     * A frame specification as a two-element array indicating how the sliding window should proceed. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. The default value is `[null, 0]`, indicating that the sliding window includes the current object and all preceding objects. The value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object. Finally, `[null, null]` indicates that the window frame should always include all data objects. The only operators affected are the aggregation operations and the `first_value`, `last_value`, and `nth_value` window operations. The other window operations are not affected by this.
+     * A frame specification as a two-element array indicating how the sliding window should proceed. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. The default value is `[null, 0]`, indicating that the sliding window includes the current object and all preceding objects. The value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object. Finally, `[null, null]` indicates that the window frame should always include all data objects. If you this frame and want to assign the same value to add objects, you can use the simpler [join aggregate transform](https://vega.github.io/vega-lite/docs/joinaggregate.html). The only operators affected are the aggregation operations and the `first_value`, `last_value`, and `nth_value` window operations. The other window operations are not affected by this.
      *
      * __Default value:__:  `[null, 0]` (includes the current object and all preceding objects)
      */
     frame?: (null | number)[];
     /**
-     * Indicates if the sliding window frame should ignore peer values. (Peer values are those considered identical by the sort criteria). The default is false, causing the window frame to expand to include all peer values. If set to true, the window frame will be defined by offset values only. This setting only affects those operations that depend on the window frame, namely aggregation operations and the first_value, last_value, and nth_value window operations.
+     * Indicates if the sliding window frame should ignore peer values (data that are considered identical by the sort criteria). The default is false, causing the window frame to expand to include all peer values. If set to true, the window frame will be defined by offset values only. This setting only affects those operations that depend on the window frame, namely aggregation operations and the first_value, last_value, and nth_value window operations.
      *
      * __Default value:__ `false`
      */
     ignorePeers?: boolean;
     /**
-     * The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be in a single group.
+     * The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be in a single window.
      */
     groupby?: string[];
     /**
      * A sort field definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).
      */
     sort?: SortField[];
+}
+export interface JoinAggregateFieldDef {
+    /**
+     * The aggregation operation to apply (e.g., sum, average or count). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/aggregate.html#ops).
+     */
+    op: AggregateOp;
+    /**
+     * The data field for which to compute the aggregate function. This can be omitted for functions that do not operate over a field such as `count`.
+     */
+    field?: string;
+    /**
+     * The output name for the join aggregate operation.
+     */
+    as: string;
+}
+export interface JoinAggregateTransform {
+    /**
+     * The definition of the fields in the join aggregate, and what calculations to use.
+     */
+    joinaggregate: JoinAggregateFieldDef[];
+    /**
+     * The data fields for partitioning the data objects into separate groups. If unspecified, all data points will be in a single group.
+     */
+    groupby?: string[];
 }
 export interface ImputeSequence {
     /**
@@ -273,6 +298,7 @@ export interface FoldTransform {
 export declare function isLookup(t: Transform): t is LookupTransform;
 export declare function isSample(t: Transform): t is SampleTransform;
 export declare function isWindow(t: Transform): t is WindowTransform;
+export declare function isJoinAggregate(t: Transform): t is JoinAggregateTransform;
 export declare function isFlatten(t: Transform): t is FlattenTransform;
 export declare function isCalculate(t: Transform): t is CalculateTransform;
 export declare function isBin(t: Transform): t is BinTransform;
@@ -281,7 +307,7 @@ export declare function isTimeUnit(t: Transform): t is TimeUnitTransform;
 export declare function isAggregate(t: Transform): t is AggregateTransform;
 export declare function isStack(t: Transform): t is StackTransform;
 export declare function isFold(t: Transform): t is FoldTransform;
-export declare type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | ImputeTransform | AggregateTransform | WindowTransform | StackTransform | FlattenTransform | FoldTransform | SampleTransform;
-export declare function normalizeTransform(transform: Transform[]): (CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | ImputeTransform | AggregateTransform | WindowTransform | StackTransform | FlattenTransform | FoldTransform | SampleTransform | {
+export declare type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | ImputeTransform | AggregateTransform | WindowTransform | JoinAggregateTransform | StackTransform | FlattenTransform | FoldTransform | SampleTransform;
+export declare function normalizeTransform(transform: Transform[]): (CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | ImputeTransform | AggregateTransform | WindowTransform | JoinAggregateTransform | StackTransform | FlattenTransform | FoldTransform | SampleTransform | {
     filter: LogicalOperand<Predicate>;
 })[];

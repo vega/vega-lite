@@ -11,7 +11,7 @@ import { ScaleComponent } from './component';
 import { parseScaleDomain } from './domain';
 import { parseScaleProperty, parseScaleRange } from './properties';
 import { scaleType } from './type';
-export function parseScale(model) {
+export function parseScales(model) {
     parseScaleCore(model);
     parseScaleDomain(model);
     for (const prop of NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES) {

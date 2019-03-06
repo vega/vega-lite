@@ -1,19 +1,16 @@
 import { RangeType } from './compile/scale/type';
 import { Encoding } from './encoding';
 import { Mark } from './mark';
-import { FacetMapping } from './spec/facet';
+import { EncodingFacetMapping, EncodingFacetMapping as ExtendedFacetMapping } from './spec/facet';
 import { Flag } from './util';
 export declare namespace Channel {
     const ROW: 'row';
     const COLUMN: 'column';
+    const FACET: 'facet';
     const X: 'x';
     const Y: 'y';
     const X2: 'x2';
     const Y2: 'y2';
-    const XERROR: 'xError';
-    const YERROR: 'yError';
-    const XERROR2: 'xError2';
-    const YERROR2: 'yError2';
     const LATITUDE: 'latitude';
     const LONGITUDE: 'longitude';
     const LATITUDE2: 'latitude2';
@@ -34,19 +31,16 @@ export declare namespace Channel {
     const TOOLTIP: 'tooltip';
     const HREF: 'href';
 }
-export declare type Channel = keyof Encoding<any> | keyof FacetMapping<any>;
+export declare type Channel = keyof Encoding<any> | keyof ExtendedFacetMapping<any>;
 export declare const X: "x";
 export declare const Y: "y";
 export declare const X2: "x2";
 export declare const Y2: "y2";
-export declare const XERROR: "xError";
-export declare const YERROR: "yError";
-export declare const XERROR2: "xError2";
-export declare const YERROR2: "yError2";
 export declare const LATITUDE: "latitude";
 export declare const LATITUDE2: "latitude2";
 export declare const LONGITUDE: "longitude";
 export declare const LONGITUDE2: "longitude2";
+export declare const FACET: "facet";
 export declare const ROW: "row";
 export declare const COLUMN: "column";
 export declare const SHAPE: "shape";
@@ -64,12 +58,15 @@ export declare const STROKEOPACITY: "strokeOpacity";
 export declare const STROKEWIDTH: "strokeWidth";
 export declare const TOOLTIP: "tooltip";
 export declare const HREF: "href";
+export declare type PositionChannel = 'x' | 'y' | 'x2' | 'y2';
 export declare type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
 export declare const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel>;
-export declare const GEOPOSITION_CHANNELS: import("vega-lite/build/src/channel").GeoPositionChannel[];
+export declare const GEOPOSITION_CHANNELS: ("longitude" | "latitude" | "longitude2" | "latitude2")[];
 export declare type ColorChannel = 'color' | 'fill' | 'stroke';
 export declare function isColorChannel(channel: Channel): channel is ColorChannel;
-export declare const CHANNELS: import("vega-lite/build/src/channel").Channel[];
+export declare type FacetChannel = keyof EncodingFacetMapping<any>;
+export declare const FACET_CHANNELS: ("facet" | "row" | "column")[];
+export declare const CHANNELS: Channel[];
 /**
  * Channels that cannot have an array of channelDef.
  * model.fieldDef, getFieldDef only work for these channels.
@@ -79,17 +76,17 @@ export declare const CHANNELS: import("vega-lite/build/src/channel").Channel[];
  * are not applicable for them.  Similarly, selection projection won't work with "detail" and "order".)
  */
 export declare const SINGLE_DEF_CHANNELS: SingleDefChannel[];
-export declare type SingleDefUnitChannel = 'x' | 'y' | 'x2' | 'y2' | 'xError' | 'yError' | 'xError2' | 'yError2' | 'longitude' | 'latitude' | 'longitude2' | 'latitude2' | 'color' | 'fill' | 'stroke' | 'strokeWidth' | 'size' | 'shape' | 'fillOpacity' | 'strokeOpacity' | 'opacity' | 'text' | 'tooltip' | 'href' | 'key';
-export declare type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column';
+export declare type SingleDefUnitChannel = 'x' | 'y' | 'x2' | 'y2' | 'longitude' | 'latitude' | 'longitude2' | 'latitude2' | 'color' | 'fill' | 'stroke' | 'strokeWidth' | 'size' | 'shape' | 'fillOpacity' | 'strokeOpacity' | 'opacity' | 'text' | 'tooltip' | 'href' | 'key';
+export declare type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column' | 'facet';
 export declare function isChannel(str: string): str is Channel;
 export declare function isSecondaryRangeChannel(c: Channel): c is 'x2' | 'y2' | 'latitude2' | 'longitude2';
 export declare function getMainRangeChannel(channel: Channel): Channel;
-export declare const UNIT_CHANNELS: ("text" | "shape" | "x" | "y" | "x2" | "y2" | "xError" | "xError2" | "yError" | "yError2" | "longitude" | "latitude" | "longitude2" | "latitude2" | "color" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "detail" | "key" | "tooltip" | "href" | "order")[];
-export declare const NONPOSITION_CHANNELS: ("text" | "shape" | "color" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "detail" | "key" | "tooltip" | "href" | "order")[];
+export declare const UNIT_CHANNELS: ("text" | "stroke" | "shape" | "x" | "y" | "x2" | "y2" | "longitude" | "latitude" | "longitude2" | "latitude2" | "color" | "fill" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "detail" | "key" | "tooltip" | "href" | "order")[];
+export declare const NONPOSITION_CHANNELS: ("text" | "stroke" | "shape" | "color" | "fill" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "detail" | "key" | "tooltip" | "href" | "order")[];
 export declare type NonPositionChannel = typeof NONPOSITION_CHANNELS[0];
 export declare const POSITION_SCALE_CHANNELS: ("x" | "y")[];
 export declare type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
-export declare const NONPOSITION_SCALE_CHANNELS: ("shape" | "color" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size")[];
+export declare const NONPOSITION_SCALE_CHANNELS: ("stroke" | "shape" | "color" | "fill" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size")[];
 export declare type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
 export declare function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel;
 /**
@@ -97,7 +94,7 @@ export declare function isNonPositionScaleChannel(channel: Channel): channel is 
  */
 export declare function supportLegend(channel: NonPositionScaleChannel): boolean;
 /** List of channels with scales */
-export declare const SCALE_CHANNELS: ("shape" | "x" | "y" | "color" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size")[];
+export declare const SCALE_CHANNELS: ("stroke" | "shape" | "x" | "y" | "color" | "fill" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size")[];
 export declare type ScaleChannel = typeof SCALE_CHANNELS[0];
 export declare function isScaleChannel(channel: Channel): channel is ScaleChannel;
 export declare type SupportedMark = {

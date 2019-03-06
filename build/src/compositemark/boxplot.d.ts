@@ -1,12 +1,13 @@
-import { Config } from '../config';
+import { Orientation } from 'vega';
 import { Encoding } from '../encoding';
+import { NormalizerParams } from '../normalize';
 import { GenericUnitSpec, NormalizedLayerSpec } from '../spec';
-import { Orient } from '../vega.schema';
+import { CompositeMarkNormalizer } from './base';
 import { GenericCompositeMarkDef, PartsMixins } from './common';
 export declare const BOXPLOT: 'boxplot';
 export declare type BoxPlot = typeof BOXPLOT;
 export declare type BoxPlotPart = 'box' | 'median' | 'outliers' | 'rule' | 'ticks';
-export declare const BOXPLOT_PARTS: import("vega-lite/build/src/compositemark/boxplot").BoxPlotPart[];
+export declare const BOXPLOT_PARTS: BoxPlotPart[];
 export declare type BoxPlotPartsMixins = PartsMixins<BoxPlotPart>;
 export interface BoxPlotConfig extends BoxPlotPartsMixins {
     /** Size of the box and median tick of a box plot */
@@ -14,7 +15,7 @@ export interface BoxPlotConfig extends BoxPlotPartsMixins {
     /**
      * The extent of the whiskers. Available options include:
      * - `"min-max"`: min and max are the lower and upper whiskers respectively.
-     * - A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. The product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
+     * - A number representing multiple of the interquartile range.  This number will be multiplied by the IQR to determine whisker boundary, which spans from the smallest data to the largest data within the range _[Q1 - k * IQR, Q3 + k * IQR]_ where _Q1_ and _Q3_ are the first and third quartiles while _IQR_ is the interquartile range (_Q3-Q1_).
      *
      * __Default value:__ `1.5`.
      */
@@ -31,7 +32,7 @@ export declare type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> & BoxPlotConfi
      *
      * __Default value:__ `"vertical"`.
      */
-    orient?: Orient;
+    orient?: Orientation;
 };
 export interface BoxPlotConfigMixins {
     /**
@@ -39,4 +40,6 @@ export interface BoxPlotConfigMixins {
      */
     boxplot?: BoxPlotConfig;
 }
-export declare function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, config: Config): NormalizedLayerSpec;
+export declare const boxPlotNormalizer: CompositeMarkNormalizer<"boxplot">;
+export declare function getBoxPlotType(extent: number | 'min-max'): "min-max" | "tukey";
+export declare function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, { config }: NormalizerParams): NormalizedLayerSpec;

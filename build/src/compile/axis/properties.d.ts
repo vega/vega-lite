@@ -27,6 +27,4 @@ export declare function defaultTickCount({ fieldDef, scaleType, size, scaleName,
 };
 export declare function values(specifiedAxis: Axis, model: UnitModel, fieldDef: TypedFieldDef<string>, channel: PositionScaleChannel): (string | number | boolean | import("../../datetime").DateTime | {
     signal: string;
-})[] | {
-    signal: string;
-};
+})[];

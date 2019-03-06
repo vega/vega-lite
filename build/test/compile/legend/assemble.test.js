@@ -14,7 +14,7 @@ describe('legend/assemble', () => {
                 shape: { field: 'Origin', type: 'nominal' }
             }
         });
-        model.parseLegend();
+        model.parseLegends();
         const legends = model.assembleLegends();
         expect(legends).toHaveLength(1);
         expect(legends[0].title).toEqual('Origin');
@@ -32,7 +32,7 @@ describe('legend/assemble', () => {
                 size: { field: 'b', type: 'quantitative' }
             }
         });
-        model.parseLegend();
+        model.parseLegends();
         const legends = model.assembleLegends();
         expect(legends).toHaveLength(1);
         expect(legends[0].title).toEqual('b');

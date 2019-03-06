@@ -154,7 +154,7 @@ export class AggregateNode extends DataFlowNode {
                 for (const alias of this.measures[field][op]) {
                     as.push(alias);
                     ops.push(op);
-                    fields.push(replacePathInField(field));
+                    fields.push(field === '*' ? null : replacePathInField(field));
                 }
             }
         }

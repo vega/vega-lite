@@ -1,3 +1,4 @@
+import { isAggregateOp } from '../../aggregate';
 import { vgField } from '../../fielddef';
 import { duplicate, hash } from '../../util';
 import { unique } from './../../util';
@@ -48,6 +49,10 @@ export class WindowTransformNode extends DataFlowNode {
         }
         const frame = this.transform.frame;
         const groupby = this.transform.groupby;
+        if (frame && frame[0] === null && frame[1] === null && ops.every(o => isAggregateOp(o))) {
+            // when the window does not rely on any particular window ops or frame, switch to a simpler and more efficient joinaggregate
+            return Object.assign({ type: 'joinaggregate', as, ops: ops, fields }, (groupby !== undefined ? { groupby } : {}));
+        }
         const sortFields = [];
         const sortOrder = [];
         if (this.transform.sort !== undefined) {
@@ -61,24 +66,11 @@ export class WindowTransformNode extends DataFlowNode {
             order: sortOrder
         };
         const ignorePeers = this.transform.ignorePeers;
-        const result = {
-            type: 'window',
-            params,
+        return Object.assign({ type: 'window', params,
             as,
             ops,
             fields,
-            sort
-        };
-        if (ignorePeers !== undefined) {
-            result.ignorePeers = ignorePeers;
-        }
-        if (groupby !== undefined) {
-            result.groupby = groupby;
-        }
-        if (frame !== undefined) {
-            result.frame = frame;
-        }
-        return result;
+            sort }, (ignorePeers !== undefined ? { ignorePeers } : {}), (groupby !== undefined ? { groupby } : {}), (frame !== undefined ? { frame } : {}));
     }
 }
 //# sourceMappingURL=window.js.map

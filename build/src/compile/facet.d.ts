@@ -4,14 +4,13 @@ import { Config } from '../config';
 import { FieldRefOption, TypedFieldDef } from '../fielddef';
 import { EncodingSortField } from '../sort';
 import { NormalizedFacetSpec } from '../spec';
-import { FacetFieldDef, FacetMapping } from '../spec/facet';
+import { EncodingFacetMapping, FacetFieldDef } from '../spec/facet';
 import { VgData, VgLayout, VgMarkGroup } from '../vega.schema';
 import { Model, ModelWithField } from './model';
 import { RepeaterValue } from './repeater';
 export declare function facetSortFieldName(fieldDef: FacetFieldDef<string>, sort: EncodingSortField<string>, opt?: FieldRefOption): string;
 export declare class FacetModel extends ModelWithField {
-    readonly type: 'facet';
-    readonly facet: FacetMapping<string>;
+    readonly facet: EncodingFacetMapping<string>;
     readonly child: Model;
     readonly children: Model[];
     constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
@@ -20,14 +19,11 @@ export declare class FacetModel extends ModelWithField {
     fieldDef(channel: Channel): TypedFieldDef<string>;
     parseData(): void;
     parseLayoutSize(): void;
-    parseSelection(): void;
+    parseSelections(): void;
     parseMarkGroup(): void;
-    parseAxisAndHeader(): void;
-    private parseHeader;
-    private makeHeaderComponent;
-    private mergeChildAxis;
+    parseAxesAndHeaders(): void;
     assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
-    assembleSelectionSignals(): NewSignal[];
+    assembleSignals(): NewSignal[];
     assembleSelectionData(data: VgData[]): VgData[];
     private getHeaderLayoutMixins;
     protected assembleDefaultLayout(): VgLayout;
@@ -39,8 +35,8 @@ export declare class FacetModel extends ModelWithField {
      */
     private getCardinalityAggregateForChild;
     private assembleFacet;
-    private headerSortFields;
-    private headerSortOrder;
+    private facetSortFields;
+    private facetSortOrder;
     assembleMarks(): VgMarkGroup[];
-    protected getMapping(): FacetMapping<string>;
+    protected getMapping(): EncodingFacetMapping<string>;
 }

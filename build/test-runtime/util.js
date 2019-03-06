@@ -2,8 +2,8 @@ import * as tslib_1 from "tslib";
 import * as fs from 'fs';
 import { sync as mkdirp } from 'mkdirp';
 import { stringValue } from 'vega-util';
-export const generate = process.env.VL_GENERATE_TESTS;
-export const output = 'test-runtime/resources';
+const generate = process.env.VL_GENERATE_TESTS;
+const output = 'test-runtime/resources';
 export const selectionTypes = ['single', 'multi', 'interval'];
 export const compositeTypes = ['repeat', 'facet'];
 export const resolutions = ['union', 'intersect'];
@@ -41,9 +41,9 @@ export const tuples = [
     { a: 9, b: 15, c: 1 },
     { a: 9, b: 48, c: 2 }
 ];
-const unitNames = {
-    repeat: ['child_d', 'child_e', 'child_f'],
-    facet: ['child_0', 'child_1', 'child_2']
+const UNIT_NAMES = {
+    repeat: ['child__repeat_row_d', 'child__repeat_row_e', 'child__repeat_row_f'],
+    facet: ['child__facet_row_0', 'child__facet_row_1', 'child__facet_row_2']
 };
 export const hits = {
     discrete: {
@@ -144,41 +144,42 @@ export function spec(compose, iter, sel, opts = {}) {
     return null;
 }
 export function unitNameRegex(specType, idx) {
-    const name = unitNames[specType][idx].replace('child_', '');
+    const name = UNIT_NAMES[specType][idx].replace('child_', '');
     return new RegExp(`child(.*?)_${name}`);
 }
 export function parentSelector(compositeType, index) {
-    return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` : unitNames.repeat[index] + '_group';
+    return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` : UNIT_NAMES.repeat[index] + '_group';
 }
 export function brush(key, idx, parent, targetBrush) {
     const fn = key.match('_clear') ? 'clear' : 'brush';
-    return `return ${fn}(${hits.interval[key][idx].join(', ')}, ${stringValue(parent)}, ${!!targetBrush})`;
+    return `${fn}(${hits.interval[key][idx].join(', ')}, ${stringValue(parent)}, ${!!targetBrush})`;
 }
 export function pt(key, idx, parent) {
     const fn = key.match('_clear') ? 'clear' : 'pt';
-    return `return ${fn}(${hits.discrete[key][idx]}, ${stringValue(parent)})`;
+    return `${fn}(${hits.discrete[key][idx]}, ${stringValue(parent)})`;
 }
-export function embedFn(browser) {
-    return (specification) => {
-        browser.execute(_ => window['embed'](_), specification);
-    };
-}
-export function svg(browser, path, filename) {
-    const xml = browser.executeAsync(done => {
-        window['view'].runAfter((view) => view.toSVG().then((_) => done(_)));
+export function embedFn(page) {
+    return (specification) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+        yield page.evaluate((_) => window['embed'](_), 
+        // specification is serializable even if the types don't agree
+        specification);
     });
-    if (generate) {
-        mkdirp((path = `${output}/${path}`));
-        fs.writeFileSync(`${path}/${filename}.svg`, xml.value);
-    }
-    return xml.value;
 }
-export function testRenderFn(browser, path) {
-    return (filename) => {
-        // const render =
-        svg(browser, path, filename);
-        // const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);
-        // expect(render).toEqual(file);
-    };
+export function svg(page, path, filename) {
+    return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        const svgString = yield page.evaluate(`new Promise((resolve, reject) => { vega.resetSVGClipId(); view.runAsync().then(view => view.toSVG().then(resolve)) })`);
+        if (generate) {
+            mkdirp((path = `${output}/${path}`));
+            fs.writeFileSync(`${path}/${filename}.svg`, svgString);
+        }
+        return svgString;
+    });
+}
+export function testRenderFn(page, path) {
+    return (filename) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+        const render = yield svg(page, path, filename);
+        const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);
+        expect(render).toBe(file.toString());
+    });
 }
 //# sourceMappingURL=util.js.map

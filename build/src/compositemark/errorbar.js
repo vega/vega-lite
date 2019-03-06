@@ -4,14 +4,16 @@ import { isContinuous, isFieldDef, title } from '../fielddef';
 import * as log from '../log';
 import { isMarkDef } from '../mark';
 import { keys, titlecase } from '../util';
-import { compositeMarkContinuousAxis, compositeMarkOrient, filterUnsupportedChannels, getCompositeMarkTooltip, makeCompositeAggregatePartFactory } from './common';
+import { CompositeMarkNormalizer } from './base';
+import { compositeMarkContinuousAxis, compositeMarkOrient, getCompositeMarkTooltip, makeCompositeAggregatePartFactory } from './common';
 export const ERRORBAR = 'errorbar';
 const ERRORBAR_PART_INDEX = {
     ticks: 1,
     rule: 1
 };
 export const ERRORBAR_PARTS = keys(ERRORBAR_PART_INDEX);
-export function normalizeErrorBar(spec, config) {
+export const errorBarNormalizer = new CompositeMarkNormalizer(ERRORBAR, normalizeErrorBar);
+export function normalizeErrorBar(spec, { config }) {
     const { transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis, ticksOrient, markDef, outerSpec, tooltipEncoding } = errorBarParams(spec, ERRORBAR, config);
     const makeErrorBarPart = makeCompositeAggregatePartFactory(markDef, continuousAxis, continuousAxisChannelDef, encodingWithoutContinuousAxis, config.errorbar);
     const tick = { type: 'tick', orient: ticksOrient };
@@ -142,21 +144,7 @@ function errorBarIsInputTypeAggregatedError(encoding) {
         isFieldDef(encoding.yError) ||
         isFieldDef(encoding.yError2));
 }
-export const errorBarSupportedChannels = [
-    'x',
-    'y',
-    'x2',
-    'y2',
-    'xError',
-    'yError',
-    'xError2',
-    'yError2',
-    'color',
-    'detail',
-    'opacity'
-];
 export function errorBarParams(spec, compositeMark, config) {
-    spec = filterUnsupportedChannels(spec, errorBarSupportedChannels, compositeMark);
     // TODO: use selection
     const { mark, encoding, selection, projection: _p } = spec, outerSpec = tslib_1.__rest(spec, ["mark", "encoding", "selection", "projection"]);
     const markDef = isMarkDef(mark) ? mark : { type: mark };

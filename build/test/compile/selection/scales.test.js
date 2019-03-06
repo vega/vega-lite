@@ -57,7 +57,7 @@ describe('Selection + Scales', () => {
                 }
             });
             model.parseScale();
-            model.parseSelection();
+            model.parseSelections();
             const scales = assembleScalesForModel(model.children[1]);
             const xscale = scales[0];
             const yscale = scales[1];
@@ -100,7 +100,7 @@ describe('Selection + Scales', () => {
                 }
             });
             model.parseScale();
-            model.parseSelection();
+            model.parseSelections();
             const scales = assembleScalesForModel(model.children[3]);
             expect(scales.length === 2).toBe(true);
             expect('domainRaw' in scales[0]).toBeTruthy();
@@ -140,7 +140,7 @@ describe('Selection + Scales', () => {
                 ]
             });
             model.parseScale();
-            model.parseSelection();
+            model.parseSelections();
             const scales = assembleScalesForModel(model.children[0]);
             expect('domainRaw' in scales[0]).toBeTruthy();
             expect(scales[0].domainRaw.signal).toBe('brush["date"]');
@@ -170,7 +170,7 @@ describe('Selection + Scales', () => {
             }
         });
         model.parseScale();
-        model.parseSelection();
+        model.parseSelections();
         it('should be marked as push: outer', () => {
             const signals = assembleUnitSelectionSignals(model.children[0], []);
             const hp = signals.filter(s => s.name === 'grid_Horsepower');
@@ -212,7 +212,7 @@ describe('Selection + Scales', () => {
                 y: { field: 'Miles_per_Gallon', type: 'quantitative' }
             }
         });
-        model.parseSelection();
+        model.parseSelections();
         expect(localLogger.warns[0]).toEqual(log.message.cannotProjectOnChannelWithoutField(X));
         model = parseUnitModelWithScale({
             data: { url: 'data/cars.json' },
@@ -225,7 +225,7 @@ describe('Selection + Scales', () => {
                 y: { field: 'Miles_per_Gallon', type: 'quantitative' }
             }
         });
-        model.parseSelection();
+        model.parseSelections();
         expect(localLogger.warns[1]).toEqual(log.message.SCALE_BINDINGS_CONTINUOUS);
     }));
 });

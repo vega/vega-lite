@@ -1,7 +1,7 @@
 import { parse, View } from 'vega';
 import { compile } from '../src';
 let view;
-function embed(vlSpec) {
+export function embed(vlSpec) {
     const vgSpec = compile(vlSpec).spec;
     view = new View(parse(vgSpec))
         .renderer('svg')
@@ -9,7 +9,7 @@ function embed(vlSpec) {
         .run();
 }
 const winSrc = ['mousemove', 'mouseup'];
-function mouseEvt(type, target, opts) {
+export function mouseEvt(type, target, opts) {
     opts.bubbles = true;
     target = winSrc.indexOf(type) < 0 ? target : window;
     target.dispatchEvent(new MouseEvent('mousemove', Object.assign({}, opts, { clientX: opts.clientX - 5, clientY: opts.clientY - 5 })));
@@ -17,22 +17,22 @@ function mouseEvt(type, target, opts) {
     target.dispatchEvent(type === 'wheel' ? new WheelEvent('wheel', opts) : new MouseEvent(type, opts));
     target.dispatchEvent(new MouseEvent('mousemove', Object.assign({}, opts, { clientX: opts.clientX + 5, clientY: opts.clientY + 5 })));
 }
-function mark(id, parent) {
+export function mark(id, parent) {
     return document.querySelector((parent ? `g.${parent} ` : '') + `g.mark-symbol.role-mark path:nth-child(${id})`);
 }
-function coords(el) {
+export function coords(el) {
     const rect = el.getBoundingClientRect();
     return [Math.ceil(rect.left + rect.width / 2), Math.ceil(rect.top + rect.height / 2)];
 }
-function brushOrEl(el, parent, _) {
+export function brushOrEl(el, parent, _) {
     return !_ ? el : document.querySelector((parent ? `g.${parent} ` : '') + 'g.sel_brush > path');
 }
-function click(el, evt) {
+export function click(el, evt) {
     mouseEvt('mousedown', el, evt);
     mouseEvt('mouseup', window, evt);
     mouseEvt('click', el, evt);
 }
-function brush(id0, id1, parent, targetBrush) {
+export function brush(id0, id1, parent, targetBrush) {
     const el0 = mark(id0, parent);
     const el1 = mark(id1, parent);
     const [mdX, mdY] = coords(el0);
@@ -41,13 +41,13 @@ function brush(id0, id1, parent, targetBrush) {
     mouseEvt('mouseup', window, { clientX: muX, clientY: muY });
     return view.data('sel_store');
 }
-function pt(id, parent, shiftKey) {
+export function pt(id, parent, shiftKey) {
     const el = mark(id, parent);
     const [clientX, clientY] = coords(el);
     click(el, { clientX, clientY, shiftKey });
     return view.data('sel_store');
 }
-function clear(id, parent, shiftKey) {
+export function clear(id, parent, shiftKey) {
     const bg = document.querySelector((parent ? `g.${parent} ` : '') + 'path.background');
     const el = mark(id, parent);
     let [clientX, clientY] = coords(el);
@@ -56,7 +56,7 @@ function clear(id, parent, shiftKey) {
     click(bg, { clientX, clientY, shiftKey });
     return view.data('sel_store');
 }
-function zoom(id, delta, parent, targetBrush) {
+export function zoom(id, delta, parent, targetBrush) {
     const el = mark(id, parent);
     const [clientX, clientY] = coords(el);
     mouseEvt('wheel', brushOrEl(el, parent, targetBrush), {
@@ -75,10 +75,10 @@ function zoom(id, delta, parent, targetBrush) {
     });
     return view.data('sel_store');
 }
-window['embed'] = embed;
-window['click'] = click;
-window['brush'] = brush;
-window['pt'] = pt;
-window['clear'] = clear;
-window['zoom'] = zoom;
+// window['embed'] = embed;
+// window['click'] = click;
+// window['brush'] = brush;
+// window['pt'] = pt;
+// window['clear'] = clear;
+// window['zoom'] = zoom;
 //# sourceMappingURL=global.js.map

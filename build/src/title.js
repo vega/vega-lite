@@ -8,7 +8,7 @@ export function extractTitleConfig(titleConfig) {
     // The rest are mark config.
     titleMarkConfig = tslib_1.__rest(titleConfig, ["anchor", "frame", "offset", "orient", "color"]);
     const mark = Object.assign({}, titleMarkConfig, (color ? { fill: color } : {}));
-    const nonMark = Object.assign({}, (anchor ? { anchor } : {}), (offset ? { offset } : {}), (orient ? { orient } : {}));
+    const nonMark = Object.assign({}, (anchor ? { anchor } : {}), (frame ? { frame } : {}), (offset ? { offset } : {}), (orient ? { orient } : {}));
     return { mark, nonMark };
 }
 //# sourceMappingURL=title.js.map

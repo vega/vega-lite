@@ -29,7 +29,7 @@ const markCompiler = {
     tick,
     trail
 };
-export function parseMarkGroup(model) {
+export function parseMarkGroups(model) {
     if (contains([LINE, AREA, TRAIL], model.mark)) {
         return parsePathMark(model);
     }
@@ -141,10 +141,6 @@ export function pathGroupingFields(mark, encoding) {
             case 'href':
             case 'x2':
             case 'y2':
-            case 'xError':
-            case 'yError':
-            case 'xError2':
-            case 'yError2':
             case 'latitude':
             case 'longitude':
             case 'latitude2':

@@ -8,11 +8,17 @@ export function parseLayerLayoutSize(model) {
     layoutSizeCmpt.setWithExplicit('height', parseNonUnitLayoutSizeForChannel(model, 'height'));
 }
 export const parseRepeatLayoutSize = parseLayerLayoutSize;
+const SIZE_TYPE_TO_MERGE = {
+    vconcat: 'width',
+    hconcat: 'height'
+};
 export function parseConcatLayoutSize(model) {
     parseChildrenLayoutSize(model);
     const layoutSizeCmpt = model.component.layoutSize;
-    const sizeTypeToMerge = model.isVConcat ? 'width' : 'height';
-    layoutSizeCmpt.setWithExplicit(sizeTypeToMerge, parseNonUnitLayoutSizeForChannel(model, sizeTypeToMerge));
+    const sizeTypeToMerge = SIZE_TYPE_TO_MERGE[model.concatType];
+    if (sizeTypeToMerge) {
+        layoutSizeCmpt.setWithExplicit(sizeTypeToMerge, parseNonUnitLayoutSizeForChannel(model, sizeTypeToMerge));
+    }
 }
 export function parseChildrenLayoutSize(model) {
     for (const child of model.children) {

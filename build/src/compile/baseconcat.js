@@ -3,8 +3,8 @@ import { parseData } from './data/parse';
 import { assembleLayoutSignals } from './layoutsize/assemble';
 import { Model } from './model';
 export class BaseConcatModel extends Model {
-    constructor(spec, parent, parentGivenName, config, repeater, resolve) {
-        super(spec, parent, parentGivenName, config, repeater, resolve);
+    constructor(spec, specType, parent, parentGivenName, config, repeater, resolve) {
+        super(spec, specType, parent, parentGivenName, config, repeater, resolve);
     }
     parseData() {
         this.component.data = parseData(this);
@@ -12,13 +12,13 @@ export class BaseConcatModel extends Model {
             child.parseData();
         });
     }
-    parseSelection() {
+    parseSelections() {
         // Merge selections up the hierarchy so that they may be referenced
         // across unit specs. Persist their definitions within each child
         // to assemble signals which remain within output Vega unit groups.
         this.component.selection = {};
         for (const child of this.children) {
-            child.parseSelection();
+            child.parseSelections();
             keys(child.component.selection).forEach(key => {
                 this.component.selection[key] = child.component.selection[key];
             });
@@ -29,22 +29,22 @@ export class BaseConcatModel extends Model {
             child.parseMarkGroup();
         }
     }
-    parseAxisAndHeader() {
+    parseAxesAndHeaders() {
         for (const child of this.children) {
-            child.parseAxisAndHeader();
+            child.parseAxesAndHeaders();
         }
         // TODO(#2415): support shared axes
     }
     assembleSelectionTopLevelSignals(signals) {
         return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
     }
-    assembleSelectionSignals() {
-        this.children.forEach(child => child.assembleSelectionSignals());
+    assembleSignals() {
+        this.children.forEach(child => child.assembleSignals());
         return [];
     }
     assembleLayoutSignals() {
         return this.children.reduce((signals, child) => {
-            return signals.concat(child.assembleLayoutSignals());
+            return [...signals, ...child.assembleLayoutSignals()];
         }, assembleLayoutSignals(this));
     }
     assembleSelectionData(data) {

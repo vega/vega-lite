@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 import { COLOR, DETAIL, FILLOPACITY, OPACITY, SIZE, STROKEOPACITY, STROKEWIDTH, UNIT_CHANNELS } from '../../../src/channel';
-import { getSort, parseMarkGroup, pathGroupingFields } from '../../../src/compile/mark/mark';
+import { getSort, parseMarkGroups, pathGroupingFields } from '../../../src/compile/mark/mark';
 import { GEOSHAPE } from '../../../src/mark';
 import { parseFacetModel, parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize } from '../../util';
 describe('Mark', () => {
@@ -16,7 +16,7 @@ describe('Mark', () => {
                 }
             });
             it('should have a facet directive and a nested mark group that uses the faceted data.', () => {
-                const markGroup = parseMarkGroup(model)[0];
+                const markGroup = parseMarkGroups(model)[0];
                 expect(markGroup.name).toEqual('pathgroup');
                 expect(markGroup.from).toEqual({
                     facet: {
@@ -32,7 +32,7 @@ describe('Mark', () => {
                 expect(submarkGroup.from.data).toEqual('faceted_path_main');
             });
             it('should not have post encoding transform', () => {
-                const markGroup = parseMarkGroup(model)[0];
+                const markGroup = parseMarkGroups(model)[0];
                 expect(markGroup.name).toEqual('pathgroup');
                 expect(markGroup.from).toEqual({
                     facet: {
@@ -54,13 +54,13 @@ describe('Mark', () => {
                 }
             });
             it('should have mark group with proper data and key', () => {
-                const markGroup = parseMarkGroup(model)[0];
+                const markGroup = parseMarkGroups(model)[0];
                 expect(markGroup.name).toEqual('marks');
                 expect(markGroup.type).toEqual('line');
                 expect(markGroup.from.data).toEqual('main');
             });
             it('should not have post encoding transform', () => {
-                const markGroup = parseMarkGroup(model);
+                const markGroup = parseMarkGroups(model);
                 expect(markGroup[0].transform).not.toBeDefined();
             });
             // NON-PATH
@@ -75,13 +75,13 @@ describe('Mark', () => {
                 }
             });
             it('should have mark group with proper data and key', () => {
-                const markGroup = parseMarkGroup(model)[0];
+                const markGroup = parseMarkGroups(model)[0];
                 expect(markGroup.type).toEqual('symbol');
                 expect(markGroup.key.field).toEqual('k');
                 expect(markGroup.from.data).toEqual('main');
             });
             it('should not have post encoding transform', () => {
-                const markGroup = parseMarkGroup(model);
+                const markGroup = parseMarkGroups(model);
                 expect(markGroup[0].transform).not.toBeDefined();
             });
         });
@@ -100,7 +100,7 @@ describe('Mark', () => {
                 },
                 encoding: {}
             });
-            const markGroup = parseMarkGroup(model);
+            const markGroup = parseMarkGroups(model);
             expect(markGroup[0].transform).toBeDefined();
             expect(markGroup[0].transform[0].type).toEqual(GEOSHAPE);
         });
@@ -114,12 +114,12 @@ describe('Mark', () => {
                 }
             });
             it('should use main stacked data source', () => {
-                const markGroup = parseMarkGroup(model);
+                const markGroup = parseMarkGroups(model);
                 expect(markGroup[0].from.data).toBe('main');
                 expect(markGroup[0].style).toEqual(['bar']);
             });
             it('should not have post encoding transform', () => {
-                const markGroup = parseMarkGroup(model);
+                const markGroup = parseMarkGroups(model);
                 expect(markGroup[0].transform).not.toBeDefined();
             });
         });
@@ -140,13 +140,13 @@ describe('Mark', () => {
             it('should use faceted data source', () => {
                 model.parseScale();
                 model.parseLayoutSize();
-                const markGroup = parseMarkGroup(model.child);
+                const markGroup = parseMarkGroups(model.child);
                 expect(markGroup[0].from.data).toEqual('child_main');
             });
             it('should not have post encoding transform', () => {
                 model.parseScale();
                 model.parseLayoutSize();
-                const markGroup = parseMarkGroup(model.child);
+                const markGroup = parseMarkGroups(model.child);
                 expect(markGroup[0].transform).not.toBeDefined();
             });
         });
@@ -159,11 +159,11 @@ describe('Mark', () => {
                 }
             });
             it('should use main aggregated data source', () => {
-                const markGroup = parseMarkGroup(model);
+                const markGroup = parseMarkGroups(model);
                 expect(markGroup[0].from.data).toEqual('main');
             });
             it('should not have post encoding transform', () => {
-                const markGroup = parseMarkGroup(model);
+                const markGroup = parseMarkGroups(model);
                 expect(markGroup[0].transform).not.toBeDefined();
             });
         });

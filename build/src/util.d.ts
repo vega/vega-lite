@@ -1,12 +1,8 @@
-import clone_ from 'clone';
+import { default as clone_ } from 'clone';
 import stableStringify from 'fast-json-stable-stringify';
 import { LogicalOperand } from './logical';
 export declare const deepEqual: (a: any, b: any) => boolean;
 export declare const duplicate: typeof clone_;
-/**
- * Make a regular expression that matches a whole word of the given string
- */
-export declare function globalWholeWordRegExp(word: string): RegExp;
 /**
  * Creates an object composed of the picked object properties.
  *
@@ -134,3 +130,5 @@ export declare function uniqueId(prefix?: string): string | number;
  * Resets the id counter used in uniqueId. This can be useful for testing.
  */
 export declare function resetIdCounter(): void;
+export declare function internalField(name: string): string;
+export declare function isInternalField(name: string): boolean;

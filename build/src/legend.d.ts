@@ -1,8 +1,8 @@
-import { Align, BaseLegend, FontWeight, LabelOverlap, LegendConfig as VgLegendConfig, LegendOrient, Orientation, SymbolShape, TextBaseline } from 'vega';
+import { Align, BaseLegend, FontStyle, FontWeight, LabelOverlap, LegendConfig as VgLegendConfig, LegendOrient, Orient, Orientation, SymbolShape, TextBaseline, TitleAnchor } from 'vega';
 import { DateTime } from './datetime';
 import { Guide, GuideEncodingEntry, VlOnlyGuideConfig } from './guide';
 import { Color, LayoutAlign } from './vega.schema';
-export declare type LegendConfig = LegendMixins & VlOnlyGuideConfig & VgLegendConfig<number, number, string, Color, FontWeight, Align, TextBaseline, LayoutAlign, LabelOverlap, SymbolShape> & {
+export declare type LegendConfig = LegendMixins & VlOnlyGuideConfig & VgLegendConfig<number, number, string, Color, FontWeight, FontStyle, Align, TextBaseline, LayoutAlign, LabelOverlap, SymbolShape, number[], Orient, TitleAnchor, LegendOrient> & {
     /**
      * Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
      *
@@ -43,7 +43,7 @@ export declare type LegendConfig = LegendMixins & VlOnlyGuideConfig & VgLegendCo
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend extends BaseLegend<number, number, string, Color, FontWeight, Align, TextBaseline, LayoutAlign, LabelOverlap, SymbolShape>, LegendMixins, Guide {
+export interface Legend extends BaseLegend<number, number, string, Color, FontWeight, FontStyle, Align, TextBaseline, LayoutAlign, LabelOverlap, SymbolShape, number[], Orient, TitleAnchor, LegendOrient>, LegendMixins, Guide {
     /**
      * Mark definitions for custom legend encoding.
      *
@@ -54,6 +54,12 @@ export interface Legend extends BaseLegend<number, number, string, Color, FontWe
      * The desired number of tick values for quantitative legends.
      */
     tickCount?: number;
+    /**
+     * The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.
+     *
+     * __Default value__: `undefined`
+     */
+    tickMinStep?: number;
     /**
      * Explicitly set the visible legend values.
      */
@@ -83,7 +89,7 @@ export interface Legend extends BaseLegend<number, number, string, Color, FontWe
      */
     direction?: Orientation;
     /**
-     * The orientation of the legend, which determines how the legend is positioned within the scene. One of "left", "right", "top-left", "top-right", "bottom-left", "bottom-right", "none".
+     * The orientation of the legend, which determines how the legend is positioned within the scene. One of `"left"`, `"right"`, `"top-left"`, `"top-right"`, `"bottom-left"`, `"bottom-right"`, `"none"`.
      *
      * __Default value:__ `"right"`
      */
@@ -121,6 +127,6 @@ export interface LegendEncoding {
     gradient?: GuideEncodingEntry;
 }
 export declare const defaultLegendConfig: LegendConfig;
-export declare const LEGEND_PROPERTIES: ("title" | "padding" | "type" | "values" | "strokeWidth" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding" | "orient" | "cornerRadius" | "format" | "offset" | "direction" | "tickCount" | "zindex" | "fillColor" | "strokeColor" | "titleAlign" | "titleOpacity" | "gradientLength" | "gradientOpacity" | "gradientThickness" | "gradientStrokeColor" | "gradientStrokeWidth" | "clipHeight" | "columns" | "columnPadding" | "rowPadding" | "gridAlign" | "symbolFillColor" | "symbolOffset" | "symbolOpacity" | "symbolSize" | "symbolStrokeColor" | "symbolStrokeWidth" | "symbolType" | "labelAlign" | "labelBaseline" | "labelFontWeight" | "labelOpacity" | "labelOffset" | "labelOverlap")[];
-export declare const VG_LEGEND_PROPERTIES: ("title" | "padding" | "type" | "shape" | "values" | "fill" | "stroke" | "opacity" | "strokeWidth" | "size" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding" | "orient" | "cornerRadius" | "format" | "offset" | "direction" | "tickCount" | "zindex" | "fillColor" | "strokeColor" | "titleAlign" | "titleOpacity" | "gradientLength" | "gradientOpacity" | "gradientThickness" | "gradientStrokeColor" | "gradientStrokeWidth" | "clipHeight" | "columns" | "columnPadding" | "rowPadding" | "gridAlign" | "symbolFillColor" | "symbolOffset" | "symbolOpacity" | "symbolSize" | "symbolStrokeColor" | "symbolStrokeWidth" | "symbolType" | "labelAlign" | "labelBaseline" | "labelFontWeight" | "labelOpacity" | "labelOffset" | "labelOverlap" | "encode")[];
+export declare const LEGEND_PROPERTIES: ("title" | "padding" | "type" | "values" | "format" | "orient" | "cornerRadius" | "direction" | "tickCount" | "tickMinStep" | "zindex" | "fillColor" | "offset" | "strokeColor" | "titleAlign" | "titleAnchor" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontStyle" | "titleFontWeight" | "titleLimit" | "titleOpacity" | "titleOrient" | "titlePadding" | "gradientLength" | "gradientOpacity" | "gradientThickness" | "gradientStrokeColor" | "gradientStrokeWidth" | "clipHeight" | "columns" | "columnPadding" | "rowPadding" | "gridAlign" | "symbolDash" | "symbolDashOffset" | "symbolFillColor" | "symbolOffset" | "symbolOpacity" | "symbolSize" | "symbolStrokeColor" | "symbolStrokeWidth" | "symbolType" | "labelAlign" | "labelBaseline" | "labelColor" | "labelFont" | "labelFontSize" | "labelFontStyle" | "labelFontWeight" | "labelLimit" | "labelOpacity" | "labelPadding" | "labelOffset" | "labelOverlap" | "labelSeparation")[];
+export declare const VG_LEGEND_PROPERTIES: ("title" | "padding" | "stroke" | "type" | "shape" | "values" | "fill" | "opacity" | "strokeWidth" | "size" | "format" | "orient" | "cornerRadius" | "direction" | "tickCount" | "tickMinStep" | "zindex" | "encode" | "fillColor" | "offset" | "strokeColor" | "titleAlign" | "titleAnchor" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontStyle" | "titleFontWeight" | "titleLimit" | "titleOpacity" | "titleOrient" | "titlePadding" | "gradientLength" | "gradientOpacity" | "gradientThickness" | "gradientStrokeColor" | "gradientStrokeWidth" | "clipHeight" | "columns" | "columnPadding" | "rowPadding" | "gridAlign" | "symbolDash" | "symbolDashOffset" | "symbolFillColor" | "symbolOffset" | "symbolOpacity" | "symbolSize" | "symbolStrokeColor" | "symbolStrokeWidth" | "symbolType" | "labelAlign" | "labelBaseline" | "labelColor" | "labelFont" | "labelFontSize" | "labelFontStyle" | "labelFontWeight" | "labelLimit" | "labelOpacity" | "labelPadding" | "labelOffset" | "labelOverlap" | "labelSeparation")[];
 export {};

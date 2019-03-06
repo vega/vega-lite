@@ -1,7 +1,8 @@
 import * as log from '../log';
 import { isLayerSpec, isUnitSpec } from '../spec';
 import { flatten, keys } from '../util';
-import { parseLayerAxis } from './axis/parse';
+import { assembleAxisSignals } from './axis/assemble';
+import { parseLayerAxes } from './axis/parse';
 import { parseData } from './data/parse';
 import { assembleLayoutSignals } from './layoutsize/assemble';
 import { parseLayerLayoutSize } from './layoutsize/parse';
@@ -11,8 +12,7 @@ import { assembleLayerSelectionMarks } from './selection/selection';
 import { UnitModel } from './unit';
 export class LayerModel extends Model {
     constructor(spec, parent, parentGivenName, parentGivenSize, repeater, config, fit) {
-        super(spec, parent, parentGivenName, config, repeater, spec.resolve, spec.view);
-        this.type = 'layer';
+        super(spec, 'layer', parent, parentGivenName, config, repeater, spec.resolve, spec.view);
         const layoutSize = Object.assign({}, parentGivenSize, (spec.width ? { width: spec.width } : {}), (spec.height ? { height: spec.height } : {}));
         this.initSize(layoutSize);
         this.children = spec.layer.map((layer, i) => {
@@ -34,13 +34,13 @@ export class LayerModel extends Model {
     parseLayoutSize() {
         parseLayerLayoutSize(this);
     }
-    parseSelection() {
+    parseSelections() {
         // Merge selections up the hierarchy so that they may be referenced
         // across unit specs. Persist their definitions within each child
         // to assemble signals which remain within output Vega unit groups.
         this.component.selection = {};
         for (const child of this.children) {
-            child.parseSelection();
+            child.parseSelections();
             keys(child.component.selection).forEach(key => {
                 this.component.selection[key] = child.component.selection[key];
             });
@@ -51,17 +51,17 @@ export class LayerModel extends Model {
             child.parseMarkGroup();
         }
     }
-    parseAxisAndHeader() {
-        parseLayerAxis(this);
+    parseAxesAndHeaders() {
+        parseLayerAxes(this);
     }
     assembleSelectionTopLevelSignals(signals) {
         return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
     }
     // TODO: Support same named selections across children.
-    assembleSelectionSignals() {
+    assembleSignals() {
         return this.children.reduce((signals, child) => {
-            return signals.concat(child.assembleSelectionSignals());
-        }, []);
+            return signals.concat(child.assembleSignals());
+        }, assembleAxisSignals(this));
     }
     assembleLayoutSignals() {
         return this.children.reduce((signals, child) => {

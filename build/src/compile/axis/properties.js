@@ -1,9 +1,9 @@
 import { isBinning } from '../../bin';
 import { X, Y } from '../../channel';
-import { valueArray, vgField } from '../../fielddef';
+import { valueArray } from '../../fielddef';
 import * as log from '../../log';
-import { hasDiscreteDomain, isSelectionDomain } from '../../scale';
-import { NOMINAL, ORDINAL, QUANTITATIVE } from '../../type';
+import { hasDiscreteDomain } from '../../scale';
+import { NOMINAL, ORDINAL } from '../../type';
 import { contains } from '../../util';
 import { getAxisConfig } from './config';
 // TODO: we need to refactor this method after we take care of config refactoring
@@ -128,10 +128,7 @@ export function defaultTickCount({ fieldDef, scaleType, size, scaleName, specifi
     if (!hasDiscreteDomain(scaleType) &&
         scaleType !== 'log' &&
         !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)) {
-        if (specifiedAxis.tickStep) {
-            return { signal: `(domain('${scaleName}')[1] - domain('${scaleName}')[0]) / ${specifiedAxis.tickStep} + 1` };
-        }
-        else if (isBinning(fieldDef.bin)) {
+        if (isBinning(fieldDef.bin)) {
             // for binned data, we don't want more ticks than maxbins
             return { signal: `ceil(${size.signal}/10)` };
         }
@@ -143,22 +140,6 @@ export function values(specifiedAxis, model, fieldDef, channel) {
     const vals = specifiedAxis.values;
     if (vals) {
         return valueArray(fieldDef, vals);
-    }
-    if (fieldDef.type === QUANTITATIVE) {
-        if (isBinning(fieldDef.bin)) {
-            const domain = model.scaleDomain(channel);
-            if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
-                // explicit value
-                return vals;
-            }
-            const binSignal = model.getName(vgField(fieldDef, { suffix: 'bins' }));
-            return { signal: `sequence(${binSignal}.start, ${binSignal}.stop + ${binSignal}.step, ${binSignal}.step)` };
-        }
-        else if (specifiedAxis.tickStep) {
-            const scaleName = model.scaleName(channel);
-            const step = specifiedAxis.tickStep;
-            return { signal: `sequence(domain('${scaleName}')[0], domain('${scaleName}')[1] + ${step}, ${step})` };
-        }
     }
     return undefined;
 }

@@ -13,7 +13,7 @@ describe('compile/data/source', () => {
                 expect(source.data.values).toEqual([{ a: 1, b: 2, c: 3 }, { a: 4, b: 5, c: 6 }]);
             });
             it('should have no source.format.type', () => {
-                expect(source.data.format).toEqual(undefined);
+                expect(source.data).not.toHaveProperty('format');
             });
         });
         describe('with explicit values as CSV', () => {

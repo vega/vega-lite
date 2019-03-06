@@ -3,8 +3,12 @@ import { isArray } from 'vega-util';
 import { hasConditionalFieldDef, isConditionalDef, isFieldDef, isRepeatRef, isSortableFieldDef } from '../fielddef';
 import * as log from '../log';
 import { isSortField } from '../sort';
+import { isFacetMapping } from '../spec/facet';
 export function replaceRepeaterInFacet(facet, repeater) {
-    return replaceRepeater(facet, repeater);
+    if (isFacetMapping(facet)) {
+        return replaceRepeater(facet, repeater);
+    }
+    return replaceRepeaterInFieldDef(facet, repeater);
 }
 export function replaceRepeaterInEncoding(encoding, repeater) {
     return replaceRepeater(encoding, repeater);

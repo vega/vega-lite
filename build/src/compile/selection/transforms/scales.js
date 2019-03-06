@@ -1,7 +1,7 @@
 import { stringValue } from 'vega-util';
 import { isScaleChannel, X, Y } from '../../../channel';
 import * as log from '../../../log';
-import { hasContinuousDomain, isBinScale } from '../../../scale';
+import { hasContinuousDomain } from '../../../scale';
 import { accessPathWithDatum, varName } from '../../../util';
 import { channelSignalName, VL_SELECTION_RESOLVE } from '../selection';
 const scaleBindings = {
@@ -18,7 +18,7 @@ const scaleBindings = {
             }
             const scale = model.getScaleComponent(channel);
             const scaleType = scale ? scale.get('type') : undefined;
-            if (!scale || !hasContinuousDomain(scaleType) || isBinScale(scaleType)) {
+            if (!scale || !hasContinuousDomain(scaleType)) {
                 log.warn(log.message.SCALE_BINDINGS_CONTINUOUS);
                 continue;
             }

@@ -1,5 +1,6 @@
 import * as log from '../log';
 import { keys } from '../util';
+import { CompositeMarkNormalizer } from './base';
 import { makeCompositeAggregatePartFactory } from './common';
 import { errorBarParams } from './errorbar';
 export const ERRORBAND = 'errorband';
@@ -8,7 +9,8 @@ const ERRORBAND_PART_INDEX = {
     borders: 1
 };
 export const ERRORBAND_PARTS = keys(ERRORBAND_PART_INDEX);
-export function normalizeErrorBand(spec, config) {
+export const errorBandNormalizer = new CompositeMarkNormalizer(ERRORBAND, normalizeErrorBand);
+export function normalizeErrorBand(spec, { config }) {
     const { transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis, markDef, outerSpec, tooltipEncoding } = errorBarParams(spec, ERRORBAND, config);
     const makeErrorBandPart = makeCompositeAggregatePartFactory(markDef, continuousAxis, continuousAxisChannelDef, encodingWithoutContinuousAxis, config.errorband);
     const is2D = spec.encoding.x !== undefined && spec.encoding.y !== undefined;

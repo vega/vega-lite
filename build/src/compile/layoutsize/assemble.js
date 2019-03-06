@@ -3,7 +3,7 @@ import { getFirstDefined } from '../../util';
 import { isVgRangeStep } from '../../vega.schema';
 import { isFacetModel } from '../model';
 export function assembleLayoutSignals(model) {
-    return [].concat(sizeSignals(model, 'width'), sizeSignals(model, 'height'));
+    return [...sizeSignals(model, 'width'), ...sizeSignals(model, 'height')];
 }
 export function sizeSignals(model, sizeType) {
     const channel = sizeType === 'width' ? 'x' : 'y';

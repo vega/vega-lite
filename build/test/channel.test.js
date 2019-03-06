@@ -3,7 +3,7 @@ import { without } from '../src/util';
 describe('channel', () => {
     describe('UNIT_CHANNELS', () => {
         it('should be CHANNELS without row and column', () => {
-            expect(UNIT_CHANNELS).toEqual(without(CHANNELS, ['row', 'column']));
+            expect(UNIT_CHANNELS).toEqual(without(CHANNELS, ['row', 'column', 'facet']));
         });
     });
     describe('SINGLE_DEF_CHANNELS', () => {

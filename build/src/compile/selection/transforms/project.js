@@ -1,8 +1,11 @@
+import { isArray } from 'vega-util';
 import * as log from '../../../log';
-import { hasContinuousDomain, isBinScale } from '../../../scale';
+import { hasContinuousDomain } from '../../../scale';
+import { isIntervalSelection } from '../../../selection';
 import { keys } from '../../../util';
 import { TimeUnitNode } from '../../data/timeunit';
 import { TUPLE } from '../selection';
+import scales from './scales';
 export const TUPLE_FIELDS = '_fields';
 const project = {
     has: (selDef) => {
@@ -12,11 +15,12 @@ const project = {
     parse: (model, selDef, selCmpt) => {
         const timeUnits = {};
         const f = {};
-        const p = selCmpt.project || (selCmpt.project = []);
+        // Selection component may already have a projection from the config. (Interval selection will have `encodings: ['x', 'y'].)
+        const proj = selCmpt.project || (selCmpt.project = []);
         selCmpt.fields = {};
         // TODO: find a possible channel mapping for these fields.
         if (selDef.fields) {
-            p.push(...selDef.fields.map(field => ({ field, type: 'E' })));
+            proj.push(...selDef.fields.map(field => ({ field, type: 'E' })));
         }
         for (const channel of selDef.encodings || []) {
             const fieldDef = model.fieldDef(channel);
@@ -43,19 +47,36 @@ const project = {
                     let type = 'E';
                     if (selCmpt.type === 'interval') {
                         const scaleType = model.getScaleComponent(channel).get('type');
-                        if (hasContinuousDomain(scaleType) && !isBinScale(scaleType)) {
+                        if (hasContinuousDomain(scaleType)) {
                             type = 'R';
                         }
                     }
                     else if (fieldDef.bin) {
                         type = 'R-RE';
                     }
-                    p.push((f[field] = { field, channel, type }));
+                    proj.push((f[field] = { field, channel, type }));
                 }
                 selCmpt.fields[channel] = field;
             }
             else {
                 log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
+            }
+        }
+        if (selDef.init) {
+            if (scales.has(selCmpt)) {
+                log.warn(log.message.NO_INIT_SCALE_BINDINGS);
+            }
+            else {
+                function parseInit(i) {
+                    return proj.map(p => (i[p.channel] !== undefined ? i[p.channel] : i[p.field]));
+                }
+                if (isIntervalSelection(selDef)) {
+                    selCmpt.init = parseInit(selDef.init);
+                }
+                else {
+                    const init = isArray(selDef.init) ? selDef.init : [selDef.init];
+                    selCmpt.init = init.map(parseInit);
+                }
             }
         }
         if (keys(timeUnits).length) {
@@ -69,7 +90,7 @@ const project = {
             ? signals
             : signals.concat({
                 name,
-                update: `${JSON.stringify(selCmpt.project)}`
+                value: selCmpt.project
             });
     }
 };

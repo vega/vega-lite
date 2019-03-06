@@ -1,5 +1,5 @@
 import { WindowTransform } from '../../transform';
-import { VgWindowTransform } from '../../vega.schema';
+import { VgJoinAggregateTransform, VgWindowTransform } from '../../vega.schema';
 import { DataFlowNode } from './dataflow';
 /**
  * A class for the window transform nodes
@@ -13,5 +13,5 @@ export declare class WindowTransformNode extends DataFlowNode {
     producedFields(): Set<string>;
     private getDefaultName;
     hash(): string;
-    assemble(): VgWindowTransform;
+    assemble(): VgWindowTransform | VgJoinAggregateTransform;
 }

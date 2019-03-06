@@ -97,7 +97,6 @@ describe('src/compile/projection/parse', () => {
             model.parse();
             expect(typeof model.component.projection.data[0]).toBe('string');
             expect(typeof model.component.projection.data[0]).not.toBe('object');
-            expect(model.component.projection.data[0]).not.toHaveProperty('signal');
         });
     });
     describe('parseNonUnitProjection', () => {

@@ -1,3 +1,6 @@
+export function isFacetMapping(f) {
+    return !!f['row'] || !!f['column'];
+}
 export function isFacetFieldDef(channelDef) {
     return !!channelDef && !!channelDef['header'];
 }

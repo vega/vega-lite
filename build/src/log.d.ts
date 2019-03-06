@@ -3,7 +3,7 @@
  */
 import { AggregateOp } from 'vega';
 import { LoggerInterface } from 'vega-util';
-import { Channel, GeoPositionChannel } from './channel';
+import { Channel, FacetChannel, GeoPositionChannel } from './channel';
 import { CompositeMark } from './compositemark';
 import { ErrorBarCenter, ErrorBarExtent } from './compositemark/errorbar';
 import { DateTime, DateTimeExpr } from './datetime';
@@ -50,9 +50,11 @@ export declare namespace message {
     function selectionNotSupported(mark: CompositeMark): string;
     function selectionNotFound(name: string): string;
     const SCALE_BINDINGS_CONTINUOUS = "Scale bindings are currently only supported for scales with unbinned, continuous domains.";
+    const NO_INIT_SCALE_BINDINGS = "Selections bound to scales cannot be separately initialized.";
     function noSuchRepeatedValue(field: string): string;
-    const CONCAT_CANNOT_SHARE_AXIS = "Axes cannot be shared in concatenated views.";
-    const REPEAT_CANNOT_SHARE_AXIS = "Axes cannot be shared in repeated views.";
+    function columnsNotSupportByRowCol(type: 'facet' | 'repeat'): string;
+    const CONCAT_CANNOT_SHARE_AXIS = "Axes cannot be shared in concatenated views yet (https://github.com/vega/vega-lite/issues/2415).";
+    const REPEAT_CANNOT_SHARE_AXIS = "Axes cannot be shared in repeated views yet (https://github.com/vega/vega-lite/issues/2415).";
     function cannotSetTitleAnchor(type: string): string;
     function unrecognizedParse(p: string): string;
     function differentParse(field: string, local: string, ancestor: string): string;
@@ -82,6 +84,7 @@ export declare namespace message {
     function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet' | CompositeMark, when?: string): string;
     function invalidEncodingChannel(channel: string): string;
     function facetChannelShouldBeDiscrete(channel: string): string;
+    function facetChannelDropped(channels: FacetChannel[]): string;
     function discreteChannelCannotEncode(channel: Channel, type: Type): string;
     const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = "Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.";
     function lineWithRange(hasX2: boolean, hasY2: boolean): string;

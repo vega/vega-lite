@@ -9,15 +9,12 @@ export var Channel;
     // Facet
     Channel.ROW = 'row';
     Channel.COLUMN = 'column';
+    Channel.FACET = 'facet';
     // Position
     Channel.X = 'x';
     Channel.Y = 'y';
     Channel.X2 = 'x2';
     Channel.Y2 = 'y2';
-    Channel.XERROR = 'xError';
-    Channel.YERROR = 'yError';
-    Channel.XERROR2 = 'xError2';
-    Channel.YERROR2 = 'yError2';
     // Geo Position
     Channel.LATITUDE = 'latitude';
     Channel.LONGITUDE = 'longitude';
@@ -45,14 +42,11 @@ export const X = Channel.X;
 export const Y = Channel.Y;
 export const X2 = Channel.X2;
 export const Y2 = Channel.Y2;
-export const XERROR = Channel.XERROR;
-export const YERROR = Channel.YERROR;
-export const XERROR2 = Channel.XERROR2;
-export const YERROR2 = Channel.YERROR2;
 export const LATITUDE = Channel.LATITUDE;
 export const LATITUDE2 = Channel.LATITUDE2;
 export const LONGITUDE = Channel.LONGITUDE;
 export const LONGITUDE2 = Channel.LONGITUDE2;
+export const FACET = Channel.FACET;
 export const ROW = Channel.ROW;
 export const COLUMN = Channel.COLUMN;
 export const SHAPE = Channel.SHAPE;
@@ -79,7 +73,7 @@ export const GEOPOSITION_CHANNEL_INDEX = {
 export const GEOPOSITION_CHANNELS = flagKeys(GEOPOSITION_CHANNEL_INDEX);
 const UNIT_CHANNEL_INDEX = Object.assign({ 
     // position
-    x: 1, y: 1, x2: 1, y2: 1, xError: 1, yError: 1, xError2: 1, yError2: 1 }, GEOPOSITION_CHANNEL_INDEX, { 
+    x: 1, y: 1, x2: 1, y2: 1 }, GEOPOSITION_CHANNEL_INDEX, { 
     // color
     color: 1, fill: 1, stroke: 1, 
     // other non-position with scale
@@ -91,8 +85,10 @@ export function isColorChannel(channel) {
 }
 const FACET_CHANNEL_INDEX = {
     row: 1,
-    column: 1
+    column: 1,
+    facet: 1
 };
+export const FACET_CHANNELS = flagKeys(FACET_CHANNEL_INDEX);
 const CHANNEL_INDEX = Object.assign({}, UNIT_CHANNEL_INDEX, FACET_CHANNEL_INDEX);
 export const CHANNELS = flagKeys(CHANNEL_INDEX);
 const { order: _o, detail: _d } = CHANNEL_INDEX, SINGLE_DEF_CHANNEL_INDEX = tslib_1.__rest(CHANNEL_INDEX, ["order", "detail"]);
@@ -130,9 +126,9 @@ export const UNIT_CHANNELS = flagKeys(UNIT_CHANNEL_INDEX);
 // NONPOSITION_CHANNELS = UNIT_CHANNELS without X, Y, X2, Y2;
 const { x: _x, y: _y, 
 // x2 and y2 share the same scale as x and y
-x2: _x2, y2: _y2, xError: _xError, yError: _yError, xError2: _xError2, yError2: _yError2, latitude: _latitude, longitude: _longitude, latitude2: _latitude2, longitude2: _longitude2 } = UNIT_CHANNEL_INDEX, 
+x2: _x2, y2: _y2, latitude: _latitude, longitude: _longitude, latitude2: _latitude2, longitude2: _longitude2 } = UNIT_CHANNEL_INDEX, 
 // The rest of unit channels then have scale
-NONPOSITION_CHANNEL_INDEX = tslib_1.__rest(UNIT_CHANNEL_INDEX, ["x", "y", "x2", "y2", "xError", "yError", "xError2", "yError2", "latitude", "longitude", "latitude2", "longitude2"]);
+NONPOSITION_CHANNEL_INDEX = tslib_1.__rest(UNIT_CHANNEL_INDEX, ["x", "y", "x2", "y2", "latitude", "longitude", "latitude2", "longitude2"]);
 export const NONPOSITION_CHANNELS = flagKeys(NONPOSITION_CHANNEL_INDEX);
 // POSITION_SCALE_CHANNELS = X and Y;
 const POSITION_SCALE_CHANNEL_INDEX = { x: 1, y: 1 };
@@ -202,6 +198,7 @@ function getSupportedMark(channel) {
         case FILLOPACITY:
         case STROKEOPACITY:
         case STROKEWIDTH:
+        case FACET:
         case ROW:
         case COLUMN:
             return {
@@ -267,11 +264,6 @@ function getSupportedMark(channel) {
             return { point: 'always', geoshape: 'always' };
         case TEXT:
             return { text: 'always' };
-        case XERROR:
-        case YERROR:
-        case XERROR2:
-        case YERROR2:
-            return {};
     }
 }
 export function rangeType(channel) {
@@ -286,11 +278,8 @@ export function rangeType(channel) {
         // X2 and Y2 use X and Y scales, so they similarly have continuous range.
         case X2:
         case Y2:
-        case XERROR:
-        case YERROR:
-        case XERROR2:
-        case YERROR2:
             return undefined;
+        case FACET:
         case ROW:
         case COLUMN:
         case SHAPE:

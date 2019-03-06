@@ -48,7 +48,7 @@ export declare class StackNode extends DataFlowNode {
     static makeFromEncoding(parent: DataFlowNode, model: UnitModel): StackNode;
     readonly stack: StackComponent;
     addDimensions(fields: string[]): void;
-    dependentFields(): Set<any>;
+    dependentFields(): Set<string>;
     producedFields(): Set<string>;
     hash(): string;
     private getGroupbyFields;

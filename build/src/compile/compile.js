@@ -1,7 +1,8 @@
 import { initConfig, stripAndRedirectConfig } from '../config';
 import * as vlFieldDef from '../fielddef';
 import * as log from '../log';
-import { isLayerSpec, isUnitSpec, normalize } from '../spec';
+import { normalize } from '../normalize/index';
+import { isLayerSpec, isUnitSpec } from '../spec';
 import { extractTopLevelProperties, normalizeAutoSize } from '../spec/toplevel';
 import { keys, mergeDeep } from '../util';
 import { buildModel } from './buildmodel';
@@ -112,7 +113,7 @@ function assembleTopLevelModel(model, topLevelProperties, datasets = {}, usermet
         }
         return true;
     });
-    const output = Object.assign({ $schema: 'https://vega.github.io/schema/vega/v4.json' }, (model.description ? { description: model.description } : {}), topLevelProperties, (title ? { title } : {}), (style ? { style } : {}), (encodeEntry ? { encode: { update: encodeEntry } } : {}), { data }, (projections.length > 0 ? { projections: projections } : {}), model.assembleGroup([...layoutSignals, ...model.assembleSelectionTopLevelSignals([])]), (vgConfig ? { config: vgConfig } : {}), (usermeta ? { usermeta } : {}));
+    const output = Object.assign({ $schema: 'https://vega.github.io/schema/vega/v5.json' }, (model.description ? { description: model.description } : {}), topLevelProperties, (title ? { title } : {}), (style ? { style } : {}), (encodeEntry ? { encode: { update: encodeEntry } } : {}), { data }, (projections.length > 0 ? { projections: projections } : {}), model.assembleGroup([...layoutSignals, ...model.assembleSelectionTopLevelSignals([])]), (vgConfig ? { config: vgConfig } : {}), (usermeta ? { usermeta } : {}));
     return {
         spec: output
         // TODO: add warning / errors here

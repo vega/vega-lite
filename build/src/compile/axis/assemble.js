@@ -61,6 +61,31 @@ export function assembleAxis(axisCmpt, kind, config, opt = { header: false }) {
          });
     }
 }
+/**
+ * Add axis signals so grid line works correctly
+ * (Fix https://github.com/vega/vega-lite/issues/4226)
+ */
+export function assembleAxisSignals(model) {
+    const axisComponents = model.component.axes;
+    const { x, y } = axisComponents;
+    if (x && !y) {
+        return [
+            {
+                name: 'height',
+                update: model.getSizeSignalRef('height').signal
+            }
+        ];
+    }
+    else if (y && !x) {
+        return [
+            {
+                name: 'width',
+                update: model.getSizeSignalRef('width').signal
+            }
+        ];
+    }
+    return [];
+}
 export function assembleAxes(axisComponents, config) {
     const { x = [], y = [] } = axisComponents;
     return [

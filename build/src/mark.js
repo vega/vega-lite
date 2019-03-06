@@ -87,4 +87,7 @@ export const defaultBarConfig = {
 export const defaultTickConfig = {
     thickness: 1
 };
+export function getMarkType(m) {
+    return isMarkDef(m) ? m.type : m;
+}
 //# sourceMappingURL=mark.js.map

@@ -1,6 +1,7 @@
 /* tslint:disable:quotemark */
 import { isMarkDef } from '../../src/mark';
-import { isLayerSpec, isUnitSpec, normalize } from '../../src/spec';
+import { normalize } from '../../src/normalize/index';
+import { isLayerSpec, isUnitSpec } from '../../src/spec';
 import { defaultConfig } from '.././../src/config';
 describe('common feature of composite marks', () => {
     it('should clip all the part when clip property in composite mark def is true', () => {

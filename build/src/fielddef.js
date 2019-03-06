@@ -8,7 +8,7 @@ import * as log from './log';
 import { isFacetFieldDef } from './spec/facet';
 import { getLocalTimeUnit, getTimeUnitParts, isLocalSingleTimeUnit, isUtcSingleTimeUnit, normalizeTimeUnit } from './timeunit';
 import { getFullName, QUANTITATIVE } from './type';
-import { contains, flatAccessWithDatum, getFirstDefined, replacePathInField, titlecase } from './util';
+import { contains, flatAccessWithDatum, getFirstDefined, internalField, replacePathInField, titlecase } from './util';
 export function isConditionalSelection(c) {
     return c['selection'];
 }
@@ -69,7 +69,7 @@ export function vgField(fieldDef, opt = {}) {
     const prefix = opt.prefix;
     let suffix = opt.suffix;
     if (isCount(fieldDef)) {
-        field = 'count_*';
+        field = internalField('count');
     }
     else {
         let fn;
@@ -316,6 +316,11 @@ export function normalizeBin(bin, channel) {
     if (isBoolean(bin)) {
         return { maxbins: autoMaxBins(channel) };
     }
+    else if (bin === 'binned') {
+        return {
+            binned: true
+        };
+    }
     else if (!bin.maxbins && !bin.step) {
         return Object.assign({}, bin, { maxbins: autoMaxBins(channel) });
     }
@@ -335,6 +340,7 @@ export function channelCompatibility(fieldDef, channel) {
     switch (channel) {
         case 'row':
         case 'column':
+        case 'facet':
             if (isContinuous(fieldDef)) {
                 return {
                     compatible: false,

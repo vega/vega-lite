@@ -6,7 +6,7 @@ import { MarkConfigMixins } from './mark';
 import { ProjectionConfig } from './projection';
 import { ScaleConfig } from './scale';
 import { SelectionConfig } from './selection';
-import { BaseViewBackground } from './spec/base';
+import { BaseViewBackground, CompositionConfigMixins } from './spec/base';
 import { TopLevelProperties } from './spec/toplevel';
 import { StackOffset } from './stack';
 import { TitleConfig } from './title';
@@ -36,7 +36,7 @@ export declare type RangeConfigValue = (number | string)[] | SchemeConfig | {
     step: number;
 };
 export declare type RangeConfig = RangeConfigProps & {
-    [name: string]: RangeConfigValue;
+    [key: string]: RangeConfigValue;
 };
 export interface RangeConfigProps {
     /**
@@ -112,7 +112,7 @@ export interface VLOnlyConfig {
 export interface StyleConfigIndex {
     [style: string]: BaseMarkConfig;
 }
-export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
+export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins, CompositionConfigMixins {
     /**
      * CSS color property to use as the background of the whole Vega-Lite view
      *

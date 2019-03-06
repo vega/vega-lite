@@ -60,9 +60,22 @@ export interface BinParams extends BaseBin {
      * @maxItems 2
      */
     extent?: number[];
+    /**
+     * When set to true, Vega-Lite treats the input data as already binned.
+     */
+    binned?: boolean;
 }
-export declare function binToString(bin: BinParams | boolean): string;
+/**
+ * Create a key for the bin configuration. Not for prebinned bin.
+ */
+export declare function binToString(bin: BinParams | true): string;
+/**
+ * Vega-Lite should bin the data.
+ */
 export declare function isBinning(bin: BinParams | boolean | 'binned'): bin is BinParams | true;
+/**
+ * The data is already binned and so Vega-Lite should not bin it again.
+ */
 export declare function isBinned(bin: BinParams | boolean | 'binned'): bin is 'binned';
 export declare function isBinParams(bin: BinParams | boolean | 'binned'): bin is BinParams;
 export declare function autoMaxBins(channel: Channel): number;

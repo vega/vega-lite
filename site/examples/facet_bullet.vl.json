@@ -1,6 +1,5 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-  "description": "A simple bar chart with embedded data.",
   "data": {
     "values": [
       {"title":"Revenue","subtitle":"US$, in thousands","ranges":[150,225,300],"measures":[220,270],"markers":[250]},
@@ -16,6 +15,7 @@
       "header": {"labelAngle": 0, "title": ""}
     }
   },
+  "spacing": 10,
   "spec": {
     "layer": [{
       "mark": {"type": "bar", "color": "#eee"},

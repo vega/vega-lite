@@ -73,8 +73,7 @@ export function extractTransformsFromEncoding(oldEncoding, config) {
                     // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
                     if (isPositionChannel) {
                         const secondaryChannel = {
-                            field: newField + '_end',
-                            type: Type.QUANTITATIVE
+                            field: newField + '_end'
                         };
                         encoding[channel + '2'] = secondaryChannel;
                     }
@@ -220,13 +219,14 @@ export function forEach(mapping, f, thisArg) {
         return;
     }
     for (const channel of keys(mapping)) {
-        if (isArray(mapping[channel])) {
-            mapping[channel].forEach((channelDef) => {
+        const el = mapping[channel];
+        if (isArray(el)) {
+            el.forEach((channelDef) => {
                 f.call(thisArg, channelDef, channel);
             });
         }
         else {
-            f.call(thisArg, mapping[channel], channel);
+            f.call(thisArg, el, channel);
         }
     }
 }

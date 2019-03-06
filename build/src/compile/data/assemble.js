@@ -12,6 +12,7 @@ import { GeoJSONNode } from './geojson';
 import { GeoPointNode } from './geopoint';
 import { IdentifierNode } from './identifier';
 import { ImputeNode } from './impute';
+import { JoinAggregateTransformNode } from './joinaggregate';
 import { LookupNode } from './lookup';
 import { SampleTransformNode } from './sample';
 import { SourceNode } from './source';
@@ -43,11 +44,11 @@ function makeWalkTree(data) {
                 // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
                 dataSource.format = Object.assign({}, (dataSource.format || {}), { parse: node.assembleFormatParse() });
                 // add calculates for all nested fields
-                dataSource.transform = dataSource.transform.concat(node.assembleTransforms(true));
+                dataSource.transform.push(...node.assembleTransforms(true));
             }
             else {
                 // Otherwise use Vega expression to parse
-                dataSource.transform = dataSource.transform.concat(node.assembleTransforms());
+                dataSource.transform.push(...node.assembleTransforms());
             }
         }
         if (node instanceof FacetNode) {
@@ -72,6 +73,7 @@ function makeWalkTree(data) {
             node instanceof AggregateNode ||
             node instanceof LookupNode ||
             node instanceof WindowTransformNode ||
+            node instanceof JoinAggregateTransformNode ||
             node instanceof FoldTransformNode ||
             node instanceof FlattenTransformNode ||
             node instanceof IdentifierNode ||

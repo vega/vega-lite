@@ -1,6 +1,33 @@
 import * as log from '../../src/log';
+import { DEFAULT_SPACING } from '../../src/spec/base';
 import { parseConcatModel } from '../util';
-describe('Concat', () => {
+describe('ConcatModel', () => {
+    describe('concat', () => {
+        it('should correctly apply columns config', () => {
+            const model = parseConcatModel({
+                concat: [
+                    {
+                        mark: 'point',
+                        encoding: {
+                            x: { field: 'a', type: 'ordinal' }
+                        }
+                    },
+                    {
+                        mark: 'bar',
+                        encoding: {
+                            x: { field: 'b', type: 'ordinal' },
+                            y: { field: 'c', type: 'quantitative' }
+                        }
+                    }
+                ],
+                config: {
+                    concat: { columns: 1 }
+                }
+            });
+            expect(model.layout).toMatchObject({ columns: 1, spacing: DEFAULT_SPACING });
+            expect(model.concatType).toEqual('concat');
+        });
+    });
     describe('merge scale domains', () => {
         it('should instantiate all children in vconcat', () => {
             const model = parseConcatModel({
@@ -21,7 +48,7 @@ describe('Concat', () => {
                 ]
             });
             expect(model.children).toHaveLength(2);
-            expect(model.isVConcat).toBeTruthy();
+            expect(model.concatType).toEqual('vconcat');
         });
         it('should instantiate all children in hconcat', () => {
             const model = parseConcatModel({
@@ -42,7 +69,7 @@ describe('Concat', () => {
                 ]
             });
             expect(model.children).toHaveLength(2);
-            expect(!model.isVConcat).toBeTruthy();
+            expect(model.concatType).toEqual('hconcat');
         });
         it('should create correct layout for vconcat', () => {
             const model = parseConcatModel({
@@ -58,7 +85,7 @@ describe('Concat', () => {
                 ]
             });
             expect(model.assembleLayout()).toEqual({
-                padding: { row: 10, column: 10 },
+                padding: DEFAULT_SPACING,
                 columns: 1,
                 bounds: 'full',
                 align: 'each'
@@ -77,8 +104,9 @@ describe('Concat', () => {
                     }
                 ]
             });
+            expect(model.concatType).toEqual('hconcat');
             expect(model.assembleLayout()).toEqual({
-                padding: { row: 10, column: 10 },
+                padding: DEFAULT_SPACING,
                 bounds: 'full',
                 align: 'each'
             });

@@ -8,21 +8,20 @@ export var ScaleType;
 (function (ScaleType) {
     // Continuous - Quantitative
     ScaleType.LINEAR = 'linear';
-    ScaleType.BIN_LINEAR = 'bin-linear';
     ScaleType.LOG = 'log';
     ScaleType.POW = 'pow';
     ScaleType.SQRT = 'sqrt';
+    ScaleType.SYMLOG = 'symlog';
     // Continuous - Time
     ScaleType.TIME = 'time';
     ScaleType.UTC = 'utc';
-    // sequential
-    ScaleType.SEQUENTIAL = 'sequential';
-    // Quantile, Quantize, threshold
+    // Discretizing scales
     ScaleType.QUANTILE = 'quantile';
     ScaleType.QUANTIZE = 'quantize';
     ScaleType.THRESHOLD = 'threshold';
-    ScaleType.ORDINAL = 'ordinal';
     ScaleType.BIN_ORDINAL = 'bin-ordinal';
+    // Discrete scales
+    ScaleType.ORDINAL = 'ordinal';
     ScaleType.POINT = 'point';
     ScaleType.BAND = 'band';
 })(ScaleType || (ScaleType = {}));
@@ -35,10 +34,9 @@ const SCALE_CATEGORY_INDEX = {
     log: 'numeric',
     pow: 'numeric',
     sqrt: 'numeric',
-    'bin-linear': 'bin-linear',
+    symlog: 'numeric',
     time: 'time',
     utc: 'time',
-    sequential: 'sequential',
     ordinal: 'ordinal',
     'bin-ordinal': 'bin-ordinal',
     point: 'ordinal-position',
@@ -67,6 +65,7 @@ const SCALE_PRECEDENCE_INDEX = {
     log: 1,
     pow: 1,
     sqrt: 1,
+    symlog: 1,
     // time
     time: 0,
     utc: 0,
@@ -74,8 +73,6 @@ const SCALE_PRECEDENCE_INDEX = {
     point: 10,
     band: 11,
     // non grouped types
-    'bin-linear': 0,
-    sequential: 0,
     ordinal: 0,
     'bin-ordinal': 0,
     quantile: 0,
@@ -88,20 +85,11 @@ const SCALE_PRECEDENCE_INDEX = {
 export function scaleTypePrecedence(scaleType) {
     return SCALE_PRECEDENCE_INDEX[scaleType];
 }
-export const CONTINUOUS_TO_CONTINUOUS_SCALES = [
-    'linear',
-    'bin-linear',
-    'log',
-    'pow',
-    'sqrt',
-    'time',
-    'utc'
-];
+export const CONTINUOUS_TO_CONTINUOUS_SCALES = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'time', 'utc'];
 const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
 export const CONTINUOUS_TO_DISCRETE_SCALES = ['quantile', 'quantize', 'threshold'];
 const CONTINUOUS_TO_DISCRETE_INDEX = toSet(CONTINUOUS_TO_DISCRETE_SCALES);
 export const CONTINUOUS_DOMAIN_SCALES = CONTINUOUS_TO_CONTINUOUS_SCALES.concat([
-    'sequential',
     'quantile',
     'quantize',
     'threshold'
@@ -109,13 +97,9 @@ export const CONTINUOUS_DOMAIN_SCALES = CONTINUOUS_TO_CONTINUOUS_SCALES.concat([
 const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
 export const DISCRETE_DOMAIN_SCALES = ['ordinal', 'bin-ordinal', 'point', 'band'];
 const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
-const BIN_SCALES_INDEX = toSet(['bin-linear', 'bin-ordinal']);
 export const TIME_SCALE_TYPES = ['time', 'utc'];
 export function hasDiscreteDomain(type) {
     return type in DISCRETE_DOMAIN_INDEX;
-}
-export function isBinScale(type) {
-    return type in BIN_SCALES_INDEX;
 }
 export function hasContinuousDomain(type) {
     return type in CONTINUOUS_DOMAIN_INDEX;
@@ -132,7 +116,6 @@ export const defaultScaleConfig = {
     pointPadding: 0.5,
     barBandPaddingInner: 0.1,
     rectBandPaddingInner: 0,
-    facetSpacing: 16,
     minBandSize: 2,
     minFontSize: 8,
     maxFontSize: 40,
@@ -157,6 +140,7 @@ const SCALE_PROPERTY_INDEX = {
     range: 1,
     rangeStep: 1,
     scheme: 1,
+    bins: 1,
     // Other properties
     reverse: 1,
     round: 1,
@@ -166,6 +150,7 @@ const SCALE_PROPERTY_INDEX = {
     // quantitative
     base: 1,
     exponent: 1,
+    constant: 1,
     interpolate: 1,
     zero: 1,
     // band/point
@@ -185,9 +170,10 @@ export function scaleTypeSupportProperty(scaleType, propName) {
         case 'range':
             return true;
         case 'scheme':
-            return contains(['sequential', 'ordinal', 'bin-ordinal', 'quantile', 'quantize', 'threshold'], scaleType);
         case 'interpolate':
-            return contains(['linear', 'bin-linear', 'pow', 'log', 'sqrt', 'utc', 'time'], scaleType);
+            return !contains(['point', 'band', 'identity'], scaleType);
+        case 'bins':
+            return !contains(['point', 'band', 'identity', 'ordinal'], scaleType);
         case 'round':
             return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
         case 'padding':
@@ -198,20 +184,21 @@ export function scaleTypeSupportProperty(scaleType, propName) {
         case 'paddingInner':
             return scaleType === 'band';
         case 'clamp':
-            return isContinuousToContinuous(scaleType) || scaleType === 'sequential';
+            return isContinuousToContinuous(scaleType);
         case 'nice':
-            return isContinuousToContinuous(scaleType) || scaleType === 'sequential' || scaleType === 'quantize';
+            return isContinuousToContinuous(scaleType) || scaleType === 'quantize' || scaleType === 'threshold';
         case 'exponent':
             return scaleType === 'pow';
         case 'base':
             return scaleType === 'log';
+        case 'constant':
+            return scaleType === 'symlog';
         case 'zero':
             return (hasContinuousDomain(scaleType) &&
                 !contains([
                     'log',
                     'time',
                     'utc',
-                    'bin-linear',
                     'threshold',
                     'quantile' // quantile depends on distribution so zero does not matter
                 ], scaleType));
@@ -231,10 +218,12 @@ export function channelScalePropertyIncompatability(channel, propName) {
             }
             return undefined;
         case 'type':
+        case 'bins':
         case 'domain':
         case 'range':
         case 'base':
         case 'exponent':
+        case 'constant':
         case 'nice':
         case 'padding':
         case 'paddingInner':
@@ -249,26 +238,23 @@ export function channelScalePropertyIncompatability(channel, propName) {
     /* istanbul ignore next: it should never reach here */
     throw new Error(`Invalid scale property "${propName}".`);
 }
-export function scaleTypeSupportDataType(specifiedType, fieldDefType, bin) {
+export function scaleTypeSupportDataType(specifiedType, fieldDefType) {
     if (contains([Type.ORDINAL, Type.NOMINAL], fieldDefType)) {
         return specifiedType === undefined || hasDiscreteDomain(specifiedType);
     }
     else if (fieldDefType === Type.TEMPORAL) {
-        return contains([ScaleType.TIME, ScaleType.UTC, ScaleType.SEQUENTIAL, undefined], specifiedType);
+        return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
     }
     else if (fieldDefType === Type.QUANTITATIVE) {
-        if (bin) {
-            return contains([ScaleType.BIN_LINEAR, ScaleType.BIN_ORDINAL, ScaleType.LINEAR], specifiedType);
-        }
         return contains([
             ScaleType.LOG,
             ScaleType.POW,
             ScaleType.SQRT,
+            ScaleType.SYMLOG,
             ScaleType.QUANTILE,
             ScaleType.QUANTIZE,
             ScaleType.THRESHOLD,
             ScaleType.LINEAR,
-            ScaleType.SEQUENTIAL,
             undefined
         ], specifiedType);
     }
@@ -299,8 +285,8 @@ export function channelSupportScaleType(channel, scaleType) {
     /* istanbul ignore next: it should never reach here */
     return false;
 }
-export function getSupportedScaleType(channel, fieldDefType, bin) {
-    return SCALE_TYPE_INDEX[generateScaleTypeIndexKey(channel, fieldDefType, bin)];
+export function getSupportedScaleType(channel, fieldDefType) {
+    return SCALE_TYPE_INDEX[generateScaleTypeIndexKey(channel, fieldDefType)];
 }
 // generates ScaleTypeIndex where keys are encoding channels and values are list of valid ScaleTypes
 function generateScaleTypeIndex() {
@@ -308,20 +294,17 @@ function generateScaleTypeIndex() {
     for (const channel of CHANNELS) {
         for (const fieldDefType of keys(TYPE_INDEX)) {
             for (const scaleType of SCALE_TYPES) {
-                for (const bin of [false, true]) {
-                    const key = generateScaleTypeIndexKey(channel, fieldDefType, bin);
-                    if (channelSupportScaleType(channel, scaleType) && scaleTypeSupportDataType(scaleType, fieldDefType, bin)) {
-                        index[key] = index[key] || [];
-                        index[key].push(scaleType);
-                    }
+                const key = generateScaleTypeIndexKey(channel, fieldDefType);
+                if (channelSupportScaleType(channel, scaleType) && scaleTypeSupportDataType(scaleType, fieldDefType)) {
+                    index[key] = index[key] || [];
+                    index[key].push(scaleType);
                 }
             }
         }
     }
     return index;
 }
-function generateScaleTypeIndexKey(channel, fieldDefType, bin) {
-    const key = channel + '_' + fieldDefType;
-    return bin ? key + '_bin' : key;
+function generateScaleTypeIndexKey(channel, fieldDefType) {
+    return channel + '_' + fieldDefType;
 }
 //# sourceMappingURL=scale.js.map

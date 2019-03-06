@@ -1,6 +1,5 @@
 import { isNumber } from 'vega-util';
 import { isBinned, isBinning } from '../../bin';
-import { X, Y } from '../../channel';
 import { isFieldDef } from '../../fielddef';
 import * as log from '../../log';
 import { hasDiscreteDomain, ScaleType } from '../../scale';
@@ -12,67 +11,44 @@ import * as ref from './valueref';
 export const bar = {
     vgMark: 'rect',
     encodeEntry: (model) => {
-        return Object.assign({}, mixins.baseEncodeEntry(model, { size: 'ignore', orient: 'ignore' }), x(model), y(model));
+        return Object.assign({}, mixins.baseEncodeEntry(model, { size: 'ignore', orient: 'ignore' }), barPosition(model, 'x'), barPosition(model, 'y'));
     }
 };
-function x(model) {
-    const { config, encoding, markDef, width } = model;
+function barPosition(model, channel) {
+    const { config, encoding, markDef } = model;
     const orient = markDef.orient;
     const sizeDef = encoding.size;
-    const xDef = encoding.x;
-    const x2Def = encoding.x2;
-    const xScaleName = model.scaleName(X);
-    const xScale = model.getScaleComponent(X);
+    const isBarLength = channel === 'x' ? orient === 'horizontal' : orient === 'vertical';
+    const channel2 = channel === 'x' ? 'x2' : 'y2';
+    const fieldDef = encoding[channel];
+    const fieldDef2 = encoding[channel2];
+    const scaleName = model.scaleName(channel);
+    const scale = model.getScaleComponent(channel);
+    const spacing = getFirstDefined(markDef.binSpacing, config.bar.binSpacing);
+    const reverse = scale ? scale.get('reverse') : undefined;
+    const mark = 'bar';
     // x, x2, and width -- we must specify two of these in all conditions
-    if (isFieldDef(xDef) && isBinned(xDef.bin)) {
-        return mixins.binPosition(xDef, x2Def, X, xScaleName, getFirstDefined(markDef.binSpacing, config.bar.binSpacing), xScale.get('reverse'));
+    if (isFieldDef(fieldDef) && isBinned(fieldDef.bin)) {
+        return mixins.binPosition({ fieldDef, fieldDef2, channel, mark, scaleName, spacing, reverse });
     }
-    else if (orient === 'horizontal' || x2Def) {
-        return Object.assign({}, mixins.pointPosition('x', model, 'zeroOrMin'), mixins.pointPosition2(model, 'zeroOrMin', 'x2'));
+    else if (isBarLength || fieldDef2) {
+        return Object.assign({}, mixins.pointPosition(channel, model, 'zeroOrMin'), mixins.pointPosition2(model, 'zeroOrMin', channel2));
     }
     else {
         // vertical
-        if (isFieldDef(xDef)) {
-            const xScaleType = xScale.get('type');
-            if (isBinning(xDef.bin) && !sizeDef && !hasDiscreteDomain(xScaleType)) {
-                return mixins.binPosition(xDef, undefined, X, model.scaleName('x'), getFirstDefined(markDef.binSpacing, config.bar.binSpacing), xScale.get('reverse'));
+        if (isFieldDef(fieldDef)) {
+            const scaleType = scale.get('type');
+            if (isBinning(fieldDef.bin) && !sizeDef && !hasDiscreteDomain(scaleType)) {
+                return mixins.binPosition({ fieldDef, channel, scaleName, mark, spacing, reverse });
             }
             else {
-                if (xScaleType === ScaleType.BAND) {
-                    return mixins.bandPosition(xDef, 'x', model);
+                if (scaleType === ScaleType.BAND) {
+                    return mixins.bandPosition(fieldDef, channel, model);
                 }
             }
         }
         // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
-        return mixins.centeredBandPosition('x', model, Object.assign({}, ref.mid(width)), defaultSizeRef(markDef, xScaleName, xScale, config));
-    }
-}
-function y(model) {
-    const { config, encoding, height, markDef } = model;
-    const orient = markDef.orient;
-    const sizeDef = encoding.size;
-    const yDef = encoding.y;
-    const y2Def = encoding.y2;
-    const yScaleName = model.scaleName(Y);
-    const yScale = model.getScaleComponent(Y);
-    // y, y2 & height -- we must specify two of these in all conditions
-    if (isFieldDef(yDef) && isBinned(yDef.bin)) {
-        return mixins.binPosition(yDef, y2Def, Y, yScaleName, getFirstDefined(markDef.binSpacing, config.bar.binSpacing), yScale.get('reverse'));
-    }
-    else if (orient === 'vertical' || y2Def) {
-        return Object.assign({}, mixins.pointPosition('y', model, 'zeroOrMin'), mixins.pointPosition2(model, 'zeroOrMin', 'y2'));
-    }
-    else {
-        if (isFieldDef(yDef)) {
-            const yScaleType = yScale.get('type');
-            if (isBinning(yDef.bin) && !sizeDef && !hasDiscreteDomain(yScaleType)) {
-                return mixins.binPosition(yDef, undefined, Y, model.scaleName('y'), getFirstDefined(markDef.binSpacing, config.bar.binSpacing), yScale.get('reverse'));
-            }
-            else if (yScaleType === ScaleType.BAND) {
-                return mixins.bandPosition(yDef, 'y', model);
-            }
-        }
-        return mixins.centeredBandPosition('y', model, ref.mid(height), defaultSizeRef(markDef, yScaleName, yScale, config));
+        return mixins.centeredBandPosition(channel, model, Object.assign({}, ref.mid(channel === 'x' ? model.width : model.height)), defaultSizeRef(markDef, scaleName, scale, config));
     }
 }
 function defaultSizeRef(markDef, scaleName, scale, config) {

@@ -1,8 +1,6 @@
-/// <reference types="webdriverio" />
+import { Page } from 'puppeteer';
 import { SelectionResolution, SelectionType } from '../src/selection';
 import { TopLevelSpec } from '../src/spec';
-export declare const generate: string;
-export declare const output = "test-runtime/resources";
 export declare type ComposeType = 'unit' | 'repeat' | 'facet';
 export declare const selectionTypes: SelectionType[];
 export declare const compositeTypes: ComposeType[];
@@ -43,6 +41,6 @@ export declare function unitNameRegex(specType: ComposeType, idx: number): RegEx
 export declare function parentSelector(compositeType: ComposeType, index: number): string;
 export declare function brush(key: string, idx: number, parent?: string, targetBrush?: boolean): string;
 export declare function pt(key: string, idx: number, parent?: string): string;
-export declare function embedFn(browser: WebdriverIO.Client<void>): (specification: TopLevelSpec) => void;
-export declare function svg(browser: WebdriverIO.Client<void>, path: string, filename: string): any;
-export declare function testRenderFn(browser: WebdriverIO.Client<void>, path: string): (filename: string) => void;
+export declare function embedFn(page: Page): (specification: TopLevelSpec) => Promise<void>;
+export declare function svg(page: Page, path: string, filename: string): Promise<any>;
+export declare function testRenderFn(page: Page, path: string): (filename: string) => Promise<void>;

@@ -121,7 +121,7 @@ export interface GenericBinMixins<B> {
      *
      * - If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
      *
-     * - To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `"binned"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
+     * - To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `"binned"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
      *
      * __Default value:__ `false`
      */
@@ -279,7 +279,7 @@ export declare function hasConditionalValueDef<F extends Field, V extends Value>
 };
 export declare function isFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is TypedFieldDef<F> | SecondaryFieldDef<F> | PositionFieldDef<F> | ScaleFieldDef<F> | MarkPropFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F>;
 export declare function isTypedFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is TypedFieldDef<F>;
-export declare function isStringFieldDef(channelDef: ChannelDef<FieldDef<string | RepeatRef>>): channelDef is TypedFieldDef<string>;
+export declare function isStringFieldDef(channelDef: ChannelDef<FieldDef<Field>>): channelDef is TypedFieldDef<string>;
 export declare function isValueDef<F extends Field, V extends Value>(channelDef: ChannelDef<FieldDef<F>, V>): channelDef is ValueDef<V>;
 export declare function isScaleFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is ScaleFieldDef<F>;
 export declare function isPositionFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is PositionFieldDef<F>;
@@ -333,7 +333,7 @@ export declare function getTypedFieldDef<F extends Field>(channelDef: ChannelDef
  */
 export declare function normalize(channelDef: ChannelDef, channel: Channel): ChannelDef<any>;
 export declare function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel): FieldDef<string>;
-export declare function normalizeBin(bin: BinParams | boolean, channel: Channel): BinParams;
+export declare function normalizeBin(bin: BinParams | boolean | 'binned', channel: Channel): BinParams;
 export declare function channelCompatibility(fieldDef: TypedFieldDef<Field>, channel: Channel): {
     compatible: boolean;
     warning?: string;

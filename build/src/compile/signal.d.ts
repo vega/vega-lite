@@ -1,16 +1,11 @@
+import { SignalRef } from 'vega';
+export declare type Rename = (oldSignalName: string) => string;
 /**
- * A class that wraps an expression with a list signal names in the expression. If they are renamed during parsing multi-views,   we can rename then signals in the assemble phase.
+ * A class that behaves like a SignalRef but lazily generates the signal.
+ * The provided generator function should use `Model.getSignalName` to use the correct signal name.
  */
-export declare class SignalRefComponent {
-    expr: string;
-    signalNames: string[];
-    constructor(expr: string, signalNames: string[]);
-    static fromName(signalName: string): SignalRefComponent;
-    /**
-     * Generate new signal based on this signal
-     */
-    map(f: (expr: string) => string): SignalRefComponent;
+export declare class SignalRefWrapper implements SignalRef {
+    constructor(exprGenerator: () => string);
+    signal: string;
+    static fromName(rename: Rename, signalName: string): SignalRefWrapper;
 }
-export declare function evalOrMakeSignalRefComponent(expr: string, params: {
-    [varname: string]: number | string | boolean | object | SignalRefComponent;
-}): any;

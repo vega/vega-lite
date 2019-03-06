@@ -15,6 +15,9 @@ export function isSample(t) {
 export function isWindow(t) {
     return t['window'] !== undefined;
 }
+export function isJoinAggregate(t) {
+    return t['joinaggregate'] !== undefined;
+}
 export function isFlatten(t) {
     return t['flatten'] !== undefined;
 }

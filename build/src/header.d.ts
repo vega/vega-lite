@@ -1,4 +1,4 @@
-import { FontWeight, TextBaseline, TitleConfig } from 'vega';
+import { FontWeight, TextBaseline, TitleAnchor, TitleConfig } from 'vega';
 import { Guide } from './guide';
 export declare const HEADER_TITLE_PROPERTIES_MAP: {
     [k in keyof HeaderConfig]: keyof TitleConfig;
@@ -6,18 +6,13 @@ export declare const HEADER_TITLE_PROPERTIES_MAP: {
 export declare const HEADER_LABEL_PROPERTIES_MAP: {
     [k in keyof HeaderConfig]: keyof TitleConfig;
 };
-export declare const HEADER_TITLE_PROPERTIES: ("titleAnchor" | "titleAngle" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelAngle" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding")[];
-export declare const HEADER_LABEL_PROPERTIES: ("titleAnchor" | "titleAngle" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelAngle" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding")[];
+export declare const HEADER_TITLE_PROPERTIES: ("titleAnchor" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding" | "titleAngle" | "labelAngle")[];
+export declare const HEADER_LABEL_PROPERTIES: ("titleAnchor" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding" | "titleAngle" | "labelAngle")[];
 export interface HeaderConfig {
     /**
      * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
-     *
-     * __Default value:__ `"middle"` for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.
-     * `"start"` for other composite views.
-     *
-     * __Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `"start"`.
      */
-    titleAnchor?: string;
+    titleAnchor?: TitleAnchor;
     /**
      * The rotation angle of the header title.
      *
@@ -59,7 +54,7 @@ export interface HeaderConfig {
      */
     titleLimit?: number;
     /**
-     * The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.
+     * The padding, in pixel, between facet header's title and the label.
      *
      * __Default value:__ `10`
      */
@@ -94,7 +89,7 @@ export interface HeaderConfig {
      */
     labelLimit?: number;
     /**
-     * The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.
+     * The padding, in pixel, between facet header's label and the plot.
      *
      * __Default value:__ `10`
      */

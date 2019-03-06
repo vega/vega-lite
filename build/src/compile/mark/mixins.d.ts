@@ -1,5 +1,6 @@
 import { NonPositionScaleChannel } from '../../channel';
 import { ChannelDef, SecondaryFieldDef, TypedFieldDef, ValueDef } from '../../fielddef';
+import { Mark } from '../../mark';
 import { VgEncodeEntry, VgValueRef } from '../../vega.schema';
 import { UnitModel } from '../unit';
 export declare function color(model: UnitModel): VgEncodeEntry;
@@ -20,13 +21,16 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
     text?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    stroke?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    shape?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     width?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     height?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    shape?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     interpolate?: VgValueRef | (VgValueRef & {
@@ -45,9 +49,6 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
         test?: string;
     })[];
     fill?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    stroke?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     opacity?: VgValueRef | (VgValueRef & {
@@ -71,7 +72,7 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
     href?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    radius?: VgValueRef | (VgValueRef & {
+    url?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     xc?: VgValueRef | (VgValueRef & {
@@ -116,9 +117,6 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
     orient?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    url?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
     align?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -135,6 +133,9 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
         test?: string;
     })[];
     dy?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    radius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     theta?: VgValueRef | (VgValueRef & {
@@ -174,13 +175,16 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
     text?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    stroke?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    shape?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     width?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     height?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    shape?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     interpolate?: VgValueRef | (VgValueRef & {
@@ -199,9 +203,6 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
         test?: string;
     })[];
     fill?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    stroke?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     opacity?: VgValueRef | (VgValueRef & {
@@ -227,7 +228,7 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
     href?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    radius?: VgValueRef | (VgValueRef & {
+    url?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     xc?: VgValueRef | (VgValueRef & {
@@ -272,9 +273,6 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
     orient?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    url?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
     align?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -291,6 +289,9 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
         test?: string;
     })[];
     dy?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    radius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     theta?: VgValueRef | (VgValueRef & {
@@ -352,13 +353,16 @@ export declare function bandPosition(fieldDef: TypedFieldDef<string>, channel: '
     text?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    stroke?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    shape?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     width?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     height?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    shape?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     interpolate?: VgValueRef | (VgValueRef & {
@@ -377,9 +381,6 @@ export declare function bandPosition(fieldDef: TypedFieldDef<string>, channel: '
         test?: string;
     })[];
     fill?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    stroke?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     opacity?: VgValueRef | (VgValueRef & {
@@ -403,7 +404,7 @@ export declare function bandPosition(fieldDef: TypedFieldDef<string>, channel: '
     href?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    radius?: VgValueRef | (VgValueRef & {
+    url?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     xc?: VgValueRef | (VgValueRef & {
@@ -448,9 +449,6 @@ export declare function bandPosition(fieldDef: TypedFieldDef<string>, channel: '
     orient?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    url?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
     align?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -467,6 +465,9 @@ export declare function bandPosition(fieldDef: TypedFieldDef<string>, channel: '
         test?: string;
     })[];
     dy?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    radius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     theta?: VgValueRef | (VgValueRef & {
@@ -507,13 +508,16 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
     text?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    stroke?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    shape?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     width?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     height?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    shape?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     interpolate?: VgValueRef | (VgValueRef & {
@@ -532,9 +536,6 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
         test?: string;
     })[];
     fill?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    stroke?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     opacity?: VgValueRef | (VgValueRef & {
@@ -558,7 +559,7 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
     href?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    radius?: VgValueRef | (VgValueRef & {
+    url?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     xc?: VgValueRef | (VgValueRef & {
@@ -603,9 +604,6 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
     orient?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    url?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
     align?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -622,6 +620,9 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
         test?: string;
     })[];
     dy?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    radius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     theta?: VgValueRef | (VgValueRef & {
@@ -646,67 +647,27 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
         test?: string;
     })[];
 };
-export declare function binPosition(fieldDef: TypedFieldDef<string>, fieldDef2: ValueDef | SecondaryFieldDef<string>, channel: 'x' | 'y', scaleName: string, spacing: number, reverse: boolean): {
-    [x: string]: VgValueRef;
+export declare function binPosition({ fieldDef, fieldDef2, channel, scaleName, mark, spacing, reverse }: {
+    fieldDef: TypedFieldDef<string>;
+    fieldDef2?: ValueDef | SecondaryFieldDef<string>;
+    channel: 'x' | 'y';
+    scaleName: string;
+    mark: Mark;
+    spacing?: number;
+    reverse: boolean;
+}): {
+    [x: string]: VgValueRef | VgValueRef[];
 };
 /**
  * Return mixins for point (non-band) position channels.
  */
 export declare function pointPosition(channel: 'x' | 'y', model: UnitModel, defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax', vgChannel?: 'x' | 'y' | 'xc' | 'yc'): {
-    [x: string]: {
-        offset: any;
-        value?: string | number | boolean;
-        field?: string | {
-            datum?: string;
-            group?: string;
-            parent?: string;
-        };
-        signal?: string;
-        scale?: string;
-        mult?: number;
-        band?: number | boolean | VgValueRef;
-    } | {
-        value?: string | number | boolean;
-        field?: string | {
-            datum?: string;
-            group?: string;
-            parent?: string;
-        };
-        signal?: string;
-        scale?: string;
-        mult?: number;
-        offset?: number | VgValueRef;
-        band?: number | boolean | VgValueRef;
-    };
+    [x: string]: VgValueRef | VgValueRef[];
 };
 /**
  * Return mixins for x2, y2.
  * If channel is not specified, return one channel based on orientation.
  */
 export declare function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel: 'x2' | 'y2'): {
-    [x: string]: {
-        offset: any;
-        value?: string | number | boolean;
-        field?: string | {
-            datum?: string;
-            group?: string;
-            parent?: string;
-        };
-        signal?: string;
-        scale?: string;
-        mult?: number;
-        band?: number | boolean | VgValueRef;
-    } | {
-        value?: string | number | boolean;
-        field?: string | {
-            datum?: string;
-            group?: string;
-            parent?: string;
-        };
-        signal?: string;
-        scale?: string;
-        mult?: number;
-        offset?: number | VgValueRef;
-        band?: number | boolean | VgValueRef;
-    };
+    [x: string]: VgValueRef | VgValueRef[];
 };

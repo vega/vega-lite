@@ -23,6 +23,6 @@ export interface StackProperties {
      */
     impute: boolean;
 }
-export declare const STACKABLE_MARKS: ("square" | "area" | "circle" | "line" | "text" | "point" | "rule" | "bar" | "tick")[];
+export declare const STACKABLE_MARKS: ("square" | "area" | "circle" | "line" | "text" | "rule" | "point" | "bar" | "tick")[];
 export declare const STACK_BY_DEFAULT_MARKS: ("area" | "bar")[];
 export declare function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig: StackOffset): StackProperties;

@@ -1,13 +1,17 @@
-import { Config } from '../config';
+import { Orientation } from 'vega';
 import { Encoding } from '../encoding';
+import { Field } from '../fielddef';
+import { NormalizerParams } from '../normalize/index';
 import { GenericUnitSpec, NormalizedLayerSpec } from '../spec';
-import { Interpolate, Orient } from '../vega.schema';
+import { Interpolate } from '../vega.schema';
+import { CompositeMarkNormalizer } from './base';
 import { GenericCompositeMarkDef, PartsMixins } from './common';
-import { ErrorBarCenter, ErrorBarExtent } from './errorbar';
+import { ErrorBarCenter, ErrorBarExtent, ErrorEncoding } from './errorbar';
+export declare type ErrorBandUnitSpec<EE = {}> = GenericUnitSpec<ErrorEncoding<Field> & EE, ErrorBand | ErrorBandDef>;
 export declare const ERRORBAND: 'errorband';
 export declare type ErrorBand = typeof ERRORBAND;
 export declare type ErrorBandPart = 'band' | 'borders';
-export declare const ERRORBAND_PARTS: import("vega-lite/build/src/compositemark/errorband").ErrorBandPart[];
+export declare const ERRORBAND_PARTS: ErrorBandPart[];
 export declare type ErrorBandPartsMixins = PartsMixins<ErrorBandPart>;
 export interface ErrorBandConfig extends ErrorBandPartsMixins {
     /**
@@ -57,7 +61,7 @@ export declare type ErrorBandDef = GenericCompositeMarkDef<ErrorBand> & ErrorBan
     /**
      * Orientation of the error band. This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
      */
-    orient?: Orient;
+    orient?: Orientation;
 };
 export interface ErrorBandConfigMixins {
     /**
@@ -65,4 +69,5 @@ export interface ErrorBandConfigMixins {
      */
     errorband?: ErrorBandConfig;
 }
-export declare function normalizeErrorBand(spec: GenericUnitSpec<Encoding<string>, ErrorBand | ErrorBandDef>, config: Config): NormalizedLayerSpec;
+export declare const errorBandNormalizer: CompositeMarkNormalizer<"errorband">;
+export declare function normalizeErrorBand(spec: GenericUnitSpec<Encoding<string>, ErrorBand | ErrorBandDef>, { config }: NormalizerParams): NormalizedLayerSpec;

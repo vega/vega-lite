@@ -1,8 +1,8 @@
-import { Align, Axis as VgAxis, AxisOrient, BaseAxis, FontWeight, LabelOverlap, TextBaseline } from 'vega';
+import { Align, Axis as VgAxis, AxisOrient, BaseAxis, FontStyle, FontWeight, LabelOverlap, TextBaseline } from 'vega';
 import { DateTime } from './datetime';
 import { Guide, GuideEncodingEntry, VlOnlyGuideConfig } from './guide';
 import { Color, LayoutAlign } from './vega.schema';
-declare type BaseAxisNoSignals = AxisMixins & BaseAxis<number, number, boolean, number | boolean, string, Color, FontWeight, Align, TextBaseline, LayoutAlign, LabelOverlap, number[]>;
+declare type BaseAxisNoSignals = AxisMixins & BaseAxis<number, number, boolean, number | boolean, string, Color, FontWeight, FontStyle, Align, TextBaseline, LayoutAlign, LabelOverlap, number[]>;
 declare type VgAxisConfigNoSignals = BaseAxisNoSignals;
 interface AxisMixins {
     /**
@@ -52,11 +52,11 @@ export interface Axis extends BaseAxisNoSignals, Guide {
      */
     tickCount?: number;
     /**
-     * A desired step size for ticks. This property will generate the corresponding `tickCount` and `values`. It can be useful for [data that are binned before importing into Vega-Lite](https://vega.github.io/vega-lite/docs/bin.html#binned).
+     * The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.
      *
      * __Default value__: `undefined`
      */
-    tickStep?: number;
+    tickMinStep?: number;
     /**
      * Explicitly set the visible axis tick values.
      */
@@ -115,8 +115,8 @@ export interface AxisEncoding {
     title?: GuideEncodingEntry;
 }
 export declare function isAxisProperty(prop: string): prop is keyof Axis;
-export declare const VG_AXIS_PROPERTIES: ("title" | "domain" | "values" | "titleAngle" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelAngle" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding" | "orient" | "format" | "ticks" | "offset" | "tickCount" | "zindex" | "titleAlign" | "titleOpacity" | "labelAlign" | "labelBaseline" | "labelFontWeight" | "labelOpacity" | "labelOverlap" | "encode" | "grid" | "labels" | "scale" | "gridScale" | "position" | "minExtent" | "maxExtent" | "bandPosition" | "titleX" | "titleY" | "domainColor" | "domainOpacity" | "domainWidth" | "tickColor" | "tickExtra" | "tickOffset" | "tickOpacity" | "tickRound" | "tickSize" | "tickWidth" | "gridColor" | "gridDash" | "gridOpacity" | "gridWidth" | "labelBound" | "labelFlush" | "labelFlushOffset")[];
-export declare const AXIS_PROPERTIES: ("title" | "domain" | "values" | "titleAngle" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelAngle" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding" | "orient" | "format" | "ticks" | "encoding" | "offset" | "tickCount" | "zindex" | "titleAlign" | "titleOpacity" | "labelAlign" | "labelBaseline" | "labelFontWeight" | "labelOpacity" | "labelOverlap" | "grid" | "labels" | "position" | "minExtent" | "maxExtent" | "bandPosition" | "titleX" | "titleY" | "domainColor" | "domainOpacity" | "domainWidth" | "tickColor" | "tickExtra" | "tickOffset" | "tickOpacity" | "tickRound" | "tickSize" | "tickWidth" | "gridColor" | "gridDash" | "gridOpacity" | "gridWidth" | "labelBound" | "labelFlush" | "labelFlushOffset" | "tickStep")[];
+export declare const VG_AXIS_PROPERTIES: ("title" | "domain" | "values" | "format" | "orient" | "ticks" | "tickCount" | "tickMinStep" | "zindex" | "encode" | "offset" | "titleAlign" | "titleAnchor" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontStyle" | "titleFontWeight" | "titleLimit" | "titleOpacity" | "titlePadding" | "labelAlign" | "labelBaseline" | "labelColor" | "labelFont" | "labelFontSize" | "labelFontStyle" | "labelFontWeight" | "labelLimit" | "labelOpacity" | "labelPadding" | "labelOverlap" | "labelSeparation" | "titleAngle" | "labelAngle" | "scale" | "grid" | "labels" | "gridScale" | "position" | "minExtent" | "maxExtent" | "bandPosition" | "titleX" | "titleY" | "domainDash" | "domainDashOffset" | "domainColor" | "domainOpacity" | "domainWidth" | "tickColor" | "tickDash" | "tickDashOffset" | "tickExtra" | "tickOffset" | "tickOpacity" | "tickRound" | "tickSize" | "tickWidth" | "gridColor" | "gridDash" | "gridDashOffset" | "gridOpacity" | "gridWidth" | "labelBound" | "labelFlush" | "labelFlushOffset")[];
+export declare const AXIS_PROPERTIES: ("title" | "domain" | "values" | "format" | "encoding" | "orient" | "ticks" | "tickCount" | "tickMinStep" | "zindex" | "offset" | "titleAlign" | "titleAnchor" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontStyle" | "titleFontWeight" | "titleLimit" | "titleOpacity" | "titlePadding" | "labelAlign" | "labelBaseline" | "labelColor" | "labelFont" | "labelFontSize" | "labelFontStyle" | "labelFontWeight" | "labelLimit" | "labelOpacity" | "labelPadding" | "labelOverlap" | "labelSeparation" | "titleAngle" | "labelAngle" | "grid" | "labels" | "position" | "minExtent" | "maxExtent" | "bandPosition" | "titleX" | "titleY" | "domainDash" | "domainDashOffset" | "domainColor" | "domainOpacity" | "domainWidth" | "tickColor" | "tickDash" | "tickDashOffset" | "tickExtra" | "tickOffset" | "tickOpacity" | "tickRound" | "tickSize" | "tickWidth" | "gridColor" | "gridDash" | "gridDashOffset" | "gridOpacity" | "gridWidth" | "labelBound" | "labelFlush" | "labelFlushOffset")[];
 export interface AxisConfigMixins {
     /**
      * Axis configuration, which determines default properties for all `x` and `y` [axes](https://vega.github.io/vega-lite/docs/axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](https://vega.github.io/vega-lite/docs/axis.html#config).

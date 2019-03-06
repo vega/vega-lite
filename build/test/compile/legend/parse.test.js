@@ -150,7 +150,7 @@ describe('compile/legend', () => {
                 ]
             });
             model.parseScale();
-            model.parseLegend();
+            model.parseLegends();
             expect(model.component.legends.color.explicit.orient).toEqual('left');
         });
         it('should correctly merge legend that exists only on one plot', () => {
@@ -177,7 +177,7 @@ describe('compile/legend', () => {
                 ]
             });
             model.parseScale();
-            model.parseLegend();
+            model.parseLegends();
             expect(model.component.legends.color).toBeTruthy();
             expect(model.children[0].component.legends.color).not.toBeDefined();
             expect(model.children[1].component.legends.color).not.toBeDefined();

@@ -18,7 +18,7 @@ const nearest = {
             type: 'path',
             from: { data: model.getName('marks') },
             encode: {
-                enter: {
+                update: {
                     fill: { value: 'transparent' },
                     strokeWidth: { value: 0.35 },
                     stroke: { value: 'transparent' },

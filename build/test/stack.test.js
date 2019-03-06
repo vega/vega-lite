@@ -2,7 +2,6 @@ import { DETAIL, X, Y } from '../src/channel';
 import * as log from '../src/log';
 import { AREA, BAR, PRIMITIVE_MARKS, RECT } from '../src/mark';
 import { ScaleType } from '../src/scale';
-import { isStacked } from '../src/spec';
 import { stack, STACK_BY_DEFAULT_MARKS, STACKABLE_MARKS } from '../src/stack';
 describe('stack', () => {
     const NON_STACKABLE_MARKS = [RECT];
@@ -22,7 +21,6 @@ describe('stack', () => {
                     }
                 };
                 expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
-                expect(isStacked(spec)).toBe(false);
             });
         }
     });
@@ -39,7 +37,6 @@ describe('stack', () => {
             };
             const stackProps = stack(spec.mark, spec.encoding, undefined);
             expect(stackProps.fieldChannel).toEqual('x');
-            expect(isStacked(spec)).toBe(true);
         });
     });
     it('should prioritize axis with stack', () => {
@@ -55,7 +52,6 @@ describe('stack', () => {
             };
             const stackProps = stack(spec.mark, spec.encoding, undefined);
             expect(stackProps.fieldChannel).toEqual('x');
-            expect(isStacked(spec)).toBe(true);
         });
     });
     it('should always be disabled if there is no stackby channel', () => {
@@ -73,7 +69,6 @@ describe('stack', () => {
                     }
                 };
                 expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
-                expect(isStacked(spec)).toBe(false);
             });
         }
     });
@@ -93,7 +88,6 @@ describe('stack', () => {
                     }
                 };
                 expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
-                expect(isStacked(spec)).toBe(false);
             });
         }
     });
@@ -113,7 +107,6 @@ describe('stack', () => {
                     }
                 };
                 expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
-                expect(isStacked(spec)).toBe(false);
             });
         }
     });
@@ -136,7 +129,6 @@ describe('stack', () => {
                 };
                 const _stack = stack(spec.mark, spec.encoding, spec.config.stack);
                 expect(_stack).toBeTruthy();
-                expect(isStacked(spec)).toBe(true);
                 expect(_stack.stackBy[0].channel).toEqual(DETAIL);
             });
         }
@@ -157,9 +149,25 @@ describe('stack', () => {
                 };
                 const _stack = stack(spec.mark, spec.encoding, undefined);
                 expect(_stack).toBeTruthy();
-                expect(isStacked(spec)).toBe(true);
                 expect(_stack.stackBy[0].channel).toEqual(DETAIL);
             });
+        }
+    });
+    it('should not include tooltip in stackBy', () => {
+        const spec = {
+            data: { url: 'data/barley.json' },
+            mark: 'bar',
+            encoding: {
+                x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+                y: { field: 'variety', type: 'nominal' },
+                detail: { field: 'site', type: 'nominal' },
+                tooltip: { field: 'total_yield', type: 'nominal' }
+            }
+        };
+        const _stack = stack(spec.mark, spec.encoding, undefined);
+        expect(_stack).toBeTruthy();
+        for (const stackBy of _stack.stackBy) {
+            expect(stackBy.channel).not.toEqual('tooltip');
         }
     });
     it('should always be disabled if both x and y are aggregate', () => {
@@ -178,7 +186,6 @@ describe('stack', () => {
                     }
                 };
                 expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
-                expect(isStacked(spec)).toBe(false);
             });
         }
     });
@@ -198,7 +205,6 @@ describe('stack', () => {
                     }
                 };
                 expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
-                expect(isStacked(spec)).toBe(false);
             });
         }
     });
@@ -219,7 +225,6 @@ describe('stack', () => {
                     }
                 };
                 expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
-                expect(isStacked(spec)).toBe(false);
             });
         }
     });
@@ -240,7 +245,6 @@ describe('stack', () => {
                     }
                 };
                 expect(stack(spec.mark, spec.encoding, spec.config.stack)).toBeNull();
-                expect(isStacked(spec)).toBe(false);
             });
         }
     });
@@ -262,7 +266,6 @@ describe('stack', () => {
                         }
                     };
                     expect(stack(spec.mark, spec.encoding, spec.config.stack)).not.toBeNull();
-                    expect(isStacked(spec)).toBe(true);
                     const warns = localLogger.warns;
                     expect(warns[warns.length - 1]).toEqual(log.message.cannotStackNonLinearScale(scaleType));
                 });
@@ -288,7 +291,7 @@ describe('stack', () => {
                             color: { field: 'site', type: 'nominal' }
                         }
                     };
-                    expect(isStacked(spec)).toBe(true);
+                    stack(spec.mark, spec.encoding, undefined);
                     const warns = localLogger.warns;
                     expect(warns[warns.length - 1]).toEqual(log.message.stackNonSummativeAggregate(aggregate));
                 });
@@ -310,7 +313,6 @@ describe('stack', () => {
                 const _stack = stack(spec.mark, spec.encoding, undefined);
                 expect(_stack.fieldChannel).toBe(X);
                 expect(_stack.groupbyChannel).toBe(Y);
-                expect(isStacked(spec)).toBe(true);
             });
         });
         it('should be correct for horizontal (single)', () => {
@@ -326,7 +328,6 @@ describe('stack', () => {
                 const _stack = stack(spec.mark, spec.encoding, undefined);
                 expect(_stack.fieldChannel).toBe(X);
                 expect(_stack.groupbyChannel).toBeUndefined();
-                expect(isStacked(spec)).toBe(true);
             });
         });
         it('should be correct for vertical', () => {
@@ -343,7 +344,6 @@ describe('stack', () => {
                 const _stack = stack(spec.mark, spec.encoding, undefined);
                 expect(_stack.fieldChannel).toBe(Y);
                 expect(_stack.groupbyChannel).toBe(X);
-                expect(isStacked(spec)).toBe(true);
             });
         });
         it('should be correct for vertical (single)', () => {
@@ -359,7 +359,6 @@ describe('stack', () => {
                 const _stack = stack(spec.mark, spec.encoding, undefined);
                 expect(_stack.fieldChannel).toBe(Y);
                 expect(_stack.groupbyChannel).toBeUndefined();
-                expect(isStacked(spec)).toBe(true);
             });
         });
     });
@@ -376,7 +375,6 @@ describe('stack', () => {
                     }
                 };
                 expect(stack(spec.mark, spec.encoding, undefined).offset).toBe('zero');
-                expect(isStacked(spec)).toBe(true);
             });
         });
         it('should be the specified stacked for stackable marks with at least one of the stack channel', () => {
@@ -395,7 +393,6 @@ describe('stack', () => {
                         }
                     };
                     expect(stack(spec.mark, spec.encoding, spec.config.stack).offset).toEqual(stacked);
-                    expect(isStacked(spec)).toBe(true);
                 });
             }
         });

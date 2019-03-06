@@ -1,18 +1,18 @@
 import { Channel } from './channel';
 import { Config } from './config';
-import { ChannelDef, ColorFieldDefWithCondition, ColorValueDefWithCondition, Field, FieldDef, FieldDefWithoutScale, LatLongFieldDef, NumericFieldDefWithCondition, NumericValueDefWithCondition, OrderFieldDef, PositionFieldDef, RepeatRef, SecondaryFieldDef, ShapeFieldDefWithCondition, ShapeValueDefWithCondition, StringFieldDefWithCondition, StringValueDefWithCondition, TextFieldDef, TextFieldDefWithCondition, TextValueDefWithCondition, TypedFieldDef, ValueDef } from './fielddef';
+import { ChannelDef, ColorFieldDefWithCondition, ColorValueDefWithCondition, Field, FieldDef, FieldDefWithoutScale, LatLongFieldDef, NumericFieldDefWithCondition, NumericValueDefWithCondition, OrderFieldDef, PositionFieldDef, SecondaryFieldDef, ShapeFieldDefWithCondition, ShapeValueDefWithCondition, StringFieldDefWithCondition, StringValueDefWithCondition, TextFieldDef, TextFieldDefWithCondition, TextValueDefWithCondition, TypedFieldDef, ValueDef } from './fielddef';
 import { Mark } from './mark';
-import { FacetMapping } from './spec/facet';
+import { EncodingFacetMapping } from './spec/facet';
 import { AggregatedFieldDef, BinTransform, TimeUnitTransform } from './transform';
 export interface Encoding<F extends Field> {
     /**
-     * X coordinates of the marks, or width of horizontal `"bar"` and `"area"`.
+     * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without `x2`.
      *
      * The `value` of this channel can be a number or a string `"width"`.
      */
     x?: PositionFieldDef<F> | ValueDef<number | 'width'>;
     /**
-     * Y coordinates of the marks, or height of vertical `"bar"` and `"area"`.
+     * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without `y2`
      *
      * The `value` of this channel can be a number or a string `"height"`.
      */
@@ -29,22 +29,6 @@ export interface Encoding<F extends Field> {
      * The `value` of this channel can be a number or a string `"height"`.
      */
     y2?: SecondaryFieldDef<F> | ValueDef<number | 'height'>;
-    /**
-     * Error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
-     */
-    xError?: SecondaryFieldDef<F> | ValueDef<number>;
-    /**
-     * Secondary error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
-     */
-    xError2?: SecondaryFieldDef<F> | ValueDef<number>;
-    /**
-     * Error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
-     */
-    yError?: SecondaryFieldDef<F> | ValueDef<number>;
-    /**
-     * Secondary error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
-     */
-    yError2?: SecondaryFieldDef<F> | ValueDef<number>;
     /**
      * Longitude position of geographically projected marks.
      */
@@ -159,11 +143,11 @@ export interface Encoding<F extends Field> {
      */
     order?: OrderFieldDef<F> | OrderFieldDef<F>[] | ValueDef<number>;
 }
-export interface EncodingWithFacet<F extends Field> extends Encoding<F>, FacetMapping<F> {
+export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {
 }
 export declare function channelHasField<F extends Field>(encoding: EncodingWithFacet<F>, channel: Channel): boolean;
 export declare function isAggregate(encoding: EncodingWithFacet<Field>): boolean;
-export declare function extractTransformsFromEncoding(oldEncoding: Encoding<string | RepeatRef>, config: Config): {
+export declare function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, config: Config): {
     bins: BinTransform[];
     timeUnits: TimeUnitTransform[];
     aggregate: AggregatedFieldDef[];
@@ -174,7 +158,9 @@ export declare function markChannelCompatible(encoding: Encoding<string>, channe
 export declare function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encoding<string>;
 export declare function isRanged(encoding: EncodingWithFacet<any>): boolean;
 export declare function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): FieldDef<F>[];
-export declare function forEach(mapping: any, f: (cd: ChannelDef, c: Channel) => void, thisArg?: any): void;
+export declare function forEach<U extends {
+    [k in Channel]?: any;
+}>(mapping: U, f: (cd: ChannelDef, c: Channel) => void, thisArg?: any): void;
 export declare function reduce<T, U extends {
     [k in Channel]?: any;
 }>(mapping: U, f: (acc: any, fd: TypedFieldDef<string>, c: Channel) => U, init: T, thisArg?: any): any;

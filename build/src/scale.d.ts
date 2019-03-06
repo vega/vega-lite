@@ -1,27 +1,25 @@
-import { BinParams } from './bin';
 import { Channel } from './channel';
 import { DateTime } from './datetime';
 import { Type } from './type';
 import { ScaleInterpolate, ScaleInterpolateParams } from './vega.schema';
 export declare namespace ScaleType {
     const LINEAR: 'linear';
-    const BIN_LINEAR: 'bin-linear';
     const LOG: 'log';
     const POW: 'pow';
     const SQRT: 'sqrt';
+    const SYMLOG: 'symlog';
     const TIME: 'time';
     const UTC: 'utc';
-    const SEQUENTIAL: 'sequential';
     const QUANTILE: 'quantile';
     const QUANTIZE: 'quantize';
     const THRESHOLD: 'threshold';
-    const ORDINAL: 'ordinal';
     const BIN_ORDINAL: 'bin-ordinal';
+    const ORDINAL: 'ordinal';
     const POINT: 'point';
     const BAND: 'band';
 }
-export declare type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT | typeof ScaleType.TIME | typeof ScaleType.UTC | typeof ScaleType.SEQUENTIAL | typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD | typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
-export declare const SCALE_TYPES: import("vega-lite/build/src/scale").ScaleType[];
+export declare type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT | typeof ScaleType.SYMLOG | typeof ScaleType.TIME | typeof ScaleType.UTC | typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
+export declare const SCALE_TYPES: ScaleType[];
 /**
  * Whether the two given scale types can be merged together.
  */
@@ -36,9 +34,8 @@ export declare const CONTINUOUS_DOMAIN_SCALES: ScaleType[];
 export declare const DISCRETE_DOMAIN_SCALES: ScaleType[];
 export declare const TIME_SCALE_TYPES: ScaleType[];
 export declare function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'bin-ordinal' | 'point' | 'band';
-export declare function isBinScale(type: ScaleType): type is 'bin-linear' | 'bin-ordinal';
-export declare function hasContinuousDomain(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'time' | 'utc' | 'sequential' | 'quantile' | 'quantize' | 'threshold';
-export declare function isContinuousToContinuous(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'time' | 'utc';
+export declare function hasContinuousDomain(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' | 'time' | 'utc' | 'quantile' | 'quantize' | 'threshold';
+export declare function isContinuousToContinuous(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' | 'time' | 'utc';
 export declare function isContinuousToDiscrete(type: ScaleType): type is 'quantile' | 'quantize' | 'threshold';
 export declare type NiceTime = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year';
 export interface ScaleConfig {
@@ -242,33 +239,16 @@ export interface ScaleConfig {
      */
     quantizeCount?: number;
 }
-export declare const defaultScaleConfig: {
-    textXRangeStep: number;
-    rangeStep: number;
-    pointPadding: number;
-    barBandPaddingInner: number;
-    rectBandPaddingInner: number;
-    facetSpacing: number;
-    minBandSize: number;
-    minFontSize: number;
-    maxFontSize: number;
-    minOpacity: number;
-    maxOpacity: number;
-    minSize: number;
-    minStrokeWidth: number;
-    maxStrokeWidth: number;
-    quantileCount: number;
-    quantizeCount: number;
-};
+export declare const defaultScaleConfig: ScaleConfig;
 export interface SchemeParams {
     /**
-     * A color scheme name for sequential/ordinal scales (e.g., `"category10"` or `"viridis"`).
+     * A color scheme name for ordinal scales (e.g., `"category10"` or `"blues"`).
      *
      * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
      */
     name: string;
     /**
-     * For sequential and diverging schemes only, determines the extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.
+     * The extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.
      */
     extent?: number[];
     /**
@@ -305,11 +285,11 @@ export interface Scale {
     /**
      * The type of scale.  Vega-Lite supports the following categories of scale types:
      *
-     * 1) [**Continuous Scales**](https://vega.github.io/vega-lite/docs/scale.html#continuous) -- mapping continuous domains to continuous output ranges ([`"linear"`](https://vega.github.io/vega-lite/docs/scale.html#linear), [`"pow"`](https://vega.github.io/vega-lite/docs/scale.html#pow), [`"sqrt"`](https://vega.github.io/vega-lite/docs/scale.html#sqrt), [`"log"`](https://vega.github.io/vega-lite/docs/scale.html#log), [`"time"`](https://vega.github.io/vega-lite/docs/scale.html#time), [`"utc"`](https://vega.github.io/vega-lite/docs/scale.html#utc), [`"sequential"`](https://vega.github.io/vega-lite/docs/scale.html#sequential)).
+     * 1) [**Continuous Scales**](https://vega.github.io/vega-lite/docs/scale.html#continuous) -- mapping continuous domains to continuous output ranges ([`"linear"`](https://vega.github.io/vega-lite/docs/scale.html#linear), [`"pow"`](https://vega.github.io/vega-lite/docs/scale.html#pow), [`"sqrt"`](https://vega.github.io/vega-lite/docs/scale.html#sqrt), [`"symlog"`](https://vega.github.io/vega-lite/docs/scale.html#symlog), [`"log"`](https://vega.github.io/vega-lite/docs/scale.html#log), [`"time"`](https://vega.github.io/vega-lite/docs/scale.html#time), [`"utc"`](https://vega.github.io/vega-lite/docs/scale.html#utc).
      *
      * 2) [**Discrete Scales**](https://vega.github.io/vega-lite/docs/scale.html#discrete) -- mapping discrete domains to discrete ([`"ordinal"`](https://vega.github.io/vega-lite/docs/scale.html#ordinal)) or continuous ([`"band"`](https://vega.github.io/vega-lite/docs/scale.html#band) and [`"point"`](https://vega.github.io/vega-lite/docs/scale.html#point)) output ranges.
      *
-     * 3) [**Discretizing Scales**](https://vega.github.io/vega-lite/docs/scale.html#discretizing) -- mapping continuous domains to discrete output ranges ([`"bin-linear"`](https://vega.github.io/vega-lite/docs/scale.html#bin-linear), [`"bin-ordinal"`](https://vega.github.io/vega-lite/docs/scale.html#bin-ordinal), [`"quantile"`](https://vega.github.io/vega-lite/docs/scale.html#quantile), [`"quantize"`](https://vega.github.io/vega-lite/docs/scale.html#quantize) and [`"threshold"`](https://vega.github.io/vega-lite/docs/scale.html#threshold).
+     * 3) [**Discretizing Scales**](https://vega.github.io/vega-lite/docs/scale.html#discretizing) -- mapping continuous domains to discrete output ranges [`"bin-ordinal"`](https://vega.github.io/vega-lite/docs/scale.html#bin-ordinal), [`"quantile"`](https://vega.github.io/vega-lite/docs/scale.html#quantile), [`"quantize"`](https://vega.github.io/vega-lite/docs/scale.html#quantize) and [`"threshold"`](https://vega.github.io/vega-lite/docs/scale.html#threshold).
      *
      * __Default value:__ please see the [scale type table](https://vega.github.io/vega-lite/docs/scale.html#type).
      */
@@ -345,7 +325,7 @@ export interface Scale {
      *
      * __Notes:__
      *
-     * 1) For [sequential](https://vega.github.io/vega-lite/docs/scale.html#sequential), [ordinal](https://vega.github.io/vega-lite/docs/scale.html#ordinal), and discretizing color scales, you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.
+     * 1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.
      *
      * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`) or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales.
      */
@@ -363,13 +343,17 @@ export interface Scale {
      */
     rangeStep?: number | null;
     /**
-     * A string indicating a color [scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme) name (e.g., `"category10"` or `"viridis"`) or a [scheme parameter object](https://vega.github.io/vega-lite/docs/scale.html#scheme-params).
+     * A string indicating a color [scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme) name (e.g., `"category10"` or `"blues"`) or a [scheme parameter object](https://vega.github.io/vega-lite/docs/scale.html#scheme-params).
      *
-     * Discrete color schemes may be used with [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) or [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales. Continuous color schemes are intended for use with [sequential](https://vega.github.io/vega-lite/docs/scales.html#sequential) scales.
+     * Discrete color schemes may be used with [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) or [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales. Continuous color schemes are intended for use with color scales.
      *
      * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
      */
     scheme?: string | SchemeParams;
+    /**
+     * An array of bin boundaries over the scale domain. If provided, axes and legends will use the bin boundaries to inform the choice of tick marks and text labels.
+     */
+    bins?: number[];
     /**
      * If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
      *
@@ -439,6 +423,12 @@ export interface Scale {
      */
     exponent?: number;
     /**
+     * A constant determining the slope of the symlog function around zero. Only used for `symlog` scales.
+     *
+     * __Default value:__ `1`
+     */
+    constant?: number;
+    /**
      * If `true`, ensures that a zero baseline value is included in the scale domain.
      *
      * __Default value:__ `true` for x and y channels if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.
@@ -450,22 +440,20 @@ export interface Scale {
      * The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in HCL space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include `rgb`, `hsl`, `hsl-long`, `lab`, `hcl`, `hcl-long`, `cubehelix` and `cubehelix-long` ('-long' variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued _type_ property and an optional numeric _gamma_ property applicable to rgb and cubehelix interpolators. For more, see the [d3-interpolate documentation](https://github.com/d3/d3-interpolate).
      *
      * * __Default value:__ `hcl`
-     *
-     * __Note:__ Sequential scales do not support `interpolate` as they have a fixed interpolator.  Since Vega-Lite uses sequential scales for quantitative fields by default, you have to set the scale `type` to other quantitative scale type such as `"linear"` to customize `interpolate`.
      */
     interpolate?: ScaleInterpolate | ScaleInterpolateParams;
 }
-export declare const SCALE_PROPERTIES: ("reverse" | "round" | "base" | "domain" | "padding" | "type" | "range" | "zero" | "nice" | "rangeStep" | "scheme" | "paddingInner" | "paddingOuter" | "clamp" | "exponent" | "interpolate")[];
-export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: ("reverse" | "round" | "base" | "padding" | "zero" | "nice" | "paddingInner" | "paddingOuter" | "clamp" | "exponent" | "interpolate")[];
+export declare const SCALE_PROPERTIES: ("reverse" | "round" | "base" | "domain" | "padding" | "type" | "range" | "zero" | "rangeStep" | "scheme" | "bins" | "paddingInner" | "paddingOuter" | "clamp" | "nice" | "exponent" | "constant" | "interpolate")[];
+export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: ("reverse" | "round" | "base" | "padding" | "zero" | "bins" | "paddingInner" | "paddingOuter" | "clamp" | "nice" | "exponent" | "constant" | "interpolate")[];
 export declare const SCALE_TYPE_INDEX: ScaleTypeIndex;
 export declare function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale): boolean;
 /**
  * Returns undefined if the input channel supports the input scale property name
  */
 export declare function channelScalePropertyIncompatability(channel: Channel, propName: keyof Scale): string;
-export declare function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type, bin: boolean | BinParams | 'binned'): boolean;
+export declare function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type): boolean;
 export declare function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean;
-export declare function getSupportedScaleType(channel: Channel, fieldDefType: Type, bin?: boolean): import("vega-lite/build/src/scale").ScaleType[];
+export declare function getSupportedScaleType(channel: Channel, fieldDefType: Type): ScaleType[];
 export interface ScaleTypeIndex {
     [channel: string]: ScaleType[];
 }

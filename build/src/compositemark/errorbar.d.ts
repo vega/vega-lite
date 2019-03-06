@@ -1,12 +1,14 @@
-import { Channel } from '../channel';
+import { Orientation } from 'vega';
+import { PositionChannel } from '../channel';
 import { Config } from '../config';
 import { Data } from '../data';
 import { Encoding } from '../encoding';
-import { PositionFieldDef } from '../fielddef';
+import { Field, PositionFieldDef, SecondaryFieldDef, ValueDef } from '../fielddef';
+import { NormalizerParams } from '../normalize/index';
 import { GenericUnitSpec, NormalizedLayerSpec } from '../spec';
 import { TitleParams } from '../title';
 import { Transform } from '../transform';
-import { Orient } from '../vega.schema';
+import { CompositeMarkNormalizer } from './base';
 import { GenericCompositeMarkDef, PartsMixins } from './common';
 import { ErrorBand, ErrorBandDef } from './errorband';
 export declare const ERRORBAR: 'errorbar';
@@ -15,7 +17,26 @@ export declare type ErrorBarExtent = 'ci' | 'iqr' | 'stderr' | 'stdev';
 export declare type ErrorBarCenter = 'mean' | 'median';
 export declare type ErrorBarPart = 'ticks' | 'rule';
 export declare type ErrorInputType = 'raw' | 'aggregated-upper-lower' | 'aggregated-error';
-export declare const ERRORBAR_PARTS: import("vega-lite/build/src/compositemark/errorbar").ErrorBarPart[];
+export interface ErrorExtraEncoding<F extends Field> {
+    /**
+     * Error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
+     */
+    xError?: SecondaryFieldDef<F> | ValueDef<number>;
+    /**
+     * Secondary error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
+     */
+    xError2?: SecondaryFieldDef<F> | ValueDef<number>;
+    /**
+     * Error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
+     */
+    yError?: SecondaryFieldDef<F> | ValueDef<number>;
+    /**
+     * Secondary error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
+     */
+    yError2?: SecondaryFieldDef<F> | ValueDef<number>;
+}
+export declare type ErrorEncoding<F extends Field> = Pick<Encoding<F>, PositionChannel | 'color' | 'detail' | 'opacity'> & ErrorExtraEncoding<F>;
+export declare const ERRORBAR_PARTS: ErrorBarPart[];
 export declare type ErrorBarPartsMixins = PartsMixins<ErrorBarPart>;
 export interface ErrorBarConfig extends ErrorBarPartsMixins {
     /**
@@ -42,7 +63,7 @@ export declare type ErrorBarDef = GenericCompositeMarkDef<ErrorBar> & ErrorBarCo
     /**
      * Orientation of the error bar.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
      */
-    orient?: Orient;
+    orient?: Orientation;
 };
 export interface ErrorBarConfigMixins {
     /**
@@ -50,15 +71,15 @@ export interface ErrorBarConfigMixins {
      */
     errorbar?: ErrorBarConfig;
 }
-export declare function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, config: Config): NormalizedLayerSpec;
-export declare const errorBarSupportedChannels: Channel[];
-export declare function errorBarParams<M extends ErrorBar | ErrorBand, MD extends GenericCompositeMarkDef<M> & (ErrorBarDef | ErrorBandDef)>(spec: GenericUnitSpec<Encoding<string>, M | MD>, compositeMark: M, config: Config): {
+export declare const errorBarNormalizer: CompositeMarkNormalizer<"errorbar">;
+export declare function normalizeErrorBar(spec: GenericUnitSpec<ErrorEncoding<string>, ErrorBar | ErrorBarDef>, { config }: NormalizerParams): NormalizedLayerSpec;
+export declare function errorBarParams<M extends ErrorBar | ErrorBand, MD extends GenericCompositeMarkDef<M> & (ErrorBarDef | ErrorBandDef)>(spec: GenericUnitSpec<ErrorEncoding<string>, M | MD>, compositeMark: M, config: Config): {
     transform: Transform[];
     groupby: string[];
     continuousAxisChannelDef: PositionFieldDef<string>;
     continuousAxis: 'x' | 'y';
-    encodingWithoutContinuousAxis: Encoding<string>;
-    ticksOrient: Orient;
+    encodingWithoutContinuousAxis: ErrorEncoding<string>;
+    ticksOrient: Orientation;
     markDef: MD;
     outerSpec: {
         data?: Data;
@@ -69,5 +90,5 @@ export declare function errorBarParams<M extends ErrorBar | ErrorBand, MD extend
         width?: number;
         height?: number;
     };
-    tooltipEncoding: Encoding<string>;
+    tooltipEncoding: ErrorEncoding<string>;
 };

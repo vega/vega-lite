@@ -1,6 +1,7 @@
 import { selector as parseSelector } from 'vega-event-selector';
-import { isString, stringValue } from 'vega-util';
-import { X, Y } from '../../channel';
+import { identity, isArray, isString, stringValue } from 'vega-util';
+import { FACET_CHANNELS, X, Y } from '../../channel';
+import { dateTimeExpr, isDateTime } from '../../datetime';
 import { warn } from '../../log';
 import { SELECTION_ID } from '../../selection';
 import { accessPathWithDatum, duplicate, keys, logicalExpr, varName } from '../../util';
@@ -68,12 +69,7 @@ export function assembleUnitSelectionSignals(model, signals) {
         });
         signals.push({
             name: name + MODIFY,
-            on: [
-                {
-                    events: { signal: name + TUPLE },
-                    update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
-                }
-            ]
+            update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
         });
     });
     return signals;
@@ -257,11 +253,14 @@ function getFacetModel(model) {
 }
 export function unitName(model) {
     let name = stringValue(model.name);
-    const facet = getFacetModel(model);
-    if (facet) {
-        name +=
-            (facet.facet.row ? ` + '_' + (${accessPathWithDatum(facet.vgField('row'), 'facet')})` : '') +
-                (facet.facet.column ? ` + '_' + (${accessPathWithDatum(facet.vgField('column'), 'facet')})` : '');
+    const facetModel = getFacetModel(model);
+    if (facetModel) {
+        const { facet } = facetModel;
+        for (const channel of FACET_CHANNELS) {
+            if (facet[channel]) {
+                name += ` + '__facet_${channel}_' + (${accessPathWithDatum(facetModel.vgField(channel), 'facet')})`;
+            }
+        }
     }
     return name;
 }
@@ -302,5 +301,15 @@ export function positionalProjections(selCmpt) {
         }
     });
     return { x, xi, y, yi };
+}
+export function assembleInit(init, wrap = identity) {
+    if (isArray(init)) {
+        const str = init.map(v => assembleInit(v, wrap)).join(', ');
+        return `[${str}]`;
+    }
+    else if (isDateTime(init)) {
+        return wrap(dateTimeExpr(init));
+    }
+    return wrap(JSON.stringify(init));
 }
 //# sourceMappingURL=selection.js.map

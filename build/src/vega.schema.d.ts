@@ -1,4 +1,4 @@
-import { AggregateOp, Align, Compare as VgCompare, Field as VgField, FlattenTransform as VgFlattenTransform, FoldTransform as VgFoldTransform, FontStyle as VgFontStyle, FontWeight as VgFontWeight, LayoutAlign, ProjectionType, SampleTransform as VgSampleTransform, SignalRef, SortField as VgSortField, TextBaseline as VgTextBaseline, UnionSortField as VgUnionSortField } from 'vega';
+import { AggregateOp, Align, Compare as VgCompare, Field as VgField, FlattenTransform as VgFlattenTransform, FoldTransform as VgFoldTransform, FontStyle as VgFontStyle, FontWeight as VgFontWeight, LayoutAlign, Orientation, ProjectionType, SampleTransform as VgSampleTransform, SignalRef, SortField as VgSortField, TextBaseline as VgTextBaseline, UnionSortField as VgUnionSortField } from 'vega';
 import { BaseBin } from './bin';
 import { NiceTime, ScaleType } from './scale';
 import { StackOffset } from './stack';
@@ -38,6 +38,7 @@ export interface VgValueRef {
     mult?: number;
     offset?: number | VgValueRef;
     band?: boolean | number | VgValueRef;
+    test?: string;
 }
 export interface DataRefUnionDomain {
     fields: (any[] | VgDataRef | SignalRef)[];
@@ -53,8 +54,8 @@ export interface SchemeConfig {
     extent?: number[];
     count?: number;
 }
-export declare type VgRange<S> = string | VgDataRef | (number | string | VgDataRef | S)[] | SchemeConfig | VgRangeStep | S;
-export declare function isVgRangeStep(range: VgRange<any>): range is VgRangeStep;
+export declare type VgRange = string | VgDataRef | (number | string | VgDataRef | SignalRef)[] | SchemeConfig | VgRangeStep | SignalRef;
+export declare function isVgRangeStep(range: VgRange): range is VgRangeStep;
 export interface VgRangeStep {
     step: number | SignalRef;
 }
@@ -90,12 +91,14 @@ export interface VgProjection {
 export interface VgScale {
     name: string;
     type: ScaleType;
-    domain: VgDomain;
+    domain?: VgDomain;
     domainRaw?: SignalRef;
-    range: VgRange<SignalRef>;
+    bins?: number[] | SignalRef;
+    range: VgRange;
     clamp?: boolean;
     base?: number;
     exponent?: number;
+    constant?: number;
     interpolate?: ScaleInterpolate | ScaleInterpolateParams;
     nice?: boolean | number | NiceTime | {
         interval: string;
@@ -139,7 +142,6 @@ export interface VgLayout {
 export declare function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain;
 export declare function isFieldRefUnionDomain(domain: VgDomain): domain is VgFieldRefUnionDomain;
 export declare function isDataRefDomain(domain: VgDomain): domain is VgDataRef;
-export declare function isSignalRefDomain(domain: VgDomain): domain is SignalRef;
 export declare type VgEncodeChannel = 'x' | 'x2' | 'xc' | 'width' | 'y' | 'y2' | 'yc' | 'height' | 'opacity' | 'fill' | 'fillOpacity' | 'stroke' | 'strokeWidth' | 'strokeCap' | 'strokeOpacity' | 'strokeDash' | 'strokeDashOffset' | 'strokeMiterLimit' | 'strokeJoin' | 'cursor' | 'clip' | 'size' | 'shape' | 'path' | 'innerRadius' | 'outerRadius' | 'startAngle' | 'endAngle' | 'interpolate' | 'tension' | 'orient' | 'url' | 'align' | 'baseline' | 'text' | 'dir' | 'ellipsis' | 'limit' | 'dx' | 'dy' | 'radius' | 'theta' | 'angle' | 'font' | 'fontSize' | 'fontWeight' | 'fontStyle' | 'tooltip' | 'href' | 'cursor' | 'defined' | 'cornerRadius';
 export declare type VgEncodeEntry = {
     [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {
@@ -203,7 +205,13 @@ export interface VgIdentifierTransform {
     type: 'identifier';
     as: string;
 }
-export declare type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgFlattenTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform | VgGeoPointTransform | VgGeoJSONTransform | VgWindowTransform | VgFoldTransform | VgSampleTransform;
+export declare type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgFlattenTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform | VgGeoPointTransform | VgGeoJSONTransform | VgWindowTransform | VgJoinAggregateTransform | VgFoldTransform | VgSampleTransform | VgSequenceTransform;
+export interface VgSequenceTransform {
+    type: 'sequence';
+    start: number | SignalRef;
+    stop: number | SignalRef;
+    step?: number | SignalRef;
+}
 export interface VgGeoPointTransform {
     type: 'geopoint';
     projection: string;
@@ -235,12 +243,27 @@ export interface VgImputeTransform {
     value?: any;
 }
 export declare type Interpolate = 'linear' | 'linear-closed' | 'step' | 'step-before' | 'step-after' | 'basis' | 'basis-open' | 'basis-closed' | 'cardinal' | 'cardinal-open' | 'cardinal-closed' | 'bundle' | 'monotone';
-export declare type Orient = 'horizontal' | 'vertical';
 export declare type Cursor = 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'e-resize' | 'n-resize' | 'ne-resize' | 'nw-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'grab' | 'grabbing';
 export declare type StrokeCap = 'butt' | 'round' | 'square';
 export declare type StrokeJoin = 'miter' | 'round' | 'bevel';
 export declare type Dir = 'ltr' | 'rtl';
 export interface BaseMarkConfig {
+    /**
+     * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without `x2`.
+     */
+    x?: number;
+    /**
+     * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without `y2`
+     */
+    y?: number;
+    /**
+     * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+     */
+    x2?: number;
+    /**
+     * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+     */
+    y2?: number;
     /**
      * Default Fill Color.  This has higher precedence than `config.color`
      *
@@ -323,7 +346,7 @@ export interface BaseMarkConfig {
      * For stacked charts, this is always determined by the orientation of the stack;
      * therefore explicitly specified value will be ignored.
      */
-    orient?: Orient;
+    orient?: Orientation;
     /**
      * The line interpolation method to use for line and area marks. One of the following:
      * - `"linear"`: piecewise linear segments, as in a polyline.
@@ -460,7 +483,7 @@ export interface BaseMarkConfig {
      */
     cornerRadius?: number;
 }
-export declare const VG_MARK_CONFIGS: ("dir" | "font" | "cursor" | "text" | "shape" | "interpolate" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "tooltip" | "href" | "radius" | "strokeCap" | "strokeDash" | "strokeDashOffset" | "strokeMiterLimit" | "strokeJoin" | "tension" | "orient" | "align" | "baseline" | "ellipsis" | "limit" | "dx" | "dy" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "cornerRadius")[];
+export declare const VG_MARK_CONFIGS: ("dir" | "font" | "cursor" | "text" | "stroke" | "shape" | "interpolate" | "x" | "y" | "x2" | "y2" | "fill" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "tooltip" | "href" | "strokeCap" | "strokeDash" | "strokeDashOffset" | "strokeMiterLimit" | "strokeJoin" | "tension" | "orient" | "align" | "baseline" | "ellipsis" | "limit" | "dx" | "dy" | "radius" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "cornerRadius")[];
 export declare type VgComparatorOrder = 'ascending' | 'descending';
 export interface VgComparator {
     field?: string | string[];
@@ -476,4 +499,11 @@ export interface VgWindowTransform {
     ignorePeers?: boolean;
     groupby?: string[];
     sort?: VgComparator;
+}
+export interface VgJoinAggregateTransform {
+    type: 'joinaggregate';
+    as?: string[];
+    ops?: AggregateOp[];
+    fields?: string[];
+    groupby?: string[];
 }

@@ -5,12 +5,13 @@ import { getTypedFieldDef, hasConditionalFieldDef, isFieldDef } from '../fieldde
 import { GEOSHAPE, isMarkDef } from '../mark';
 import { stack } from '../stack';
 import { duplicate } from '../util';
-import { parseUnitAxis } from './axis/parse';
+import { assembleAxisSignals } from './axis/assemble';
+import { parseUnitAxes } from './axis/parse';
 import { parseData } from './data/parse';
 import { assembleLayoutSignals } from './layoutsize/assemble';
 import { parseUnitLayoutSize } from './layoutsize/parse';
 import { normalizeMarkDef } from './mark/init';
-import { parseMarkGroup } from './mark/mark';
+import { parseMarkGroups } from './mark/mark';
 import { isLayerModel, ModelWithField } from './model';
 import { replaceRepeaterInEncoding } from './repeater';
 import { assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection } from './selection/selection';
@@ -19,9 +20,8 @@ import { assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelecti
  */
 export class UnitModel extends ModelWithField {
     constructor(spec, parent, parentGivenName, parentGivenSize = {}, repeater, config, fit) {
-        super(spec, parent, parentGivenName, config, repeater, undefined, spec.view);
+        super(spec, 'unit', parent, parentGivenName, config, repeater, undefined, spec.view);
         this.fit = fit;
-        this.type = 'unit';
         this.specifiedScales = {};
         this.specifiedAxes = {};
         this.specifiedLegends = {};
@@ -118,20 +118,20 @@ export class UnitModel extends ModelWithField {
     parseLayoutSize() {
         parseUnitLayoutSize(this);
     }
-    parseSelection() {
+    parseSelections() {
         this.component.selection = parseUnitSelection(this, this.selection);
     }
     parseMarkGroup() {
-        this.component.mark = parseMarkGroup(this);
+        this.component.mark = parseMarkGroups(this);
     }
-    parseAxisAndHeader() {
-        this.component.axes = parseUnitAxis(this);
+    parseAxesAndHeaders() {
+        this.component.axes = parseUnitAxes(this);
     }
     assembleSelectionTopLevelSignals(signals) {
         return assembleTopLevelSignals(this, signals);
     }
-    assembleSelectionSignals() {
-        return assembleUnitSelectionSignals(this, []);
+    assembleSignals() {
+        return [...assembleAxisSignals(this), ...assembleUnitSelectionSignals(this, [])];
     }
     assembleSelectionData(data) {
         return assembleUnitSelectionData(this, data);

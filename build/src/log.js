@@ -90,15 +90,20 @@ export var message;
     }
     message.selectionNotFound = selectionNotFound;
     message.SCALE_BINDINGS_CONTINUOUS = 'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
+    message.NO_INIT_SCALE_BINDINGS = 'Selections bound to scales cannot be separately initialized.';
     // REPEAT
     function noSuchRepeatedValue(field) {
         return `Unknown repeated value "${field}".`;
     }
     message.noSuchRepeatedValue = noSuchRepeatedValue;
+    function columnsNotSupportByRowCol(type) {
+        return `The "columns" property cannot be used when "${type}" has nested row/column.`;
+    }
+    message.columnsNotSupportByRowCol = columnsNotSupportByRowCol;
     // CONCAT
-    message.CONCAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in concatenated views.';
+    message.CONCAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in concatenated views yet (https://github.com/vega/vega-lite/issues/2415).';
     // REPEAT
-    message.REPEAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in repeated views.';
+    message.REPEAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in repeated views yet (https://github.com/vega/vega-lite/issues/2415).';
     // TITLE
     function cannotSetTitleAnchor(type) {
         return `Cannot set title "anchor" for a ${type} spec`;
@@ -184,6 +189,10 @@ export var message;
         return `${channel} encoding should be discrete (ordinal / nominal / binned).`;
     }
     message.facetChannelShouldBeDiscrete = facetChannelShouldBeDiscrete;
+    function facetChannelDropped(channels) {
+        return `Facet encoding dropped as ${channels.join(' and ')} ${channels.length > 1 ? 'are' : 'is'} also specified.`;
+    }
+    message.facetChannelDropped = facetChannelDropped;
     function discreteChannelCannotEncode(channel, type) {
         return `Using discrete channel "${channel}" to encode "${type}" field can be misleading as it does not encode ${type === 'ordinal' ? 'order' : 'magnitude'}.`;
     }

@@ -1,4 +1,7 @@
 export const SELECTION_ID = '_vgsid_';
+export function isIntervalSelection(s) {
+    return s.type === 'interval';
+}
 export const defaultConfig = {
     single: {
         on: 'click',

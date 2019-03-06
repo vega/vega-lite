@@ -1,10 +1,10 @@
+import { Orientation } from 'vega';
 import { CompositeMark, CompositeMarkDef } from '.';
-import { Channel } from '../channel';
 import { Encoding } from '../encoding';
 import { Field, FieldDefWithoutScale, PositionFieldDef, SecondaryFieldDef } from '../fielddef';
-import { ColorMixins, GenericMarkDef, MarkConfig, MarkDef } from '../mark';
+import { ColorMixins, GenericMarkDef, Mark, MarkConfig, MarkDef } from '../mark';
 import { GenericUnitSpec, NormalizedUnitSpec } from '../spec';
-import { Orient } from '../vega.schema';
+import { StandardType } from '../type';
 export declare type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 export declare type GenericCompositeMarkDef<T> = GenericMarkDef<T> & ColorMixins & {
     /**
@@ -29,18 +29,17 @@ export interface CompositeMarkTooltipSummary {
 export declare function getCompositeMarkTooltip(tooltipSummary: CompositeMarkTooltipSummary[], continuousAxisChannelDef: PositionFieldDef<string>, encodingWithoutContinuousAxis: Encoding<string>, withFieldName?: boolean): Encoding<string>;
 export declare function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(compositeMarkDef: GenericCompositeMarkDef<any> & P, continuousAxis: 'x' | 'y', continuousAxisChannelDef: PositionFieldDef<string>, sharedEncoding: Encoding<string>, compositeMarkConfig: P): ({ partName, mark, positionPrefix, endPositionPrefix, extraEncoding }: {
     partName: keyof P;
-    mark: "square" | "area" | "circle" | "line" | "rect" | "text" | "point" | "rule" | "trail" | "geoshape" | "bar" | "tick" | MarkDef;
+    mark: "square" | "area" | "circle" | "line" | "rect" | "text" | "rule" | "trail" | "point" | "geoshape" | "bar" | "tick" | MarkDef<Mark>;
     positionPrefix: string;
     endPositionPrefix?: string;
     extraEncoding?: Encoding<string>;
-}) => GenericUnitSpec<Encoding<Field>, "square" | "area" | "circle" | "line" | "rect" | "text" | "point" | "rule" | "trail" | "geoshape" | "bar" | "tick" | MarkDef>[];
+}) => GenericUnitSpec<Encoding<Field>, "square" | "area" | "circle" | "line" | "rect" | "text" | "rule" | "trail" | "point" | "geoshape" | "bar" | "tick" | MarkDef<Mark>>[];
 export declare function partLayerMixins<P extends PartsMixins<any>>(markDef: GenericCompositeMarkDef<any> & P, part: keyof P, compositeMarkConfig: P, partBaseSpec: NormalizedUnitSpec): NormalizedUnitSpec[];
-export declare function compositeMarkContinuousAxis<M extends CompositeMark>(spec: GenericUnitSpec<Encoding<string>, CompositeMark | CompositeMarkDef>, orient: Orient, compositeMark: M): {
+export declare function compositeMarkContinuousAxis<M extends CompositeMark>(spec: GenericUnitSpec<Encoding<string>, CompositeMark | CompositeMarkDef>, orient: Orientation, compositeMark: M): {
     continuousAxisChannelDef: PositionFieldDef<string>;
     continuousAxisChannelDef2: SecondaryFieldDef<string>;
-    continuousAxisChannelDefError: FieldDefWithoutScale<string, import("vega-lite/build/src/type").StandardType>;
-    continuousAxisChannelDefError2: FieldDefWithoutScale<string, import("vega-lite/build/src/type").StandardType>;
-    continuousAxis: "x" | "y";
+    continuousAxisChannelDefError: FieldDefWithoutScale<string, StandardType>;
+    continuousAxisChannelDefError2: FieldDefWithoutScale<string, StandardType>;
+    continuousAxis: 'x' | 'y';
 };
-export declare function compositeMarkOrient<M extends CompositeMark>(spec: GenericUnitSpec<Encoding<Field>, CompositeMark | CompositeMarkDef>, compositeMark: M): Orient;
-export declare function filterUnsupportedChannels<M extends CompositeMark, MD extends GenericCompositeMarkDef<M>>(spec: GenericUnitSpec<Encoding<string>, M | MD>, supportedChannels: Channel[], compositeMark: M): GenericUnitSpec<Encoding<string>, M | MD>;
+export declare function compositeMarkOrient<M extends CompositeMark>(spec: GenericUnitSpec<Encoding<Field>, CompositeMark | CompositeMarkDef>, compositeMark: M): Orientation;

@@ -1,20 +1,30 @@
 import { isBoolean, isObject } from 'vega-util';
 import { COLOR, COLUMN, FILL, FILLOPACITY, OPACITY, ROW, SHAPE, SIZE, STROKE, STROKEOPACITY, STROKEWIDTH } from './channel';
+import { normalizeBin } from './fielddef';
 import { keys, varName } from './util';
+/**
+ * Create a key for the bin configuration. Not for prebinned bin.
+ */
 export function binToString(bin) {
     if (isBoolean(bin)) {
-        return 'bin';
+        bin = normalizeBin(bin, undefined);
     }
     return ('bin' +
         keys(bin)
             .map(p => varName(`_${p}_${bin[p]}`))
             .join(''));
 }
+/**
+ * Vega-Lite should bin the data.
+ */
 export function isBinning(bin) {
-    return bin === true || isBinParams(bin);
+    return bin === true || (isBinParams(bin) && !bin.binned);
 }
+/**
+ * The data is already binned and so Vega-Lite should not bin it again.
+ */
 export function isBinned(bin) {
-    return bin === 'binned';
+    return bin === 'binned' || (isBinParams(bin) && bin.binned);
 }
 export function isBinParams(bin) {
     return isObject(bin);

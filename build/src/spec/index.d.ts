@@ -4,42 +4,32 @@
  * - The external specs (no prefix) would allow composite marks, row/column encodings, and mark macros like point/line overlay.
  * - The internal specs (with `Normalized` prefix) would only support primitive marks and support no macros/shortcuts.
  */
-import { Config } from '../config';
-import { TypedFieldDef } from '../fielddef';
 import { DataMixins } from './base';
-import { GenericHConcatSpec, GenericVConcatSpec } from './concat';
+import { GenericConcatSpec, GenericHConcatSpec, GenericVConcatSpec } from './concat';
 import { GenericFacetSpec } from './facet';
-import { ExtendedLayerSpec, GenericLayerSpec, NormalizedLayerSpec } from './layer';
+import { GenericLayerSpec, LayerSpec, NormalizedLayerSpec } from './layer';
 import { GenericRepeatSpec } from './repeat';
 import { TopLevel } from './toplevel';
-import { FacetedCompositeUnitSpec, GenericUnitSpec, NormalizedUnitSpec } from './unit';
-export { normalizeTopLevelSpec as normalize } from '../normalize';
+import { FacetedUnitSpec, GenericUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec } from './unit';
 export { BaseSpec, DataMixins, LayoutSizeMixins } from './base';
-export { GenericHConcatSpec, GenericVConcatSpec, isConcatSpec, isHConcatSpec, isVConcatSpec, NormalizedConcatSpec } from './concat';
+export { GenericHConcatSpec, GenericVConcatSpec, isAnyConcatSpec, isHConcatSpec, isVConcatSpec, NormalizedConcatSpec } from './concat';
 export { GenericFacetSpec, isFacetSpec, NormalizedFacetSpec } from './facet';
-export { ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec } from './layer';
+export { GenericLayerSpec, isLayerSpec, LayerSpec as ExtendedLayerSpec, NormalizedLayerSpec } from './layer';
 export { GenericRepeatSpec, isRepeatSpec, NormalizedRepeatSpec } from './repeat';
 export { TopLevel } from './toplevel';
-export { CompositeUnitSpec, FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec } from './unit';
+export { FacetedUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec, UnitSpec } from './unit';
 /**
  * Any specification in Vega-Lite.
  */
-export declare type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> = U | L | GenericFacetSpec<U, L> | GenericRepeatSpec<U, L> | GenericVConcatSpec<U, L> | GenericHConcatSpec<U, L>;
+export declare type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> = U | L | GenericFacetSpec<U, L> | GenericRepeatSpec<U, L> | GenericConcatSpec<U, L> | GenericVConcatSpec<U, L> | GenericHConcatSpec<U, L>;
 /**
  * Specs with only primitive marks and without other macros.
  */
 export declare type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
-export declare type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataMixins;
-export declare type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> & DataMixins;
+export declare type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedUnitSpec, LayerSpec>> & DataMixins;
 /**
  * A Vega-Lite top-level specification.
  * This is the root class for all Vega-Lite specifications.
  * (The json schema is generated from this type.)
  */
-export declare type TopLevelSpec = TopLevelFacetedUnitSpec | TopLevelFacetSpec | TopLevel<ExtendedLayerSpec> | TopLevel<GenericRepeatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericVConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
-export declare function fieldDefs(spec: GenericSpec<any, any>): TypedFieldDef<any>[];
-export declare function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Config): boolean;
-/**
- * Takes a spec and returns a list of fields used in encoding
- */
-export declare function usedFields(spec: NormalizedSpec): string[];
+export declare type TopLevelSpec = TopLevelUnitSpec | TopLevelFacetSpec | TopLevel<LayerSpec> | TopLevel<GenericRepeatSpec<FacetedUnitSpec, LayerSpec>> | TopLevel<GenericConcatSpec<FacetedUnitSpec, LayerSpec>> | TopLevel<GenericVConcatSpec<FacetedUnitSpec, LayerSpec>> | TopLevel<GenericHConcatSpec<FacetedUnitSpec, LayerSpec>>;

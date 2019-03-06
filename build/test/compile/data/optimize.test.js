@@ -51,9 +51,9 @@ describe('compile/data/optimize', () => {
             expect(commonParse.parse).toEqual({ a: 'time' });
             expect(commonParse.children).toHaveLength(2);
             expect(commonParse.children[0]).toBeInstanceOf(ParseNode);
-            expect(commonParse.children[0]).toMatchObject(parseOne);
+            expect(commonParse.children[0]).toEqual(parseOne);
             expect(commonParse.children[1]).toBeInstanceOf(ParseNode);
-            expect(commonParse.children[1]).toMatchObject(parseTwo);
+            expect(commonParse.children[1]).toEqual(parseTwo);
         });
         it('should push parse up from lowest level first to avoid conflicting common parse', () => {
             const source = new SourceNode(null);

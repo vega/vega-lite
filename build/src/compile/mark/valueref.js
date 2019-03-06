@@ -1,39 +1,91 @@
-import { isArray, isFunction, isString, stringValue } from 'vega-util';
+import { isFunction, isString, stringValue } from 'vega-util';
+import { isCountingAggregateOp } from '../../aggregate';
 import { isBinned, isBinning } from '../../bin';
 import { getMainRangeChannel, X, X2, Y, Y2 } from '../../channel';
 import { forEach } from '../../encoding';
 import { binRequiresRange, format, hasConditionalFieldDef, isFieldDef, isTypedFieldDef, isValueDef, title, vgField } from '../../fielddef';
 import * as log from '../../log';
-import { hasDiscreteDomain, ScaleType } from '../../scale';
+import { isPathMark } from '../../mark';
+import { hasDiscreteDomain, isContinuousToContinuous, ScaleType } from '../../scale';
 import { QUANTITATIVE } from '../../type';
-import { contains, some } from '../../util';
-import { formatSignalRef } from '../common';
+import { contains, getFirstDefined } from '../../util';
+import { formatSignalRef, getMarkConfig } from '../common';
+function midPointWithPositionInvalidTest(params) {
+    const { channel, channelDef, mark, scale } = params;
+    const ref = midPoint(params);
+    // Wrap to check if the positional value is invalid, if so, plot the point on the min value
+    if (
+    // Only this for field def without counting aggregate (as count wouldn't be null)
+    isFieldDef(channelDef) &&
+        !isCountingAggregateOp(channelDef.aggregate) &&
+        // and only for continuous scale without zero (otherwise, null / invalid will be interpreted as zero, which doesn't cause layout problem)
+        scale &&
+        isContinuousToContinuous(scale.get('type')) &&
+        scale.get('zero') === false) {
+        return wrapPositionInvalidTest({
+            fieldDef: channelDef,
+            channel,
+            mark,
+            ref
+        });
+    }
+    return ref;
+}
+function wrapPositionInvalidTest({ fieldDef, channel, mark, ref }) {
+    if (!isPathMark(mark)) {
+        // Only do this for non-path mark (as path marks will already use "defined" to skip points)
+        return [fieldInvalidTestValueRef(fieldDef, channel), ref];
+    }
+    return ref;
+}
+export function fieldInvalidTestValueRef(fieldDef, channel) {
+    const test = fieldInvalidPredicate(fieldDef, true);
+    const mainChannel = getMainRangeChannel(channel);
+    const zeroValueRef = mainChannel === 'x' ? { value: 0 } : { field: { group: 'height' } };
+    return Object.assign({ test }, zeroValueRef);
+}
+export function fieldInvalidPredicate(field, invalid = true) {
+    field = isString(field) ? field : vgField(field, { expr: 'datum' });
+    const op = invalid ? '||' : '&&';
+    const eq = invalid ? '===' : '!==';
+    return `${field} ${eq} null ${op} ${invalid ? '' : '!'}isNaN(${field})`;
+}
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale
 // but that's complicated.  For now, this is a huge step moving forward.
 /**
  * @return Vega ValueRef for normal x- or y-position without projection
  */
-export function position(channel, channelDef, channel2Def, scaleName, scale, stack, defaultRef) {
+export function position(params) {
+    const { channel, channelDef, scaleName, stack, offset } = params;
     if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
         // x or y use stack_end so that stacked line's point mark use stack_end too.
-        return fieldRef(channelDef, scaleName, { suffix: 'end' });
+        return fieldRef(channelDef, scaleName, { suffix: 'end' }, { offset });
     }
-    return midPoint(channel, channelDef, channel2Def, scaleName, scale, stack, defaultRef);
+    return midPointWithPositionInvalidTest(params);
 }
 /**
  * @return Vega ValueRef for normal x2- or y2-position without projection
  */
-export function position2(channel, aFieldDef, a2fieldDef, scaleName, scale, stack, defaultRef) {
-    if (isFieldDef(aFieldDef) &&
+export function position2({ channel, channelDef, channel2Def, scaleName, scale, stack, mark, offset, defaultRef }) {
+    if (isFieldDef(channelDef) &&
         stack &&
         // If fieldChannel is X and channel is X2 (or Y and Y2)
         channel.charAt(0) === stack.fieldChannel.charAt(0)) {
-        return fieldRef(aFieldDef, scaleName, { suffix: 'start' });
+        return fieldRef(channelDef, scaleName, { suffix: 'start' }, { offset });
     }
-    return midPoint(channel, a2fieldDef, undefined, scaleName, scale, stack, defaultRef);
+    return midPointWithPositionInvalidTest({
+        channel,
+        channelDef: channel2Def,
+        scaleName,
+        scale,
+        stack,
+        mark,
+        offset,
+        defaultRef
+    });
 }
 export function getOffset(channel, markDef) {
-    const offsetChannel = channel + 'Offset';
+    const offsetChannel = (channel + 'Offset'); // Need to cast as the type can't be inferred automatically
     // TODO: in the future read from encoding channel too
     const markDefOffsetValue = markDef[offsetChannel];
     if (markDefOffsetValue) {
@@ -44,14 +96,21 @@ export function getOffset(channel, markDef) {
 /**
  * Value Ref for binned fields
  */
-export function bin(fieldDef, scaleName, side, offset) {
+export function bin({ channel, fieldDef, scaleName, mark, side, offset }) {
     const binSuffix = side === 'start' ? undefined : 'end';
-    return fieldRef(fieldDef, scaleName, { binSuffix }, offset ? { offset } : {});
+    const ref = fieldRef(fieldDef, scaleName, { binSuffix }, offset ? { offset } : {});
+    return wrapPositionInvalidTest({
+        fieldDef,
+        channel,
+        mark,
+        ref
+    });
 }
 export function fieldRef(fieldDef, scaleName, opt, mixins) {
     const ref = Object.assign({}, (scaleName ? { scale: scaleName } : {}), { field: vgField(fieldDef, opt) });
     if (mixins) {
-        return Object.assign({}, ref, mixins);
+        const { offset, band } = mixins;
+        return Object.assign({}, ref, (offset ? { offset } : {}), (band ? { band } : {}));
     }
     return ref;
 }
@@ -64,19 +123,17 @@ export function bandRef(scaleName, band = true) {
 /**
  * Signal that returns the middle of a bin from start and end field. Should only be used with x and y.
  */
-function binMidSignal(scaleName, fieldDef, fieldDef2) {
+function binMidSignal({ scaleName, fieldDef, fieldDef2, offset }) {
     const start = vgField(fieldDef, { expr: 'datum' });
     const end = fieldDef2 !== undefined
         ? vgField(fieldDef2, { expr: 'datum' })
         : vgField(fieldDef, { binSuffix: 'end', expr: 'datum' });
-    return {
-        signal: `scale("${scaleName}", (${start} + ${end}) / 2)`
-    };
+    return Object.assign({ signal: `scale("${scaleName}", (${start} + ${end}) / 2)` }, (offset ? { offset } : {}));
 }
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export function midPoint(channel, channelDef, channel2Def, scaleName, scale, stack, defaultRef) {
+export function midPoint({ channel, channelDef, channel2Def, scaleName, scale, stack, offset, defaultRef }) {
     // TODO: datum support
     if (channelDef) {
         /* istanbul ignore else */
@@ -88,16 +145,18 @@ export function midPoint(channel, channelDef, channel2Def, scaleName, scale, sta
                     if (contains([X, Y], channel) && channelDef.type === QUANTITATIVE) {
                         if (stack && stack.impute) {
                             // For stack, we computed bin_mid so we can impute.
-                            return fieldRef(channelDef, scaleName, { binSuffix: 'mid' });
+                            return fieldRef(channelDef, scaleName, { binSuffix: 'mid' }, { offset });
                         }
                         // For non-stack, we can just calculate bin mid on the fly using signal.
-                        return binMidSignal(scaleName, channelDef);
+                        return binMidSignal({ scaleName, fieldDef: channelDef, offset });
                     }
-                    return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? { binSuffix: 'range' } : {});
+                    return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? { binSuffix: 'range' } : {}, {
+                        offset
+                    });
                 }
                 else if (isBinned(channelDef.bin)) {
                     if (isFieldDef(channel2Def)) {
-                        return binMidSignal(scaleName, channelDef, channel2Def);
+                        return binMidSignal({ scaleName, fieldDef: channelDef, fieldDef2: channel2Def, offset });
                     }
                     else {
                         const channel2 = channel === X ? X2 : Y2;
@@ -110,22 +169,23 @@ export function midPoint(channel, channelDef, channel2Def, scaleName, scale, sta
                 if (hasDiscreteDomain(scaleType)) {
                     if (scaleType === 'band') {
                         // For band, to get mid point, need to offset by half of the band
-                        return fieldRef(channelDef, scaleName, { binSuffix: 'range' }, { band: 0.5 });
+                        return fieldRef(channelDef, scaleName, { binSuffix: 'range' }, { band: 0.5, offset });
                     }
-                    return fieldRef(channelDef, scaleName, { binSuffix: 'range' });
+                    return fieldRef(channelDef, scaleName, { binSuffix: 'range' }, { offset });
                 }
             }
-            return fieldRef(channelDef, scaleName, {}); // no need for bin suffix
+            return fieldRef(channelDef, scaleName, {}, { offset }); // no need for bin suffix
         }
         else if (isValueDef(channelDef)) {
             const value = channelDef.value;
+            const offsetMixins = offset ? { offset } : {};
             if (contains(['x', 'x2'], channel) && value === 'width') {
-                return { field: { group: 'width' } };
+                return Object.assign({ field: { group: 'width' } }, offsetMixins);
             }
             else if (contains(['y', 'y2'], channel) && value === 'height') {
-                return { field: { group: 'height' } };
+                return Object.assign({ field: { group: 'height' } }, offsetMixins);
             }
-            return { value };
+            return Object.assign({ value }, offsetMixins);
         }
         // If channelDef is neither field def or value def, it's a condition-only def.
         // In such case, we will use default ref.
@@ -172,21 +232,13 @@ export function text(channelDef, config) {
 export function mid(sizeRef) {
     return Object.assign({}, sizeRef, { mult: 0.5 });
 }
-/**
- * Whether the scale definitely includes zero in the domain
- */
-function domainDefinitelyIncludeZero(scale) {
-    if (scale.get('zero') !== false) {
-        return true;
-    }
-    const domains = scale.domains;
-    if (isArray(domains)) {
-        return some(domains, d => isArray(d) && d.length === 2 && d[0] <= 0 && d[1] >= 0);
-    }
-    return false;
-}
-export function getDefaultRef(defaultRef, channel, scaleName, scale, mark) {
+export function positionDefault({ markDef, config, defaultRef, channel, scaleName, scale, mark, checkBarAreaWithoutZero: checkBarAreaWithZero }) {
     return () => {
+        const mainChannel = getMainRangeChannel(channel);
+        const definedValueOrConfig = getFirstDefined(markDef[channel], getMarkConfig(channel, markDef, config));
+        if (definedValueOrConfig !== undefined) {
+            return { value: definedValueOrConfig };
+        }
         if (isString(defaultRef)) {
             if (scaleName) {
                 const scaleType = scale.get('type');
@@ -195,28 +247,28 @@ export function getDefaultRef(defaultRef, channel, scaleName, scale, mark) {
                     // Zero in time scale is arbitrary, and does not affect ratio.
                     // (Time is an interval level of measurement, not ratio).
                     // See https://en.wikipedia.org/wiki/Level_of_measurement for more info.
-                    if (mark === 'bar' || mark === 'area') {
-                        log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, channel, { scaleType }));
+                    if (checkBarAreaWithZero && (mark === 'bar' || mark === 'area')) {
+                        log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, mainChannel, { scaleType }));
                     }
                 }
                 else {
-                    if (domainDefinitelyIncludeZero(scale)) {
+                    if (scale.domainDefinitelyIncludesZero) {
                         return {
                             scale: scaleName,
                             value: 0
                         };
                     }
-                    if (mark === 'bar' || mark === 'area') {
-                        log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, channel, { zeroFalse: scale.explicit.zero === false }));
+                    if (checkBarAreaWithZero && (mark === 'bar' || mark === 'area')) {
+                        log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, mainChannel, { zeroFalse: scale.explicit.zero === false }));
                     }
                 }
             }
             if (defaultRef === 'zeroOrMin') {
-                return channel === 'x' ? { value: 0 } : { field: { group: 'height' } };
+                return mainChannel === 'x' ? { value: 0 } : { field: { group: 'height' } };
             }
             else {
                 // zeroOrMax
-                return channel === 'x' ? { field: { group: 'width' } } : { value: 0 };
+                return mainChannel === 'x' ? { field: { group: 'width' } } : { value: 0 };
             }
         }
         return defaultRef;

@@ -8,14 +8,15 @@ describe('autoMaxBins', () => {
 });
 describe('binToString', () => {
     it('should generate the corrrect key for boolean', () => {
-        expect(binToString(true)).toEqual('bin');
-        expect(binToString(false)).toEqual('bin');
+        expect(binToString(true)).toEqual('bin_maxbins_10');
     });
 });
 describe('isBinParams', () => {
     it('should detect whether the input is BinParams or not', () => {
         expect(isBinParams(true)).toEqual(false);
+        expect(isBinParams('binned')).toEqual(false);
         expect(isBinParams({})).toEqual(true);
+        expect(isBinParams({ binned: true })).toEqual(true);
         expect(isBinParams({ extent: [0, 1] })).toEqual(true);
     });
 });

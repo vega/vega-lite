@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
-import { isNumber, isString } from 'vega-util';
-import { isChannel, isScaleChannel } from '../channel';
+import { isString } from 'vega-util';
+import { FACET_CHANNELS, isChannel, isScaleChannel } from '../channel';
 import { forEach, reduce } from '../encoding';
 import { getFieldDef, vgField } from '../fielddef';
 import * as log from '../log';
@@ -12,7 +12,8 @@ import { normalizeTransform } from '../transform';
 import { contains, duplicate, keys, varName } from '../util';
 import { isVgRangeStep } from '../vega.schema';
 import { assembleAxes } from './axis/assemble';
-import { getHeaderGroups, getTitleGroup, HEADER_CHANNELS } from './header/index';
+import { assembleHeaderGroups, assembleLayoutTitleBand, assembleTitleGroup } from './header/assemble';
+import { HEADER_CHANNELS } from './header/component';
 import { sizeExpr } from './layoutsize/assemble';
 import { assembleLegends } from './legend/assemble';
 import { parseLegend } from './legend/parse';
@@ -20,7 +21,7 @@ import { assembleProjections } from './projection/assemble';
 import { parseProjection } from './projection/parse';
 import { assembleScales } from './scale/assemble';
 import { assembleDomain, getFieldFromDomain } from './scale/domain';
-import { parseScale } from './scale/parse';
+import { parseScales } from './scale/parse';
 import { Split } from './split';
 export class NameMap {
     constructor() {
@@ -66,7 +67,8 @@ export function isLayerModel(model) {
     return model && model.type === 'layer';
 }
 export class Model {
-    constructor(spec, parent, parentGivenName, config, repeater, resolve, view) {
+    constructor(spec, type, parent, parentGivenName, config, repeater, resolve, view) {
+        this.type = type;
         this.parent = parent;
         this.config = config;
         this.repeater = repeater;
@@ -100,8 +102,7 @@ export class Model {
         this.data = spec.data;
         this.description = spec.description;
         this.transforms = normalizeTransform(spec.transform || []);
-        this.layout =
-            isUnitSpec(spec) || isLayerSpec(spec) ? undefined : extractCompositionLayout(spec);
+        this.layout = isUnitSpec(spec) || isLayerSpec(spec) ? {} : extractCompositionLayout(spec, type, config);
         this.component = {
             data: {
                 sources: parent ? parent.component.data.sources : [],
@@ -111,7 +112,7 @@ export class Model {
                 isFaceted: isFacetSpec(spec) || (parent && parent.component.data.isFaceted && !spec.data)
             },
             layoutSize: new Split(),
-            layoutHeaders: { row: {}, column: {} },
+            layoutHeaders: { row: {}, column: {}, facet: {} },
             mark: null,
             resolve: Object.assign({ scale: {}, axis: {}, legend: {} }, (resolve ? duplicate(resolve) : {})),
             selection: null,
@@ -140,15 +141,15 @@ export class Model {
         this.parseScale();
         this.parseLayoutSize(); // depends on scale
         this.renameTopLevelLayoutSizeSignal();
-        this.parseSelection();
+        this.parseSelections();
         this.parseProjection();
         this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections; depends on projection because some transforms require the finalized projection name.
-        this.parseAxisAndHeader(); // depends on scale and layout size
-        this.parseLegend(); // depends on scale, markDef
+        this.parseAxesAndHeaders(); // depends on scale and layout size
+        this.parseLegends(); // depends on scale, markDef
         this.parseMarkGroup(); // depends on data name, scale, layout size, axisGroup, and children's scale, axis, legend and mark.
     }
     parseScale() {
-        parseScale(this);
+        parseScales(this);
     }
     parseProjection() {
         parseProjection(this);
@@ -166,7 +167,7 @@ export class Model {
             this.renameSignal(this.getName('height'), 'height');
         }
     }
-    parseLegend() {
+    parseLegends() {
         parseLegend(this);
     }
     assembleGroupStyle() {
@@ -207,13 +208,9 @@ export class Model {
         if (!this.layout) {
             return undefined;
         }
-        const { align, bounds, center, spacing = {} } = this.layout;
-        return Object.assign({ padding: isNumber(spacing)
-                ? spacing
-                : {
-                    row: spacing.row || 10,
-                    column: spacing.column || 10
-                } }, this.assembleDefaultLayout(), (align ? { align } : {}), (bounds ? { bounds } : {}), (center ? { center } : {}));
+        const _a = this.layout, { spacing } = _a, layout = tslib_1.__rest(_a, ["spacing"]);
+        const titleBand = assembleLayoutTitleBand(this.component.layoutHeaders);
+        return Object.assign({ padding: spacing }, this.assembleDefaultLayout(), layout, (titleBand ? { titleBand } : {}));
     }
     assembleDefaultLayout() {
         return {};
@@ -221,13 +218,13 @@ export class Model {
     assembleHeaderMarks() {
         const { layoutHeaders } = this.component;
         let headerMarks = [];
-        for (const channel of HEADER_CHANNELS) {
+        for (const channel of FACET_CHANNELS) {
             if (layoutHeaders[channel].title) {
-                headerMarks.push(getTitleGroup(this, channel));
+                headerMarks.push(assembleTitleGroup(this, channel));
             }
         }
         for (const channel of HEADER_CHANNELS) {
-            headerMarks = headerMarks.concat(getHeaderGroups(this, channel));
+            headerMarks = headerMarks.concat(assembleHeaderGroups(this, channel));
         }
         return headerMarks;
     }
@@ -264,7 +261,7 @@ export class Model {
      */
     assembleGroup(signals = []) {
         const group = {};
-        signals = signals.concat(this.assembleSelectionSignals());
+        signals = signals.concat(this.assembleSignals());
         if (signals.length > 0) {
             group.signals = signals;
         }

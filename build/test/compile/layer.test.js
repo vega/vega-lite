@@ -101,7 +101,7 @@ describe('Layer', () => {
             ]);
         });
         it('should create second axis on top', () => {
-            model.parseAxisAndHeader();
+            model.parseAxesAndHeaders();
             expect(model.component.axes['x']).toHaveLength(2);
             expect(model.component.axes['x'][1].implicit.orient).toEqual('top');
         });

@@ -11,7 +11,7 @@ import { AxisComponent } from './component';
 import { getAxisConfig } from './config';
 import * as encode from './encode';
 import * as properties from './properties';
-export function parseUnitAxis(model) {
+export function parseUnitAxes(model) {
     return POSITION_SCALE_CHANNELS.reduce((axis, channel) => {
         if (model.component.scales[channel] && model.axis(channel)) {
             axis[channel] = [parseAxis(channel, model)];
@@ -25,11 +25,11 @@ const OPPOSITE_ORIENT = {
     left: 'right',
     right: 'left'
 };
-export function parseLayerAxis(model) {
+export function parseLayerAxes(model) {
     const { axes, resolve } = model.component;
     const axisCount = { top: 0, bottom: 0, right: 0, left: 0 };
     for (const child of model.children) {
-        child.parseAxisAndHeader();
+        child.parseAxesAndHeaders();
         for (const channel of keys(child.component.axes)) {
             resolve.axis[channel] = parseGuideResolve(model.component.resolve, channel);
             if (resolve.axis[channel] === 'shared') {
@@ -217,6 +217,7 @@ function getProperty(property, specifiedAxis, channel, model) {
     // Also, we don't use `getFirstDefined` for labelAngle
     // as we want to normalize specified value to be within [0,360)
     const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldDef);
+    const orient = getFirstDefined(specifiedAxis.orient, properties.orient(channel));
     switch (property) {
         case 'scale':
             return model.scaleName(channel);
@@ -235,11 +236,11 @@ function getProperty(property, specifiedAxis, channel, model) {
             }
         }
         case 'labelAlign':
-            return getFirstDefined(specifiedAxis.labelAlign, properties.defaultLabelAlign(labelAngle, properties.orient(channel)));
+            return getFirstDefined(specifiedAxis.labelAlign, properties.defaultLabelAlign(labelAngle, orient));
         case 'labelAngle':
             return labelAngle;
         case 'labelBaseline':
-            return getFirstDefined(specifiedAxis.labelBaseline, properties.defaultLabelBaseline(labelAngle, properties.orient(channel)));
+            return getFirstDefined(specifiedAxis.labelBaseline, properties.defaultLabelBaseline(labelAngle, orient));
         case 'labelFlush':
             return getFirstDefined(specifiedAxis.labelFlush, properties.defaultLabelFlush(fieldDef, channel));
         case 'labelOverlap': {
@@ -247,7 +248,7 @@ function getProperty(property, specifiedAxis, channel, model) {
             return getFirstDefined(specifiedAxis.labelOverlap, properties.defaultLabelOverlap(fieldDef, scaleType));
         }
         case 'orient':
-            return getFirstDefined(specifiedAxis.orient, properties.orient(channel));
+            return orient;
         case 'tickCount': {
             const scaleType = model.getScaleComponent(channel).get('type');
             const scaleName = model.scaleName(channel);

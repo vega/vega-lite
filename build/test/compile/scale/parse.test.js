@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 import { toSet } from 'vega-util';
-import { parseScale, parseScaleCore } from '../../../src/compile/scale/parse';
+import { parseScaleCore, parseScales } from '../../../src/compile/scale/parse';
 import { SELECTION_DOMAIN } from '../../../src/compile/selection/selection';
 import * as log from '../../../src/log';
 import { NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES } from '../../../src/scale';
@@ -211,7 +211,7 @@ describe('src/compile', () => {
                     }
                 ]
             });
-            parseScale(model);
+            parseScales(model);
             expect(model.getScaleComponent('y').explicit.range).toEqual({ step: 17 });
             expect(logger.warns).toHaveLength(0);
         }));
@@ -284,7 +284,7 @@ describe('src/compile', () => {
                 }
             });
             const scale = model.getScaleComponent('color');
-            it('should create sequential color scale', () => {
+            it('should create linear color scale', () => {
                 expect(scale.implicit.name).toEqual('color');
                 expect(scale.implicit.type).toEqual('ordinal');
                 expect(scale.domains).toEqual([
@@ -306,7 +306,7 @@ describe('src/compile', () => {
             const scale = model.getScaleComponent('color');
             it('should create linear color scale', () => {
                 expect(scale.implicit.name).toEqual('color');
-                expect(scale.implicit.type).toEqual('sequential');
+                expect(scale.implicit.type).toEqual('linear');
                 expect(scale.implicit.range).toEqual('ramp');
                 expect(scale.domains).toEqual([
                     {
@@ -327,6 +327,7 @@ describe('src/compile', () => {
             it('should add correct scales', () => {
                 expect(scale.implicit.name).toEqual('color');
                 expect(scale.implicit.type).toEqual('bin-ordinal');
+                expect(scale.implicit.bins).toEqual({ signal: 'bin_maxbins_6_origin_bins' });
             });
         });
         describe('ordinal color with bin', () => {
@@ -340,6 +341,7 @@ describe('src/compile', () => {
             it('should add correct scales', () => {
                 expect(scale.implicit.name).toEqual('color');
                 expect(scale.implicit.type).toEqual('ordinal');
+                expect(scale.implicit.bins).toBeUndefined();
             });
         });
         describe('opacity with bin', () => {
@@ -352,7 +354,8 @@ describe('src/compile', () => {
             const scale = model.getScaleComponent('opacity');
             it('should add correct scales', () => {
                 expect(scale.implicit.name).toEqual('opacity');
-                expect(scale.implicit.type).toEqual('bin-linear');
+                expect(scale.implicit.type).toEqual('linear');
+                expect(scale.implicit.bins).toEqual({ signal: 'bin_maxbins_6_origin_bins' });
             });
         });
         describe('size with bin', () => {
@@ -365,7 +368,8 @@ describe('src/compile', () => {
             const scale = model.getScaleComponent('size');
             it('should add correct scales', () => {
                 expect(scale.implicit.name).toEqual('size');
-                expect(scale.implicit.type).toEqual('bin-linear');
+                expect(scale.implicit.type).toEqual('linear');
+                expect(scale.implicit.bins).toEqual({ signal: 'bin_maxbins_6_origin_bins' });
             });
         });
         describe('color with time unit', () => {

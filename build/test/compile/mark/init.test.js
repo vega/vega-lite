@@ -274,7 +274,7 @@ describe('compile/mark/init', () => {
                         bin: 'binned',
                         type: 'quantitative',
                         axis: {
-                            tickStep: 2
+                            tickMinStep: 2
                         }
                     },
                     x2: {
@@ -298,7 +298,7 @@ describe('compile/mark/init', () => {
                         bin: 'binned',
                         type: 'quantitative',
                         axis: {
-                            tickStep: 2
+                            tickMinStep: 2
                         }
                     },
                     y2: {
@@ -322,7 +322,7 @@ describe('compile/mark/init', () => {
                         bin: 'binned',
                         type: 'quantitative',
                         axis: {
-                            tickStep: 2
+                            tickMinStep: 2
                         }
                     },
                     x2: {
@@ -346,7 +346,7 @@ describe('compile/mark/init', () => {
                         bin: 'binned',
                         type: 'quantitative',
                         axis: {
-                            tickStep: 2
+                            tickMinStep: 2
                         }
                     },
                     y2: {

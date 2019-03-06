@@ -1,6 +1,6 @@
 import { keys } from './util';
 export const HEADER_TITLE_PROPERTIES_MAP = {
-    titleAnchor: 'anchor',
+    titleAnchor: undefined,
     titleAngle: 'angle',
     titleBaseline: 'baseline',
     titleColor: 'color',

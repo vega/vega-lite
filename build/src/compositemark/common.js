@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { isBoolean, isString } from 'vega-util';
-import { fieldDefs, reduce } from '../encoding';
+import { fieldDefs } from '../encoding';
 import { isContinuous, isFieldDef } from '../fielddef';
 import * as log from '../log';
 import { isMarkDef } from '../mark';
@@ -110,16 +110,5 @@ export function compositeMarkOrient(spec, compositeMark) {
         // Neither x nor y is continuous.
         throw new Error('Need a valid continuous axis for ' + compositeMark + 's');
     }
-}
-export function filterUnsupportedChannels(spec, supportedChannels, compositeMark) {
-    return Object.assign({}, spec, { encoding: reduce(spec.encoding, (newEncoding, fieldDef, channel) => {
-            if (supportedChannels.indexOf(channel) > -1) {
-                newEncoding[channel] = fieldDef;
-            }
-            else {
-                log.warn(log.message.incompatibleChannel(channel, compositeMark));
-            }
-            return newEncoding;
-        }, {}) });
 }
 //# sourceMappingURL=common.js.map

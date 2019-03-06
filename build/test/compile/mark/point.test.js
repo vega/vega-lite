@@ -2,6 +2,7 @@
 import { COLOR, SHAPE, SIZE, X, Y } from '../../../src/channel';
 import { circle, point, square } from '../../../src/compile/mark/point';
 import { defaultMarkConfig } from '../../../src/mark';
+import { internalField } from '../../../src/util';
 import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
 describe('Mark: Point', () => {
     function pointXY(moreEncoding = {}, moreConfig = {}) {
@@ -114,7 +115,7 @@ describe('Mark: Point', () => {
         }));
         const props = point.encodeEntry(model);
         it('should have scale for size', () => {
-            expect(props.size).toEqual({ scale: SIZE, field: 'count_*' });
+            expect(props.size).toEqual({ scale: SIZE, field: internalField('count') });
         });
     });
     describe('with x, y, color', () => {
@@ -130,7 +131,7 @@ describe('Mark: Point', () => {
         const model = parseUnitModelWithScaleAndLayoutSize(Object.assign({}, pointXY({
             color: { condition: { selection: 'test', field: 'yield', type: 'quantitative' } }
         }), { selection: { test: { type: 'single' } } }));
-        model.parseSelection();
+        model.parseSelections();
         const props = point.encodeEntry(model);
         it('should have one condition for color with scale for "yield"', () => {
             expect(Array.isArray(props.stroke)).toBe(true);
@@ -143,7 +144,7 @@ describe('Mark: Point', () => {
         const model = parseUnitModelWithScaleAndLayoutSize(Object.assign({}, pointXY({
             color: { condition: { test: 'true', field: 'yield', type: 'quantitative' } }
         })));
-        model.parseSelection();
+        model.parseSelections();
         const props = point.encodeEntry(model);
         it('should have one condition for color with scale for "yield"', () => {
             expect(Array.isArray(props.stroke)).toBe(true);

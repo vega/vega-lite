@@ -24,12 +24,6 @@ export function isDataRefDomain(domain) {
     }
     return false;
 }
-export function isSignalRefDomain(domain) {
-    if (!isArray(domain)) {
-        return 'signal' in domain;
-    }
-    return false;
-}
 const VG_MARK_CONFIG_INDEX = {
     opacity: 1,
     fill: 1,
@@ -65,9 +59,13 @@ const VG_MARK_CONFIG_INDEX = {
     cursor: 1,
     href: 1,
     tooltip: 1,
-    cornerRadius: 1
+    cornerRadius: 1,
+    x: 1,
+    y: 1,
+    x2: 1,
+    y2: 1
     // commented below are vg channel that do not have mark config.
-    // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
+    // xc'|'width'|'yc'|'height'
     // clip: 1,
     // endAngle: 1,
     // innerRadius: 1,

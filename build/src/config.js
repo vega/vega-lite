@@ -6,6 +6,7 @@ import * as mark from './mark';
 import { PRIMITIVE_MARKS, VL_ONLY_MARK_CONFIG_PROPERTIES, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX } from './mark';
 import { defaultScaleConfig } from './scale';
 import { defaultConfig as defaultSelectionConfig } from './selection';
+import { DEFAULT_SPACING } from './spec/base';
 import { extractTitleConfig } from './title';
 import { duplicate, keys, mergeDeep } from './util';
 export const defaultViewConfig = {
@@ -58,7 +59,7 @@ export const defaultConfig = {
     projection: {},
     axis: {},
     axisX: {},
-    axisY: { minExtent: 30 },
+    axisY: {},
     axisLeft: {},
     axisRight: {},
     axisTop: {},
@@ -67,7 +68,10 @@ export const defaultConfig = {
     legend: defaultLegendConfig,
     selection: defaultSelectionConfig,
     style: {},
-    title: {}
+    title: {},
+    facet: { spacing: DEFAULT_SPACING },
+    repeat: { spacing: DEFAULT_SPACING },
+    concat: { spacing: DEFAULT_SPACING }
 };
 export function initConfig(config) {
     return mergeDeep(duplicate(defaultConfig), config);
@@ -75,6 +79,9 @@ export function initConfig(config) {
 const MARK_STYLES = ['view', ...PRIMITIVE_MARKS];
 const VL_ONLY_CONFIG_PROPERTIES = [
     'padding',
+    'facet',
+    'concat',
+    'repeat',
     'numberFormat',
     'timeFormat',
     'countTitle',

@@ -20,6 +20,16 @@ describe('Single Selection', () => {
             on: 'mouseover',
             encodings: ['y', 'color'],
             resolve: 'intersect'
+        },
+        'thr-ee': {
+            type: 'single',
+            fields: ['Horsepower'],
+            init: { Horsepower: 50 }
+        },
+        four: {
+            type: 'single',
+            encodings: ['x', 'color'],
+            init: { x: 50, Origin: 'Japan' }
         }
     }));
     it('builds tuple signals', () => {
@@ -27,7 +37,6 @@ describe('Single Selection', () => {
         expect(oneSg).toEqual([
             {
                 name: 'one_tuple',
-                value: {},
                 on: [
                     {
                         events: selCmpts['one'].events,
@@ -41,7 +50,6 @@ describe('Single Selection', () => {
         expect(twoSg).toEqual([
             {
                 name: 'two_tuple',
-                value: {},
                 on: [
                     {
                         events: selCmpts['two'].events,
@@ -51,8 +59,42 @@ describe('Single Selection', () => {
                 ]
             }
         ]);
+        const threeSg = single.signals(model, selCmpts['thr_ee']);
+        expect(threeSg).toEqual([
+            {
+                name: 'thr_ee_tuple',
+                on: [
+                    {
+                        events: [{ source: 'scope', type: 'click' }],
+                        update: 'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: thr_ee_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"]]} : null',
+                        force: true
+                    }
+                ]
+            },
+            {
+                name: 'thr_ee_init',
+                init: 'modify("thr_ee_store", [{unit: "", fields: thr_ee_tuple_fields, values: [50]}])'
+            }
+        ]);
+        const fourSg = single.signals(model, selCmpts['four']);
+        expect(fourSg).toEqual([
+            {
+                name: 'four_tuple',
+                on: [
+                    {
+                        events: [{ source: 'scope', type: 'click' }],
+                        update: 'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: four_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+                        force: true
+                    }
+                ]
+            },
+            {
+                name: 'four_init',
+                init: 'modify("four_store", [{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}])'
+            }
+        ]);
         const signals = selection.assembleUnitSelectionSignals(model, []);
-        expect(signals).toEqual(expect.arrayContaining(oneSg.concat(twoSg)));
+        expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg]));
     });
     it('builds modify signals', () => {
         const oneExpr = single.modifyExpr(model, selCmpts['one']);
@@ -63,21 +105,11 @@ describe('Single Selection', () => {
         expect(signals).toEqual(expect.arrayContaining([
             {
                 name: 'one_modify',
-                on: [
-                    {
-                        events: { signal: 'one_tuple' },
-                        update: `modify(\"one_store\", ${oneExpr})`
-                    }
-                ]
+                update: `modify(\"one_store\", ${oneExpr})`
             },
             {
                 name: 'two_modify',
-                on: [
-                    {
-                        events: { signal: 'two_tuple' },
-                        update: `modify(\"two_store\", ${twoExpr})`
-                    }
-                ]
+                update: `modify(\"two_store\", ${twoExpr})`
             }
         ]));
     });
@@ -101,7 +133,12 @@ describe('Single Selection', () => {
     });
     it('builds unit datasets', () => {
         const data = [];
-        expect(selection.assembleUnitSelectionData(model, data)).toEqual([{ name: 'one_store' }, { name: 'two_store' }]);
+        expect(selection.assembleUnitSelectionData(model, data)).toEqual([
+            { name: 'one_store' },
+            { name: 'two_store' },
+            { name: 'thr_ee_store' },
+            { name: 'four_store' }
+        ]);
     });
     it('leaves marks alone', () => {
         const marks = [];

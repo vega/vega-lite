@@ -147,7 +147,7 @@ describe('Repeat', () => {
             model.parseScale();
             const colorScale = model.component.scales['color'];
             expect(colorScale.domains).toHaveLength(4);
-            model.parseLegend();
+            model.parseLegends();
             expect(keys(model.component.legends)).toHaveLength(1);
         });
     });

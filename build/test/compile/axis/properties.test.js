@@ -65,17 +65,6 @@ describe('compile/axis', () => {
             });
             expect(tickCount).toBeUndefined();
         });
-        it('should return prebin step signal for axis with tickStep', () => {
-            const tickCount = properties.defaultTickCount({
-                fieldDef: { field: 'a', type: 'quantitative' },
-                scaleType: 'linear',
-                scaleName: 'x',
-                specifiedAxis: {
-                    tickStep: 3
-                }
-            });
-            expect(tickCount).toEqual({ signal: "(domain('x')[1] - domain('x')[0]) / 3 + 1" });
-        });
     });
     describe('values', () => {
         it('should return correct timestamp values for DateTimes', () => {
@@ -104,20 +93,6 @@ describe('compile/axis', () => {
             });
             const values = properties.values({}, model1, model1.fieldDef('y'), 'y');
             expect(values).toBeUndefined();
-        });
-        it('should return value signal for axis with tickStep', () => {
-            const model = parseUnitModelWithScale({
-                mark: 'bar',
-                encoding: {
-                    x: {
-                        type: 'quantitative',
-                        field: 'US_Gross'
-                    }
-                },
-                data: { url: 'data/movies.json' }
-            });
-            const values = properties.values({ tickStep: 3 }, model, { type: 'quantitative' }, 'x');
-            expect(values).toEqual({ signal: "sequence(domain('x')[0], domain('x')[1] + 3, 3)" });
         });
     });
     describe('labelAngle', () => {
