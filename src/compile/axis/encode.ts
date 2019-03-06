@@ -1,8 +1,9 @@
 import {AxisOrient} from 'vega';
 import {PositionScaleChannel} from '../../channel';
+import {isTimeFormatFieldDef} from '../../fielddef';
 import {ScaleType} from '../../scale';
 import {keys} from '../../util';
-import {isTimeFormat, timeFormatExpression} from '../common';
+import {timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any, orient: AxisOrient) {
@@ -14,8 +15,8 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
 
   let labelsSpec: any = {};
 
-  // Text
-  if (isTimeFormat(fieldDef)) {
+  // We use a label encoding instead of setting the `format` property because Vega does not let us determine how the format should be interpreted.
+  if (isTimeFormatFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
 
     const expr = timeFormatExpression(
