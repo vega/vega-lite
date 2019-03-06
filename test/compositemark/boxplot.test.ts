@@ -915,4 +915,35 @@ describe('normalizeBoxIQR', () => {
       }
     });
   });
+
+  it('should include necessary transform for the groupby fields of joinaggregate in filtered layers', () => {
+    const normalizedSpec = normalize(
+      {
+        $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+        data: {
+          url: 'data/cars.json'
+        },
+        transform: [
+          {
+            filter: 'year(datum.Year) >= 1977'
+          }
+        ],
+        mark: 'boxplot',
+        encoding: {
+          y: {
+            field: 'Miles_per_Gallon',
+            type: 'quantitative'
+          },
+          x: {
+            field: 'Year',
+            type: 'temporal',
+            timeUnit: 'year'
+          }
+        }
+      },
+      defaultConfig
+    );
+
+    expect(normalizedSpec['layer'][0].transform[0]).toEqual({timeUnit: 'year', field: 'Year', as: 'year_Year'});
+  });
 });

@@ -1,5 +1,5 @@
 import {Orientation} from 'vega';
-import {isNumber, isObject} from 'vega-util';
+import {array, isNumber, isObject} from 'vega-util';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
 import {PositionFieldDef} from '../fielddef';
@@ -106,7 +106,8 @@ export function normalizeBoxPlot(
     continuousAxis,
     groupby,
     encodingWithoutContinuousAxis,
-    ticksOrient
+    ticksOrient,
+    preJoinAggregate
   } = boxParams(spec, extent, config);
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
@@ -289,11 +290,13 @@ export function normalizeBoxPlot(
   }
 
   if (filteredLayersMixins) {
+    filteredLayersMixins.transform.unshift(...preJoinAggregate);
+
     // tukey box plot with outliers included
     return {
       ...outerSpec,
       layer: [
-        ...(filteredLayersMixins ? [filteredLayersMixins] : []),
+        ...[filteredLayersMixins],
         {
           // boxplot
           transform,
@@ -335,6 +338,7 @@ function boxParams(
   continuousAxis: 'x' | 'y';
   encodingWithoutContinuousAxis: Encoding<string>;
   ticksOrient: Orientation;
+  preJoinAggregate: Transform[];
 } {
   const orient = compositeMarkOrient(spec, BOXPLOT);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, BOXPLOT);
@@ -389,6 +393,14 @@ function boxParams(
 
   const ticksOrient: Orientation = orient === 'vertical' ? 'horizontal' : 'vertical';
 
+  const preJoinAggregate: Transform[] = [];
+  for (const transform of [...bins, ...timeUnits, ...postAggregateCalculates]) {
+    const transformOutputs: string[] = array(transform.as);
+    if (transformOutputs.some(transformOutput => groupby.includes(transformOutput))) {
+      preJoinAggregate.push(transform);
+    }
+  }
+
   return {
     transform: [
       ...bins,
@@ -403,6 +415,7 @@ function boxParams(
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis,
-    ticksOrient
+    ticksOrient,
+    preJoinAggregate
   };
 }
