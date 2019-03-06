@@ -246,8 +246,5 @@
       "zindex": 0
     }
   ],
-  "config": {
-    "axisY": {"minExtent": 30},
-    "style": {"text": {"align": "left", "dx": 3, "dy": 1}}
-  }
+  "config": {"style": {"text": {"align": "left", "dx": 3, "dy": 1}}}
 }

@@ -135,6 +135,5 @@
       },
       "shape": "shape"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

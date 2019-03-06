@@ -404,6 +404,5 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "location"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

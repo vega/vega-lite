@@ -109,6 +109,5 @@
       "zindex": 0
     },
     {"scale": "y", "orient": "left", "grid": false, "title": "a", "zindex": 1}
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

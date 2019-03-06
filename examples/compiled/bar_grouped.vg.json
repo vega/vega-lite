@@ -179,7 +179,6 @@
   ],
   "config": {
     "axis": {"domainWidth": 1},
-    "axisY": {"minExtent": 30},
     "style": {"cell": {"stroke": "transparent"}}
   }
 }
