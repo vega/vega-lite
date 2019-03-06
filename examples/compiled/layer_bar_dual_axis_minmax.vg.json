@@ -166,6 +166,5 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

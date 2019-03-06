@@ -251,5 +251,5 @@
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
   ],
-  "config": {"axisY": {"minExtent": 30}, "style": {"cell": {"fill": "yellow"}}}
+  "config": {"style": {"cell": {"fill": "yellow"}}}
 }

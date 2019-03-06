@@ -54,8 +54,5 @@
       }
     }
   ],
-  "config": {
-    "axisY": {"minExtent": 30},
-    "style": {"cell": {"stroke": "transparent"}}
-  }
+  "config": {"style": {"cell": {"stroke": "transparent"}}}
 }

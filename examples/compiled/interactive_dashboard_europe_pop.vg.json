@@ -1434,6 +1434,5 @@
       "zero": false,
       "nice": true
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

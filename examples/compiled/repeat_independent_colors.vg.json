@@ -279,6 +279,5 @@
       "range": "category",
       "interpolate": "hcl"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

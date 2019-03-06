@@ -250,6 +250,5 @@
       "interpolate": "hcl",
       "zero": false
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }
