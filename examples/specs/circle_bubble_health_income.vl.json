@@ -13,7 +13,8 @@
     "y": {
       "field": "health",
       "type": "quantitative",
-      "scale": {"zero": false}
+      "scale": {"zero": false},
+      "axis": {"minExtent": 30}
     },
     "x": {
       "field": "income",

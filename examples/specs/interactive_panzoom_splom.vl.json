@@ -14,7 +14,11 @@
     "mark": "point",
     "encoding": {
       "x": {"field": {"repeat": "column"}, "type": "quantitative"},
-      "y": {"field": {"repeat": "row"}, "type": "quantitative"},
+      "y": {
+        "field": {"repeat": "row"},
+        "type": "quantitative",
+        "axis": {"minExtent": 30}
+      },
       "color": {"field": "Origin", "type": "nominal"}
     }
   }
