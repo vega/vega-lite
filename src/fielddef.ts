@@ -395,7 +395,7 @@ export interface TextFieldDef<F extends Field> extends FieldDefWithoutScale<F, S
   format?: string;
 
   /**
-   * A type of formatting to be forced to.
+   * The type of the `format` property.
    */
   formatType?: 'number' | 'time';
 }
@@ -896,6 +896,20 @@ export function isNumberFieldDef(fieldDef: TypedFieldDef<any>) {
   return fieldDef.type === 'quantitative' || isBinning(fieldDef.bin);
 }
 
+/**
+ * Check if the field def uses a time format or does not use any format but is temporal (this does not cover field defs that are temporal but use a number format).
+ */
+export function isTimeFormatFieldDef(fieldDef: TypedFieldDef<string>): boolean {
+  const formatType =
+    (isPositionFieldDef(fieldDef) && fieldDef.axis && fieldDef.axis.formatType) ||
+    (isMarkPropFieldDef(fieldDef) && fieldDef.legend && fieldDef.legend.formatType) ||
+    (isTextFieldDef(fieldDef) && fieldDef.formatType);
+  return formatType === 'time' || (!formatType && isTimeFieldDef(fieldDef));
+}
+
+/**
+ * Check if field def has tye `temporal`. If you want to also cover field defs that use a time format, use `isTimeFormatFieldDef`.
+ */
 export function isTimeFieldDef(fieldDef: TypedFieldDef<any>) {
   return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
 }

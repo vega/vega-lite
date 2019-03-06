@@ -4,15 +4,12 @@ import {Config, StyleConfigIndex} from '../config';
 import {
   FieldDefBase,
   FieldRefOption,
-  isMarkPropFieldDef,
-  isPositionFieldDef,
   isScaleFieldDef,
-  isTimeFieldDef,
+  isTimeFormatFieldDef,
   OrderFieldDef,
   TypedFieldDef,
   vgField
 } from '../fielddef';
-import {isTextFieldDef} from '../fielddef';
 import {MarkConfig, MarkDef} from '../mark';
 import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
@@ -79,7 +76,7 @@ export function formatSignalRef(
   expr: 'datum' | 'parent' | 'datum.datum',
   config: Config
 ) {
-  if (isTimeFormat(fieldDef)) {
+  if (isTimeFormatFieldDef(fieldDef)) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
       signal: timeFormatExpression(
@@ -126,14 +123,6 @@ export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: s
     return config.numberFormat;
   }
   return undefined;
-}
-
-export function isTimeFormat(fieldDef: TypedFieldDef<string>): boolean {
-  const formatType =
-    (isPositionFieldDef(fieldDef) && fieldDef.axis && fieldDef.axis.formatType) ||
-    (isMarkPropFieldDef(fieldDef) && fieldDef.legend && fieldDef.legend.formatType) ||
-    (isTextFieldDef(fieldDef) && fieldDef.formatType);
-  return formatType === 'time' || (!formatType && isTimeFieldDef(fieldDef));
 }
 
 function formatExpr(field: string, format: string) {
