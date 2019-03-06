@@ -117,6 +117,9 @@
     "vega-util": "^1.9.0",
     "yargs": "^13.2.1"
   },
+  "peerDependencies": {
+    "vega": "^5.0.0"
+  },
   "jest": {
     "preset": "jest-puppeteer",
     "transform": {
