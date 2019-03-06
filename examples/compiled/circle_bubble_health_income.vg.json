@@ -206,6 +206,7 @@
       "orient": "left",
       "grid": false,
       "title": "health",
+      "minExtent": 30,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1

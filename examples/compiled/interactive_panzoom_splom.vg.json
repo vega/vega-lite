@@ -203,6 +203,7 @@
           "orient": "left",
           "grid": false,
           "title": "Horsepower",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -399,6 +400,7 @@
           "orient": "left",
           "grid": false,
           "title": "Horsepower",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -575,6 +577,7 @@
           "orient": "left",
           "grid": false,
           "title": "Horsepower",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -771,6 +774,7 @@
           "orient": "left",
           "grid": false,
           "title": "Acceleration",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -947,6 +951,7 @@
           "orient": "left",
           "grid": false,
           "title": "Acceleration",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -1143,6 +1148,7 @@
           "orient": "left",
           "grid": false,
           "title": "Acceleration",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -1319,6 +1325,7 @@
           "orient": "left",
           "grid": false,
           "title": "Miles_per_Gallon",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -1515,6 +1522,7 @@
           "orient": "left",
           "grid": false,
           "title": "Miles_per_Gallon",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -1711,6 +1719,7 @@
           "orient": "left",
           "grid": false,
           "title": "Miles_per_Gallon",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
