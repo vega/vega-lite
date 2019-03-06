@@ -17,6 +17,7 @@ import {isSortField} from '../../sort';
 import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
 import {keys} from '../../util';
 import {RowCol, VgComparator, VgMarkGroup} from '../../vega.schema';
+import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties';
 import {formatSignalRef} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
 import {isFacetModel, Model} from '../model';
@@ -78,32 +79,17 @@ export function assembleHeaderGroups(model: Model, channel: HeaderChannel): VgMa
   return groups;
 }
 
-// 0, (0,90), 90, (90, 180), 180, (180, 270), 270, (270, 0)
-
-export function labelAlign(angle: number) {
-  // to keep angle in [0, 360)
-  angle = ((angle % 360) + 360) % 360;
-  if ((angle + 90) % 180 === 0) {
-    // for 90 and 270
-    return {}; // default center
-  } else if (angle < 90 || 270 < angle) {
-    return {align: {value: 'right'}};
-  } else if (135 <= angle && angle < 225) {
-    return {align: {value: 'left'}};
-  }
-  return {};
+export function labelAlign(angle: number, channel: FacetChannel) {
+  const align = defaultLabelAlign(angle, channel === 'row' ? 'left' : 'top');
+  return align ? {align} : {};
 }
 
-export function labelBaseline(angle: number) {
-  // to keep angle in [0, 360)
-  angle = ((angle % 360) + 360) % 360;
-  if (45 <= angle && angle <= 135) {
-    return {baseline: 'top'};
-  }
-  return {baseline: 'middle'};
+export function labelBaseline(angle: number, channel: FacetChannel) {
+  const baseline = defaultLabelBaseline(angle, channel === 'row' ? 'left' : 'top');
+  return baseline ? {baseline} : {};
 }
 
-function getSort(facetFieldDef: FacetFieldDef<string>, channel: 'row' | 'column'): VgComparator {
+function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): VgComparator {
   const {sort} = facetFieldDef;
   if (isSortField(sort)) {
     return {
@@ -127,10 +113,6 @@ export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel
   const {header = {}} = facetFieldDef;
   const {format, labelAngle} = header;
 
-  const update = {
-    ...labelAlign(labelAngle)
-  };
-
   return {
     text: formatSignalRef(facetFieldDef, format, 'parent', config),
     offset: 10,
@@ -138,9 +120,9 @@ export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel
     style: 'guide-label',
     frame: 'group',
     ...(labelAngle !== undefined ? {angle: labelAngle} : {}),
-    ...labelBaseline(labelAngle),
-    ...getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP),
-    ...(keys(update).length > 0 ? {encode: {update}} : {})
+    ...labelBaseline(labelAngle, channel),
+    ...labelAlign(labelAngle, channel),
+    ...getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP)
   };
 }
 

@@ -27,16 +27,30 @@ describe('compile/header/index', () => {
   });
 
   describe('labelAlign', () => {
-    it('label aligns correctly according to angle', () => {
-      expect(labelAlign(23)).toEqual({align: {value: 'right'}});
-      expect(labelAlign(135)).toEqual({align: {value: 'left'}});
-      expect(labelAlign(50)).toEqual({align: {value: 'right'}});
+    it('label aligns correctly according to angle for row', () => {
+      expect(labelAlign(0, 'row')).toEqual({align: 'right'});
+      expect(labelAlign(10, 'row')).toEqual({align: 'right'});
+      expect(labelAlign(135, 'row')).toEqual({align: 'left'});
+      expect(labelAlign(90, 'row')).toEqual({align: 'center'});
+    });
+
+    it('label aligns correctly according to angle for column', () => {
+      expect(labelAlign(0, 'column')).toEqual({align: 'center'});
+      expect(labelAlign(10, 'column')).toEqual({align: 'right'});
+      expect(labelAlign(-10, 'column')).toEqual({align: 'left'});
     });
   });
 
-  describe('label baseline adjusted according to angle', () => {
-    expect(labelBaseline(10)).toEqual({baseline: 'middle'});
-    expect(labelBaseline(90)).toEqual({baseline: 'top'});
+  describe('labelBaseline', () => {
+    it('label baseline adjusted according to angle for row', () => {
+      expect(labelBaseline(0, 'row')).toEqual({baseline: 'middle'});
+      expect(labelBaseline(90, 'row')).toEqual({baseline: 'top'});
+    });
+
+    it('label baseline adjusted according to angle for column', () => {
+      expect(labelBaseline(0, 'column')).toEqual({baseline: 'bottom'});
+      expect(labelBaseline(60, 'column')).toEqual({baseline: 'middle'});
+    });
   });
 
   describe('getHeaderGroups', () => {

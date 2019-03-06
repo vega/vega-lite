@@ -93,7 +93,6 @@
         "offset": 10,
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle",
         "fontSize": 15
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
