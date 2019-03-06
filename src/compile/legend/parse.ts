@@ -124,7 +124,7 @@ function getProperty<K extends keyof VgLegend>(
   channel: NonPositionScaleChannel,
   model: UnitModel
 ): VgLegend[K] {
-  const {encoding} = model;
+  const {encoding, mark} = model;
   const fieldDef = getTypedFieldDef(encoding[channel]);
   const legendConfig = model.config.legend;
   const {timeUnit} = fieldDef;
@@ -163,6 +163,9 @@ function getProperty<K extends keyof VgLegend>(
           scaleType
         })
       );
+
+    case 'symbolType':
+      return getFirstDefined(legend.symbolType, properties.defaultSymbolType(mark));
 
     case 'values':
       return properties.values(legend, fieldDef);
