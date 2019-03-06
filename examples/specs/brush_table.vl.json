@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-  "description": "Drag out a rectangular brush to highlight points.",
+  "description": "Drag a rectangular brush to show (first 20) selected points in a table.",
   "data": {"url": "data/cars.json"},
   "transform": [{
     "window": [{"op": "row_number", "as": "row_number"}]
@@ -21,9 +21,11 @@
       }
     }
   }, {
-    "transform": [{
-      "filter": {"selection": "brush"}
-    }],
+    "transform": [
+      {"filter": {"selection": "brush"}},
+      {"window": [{"op": "rank", "as": "rank"}]},
+      {"filter": {"field": "rank", "lt": 20}}
+    ],
     "hconcat": [{
       "title": "Horsepower",
       "mark": "text",
