@@ -6,13 +6,15 @@
 import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {Mark} from './mark';
-import {FacetMapping} from './spec/facet';
+import {EncodingFacetMapping, EncodingFacetMapping as ExtendedFacetMapping} from './spec/facet';
 import {Flag, flagKeys} from './util';
 
 export namespace Channel {
   // Facet
   export const ROW: 'row' = 'row';
   export const COLUMN: 'column' = 'column';
+
+  export const FACET: 'facet' = 'facet';
 
   // Position
   export const X: 'x' = 'x';
@@ -51,7 +53,7 @@ export namespace Channel {
   export const HREF: 'href' = 'href';
 }
 
-export type Channel = keyof Encoding<any> | keyof FacetMapping<any>;
+export type Channel = keyof Encoding<any> | keyof ExtendedFacetMapping<any>;
 
 export const X = Channel.X;
 export const Y = Channel.Y;
@@ -62,6 +64,8 @@ export const LATITUDE = Channel.LATITUDE;
 export const LATITUDE2 = Channel.LATITUDE2;
 export const LONGITUDE = Channel.LONGITUDE;
 export const LONGITUDE2 = Channel.LONGITUDE2;
+
+export const FACET = Channel.FACET;
 
 export const ROW = Channel.ROW;
 export const COLUMN = Channel.COLUMN;
@@ -84,6 +88,8 @@ export const STROKEWIDTH = Channel.STROKEWIDTH;
 
 export const TOOLTIP = Channel.TOOLTIP;
 export const HREF = Channel.HREF;
+
+export type PositionChannel = 'x' | 'y' | 'x2' | 'y2';
 
 export type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
 
@@ -134,14 +140,15 @@ export function isColorChannel(channel: Channel): channel is ColorChannel {
   return channel === 'color' || channel === 'fill' || channel === 'stroke';
 }
 
-const FACET_CHANNEL_INDEX: Flag<keyof FacetMapping<any>> = {
+export type FacetChannel = keyof EncodingFacetMapping<any>;
+
+const FACET_CHANNEL_INDEX: Flag<keyof EncodingFacetMapping<any>> = {
   row: 1,
-  column: 1
+  column: 1,
+  facet: 1
 };
 
 export const FACET_CHANNELS = flagKeys(FACET_CHANNEL_INDEX);
-
-export type FacetChannel = keyof FacetMapping<any>;
 
 const CHANNEL_INDEX = {
   ...UNIT_CHANNEL_INDEX,
@@ -189,7 +196,7 @@ export type SingleDefUnitChannel =
   | 'href'
   | 'key';
 
-export type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column';
+export type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column' | 'facet';
 
 export function isChannel(str: string): str is Channel {
   return !!CHANNEL_INDEX[str];
@@ -327,6 +334,8 @@ function getSupportedMark(channel: Channel): SupportedMark {
     case FILLOPACITY:
     case STROKEOPACITY:
     case STROKEWIDTH:
+
+    case FACET:
     case ROW:
     case COLUMN:
       return {
@@ -409,6 +418,7 @@ export function rangeType(channel: Channel): RangeType {
     case Y2:
       return undefined;
 
+    case FACET:
     case ROW:
     case COLUMN:
     case SHAPE:

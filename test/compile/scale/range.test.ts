@@ -34,7 +34,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit([0, {signal: 'plot_width'}]));
+          ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
         }
       });
 
@@ -54,7 +54,7 @@ describe('compile/scale', () => {
               'plot_height',
               []
             )
-          ).toMatchObject(makeImplicit([{signal: 'plot_height'}, 0]));
+          ).toEqual(makeImplicit([{signal: 'plot_height'}, 0]));
         }
       });
 
@@ -74,7 +74,7 @@ describe('compile/scale', () => {
               'plot_height',
               []
             )
-          ).toMatchObject(makeImplicit([0, {signal: 'plot_height'}]));
+          ).toEqual(makeImplicit([0, {signal: 'plot_height'}]));
         }
       });
 
@@ -136,7 +136,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit({step: 55}));
+          ).toEqual(makeImplicit({step: 55}));
         }
       });
 
@@ -178,7 +178,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 []
               )
-            ).toMatchObject(makeImplicit([0, {signal: 'plot_width'}]));
+            ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
           }
           expect(localLogger.warns[0]).toEqual(log.message.rangeStepDropped('x'));
         })
@@ -200,7 +200,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit([0, {signal: 'plot_width'}]));
+          ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
         }
       });
 
@@ -220,7 +220,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit([0, {signal: 'plot_width'}]));
+          ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
         }
       });
 
@@ -240,7 +240,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit([0, {signal: 'plot_width'}]));
+          ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
         }
       });
 
@@ -261,7 +261,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 []
               )
-            ).toMatchObject(makeImplicit([0, {signal: 'plot_width'}]));
+            ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
             expect(localLogger.warns[0]).toEqual(
               log.message.scalePropertyNotWorkWithScaleType(scaleType, 'rangeStep', 'x')
             );
@@ -340,7 +340,7 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toMatchObject(makeImplicit('category'));
+        ).toEqual(makeImplicit('category'));
       });
 
       it('should use default ordinal range in Vega for an ordinal color field.', () => {
@@ -358,7 +358,7 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toMatchObject(makeImplicit('ordinal'));
+        ).toEqual(makeImplicit('ordinal'));
       });
 
       it('should use default ramp range in Vega for a temporal/quantitative color field.', () => {
@@ -376,7 +376,7 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toMatchObject(makeImplicit('ramp'));
+        ).toEqual(makeImplicit('ramp'));
       });
 
       it('should use the specified scheme with count for a quantitative color field.', () => {
@@ -414,7 +414,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit('ramp'));
+          ).toEqual(makeImplicit('ramp'));
         });
       });
 
@@ -433,7 +433,7 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toMatchObject(makeImplicit('ramp'));
+        ).toEqual(makeImplicit('ramp'));
       });
 
       it('should use default color range for log scale', () => {
@@ -451,7 +451,7 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toMatchObject(makeImplicit('ramp'));
+        ).toEqual(makeImplicit('ramp'));
       });
     });
 
@@ -471,7 +471,7 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toMatchObject(makeImplicit([defaultConfig.scale.minOpacity, defaultConfig.scale.maxOpacity]));
+        ).toEqual(makeImplicit([defaultConfig.scale.minOpacity, defaultConfig.scale.maxOpacity]));
       });
     });
 
@@ -495,7 +495,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit([2, 9]));
+          ).toEqual(makeImplicit([2, 9]));
         });
 
         it('should return [continuousBandSize, xRangeStep-1] by default since min/maxSize config are not specified', () => {
@@ -513,7 +513,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit([2, defaultConfig.scale.rangeStep - 1]));
+          ).toEqual(makeImplicit([2, defaultConfig.scale.rangeStep - 1]));
         });
       });
 
@@ -536,7 +536,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit([4, 9]));
+          ).toEqual(makeImplicit([4, 9]));
         });
 
         it('should return [(default)minBandSize, rangeStep-1] by default since maxSize config is not specified', () => {
@@ -554,7 +554,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit([defaultConfig.scale.minBandSize, defaultConfig.scale.rangeStep - 1]));
+          ).toEqual(makeImplicit([defaultConfig.scale.minBandSize, defaultConfig.scale.rangeStep - 1]));
         });
       });
 
@@ -574,7 +574,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit([defaultConfig.scale.minFontSize, defaultConfig.scale.maxFontSize]));
+          ).toEqual(makeImplicit([defaultConfig.scale.minFontSize, defaultConfig.scale.maxFontSize]));
         });
       });
 
@@ -594,7 +594,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit([defaultConfig.scale.minStrokeWidth, defaultConfig.scale.maxStrokeWidth]));
+          ).toEqual(makeImplicit([defaultConfig.scale.minStrokeWidth, defaultConfig.scale.maxStrokeWidth]));
         });
       });
 
@@ -622,7 +622,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 []
               )
-            ).toMatchObject(makeImplicit([5, 25]));
+            ).toEqual(makeImplicit([5, 25]));
           }
         });
 
@@ -642,7 +642,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11, 13] // xyRangeSteps
               )
-            ).toMatchObject(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
+            ).toEqual(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -662,7 +662,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11, 13] // xyRangeSteps
               )
-            ).toMatchObject(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
+            ).toEqual(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -682,7 +682,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11, 13] // xyRangeSteps
               )
-            ).toMatchObject(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
+            ).toEqual(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -702,7 +702,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11] // xyRangeSteps only have one value
               )
-            ).toMatchObject(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
+            ).toEqual(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -723,7 +723,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 []
               )
-            ).toMatchObject(makeImplicit({signal: 'sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))'}));
+            ).toEqual(makeImplicit({signal: 'sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))'}));
           });
         });
 
@@ -742,7 +742,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit({signal: 'sequence(9, 361 + (361 - 9) / (3 - 1), (361 - 9) / (3 - 1))'}));
+          ).toEqual(makeImplicit({signal: 'sequence(9, 361 + (361 - 9) / (3 - 1), (361 - 9) / (3 - 1))'}));
         });
       });
     });
@@ -763,7 +763,7 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toMatchObject(makeImplicit('symbol'));
+        ).toEqual(makeImplicit('symbol'));
       });
     });
   });

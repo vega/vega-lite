@@ -11,10 +11,5 @@ export default {
     sourcemap: true,
     name: 'vl'
   },
-  plugins: [
-    nodeResolve(),
-    commonjs(),
-    json(),
-    sourcemaps()
-  ]
+  plugins: [nodeResolve({browser: true}), commonjs(), json(), sourcemaps()]
 };

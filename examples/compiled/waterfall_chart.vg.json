@@ -132,9 +132,9 @@
           "tooltip": {
             "signal": "{\"Months\": ''+datum[\"label\"], \"lead\": ''+datum[\"lead\"], \"sum\": format(datum[\"sum\"], \"\")}"
           },
-          "x": {"scale": "x", "field": "label", "band": 0.5, "offset": -22.5},
+          "x": {"scale": "x", "field": "label", "offset": -22.5, "band": 0.5},
           "y": {"scale": "y", "field": "sum"},
-          "x2": {"scale": "x", "field": "lead", "band": 0.5, "offset": 22.5}
+          "x2": {"scale": "x", "field": "lead", "offset": 22.5, "band": 0.5}
         }
       }
     },
@@ -276,8 +276,5 @@
       "zindex": 0
     }
   ],
-  "config": {
-    "axisY": {"minExtent": 30},
-    "style": {"text": {"fontWeight": "bold"}}
-  }
+  "config": {"style": {"text": {"fontWeight": "bold"}}}
 }

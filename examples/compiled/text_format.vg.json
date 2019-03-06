@@ -25,7 +25,8 @@
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
-    }
+    },
+    {"name": "width", "update": "width"}
   ],
   "marks": [
     {
@@ -65,6 +66,5 @@
       "labelOverlap": true,
       "zindex": 1
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

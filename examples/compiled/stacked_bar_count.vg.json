@@ -141,6 +141,5 @@
       "title": "weather",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

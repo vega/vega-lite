@@ -41,7 +41,7 @@ import {
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
-import {FacetMapping} from './spec/facet';
+import {EncodingFacetMapping} from './spec/facet';
 import {getDateTimeComponents} from './timeunit';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {Type} from './type';
@@ -49,14 +49,14 @@ import {keys, some} from './util';
 
 export interface Encoding<F extends Field> {
   /**
-   * X coordinates of the marks, or width of horizontal `"bar"` and `"area"`.
+   * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without `x2`.
    *
    * The `value` of this channel can be a number or a string `"width"`.
    */
   x?: PositionFieldDef<F> | ValueDef<number | 'width'>;
 
   /**
-   * Y coordinates of the marks, or height of vertical `"bar"` and `"area"`.
+   * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without `y2`
    *
    * The `value` of this channel can be a number or a string `"height"`.
    */
@@ -215,7 +215,7 @@ export interface Encoding<F extends Field> {
   order?: OrderFieldDef<F> | OrderFieldDef<F>[] | ValueDef<number>;
 }
 
-export interface EncodingWithFacet<F extends Field> extends Encoding<F>, FacetMapping<F> {}
+export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
 
 export function channelHasField<F extends Field>(encoding: EncodingWithFacet<F>, channel: Channel): boolean {
   const channelDef = encoding && encoding[channel];

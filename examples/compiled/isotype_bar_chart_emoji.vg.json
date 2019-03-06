@@ -75,12 +75,7 @@
     {"name": "child_width", "value": 800},
     {"name": "child_height", "value": 200}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 1,
-    "bounds": "full",
-    "align": "all"
-  },
+  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "all"},
   "marks": [
     {
       "name": "row_header",
@@ -93,6 +88,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}}
@@ -151,5 +147,5 @@
       "padding": 0.5
     }
   ],
-  "config": {"axisY": {"minExtent": 30}, "style": {"cell": {"stroke": ""}}}
+  "config": {"style": {"cell": {"stroke": ""}}}
 }

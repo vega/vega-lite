@@ -7,7 +7,7 @@ permalink: /docs/spec.html
 
 {:#spec}
 
-Vega-Lite specifications are JSON objects that describe a diverse range of interactive visualizations. The simplest form of specification is a specification of a [single view](#single), which describes a view that uses a single [mark type](mark.html) to visualize the data. Besides using a single view specification as a standalone visualization, Vega-Lite also provides operators for composing multiple view specifications into a layered or multi-view specification. These operators include [`layer`](layer.html), [`facet`](facet.html), [`concat`](concat.html), [`repeat`](repeat.html).
+Vega-Lite specifications are JSON objects that describe a diverse range of interactive visualizations. The simplest form of specification is a specification of a [single view](#single), which describes a view that uses a single [mark type](mark.html) to visualize the data. Besides using a single view specification as a standalone visualization, Vega-Lite also provides operators for composing multiple view specifications into a layered or multi-view specification. These operators include [`layer`](layer.html), [`facet`](facet.html), [`concat`](concat.html), and [`repeat`](repeat.html).
 
 ## Documentation Overview
 
@@ -24,6 +24,10 @@ Vega-Lite specifications are JSON objects that describe a diverse range of inter
 All view specifications in Vega-Lite can contain the following properties:
 
 {% include table.html props="name,description,title,data,transform" source="TopLevelFacetedUnitSpec" %}
+
+In addition, all view composition specifications ([`layer`](layer.html), [`facet`](facet.html), [`concat`](concat.html), and [`repeat`](repeat.html)) and unit specifications with [facet channels](https://vega.github.io/vega-lite/docs/encoding.html#facet) can have the following composition layout and [resolution](https://vega.github.io/vega-lite/docs/resolve.html) properties:
+
+{% include table.html props="bounds,center,spacing,resolve" source="TopLevelFacetedUnitSpec" %}
 
 {:#top-level}
 

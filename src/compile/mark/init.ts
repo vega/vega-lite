@@ -1,3 +1,4 @@
+import {Orientation} from 'vega';
 import {isBinned, isBinning} from '../../bin';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
@@ -6,7 +7,6 @@ import * as log from '../../log';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, getFirstDefined} from '../../util';
-import {Orient} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 
 export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, config: Config) {
@@ -62,7 +62,7 @@ function filled(markDef: MarkDef, config: Config) {
   return getFirstDefined(filledConfig, mark !== POINT && mark !== LINE && mark !== RULE);
 }
 
-function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient): Orient {
+function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orientation): Orientation {
   switch (mark) {
     case POINT:
     case CIRCLE:

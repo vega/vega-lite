@@ -89,12 +89,7 @@
     {"name": "child_width", "value": 200},
     {"name": "child_height", "value": 20}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 1,
-    "bounds": "full",
-    "align": "all"
-  },
+  "layout": {"padding": 10, "columns": 1, "bounds": "full", "align": "all"},
   "marks": [
     {
       "name": "row_header",
@@ -107,6 +102,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "angle": 0,
         "baseline": "middle",
         "encode": {"update": {"align": {"value": "right"}}}
@@ -127,6 +123,7 @@
           "height": {"signal": "child_height"}
         }
       },
+      "signals": [{"name": "height", "update": "child_height"}],
       "marks": [
         {
           "name": "child_layer_0_marks",
@@ -318,6 +315,5 @@
         }
       ]
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

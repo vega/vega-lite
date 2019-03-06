@@ -85,6 +85,19 @@
       ],
       "type": "string"
     },
+    "AnchorValue": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/TitleAnchor"
+        },
+        {
+          "$ref": "#/definitions/AnchorValueRef"
+        }
+      ]
+    },
+    "AnchorValueRef": {
+      "$ref": "#/definitions/ScaledValueRef<TitleAnchor>"
+    },
     "AnyMark": {
       "anyOf": [
         {
@@ -207,7 +220,7 @@
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/Orient",
+          "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "point": {
@@ -306,6 +319,22 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+        },
+        "x": {
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
+          "type": "number"
+        },
+        "x2": {
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
+        },
+        "y": {
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
+          "type": "number"
+        },
+        "y2": {
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -355,6 +384,17 @@
           "$ref": "#/definitions/Color",
           "description": "Color of axis domain line.\n\n__Default value:__ `\"gray\"`."
         },
+        "domainDash": {
+          "description": "An array of alternating [stroke, space] lengths for dashed domain lines.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "domainDashOffset": {
+          "description": "The pixel offset at which to start drawing with the domain dash array.",
+          "type": "number"
+        },
         "domainOpacity": {
           "description": "Opacity of the axis domain line.",
           "type": "number"
@@ -376,11 +416,15 @@
           "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
         },
         "gridDash": {
-          "description": "The offset (in pixels) into which to begin drawing with the grid dash array.",
+          "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
           "items": {
             "type": "number"
           },
           "type": "array"
+        },
+        "gridDashOffset": {
+          "description": "The pixel offset at which to start drawing with the grid dash array.",
+          "type": "number"
         },
         "gridOpacity": {
           "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
@@ -498,6 +542,17 @@
           "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
           "type": "number"
         },
+        "tickDash": {
+          "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "tickDashOffset": {
+          "description": "The pixel offset at which to start drawing with the tick mark dash array.",
+          "type": "number"
+        },
         "tickExtra": {
           "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPostion\": 1` and an axis `\"padding\"` value of `0`.",
           "type": "boolean"
@@ -542,6 +597,10 @@
         "titleAlign": {
           "$ref": "#/definitions/Align",
           "description": "Horizontal text alignment of axis titles."
+        },
+        "titleAnchor": {
+          "$ref": "#/definitions/AnchorValue",
+          "description": "Text anchor position for placing axis titles."
         },
         "titleAngle": {
           "description": "Angle in degrees of axis titles.",
@@ -645,6 +704,17 @@
           "$ref": "#/definitions/Color",
           "description": "Color of axis domain line.\n\n__Default value:__ `\"gray\"`."
         },
+        "domainDash": {
+          "description": "An array of alternating [stroke, space] lengths for dashed domain lines.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "domainDashOffset": {
+          "description": "The pixel offset at which to start drawing with the domain dash array.",
+          "type": "number"
+        },
         "domainOpacity": {
           "description": "Opacity of the axis domain line.",
           "type": "number"
@@ -662,11 +732,15 @@
           "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
         },
         "gridDash": {
-          "description": "The offset (in pixels) into which to begin drawing with the grid dash array.",
+          "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
           "items": {
             "type": "number"
           },
           "type": "array"
+        },
+        "gridDashOffset": {
+          "description": "The pixel offset at which to start drawing with the grid dash array.",
+          "type": "number"
         },
         "gridOpacity": {
           "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
@@ -772,6 +846,17 @@
           "$ref": "#/definitions/Color",
           "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
         },
+        "tickDash": {
+          "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "tickDashOffset": {
+          "description": "The pixel offset at which to start drawing with the tick mark dash array.",
+          "type": "number"
+        },
         "tickExtra": {
           "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPostion\": 1` and an axis `\"padding\"` value of `0`.",
           "type": "boolean"
@@ -802,9 +887,17 @@
           "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
           "type": "boolean"
         },
+        "title": {
+          "description": "Set to null to disable title for the axis or legend",
+          "type": "null"
+        },
         "titleAlign": {
           "$ref": "#/definitions/Align",
           "description": "Horizontal text alignment of axis titles."
+        },
+        "titleAnchor": {
+          "$ref": "#/definitions/AnchorValue",
+          "description": "Text anchor position for placing axis titles."
         },
         "titleAngle": {
           "description": "Angle in degrees of axis titles.",
@@ -990,7 +1083,7 @@
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/Orient",
+          "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "radius": {
@@ -1072,6 +1165,22 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+        },
+        "x": {
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
+          "type": "number"
+        },
+        "x2": {
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
+        },
+        "y": {
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
+          "type": "number"
+        },
+        "y2": {
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -1090,6 +1199,64 @@
         },
         "type": {
           "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "BaseLegendLayout": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor point for legend orient group layout."
+        },
+        "bounds": {
+          "$ref": "#/definitions/LayoutBounds",
+          "description": "The bounds calculation to use for legend orient group layout."
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "A flag to center legends within a shared orient group."
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Orientation"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The layout direction for legend orient group layout."
+        },
+        "margin": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The pixel margin between legends within a orient group."
+        },
+        "offset": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The pixel offset from the chart body for a legend orient group."
         }
       },
       "type": "object"
@@ -1181,7 +1348,7 @@
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/Orient",
+          "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "radius": {
@@ -1252,6 +1419,22 @@
         },
         "tooltip": {
           "description": "The tooltip text to show upon mouse hover."
+        },
+        "x": {
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
+          "type": "number"
+        },
+        "x2": {
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
+        },
+        "y": {
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
+          "type": "number"
+        },
+        "y2": {
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -1314,6 +1497,59 @@
         }
       },
       "type": "object"
+    },
+    "BaseValueRef<TitleAnchor>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SignalRef"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/TitleAnchor"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "$ref": "#/definitions/Field"
+            }
+          },
+          "required": [
+            "field"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "range": {
+              "type": [
+                "number",
+                "boolean"
+              ]
+            }
+          },
+          "required": [
+            "range"
+          ],
+          "type": "object"
+        }
+      ]
     },
     "Baseline": {
       "enum": [
@@ -1667,7 +1903,7 @@
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/Orient",
+          "$ref": "#/definitions/Orientation",
           "description": "Orientation of the box plot.  This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous.\n\n__Default value:__ `\"vertical\"`."
         },
         "outliers": {
@@ -1982,7 +2218,7 @@
               "$ref": "#/definitions/XValueDef"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
         },
         "x2": {
           "anyOf": [
@@ -2026,7 +2262,7 @@
               "$ref": "#/definitions/YValueDef"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"`."
         },
         "y2": {
           "anyOf": [
@@ -2090,9 +2326,19 @@
         }
       ]
     },
-    "CompositeUnitSpec": {
-      "$ref": "#/definitions/GenericUnitSpec<Encoding,AnyMark>",
-      "description": "Unit spec that can be normalized/expanded into a layer spec or another unit spec."
+    "CompositionConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "columns": {
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
+          "type": "number"
+        },
+        "spacing": {
+          "description": "The default spacing in pixels between composed sub-views.\n\n__Default value__: `20`",
+          "type": "number"
+        }
+      },
+      "type": "object"
     },
     "ConditionOnlyDef<MarkPropFieldDef<\"nominal\">>": {
       "additionalProperties": false,
@@ -3179,6 +3425,10 @@
           "$ref": "#/definitions/MarkConfig",
           "description": "Circle-Specific Config"
         },
+        "concat": {
+          "$ref": "#/definitions/CompositionConfig",
+          "description": "Default configuration for all concatenation view composition operators (`concat`, `hconcat`, and `vconcat`)"
+        },
         "countTitle": {
           "description": "Default axis and legend title for count fields.\n\n__Default value:__ `'Count of Records`.",
           "type": "string"
@@ -3190,6 +3440,10 @@
         "errorbar": {
           "$ref": "#/definitions/ErrorBarConfig",
           "description": "ErrorBar Config"
+        },
+        "facet": {
+          "$ref": "#/definitions/CompositionConfig",
+          "description": "Default configuration for the `facet` view composition operator"
         },
         "fieldTitle": {
           "description": "Defines how Vega-Lite generates title for fields.  There are three possible styles:\n- `\"verbal\"` (Default) - displays function in a verbal style (e.g., \"Sum of field\", \"Year-month of date\", \"field (binned)\").\n- `\"function\"` - displays function using parentheses and capitalized texts (e.g., \"SUM(field)\", \"YEARMONTH(date)\", \"BIN(field)\").\n- `\"plain\"` - displays only the field name without functions (e.g., \"field\", \"date\", \"field\").",
@@ -3254,6 +3508,10 @@
         "rect": {
           "$ref": "#/definitions/MarkConfig",
           "description": "Rect-Specific Config"
+        },
+        "repeat": {
+          "$ref": "#/definitions/CompositionConfig",
+          "description": "Default configuration for the `repeat` view composition operator"
         },
         "rule": {
           "$ref": "#/definitions/MarkConfig",
@@ -3477,6 +3735,18 @@
       },
       "type": "object"
     },
+    "DatumFieldRef": {
+      "additionalProperties": false,
+      "properties": {
+        "datum": {
+          "$ref": "#/definitions/Field"
+        }
+      },
+      "required": [
+        "datum"
+      ],
+      "type": "object"
+    },
     "Day": {
       "maximum": 7,
       "minimum": 1,
@@ -3647,7 +3917,7 @@
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/Orient",
+          "$ref": "#/definitions/Orientation",
           "description": "Orientation of the error band. This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
         },
         "tension": {
@@ -3722,7 +3992,7 @@
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/Orient",
+          "$ref": "#/definitions/Orientation",
           "description": "Orientation of the error bar.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
         },
         "rule": {
@@ -3765,84 +4035,6 @@
       "type": "string"
     },
     "EventStream": {
-    },
-    "LayerSpec": {
-      "additionalProperties": false,
-      "description": "Layer Spec with `encoding` and `projection` shorthands that will be applied to underlying unit (single-view) specifications.",
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "encoding": {
-          "$ref": "#/definitions/Encoding",
-          "description": "A shared key-value mapping between encoding channels and definition of fields in the underlying layers."
-        },
-        "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        },
-        "layer": {
-          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/LayerSpec"
-              },
-              {
-                "$ref": "#/definitions/CompositeUnitSpec"
-              }
-            ]
-          },
-          "type": "array"
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "projection": {
-          "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of the geographic projection shared by underlying layers."
-        },
-        "resolve": {
-          "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for layers."
-        },
-        "title": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        },
-        "view": {
-          "$ref": "#/definitions/ViewBackground",
-          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
-        },
-        "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "layer"
-      ],
-      "type": "object"
     },
     "FacetFieldDef": {
       "additionalProperties": false,
@@ -3922,11 +4114,11 @@
       "properties": {
         "column": {
           "$ref": "#/definitions/FacetFieldDef",
-          "description": "Horizontal facets for trellis plots."
+          "description": "A field definition for the horizontal facet of trellis plots."
         },
         "row": {
           "$ref": "#/definitions/FacetFieldDef",
-          "description": "Vertical facets for trellis plots."
+          "description": "A field definition for the vertical facet of trellis plots."
         }
       },
       "type": "object"
@@ -3947,7 +4139,7 @@
         },
         "column": {
           "$ref": "#/definitions/FacetFieldDef",
-          "description": "Horizontal facets for trellis plots."
+          "description": "A field definition for the horizontal facet of trellis plots."
         },
         "detail": {
           "anyOf": [
@@ -3962,6 +4154,10 @@
             }
           ],
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
+        },
+        "facet": {
+          "$ref": "#/definitions/FacetFieldDef",
+          "description": "A field definition for the (flexible) facet of trellis plots.\n\nIf either `row` or `column` is specified, this channel will be ignored."
         },
         "fill": {
           "anyOf": [
@@ -4046,7 +4242,7 @@
         },
         "row": {
           "$ref": "#/definitions/FacetFieldDef",
-          "description": "Vertical facets for trellis plots."
+          "description": "A field definition for the vertical facet of trellis plots."
         },
         "shape": {
           "anyOf": [
@@ -4143,7 +4339,7 @@
               "$ref": "#/definitions/XValueDef"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
         },
         "x2": {
           "anyOf": [
@@ -4187,7 +4383,7 @@
               "$ref": "#/definitions/YValueDef"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"`."
         },
         "y2": {
           "anyOf": [
@@ -4226,8 +4422,124 @@
       "type": "object"
     },
     "FacetedUnitSpec": {
-      "$ref": "#/definitions/GenericUnitSpec<FacetedEncoding,AnyMark>",
-      "description": "Unit spec that can have a composite mark and row or column channels (shorthand for a facet spec)."
+      "additionalProperties": false,
+      "description": "Unit spec that can have a composite mark and row or column channels (shorthand for a facet spec).",
+      "properties": {
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<LayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
+        },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
+          "type": "number"
+        },
+        "data": {
+          "$ref": "#/definitions/Data",
+          "description": "An object describing the data source"
+        },
+        "description": {
+          "description": "Description of this mark for commenting purpose.",
+          "type": "string"
+        },
+        "encoding": {
+          "$ref": "#/definitions/FacetedEncoding",
+          "description": "A key-value mapping between encoding channels and definition of fields."
+        },
+        "height": {
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
+          "type": "number"
+        },
+        "mark": {
+          "$ref": "#/definitions/AnyMark",
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
+        },
+        "name": {
+          "description": "Name of the visualization for later reference.",
+          "type": "string"
+        },
+        "projection": {
+          "$ref": "#/definitions/Projection",
+          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
+        },
+        "resolve": {
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
+        "selection": {
+          "additionalProperties": {
+            "$ref": "#/definitions/SelectionDef"
+          },
+          "description": "A key-value mapping between selection names and definitions.",
+          "type": "object"
+        },
+        "spacing": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/RowCol<number>"
+            }
+          ],
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
+        "transform": {
+          "description": "An array of data transformations such as filter and new field calculation.",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          },
+          "type": "array"
+        },
+        "view": {
+          "$ref": "#/definitions/ViewBackground",
+          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
+        },
+        "width": {
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "type": "object"
     },
     "Field": {
       "anyOf": [
@@ -4235,7 +4547,16 @@
           "type": "string"
         },
         {
-          "$ref": "#/definitions/RepeatRef"
+          "$ref": "#/definitions/SignalRef"
+        },
+        {
+          "$ref": "#/definitions/DatumFieldRef"
+        },
+        {
+          "$ref": "#/definitions/GroupFieldRef"
+        },
+        {
+          "$ref": "#/definitions/ParentFieldRef"
         }
       ]
     },
@@ -5140,6 +5461,102 @@
       },
       "type": "object"
     },
+    "ConcatSpec": {
+      "additionalProperties": false,
+      "description": "Base interface for a generalized concatenation specification.",
+      "properties": {
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<LayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
+        },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
+          "type": "number"
+        },
+        "concat": {
+          "description": "A list of views to be concatenated.",
+          "items": {
+            "$ref": "#/definitions/Spec"
+          },
+          "type": "array"
+        },
+        "data": {
+          "$ref": "#/definitions/Data",
+          "description": "An object describing the data source"
+        },
+        "description": {
+          "description": "Description of this mark for commenting purpose.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the visualization for later reference.",
+          "type": "string"
+        },
+        "resolve": {
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
+        "spacing": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/RowCol<number>"
+            }
+          ],
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
+        "transform": {
+          "description": "An array of data transformations such as filter and new field calculation.",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "concat"
+      ],
+      "type": "object"
+    },
     "FacetSpec": {
       "additionalProperties": false,
       "description": "Base interface for a facet specification.",
@@ -5174,6 +5591,10 @@
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
+          "type": "number"
+        },
         "data": {
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
@@ -5183,8 +5604,15 @@
           "type": "string"
         },
         "facet": {
-          "$ref": "#/definitions/FacetMapping",
-          "description": "An object that describes mappings between `row` and `column` channels and their field definitions."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FacetFieldDef"
+            },
+            {
+              "$ref": "#/definitions/FacetMapping"
+            }
+          ],
+          "description": "Definition for how to facet the data.  One of:\n1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)\n2) [An object that maps `row` and `column` channels to their field definitions](https://vega.github.io/vega-lite/docs/facet.html#mapping)"
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -5192,7 +5620,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for facets."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "anyOf": [
@@ -5203,7 +5631,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "spec": {
           "anyOf": [
@@ -5266,7 +5694,7 @@
           "type": "string"
         },
         "hconcat": {
-          "description": "A list of views that should be concatenated and put into a row.",
+          "description": "A list of views to be concatenated and put into a row.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -5278,7 +5706,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for horizontally concatenated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
@@ -5342,6 +5770,10 @@
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
+          "type": "number"
+        },
         "data": {
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
@@ -5355,12 +5787,22 @@
           "type": "string"
         },
         "repeat": {
-          "$ref": "#/definitions/Repeat",
-          "description": "An object that describes what fields should be repeated into views that are laid out as a `row` or `column`."
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/RepeatMapping"
+            }
+          ],
+          "description": "Definition for fields to be repeated.  One of:\n1) An array of fields to be repeated.  If `\"repeat\"` is an array, the field can be referred using `{\"repeat\": \"repeat\"}`\n2) An object that mapped `\"row\"` and/or `\"column\"` to the listed of fields to be repeated along the particular orientations. The objects `{\"repeat\": \"row\"}` and `{\"repeat\": \"column\"}` can be used to refer to the repeated field respectively."
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale and legend resolutions for repeated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "anyOf": [
@@ -5371,10 +5813,11 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "spec": {
-          "$ref": "#/definitions/Spec"
+          "$ref": "#/definitions/Spec",
+          "description": "A specification of the view that gets repeated."
         },
         "title": {
           "anyOf": [
@@ -5416,6 +5859,9 @@
           "$ref": "#/definitions/RepeatSpec"
         },
         {
+          "$ref": "#/definitions/ConcatSpec"
+        },
+        {
           "$ref": "#/definitions/VConcatSpec"
         },
         {
@@ -5438,77 +5884,6 @@
         },
         "encoding": {
           "$ref": "#/definitions/Encoding",
-          "description": "A key-value mapping between encoding channels and definition of fields."
-        },
-        "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        },
-        "mark": {
-          "$ref": "#/definitions/AnyMark",
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "projection": {
-          "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
-        },
-        "selection": {
-          "additionalProperties": {
-            "$ref": "#/definitions/SelectionDef"
-          },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        },
-        "view": {
-          "$ref": "#/definitions/ViewBackground",
-          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
-        },
-        "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "mark"
-      ],
-      "type": "object"
-    },
-    "GenericUnitSpec<FacetedEncoding,AnyMark>": {
-      "additionalProperties": false,
-      "description": "Base interface for a unit (single-view) specification.",
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "encoding": {
-          "$ref": "#/definitions/FacetedEncoding",
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
@@ -5596,7 +5971,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
@@ -5621,7 +5996,7 @@
           "type": "array"
         },
         "vconcat": {
-          "description": "A list of views that should be concatenated and put into a column.",
+          "description": "A list of views to be concatenated and put into a column.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -5630,6 +6005,21 @@
       },
       "required": [
         "vconcat"
+      ],
+      "type": "object"
+    },
+    "GroupFieldRef": {
+      "additionalProperties": false,
+      "properties": {
+        "group": {
+          "$ref": "#/definitions/Field"
+        },
+        "level": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "group"
       ],
       "type": "object"
     },
@@ -5676,8 +6066,8 @@
           ]
         },
         "titleAnchor": {
-          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `\"start\"`.",
-          "type": "string"
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
         },
         "titleAngle": {
           "description": "The rotation angle of the header title.\n\n__Default value:__ `0`.",
@@ -5748,8 +6138,8 @@
           "type": "number"
         },
         "titleAnchor": {
-          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `\"start\"`.",
-          "type": "string"
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
         },
         "titleAngle": {
           "description": "The rotation angle of the header title.\n\n__Default value:__ `0`.",
@@ -6267,6 +6657,84 @@
       },
       "type": "object"
     },
+    "LayerSpec": {
+      "additionalProperties": false,
+      "description": "A full layered plot specification, which may contains `encoding` and `projection` properties that will be applied to underlying unit (single-view) specifications.",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data",
+          "description": "An object describing the data source"
+        },
+        "description": {
+          "description": "Description of this mark for commenting purpose.",
+          "type": "string"
+        },
+        "encoding": {
+          "$ref": "#/definitions/Encoding",
+          "description": "A shared key-value mapping between encoding channels and definition of fields in the underlying layers."
+        },
+        "height": {
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
+          "type": "number"
+        },
+        "layer": {
+          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/LayerSpec"
+              },
+              {
+                "$ref": "#/definitions/UnitSpec"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "name": {
+          "description": "Name of the visualization for later reference.",
+          "type": "string"
+        },
+        "projection": {
+          "$ref": "#/definitions/Projection",
+          "description": "An object defining properties of the geographic projection shared by underlying layers."
+        },
+        "resolve": {
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
+        "transform": {
+          "description": "An array of data transformations such as filter and new field calculation.",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          },
+          "type": "array"
+        },
+        "view": {
+          "$ref": "#/definitions/ViewBackground",
+          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
+        },
+        "width": {
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "layer"
+      ],
+      "type": "object"
+    },
     "LayoutAlign": {
       "enum": [
         "all",
@@ -6274,6 +6742,25 @@
         "none"
       ],
       "type": "string"
+    },
+    "LayoutBounds": {
+      "anyOf": [
+        {
+          "enum": [
+            "full"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "flush"
+          ],
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/SignalRef"
+        }
+      ]
     },
     "Legend": {
       "additionalProperties": false,
@@ -6407,6 +6894,17 @@
           "$ref": "#/definitions/Color",
           "description": "Border stroke color for the full legend."
         },
+        "symbolDash": {
+          "description": "An array of alternating [stroke, space] lengths for dashed symbol strokes.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "symbolDashOffset": {
+          "description": "The pixel offset at which to start drawing with the symbol stroke dash array.",
+          "type": "number"
+        },
         "symbolFillColor": {
           "$ref": "#/definitions/Color",
           "description": "The color of the legend symbol,"
@@ -6456,6 +6954,10 @@
           "$ref": "#/definitions/Align",
           "description": "Horizontal text alignment for legend titles.\n\n__Default value:__ `\"left\"`."
         },
+        "titleAnchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "Text anchor position for placing legend titles."
+        },
         "titleBaseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "Vertical text baseline for legend titles.\n\n__Default value:__ `\"top\"`."
@@ -6488,6 +6990,10 @@
         "titleOpacity": {
           "description": "Opacity of the legend title.",
           "type": "number"
+        },
+        "titleOrient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Orientation of the legend title."
         },
         "titlePadding": {
           "description": "The padding, in pixels, between title and legend.\n\n__Default value:__ `5`.",
@@ -6660,6 +7166,10 @@
           "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
           "type": "number"
         },
+        "layout": {
+          "$ref": "#/definitions/LegendLayout",
+          "description": "Legend orient group layout parameters."
+        },
         "offset": {
           "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
           "type": "number"
@@ -6703,6 +7213,17 @@
           "$ref": "#/definitions/Color",
           "description": "Default stroke color for legend symbols. Only applied if there is no `\"fill\"` scale color encoding for the legend.\n\n__Default value:__ `\"gray\"`."
         },
+        "symbolDash": {
+          "description": "An array of alternating [stroke, space] lengths for dashed symbol strokes.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "symbolDashOffset": {
+          "description": "The pixel offset at which to start drawing with the symbol stroke dash array.",
+          "type": "number"
+        },
         "symbolDirection": {
           "$ref": "#/definitions/Orientation",
           "description": "The default direction (`\"horizontal\"` or `\"vertical\"`) for symbol legends.\n\n__Default value:__ `\"vertical\"`."
@@ -6737,9 +7258,17 @@
           "$ref": "#/definitions/SymbolShape",
           "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   * In addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n   *\n   * __Default value:__ `\"circle\"`.\n   *"
         },
+        "title": {
+          "description": "Set to null to disable title for the axis or legend",
+          "type": "null"
+        },
         "titleAlign": {
           "$ref": "#/definitions/Align",
           "description": "Horizontal text alignment for legend titles.\n\n__Default value:__ `\"left\"`."
+        },
+        "titleAnchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "Text anchor position for placing legend titles."
         },
         "titleBaseline": {
           "$ref": "#/definitions/TextBaseline",
@@ -6774,9 +7303,95 @@
           "description": "Opacity of the legend title.",
           "type": "number"
         },
+        "titleOrient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Orientation of the legend title."
+        },
         "titlePadding": {
           "description": "The padding, in pixels, between title and legend.\n\n__Default value:__ `5`.",
           "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "LegendLayout": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor point for legend orient group layout."
+        },
+        "bottom": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "bottom-left": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "bottom-right": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "bounds": {
+          "$ref": "#/definitions/LayoutBounds",
+          "description": "The bounds calculation to use for legend orient group layout."
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "A flag to center legends within a shared orient group."
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Orientation"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The layout direction for legend orient group layout."
+        },
+        "left": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "margin": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The pixel margin between legends within a orient group."
+        },
+        "offset": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The pixel offset from the chart body for a legend orient group."
+        },
+        "right": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "top": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "top-left": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "top-right": {
+          "$ref": "#/definitions/BaseLegendLayout"
         }
       },
       "type": "object"
@@ -6923,7 +7538,7 @@
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/Orient",
+          "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "point": {
@@ -7022,6 +7637,22 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+        },
+        "x": {
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
+          "type": "number"
+        },
+        "x2": {
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
+        },
+        "y": {
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
+          "type": "number"
+        },
+        "y2": {
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -7349,7 +7980,7 @@
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/Orient",
+          "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "radius": {
@@ -7431,6 +8062,22 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+        },
+        "x": {
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
+          "type": "number"
+        },
+        "x2": {
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
+        },
+        "y": {
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
+          "type": "number"
+        },
+        "y2": {
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -7550,7 +8197,7 @@
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/Orient",
+          "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "point": {
@@ -7673,12 +8320,28 @@
           "$ref": "#/definitions/Mark",
           "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
         },
+        "x": {
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
+          "type": "number"
+        },
+        "x2": {
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
+        },
         "x2Offset": {
           "description": "Offset for x2-position.",
           "type": "number"
         },
         "xOffset": {
           "description": "Offset for x-position.",
+          "type": "number"
+        },
+        "y": {
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
+          "type": "number"
+        },
+        "y2": {
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
           "type": "number"
         },
         "y2Offset": {
@@ -7934,8 +8597,10 @@
     },
     "Orient": {
       "enum": [
-        "horizontal",
-        "vertical"
+        "left",
+        "right",
+        "top",
+        "bottom"
       ],
       "type": "string"
     },
@@ -8045,7 +8710,7 @@
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/Orient",
+          "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "radius": {
@@ -8142,12 +8807,28 @@
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
+        "x": {
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
+          "type": "number"
+        },
+        "x2": {
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
+        },
         "x2Offset": {
           "description": "Offset for x2-position.",
           "type": "number"
         },
         "xOffset": {
           "description": "Offset for x-position.",
+          "type": "number"
+        },
+        "y": {
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
+          "type": "number"
+        },
+        "y2": {
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
           "type": "number"
         },
         "y2Offset": {
@@ -8186,6 +8867,21 @@
         }
       ],
       "minimum": 0
+    },
+    "ParentFieldRef": {
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "type": "number"
+        },
+        "parent": {
+          "$ref": "#/definitions/Field"
+        }
+      },
+      "required": [
+        "parent"
+      ],
+      "type": "object"
     },
     "Parse": {
       "additionalProperties": {
@@ -8670,18 +9366,18 @@
         }
       ]
     },
-    "Repeat": {
+    "RepeatMapping": {
       "additionalProperties": false,
       "properties": {
         "column": {
-          "description": "Horizontal repeated views.",
+          "description": "An array of fields to be repeated horizontally.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "row": {
-          "description": "Vertical repeated views.",
+          "description": "An array of fields to be repeated vertically.",
           "items": {
             "type": "string"
           },
@@ -9186,6 +9882,44 @@
       ],
       "type": "string"
     },
+    "ScaledValueRef<TitleAnchor>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/BaseValueRef<TitleAnchor>"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "scale": {
+              "$ref": "#/definitions/Field"
+            }
+          },
+          "required": [
+            "scale"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "band": {
+              "type": [
+                "boolean",
+                "number"
+              ]
+            },
+            "scale": {
+              "$ref": "#/definitions/Field"
+            }
+          },
+          "required": [
+            "scale",
+            "band"
+          ],
+          "type": "object"
+        }
+      ]
+    },
     "SchemeConfig": {
       "additionalProperties": false,
       "properties": {
@@ -9429,6 +10163,18 @@
     "ShapeValueDefWithCondition": {
       "$ref": "#/definitions/StringValueDefWithCondition<TypeForShape>"
     },
+    "SignalRef": {
+      "additionalProperties": false,
+      "properties": {
+        "signal": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "signal"
+      ],
+      "type": "object"
+    },
     "SingleDefChannel": {
       "anyOf": [
         {
@@ -9443,6 +10189,12 @@
         {
           "enum": [
             "column"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "facet"
           ],
           "type": "string"
         }
@@ -9926,7 +10678,7 @@
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/Orient",
+          "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "radius": {
@@ -10012,6 +10764,22 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+        },
+        "x": {
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
+          "type": "number"
+        },
+        "x2": {
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
+        },
+        "y": {
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
+          "type": "number"
+        },
+        "y2": {
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -10178,7 +10946,7 @@
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/Orient",
+          "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "radius": {
@@ -10265,6 +11033,22 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+        },
+        "x": {
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
+          "type": "number"
+        },
+        "x2": {
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
+        },
+        "y": {
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
+          "type": "number"
+        },
+        "y2": {
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -10304,11 +11088,15 @@
     },
     "TitleAnchor": {
       "enum": [
+        null,
         "start",
         "middle",
         "end"
       ],
-      "type": "string"
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "TitleConfig": {
       "$ref": "#/definitions/BaseTitleConfig"
@@ -10431,13 +11219,24 @@
       ],
       "type": "object"
     },
-    "TopLevelLayerSpec": {
+    "TopLevelConcatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
           "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
+        },
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<LayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
         },
         "autosize": {
           "anyOf": [
@@ -10453,6 +11252,36 @@
         "background": {
           "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
           "type": "string"
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
+        },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
+          "type": "number"
+        },
+        "concat": {
+          "description": "A list of views to be concatenated.",
+          "items": {
+            "$ref": "#/definitions/Spec"
+          },
+          "type": "array"
         },
         "config": {
           "$ref": "#/definitions/Config",
@@ -10470,28 +11299,6 @@
           "description": "Description of this mark for commenting purpose.",
           "type": "string"
         },
-        "encoding": {
-          "$ref": "#/definitions/Encoding",
-          "description": "A shared key-value mapping between encoding channels and definition of fields in the underlying layers."
-        },
-        "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        },
-        "layer": {
-          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/LayerSpec"
-              },
-              {
-                "$ref": "#/definitions/CompositeUnitSpec"
-              }
-            ]
-          },
-          "type": "array"
-        },
         "name": {
           "description": "Name of the visualization for later reference.",
           "type": "string"
@@ -10500,13 +11307,20 @@
           "$ref": "#/definitions/Padding",
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
-        "projection": {
-          "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of the geographic projection shared by underlying layers."
-        },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for layers."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
+        "spacing": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/RowCol<number>"
+            }
+          ],
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "title": {
           "anyOf": [
@@ -10529,18 +11343,10 @@
         "usermeta": {
           "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
           "type": "object"
-        },
-        "view": {
-          "$ref": "#/definitions/ViewBackground",
-          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
-        },
-        "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
         }
       },
       "required": [
-        "layer"
+        "concat"
       ],
       "type": "object"
     },
@@ -10596,7 +11402,7 @@
           "type": "string"
         },
         "hconcat": {
-          "description": "A list of views that should be concatenated and put into a row.",
+          "description": "A list of views to be concatenated and put into a row.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -10612,7 +11418,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for horizontally concatenated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
@@ -10699,6 +11505,10 @@
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
+          "type": "number"
+        },
         "config": {
           "$ref": "#/definitions/Config",
           "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
@@ -10724,12 +11534,22 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "repeat": {
-          "$ref": "#/definitions/Repeat",
-          "description": "An object that describes what fields should be repeated into views that are laid out as a `row` or `column`."
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/RepeatMapping"
+            }
+          ],
+          "description": "Definition for fields to be repeated.  One of:\n1) An array of fields to be repeated.  If `\"repeat\"` is an array, the field can be referred using `{\"repeat\": \"repeat\"}`\n2) An object that mapped `\"row\"` and/or `\"column\"` to the listed of fields to be repeated along the particular orientations. The objects `{\"repeat\": \"row\"}` and `{\"repeat\": \"column\"}` can be used to refer to the repeated field respectively."
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale and legend resolutions for repeated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "anyOf": [
@@ -10740,10 +11560,11 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "spec": {
-          "$ref": "#/definitions/Spec"
+          "$ref": "#/definitions/Spec",
+          "description": "A specification of the view that gets repeated."
         },
         "title": {
           "anyOf": [
@@ -10835,7 +11656,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
@@ -10864,7 +11685,7 @@
           "type": "object"
         },
         "vconcat": {
-          "description": "A list of views that should be concatenated and put into a column.",
+          "description": "A list of views to be concatenated and put into a column.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -10873,6 +11694,119 @@
       },
       "required": [
         "vconcat"
+      ],
+      "type": "object"
+    },
+    "TopLevelLayerSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "format": "uri",
+          "type": "string"
+        },
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
+        },
+        "background": {
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
+          "type": "string"
+        },
+        "config": {
+          "$ref": "#/definitions/Config",
+          "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
+        },
+        "data": {
+          "$ref": "#/definitions/Data",
+          "description": "An object describing the data source"
+        },
+        "datasets": {
+          "$ref": "#/definitions/Datasets",
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+        },
+        "description": {
+          "description": "Description of this mark for commenting purpose.",
+          "type": "string"
+        },
+        "encoding": {
+          "$ref": "#/definitions/Encoding",
+          "description": "A shared key-value mapping between encoding channels and definition of fields in the underlying layers."
+        },
+        "height": {
+          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
+          "type": "number"
+        },
+        "layer": {
+          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/LayerSpec"
+              },
+              {
+                "$ref": "#/definitions/UnitSpec"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        "name": {
+          "description": "Name of the visualization for later reference.",
+          "type": "string"
+        },
+        "padding": {
+          "$ref": "#/definitions/Padding",
+          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
+        },
+        "projection": {
+          "$ref": "#/definitions/Projection",
+          "description": "An object defining properties of the geographic projection shared by underlying layers."
+        },
+        "resolve": {
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
+        "transform": {
+          "description": "An array of data transformations such as filter and new field calculation.",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          },
+          "type": "array"
+        },
+        "usermeta": {
+          "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
+          "type": "object"
+        },
+        "view": {
+          "$ref": "#/definitions/ViewBackground",
+          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
+        },
+        "width": {
+          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "layer"
       ],
       "type": "object"
     },
@@ -10929,6 +11863,10 @@
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
+          "type": "number"
+        },
         "config": {
           "$ref": "#/definitions/Config",
           "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
@@ -10946,8 +11884,15 @@
           "type": "string"
         },
         "facet": {
-          "$ref": "#/definitions/FacetMapping",
-          "description": "An object that describes mappings between `row` and `column` channels and their field definitions."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FacetFieldDef"
+            },
+            {
+              "$ref": "#/definitions/FacetMapping"
+            }
+          ],
+          "description": "Definition for how to facet the data.  One of:\n1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)\n2) [An object that maps `row` and `column` channels to their field definitions](https://vega.github.io/vega-lite/docs/facet.html#mapping)"
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -10959,7 +11904,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for facets."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "anyOf": [
@@ -10970,7 +11915,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "spec": {
           "anyOf": [
@@ -11028,6 +11973,9 @@
           "$ref": "#/definitions/TopLevelRepeatSpec"
         },
         {
+          "$ref": "#/definitions/TopLevelConcatSpec"
+        },
+        {
           "$ref": "#/definitions/TopLevelVConcatSpec"
         },
         {
@@ -11044,6 +11992,17 @@
           "format": "uri",
           "type": "string"
         },
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<LayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
         "autosize": {
           "anyOf": [
             {
@@ -11058,6 +12017,29 @@
         "background": {
           "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
           "type": "string"
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
+        },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
+          "type": "number"
         },
         "config": {
           "$ref": "#/definitions/Config",
@@ -11099,12 +12081,27 @@
           "$ref": "#/definitions/Projection",
           "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
         },
+        "resolve": {
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
         "selection": {
           "additionalProperties": {
             "$ref": "#/definitions/SelectionDef"
           },
           "description": "A key-value mapping between selection names and definitions.",
           "type": "object"
+        },
+        "spacing": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/RowCol<number>"
+            }
+          ],
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "title": {
           "anyOf": [
@@ -11239,6 +12236,10 @@
         "geojson"
       ],
       "type": "string"
+    },
+    "UnitSpec": {
+      "$ref": "#/definitions/GenericUnitSpec<Encoding,AnyMark>",
+      "description": "A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types)."
     },
     "UrlData": {
       "additionalProperties": false,
@@ -11582,7 +12583,10 @@
         },
         "fill": {
           "description": "The fill color.\n\n__Default value:__ `undefined`",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -11598,7 +12602,10 @@
         },
         "stroke": {
           "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -11654,7 +12661,10 @@
         },
         "fill": {
           "description": "The fill color.\n\n__Default value:__ `undefined`",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -11674,7 +12684,10 @@
         },
         "stroke": {
           "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",

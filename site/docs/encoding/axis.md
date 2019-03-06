@@ -123,7 +123,7 @@ Axis configuration defines default settings for axes. Properties defined under t
 
 Additional property blocks can target more specific axis types based on the orientation (`"axisX"`, `"axisY"`, `"axisLeft"`, `"axisTop"`, etc.) or band scale type (`"axisBand"`). For example, properties defined under the `"axisBand"` property will only apply to axes visualizing `"band"` scales. If multiple axis config blocks apply to a single axis, type-based options take precedence over orientation-based options, which in turn take precedence over general options.
 
-An axis configuration supports all [axis properties](#properties) except `position`, `orient`, `format`, `tickCount`, `title`, `values`, and `zindex`.
+An axis configuration supports all [axis properties](#properties) except `position`, `orient`, `format`, `tickCount`, `values`, and `zindex`.
 
 The `shortTimeLabels` property is also available for the general axis config (`config.axis`), but not for specific axis config (e.g., `config.axisX`).
 

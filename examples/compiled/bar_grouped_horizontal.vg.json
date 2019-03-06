@@ -38,7 +38,7 @@
     }
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 10,
     "offset": {"rowTitle": 10},
     "columns": 1,
     "bounds": "full",
@@ -67,6 +67,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}}
@@ -103,6 +104,7 @@
           "height": {"signal": "child_height"}
         }
       },
+      "signals": [{"name": "height", "update": "child_height"}],
       "marks": [
         {
           "name": "child_marks",
@@ -166,7 +168,6 @@
   ],
   "config": {
     "axis": {"domainWidth": 1},
-    "axisY": {"minExtent": 30},
     "style": {"cell": {"stroke": "transparent"}}
   }
 }

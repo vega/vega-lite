@@ -26,12 +26,7 @@
     {"name": "grid_Displacement"},
     {"name": "grid_Acceleration"}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 1,
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
@@ -654,6 +649,5 @@
       "nice": true,
       "zero": true
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

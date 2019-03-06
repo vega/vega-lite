@@ -24,14 +24,15 @@ import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
+import {assembleAxisSignals} from './axis/assemble';
 import {AxisIndex} from './axis/component';
-import {parseUnitAxis} from './axis/parse';
+import {parseUnitAxes} from './axis/parse';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {parseUnitLayoutSize} from './layoutsize/parse';
 import {LegendIndex} from './legend/component';
 import {normalizeMarkDef} from './mark/init';
-import {parseMarkGroup} from './mark/mark';
+import {parseMarkGroups} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
 import {ScaleIndex} from './scale/component';
@@ -47,7 +48,6 @@ import {
  * Internal model of Vega-Lite specification for the compiler.
  */
 export class UnitModel extends ModelWithField {
-  public readonly type: 'unit' = 'unit';
   public readonly markDef: MarkDef;
   public readonly encoding: Encoding<string>;
 
@@ -73,7 +73,7 @@ export class UnitModel extends ModelWithField {
     config: Config,
     public fit: boolean
   ) {
-    super(spec, parent, parentGivenName, config, repeater, undefined, spec.view);
+    super(spec, 'unit', parent, parentGivenName, config, repeater, undefined, spec.view);
 
     this.initSize({
       ...parentGivenSize,
@@ -200,24 +200,24 @@ export class UnitModel extends ModelWithField {
     parseUnitLayoutSize(this);
   }
 
-  public parseSelection() {
+  public parseSelections() {
     this.component.selection = parseUnitSelection(this, this.selection);
   }
 
   public parseMarkGroup() {
-    this.component.mark = parseMarkGroup(this);
+    this.component.mark = parseMarkGroups(this);
   }
 
-  public parseAxisAndHeader() {
-    this.component.axes = parseUnitAxis(this);
+  public parseAxesAndHeaders() {
+    this.component.axes = parseUnitAxes(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: any[]): NewSignal[] {
     return assembleTopLevelSignals(this, signals);
   }
 
-  public assembleSelectionSignals(): NewSignal[] {
-    return assembleUnitSelectionSignals(this, []);
+  public assembleSignals(): NewSignal[] {
+    return [...assembleAxisSignals(this), ...assembleUnitSelectionSignals(this, [])];
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {

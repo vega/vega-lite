@@ -5,25 +5,39 @@
   "data": [
     {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}},
     {
-      "name": "column_domain",
+      "name": "facet_domain",
       "source": "source_0",
       "transform": [{"type": "aggregate", "groupby": ["MPAA_Rating"]}]
+    },
+    {
+      "name": "facet_domain_row",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {"signal": "ceil(length(data(\"facet_domain\")) / 2)"}
+        }
+      ]
+    },
+    {
+      "name": "facet_domain_column",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {"signal": "min(length(data(\"facet_domain\")), 2)"}
+        }
+      ]
     }
   ],
   "signals": [
     {"name": "child_width", "value": 200},
     {"name": "child_height", "value": 200}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "offset": {"columnTitle": 10},
-    "columns": {"signal": "length(data('column_domain'))"},
-    "bounds": "full",
-    "align": "all"
-  },
+  "layout": {"padding": 20, "bounds": "full", "align": "all", "columns": 2},
   "marks": [
     {
-      "name": "column-title",
+      "name": "facet-title",
       "type": "group",
       "role": "column-title",
       "title": {"text": "MPAA_Rating", "offset": 10, "style": "guide-title"}
@@ -32,6 +46,7 @@
       "name": "row_header",
       "type": "group",
       "role": "row-header",
+      "from": {"data": "facet_domain_row"},
       "encode": {"update": {"height": {"signal": "child_height"}}},
       "axes": [
         {
@@ -46,25 +61,10 @@
       ]
     },
     {
-      "name": "column_header",
-      "type": "group",
-      "role": "column-header",
-      "from": {"data": "column_domain"},
-      "sort": {"field": "datum[\"MPAA_Rating\"]", "order": "ascending"},
-      "title": {
-        "text": {"signal": "''+parent[\"MPAA_Rating\"]"},
-        "offset": 10,
-        "style": "guide-label",
-        "baseline": "middle"
-      },
-      "encode": {"update": {"width": {"signal": "child_width"}}}
-    },
-    {
       "name": "column_footer",
       "type": "group",
       "role": "column-footer",
-      "from": {"data": "column_domain"},
-      "sort": {"field": "datum[\"MPAA_Rating\"]", "order": "ascending"},
+      "from": {"data": "facet_domain_column"},
       "encode": {"update": {"width": {"signal": "child_width"}}},
       "axes": [
         {
@@ -82,6 +82,13 @@
     {
       "name": "cell",
       "type": "group",
+      "title": {
+        "text": {"signal": "''+parent[\"MPAA_Rating\"]"},
+        "offset": 10,
+        "style": "guide-label",
+        "frame": "group",
+        "baseline": "middle"
+      },
       "style": "cell",
       "from": {
         "facet": {
@@ -176,6 +183,5 @@
       "nice": true,
       "zero": true
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

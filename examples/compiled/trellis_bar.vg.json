@@ -47,7 +47,7 @@
     {"name": "child_height", "value": 200}
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 20,
     "offset": {"rowTitle": 10},
     "columns": 1,
     "bounds": "full",
@@ -76,6 +76,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
@@ -202,6 +203,5 @@
       "title": "gender",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

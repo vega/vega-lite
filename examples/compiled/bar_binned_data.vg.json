@@ -39,7 +39,7 @@
             "signal": "{\"bin_start\": format(datum[\"bin_start\"], \"\"), \"bin_end\": format(datum[\"bin_end\"], \"\"), \"count\": format(datum[\"count\"], \"\")}"
           },
           "x2": {"scale": "x", "field": "bin_start", "offset": 1},
-          "x": {"scale": "x", "field": "bin_end", "offset": 0},
+          "x": {"scale": "x", "field": "bin_end"},
           "y": {"scale": "y", "field": "count"},
           "y2": {"scale": "y", "value": 0}
         }
@@ -97,6 +97,5 @@
       "ticks": false,
       "zindex": 0
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

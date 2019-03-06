@@ -171,7 +171,7 @@ describe('Mark: Point', () => {
       }),
       selection: {test: {type: 'single'}}
     });
-    model.parseSelection();
+    model.parseSelections();
     const props = point.encodeEntry(model);
 
     it('should have one condition for color with scale for "yield"', () => {
@@ -188,7 +188,7 @@ describe('Mark: Point', () => {
         color: {condition: {test: 'true', field: 'yield', type: 'quantitative'}}
       })
     });
-    model.parseSelection();
+    model.parseSelections();
     const props = point.encodeEntry(model);
 
     it('should have one condition for color with scale for "yield"', () => {

@@ -1,21 +1,23 @@
-import {COLUMN, ROW} from '../channel';
+import {isArray} from 'vega-util';
+import {COLUMN, FACET, ROW} from '../channel';
 import {boxPlotNormalizer} from '../compositemark/boxplot';
 import {errorBandNormalizer} from '../compositemark/errorband';
 import {errorBarNormalizer} from '../compositemark/errorbar';
 import {channelHasField, Encoding} from '../encoding';
 import * as log from '../log';
 import {Projection} from '../projection';
-import {ExtendedLayerSpec, ExtendedUnitSpec, FacetedExtendedUnitSpec, GenericSpec} from '../spec';
-import {NormalizedFacetSpec} from '../spec/facet';
+import {ExtendedLayerSpec, FacetedUnitSpec, GenericSpec, UnitSpec} from '../spec';
+import {GenericFacetSpec, isFacetMapping, NormalizedFacetSpec} from '../spec/facet';
 import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer';
 import {SpecMapper} from '../spec/map';
+import {GenericRepeatSpec} from '../spec/repeat';
 import {isUnitSpec, NormalizedUnitSpec} from '../spec/unit';
-import {keys} from '../util';
+import {keys, omit} from '../util';
 import {NonFacetUnitNormalizer, NormalizerParams} from './base';
 import {PathOverlayNormalizer} from './pathoverlay';
 import {RuleForRangedLineNormalizer} from './ruleforrangedline';
 
-export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedExtendedUnitSpec, ExtendedLayerSpec> {
+export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec, ExtendedLayerSpec> {
   private nonFacetUnitNormalizers: NonFacetUnitNormalizer<any>[] = [
     boxPlotNormalizer,
     errorBarNormalizer,
@@ -24,13 +26,14 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedExtended
     new RuleForRangedLineNormalizer()
   ];
 
-  public map(spec: GenericSpec<FacetedExtendedUnitSpec, ExtendedLayerSpec>, params: NormalizerParams) {
+  public map(spec: GenericSpec<FacetedUnitSpec, ExtendedLayerSpec>, params: NormalizerParams) {
     // Special handling for a faceted unit spec as it can return a facet spec, not just a layer or unit spec like a normal unit spec.
     if (isUnitSpec(spec)) {
       const hasRow = channelHasField(spec.encoding, ROW);
       const hasColumn = channelHasField(spec.encoding, COLUMN);
+      const hasFacet = channelHasField(spec.encoding, FACET);
 
-      if (hasRow || hasColumn) {
+      if (hasRow || hasColumn || hasFacet) {
         return this.mapFacetedUnit(spec, params);
       }
     }
@@ -39,7 +42,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedExtended
   }
 
   // This is for normalizing non-facet unit
-  public mapUnit(spec: ExtendedUnitSpec, params: NormalizerParams): NormalizedUnitSpec | NormalizedLayerSpec {
+  public mapUnit(spec: UnitSpec, params: NormalizerParams): NormalizedUnitSpec | NormalizedLayerSpec {
     const {parentEncoding, parentProjection} = params;
     if (parentEncoding || parentProjection) {
       return this.mapUnitWithParentEncodingOrProjection(spec, params);
@@ -56,8 +59,41 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedExtended
     return spec as NormalizedUnitSpec;
   }
 
+  protected mapRepeat(
+    spec: GenericRepeatSpec<UnitSpec, ExtendedLayerSpec>,
+    params: NormalizerParams
+  ): GenericRepeatSpec<NormalizedUnitSpec, NormalizedLayerSpec> {
+    const {repeat} = spec;
+
+    if (!isArray(repeat) && spec.columns) {
+      // is repeat with row/column
+      spec = omit(spec, ['columns']);
+      log.warn(log.message.columnsNotSupportByRowCol('repeat'));
+    }
+
+    return {
+      ...spec,
+      spec: this.map(spec.spec, params)
+    };
+  }
+
+  protected mapFacet(
+    spec: GenericFacetSpec<UnitSpec, ExtendedLayerSpec>,
+    params: NormalizerParams
+  ): GenericFacetSpec<NormalizedUnitSpec, NormalizedLayerSpec> {
+    const {facet} = spec;
+
+    if (isFacetMapping(facet) && spec.columns) {
+      // is facet with row/column
+      spec = omit(spec, ['columns']);
+      log.warn(log.message.columnsNotSupportByRowCol('facet'));
+    }
+
+    return super.mapFacet(spec, params);
+  }
+
   private mapUnitWithParentEncodingOrProjection(
-    spec: FacetedExtendedUnitSpec,
+    spec: FacetedUnitSpec,
     params: NormalizerParams
   ): NormalizedUnitSpec | NormalizedLayerSpec {
     const {encoding, projection} = spec;
@@ -74,20 +110,29 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedExtended
     );
   }
 
-  private mapFacetedUnit(spec: FacetedExtendedUnitSpec, params: NormalizerParams): NormalizedFacetSpec {
+  private mapFacetedUnit(spec: FacetedUnitSpec, params: NormalizerParams): NormalizedFacetSpec {
     // New encoding in the inside spec should not contain row / column
     // as row/column should be moved to facet
-    const {row, column, ...encoding} = spec.encoding;
+    const {row, column, facet, ...encoding} = spec.encoding;
 
     // Mark and encoding should be moved into the inner spec
     const {mark, width, projection, height, selection, encoding: _, ...outerSpec} = spec;
 
+    if (facet && (row || column)) {
+      log.warn(log.message.facetChannelDropped([...(row ? [ROW] : []), ...(column ? [COLUMN] : [])]));
+    }
+
     return {
       ...outerSpec,
-      facet: {
-        ...(row ? {row} : {}),
-        ...(column ? {column} : {})
-      },
+
+      // row / column has higher precedence than facet
+      facet:
+        row || column
+          ? {
+              ...(row ? {row} : {}),
+              ...(column ? {column} : {})
+            }
+          : facet,
       spec: this.mapUnit(
         {
           ...(projection ? {projection} : {}),

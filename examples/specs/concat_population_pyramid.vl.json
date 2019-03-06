@@ -6,6 +6,7 @@
     {"filter": "datum.year == 2000"},
     {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
   ],
+  "spacing": 10,
   "hconcat": [{
     "transform": [{
       "filter": {"field": "gender", "equal": "Female"}
@@ -30,6 +31,7 @@
     }
   }, {
     "width": 20,
+    "view": {"stroke": null},
     "mark": {
       "type": "text",
       "align": "center"

@@ -346,7 +346,7 @@
       "type": "path",
       "from": {"data": "marks"},
       "encode": {
-        "enter": {
+        "update": {
           "fill": {"value": "transparent"},
           "strokeWidth": {"value": 0.35},
           "stroke": {"value": "transparent"},
@@ -472,6 +472,5 @@
       "ticks": false,
       "zindex": 0
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

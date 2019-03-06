@@ -53,7 +53,7 @@
             "signal": "{\"IMDB_Rating (binned)\": format(datum[\"bin_IMDB_Rating\"], \"\"), \"bin_IMDB_Rating_end\": format(datum[\"bin_IMDB_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x2": {"scale": "x", "field": "bin_IMDB_Rating", "offset": 1},
-          "x": {"scale": "x", "field": "bin_IMDB_Rating_end", "offset": 0},
+          "x": {"scale": "x", "field": "bin_IMDB_Rating_end"},
           "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }
@@ -114,6 +114,5 @@
       "ticks": false,
       "zindex": 0
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

@@ -4,7 +4,8 @@ import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec';
 import {flatten, keys} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
-import {parseLayerAxis} from './axis/parse';
+import {assembleAxisSignals} from './axis/assemble';
+import {parseLayerAxes} from './axis/parse';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {parseLayerLayoutSize} from './layoutsize/parse';
@@ -15,10 +16,8 @@ import {assembleLayerSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
 
 export class LayerModel extends Model {
-  public readonly type: 'layer' = 'layer';
-
   // HACK: This should be (LayerModel | UnitModel)[], but setting the correct type leads to weird error.
-  // So I'm just putting generic Model for now.
+  // So I'm just putting generic Model for now
   public readonly children: Model[];
 
   constructor(
@@ -30,7 +29,7 @@ export class LayerModel extends Model {
     config: Config,
     fit: boolean
   ) {
-    super(spec, parent, parentGivenName, config, repeater, spec.resolve, spec.view);
+    super(spec, 'layer', parent, parentGivenName, config, repeater, spec.resolve, spec.view);
 
     const layoutSize = {
       ...parentGivenSize,
@@ -64,13 +63,13 @@ export class LayerModel extends Model {
     parseLayerLayoutSize(this);
   }
 
-  public parseSelection() {
+  public parseSelections() {
     // Merge selections up the hierarchy so that they may be referenced
     // across unit specs. Persist their definitions within each child
     // to assemble signals which remain within output Vega unit groups.
     this.component.selection = {};
     for (const child of this.children) {
-      child.parseSelection();
+      child.parseSelections();
       keys(child.component.selection).forEach(key => {
         this.component.selection[key] = child.component.selection[key];
       });
@@ -83,8 +82,8 @@ export class LayerModel extends Model {
     }
   }
 
-  public parseAxisAndHeader() {
-    parseLayerAxis(this);
+  public parseAxesAndHeaders() {
+    parseLayerAxes(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[] {
@@ -92,10 +91,10 @@ export class LayerModel extends Model {
   }
 
   // TODO: Support same named selections across children.
-  public assembleSelectionSignals(): NewSignal[] {
+  public assembleSignals(): NewSignal[] {
     return this.children.reduce((signals, child) => {
-      return signals.concat(child.assembleSelectionSignals());
-    }, []);
+      return signals.concat(child.assembleSignals());
+    }, assembleAxisSignals(this));
   }
 
   public assembleLayoutSignals(): NewSignal[] {

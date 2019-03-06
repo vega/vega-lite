@@ -126,7 +126,7 @@
       "type": "path",
       "from": {"data": "layer_1_marks"},
       "encode": {
-        "enter": {
+        "update": {
           "fill": {"value": "transparent"},
           "strokeWidth": {"value": 0.35},
           "stroke": {"value": "transparent"},
@@ -271,8 +271,5 @@
       "title": "symbol"
     }
   ],
-  "config": {
-    "axisY": {"minExtent": 30},
-    "style": {"text": {"align": "right", "dx": -5, "dy": 5}}
-  }
+  "config": {"style": {"text": {"align": "right", "dx": -5, "dy": 5}}}
 }

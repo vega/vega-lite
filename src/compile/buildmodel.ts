@@ -1,7 +1,7 @@
 import {Config} from '../config';
 import * as log from '../log';
 import {
-  isConcatSpec,
+  isAnyConcatSpec,
   isFacetSpec,
   isLayerSpec,
   isRepeatSpec,
@@ -42,7 +42,7 @@ export function buildModel(
     return new RepeatModel(spec, parent, parentGivenName, repeater, config);
   }
 
-  if (isConcatSpec(spec)) {
+  if (isAnyConcatSpec(spec)) {
     return new ConcatModel(spec, parent, parentGivenName, repeater, config);
   }
 

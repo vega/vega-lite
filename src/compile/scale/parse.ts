@@ -20,7 +20,7 @@ import {parseScaleDomain} from './domain';
 import {parseScaleProperty, parseScaleRange} from './properties';
 import {scaleType} from './type';
 
-export function parseScale(model: Model) {
+export function parseScales(model: Model) {
   parseScaleCore(model);
   parseScaleDomain(model);
   for (const prop of NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES) {

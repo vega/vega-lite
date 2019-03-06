@@ -1,5 +1,12 @@
 import * as log from '../log';
-import {GenericHConcatSpec, GenericVConcatSpec, isHConcatSpec, isVConcatSpec} from './concat';
+import {
+  GenericConcatSpec,
+  GenericHConcatSpec,
+  GenericVConcatSpec,
+  isConcatSpec,
+  isHConcatSpec,
+  isVConcatSpec
+} from './concat';
 import {GenericFacetSpec, isFacetSpec} from './facet';
 import {GenericSpec} from './index';
 import {GenericLayerSpec, isLayerSpec} from './layer';
@@ -21,6 +28,8 @@ export abstract class SpecMapper<
       return this.mapHConcat(spec, params);
     } else if (isVConcatSpec(spec)) {
       return this.mapVConcat(spec, params);
+    } else if (isConcatSpec(spec)) {
+      return this.mapConcat(spec, params);
     } else {
       return this.mapLayerOrUnit(spec, params);
     }
@@ -55,6 +64,15 @@ export abstract class SpecMapper<
     return {
       ...spec,
       vconcat: spec.vconcat.map(subspec => this.map(subspec, params))
+    };
+  }
+
+  protected mapConcat(spec: GenericConcatSpec<UI, LI>, params: P): GenericConcatSpec<UO, GenericLayerSpec<UO>> {
+    const {concat, ...rest} = spec;
+
+    return {
+      ...rest,
+      concat: concat.map(subspec => this.map(subspec, params))
     };
   }
 

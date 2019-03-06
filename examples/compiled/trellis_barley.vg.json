@@ -6,7 +6,7 @@
   "data": [
     {"name": "source_0", "url": "data/barley.json", "format": {"type": "json"}},
     {
-      "name": "trellis_barley_row_domain",
+      "name": "trellis_barley_facet_domain",
       "source": "source_0",
       "transform": [
         {
@@ -15,6 +15,30 @@
           "fields": ["yield"],
           "ops": ["median"],
           "as": ["median_yield"]
+        }
+      ]
+    },
+    {
+      "name": "trellis_barley_facet_domain_row",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {
+            "signal": "ceil(length(data(\"trellis_barley_facet_domain\")) / 2)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "trellis_barley_facet_domain_column",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {
+            "signal": "min(length(data(\"trellis_barley_facet_domain\")), 2)"
+          }
         }
       ]
     },
@@ -40,38 +64,19 @@
       "update": "bandspace(domain('trellis_barley_y').length, 1, 0.5) * trellis_barley_y_step"
     }
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "offset": {"rowTitle": 10},
-    "columns": 1,
-    "bounds": "full",
-    "align": "all"
-  },
+  "layout": {"padding": 20, "bounds": "full", "align": "all", "columns": 2},
   "marks": [
     {
-      "name": "row-title",
+      "name": "facet-title",
       "type": "group",
-      "role": "row-title",
-      "title": {
-        "text": "site",
-        "offset": 10,
-        "orient": "left",
-        "style": "guide-title"
-      }
+      "role": "column-title",
+      "title": {"text": "site", "offset": 10, "style": "guide-title"}
     },
     {
       "name": "trellis_barley_row_header",
       "type": "group",
       "role": "row-header",
-      "from": {"data": "trellis_barley_row_domain"},
-      "sort": {"field": "datum[\"median_yield\"]", "order": "ascending"},
-      "title": {
-        "text": {"signal": "''+parent[\"site\"]"},
-        "offset": 10,
-        "orient": "left",
-        "style": "guide-label",
-        "baseline": "middle"
-      },
+      "from": {"data": "trellis_barley_facet_domain_row"},
       "encode": {
         "update": {"height": {"signal": "trellis_barley_child_height"}}
       },
@@ -90,6 +95,7 @@
       "name": "trellis_barley_column_footer",
       "type": "group",
       "role": "column-footer",
+      "from": {"data": "trellis_barley_facet_domain_column"},
       "encode": {"update": {"width": {"signal": "trellis_barley_child_width"}}},
       "axes": [
         {
@@ -107,6 +113,13 @@
     {
       "name": "trellis_barley_cell",
       "type": "group",
+      "title": {
+        "text": {"signal": "''+parent[\"site\"]"},
+        "offset": 10,
+        "style": "guide-label",
+        "frame": "group",
+        "baseline": "middle"
+      },
       "style": "cell",
       "from": {
         "facet": {
@@ -170,7 +183,13 @@
               "tooltip": {
                 "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"year\": ''+datum[\"year\"]}"
               },
-              "x": {"scale": "trellis_barley_x", "field": "median_yield"},
+              "x": [
+                {
+                  "test": "datum[\"median_yield\"] === null || isNaN(datum[\"median_yield\"])",
+                  "value": 0
+                },
+                {"scale": "trellis_barley_x", "field": "median_yield"}
+              ],
               "y": {"scale": "trellis_barley_y", "field": "variety"}
             }
           }
@@ -230,6 +249,5 @@
       "title": "year",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

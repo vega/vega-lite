@@ -1,0 +1,411 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Two horizonally concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature.",
+  "autosize": "pad",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/weather.csv",
+      "format": {"type": "csv"},
+      "transform": [{"type": "filter", "expr": "datum.location === 'Seattle'"}]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "extent",
+          "field": "temp_min",
+          "signal": "concat_2_bin_maxbins_10_temp_min_extent"
+        },
+        {
+          "type": "bin",
+          "field": "temp_min",
+          "as": ["bin_maxbins_10_temp_min", "bin_maxbins_10_temp_min_end"],
+          "signal": "concat_2_bin_maxbins_10_temp_min_bins",
+          "maxbins": 10,
+          "extent": {"signal": "concat_2_bin_maxbins_10_temp_min_extent"}
+        },
+        {
+          "type": "extent",
+          "field": "temp_max",
+          "signal": "concat_2_bin_maxbins_10_temp_max_extent"
+        },
+        {
+          "type": "bin",
+          "field": "temp_max",
+          "as": ["bin_maxbins_10_temp_max", "bin_maxbins_10_temp_max_end"],
+          "signal": "concat_2_bin_maxbins_10_temp_max_bins",
+          "maxbins": 10,
+          "extent": {"signal": "concat_2_bin_maxbins_10_temp_max_extent"}
+        },
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_10_temp_min",
+            "bin_maxbins_10_temp_min_end",
+            "bin_maxbins_10_temp_max",
+            "bin_maxbins_10_temp_max_end"
+          ],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
+        {
+          "type": "formula",
+          "as": "month_date",
+          "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["month_date"],
+          "ops": ["median", "mean"],
+          "fields": ["precipitation", "precipitation"],
+          "as": ["median_precipitation", "mean_precipitation"]
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "concat_0_x_step", "value": 20},
+    {
+      "name": "concat_0_width",
+      "update": "bandspace(domain('concat_0_x').length, 0.1, 0.05) * concat_0_x_step"
+    },
+    {"name": "concat_0_height", "value": 200},
+    {"name": "concat_1_x_step", "value": 20},
+    {
+      "name": "concat_1_width",
+      "update": "bandspace(domain('concat_1_x').length, 0.1, 0.05) * concat_1_x_step"
+    },
+    {"name": "concat_1_height", "value": 200},
+    {"name": "concat_2_width", "value": 200},
+    {"name": "concat_2_height", "value": 200}
+  ],
+  "layout": {"padding": 20, "bounds": "full", "align": "each", "columns": 2},
+  "marks": [
+    {
+      "type": "group",
+      "name": "concat_0_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "concat_0_width"},
+          "height": {"signal": "concat_0_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "concat_0_marks",
+          "type": "rect",
+          "style": ["bar"],
+          "from": {"data": "data_1"},
+          "encode": {
+            "update": {
+              "fill": [
+                {
+                  "test": "datum[\"mean_precipitation\"] === null || isNaN(datum[\"mean_precipitation\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
+              "tooltip": {
+                "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\")}"
+              },
+              "x": {"scale": "concat_0_x", "field": "month_date"},
+              "width": {"scale": "concat_0_x", "band": true},
+              "y": {"scale": "concat_0_y", "field": "mean_precipitation"},
+              "y2": {"scale": "concat_0_y", "value": 0}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "date (month)",
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "labelOverlap": true,
+          "encode": {
+            "labels": {
+              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+            }
+          },
+          "zindex": 1
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Mean of precipitation",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "gridScale": "concat_0_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "concat_1_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "concat_1_width"},
+          "height": {"signal": "concat_1_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "concat_1_marks",
+          "type": "rect",
+          "style": ["bar"],
+          "from": {"data": "data_1"},
+          "encode": {
+            "update": {
+              "fill": [
+                {
+                  "test": "datum[\"median_precipitation\"] === null || isNaN(datum[\"median_precipitation\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
+              "tooltip": {
+                "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Median of precipitation\": format(datum[\"median_precipitation\"], \"\")}"
+              },
+              "x": {"scale": "concat_1_x", "field": "month_date"},
+              "width": {"scale": "concat_1_x", "band": true},
+              "y": {"scale": "concat_1_y", "field": "median_precipitation"},
+              "y2": {"scale": "concat_1_y", "value": 0}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_1_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "date (month)",
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "labelOverlap": true,
+          "encode": {
+            "labels": {
+              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+            }
+          },
+          "zindex": 1
+        },
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Median of precipitation",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "gridScale": "concat_1_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "concat_2_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "concat_2_width"},
+          "height": {"signal": "concat_2_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "concat_2_marks",
+          "type": "symbol",
+          "style": ["point"],
+          "from": {"data": "data_0"},
+          "encode": {
+            "update": {
+              "fill": [
+                {
+                  "test": "datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) || datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) || datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
+              "tooltip": {
+                "signal": "{\"temp_min (binned)\": datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_min\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_min_end\"], \"\"), \"temp_max (binned)\": datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_max\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_max_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
+              },
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"])",
+                  "value": 0
+                },
+                {
+                  "signal": "scale(\"concat_2_x\", (datum[\"bin_maxbins_10_temp_min\"] + datum[\"bin_maxbins_10_temp_min_end\"]) / 2)"
+                }
+              ],
+              "y": [
+                {
+                  "test": "datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"])",
+                  "field": {"group": "height"}
+                },
+                {
+                  "signal": "scale(\"concat_2_y\", (datum[\"bin_maxbins_10_temp_max\"] + datum[\"bin_maxbins_10_temp_max_end\"]) / 2)"
+                }
+              ],
+              "size": {"scale": "size", "field": "__count"}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_2_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "temp_min (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_2_width/10)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_2_y",
+          "orient": "left",
+          "grid": false,
+          "title": "temp_max (binned)",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_2_height/10)"},
+          "zindex": 1
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "size",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "__count"},
+      "range": [
+        0,
+        {
+          "signal": "pow(0.95 * min(concat_2_width / ((concat_2_bin_maxbins_10_temp_min_bins.stop - concat_2_bin_maxbins_10_temp_min_bins.start) / concat_2_bin_maxbins_10_temp_min_bins.step), concat_2_height / ((concat_2_bin_maxbins_10_temp_max_bins.stop - concat_2_bin_maxbins_10_temp_max_bins.start) / concat_2_bin_maxbins_10_temp_max_bins.step)), 2)"
+        }
+      ],
+      "zero": true
+    },
+    {
+      "name": "concat_0_x",
+      "type": "band",
+      "domain": {"data": "data_1", "field": "month_date", "sort": true},
+      "range": {"step": {"signal": "concat_0_x_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "concat_0_y",
+      "type": "linear",
+      "domain": {"data": "data_1", "field": "mean_precipitation"},
+      "range": [{"signal": "concat_0_height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "concat_1_x",
+      "type": "band",
+      "domain": {"data": "data_1", "field": "month_date", "sort": true},
+      "range": {"step": {"signal": "concat_1_x_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "concat_1_y",
+      "type": "linear",
+      "domain": {"data": "data_1", "field": "median_precipitation"},
+      "range": [{"signal": "concat_1_height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "concat_2_x",
+      "type": "linear",
+      "domain": {
+        "signal": "[concat_2_bin_maxbins_10_temp_min_bins.start, concat_2_bin_maxbins_10_temp_min_bins.stop]"
+      },
+      "range": [0, {"signal": "concat_2_width"}],
+      "bins": {"signal": "concat_2_bin_maxbins_10_temp_min_bins"},
+      "zero": false
+    },
+    {
+      "name": "concat_2_y",
+      "type": "linear",
+      "domain": {
+        "signal": "[concat_2_bin_maxbins_10_temp_max_bins.start, concat_2_bin_maxbins_10_temp_max_bins.stop]"
+      },
+      "range": [{"signal": "concat_2_height"}, 0],
+      "bins": {"signal": "concat_2_bin_maxbins_10_temp_max_bins"},
+      "zero": false
+    }
+  ],
+  "legends": [
+    {
+      "size": "size",
+      "gradientLength": {"signal": "clamp(concat_2_height, 64, 200)"},
+      "title": "Count of Records",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "transparent"},
+            "stroke": {"value": "#4c78a8"}
+          }
+        }
+      }
+    }
+  ]
+}

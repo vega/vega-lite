@@ -127,8 +127,5 @@
       "fill": "color"
     }
   ],
-  "config": {
-    "axisY": {"minExtent": 30},
-    "style": {"text": {"baseline": "middle"}}
-  }
+  "config": {"style": {"text": {"baseline": "middle"}}}
 }

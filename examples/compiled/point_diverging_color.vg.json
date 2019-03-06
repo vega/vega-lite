@@ -121,6 +121,5 @@
       "title": "Weight_in_lbs",
       "encode": {"gradient": {"update": {"opacity": {"value": 0.7}}}}
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

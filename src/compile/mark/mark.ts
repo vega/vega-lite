@@ -34,7 +34,7 @@ const markCompiler: {[m in Mark]: MarkCompiler} = {
   trail
 };
 
-export function parseMarkGroup(model: UnitModel): any[] {
+export function parseMarkGroups(model: UnitModel): any[] {
   if (contains([LINE, AREA, TRAIL], model.mark)) {
     return parsePathMark(model);
   } else {

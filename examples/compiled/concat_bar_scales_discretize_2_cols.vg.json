@@ -1,0 +1,309 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Horizontally concatenated charts that show different types of discretizing scales.",
+  "autosize": "pad",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"a": "A", "b": 28},
+        {"a": "B", "b": 55},
+        {"a": "C", "b": 43},
+        {"a": "D", "b": 91},
+        {"a": "E", "b": 81},
+        {"a": "F", "b": 53},
+        {"a": "G", "b": 19},
+        {"a": "H", "b": 87},
+        {"a": "I", "b": 52}
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "concat_0_width", "value": 20},
+    {"name": "concat_0_y_step", "value": 20},
+    {
+      "name": "concat_0_height",
+      "update": "bandspace(domain('concat_0_y').length, 1, 0.5) * concat_0_y_step"
+    },
+    {"name": "concat_1_width", "value": 20},
+    {"name": "concat_1_y_step", "value": 20},
+    {
+      "name": "concat_1_height",
+      "update": "bandspace(domain('concat_1_y').length, 1, 0.5) * concat_1_y_step"
+    },
+    {"name": "concat_2_width", "value": 20},
+    {"name": "concat_2_y_step", "value": 20},
+    {
+      "name": "concat_2_height",
+      "update": "bandspace(domain('concat_2_y').length, 1, 0.5) * concat_2_y_step"
+    }
+  ],
+  "layout": {"padding": 20, "bounds": "full", "align": "each", "columns": 2},
+  "marks": [
+    {
+      "type": "group",
+      "name": "concat_0_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "concat_0_width"},
+          "height": {"signal": "concat_0_height"}
+        }
+      },
+      "signals": [{"name": "width", "update": "concat_0_width"}],
+      "marks": [
+        {
+          "name": "concat_0_marks",
+          "type": "symbol",
+          "style": ["circle"],
+          "from": {"data": "source_0"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 0.7},
+              "fill": [
+                {
+                  "test": "datum[\"b\"] === null || isNaN(datum[\"b\"])",
+                  "value": null
+                },
+                {"scale": "concat_0_color", "field": "b"}
+              ],
+              "tooltip": {
+                "signal": "{\"b\": ''+datum[\"b\"], \"Quantize\": format(datum[\"b\"], \"\")}"
+              },
+              "x": {"signal": "concat_0_width", "mult": 0.5},
+              "y": {"scale": "concat_0_y", "field": "b"},
+              "size": {"scale": "concat_0_size", "field": "b"},
+              "shape": {"value": "circle"}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "grid": false,
+          "domain": false,
+          "ticks": false,
+          "zindex": 1
+        }
+      ],
+      "legends": [
+        {
+          "title": "Quantize",
+          "fill": "concat_0_color",
+          "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
+          "encode": {
+            "symbols": {
+              "update": {
+                "shape": {"value": "circle"},
+                "opacity": {"value": 0.7}
+              }
+            }
+          },
+          "size": "concat_0_size"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "concat_1_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "concat_1_width"},
+          "height": {"signal": "concat_1_height"}
+        }
+      },
+      "signals": [{"name": "width", "update": "concat_1_width"}],
+      "marks": [
+        {
+          "name": "concat_1_marks",
+          "type": "symbol",
+          "style": ["circle"],
+          "from": {"data": "source_0"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 0.7},
+              "fill": [
+                {
+                  "test": "datum[\"b\"] === null || isNaN(datum[\"b\"])",
+                  "value": null
+                },
+                {"scale": "concat_1_color", "field": "b"}
+              ],
+              "tooltip": {
+                "signal": "{\"b\": ''+datum[\"b\"], \"Quantile\": format(datum[\"b\"], \"d\")}"
+              },
+              "x": {"signal": "concat_1_width", "mult": 0.5},
+              "y": {"scale": "concat_1_y", "field": "b"},
+              "size": {"scale": "concat_1_size", "field": "b"},
+              "shape": {"value": "circle"}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "grid": false,
+          "domain": false,
+          "ticks": false,
+          "zindex": 1
+        }
+      ],
+      "legends": [
+        {
+          "format": "d",
+          "title": "Quantile",
+          "fill": "concat_1_color",
+          "gradientLength": {"signal": "clamp(concat_1_height, 64, 200)"},
+          "labelOverlap": "greedy",
+          "encode": {
+            "symbols": {
+              "update": {
+                "shape": {"value": "circle"},
+                "opacity": {"value": 0.7}
+              }
+            }
+          },
+          "size": "concat_1_size"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "concat_2_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "concat_2_width"},
+          "height": {"signal": "concat_2_height"}
+        }
+      },
+      "signals": [{"name": "width", "update": "concat_2_width"}],
+      "marks": [
+        {
+          "name": "concat_2_marks",
+          "type": "symbol",
+          "style": ["circle"],
+          "from": {"data": "source_0"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 0.7},
+              "fill": [
+                {
+                  "test": "datum[\"b\"] === null || isNaN(datum[\"b\"])",
+                  "value": null
+                },
+                {"scale": "concat_2_color", "field": "b"}
+              ],
+              "tooltip": {
+                "signal": "{\"b\": ''+datum[\"b\"], \"Threshold\": format(datum[\"b\"], \"\")}"
+              },
+              "x": {"signal": "concat_2_width", "mult": 0.5},
+              "y": {"scale": "concat_2_y", "field": "b"},
+              "size": {"scale": "concat_2_size", "field": "b"},
+              "shape": {"value": "circle"}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_2_y",
+          "orient": "left",
+          "grid": false,
+          "domain": false,
+          "ticks": false,
+          "zindex": 1
+        }
+      ],
+      "legends": [
+        {
+          "title": "Threshold",
+          "fill": "concat_2_color",
+          "gradientLength": {"signal": "clamp(concat_2_height, 64, 200)"},
+          "labelOverlap": "greedy",
+          "encode": {
+            "symbols": {
+              "update": {
+                "shape": {"value": "circle"},
+                "opacity": {"value": 0.7}
+              }
+            }
+          },
+          "size": "concat_2_size"
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "concat_0_y",
+      "type": "point",
+      "domain": {"data": "source_0", "field": "b"},
+      "range": {"step": {"signal": "concat_0_y_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "concat_0_color",
+      "type": "quantize",
+      "domain": {"data": "source_0", "field": "b"},
+      "range": "ramp",
+      "zero": true,
+      "interpolate": "hcl"
+    },
+    {
+      "name": "concat_0_size",
+      "type": "quantize",
+      "domain": {"data": "source_0", "field": "b"},
+      "range": {
+        "signal": "sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))"
+      },
+      "zero": false
+    },
+    {
+      "name": "concat_1_y",
+      "type": "point",
+      "domain": {"data": "source_0", "field": "b"},
+      "range": {"step": {"signal": "concat_1_y_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "concat_1_color",
+      "type": "quantile",
+      "domain": {"data": "source_0", "field": "b"},
+      "range": {"scheme": "magma"},
+      "interpolate": "hcl"
+    },
+    {
+      "name": "concat_1_size",
+      "type": "quantile",
+      "domain": {"data": "source_0", "field": "b"},
+      "range": [80, 160, 240, 320, 400]
+    },
+    {
+      "name": "concat_2_y",
+      "type": "point",
+      "domain": {"data": "source_0", "field": "b"},
+      "range": {"step": {"signal": "concat_2_y_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "concat_2_color",
+      "type": "threshold",
+      "domain": [30, 70],
+      "range": {"scheme": "viridis"},
+      "interpolate": "hcl"
+    },
+    {
+      "name": "concat_2_size",
+      "type": "threshold",
+      "domain": [30, 70],
+      "range": [80, 200, 320]
+    }
+  ]
+}

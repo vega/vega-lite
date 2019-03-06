@@ -42,6 +42,7 @@
       ]
     }
   ],
+  "signals": [{"name": "height", "update": "height"}],
   "marks": [
     {
       "name": "pathgroup",
@@ -145,6 +146,5 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "series"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }
