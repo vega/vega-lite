@@ -9,3 +9,9 @@ export class LegendComponent extends Split<VgLegend> {}
 export type LegendComponentIndex = {[P in NonPositionScaleChannel]?: LegendComponent};
 
 export type LegendIndex = {[P in NonPositionScaleChannel]?: Legend};
+
+export interface InteractiveSelections {
+  name: string;
+  store: string;
+  fields: string[];
+}

@@ -1,7 +1,6 @@
 import {identity, isArray, SignalRef, stringValue} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
-import {forEachSelection, LEGEND, MODIFY, SELECTION_DOMAIN, STORE, VL_SELECTION_RESOLVE} from '.';
-import {COLOR, OPACITY, SHAPE, SIZE} from '../../channel';
+import {forEachSelection, LEGEND, MODIFY, SELECTION_DOMAIN, STORE, TUPLE, VL_SELECTION_RESOLVE} from '.';
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
@@ -10,6 +9,8 @@ import {VgData} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
+import {InteractiveSelections} from '../legend/component';
+import {interactiveLegendExists} from '../legend/parse';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {forEachTransform} from './transforms/transforms';
@@ -40,6 +41,41 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
     signals.push({
       name: name + MODIFY,
       update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
+    });
+  });
+
+  const selections = interactiveLegendExists(model);
+  if (selections.length) {
+    return assembleInteractiveLegendSignals(model, signals, selections);
+  }
+
+  return signals;
+}
+
+function assembleInteractiveLegendSignals(
+  model: UnitModel,
+  signals: any[],
+  selections: InteractiveSelections[]
+): any[] {
+  let selectionFields: string[] = [].concat.apply([], selections.map(s => s.fields)); // Flatten array
+  selectionFields = selectionFields.filter((v, i, a) => a.indexOf(v) === i); // Get unique elements
+
+  selections.forEach(selection => {
+    const name = selection.name;
+    const signal = signals.filter(s => s.name === name + TUPLE)[0];
+
+    signal.on[0].update = selectionFields.reduce((expression, field) => {
+      return `item().mark.name !== 'symbols_${field}${LEGEND}' && item().mark.name !== 'labels_${field}${LEGEND}' && ${expression}`;
+    }, signal.on[0].update);
+
+    const eventExpression = selection.fields.reduce((expression, field) => {
+      return `@symbols_${field}${LEGEND}:click, @labels_${field}${LEGEND}:click, ${expression}`;
+    }, '');
+
+    // Replace values to accomodate multiple fields selection
+    signal.on.push({
+      events: eventExpression,
+      update: `{unit: "", fields: ${name}_tuple_fields, values: [datum.value]}`
     });
   });
 
@@ -137,61 +173,6 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
   }
 
   return marks;
-}
-
-// Todo: Add more specific type checking
-// Todo: Remove unecessary arguments
-export function assembleLegendSelection(channel: string, fieldDef: any, part: string, value: any, model: Model) {
-  switch (channel) {
-    case COLOR:
-    case OPACITY:
-    case SIZE:
-    case SHAPE:
-      break;
-    default:
-      return {};
-  }
-
-  let hasLegend = false;
-  let field;
-  let store;
-  let selection;
-  forEachSelection(model, selCmpt => {
-    selection = varName(fieldDef.selection);
-    const selfield = selCmpt['fields'];
-    if (selection === selCmpt.name && selfield.length === 1 && selfield[0] === fieldDef.field) {
-      hasLegend = true;
-      field = fieldDef.field;
-      store = stringValue(selection + STORE);
-    }
-  });
-  // Todo: Remove hardcoded values
-  if (hasLegend) {
-    let newValue;
-    if (part === 'symbols' && channel === 'opacity') {
-      newValue = value;
-      if (newValue.stroke.value === 'transparent') {
-        newValue.stroke = [
-          {test: `vlSelectionTest(${store}, {${field}: datum.value})`, value: '#000000'},
-          {value: 'transparent'}
-        ];
-      } else {
-        newValue.stroke = [
-          {test: `length(data(${store}))) && vlSelectionTest(${store}, {${field}: datum.value})`, value: '#000000'},
-          newValue.stroke
-        ];
-      }
-    } else {
-      newValue = value ? value : {opacity: {value: 0.9}};
-      // To do : Add tests
-      newValue.opacity = [
-        {test: `!(length(data(${store}))) || vlSelectionTest(${store}, {${field}: datum.value})`, value: 0.9},
-        {value: 0.25}
-      ];
-    }
-    return {name: `${part}_${selection}${LEGEND}`, interactive: true, update: newValue};
-  }
-  return {};
 }
 
 export function assembleSelectionPredicate(

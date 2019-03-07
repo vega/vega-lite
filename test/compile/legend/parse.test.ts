@@ -4,6 +4,7 @@ import {assert} from 'chai';
 import {COLOR, FILLOPACITY, OPACITY, SHAPE, SIZE, STROKEOPACITY, STROKEWIDTH} from '../../../src/channel';
 import * as legendParse from '../../../src/compile/legend/parse';
 import {parseLegend} from '../../../src/compile/legend/parse';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {isFieldDef} from '../../../src/fielddef';
 import {NormalizedUnitSpec} from '../../../src/spec';
 import {GEOJSON} from '../../../src/type';
@@ -124,6 +125,50 @@ describe('compile/legend', () => {
         assert.isObject(def);
         assert.equal(def.title, 'a');
       });
+    });
+  });
+
+  describe('interactiveLegendExists()', () => {
+    const spec: NormalizedUnitSpec = {
+      description: 'Drag the sliders to highlight points.',
+      data: {url: 'data/cars.json'},
+      mark: 'point',
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        color: {field: 'Origin', type: 'nominal'},
+        size: {field: 'Cylinders', type: 'nominal'}
+      }
+    };
+    const model = parseUnitModelWithScale(spec);
+    it('should correctly determine if interactive legend is present', () => {
+      model.component.selection = parseUnitSelection(model, {
+        sel1: {type: 'multi', fields: ['Origin']},
+        sel2: {type: 'multi', fields: ['Cylinders']}
+      });
+      const def = legendParse.interactiveLegendExists(model);
+      assert.isTrue(Boolean(def.length));
+    });
+    it('should correctly determine if interactive legend is present', () => {
+      model.component.selection = parseUnitSelection(model, {
+        sel1: {type: 'multi', fields: ['Origin', 'Cylinders']}
+      });
+      const def = legendParse.interactiveLegendExists(model);
+      assert.isTrue(Boolean(def.length));
+    });
+    it('should correctly determine if interactive legend is present', () => {
+      model.component.selection = parseUnitSelection(model, {
+        sel1: {type: 'multi', fields: ['Origin']}
+      });
+      const def = legendParse.interactiveLegendExists(model);
+      assert.isTrue(Boolean(def.length));
+    });
+    it('should correctly determine if interactive legend is present', () => {
+      model.component.selection = parseUnitSelection(model, {
+        sel1: {type: 'multi', fields: ['Origin', 'Cylinders', 'Year']}
+      });
+      const def = legendParse.interactiveLegendExists(model);
+      assert.isFalse(Boolean(def.length));
     });
   });
 
