@@ -352,7 +352,7 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
 }
 
 /**
- * Merge bin nodes and move bin nodes up through forks but stop at filters and parse.
+ * Merge bin nodes and move bin nodes up through forks but stop at filters and parse as we want them to stay before the bin node.
  */
 export class MergeBins extends BottomUpOptimizer {
   constructor(private model: Model) {
