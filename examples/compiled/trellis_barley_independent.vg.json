@@ -6,43 +6,6 @@
   "data": [
     {"name": "source_0", "url": "data/barley.json", "format": {"type": "json"}},
     {
-      "name": "trellis_barley_facet_domain",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["site"],
-          "fields": ["yield"],
-          "ops": ["median"],
-          "as": ["median_yield"]
-        }
-      ]
-    },
-    {
-      "name": "trellis_barley_facet_domain_row",
-      "transform": [
-        {
-          "type": "sequence",
-          "start": 0,
-          "stop": {
-            "signal": "ceil(length(data(\"trellis_barley_facet_domain\")) / 2)"
-          }
-        }
-      ]
-    },
-    {
-      "name": "trellis_barley_facet_domain_column",
-      "transform": [
-        {
-          "type": "sequence",
-          "start": 0,
-          "stop": {
-            "signal": "min(length(data(\"trellis_barley_facet_domain\")), 2)"
-          }
-        }
-      ]
-    },
-    {
       "name": "data_1",
       "source": "source_0",
       "transform": [
@@ -71,44 +34,6 @@
       "type": "group",
       "role": "column-title",
       "title": {"text": "site", "offset": 10, "style": "guide-title"}
-    },
-    {
-      "name": "trellis_barley_row_header",
-      "type": "group",
-      "role": "row-header",
-      "from": {"data": "trellis_barley_facet_domain_row"},
-      "encode": {
-        "update": {"height": {"signal": "trellis_barley_child_height"}}
-      },
-      "axes": [
-        {
-          "scale": "trellis_barley_y",
-          "orient": "left",
-          "grid": false,
-          "title": "variety",
-          "labelOverlap": true,
-          "zindex": 1
-        }
-      ]
-    },
-    {
-      "name": "trellis_barley_column_footer",
-      "type": "group",
-      "role": "column-footer",
-      "from": {"data": "trellis_barley_facet_domain_column"},
-      "encode": {"update": {"width": {"signal": "trellis_barley_child_width"}}},
-      "axes": [
-        {
-          "scale": "trellis_barley_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "Median of yield",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
-          "zindex": 1
-        }
-      ]
     },
     {
       "name": "trellis_barley_cell",
@@ -199,6 +124,16 @@
         {
           "scale": "trellis_barley_x",
           "orient": "bottom",
+          "grid": false,
+          "title": "Median of yield",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "trellis_barley_x",
+          "orient": "bottom",
           "gridScale": "trellis_barley_y",
           "grid": true,
           "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
@@ -208,6 +143,14 @@
           "minExtent": 0,
           "ticks": false,
           "zindex": 0
+        },
+        {
+          "scale": "trellis_barley_y",
+          "orient": "left",
+          "grid": false,
+          "title": "variety",
+          "labelOverlap": true,
+          "zindex": 1
         }
       ]
     }

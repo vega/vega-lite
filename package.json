@@ -98,7 +98,7 @@
     "tslint": "5.13.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.3.3333",
-    "vega-cli": "^5.0.0-rc5",
+    "vega-cli": "^5.0.0",
     "vega-datasets": "^1.22.0",
     "vega-embed": "^3.29.1",
     "vega-tooltip": "^0.16.0",
@@ -115,7 +115,7 @@
     "tslib": "^1.9.3",
     "vega-event-selector": "^2.0.0",
     "vega-expression": "^2.5.0",
-    "vega-typings": "0.5.3",
+    "vega-typings": "0.5.5",
     "vega-util": "^1.9.0",
     "yargs": "^13.2.1"
   },

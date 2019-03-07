@@ -3,7 +3,32 @@
   "autosize": "pad",
   "padding": 5,
   "data": [
-    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}}
+    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}},
+    {
+      "name": "facet_domain",
+      "source": "source_0",
+      "transform": [{"type": "aggregate", "groupby": ["MPAA_Rating"]}]
+    },
+    {
+      "name": "facet_domain_row",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {"signal": "ceil(length(data(\"facet_domain\")) / 2)"}
+        }
+      ]
+    },
+    {
+      "name": "facet_domain_column",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {"signal": "min(length(data(\"facet_domain\")), 2)"}
+        }
+      ]
+    }
   ],
   "signals": [
     {"name": "child_width", "value": 200},
@@ -16,6 +41,43 @@
       "type": "group",
       "role": "column-title",
       "title": {"text": "MPAA_Rating", "offset": 10, "style": "guide-title"}
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {"data": "facet_domain_row"},
+      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "US_DVD_Sales",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "zindex": 1
+        }
+      ]
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "from": {"data": "facet_domain_column"},
+      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Worldwide_Gross",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_width/40)"},
+          "zindex": 1
+        }
+      ]
     },
     {
       "name": "cell",
@@ -78,16 +140,6 @@
         {
           "scale": "x",
           "orient": "bottom",
-          "grid": false,
-          "title": "Worldwide_Gross",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "x",
-          "orient": "bottom",
           "gridScale": "y",
           "grid": true,
           "tickCount": {"signal": "ceil(child_width/40)"},
@@ -97,15 +149,6 @@
           "minExtent": 0,
           "ticks": false,
           "zindex": 0
-        },
-        {
-          "scale": "y",
-          "orient": "left",
-          "grid": false,
-          "title": "US_DVD_Sales",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
         },
         {
           "scale": "y",

@@ -9,7 +9,7 @@ import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
 import {isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
-import {extractCompositionLayout, GenericCompositionLayout, SpecType, ViewBackground} from '../spec/base';
+import {extractCompositionLayout, GenericCompositionLayoutWithColumns, SpecType, ViewBackground} from '../spec/base';
 import {NormalizedSpec} from '../spec/index';
 import {extractTitleConfig, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
@@ -143,7 +143,7 @@ export abstract class Model {
 
   public readonly data: Data;
   public readonly transforms: Transform[];
-  public readonly layout: GenericCompositionLayout;
+  public readonly layout: GenericCompositionLayoutWithColumns;
 
   /** Name map for scales, which can be renamed by a model's parent. */
   protected scaleNameMap: NameMapInterface;
