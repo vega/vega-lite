@@ -1,6 +1,5 @@
 import {SignalRef} from 'vega';
 import {isArray, isNumber} from 'vega-util';
-import {isBinning} from '../../bin';
 import {
   Channel,
   COLOR,
@@ -19,7 +18,6 @@ import {
   Y
 } from '../../channel';
 import {Config} from '../../config';
-import {vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {
@@ -103,7 +101,6 @@ function getRangeStep(model: UnitModel, channel: 'x' | 'y'): number | SignalRef 
   }
 
   const scaleType = scaleCmpt.get('type');
-  const fieldDef = model.fieldDef(channel);
 
   if (hasDiscreteDomain(scaleType)) {
     const range = scaleCmpt && scaleCmpt.get('range');
@@ -111,20 +108,6 @@ function getRangeStep(model: UnitModel, channel: 'x' | 'y'): number | SignalRef 
       return range.step;
     }
     // TODO: support the case without range step
-  } else if (fieldDef && fieldDef.bin) {
-    if (isBinning(fieldDef.bin)) {
-      const binSignal = model.getName(vgField(fieldDef, {suffix: 'bins'}));
-
-      // TODO: extract this to be range step signal
-      const sizeType = getSizeType(channel);
-      const sizeSignal = model.getName(sizeType);
-      return new SignalRefWrapper(() => {
-        const signalName = model.getSignalName(binSignal);
-        const binCount = `(${signalName}.stop - ${signalName}.start) / ${signalName}.step`;
-        return `${model.getSignalName(sizeSignal)} / (${binCount})`;
-      });
-    }
-    // TODO: handle binned case
   }
   return undefined;
 }
