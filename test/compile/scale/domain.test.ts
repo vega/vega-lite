@@ -126,7 +126,7 @@ describe('compile/scale', () => {
               y: fieldDef
             }
           });
-          const domain = testParseDomainForChannel(model, 'y')[0] as SignalRefWrapper;
+          const domain = testParseDomainForChannel(model, 'y')[0] as SignalRef;
           expect(domain.signal).toEqual('[bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop]');
 
           expect(localLogger.warns[0]).toEqual(log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
