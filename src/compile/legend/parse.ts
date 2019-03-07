@@ -25,9 +25,6 @@ import {InteractiveSelections, LegendComponent, LegendComponentIndex} from './co
 import * as encode from './encode';
 import * as properties from './properties';
 
-// For MVP, later remove global variable and create new types
-export let selectionOnChannel: any = [];
-
 export function parseLegend(model: Model) {
   if (isUnitModel(model)) {
     model.component.legends = parseUnitLegend(model);
@@ -95,15 +92,6 @@ function isExplicit<T extends string | number | object | boolean>(
 export function parseLegendForChannel(model: UnitModel, channel: NonPositionScaleChannel): LegendComponent {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
-
-  // Refactor for better alternative
-  if (fieldDef['selection']) {
-    selectionOnChannel.push({
-      selection: varName(fieldDef['selection']),
-      field: fieldDef.field,
-      channel
-    });
-  }
 
   const legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
 
