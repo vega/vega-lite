@@ -367,7 +367,7 @@ describe('Interval Selections', () => {
         name: 'thr_ee_tuple',
         on: [
           {
-            events: [{signal: 'thr_ee_Horsepower'}, {signal: 'thr_ee_Miles_per_Gallon'}],
+            events: [{signal: 'thr_ee_Horsepower || thr_ee_Miles_per_Gallon'}],
             update:
               'thr_ee_Horsepower && thr_ee_Miles_per_Gallon ? {unit: "", fields: thr_ee_tuple_fields, values: [thr_ee_Horsepower,thr_ee_Miles_per_Gallon]} : null'
           }
@@ -392,7 +392,7 @@ describe('Interval Selections', () => {
         init: '{unit: "", fields: five_tuple_fields, values: [[50, 60], [23, 54]]}',
         on: [
           {
-            events: [{signal: 'five_Horsepower'}, {signal: 'five_Miles_per_Gallon'}],
+            events: [{signal: 'five_Horsepower || five_Miles_per_Gallon'}],
             update:
               'five_Horsepower && five_Miles_per_Gallon ? {unit: "", fields: five_tuple_fields, values: [five_Horsepower,five_Miles_per_Gallon]} : null'
           }
