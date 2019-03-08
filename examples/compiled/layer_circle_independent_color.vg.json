@@ -193,12 +193,7 @@
           {"data": "data_0", "field": "__count"}
         ]
       },
-      "range": [
-        0,
-        {
-          "signal": "pow(0.95 * min(width / ((layer_1_bin_maxbins_10_Acceleration_bins.stop - layer_1_bin_maxbins_10_Acceleration_bins.start) / layer_1_bin_maxbins_10_Acceleration_bins.step), height / ((layer_1_bin_maxbins_10_Horsepower_bins.stop - layer_1_bin_maxbins_10_Horsepower_bins.start) / layer_1_bin_maxbins_10_Horsepower_bins.step)), 2)"
-        }
-      ],
+      "range": [0, 361],
       "zero": true
     }
   ],
