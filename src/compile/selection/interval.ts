@@ -85,7 +85,7 @@ const interval: SelectionCompiler<'interval'> = {
       ...(init ? {init: `{${update}: ${assembleInit(init)}}`} : {}),
       on: [
         {
-          events: dataSignals.map(t => ({signal: t})),
+          events: [{signal: dataSignals.join(' || ')}], // Prevents double invocation, see https://github.com/vega/vega#1672.
           update: dataSignals.join(' && ') + ` ? {${update}: [${dataSignals}]} : null`
         }
       ]
@@ -223,7 +223,7 @@ function channelSignals(
         },
         {
           name: dname,
-          ...(init ? {init: assembleInit(init)} : {}),
+          ...(init ? {init: assembleInit(init)} : {}), // Cannot be `value` as `init` may require datetime exprs.
           on: [
             {
               events: {signal: vname},

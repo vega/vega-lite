@@ -202,8 +202,7 @@
           "on": [
             {
               "events": [
-                {"signal": "brush_Horsepower"},
-                {"signal": "brush_Miles_per_Gallon"}
+                {"signal": "brush_Horsepower || brush_Miles_per_Gallon"}
               ],
               "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
             }

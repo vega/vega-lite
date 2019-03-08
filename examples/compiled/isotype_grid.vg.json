@@ -242,7 +242,7 @@
       "name": "highlight_tuple",
       "on": [
         {
-          "events": [{"signal": "highlight_col"}, {"signal": "highlight_row"}],
+          "events": [{"signal": "highlight_col || highlight_row"}],
           "update": "highlight_col && highlight_row ? {unit: \"\", fields: highlight_tuple_fields, values: [highlight_col,highlight_row]} : null"
         }
       ]

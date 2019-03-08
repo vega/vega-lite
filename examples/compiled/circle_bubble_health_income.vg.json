@@ -53,7 +53,7 @@
       "name": "view_tuple",
       "on": [
         {
-          "events": [{"signal": "view_income"}, {"signal": "view_health"}],
+          "events": [{"signal": "view_income || view_health"}],
           "update": "view_income && view_health ? {unit: \"\", fields: view_tuple_fields, values: [view_income,view_health]} : null"
         }
       ]
