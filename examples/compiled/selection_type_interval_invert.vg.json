@@ -144,7 +144,7 @@
       "name": "pts_tuple",
       "on": [
         {
-          "events": [{"signal": "pts_Cylinders"}, {"signal": "pts_Origin"}],
+          "events": [{"signal": "pts_Cylinders || pts_Origin"}],
           "update": "pts_Cylinders && pts_Origin ? {unit: \"\", fields: pts_tuple_fields, values: [pts_Cylinders,pts_Origin]} : null"
         }
       ]
