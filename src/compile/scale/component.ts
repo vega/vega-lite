@@ -1,4 +1,4 @@
-import {isArray} from 'vega';
+import {isArray} from 'vega-util';
 import {ScaleChannel} from '../../channel';
 import {Scale, ScaleType} from '../../scale';
 import {Omit, some} from '../../util';
