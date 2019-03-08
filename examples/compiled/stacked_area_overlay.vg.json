@@ -201,6 +201,7 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "gender",
       "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
+      "symbolType": "stroke",
       "stroke": "color"
     }
   ]

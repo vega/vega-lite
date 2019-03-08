@@ -179,6 +179,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "stroke",
       "title": "symbol"
     }
   ]

@@ -615,6 +615,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "stroke",
       "title": "location",
       "encode": {"symbols": {"update": {"opacity": {"value": 0.2}}}}
     }
