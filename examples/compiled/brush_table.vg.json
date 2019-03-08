@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Drag out a rectangular brush to highlight points.",
+  "description": "Drag a rectangular brush to show (first 20) selected points in a table.",
   "autosize": "pad",
   "padding": 5,
   "data": [
@@ -27,7 +27,16 @@
         {
           "type": "filter",
           "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
-        }
+        },
+        {
+          "type": "window",
+          "params": [null],
+          "as": ["rank"],
+          "ops": ["rank"],
+          "fields": [null],
+          "sort": {"field": [], "order": []}
+        },
+        {"type": "filter", "expr": "datum[\"rank\"]<20"}
       ]
     }
   ],
@@ -620,6 +629,5 @@
       "range": {"step": {"signal": "concat_1_concat_2_y_step"}},
       "padding": 0.5
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }
