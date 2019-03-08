@@ -1,21 +1,14 @@
 import {stringValue} from 'vega-util';
-import {X, Y} from '../../channel';
+import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
+import {ScaleChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {hasContinuousDomain} from '../../scale';
+import {SelectionInitArray} from '../../selection';
 import {keys} from '../../util';
 import {EventStream} from '../../vega.schema';
 import {UnitModel} from '../unit';
-import {
-  assembleInit,
-  channelSignalName,
-  positionalProjections,
-  SelectionCompiler,
-  SelectionComponent,
-  STORE,
-  TUPLE,
-  unitName
-} from './selection';
-import {TUPLE_FIELDS} from './transforms/project';
+import {assembleInit} from './assemble';
+import {SelectionProjection, TUPLE_FIELDS} from './transforms/project';
 import scales from './transforms/scales';
 
 export const BRUSH = '_brush';
@@ -24,7 +17,7 @@ export const SCALE_TRIGGER = '_scale_trigger';
 const interval: SelectionCompiler<'interval'> = {
   signals: (model, selCmpt) => {
     const name = selCmpt.name;
-    const fieldsSg = name + TUPLE + TUPLE_FIELDS;
+    const fieldsSg = name + TUPLE_FIELDS;
     const hasScales = scales.has(selCmpt);
     const signals: any[] = [];
     const dataSignals: string[] = [];
@@ -40,17 +33,18 @@ const interval: SelectionCompiler<'interval'> = {
       });
     }
 
-    selCmpt.project.forEach((p, i) => {
-      const channel = p.channel;
+    selCmpt.project.forEach((proj, i) => {
+      const channel = proj.channel;
       if (channel !== X && channel !== Y) {
         warn('Interval selections only support x and y encoding channels.');
         return;
       }
 
-      const cs = channelSignals(model, selCmpt, channel, i);
-      const dname = channelSignalName(selCmpt, channel, 'data');
-      const vname = channelSignalName(selCmpt, channel, 'visual');
-      const scaleStr = stringValue(model.scaleName(channel));
+      const init = selCmpt.init ? selCmpt.init[i] : null;
+      const cs = channelSignals(model, selCmpt, proj, init);
+      const dname = proj.signals.data;
+      const vname = proj.signals.visual;
+      const scaleName = stringValue(model.scaleName(channel));
       const scaleType = model.getScaleComponent(channel).get('type');
       const toNum = hasContinuousDomain(scaleType) ? '+' : '';
 
@@ -61,8 +55,8 @@ const interval: SelectionCompiler<'interval'> = {
         scaleName: model.scaleName(channel),
         expr:
           `(!isArray(${dname}) || ` +
-          `(${toNum}invert(${scaleStr}, ${vname})[0] === ${toNum}${dname}[0] && ` +
-          `${toNum}invert(${scaleStr}, ${vname})[1] === ${toNum}${dname}[1]))`
+          `(${toNum}invert(${scaleName}, ${vname})[0] === ${toNum}${dname}[0] && ` +
+          `${toNum}invert(${scaleName}, ${vname})[1] === ${toNum}${dname}[1]))`
       });
     });
 
@@ -99,7 +93,7 @@ const interval: SelectionCompiler<'interval'> = {
 
   marks: (model, selCmpt, marks) => {
     const name = selCmpt.name;
-    const {xi, yi} = positionalProjections(selCmpt);
+    const {x, y} = selCmpt.project.has;
     const store = `data(${stringValue(selCmpt.name + STORE)})`;
 
     // Do not add a brush if we're binding to scales.
@@ -108,10 +102,10 @@ const interval: SelectionCompiler<'interval'> = {
     }
 
     const update: any = {
-      x: xi !== null ? {signal: `${name}_x[0]`} : {value: 0},
-      y: yi !== null ? {signal: `${name}_y[0]`} : {value: 0},
-      x2: xi !== null ? {signal: `${name}_x[1]`} : {field: {group: 'width'}},
-      y2: yi !== null ? {signal: `${name}_y[1]`} : {field: {group: 'height'}}
+      x: x !== undefined ? {signal: `${name}_x[0]`} : {value: 0},
+      y: y !== undefined ? {signal: `${name}_y[0]`} : {value: 0},
+      x2: x !== undefined ? {signal: `${name}_x[1]`} : {field: {group: 'width'}},
+      y2: y !== undefined ? {signal: `${name}_y[1]`} : {field: {group: 'height'}}
     };
 
     // If the selection is resolved to global, only a single interval is in
@@ -137,8 +131,8 @@ const interval: SelectionCompiler<'interval'> = {
     const vgStroke = keys(stroke).reduce((def, k) => {
       def[k] = [
         {
-          test: [xi !== null && `${name}_x[0] !== ${name}_x[1]`, yi != null && `${name}_y[0] !== ${name}_y[1]`]
-            .filter(x => x)
+          test: [x !== undefined && `${name}_x[0] !== ${name}_x[1]`, y !== undefined && `${name}_y[0] !== ${name}_y[1]`]
+            .filter(t => t)
             .join(' && '),
           value: stroke[k]
         },
@@ -183,15 +177,15 @@ export default interval;
 function channelSignals(
   model: UnitModel,
   selCmpt: SelectionComponent<'interval'>,
-  channel: 'x' | 'y',
-  idx: number
+  proj: SelectionProjection,
+  init?: SelectionInitArray
 ): any {
-  const vname = channelSignalName(selCmpt, channel, 'visual');
-  const dname = channelSignalName(selCmpt, channel, 'data');
-  const init = selCmpt.init && selCmpt.init[idx];
+  const channel = proj.channel;
+  const vname = proj.signals.visual;
+  const dname = proj.signals.data;
   const hasScales = scales.has(selCmpt);
   const scaleName = stringValue(model.scaleName(channel));
-  const scale = model.getScaleComponent(channel);
+  const scale = model.getScaleComponent(channel as ScaleChannel);
   const scaleType = scale ? scale.get('type') : undefined;
   const scaled = (str: string) => `scale(${scaleName}, ${str})`;
   const size = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;

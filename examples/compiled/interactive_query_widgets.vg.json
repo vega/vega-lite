@@ -69,8 +69,8 @@
     {
       "name": "CylYr_tuple_fields",
       "value": [
-        {"field": "Cylinders", "type": "E"},
-        {"field": "Year", "type": "E"}
+        {"type": "E", "field": "Cylinders"},
+        {"type": "E", "field": "Year"}
       ]
     },
     {

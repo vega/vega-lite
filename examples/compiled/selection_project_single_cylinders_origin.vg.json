@@ -31,8 +31,8 @@
     {
       "name": "pts_tuple_fields",
       "value": [
-        {"field": "Cylinders", "type": "E"},
-        {"field": "Origin", "type": "E"}
+        {"type": "E", "field": "Cylinders"},
+        {"type": "E", "field": "Origin"}
       ]
     },
     {"name": "pts_modify", "update": "modify(\"pts_store\", pts_tuple, true)"}
