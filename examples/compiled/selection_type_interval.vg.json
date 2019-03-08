@@ -394,6 +394,5 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Count of Records"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

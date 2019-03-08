@@ -89,8 +89,7 @@
         "text": {"signal": "''+parent[\"Series\"]"},
         "offset": 10,
         "style": "guide-label",
-        "frame": "group",
-        "baseline": "middle"
+        "frame": "group"
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
     },
@@ -561,6 +560,5 @@
       "zero": false,
       "nice": true
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

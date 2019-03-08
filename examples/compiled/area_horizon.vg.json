@@ -158,8 +158,5 @@
       "zindex": 0
     }
   ],
-  "config": {
-    "axisY": {"minExtent": 30},
-    "style": {"area": {"interpolate": "monotone"}}
-  }
+  "config": {"style": {"area": {"interpolate": "monotone"}}}
 }

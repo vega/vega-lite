@@ -83,8 +83,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
-        "frame": "group",
-        "baseline": "middle"
+        "frame": "group"
       },
       "encode": {
         "update": {"height": {"signal": "trellis_barley_child_height"}}
@@ -297,6 +296,5 @@
       "title": "year",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

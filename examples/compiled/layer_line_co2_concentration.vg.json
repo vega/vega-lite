@@ -24,10 +24,7 @@
           "as": ["first_date", "last_date"],
           "ops": ["first_value", "last_value"],
           "fields": ["scaled_date", "scaled_date"],
-          "sort": {
-            "field": ["scaled_date", "scaled_date"],
-            "order": ["ascending", "ascending"]
-          },
+          "sort": {"field": ["scaled_date"], "order": ["ascending"]},
           "groupby": ["decade"],
           "frame": [null, null]
         },
@@ -246,8 +243,5 @@
       "zindex": 0
     }
   ],
-  "config": {
-    "axisY": {"minExtent": 30},
-    "style": {"text": {"align": "left", "dx": 3, "dy": 1}}
-  }
+  "config": {"style": {"text": {"align": "left", "dx": 3, "dy": 1}}}
 }

@@ -258,7 +258,6 @@
       "tickColor": "#ccc",
       "title": false
     },
-    "axisY": {"minExtent": 30},
     "style": {
       "label": {
         "baseline": "middle",

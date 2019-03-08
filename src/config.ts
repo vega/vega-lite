@@ -243,7 +243,7 @@ export const defaultConfig: Config = {
 
   axis: {},
   axisX: {},
-  axisY: {minExtent: 30},
+  axisY: {},
   axisLeft: {},
   axisRight: {},
   axisTop: {},

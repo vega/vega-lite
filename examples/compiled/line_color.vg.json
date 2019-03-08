@@ -130,6 +130,5 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "symbol"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

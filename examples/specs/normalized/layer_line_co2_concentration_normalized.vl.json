@@ -18,10 +18,7 @@
         {"op": "first_value", "field": "scaled_date", "as": "first_date"},
         {"op": "last_value", "field": "scaled_date", "as": "last_date"}
       ],
-      "sort": [
-        {"field": "scaled_date", "order": "ascending"},
-        {"field": "scaled_date", "order": "ascending"}
-      ],
+      "sort": [{"field": "scaled_date", "order": "ascending"}],
       "groupby": ["decade"],
       "frame": [null, null]
     },

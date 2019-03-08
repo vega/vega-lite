@@ -71,8 +71,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
-        "frame": "group",
-        "baseline": "middle"
+        "frame": "group"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}}
     },
@@ -137,6 +136,5 @@
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
       "title": "pct"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

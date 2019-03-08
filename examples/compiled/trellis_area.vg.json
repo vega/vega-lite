@@ -68,8 +68,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
-        "frame": "group",
-        "baseline": "middle"
+        "frame": "group"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
       "axes": [
@@ -183,6 +182,5 @@
       "range": "category",
       "interpolate": "hcl"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

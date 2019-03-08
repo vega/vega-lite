@@ -107,6 +107,5 @@
       "title": "Origin",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

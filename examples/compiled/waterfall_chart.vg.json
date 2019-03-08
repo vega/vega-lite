@@ -276,8 +276,5 @@
       "zindex": 0
     }
   ],
-  "config": {
-    "axisY": {"minExtent": 30},
-    "style": {"text": {"fontWeight": "bold"}}
-  }
+  "config": {"style": {"text": {"fontWeight": "bold"}}}
 }

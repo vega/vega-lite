@@ -66,6 +66,5 @@
       "labelBaseline": "middle",
       "zindex": 1
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

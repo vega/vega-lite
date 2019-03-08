@@ -55,8 +55,7 @@
         "text": {"signal": "''+parent[\"MPAA_Rating\"]"},
         "offset": 10,
         "style": "guide-label",
-        "frame": "group",
-        "baseline": "middle"
+        "frame": "group"
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
     },
@@ -177,6 +176,5 @@
       "nice": true,
       "zero": true
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

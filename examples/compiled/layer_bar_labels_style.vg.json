@@ -118,7 +118,6 @@
     }
   ],
   "config": {
-    "axisY": {"minExtent": 30},
     "style": {"label": {"align": "left", "baseline": "middle", "dx": 3}}
   }
 }

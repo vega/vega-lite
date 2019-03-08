@@ -67,8 +67,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
-        "frame": "group",
-        "baseline": "middle"
+        "frame": "group"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}}
     },
@@ -168,7 +167,6 @@
   ],
   "config": {
     "axis": {"domainWidth": 1},
-    "axisY": {"minExtent": 30},
     "style": {"cell": {"stroke": "transparent"}}
   }
 }

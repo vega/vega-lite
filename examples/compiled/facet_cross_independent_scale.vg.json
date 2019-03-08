@@ -91,8 +91,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
-        "frame": "group",
-        "baseline": "middle"
+        "frame": "group"
       },
       "encode": {
         "update": {
@@ -112,8 +111,7 @@
         "text": {"signal": "''+parent[\"c\"]"},
         "offset": 10,
         "style": "guide-label",
-        "frame": "group",
-        "baseline": "middle"
+        "frame": "group"
       },
       "encode": {
         "update": {
@@ -212,6 +210,5 @@
         }
       ]
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

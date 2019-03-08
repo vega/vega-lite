@@ -158,6 +158,5 @@
         "labels": {"update": {"text": {"signal": "'Q' + quarter(datum.value)"}}}
       }
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

@@ -80,8 +80,5 @@
       "zindex": 1
     }
   ],
-  "config": {
-    "axis": {"domain": false, "grid": false},
-    "axisY": {"minExtent": 30}
-  }
+  "config": {"axis": {"domain": false, "grid": false}}
 }
