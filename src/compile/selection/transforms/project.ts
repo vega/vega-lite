@@ -129,14 +129,17 @@ const project: TransformCompiler = {
     }
   },
 
-  signals: (model, selCmpt, signals) => {
+  signals: (model, selCmpt, allSignals) => {
     const name = selCmpt.name + TUPLE_FIELDS;
-    const hasSignal = signals.filter(s => s.name === name);
+    const hasSignal = allSignals.filter(s => s.name === name);
     return hasSignal.length
-      ? signals
-      : signals.concat({
+      ? allSignals
+      : allSignals.concat({
           name,
-          value: selCmpt.project
+          value: selCmpt.project.map(proj => {
+            const {signals, ...rest} = proj;
+            return rest;
+          })
         });
   }
 };
