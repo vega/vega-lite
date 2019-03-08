@@ -56,6 +56,7 @@ describe('extractTransforms()', () => {
     'layer_line_errorband_2d_horizontal_borders_strokedash.vl.json',
     'layer_line_errorband_ci.vl.json',
     'layer_line_errorband_pre_aggregated.vl.json',
+    'layer_line_mean_point_raw.vl.json',
     'layer_overlay.vl.json',
     'layer_point_errorbar_1d_horizontal.vl.json',
     'layer_point_errorbar_1d_vertical.vl.json',
