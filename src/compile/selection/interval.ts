@@ -85,7 +85,7 @@ const interval: SelectionCompiler<'interval'> = {
       ...(init ? {init: `{${update}: ${assembleInit(init)}}`} : {}),
       on: [
         {
-          events: [{signal: dataSignals.join(' || ')}], // Prevents double invocation, see vega/vega#1672.
+          events: [{signal: dataSignals.join(' || ')}], // Prevents double invocation, see https://github.com/vega/vega#1672.
           update: dataSignals.join(' && ') + ` ? {${update}: [${dataSignals}]} : null`
         }
       ]
