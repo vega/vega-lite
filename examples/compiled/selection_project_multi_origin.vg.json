@@ -28,7 +28,7 @@
         }
       ]
     },
-    {"name": "pts_tuple_fields", "value": [{"field": "Origin", "type": "E"}]},
+    {"name": "pts_tuple_fields", "value": [{"type": "E", "field": "Origin"}]},
     {
       "name": "pts_toggle",
       "value": false,

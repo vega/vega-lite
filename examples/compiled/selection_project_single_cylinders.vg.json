@@ -30,7 +30,7 @@
     },
     {
       "name": "pts_tuple_fields",
-      "value": [{"field": "Cylinders", "type": "E"}]
+      "value": [{"type": "E", "field": "Cylinders"}]
     },
     {"name": "pts_modify", "update": "modify(\"pts_store\", pts_tuple, true)"}
   ],

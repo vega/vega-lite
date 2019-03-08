@@ -33,7 +33,7 @@
       "name": "org_tuple",
       "update": "org_Origin !== null ? {fields: org_tuple_fields, values: [org_Origin]} : null"
     },
-    {"name": "org_tuple_fields", "value": [{"field": "Origin", "type": "E"}]},
+    {"name": "org_tuple_fields", "value": [{"type": "E", "field": "Origin"}]},
     {"name": "org_modify", "update": "modify(\"org_store\", org_tuple, true)"}
   ],
   "marks": [
