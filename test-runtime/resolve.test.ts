@@ -21,14 +21,14 @@ for (const type of selectionTypes) {
   const hits = isInterval ? hitsMaster.interval : hitsMaster.discrete;
   const fn = isInterval ? brush : pt;
 
-  describe(`${type} selections at runtime`, async () => {
+  describe(`${type} selections at runtime`, () => {
     beforeAll(async () => {
       await page.goto('http://0.0.0.0:8000/test-runtime/');
     });
 
     compositeTypes.forEach(specType => {
       const testRender = testRenderFn(page, `${type}/${specType}`);
-      describe(`in ${specType} views`, async () => {
+      describe(`in ${specType} views`, () => {
         /**
          * Loop through the views, click to add a selection instance.
          * Store size should stay constant, but unit names should vary.
