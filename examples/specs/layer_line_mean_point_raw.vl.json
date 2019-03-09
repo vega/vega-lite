@@ -1,0 +1,19 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "description": "Plot showing average data with raw values in the background.",
+  "data": {"url": "data/stocks.csv"},
+  "transform": [{"filter": "datum.symbol==='GOOG'"}],
+  "layer": [{
+    "mark": {"type": "point", "opacity": 0.3},
+    "encoding": {
+      "x": {"timeUnit":"year","field": "date", "type": "temporal"},
+      "y": {"field": "price", "type": "quantitative"}
+    }
+  }, {
+    "mark": "line",
+    "encoding": {
+      "x": {"timeUnit":"year", "field": "date", "type": "temporal"},
+      "y": {"aggregate": "mean", "field": "price", "type": "quantitative"}
+    }
+  }]
+}
