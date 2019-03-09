@@ -40,33 +40,40 @@ export function assembleTitleGroup(model: Model, channel: FacetChannel) {
 
   const {header = {}} = facetFieldDef || {};
 
-  const {titleAnchor, titleOrient} = header;
+  const {titleAnchor, titleAngle, titleOrient} = header;
 
-  const channelType = channel !== 'facet' ? channel : contains(['left', 'right'], titleOrient) ? 'row' : 'column';
+  const headerChannel = channel !== 'facet' ? channel : contains(['left', 'right'], titleOrient) ? 'row' : 'column';
 
   return {
     name: `${channel}-title`,
     type: 'group',
-    role: `${channelType}-title`,
+    role: `${headerChannel}-title`,
     title: {
       text: title,
       ...(channel === 'row' ? {orient: 'left'} : {}),
       style: 'guide-title',
-      ...titleAlign(titleAnchor),
+      ...defaultHeaderGuideBaseline(titleAngle, headerChannel),
+      ...defaultHeaderGuideAlign(headerChannel, titleAngle, titleAnchor),
       ...getHeaderProperties(config, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP)
     }
   };
 }
 
-export function titleAlign(titleAnchor: TitleAnchor) {
-  switch (titleAnchor) {
+export function defaultHeaderGuideAlign(headerChannel: HeaderChannel, angle: number, anchor: TitleAnchor = 'middle') {
+  switch (anchor) {
     case 'start':
       return {align: 'left'};
     case 'end':
       return {align: 'right'};
   }
-  // TODO: take TitleAngle into account for the "middle" case
-  return {};
+
+  const align = defaultLabelAlign(angle, headerChannel === 'row' ? 'left' : 'top');
+  return align ? {align} : {};
+}
+
+export function defaultHeaderGuideBaseline(angle: number, channel: FacetChannel) {
+  const baseline = defaultLabelBaseline(angle, channel === 'row' ? 'left' : 'top');
+  return baseline ? {baseline} : {};
 }
 
 export function assembleHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGroup[] {
@@ -80,16 +87,6 @@ export function assembleHeaderGroups(model: Model, channel: HeaderChannel): VgMa
     }
   }
   return groups;
-}
-
-export function labelAlign(angle: number, channel: FacetChannel) {
-  const align = defaultLabelAlign(angle, channel === 'row' ? 'left' : 'top');
-  return align ? {align} : {};
-}
-
-export function labelBaseline(angle: number, channel: FacetChannel) {
-  const baseline = defaultLabelBaseline(angle, channel === 'row' ? 'left' : 'top');
-  return baseline ? {baseline} : {};
 }
 
 function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): VgComparator {
@@ -114,15 +111,15 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): 
 
 export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel: FacetChannel, config: Config) {
   const {header = {}} = facetFieldDef;
-  const {format, labelAngle} = header;
-
+  const {format, labelAngle, labelAnchor, labelOrient} = header;
+  const headerChannel = channel !== 'facet' ? channel : contains(['left', 'right'], labelOrient) ? 'row' : 'column';
   return {
     text: formatSignalRef(facetFieldDef, format, 'parent', config),
     ...(channel === 'row' ? {orient: 'left'} : {}),
     style: 'guide-label',
     frame: 'group',
-    ...labelBaseline(labelAngle, channel),
-    ...labelAlign(labelAngle, channel),
+    ...defaultHeaderGuideBaseline(labelAngle, headerChannel),
+    ...defaultHeaderGuideAlign(headerChannel, labelAngle, labelAnchor),
     ...getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP)
   };
 }
