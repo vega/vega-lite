@@ -5,14 +5,14 @@ import {
   FieldDefBase,
   FieldRefOption,
   isScaleFieldDef,
-  isTimeFieldDef,
+  isTimeFormatFieldDef,
   OrderFieldDef,
   TypedFieldDef,
   vgField
 } from '../fielddef';
 import {MarkConfig, MarkDef} from '../mark';
 import {ScaleType} from '../scale';
-import {formatExpression, TimeUnit} from '../timeunit';
+import {formatExpression, getDateTimeComponents, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {getFirstDefined, stringify} from '../util';
 import {BaseMarkConfig, VgCompare, VgEncodeEntry} from '../vega.schema';
@@ -76,7 +76,8 @@ export function formatSignalRef(
   expr: 'datum' | 'parent',
   config: Config
 ) {
-  const format = numberFormat(fieldDef, specifiedFormat, config);
+  const format = numberOrTimeFormat(fieldDef, specifiedFormat, config);
+
   if (isBinning(fieldDef.bin)) {
     const startField = vgField(fieldDef, {expr});
     const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
@@ -87,13 +88,15 @@ export function formatSignalRef(
     return {
       signal: `${formatExpr(vgField(fieldDef, {expr, binSuffix: 'range'}), format)}`
     };
-  } else if (isTimeFieldDef(fieldDef)) {
+  } else if (isTimeFormatFieldDef(fieldDef)) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
       signal: timeFormatExpression(
-        vgField(fieldDef, {expr}),
+        vgField(fieldDef, {
+          expr
+        }),
         fieldDef.timeUnit,
-        specifiedFormat,
+        format,
         config.text.shortTimeLabels,
         config.timeFormat,
         isUTCScale,
@@ -101,26 +104,27 @@ export function formatSignalRef(
       )
     };
   } else {
-    return {
-      signal: `''+${vgField(fieldDef, {expr})}`
-    };
+    return {signal: `''+${vgField(fieldDef, {expr})}`};
   }
 }
 
 /**
  * Returns number format for a fieldDef
  */
-export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: string, config: Config) {
-  if (isTimeFieldDef(fieldDef)) {
-    return undefined;
-  }
-
+export function numberOrTimeFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: string, config: Config) {
   // Specified format in axis/legend has higher precedence than fieldDef.format
   if (specifiedFormat) {
     return specifiedFormat;
   }
 
-  if (fieldDef.type === QUANTITATIVE) {
+  if (isTimeFormatFieldDef(fieldDef)) {
+    const dateTimeComponents: string[] = getDateTimeComponents(
+      fieldDef.timeUnit,
+      config.axis && config.axis.shortTimeLabels
+    );
+    return dateTimeComponents ? dateTimeComponents.join(' ') : config.timeFormat;
+    // return specifiedFormat;
+  } else if (fieldDef.type === QUANTITATIVE) {
     // we only apply the default if the field is quantitative
     return config.numberFormat;
   }

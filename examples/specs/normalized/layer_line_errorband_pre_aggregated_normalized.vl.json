@@ -30,7 +30,7 @@
               "title": "Year (year)",
               "type": "temporal",
               "field": "year_Year",
-              "axis": {"format": "%Y"}
+              "axis": {"format": "%Y", "formatType": "time"}
             },
             "tooltip": [
               {"field": "upper_ci1", "type": "quantitative", "title": "ci0"},
@@ -39,7 +39,7 @@
                 "title": "Year (year)",
                 "type": "temporal",
                 "field": "year_Year",
-                "axis": {"format": "%Y"}
+                "axis": {"format": "%Y", "formatType": "time"}
               }
             ]
           }

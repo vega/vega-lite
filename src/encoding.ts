@@ -298,12 +298,13 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
 
           // Add formatting to appropriate property based on the type of channel we're processing
           const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
-          if (isNonPositionScaleChannel(channel)) {
-            newChannelDef['legend'] = {format, ...newChannelDef['legend']};
-          } else if (isPositionChannel) {
-            newChannelDef['axis'] = {format, ...newChannelDef['axis']};
-          } else if (channel === 'text' || channel === 'tooltip') {
+          if (channel === 'text' || channel === 'tooltip') {
             newChannelDef['format'] = newChannelDef['format'] || format;
+            newChannelDef['formatType'] = 'time';
+          } else if (isNonPositionScaleChannel(channel)) {
+            newChannelDef['legend'] = {format, formatType: 'time', ...newChannelDef['legend']};
+          } else if (isPositionChannel) {
+            newChannelDef['axis'] = {format, formatType: 'time', ...newChannelDef['axis']};
           }
         }
         if (!aggOp) {

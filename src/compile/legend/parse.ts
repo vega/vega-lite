@@ -11,11 +11,17 @@ import {
   STROKEOPACITY,
   STROKEWIDTH
 } from '../../channel';
-import {getTypedFieldDef, isFieldDef, title as fieldDefTitle, TypedFieldDef} from '../../fielddef';
+import {
+  getTypedFieldDef,
+  isFieldDef,
+  isTimeFormatFieldDef,
+  title as fieldDefTitle,
+  TypedFieldDef
+} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
-import {mergeTitleComponent, numberFormat} from '../common';
+import {mergeTitleComponent, numberOrTimeFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
@@ -133,8 +139,9 @@ function getProperty<K extends keyof VgLegend>(
 
   switch (property) {
     case 'format':
-      // We don't include temporal field here as we apply format in encode block
-      return numberFormat(fieldDef, legend.format, model.config);
+      return numberOrTimeFormat(fieldDef, legend.format, model.config);
+    case 'formatType':
+      return isTimeFormatFieldDef(fieldDef) ? 'time' : undefined;
     case 'title':
       return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;
 

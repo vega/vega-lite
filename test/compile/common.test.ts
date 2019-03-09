@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import {mergeTitle, numberFormat, timeFormatExpression} from '../../src/compile/common';
+import {mergeTitle, numberOrTimeFormat, timeFormatExpression} from '../../src/compile/common';
 import {defaultConfig} from '../../src/config';
 import {vgField} from '../../src/fielddef';
 import {TimeUnit} from '../../src/timeunit';
@@ -88,31 +88,26 @@ describe('Common', () => {
 
   describe('numberFormat()', () => {
     it('should use number format for quantitative scale', () => {
-      expect(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: 'd'})).toBe('d');
+      expect(numberOrTimeFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: 'd'})).toBe('d');
     });
 
     it('should use number format for ordinal and nominal data but don not use config', () => {
       for (const type of [ORDINAL, NOMINAL]) {
-        expect(numberFormat({field: 'a', type: type}, undefined, {numberFormat: 'd'})).toBeUndefined();
-        expect(numberFormat({field: 'a', type: type}, 'd', {numberFormat: 'd'})).toBe('d');
+        expect(numberOrTimeFormat({field: 'a', type: type}, undefined, {numberFormat: 'd'})).toBeUndefined();
+        expect(numberOrTimeFormat({field: 'a', type: type}, 'd', {numberFormat: 'd'})).toBe('d');
       }
     });
 
     it('should support empty number format', () => {
-      expect(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: ''})).toBe('');
+      expect(numberOrTimeFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: ''})).toBe('');
     });
 
     it('should use format if provided', () => {
-      expect(numberFormat({field: 'a', type: QUANTITATIVE}, 'a', {})).toBe('a');
+      expect(numberOrTimeFormat({field: 'a', type: QUANTITATIVE}, 'a', {})).toBe('a');
     });
 
     it('should not use number format for binned quantitative scale', () => {
-      expect(numberFormat({bin: true, field: 'a', type: QUANTITATIVE}, undefined, {})).toBeUndefined();
-    });
-
-    it('should not use number format for temporal scale', () => {
-      expect(numberFormat({bin: true, field: 'a', type: TEMPORAL}, undefined, {})).toBeUndefined();
-      expect(numberFormat({bin: true, field: 'a', type: ORDINAL, timeUnit: 'month'}, undefined, {})).toBeUndefined();
+      expect(numberOrTimeFormat({bin: true, field: 'a', type: QUANTITATIVE}, undefined, {})).toBeUndefined();
     });
   });
 

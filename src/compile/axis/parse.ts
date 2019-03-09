@@ -2,9 +2,9 @@ import {Axis as VgAxis, AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 
 import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
-import {FieldDefBase, toFieldDefBase} from '../../fielddef';
+import {FieldDefBase, isTimeFormatFieldDef, toFieldDefBase} from '../../fielddef';
 import {getFirstDefined, keys} from '../../util';
-import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
+import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberOrTimeFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
@@ -12,7 +12,6 @@ import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {AxisComponent, AxisComponentIndex, AxisComponentProps} from './component';
 import {getAxisConfig} from './config';
-import * as encode from './encode';
 import * as properties from './properties';
 
 export function parseUnitAxes(model: UnitModel): AxisComponentIndex {
@@ -256,13 +255,8 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
       const axisEncodingPart = guideEncodeEntry(axisEncoding[part] || {}, model);
 
-      const value =
-        part === 'labels'
-          ? encode.labels(model, channel, axisEncodingPart, axisComponent.get('orient'))
-          : axisEncodingPart;
-
-      if (value !== undefined && keys(value).length > 0) {
-        e[part] = {update: value};
+      if (axisEncodingPart !== undefined && keys(axisEncodingPart).length > 0) {
+        e[part] = {update: axisEncodingPart};
       }
       return e;
     },
@@ -297,8 +291,9 @@ function getProperty<K extends keyof AxisComponentProps>(
     case 'gridScale':
       return properties.gridScale(model, channel);
     case 'format':
-      // We don't include temporal field here as we apply format in encode block
-      return numberFormat(fieldDef, specifiedAxis.format, model.config);
+      return numberOrTimeFormat(fieldDef, specifiedAxis.format, model.config);
+    case 'formatType':
+      return isTimeFormatFieldDef(fieldDef) ? 'time' : undefined;
     case 'grid': {
       if (isBinned(model.fieldDef(channel).bin)) {
         return false;

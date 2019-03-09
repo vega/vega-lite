@@ -415,6 +415,14 @@
           ],
           "type": "string"
         },
+        "formatType": {
+          "description": "A type of guide formatting to be forced to.",
+          "enum": [
+            "number",
+            "time"
+          ],
+          "type": "string"
+        },
         "grid": {
           "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.",
           "type": "boolean"
@@ -2830,6 +2838,14 @@
           "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
+        "formatType": {
+          "description": "A type of formatting to be forced to.",
+          "enum": [
+            "number",
+            "time"
+          ],
+          "type": "string"
+        },
         "test": {
           "$ref": "#/definitions/LogicalOperand<Predicate>"
         },
@@ -3237,6 +3253,14 @@
         },
         "format": {
           "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "type": "string"
+        },
+        "formatType": {
+          "description": "A type of formatting to be forced to.",
+          "enum": [
+            "number",
+            "time"
+          ],
           "type": "string"
         },
         "selection": {
@@ -4993,6 +5017,14 @@
           "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
+        "formatType": {
+          "description": "A type of formatting to be forced to.",
+          "enum": [
+            "number",
+            "time"
+          ],
+          "type": "string"
+        },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
@@ -6047,6 +6079,14 @@
           ],
           "type": "string"
         },
+        "formatType": {
+          "description": "A type of guide formatting to be forced to.",
+          "enum": [
+            "number",
+            "time"
+          ],
+          "type": "string"
+        },
         "labelAngle": {
           "description": "The rotation angle of the header labels.\n\n__Default value:__ `0` for column header, `-90` for row header.",
           "maximum": 360,
@@ -6812,6 +6852,14 @@
         },
         "formatType": {
           "description": "The format type for labels (number or time).",
+          "enum": [
+            "number",
+            "time"
+          ],
+          "type": "string"
+        },
+        "formatType": {
+          "description": "A type of guide formatting to be forced to.",
           "enum": [
             "number",
             "time"
@@ -10841,6 +10889,14 @@
         },
         "format": {
           "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "type": "string"
+        },
+        "formatType": {
+          "description": "A type of formatting to be forced to.",
+          "enum": [
+            "number",
+            "time"
+          ],
           "type": "string"
         },
         "timeUnit": {

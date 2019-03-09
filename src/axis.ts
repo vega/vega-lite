@@ -290,7 +290,8 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
 
 const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
   ...COMMON_AXIS_PROPERTIES_INDEX,
-  encoding: 1
+  encoding: 1,
+  formatType: 1
 };
 
 const VG_AXIS_PROPERTIES_INDEX: Flag<keyof VgAxis> = {

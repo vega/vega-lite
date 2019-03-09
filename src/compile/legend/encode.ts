@@ -5,7 +5,7 @@ import {
   Conditional,
   FieldDefWithCondition,
   hasConditionalValueDef,
-  isTimeFieldDef,
+  isTimeFormatFieldDef,
   isValueDef,
   MarkPropFieldDef,
   TypedFieldDef,
@@ -166,7 +166,7 @@ export function labels(
 
   let out: SymbolEncodeEntry = {};
 
-  if (isTimeFieldDef(fieldDef)) {
+  if (isTimeFormatFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
     const expr = timeFormatExpression(
       'datum.value',
