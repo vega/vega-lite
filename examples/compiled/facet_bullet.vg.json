@@ -103,9 +103,9 @@
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
-        "angle": 0,
         "baseline": "middle",
-        "align": "right"
+        "align": "right",
+        "angle": 0
       },
       "encode": {"update": {"height": {"signal": "child_height"}}}
     },

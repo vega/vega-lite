@@ -75,9 +75,9 @@
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
-        "angle": -90,
         "baseline": "bottom",
-        "align": "center"
+        "align": "center",
+        "angle": -90
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
       "axes": [
