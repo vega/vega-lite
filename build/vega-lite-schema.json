@@ -530,7 +530,7 @@
         },
         "orient": {
           "$ref": "#/definitions/AxisOrient",
-          "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).\n\n__Default value:__ `\"bottom\"` for x-axes and `\"left\"` for y-axes."
+          "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y-axis oriented for the right edge of the chart).\n\n__Default value:__ `\"bottom\"` for x-axes and `\"left\"` for y-axes."
         },
         "position": {
           "description": "The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
@@ -839,6 +839,10 @@
         "minExtent": {
           "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30` for y-axis; `undefined` for x-axis.",
           "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/AxisOrient",
+          "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y-axis oriented for the right edge of the chart).\n\n__Default value:__ `\"bottom\"` for x-axes and `\"left\"` for y-axes."
         },
         "shortTimeLabels": {
           "description": "Whether month names and weekday names should be abbreviated.\n\n__Default value:__  `false`",
