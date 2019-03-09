@@ -70,7 +70,7 @@
       "name": "facet-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "site", "offset": 10, "style": "guide-title"}
+      "title": {"text": "site", "style": "guide-title", "offset": 10}
     },
     {
       "name": "trellis_barley_row_header",
@@ -115,9 +115,9 @@
       "type": "group",
       "title": {
         "text": {"signal": "''+parent[\"site\"]"},
-        "offset": 10,
         "style": "guide-label",
-        "frame": "group"
+        "frame": "group",
+        "offset": 10
       },
       "style": "cell",
       "from": {

@@ -54,7 +54,7 @@
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "gender", "offset": 10, "style": "guide-title"}
+      "title": {"text": "gender", "style": "guide-title", "offset": 10}
     },
     {
       "name": "row_header",
@@ -81,9 +81,9 @@
       "sort": {"field": "datum[\"gender\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"gender\"]"},
-        "offset": 10,
         "style": "guide-label",
-        "frame": "group"
+        "frame": "group",
+        "offset": 10
       },
       "encode": {
         "update": {

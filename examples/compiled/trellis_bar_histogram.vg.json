@@ -58,9 +58,9 @@
       "role": "row-title",
       "title": {
         "text": "Origin",
-        "offset": 10,
         "orient": "left",
-        "style": "guide-title"
+        "style": "guide-title",
+        "offset": 10
       }
     },
     {
@@ -71,10 +71,10 @@
       "sort": {"field": "datum[\"Origin\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"Origin\"]"},
-        "offset": 10,
         "orient": "left",
         "style": "guide-label",
-        "frame": "group"
+        "frame": "group",
+        "offset": 10
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
       "axes": [

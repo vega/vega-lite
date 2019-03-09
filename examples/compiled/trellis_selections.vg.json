@@ -60,7 +60,7 @@
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "Series", "offset": 10, "style": "guide-title"}
+      "title": {"text": "Series", "style": "guide-title", "offset": 10}
     },
     {
       "name": "row_header",
@@ -87,9 +87,9 @@
       "sort": {"field": "datum[\"Series\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"Series\"]"},
-        "offset": 10,
         "style": "guide-label",
-        "frame": "group"
+        "frame": "group",
+        "offset": 10
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
     },

@@ -69,16 +69,16 @@
       "role": "row-title",
       "title": {
         "text": "r",
-        "offset": 10,
         "orient": "left",
-        "style": "guide-title"
+        "style": "guide-title",
+        "offset": 10
       }
     },
     {
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "c", "offset": 10, "style": "guide-title"}
+      "title": {"text": "c", "style": "guide-title", "offset": 10}
     },
     {
       "name": "row_header",
@@ -88,10 +88,10 @@
       "sort": {"field": "datum[\"r\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"r\"]"},
-        "offset": 10,
         "orient": "left",
         "style": "guide-label",
-        "frame": "group"
+        "frame": "group",
+        "offset": 10
       },
       "encode": {
         "update": {
@@ -109,9 +109,9 @@
       "sort": {"field": "datum[\"c\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"c\"]"},
-        "offset": 10,
         "style": "guide-label",
-        "frame": "group"
+        "frame": "group",
+        "offset": 10
       },
       "encode": {
         "update": {
