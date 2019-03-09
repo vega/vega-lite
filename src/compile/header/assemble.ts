@@ -3,15 +3,15 @@
  */
 import {TitleAnchor, TitleConfig} from 'vega';
 import {isArray} from 'vega-util';
-import {FacetChannel, FACET_CHANNELS} from '../../channel';
+import {FACET_CHANNELS, FacetChannel} from '../../channel';
 import {Config} from '../../config';
 import {vgField} from '../../fielddef';
 import {
-  HeaderConfig,
   HEADER_LABEL_PROPERTIES,
   HEADER_LABEL_PROPERTIES_MAP,
   HEADER_TITLE_PROPERTIES,
-  HEADER_TITLE_PROPERTIES_MAP
+  HEADER_TITLE_PROPERTIES_MAP,
+  HeaderConfig
 } from '../../header';
 import {isSortField} from '../../sort';
 import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
@@ -23,10 +23,10 @@ import {sortArrayIndexField} from '../data/calculate';
 import {isFacetModel, Model} from '../model';
 import {getHeaderChannel} from './common';
 import {
+  HEADER_TYPES,
   HeaderChannel,
   HeaderComponent,
   HeaderType,
-  HEADER_TYPES,
   LayoutHeaderComponent,
   LayoutHeaderComponentIndex
 } from './component';
@@ -191,13 +191,19 @@ export function assembleHeaderGroup(
   return null;
 }
 
-export function getLayoutTitleBand(titleAnchor: TitleAnchor) {
-  if (titleAnchor === 'start') {
-    return 0;
-  } else if (titleAnchor === 'end') {
-    return 1;
+const LAYOUT_TITLE_BAND = {
+  column: {
+    start: 0,
+    end: 1
+  },
+  row: {
+    start: 1,
+    end: 0
   }
-  return undefined;
+};
+
+export function getLayoutTitleBand(titleAnchor: TitleAnchor, headerChannel: HeaderChannel) {
+  return LAYOUT_TITLE_BAND[headerChannel][titleAnchor];
 }
 
 export function assembleLayoutTitleBand(headerComponentIndex: LayoutHeaderComponentIndex): RowCol<number> {
@@ -207,8 +213,9 @@ export function assembleLayoutTitleBand(headerComponentIndex: LayoutHeaderCompon
     const headerComponent = headerComponentIndex[channel];
     if (headerComponent && headerComponent.facetFieldDef && headerComponent.facetFieldDef.header) {
       const {titleAnchor, titleOrient} = headerComponent.facetFieldDef.header;
-      const band = getLayoutTitleBand(titleAnchor);
+
       const headerChannel = getHeaderChannel(channel, titleOrient);
+      const band = getLayoutTitleBand(titleAnchor, headerChannel);
       if (band !== undefined) {
         titleBand[headerChannel] = band;
       }

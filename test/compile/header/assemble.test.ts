@@ -103,12 +103,19 @@ describe('compile/header/index', () => {
   });
 
   describe('getLayoutTitleBand', () => {
-    it('should return 0 for start', () => {
-      expect(getLayoutTitleBand('start')).toEqual(0);
+    it('should return 0 for column start', () => {
+      expect(getLayoutTitleBand('start', 'column')).toEqual(0);
     });
 
-    it('should return 1 for end', () => {
-      expect(getLayoutTitleBand('end')).toEqual(1);
+    it('should return 1 for column end', () => {
+      expect(getLayoutTitleBand('end', 'column')).toEqual(1);
+    });
+    it('should return 1 for row start', () => {
+      expect(getLayoutTitleBand('start', 'row')).toEqual(1);
+    });
+
+    it('should return 0 for row end', () => {
+      expect(getLayoutTitleBand('end', 'row')).toEqual(0);
     });
   });
 
