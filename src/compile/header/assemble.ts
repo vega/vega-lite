@@ -16,7 +16,7 @@ import {
 import {isSortField} from '../../sort';
 import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
 import {keys} from '../../util';
-import {RowCol, VgComparator, VgMarkGroup} from '../../vega.schema';
+import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema';
 import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties';
 import {formatSignalRef} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
@@ -46,7 +46,6 @@ export function assembleTitleGroup(model: Model, channel: FacetChannel) {
     role: `${channel === 'facet' ? 'column' : channel}-title`,
     title: {
       text: title,
-      offset: 10,
       ...(channel === 'row' ? {orient: 'left'} : {}),
       style: 'guide-title',
       ...titleAlign(titleAnchor),
@@ -115,7 +114,6 @@ export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel
 
   return {
     text: formatSignalRef(facetFieldDef, format, 'parent', config),
-    offset: 10,
     ...(channel === 'row' ? {orient: 'left'} : {}),
     style: 'guide-label',
     frame: 'group',
@@ -213,7 +211,7 @@ export function getHeaderProperties(
   facetFieldDef: FacetFieldDef<string>,
   properties: (keyof HeaderConfig)[],
   propertiesMap: {[k in keyof HeaderConfig]: keyof TitleConfig}
-) {
+): Partial<VgTitle> {
   const props = {};
   for (const prop of properties) {
     if (!propertiesMap[prop]) {

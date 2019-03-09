@@ -250,6 +250,7 @@ export const defaultConfig: Config = {
   axisBottom: {},
   axisBand: {},
   legend: defaultLegendConfig,
+  header: {titlePadding: 10, labelPadding: 10},
 
   selection: defaultSelectionConfig,
   style: {},
