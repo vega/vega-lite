@@ -246,7 +246,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
-      "symbolType": "stroke",
+      "symbolType": "circle",
       "title": "gender",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }

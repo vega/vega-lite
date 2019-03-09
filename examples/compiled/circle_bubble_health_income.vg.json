@@ -229,6 +229,7 @@
     {
       "size": "size",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "population",
       "encode": {
         "symbols": {
