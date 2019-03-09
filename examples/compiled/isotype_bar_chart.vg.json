@@ -65,10 +65,10 @@
       "sort": {"field": "datum[\"country\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"country\"]"},
-        "offset": 10,
         "orient": "left",
         "style": "guide-label",
-        "frame": "group"
+        "frame": "group",
+        "offset": 10
       },
       "encode": {"update": {"height": {"signal": "child_height"}}}
     },

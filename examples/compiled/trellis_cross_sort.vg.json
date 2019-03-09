@@ -109,16 +109,16 @@
       "role": "row-title",
       "title": {
         "text": "b",
-        "offset": 10,
         "orient": "left",
-        "style": "guide-title"
+        "style": "guide-title",
+        "offset": 10
       }
     },
     {
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "a", "offset": 10, "style": "guide-title"}
+      "title": {"text": "a", "style": "guide-title", "offset": 10}
     },
     {
       "name": "row_header",
@@ -128,10 +128,10 @@
       "sort": {"field": "datum[\"median_y\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"b\"]"},
-        "offset": 10,
         "orient": "left",
         "style": "guide-label",
-        "frame": "group"
+        "frame": "group",
+        "offset": 10
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
       "axes": [
@@ -154,9 +154,9 @@
       "sort": {"field": "datum[\"median_x\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"a\"]"},
-        "offset": 10,
         "style": "guide-label",
-        "frame": "group"
+        "frame": "group",
+        "offset": 10
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
     },

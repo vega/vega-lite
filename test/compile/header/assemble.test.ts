@@ -208,7 +208,7 @@ describe('compile/header/index', () => {
         HEADER_TITLE_PROPERTIES_MAP
       );
       it('should return the correct title property from config', () => {
-        expect(configTitleProps).toEqual({fontSize: 20});
+        expect(configTitleProps).toEqual({fontSize: 20, offset: 10});
       });
 
       const bothTitleProps = getHeaderProperties(
@@ -218,12 +218,12 @@ describe('compile/header/index', () => {
         HEADER_TITLE_PROPERTIES_MAP
       );
       it('should overwrite the config title property with the header title property', () => {
-        expect(bothTitleProps).toEqual({fontSize: 40});
+        expect(bothTitleProps.fontSize).toEqual(40);
       });
     });
 
     describe('for label properties', () => {
-      const labelSpec = parseFacetModel({
+      const model = parseFacetModel({
         config: {header: {labelFontSize: 20}},
         facet: {
           row: {field: 'a', type: 'ordinal', header: {labelFontSize: 40}}
@@ -236,11 +236,11 @@ describe('compile/header/index', () => {
           }
         }
       });
-      labelSpec.parseScale();
-      labelSpec.parseLayoutSize();
-      labelSpec.parseAxesAndHeaders();
-      const config = labelSpec.config;
-      const facetFieldDef = labelSpec.component.layoutHeaders['row'].facetFieldDef;
+      model.parseScale();
+      model.parseLayoutSize();
+      model.parseAxesAndHeaders();
+      const config = model.config;
+      const facetFieldDef = model.component.layoutHeaders['row'].facetFieldDef;
 
       const headerLabelProps = getHeaderProperties(
         undefined,
@@ -259,7 +259,7 @@ describe('compile/header/index', () => {
         HEADER_LABEL_PROPERTIES_MAP
       );
       it('should return the correct label property from config', () => {
-        expect(configLabelProps).toEqual({fontSize: 20});
+        expect(configLabelProps).toEqual({fontSize: 20, offset: 10});
       });
 
       const bothLabelProps = getHeaderProperties(
@@ -269,7 +269,7 @@ describe('compile/header/index', () => {
         HEADER_LABEL_PROPERTIES_MAP
       );
       it('should overwrite the config label property with the header label property', () => {
-        expect(bothLabelProps).toEqual({fontSize: 40});
+        expect(bothLabelProps.fontSize).toEqual(40);
       });
     });
   });
