@@ -1,12 +1,12 @@
 import {
   assembleHeaderGroups,
   assembleTitleGroup,
+  defaultHeaderGuideAlign,
+  defaultHeaderGuideBaseline,
   getHeaderProperties,
-  getLayoutTitleBand,
-  labelAlign,
-  labelBaseline,
-  titleAlign
+  getLayoutTitleBand
 } from '../../../src/compile/header/assemble';
+import {HEADER_CHANNELS} from '../../../src/compile/header/component';
 import {
   HEADER_LABEL_PROPERTIES,
   HEADER_LABEL_PROPERTIES_MAP,
@@ -16,40 +16,42 @@ import {
 import {parseFacetModel} from '../../util';
 
 describe('compile/header/index', () => {
-  describe('titleAlign', () => {
+  describe('defaultHeaderGuideAlign', () => {
     it('should return left for anchor=start', () => {
-      expect(titleAlign('start')).toEqual({align: 'left'});
+      for (const headerChannel of HEADER_CHANNELS) {
+        expect(defaultHeaderGuideAlign(headerChannel, 0, 'start')).toEqual({align: 'left'});
+      }
     });
 
     it('should return right for anchor=start', () => {
-      expect(titleAlign('end')).toEqual({align: 'right'});
+      for (const headerChannel of HEADER_CHANNELS) {
+        expect(defaultHeaderGuideAlign(headerChannel, 0, 'end')).toEqual({align: 'right'});
+      }
     });
-  });
 
-  describe('labelAlign', () => {
     it('label aligns correctly according to angle for row', () => {
-      expect(labelAlign(0, 'row')).toEqual({align: 'right'});
-      expect(labelAlign(10, 'row')).toEqual({align: 'right'});
-      expect(labelAlign(135, 'row')).toEqual({align: 'left'});
-      expect(labelAlign(90, 'row')).toEqual({align: 'center'});
+      expect(defaultHeaderGuideAlign('row', 0)).toEqual({align: 'right'});
+      expect(defaultHeaderGuideAlign('row', 10)).toEqual({align: 'right'});
+      expect(defaultHeaderGuideAlign('row', 135)).toEqual({align: 'left'});
+      expect(defaultHeaderGuideAlign('row', 90)).toEqual({align: 'center'});
     });
 
     it('label aligns correctly according to angle for column', () => {
-      expect(labelAlign(0, 'column')).toEqual({align: 'center'});
-      expect(labelAlign(10, 'column')).toEqual({align: 'right'});
-      expect(labelAlign(-10, 'column')).toEqual({align: 'left'});
+      expect(defaultHeaderGuideAlign('column', 0)).toEqual({align: 'center'});
+      expect(defaultHeaderGuideAlign('column', 10)).toEqual({align: 'right'});
+      expect(defaultHeaderGuideAlign('column', -10)).toEqual({align: 'left'});
     });
   });
 
   describe('labelBaseline', () => {
     it('label baseline adjusted according to angle for row', () => {
-      expect(labelBaseline(0, 'row')).toEqual({baseline: 'middle'});
-      expect(labelBaseline(90, 'row')).toEqual({baseline: 'top'});
+      expect(defaultHeaderGuideBaseline(0, 'row')).toEqual({baseline: 'middle'});
+      expect(defaultHeaderGuideBaseline(90, 'row')).toEqual({baseline: 'top'});
     });
 
     it('label baseline adjusted according to angle for column', () => {
-      expect(labelBaseline(0, 'column')).toEqual({baseline: 'bottom'});
-      expect(labelBaseline(60, 'column')).toEqual({baseline: 'middle'});
+      expect(defaultHeaderGuideBaseline(0, 'column')).toEqual({baseline: 'bottom'});
+      expect(defaultHeaderGuideBaseline(60, 'column')).toEqual({baseline: 'middle'});
     });
   });
 

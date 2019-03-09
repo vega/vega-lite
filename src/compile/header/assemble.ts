@@ -21,6 +21,7 @@ import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties';
 import {formatSignalRef} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
 import {isFacetModel, Model} from '../model';
+import {getHeaderChannel} from './common';
 import {
   HeaderChannel,
   HeaderComponent,
@@ -42,7 +43,7 @@ export function assembleTitleGroup(model: Model, channel: FacetChannel) {
 
   const {titleAnchor, titleAngle, titleOrient} = header;
 
-  const headerChannel = channel !== 'facet' ? channel : contains(['left', 'right'], titleOrient) ? 'row' : 'column';
+  const headerChannel = getHeaderChannel(channel, titleOrient);
 
   return {
     name: `${channel}-title`,
@@ -112,7 +113,7 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): 
 export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel: FacetChannel, config: Config) {
   const {header = {}} = facetFieldDef;
   const {format, labelAngle, labelAnchor, labelOrient} = header;
-  const headerChannel = channel !== 'facet' ? channel : contains(['left', 'right'], labelOrient) ? 'row' : 'column';
+  const headerChannel = getHeaderChannel(channel, labelOrient);
   return {
     text: formatSignalRef(facetFieldDef, format, 'parent', config),
     ...(channel === 'row' ? {orient: 'left'} : {}),
@@ -136,7 +137,16 @@ export function assembleHeaderGroup(
     const {facetFieldDef} = layoutHeader;
     const config = model.config ? model.config : undefined;
     if (facetFieldDef && headerCmpt.labels) {
-      title = assembleLabelTitle(facetFieldDef, channel, config);
+      const {header = {}} = facetFieldDef;
+      const {labelOrient} = header;
+
+      // Include label title in the header if orient aligns with the channel
+      if (
+        (channel === 'row' && !contains(['top', 'bottom'], labelOrient)) ||
+        (channel === 'column' && !contains(['left', 'right'], labelOrient))
+      ) {
+        title = assembleLabelTitle(facetFieldDef, channel, config);
+      }
     }
 
     const isFacetWithoutRowCol = isFacetModel(model) && !isFacetMapping(model.facet);

@@ -16,6 +16,7 @@ import {assembleFacetData} from './data/assemble';
 import {sortArrayIndexField} from './data/calculate';
 import {parseData} from './data/parse';
 import {assembleLabelTitle} from './header/assemble';
+import {getHeaderChannel} from './header/common';
 import {HEADER_TYPES} from './header/component';
 import {parseFacetHeaders} from './header/parse';
 import {parseChildrenLayoutSize} from './layoutsize/parse';
@@ -141,12 +142,14 @@ export class FacetModel extends ModelWithField {
         const headerComponent = layoutHeaderComponent[headerType];
 
         const {facetFieldDef} = layoutHeaderComponent;
-        if (facetFieldDef && facetFieldDef.header && contains(['bottom', 'right'], facetFieldDef.header.titleOrient)) {
-          layoutMixins.titleAnchor = layoutMixins.titleAnchor || {};
+        if (facetFieldDef && facetFieldDef.header) {
+          const {titleOrient} = facetFieldDef.header;
 
-          const headerChannel =
-            channel !== 'facet' ? channel : facetFieldDef.header.titleOrient === 'bottom' ? 'column' : 'row';
-          layoutMixins.titleAnchor[headerChannel] = 'end';
+          if (contains(['right', 'bottom'], titleOrient)) {
+            const headerChannel = getHeaderChannel(channel, titleOrient);
+            layoutMixins.titleAnchor = layoutMixins.titleAnchor || {};
+            layoutMixins.titleAnchor[headerChannel] = 'end';
+          }
         }
 
         if (headerComponent && headerComponent[0]) {
@@ -351,8 +354,23 @@ export class FacetModel extends ModelWithField {
     return [];
   }
 
+  private assembleLabelTitle() {
+    const {facet, config} = this;
+    if (facet.facet) {
+      // Facet always uses title to display labels
+      return assembleLabelTitle(facet.facet, 'facet', config);
+    } else if (facet.row && facet.row.header && contains(['top', 'bottom'], facet.row.header.labelOrient)) {
+      // Row with labelOrient on top/bottom must use title to display labels
+      return assembleLabelTitle(facet.row, 'row', config);
+    } else if (facet.column && facet.column.header && contains(['left', 'right'], facet.column.header.labelOrient)) {
+      // Column with labelOrient on left/right must use title to display labels
+      return assembleLabelTitle(facet.column, 'column', config);
+    }
+    return undefined;
+  }
+
   public assembleMarks(): VgMarkGroup[] {
-    const {child, facet, config} = this;
+    const {child} = this;
 
     // If we facet by two dimensions, we need to add a cross operator to the aggregation
     // so that we create all groups
@@ -361,7 +379,7 @@ export class FacetModel extends ModelWithField {
 
     const encodeEntry = child.assembleGroupEncodeEntry(false);
 
-    const title = (facet.facet && assembleLabelTitle(facet.facet, 'facet', config)) || child.assembleTitle();
+    const title = this.assembleLabelTitle() || child.assembleTitle();
     const style = child.assembleGroupStyle();
 
     const markGroup = {
