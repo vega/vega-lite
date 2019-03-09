@@ -276,6 +276,7 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'numberFormat',
   'timeFormat',
   'countTitle',
+  'header',
   'stack',
   'scale',
   'selection',
