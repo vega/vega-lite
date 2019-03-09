@@ -3,7 +3,7 @@ import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
 import {FieldDefBase, toFieldDefBase} from '../../fielddef';
-import {getFirstDefined, keys} from '../../util';
+import {getFirstDefined, keys, normalizeAngle} from '../../util';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {LayerModel} from '../layer';
@@ -199,6 +199,9 @@ function isExplicit<T extends string | number | object | boolean>(
   channel: PositionScaleChannel
 ) {
   switch (property) {
+    case 'titleAngle':
+    case 'labelAngle':
+      return value === normalizeAngle(axis[property]);
     case 'values':
       return !!axis.values;
     // specified axis.values is already respected, but may get transformed.
