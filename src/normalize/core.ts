@@ -122,29 +122,29 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       log.warn(log.message.facetChannelDropped([...(row ? [ROW] : []), ...(column ? [COLUMN] : [])]));
     }
 
-    return {
-      ...outerSpec,
+    return this.mapFacet(
+      {
+        ...outerSpec,
 
-      // row / column has higher precedence than facet
-      facet:
-        row || column
-          ? {
-              ...(row ? {row} : {}),
-              ...(column ? {column} : {})
-            }
-          : facet,
-      spec: this.mapUnit(
-        {
+        // row / column has higher precedence than facet
+        facet:
+          row || column
+            ? {
+                ...(row ? {row} : {}),
+                ...(column ? {column} : {})
+              }
+            : facet,
+        spec: {
           ...(projection ? {projection} : {}),
           mark,
           ...(width ? {width} : {}),
           ...(height ? {height} : {}),
           encoding,
           ...(selection ? {selection} : {})
-        },
-        params
-      )
-    };
+        }
+      },
+      params
+    );
   }
 
   public mapLayer(
