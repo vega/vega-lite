@@ -1,8 +1,8 @@
 import {AlignValue, FontWeight, Orient, TextBaseline, TitleAnchor, TitleConfig} from 'vega';
-import {Guide} from './guide';
+import {FormatMixins, Guide, VlOnlyGuideConfig} from './guide';
 import {keys} from './util';
 
-export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof TitleConfig} = {
+export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof CoreHeader]: keyof TitleConfig} = {
   titleAlign: 'align',
   titleAnchor: 'anchor',
   titleAngle: 'angle',
@@ -16,7 +16,7 @@ export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof Titl
   titlePadding: 'offset'
 };
 
-export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof TitleConfig} = {
+export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof CoreHeader]: keyof TitleConfig} = {
   labelAlign: 'align',
   labelAnchor: 'anchor',
   labelAngle: 'angle',
@@ -32,7 +32,7 @@ export const HEADER_TITLE_PROPERTIES = keys(HEADER_TITLE_PROPERTIES_MAP);
 
 export const HEADER_LABEL_PROPERTIES = keys(HEADER_LABEL_PROPERTIES_MAP);
 
-export interface HeaderConfig {
+export interface CoreHeader extends FormatMixins {
   // ---------- Title ----------
   /**
    * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
@@ -40,7 +40,7 @@ export interface HeaderConfig {
   titleAnchor?: TitleAnchor;
 
   /**
-   * Horizontal text alignment of header titles.
+   * Horizontal text alignment (to the anchor) of header titles.
    */
   titleAlign?: AlignValue;
 
@@ -53,6 +53,7 @@ export interface HeaderConfig {
    * @maximum 360
    */
   titleAngle?: number;
+
   /**
    * Vertical text baseline for the header title. One of `"top"`, `"bottom"`, `"middle"`.
    *
@@ -160,7 +161,39 @@ export interface HeaderConfig {
   labelPadding?: number;
 }
 
+export interface HeaderConfig extends CoreHeader, VlOnlyGuideConfig {}
+
 /**
  * Headers of row / column channels for faceted plots.
  */
-export interface Header extends HeaderConfig, Guide {}
+export interface Header extends CoreHeader, Guide {}
+
+export interface HeaderConfigMixins {
+  /**
+   * Header configuration, which determines default properties for all [headers](https://vega.github.io/vega-lite/docs/header.html).
+   *
+   * For a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config).
+   */
+  header?: HeaderConfig;
+
+  /**
+   * Header configuration, which determines default properties for row [headers](https://vega.github.io/vega-lite/docs/header.html).
+   *
+   * For a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config).
+   */
+  headerRow?: HeaderConfig;
+
+  /**
+   * Header configuration, which determines default properties for column [headers](https://vega.github.io/vega-lite/docs/header.html).
+   *
+   * For a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config).
+   */
+  headerColumn?: HeaderConfig;
+
+  /**
+   * Header configuration, which determines default properties for non-row/column facet [headers](https://vega.github.io/vega-lite/docs/header.html).
+   *
+   * For a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config).
+   */
+  headerFacet?: HeaderConfig;
+}

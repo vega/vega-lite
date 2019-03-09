@@ -17,7 +17,7 @@ export interface TitleMixins {
   title?: string | null;
 }
 
-export interface Guide extends TitleMixins {
+export interface FormatMixins {
   /**
    * The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field. To override the default type, set `formatType`.
    *
@@ -32,6 +32,9 @@ export interface Guide extends TitleMixins {
    */
   formatType?: 'number' | 'time';
 }
+
+export interface Guide extends TitleMixins, FormatMixins {}
+
 export interface VlOnlyGuideConfig {
   /**
    * Whether month names and weekday names should be abbreviated.
@@ -41,7 +44,7 @@ export interface VlOnlyGuideConfig {
   shortTimeLabels?: boolean;
 
   /**
-   * Set to null to disable title for the axis or legend
+   * Set to null to disable title for the axis, legend, or header.
    */
   title?: null;
 }

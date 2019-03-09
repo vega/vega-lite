@@ -79,14 +79,15 @@ This example uses header properties to change the font size of this faceted plot
 {
   ...
   "config": {
-    "header": {               // Header
-      ...
-    }
+    "header": {...},               // Header
+    "headerRow": {...},
+    "headerColumn": {...},
+    "headerFacet": {...},
     ...
   }
 }
 ```
 
-The `header` property of the top-level `config` object sets the default properties for all headers. If header properties are set in row- or column-[field definitions](facet.html#mapping), these configuration values will be overridden.
+The `header` property of the top-level `config` object sets the default properties for all headers. If header properties are set in row-, column-, or facet-[field definitions](facet.html#mapping), these configuration values will be overridden. Additional property blocks can target more specific header types based on types of facet channels (`"headerRow"`, `"headerColumn"`, `"headerFacet"`).
 
 The header configuration can contain any [header properties](#general).

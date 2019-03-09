@@ -336,7 +336,8 @@ export abstract class Model {
 
     const {spacing, ...layout} = this.layout;
 
-    const titleBand = assembleLayoutTitleBand(this.component.layoutHeaders);
+    const {component, config} = this;
+    const titleBand = assembleLayoutTitleBand(component.layoutHeaders, config);
 
     return {
       padding: spacing,

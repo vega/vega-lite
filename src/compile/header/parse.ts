@@ -5,6 +5,7 @@ import {contains} from '../../util';
 import {assembleAxis} from '../axis/assemble';
 import {FacetModel} from '../facet';
 import {parseGuideResolve} from '../resolve';
+import {getHeaderProperty} from './common';
 import {HeaderChannel, HeaderComponent} from './component';
 
 export function getHeaderType(orient: AxisOrient) {
@@ -34,9 +35,9 @@ function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
       model.child.component.layoutHeaders[channel].title = null;
     }
 
-    const {header = {}} = fieldDef;
+    const labelOrient = getHeaderProperty('labelOrient', fieldDef, model.config, channel);
 
-    const headerType = contains(['bottom', 'right'], header.labelOrient) ? 'footer' : 'header';
+    const headerType = contains(['bottom', 'right'], labelOrient) ? 'footer' : 'header';
 
     model.component.layoutHeaders[channel] = {
       title,

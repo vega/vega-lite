@@ -1,9 +1,9 @@
 import {
   assembleHeaderGroups,
+  assembleHeaderProperties,
   assembleTitleGroup,
   defaultHeaderGuideAlign,
   defaultHeaderGuideBaseline,
-  getHeaderProperties,
   getLayoutTitleBand
 } from '../../../src/compile/header/assemble';
 import {HEADER_CHANNELS} from '../../../src/compile/header/component';
@@ -179,9 +179,9 @@ describe('compile/header/index', () => {
     });
   });
 
-  describe('getHeaderProperties', () => {
+  describe('assembleHeaderProperties', () => {
     describe('for title properties', () => {
-      const titleSpec = parseFacetModel({
+      const model = parseFacetModel({
         config: {header: {titleFontSize: 20}},
         facet: {
           row: {field: 'a', type: 'ordinal', header: {titleFontSize: 40}}
@@ -194,25 +194,27 @@ describe('compile/header/index', () => {
           }
         }
       });
-      titleSpec.parseScale();
-      titleSpec.parseLayoutSize();
-      titleSpec.parseAxesAndHeaders();
-      const config = titleSpec.config;
-      const facetFieldDef = titleSpec.component.layoutHeaders['row'].facetFieldDef;
+      model.parseScale();
+      model.parseLayoutSize();
+      model.parseAxesAndHeaders();
+      const config = model.config;
+      const facetFieldDef = model.component.layoutHeaders['row'].facetFieldDef;
 
-      const headerTitleProps = getHeaderProperties(
-        undefined,
+      const headerTitleProps = assembleHeaderProperties(
+        config,
         facetFieldDef,
+        'column',
         HEADER_TITLE_PROPERTIES,
         HEADER_TITLE_PROPERTIES_MAP
       );
       it('should return the correct title property from header', () => {
-        expect(headerTitleProps).toEqual({fontSize: 40});
+        expect(headerTitleProps.fontSize).toEqual(40);
       });
 
-      const configTitleProps = getHeaderProperties(
+      const configTitleProps = assembleHeaderProperties(
         config,
         undefined,
+        'column',
         HEADER_TITLE_PROPERTIES,
         HEADER_TITLE_PROPERTIES_MAP
       );
@@ -220,9 +222,10 @@ describe('compile/header/index', () => {
         expect(configTitleProps).toEqual({fontSize: 20, offset: 10});
       });
 
-      const bothTitleProps = getHeaderProperties(
+      const bothTitleProps = assembleHeaderProperties(
         config,
         facetFieldDef,
+        'column',
         HEADER_TITLE_PROPERTIES,
         HEADER_TITLE_PROPERTIES_MAP
       );
@@ -251,19 +254,21 @@ describe('compile/header/index', () => {
       const config = model.config;
       const facetFieldDef = model.component.layoutHeaders['row'].facetFieldDef;
 
-      const headerLabelProps = getHeaderProperties(
-        undefined,
+      const headerLabelProps = assembleHeaderProperties(
+        config,
         facetFieldDef,
+        'column',
         HEADER_LABEL_PROPERTIES,
         HEADER_LABEL_PROPERTIES_MAP
       );
       it('should return the correct label property from header', () => {
-        expect(headerLabelProps).toEqual({fontSize: 40});
+        expect(headerLabelProps.fontSize).toEqual(40);
       });
 
-      const configLabelProps = getHeaderProperties(
+      const configLabelProps = assembleHeaderProperties(
         config,
         undefined,
+        'column',
         HEADER_LABEL_PROPERTIES,
         HEADER_LABEL_PROPERTIES_MAP
       );
@@ -271,9 +276,10 @@ describe('compile/header/index', () => {
         expect(configLabelProps).toEqual({fontSize: 20, offset: 10});
       });
 
-      const bothLabelProps = getHeaderProperties(
+      const bothLabelProps = assembleHeaderProperties(
         config,
         facetFieldDef,
+        'column',
         HEADER_LABEL_PROPERTIES,
         HEADER_LABEL_PROPERTIES_MAP
       );

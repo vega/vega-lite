@@ -16,8 +16,8 @@ import {assembleFacetData} from './data/assemble';
 import {sortArrayIndexField} from './data/calculate';
 import {parseData} from './data/parse';
 import {assembleLabelTitle} from './header/assemble';
-import {getHeaderChannel} from './header/common';
-import {HEADER_TYPES} from './header/component';
+import {getHeaderChannel, getHeaderProperty} from './header/common';
+import {HEADER_CHANNELS, HEADER_TYPES} from './header/component';
 import {parseFacetHeaders} from './header/parse';
 import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
@@ -142,8 +142,8 @@ export class FacetModel extends ModelWithField {
         const headerComponent = layoutHeaderComponent[headerType];
 
         const {facetFieldDef} = layoutHeaderComponent;
-        if (facetFieldDef && facetFieldDef.header) {
-          const {titleOrient} = facetFieldDef.header;
+        if (facetFieldDef) {
+          const titleOrient = getHeaderProperty('titleOrient', facetFieldDef, this.config, channel);
 
           if (contains(['right', 'bottom'], titleOrient)) {
             const headerChannel = getHeaderChannel(channel, titleOrient);
@@ -359,12 +359,21 @@ export class FacetModel extends ModelWithField {
     if (facet.facet) {
       // Facet always uses title to display labels
       return assembleLabelTitle(facet.facet, 'facet', config);
-    } else if (facet.row && facet.row.header && contains(['top', 'bottom'], facet.row.header.labelOrient)) {
-      // Row with labelOrient on top/bottom must use title to display labels
-      return assembleLabelTitle(facet.row, 'row', config);
-    } else if (facet.column && facet.column.header && contains(['left', 'right'], facet.column.header.labelOrient)) {
-      // Column with labelOrient on left/right must use title to display labels
-      return assembleLabelTitle(facet.column, 'column', config);
+    }
+
+    const ORTHOGONAL_ORIENT = {
+      row: ['top', 'bottom'],
+      column: ['left', 'right']
+    };
+
+    for (const channel of HEADER_CHANNELS) {
+      if (facet[channel]) {
+        const labelOrient = getHeaderProperty('labelOrient', facet[channel], config, channel);
+        if (contains(ORTHOGONAL_ORIENT[channel], labelOrient)) {
+          // Row/Column with orthogonal labelOrient must use title to display labels
+          return assembleLabelTitle(facet[channel], channel, config);
+        }
+      }
     }
     return undefined;
   }
