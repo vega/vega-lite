@@ -220,12 +220,12 @@ export function getHeaderProperties(
       continue;
     }
     if (config && config.header) {
-      if (config.header[prop]) {
+      if (config.header[prop] !== undefined) {
         props[propertiesMap[prop]] = config.header[prop];
       }
     }
     if (facetFieldDef && facetFieldDef.header) {
-      if (facetFieldDef.header[prop]) {
+      if (facetFieldDef.header[prop] !== undefined) {
         props[propertiesMap[prop]] = facetFieldDef.header[prop];
       }
     }
