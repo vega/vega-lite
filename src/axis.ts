@@ -59,16 +59,18 @@ interface AxisMixins {
   labelOverlap?: LabelOverlap;
 }
 
-export type AxisConfig = VgAxisConfigNoSignals & VlOnlyGuideConfig;
-
-export interface Axis extends BaseAxisNoSignals, Guide {
+export interface AxisOrientMixins {
   /**
-   * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
+   * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y-axis oriented for the right edge of the chart).
    *
    * __Default value:__ `"bottom"` for x-axes and `"left"` for y-axes.
    */
   orient?: AxisOrient;
+}
 
+export type AxisConfig = VgAxisConfigNoSignals & VlOnlyGuideConfig & AxisOrientMixins;
+
+export interface Axis extends AxisOrientMixins, BaseAxisNoSignals, Guide {
   /**
    * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
    *
