@@ -199,6 +199,7 @@ function isExplicit<T extends string | number | object | boolean>(
   channel: PositionScaleChannel
 ) {
   switch (property) {
+    case 'titleAngle':
     case 'labelAngle':
       return value === normalizeAngle(axis[property]);
     case 'values':
