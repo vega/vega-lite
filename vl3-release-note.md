@@ -73,6 +73,6 @@ https://vega.github.io/vega-lite/examples/interactive_multi_line_tooltip.html)
 - Refactor to distinguish `NormalizedUnitSpec` and `CompositeUnitSpec`
 - `x2/y2/latitude2/longitude2` channels no longer need `type` and `bin`
 - Decouple `CompositeUnitSpec` from normal `UnitSpec`
-
+- Simplify names of specification classes.  For example, `TopLevelFacetedUnitSpec` is now `TopLevelUnitSpec`.
 
 
