@@ -619,14 +619,16 @@ export function resetTitleFormatter() {
 export function title(
   fieldDef: TypedFieldDef<string> | SecondaryFieldDef<string>,
   config: Config,
-  {allowDisabling}: {allowDisabling: boolean}
+  {allowDisabling, includeDefault = true}: {allowDisabling: boolean; includeDefault?: boolean}
 ) {
   const guide = getGuide(fieldDef) || {};
   const guideTitle = guide.title;
+  const def = includeDefault ? defaultTitle(fieldDef, config) : undefined;
+
   if (allowDisabling) {
-    return getFirstDefined(guideTitle, fieldDef.title, defaultTitle(fieldDef, config));
+    return getFirstDefined(guideTitle, fieldDef.title, def);
   } else {
-    return guideTitle || fieldDef.title || defaultTitle(fieldDef, config);
+    return guideTitle || fieldDef.title || def;
   }
 }
 

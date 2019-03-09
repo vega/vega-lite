@@ -27,7 +27,11 @@ export function parseFacetHeaders(model: FacetModel) {
 function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
   if (model.channelHasField(channel)) {
     const fieldDef = model.facet[channel];
-    let title = fieldDefTitle(fieldDef, model.config, {allowDisabling: true});
+    const titleConfig = getHeaderProperty('title', null, model.config, channel);
+    let title = fieldDefTitle(fieldDef, model.config, {
+      allowDisabling: true,
+      includeDefault: titleConfig === undefined || !!titleConfig
+    });
 
     if (model.child.component.layoutHeaders[channel].title) {
       // merge title with child to produce "Title / Subtitle / Sub-subtitle"
