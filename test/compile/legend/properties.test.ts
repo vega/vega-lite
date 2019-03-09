@@ -116,7 +116,7 @@ describe('compile/legend', () => {
 
     it('return undefined otherwise', () => {
       const overlap = properties.defaultSymbolType('circle');
-      expect(overlap).toEqual(undefined);
+      expect(overlap).toEqual('circle');
     });
   });
 });

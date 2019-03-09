@@ -18,7 +18,7 @@ export function values(legend: Legend, fieldDef: TypedFieldDef<string>) {
 }
 
 export function defaultSymbolType(mark: Mark) {
-  return mark === 'line' ? 'stroke' : undefined;
+  return mark === 'line' ? 'stroke' : 'circle';
 }
 
 export function clipHeight(legendType: LegendType) {
