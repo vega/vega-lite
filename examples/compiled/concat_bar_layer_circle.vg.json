@@ -360,8 +360,8 @@
           "orient": "bottom",
           "grid": false,
           "title": "Major_Genre",
-          "labelAlign": "right",
           "labelAngle": 320,
+          "labelAlign": "right",
           "labelBaseline": "top",
           "zindex": 1
         },
