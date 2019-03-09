@@ -182,6 +182,7 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "symbolType": "circle",
       "title": "country",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }

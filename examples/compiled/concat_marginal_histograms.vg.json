@@ -471,6 +471,7 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(concat_1_height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Count of Records"
     }
   ],

@@ -203,6 +203,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "symbolType": "circle",
       "title": "symbol",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }

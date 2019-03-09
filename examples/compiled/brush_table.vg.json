@@ -467,6 +467,7 @@
         {
           "stroke": "color",
           "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
+          "symbolType": "circle",
           "title": "Cylinders",
           "encode": {
             "symbols": {

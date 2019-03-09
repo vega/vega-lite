@@ -126,6 +126,7 @@
         {
           "fill": "child__repeat_row_population_color",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
+          "symbolType": "circle",
           "title": "population"
         }
       ]
@@ -173,6 +174,7 @@
         {
           "fill": "child__repeat_row_engineers_color",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
+          "symbolType": "circle",
           "title": "engineers"
         }
       ]
@@ -220,6 +222,7 @@
         {
           "fill": "child__repeat_row_hurricanes_color",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
+          "symbolType": "circle",
           "title": "hurricanes"
         }
       ]

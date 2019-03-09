@@ -216,6 +216,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "symbolType": "stroke",
       "title": "symbol"
     }
   ]
