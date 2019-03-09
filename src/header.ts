@@ -1,9 +1,10 @@
-import {FontWeight, TextBaseline, TitleAnchor, TitleConfig} from 'vega';
+import {AlignValue, FontWeight, Orient, TextBaseline, TitleAnchor, TitleConfig} from 'vega';
 import {Guide} from './guide';
 import {keys} from './util';
 
 export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof TitleConfig} = {
-  titleAnchor: undefined,
+  titleAlign: 'align',
+  titleAnchor: 'anchor',
   titleAngle: 'angle',
   titleBaseline: 'baseline',
   titleColor: 'color',
@@ -11,15 +12,19 @@ export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof Titl
   titleFontSize: 'fontSize',
   titleFontWeight: 'fontWeight',
   titleLimit: 'limit',
+  titleOrient: 'orient',
   titlePadding: 'offset'
 };
 
 export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof TitleConfig} = {
+  labelAlign: 'align',
+  labelAnchor: 'anchor',
   labelAngle: 'angle',
   labelColor: 'color',
   labelFont: 'font',
   labelFontSize: 'fontSize',
   labelLimit: 'limit',
+  labelOrient: 'orient',
   labelPadding: 'offset'
 };
 
@@ -33,6 +38,11 @@ export interface HeaderConfig {
    * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
    */
   titleAnchor?: TitleAnchor;
+
+  /**
+   * Horizontal text alignment of header titles.
+   */
+  titleAlign?: AlignValue;
 
   /**
    * The rotation angle of the header title.
@@ -80,6 +90,11 @@ export interface HeaderConfig {
   titleLimit?: number;
 
   /**
+   * The orientation of the header title. One of `"top"`, `"bottom"`, `"left"` or `"right"`.
+   */
+  titleOrient?: Orient;
+
+  /**
    * The padding, in pixel, between facet header's title and the label.
    *
    * __Default value:__ `10`
@@ -87,6 +102,17 @@ export interface HeaderConfig {
   titlePadding?: number;
 
   // ---------- Label ----------
+
+  /**
+   * Horizontal text alignment of header labels.
+   */
+  labelAlign?: AlignValue;
+
+  /**
+   * The anchor position for placing the labels. One of `"start"`, `"middle"`, or `"end"`. For example, with a label orientation of top these anchor positions map to a left-, center-, or right-aligned label.
+   */
+  labelAnchor?: TitleAnchor;
+
   /**
    * The rotation angle of the header labels.
    *
@@ -120,6 +146,11 @@ export interface HeaderConfig {
    * __Default value:__ `0`, indicating no limit
    */
   labelLimit?: number;
+
+  /**
+   * The orientation of the header label. One of `"top"`, `"bottom"`, `"left"` or `"right"`.
+   */
+  labelOrient?: Orient;
 
   /**
    * The padding, in pixel, between facet header's label and the plot.

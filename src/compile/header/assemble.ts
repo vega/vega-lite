@@ -3,29 +3,29 @@
  */
 import {TitleAnchor, TitleConfig} from 'vega';
 import {isArray} from 'vega-util';
-import {FACET_CHANNELS, FacetChannel} from '../../channel';
+import {FacetChannel, FACET_CHANNELS} from '../../channel';
 import {Config} from '../../config';
 import {vgField} from '../../fielddef';
 import {
+  HeaderConfig,
   HEADER_LABEL_PROPERTIES,
   HEADER_LABEL_PROPERTIES_MAP,
   HEADER_TITLE_PROPERTIES,
-  HEADER_TITLE_PROPERTIES_MAP,
-  HeaderConfig
+  HEADER_TITLE_PROPERTIES_MAP
 } from '../../header';
 import {isSortField} from '../../sort';
 import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
-import {keys} from '../../util';
+import {contains, keys} from '../../util';
 import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema';
 import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties';
 import {formatSignalRef} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
 import {isFacetModel, Model} from '../model';
 import {
-  HEADER_TYPES,
   HeaderChannel,
   HeaderComponent,
   HeaderType,
+  HEADER_TYPES,
   LayoutHeaderComponent,
   LayoutHeaderComponentIndex
 } from './component';
@@ -38,12 +38,16 @@ export function assembleTitleGroup(model: Model, channel: FacetChannel) {
     ? model.component.layoutHeaders[channel].facetFieldDef
     : undefined;
 
-  const titleAnchor = (facetFieldDef && facetFieldDef.header && facetFieldDef.header.titleAnchor) || undefined;
+  const {header = {}} = facetFieldDef || {};
+
+  const {titleAnchor, titleOrient} = header;
+
+  const channelType = channel !== 'facet' ? channel : contains(['left', 'right'], titleOrient) ? 'row' : 'column';
 
   return {
     name: `${channel}-title`,
     type: 'group',
-    role: `${channel === 'facet' ? 'column' : channel}-title`,
+    role: `${channelType}-title`,
     title: {
       text: title,
       ...(channel === 'row' ? {orient: 'left'} : {}),
@@ -195,10 +199,11 @@ export function assembleLayoutTitleBand(headerComponentIndex: LayoutHeaderCompon
   for (const channel of FACET_CHANNELS) {
     const headerComponent = headerComponentIndex[channel];
     if (headerComponent && headerComponent.facetFieldDef && headerComponent.facetFieldDef.header) {
-      const {titleAnchor} = headerComponent.facetFieldDef.header;
+      const {titleAnchor, titleOrient} = headerComponent.facetFieldDef.header;
       const band = getLayoutTitleBand(titleAnchor);
+      const headerChannel = getHeaderChannel(channel, titleOrient);
       if (band !== undefined) {
-        titleBand[channel === 'facet' ? 'column' : channel] = band;
+        titleBand[headerChannel] = band;
       }
     }
   }

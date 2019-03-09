@@ -16,6 +16,7 @@ import {assembleFacetData} from './data/assemble';
 import {sortArrayIndexField} from './data/calculate';
 import {parseData} from './data/parse';
 import {assembleLabelTitle} from './header/assemble';
+import {HEADER_TYPES} from './header/component';
 import {parseFacetHeaders} from './header/parse';
 import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
@@ -134,15 +135,25 @@ export class FacetModel extends ModelWithField {
   private getHeaderLayoutMixins(): VgLayout {
     const layoutMixins: VgLayout = {};
 
-    ['row', 'column'].forEach((channel: 'row' | 'column') => {
-      ['header', 'footer'].forEach((headerType: 'header' | 'footer') => {
+    for (const channel of FACET_CHANNELS) {
+      for (const headerType of HEADER_TYPES) {
         const layoutHeaderComponent = this.component.layoutHeaders[channel];
         const headerComponent = layoutHeaderComponent[headerType];
+
+        const {facetFieldDef} = layoutHeaderComponent;
+        if (facetFieldDef && facetFieldDef.header && contains(['bottom', 'right'], facetFieldDef.header.titleOrient)) {
+          layoutMixins.titleAnchor = layoutMixins.titleAnchor || {};
+
+          const headerChannel =
+            channel !== 'facet' ? channel : facetFieldDef.header.titleOrient === 'bottom' ? 'column' : 'row';
+          layoutMixins.titleAnchor[headerChannel] = 'end';
+        }
+
         if (headerComponent && headerComponent[0]) {
           // set header/footerBand
           const sizeType = channel === 'row' ? 'height' : 'width';
           const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
-          if (!this.child.component.layoutSize.get(sizeType)) {
+          if (channel !== 'facet' && !this.child.component.layoutSize.get(sizeType)) {
             // If facet child does not have size signal, then apply headerBand
             layoutMixins[bandType] = layoutMixins[bandType] || {};
             layoutMixins[bandType][channel] = 0.5;
@@ -153,8 +164,8 @@ export class FacetModel extends ModelWithField {
             layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
           }
         }
-      });
-    });
+      }
+    }
     return layoutMixins;
   }
 

@@ -213,6 +213,8 @@ export interface VgLayout {
   padding?: number | RowCol<number>;
   headerBand?: number | RowCol<number>;
   footerBand?: number | RowCol<number>;
+
+  titleAnchor?: 'start' | 'end' | RowCol<'start' | 'end'>;
   offset?:
     | number
     | {
