@@ -74,6 +74,10 @@ export function hash(a: any): string | number {
   return h;
 }
 
+export function isNullOrFalse(x: any): x is false | null {
+  return x === false || x === null;
+}
+
 export function contains<T>(array: T[], item: T) {
   return array.indexOf(item) > -1;
 }

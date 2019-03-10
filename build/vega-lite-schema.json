@@ -219,6 +219,13 @@
           "minimum": 0,
           "type": "number"
         },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "orient": {
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
@@ -1089,6 +1096,13 @@
           "maximum": 1,
           "minimum": 0,
           "type": "number"
+        },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
         },
         "orient": {
           "$ref": "#/definitions/Orientation",
@@ -7561,6 +7575,13 @@
           "minimum": 0,
           "type": "number"
         },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "orient": {
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
@@ -8003,6 +8024,13 @@
           "minimum": 0,
           "type": "number"
         },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "orient": {
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
@@ -8219,6 +8247,13 @@
           "maximum": 1,
           "minimum": 0,
           "type": "number"
+        },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
         },
         "orient": {
           "$ref": "#/definitions/Orientation",
@@ -8732,6 +8767,13 @@
           "maximum": 1,
           "minimum": 0,
           "type": "number"
+        },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
         },
         "orient": {
           "$ref": "#/definitions/Orientation",
@@ -10701,6 +10743,13 @@
           "minimum": 0,
           "type": "number"
         },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "orient": {
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
@@ -10968,6 +11017,13 @@
           "maximum": 1,
           "minimum": 0,
           "type": "number"
+        },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
         },
         "orient": {
           "$ref": "#/definitions/Orientation",
