@@ -8,16 +8,6 @@ If a field is specified, the channel definition **must** describe the encoded da
 
 {% include table.html props="type" source="FieldDef" %}
 
-**Notes**:
-
-1. Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
-
-2. When using with [`aggregate`](aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `"cat"` using `{"aggregate": "distinct", "field": "cat", "type": "quantitative"}`. The `"type"` of the aggregate output is `"quantitative"`.
-
-3. When using with [`bin`](bin.html), the `type` property can be either `"quantitative"` (for using a linear bin scale) or [`"ordinal"` (for using an ordinal bin scale)](#cast-bin).
-
-4. When using with [`timeUnit`](timeunit.html), the `type` property can be either `"temporal"` (for using a temporal scale) or [`"ordinal"` (for using an ordinal scale)](#cast-timeunit).
-
 {:#quantitative}
 
 ## Quantitative
@@ -28,7 +18,7 @@ Quantitative data expresses some kind of quantity. Typically this is numerical d
 
 ## Temporal
 
-Temporal data supports date-times and times. For example `2015-03-07 12:32:17`, `17:01`, `2015-03-16`.
+Temporal data supports date-times and times such as `"2015-03-07 12:32:17"`, `"17:01"`, `"2015-03-16"`. `"2015"`, `1552199579097` (timestamp).
 
 Note that when a `"temporal"` type is used for a field, Vega-Lite will treat it as a continuous field and thus will use a [`time` scale](scale.html#time) to map its data to visual values. For example, the following bar chart shows the mean precipitation for different months.
 
