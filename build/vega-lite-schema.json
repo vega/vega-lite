@@ -246,7 +246,7 @@
           "type": "number"
         },
         "shape": {
-          "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
+          "description": "Shape of the point marks. Supported values include:\n- plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n- the line symbol `\"stroke\"`\n- centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n- a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n__Default value:__ `\"circle\"`",
           "type": "string"
         },
         "size": {
@@ -1100,7 +1100,7 @@
           "type": "number"
         },
         "shape": {
-          "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
+          "description": "Shape of the point marks. Supported values include:\n- plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n- the line symbol `\"stroke\"`\n- centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n- a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n__Default value:__ `\"circle\"`",
           "type": "string"
         },
         "size": {
@@ -1365,7 +1365,7 @@
           "type": "number"
         },
         "shape": {
-          "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
+          "description": "Shape of the point marks. Supported values include:\n- plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n- the line symbol `\"stroke\"`\n- centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n- a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n__Default value:__ `\"circle\"`",
           "type": "string"
         },
         "size": {
@@ -2140,7 +2140,7 @@
               "$ref": "#/definitions/ShapeValueDefWithCondition"
             }
           ],
-          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property."
+          "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:\n   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   - the line symbol `\"stroke\"`\n   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
         },
         "size": {
           "anyOf": [
@@ -4261,7 +4261,7 @@
               "$ref": "#/definitions/ShapeValueDefWithCondition"
             }
           ],
-          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property."
+          "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:\n   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   - the line symbol `\"stroke\"`\n   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
         },
         "size": {
           "anyOf": [
@@ -7588,7 +7588,7 @@
           "type": "number"
         },
         "shape": {
-          "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
+          "description": "Shape of the point marks. Supported values include:\n- plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n- the line symbol `\"stroke\"`\n- centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n- a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n__Default value:__ `\"circle\"`",
           "type": "string"
         },
         "size": {
@@ -8013,7 +8013,7 @@
           "type": "number"
         },
         "shape": {
-          "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
+          "description": "Shape of the point marks. Supported values include:\n- plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n- the line symbol `\"stroke\"`\n- centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n- a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n__Default value:__ `\"circle\"`",
           "type": "string"
         },
         "size": {
@@ -8247,7 +8247,7 @@
           "type": "number"
         },
         "shape": {
-          "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
+          "description": "Shape of the point marks. Supported values include:\n- plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n- the line symbol `\"stroke\"`\n- centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n- a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n__Default value:__ `\"circle\"`",
           "type": "string"
         },
         "size": {
@@ -8743,7 +8743,7 @@
           "type": "number"
         },
         "shape": {
-          "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
+          "description": "Shape of the point marks. Supported values include:\n- plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n- the line symbol `\"stroke\"`\n- centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n- a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n__Default value:__ `\"circle\"`",
           "type": "string"
         },
         "size": {
@@ -10711,7 +10711,7 @@
           "type": "number"
         },
         "shape": {
-          "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
+          "description": "Shape of the point marks. Supported values include:\n- plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n- the line symbol `\"stroke\"`\n- centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n- a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n__Default value:__ `\"circle\"`",
           "type": "string"
         },
         "shortTimeLabels": {
@@ -10979,7 +10979,7 @@
           "type": "number"
         },
         "shape": {
-          "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
+          "description": "Shape of the point marks. Supported values include:\n- plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n- the line symbol `\"stroke\"`\n- centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n- a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n__Default value:__ `\"circle\"`",
           "type": "string"
         },
         "size": {
