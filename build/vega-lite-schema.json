@@ -85,19 +85,6 @@
       ],
       "type": "string"
     },
-    "AnchorValue": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/TitleAnchor"
-        },
-        {
-          "$ref": "#/definitions/AnchorValueRef"
-        }
-      ]
-    },
-    "AnchorValueRef": {
-      "$ref": "#/definitions/ScaledValueRef<TitleAnchor>"
-    },
     "AnyMark": {
       "anyOf": [
         {
@@ -614,7 +601,7 @@
           "description": "Horizontal text alignment of axis titles."
         },
         "titleAnchor": {
-          "$ref": "#/definitions/AnchorValue",
+          "$ref": "#/definitions/TitleAnchor",
           "description": "Text anchor position for placing axis titles."
         },
         "titleAngle": {
@@ -911,7 +898,7 @@
           "description": "Horizontal text alignment of axis titles."
         },
         "titleAnchor": {
-          "$ref": "#/definitions/AnchorValue",
+          "$ref": "#/definitions/TitleAnchor",
           "description": "Text anchor position for placing axis titles."
         },
         "titleAngle": {
@@ -1519,59 +1506,6 @@
         }
       },
       "type": "object"
-    },
-    "BaseValueRef<TitleAnchor>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/SignalRef"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "value": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/TitleAnchor"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            }
-          },
-          "required": [
-            "value"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "field": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "field"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "range": {
-              "type": [
-                "number",
-                "boolean"
-              ]
-            }
-          },
-          "required": [
-            "range"
-          ],
-          "type": "object"
-        }
-      ]
     },
     "Baseline": {
       "enum": [
@@ -3757,18 +3691,6 @@
       },
       "type": "object"
     },
-    "DatumFieldRef": {
-      "additionalProperties": false,
-      "properties": {
-        "datum": {
-          "$ref": "#/definitions/Field"
-        }
-      },
-      "required": [
-        "datum"
-      ],
-      "type": "object"
-    },
     "Day": {
       "maximum": 7,
       "minimum": 1,
@@ -4569,16 +4491,7 @@
           "type": "string"
         },
         {
-          "$ref": "#/definitions/SignalRef"
-        },
-        {
-          "$ref": "#/definitions/DatumFieldRef"
-        },
-        {
-          "$ref": "#/definitions/GroupFieldRef"
-        },
-        {
-          "$ref": "#/definitions/ParentFieldRef"
+          "$ref": "#/definitions/RepeatRef"
         }
       ]
     },
@@ -6027,21 +5940,6 @@
       },
       "required": [
         "vconcat"
-      ],
-      "type": "object"
-    },
-    "GroupFieldRef": {
-      "additionalProperties": false,
-      "properties": {
-        "group": {
-          "$ref": "#/definitions/Field"
-        },
-        "level": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "group"
       ],
       "type": "object"
     },
@@ -8934,21 +8832,6 @@
       ],
       "minimum": 0
     },
-    "ParentFieldRef": {
-      "additionalProperties": false,
-      "properties": {
-        "level": {
-          "type": "number"
-        },
-        "parent": {
-          "$ref": "#/definitions/Field"
-        }
-      },
-      "required": [
-        "parent"
-      ],
-      "type": "object"
-    },
     "Parse": {
       "additionalProperties": {
         "$ref": "#/definitions/ParseValue"
@@ -9947,44 +9830,6 @@
         "band"
       ],
       "type": "string"
-    },
-    "ScaledValueRef<TitleAnchor>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/BaseValueRef<TitleAnchor>"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "scale": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "scale"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "band": {
-              "type": [
-                "boolean",
-                "number"
-              ]
-            },
-            "scale": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "scale",
-            "band"
-          ],
-          "type": "object"
-        }
-      ]
     },
     "SchemeConfig": {
       "additionalProperties": false,

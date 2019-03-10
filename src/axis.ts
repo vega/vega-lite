@@ -1,4 +1,14 @@
-import {Align, Axis as VgAxis, AxisOrient, BaseAxis, FontStyle, FontWeight, LabelOverlap, TextBaseline} from 'vega';
+import {
+  Align,
+  Axis as VgAxis,
+  AxisOrient,
+  BaseAxis,
+  FontStyle,
+  FontWeight,
+  LabelOverlap,
+  TextBaseline,
+  TitleAnchor
+} from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
@@ -18,7 +28,8 @@ type BaseAxisNoSignals = AxisMixins &
     TextBaseline,
     LayoutAlign,
     LabelOverlap,
-    number[]
+    number[],
+    TitleAnchor
   >;
 
 // Vega axis config is the same as vega axis base. If this is not the case, add specific type.
