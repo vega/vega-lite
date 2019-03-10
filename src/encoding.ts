@@ -170,12 +170,17 @@ export interface Encoding<F extends Field> {
   size?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
 
   /**
-   * For `point` marks the supported values are
-   * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
-   * or `"triangle-down"`, or else a custom SVG path string.
-   * For `geoshape` marks it should be a field definition of the geojson data
+   * Shape of the mark.
    *
-   * __Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property.
+   * 1. For `point` marks the supported values include:
+   *   - plotting shapes: `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, `"triangle-down"`, `"triangle-right"`, or `"triangle-left"`.
+   *   - the line symbol `"stroke"`
+   *   - centered directional shapes `"arrow"`, `"wedge"`, or `"triangle"`
+   *   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)
+   *
+   * 2. For `geoshape` marks it should be a field definition of the geojson data
+   *
+   * __Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`"circle"` if unset.)
    */
   shape?: ShapeFieldDefWithCondition<F> | ShapeValueDefWithCondition<F>;
   /**
