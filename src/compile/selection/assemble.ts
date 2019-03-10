@@ -1,7 +1,7 @@
 import {SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
-import {forEachSelection, MODIFY, SELECTION_DOMAIN, STORE, VL_SELECTION_RESOLVE} from '.';
+import {forEachSelection, LEGEND, MODIFY, SELECTION_DOMAIN, STORE, TUPLE, VL_SELECTION_RESOLVE} from '.';
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
@@ -11,6 +11,8 @@ import {VgData} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
+import {InteractiveSelections} from '../legend/component';
+import {interactiveLegendExists} from '../legend/parse';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {forEachTransform} from './transforms/transforms';
@@ -46,6 +48,41 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
     signals.push({
       name: name + MODIFY,
       update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
+    });
+  });
+
+  const selections = interactiveLegendExists(model);
+  if (selections.length) {
+    return assembleInteractiveLegendSignals(model, signals, selections);
+  }
+
+  return signals;
+}
+
+function assembleInteractiveLegendSignals(
+  model: UnitModel,
+  signals: any[],
+  selections: InteractiveSelections[]
+): any[] {
+  let selectionFields: string[] = [].concat.apply([], selections.map(s => s.fields)); // Flatten array
+  selectionFields = selectionFields.filter((v, i, a) => a.indexOf(v) === i); // Get unique elements
+
+  selections.forEach(selection => {
+    const name = selection.name;
+    const signal = signals.filter(s => s.name === name + TUPLE)[0];
+
+    signal.on[0].update = selectionFields.reduce((expression, field) => {
+      return `item().mark.name !== 'symbols_${field}${LEGEND}' && item().mark.name !== 'labels_${field}${LEGEND}' && ${expression}`;
+    }, signal.on[0].update);
+
+    const eventExpression = selection.fields.reduce((expression, field) => {
+      return `@symbols_${field}${LEGEND}:click, @labels_${field}${LEGEND}:click, ${expression}`;
+    }, '');
+
+    // Replace values to accomodate multiple fields selection
+    signal.on.push({
+      events: eventExpression,
+      update: `{unit: "", fields: ${name}_tuple_fields, values: [datum.value]}`
     });
   });
 

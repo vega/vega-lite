@@ -1,4 +1,5 @@
 import {Legend as VgLegend, LegendEncode, SignalRef} from 'vega';
+import {stringValue} from 'vega-util';
 import {
   COLOR,
   FILL,
@@ -19,9 +20,10 @@ import {mergeTitleComponent, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
+import {forEachSelection, LEGEND, STORE, VL_SELECTION_TEST} from '../selection';
 import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
-import {LegendComponent, LegendComponentIndex} from './component';
+import {InteractiveSelections, LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
 import * as properties from './properties';
 import {direction, type} from './properties';
@@ -97,7 +99,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   }
 
   const legendEncoding = legend.encoding || {};
-  const legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce(
+  let legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce(
     (e: LegendEncode, part) => {
       const legendEncodingPart = guideEncodeEntry(legendEncoding[part] || {}, model);
       const value = encode[part]
@@ -111,11 +113,124 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
     {} as LegendEncode
   );
 
+  const interactiveSelections = interactiveLegendExists(model);
+  if (interactiveSelections.length) {
+    legendEncode = updateInteractiveLegendComponent(model, legendEncode, channel, interactiveSelections);
+  }
   if (keys(legendEncode).length > 0) {
     legendCmpt.set('encode', legendEncode, !!legend.encoding);
   }
 
   return legendCmpt;
+}
+
+export function interactiveLegendExists(model: UnitModel) {
+  const selections: InteractiveSelections[] = [];
+  // Look over all selections
+  forEachSelection(model, selCmpt => {
+    if (selCmpt['fields']) {
+      selections.push({name: selCmpt.name, store: stringValue(selCmpt.name + STORE), fields: selCmpt['fields']});
+    }
+  });
+
+  // Quit if no selections have projections
+  if (!selections.length) {
+    return [];
+  }
+
+  // Encoding channels should fully populate selections
+  let selectionFields: string[] = [].concat.apply([], selections.map(s => s.fields)); // Flatten array
+  selectionFields = selectionFields.filter((v, i, a) => a.indexOf(v) === i); // Get unique elements
+
+  let encodingFields: string[] = [];
+  [COLOR, OPACITY, SIZE, SHAPE].forEach(channel => {
+    const fieldDef = model.fieldDef(channel);
+    if (fieldDef) {
+      encodingFields.push(fieldDef.field);
+    }
+  });
+
+  encodingFields = encodingFields.filter((v, i, a) => a.indexOf(v) === i); // Get unique elements
+  const differenceFields = selectionFields.filter(x => encodingFields.indexOf(x) === -1);
+  if (differenceFields.length) {
+    return [];
+  }
+  return selections;
+}
+
+function updateInteractiveLegendComponent(
+  model: UnitModel,
+  legendEncode: LegendEncode,
+  channel: NonPositionScaleChannel,
+  interactiveSelections: InteractiveSelections[]
+): LegendEncode {
+  switch (channel) {
+    case COLOR:
+    case OPACITY:
+    case SIZE:
+    case SHAPE:
+      break;
+    default:
+      return legendEncode;
+  }
+  const field = model.fieldDef(channel).field;
+
+  // Choose the selection with highest specifictiy of projection containing the field
+  let selectionIndex: number;
+  let maxFields = 0;
+  interactiveSelections.forEach((s, i) => {
+    if (s.fields.length > maxFields && s.fields.indexOf(field) > -1) {
+      maxFields = s.fields.length;
+      selectionIndex = i;
+    }
+  });
+  if (!maxFields) {
+    return legendEncode;
+  }
+  const maxProjSelection = interactiveSelections[selectionIndex];
+
+  const updatedLegendEncode = legendEncode;
+  let updateValue;
+  ['labels', 'symbols'].forEach(part => {
+    if (updatedLegendEncode.hasOwnProperty(part)) {
+      updateValue = updatedLegendEncode[part].update;
+    } else {
+      updateValue = {opacity: {value: 0.7}};
+    }
+    // Replace VlSeclectionTest datapoint to accomodate multiple fields selection
+    updateValue.opacity = [
+      {
+        test: `!(length(data(${maxProjSelection.store}))) || ${VL_SELECTION_TEST}(${
+          maxProjSelection.store
+        }, {${field}: datum.value})`,
+        value: updateValue.opacity.value
+      },
+      {value: 0.2}
+    ];
+    updatedLegendEncode[part] = {name: `${part}_${field}${LEGEND}`, interactive: true, update: updateValue};
+  });
+  // For Opacity-symbols
+  // let updatedValue;
+  // if (part === 'symbols' && channel === OPACITY) {
+  //   updatedValue = value;
+  //   if (updatedValue.stroke.value === 'transparent') {
+  //     updatedValue.stroke = [
+  //       {test: `vlSelectionTest(${maxProjSelection.store}, {${field}: datum.value})`, value: '#000000'},
+  //       {value: 'transparent'}
+  //     ];
+  //   } else {
+  //     updatedValue.stroke = [
+  //       {
+  //         test: `length(data(${maxProjSelection.store}))) && vlSelectionTest(${
+  //           maxProjSelection.store
+  //           }, {${field}: datum.value})`,
+  //         value: '#000000'
+  //       },
+  //       updatedValue.stroke
+  //     ];
+  //   }
+  // }
+  return updatedLegendEncode;
 }
 
 function getProperty<K extends keyof VgLegend>(
