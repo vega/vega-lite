@@ -138,11 +138,6 @@ export namespace message {
   export const REPEAT_CANNOT_SHARE_AXIS =
     'Axes cannot be shared in repeated views yet (https://github.com/vega/vega-lite/issues/2415).';
 
-  // TITLE
-  export function cannotSetTitleAnchor(type: string) {
-    return `Cannot set title "anchor" for a ${type} spec`;
-  }
-
   // DATA
   export function unrecognizedParse(p: string) {
     return `Unrecognized parse "${p}".`;
