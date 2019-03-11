@@ -144,6 +144,12 @@ function getProperty<K extends keyof VgLegend>(
         return undefined;
       }
       return numberFormat(fieldDef, legend.format, model.config);
+    case 'formatType':
+      // Same as format, We don't include temporal field here as we apply format in encode block
+      if (isTimeFormatFieldDef(fieldDef)) {
+        return undefined;
+      }
+      return legend.formatType;
     case 'title':
       return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;
 

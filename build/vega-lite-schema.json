@@ -422,14 +422,6 @@
           ],
           "type": "string"
         },
-        "formatType": {
-          "description": "The type of the `format` property.",
-          "enum": [
-            "number",
-            "time"
-          ],
-          "type": "string"
-        },
         "grid": {
           "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.",
           "type": "boolean"
@@ -6927,14 +6919,6 @@
         },
         "formatType": {
           "description": "The format type for labels (number or time).",
-          "enum": [
-            "number",
-            "time"
-          ],
-          "type": "string"
-        },
-        "formatType": {
-          "description": "The type of the `format` property.",
           "enum": [
             "number",
             "time"

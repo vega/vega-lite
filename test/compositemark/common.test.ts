@@ -77,20 +77,5 @@ describe('common feature of composite marks', () => {
     expect(isCalculate(lowerCalculate) && lowerCalculate.calculate).toEqual(
       'datum["center_yield space,punctuation"] - datum["extent_yield space,punctuation"]'
     );
-    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
-    expect(layer).toBeTruthy();
-    for (const unitSpec of layer) {
-      const encoding: Encoding<string | RepeatRef> = isUnitSpec(unitSpec) && unitSpec.encoding;
-      expect(encoding).toBeTruthy();
-      expect(encoding.x).toEqual({
-        title: 'Year (year)',
-        type: 'ordinal',
-        field: 'year_Year',
-        axis: {
-          format: '%Y',
-          formatType: 'time'
-        }
-      });
-    }
   });
 });

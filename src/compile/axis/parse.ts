@@ -306,6 +306,12 @@ function getProperty<K extends keyof AxisComponentProps>(
         return undefined;
       }
       return numberFormat(fieldDef, specifiedAxis.format, model.config);
+    case 'formatType':
+      // Same as format, We don't include temporal field here as we apply format in encode block
+      if (isTimeFormatFieldDef(fieldDef)) {
+        return undefined;
+      }
+      return specifiedAxis.formatType;
     case 'grid': {
       if (isBinned(model.fieldDef(channel).bin)) {
         return false;
