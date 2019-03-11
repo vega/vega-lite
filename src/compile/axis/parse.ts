@@ -3,7 +3,7 @@ import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
 import {FieldDefBase, toFieldDefBase} from '../../fielddef';
-import {getFirstDefined, keys, normalizeAngle} from '../../util';
+import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {LayerModel} from '../layer';
@@ -241,8 +241,9 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
       if (explicit || configValue === undefined) {
         // Do not apply implicit rule if there is a config value
         axisComponent.set(property, value, explicit);
-      } else if (property === 'grid' && configValue) {
-        // Grid is an exception because we need to set grid = true to generate another grid axis
+      } else if (contains(['grid', 'orient'], property) && configValue) {
+        // - Grid is an exception because we need to set grid = true to generate another grid axis
+        // - Orient is not an axis config in Vega, so we need to set too.
         axisComponent.set(property, configValue, false);
       }
     }
