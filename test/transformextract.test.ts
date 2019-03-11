@@ -46,6 +46,7 @@ describe('extractTransforms()', () => {
     'joinaggregate_mean_difference.vl.json',
     'layer_bar_dual_axis_minmax.vl.json',
     'layer_bar_month.vl.json', // data transform switches the order
+    'layer_dual_axis.vl.json', // tooltip does not use the correct field name
     'layer_circle_independent_color.vl.json',
     'layer_falkensee.vl.json',
     'layer_histogram_global_mean.vl.json',
