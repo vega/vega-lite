@@ -1,4 +1,4 @@
-import {checkLinks, draw} from '../../../src/compile/data/debug';
+import {checkLinks, draw, debug} from '../../../src/compile/data/debug';
 import {resetIdCounter} from '../../../src/util';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
@@ -56,6 +56,19 @@ describe('compile/data/debug', () => {
       const node = new DataFlowNode(root);
       node.parent = null;
       expect(checkLinks([root])).toBe(false);
+    });
+  });
+  describe('debug', () => {
+    it('should print simple dataflow graph', () => {
+      resetIdCounter();
+      const root = new DataFlowNode(null, 'foo');
+      const node = new DataFlowNode(root, 'bar');
+      console.log = jest.fn();
+      debug(root);
+      expect(console.log).toHaveBeenCalledWith('DataFlowNode(foo) -> DataFlowNode (bar)');
+      expect(console.log).toHaveBeenCalledWith(root);
+      expect(console.log).toHaveBeenCalledWith('DataFlowNode(bar) -> ');
+      expect(console.log).toHaveBeenCalledWith(node);
     });
   });
 });
