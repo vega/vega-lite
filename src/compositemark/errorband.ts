@@ -58,8 +58,8 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
    * - `"linear"`: piecewise linear segments, as in a polyline.
    * - `"linear-closed"`: close the linear segments to form a polygon.
    * - `"step"`: produces a piecewise constant function (a step function) consisting of alternating horizontal and vertical lines. The y-value changes at the midpoint of each pair of adjacent x-values.
-   * - `"step-before"`: Produces a piecewise constant function (a step function) consisting of alternating horizontal and vertical lines. The y-value changes before the x-value.
-   * - `"step-after"`: Produces a piecewise constant function (a step function) consisting of alternating horizontal and vertical lines. The y-value changes after the x-value.
+   * - `"step-before"`: produces a piecewise constant function (a step function) consisting of alternating horizontal and vertical lines. The y-value changes before the x-value.
+   * - `"step-after"`: produces a piecewise constant function (a step function) consisting of alternating horizontal and vertical lines. The y-value changes after the x-value.
    * - `"basis"`: a B-spline, with control point duplication on the ends.
    * - `"basis-open"`: an open B-spline; may not intersect the start or end.
    * - `"basis-closed"`: a closed B-spline, as in a loop.
