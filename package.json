@@ -105,20 +105,20 @@
     "yaml-front-matter": "^4.0.0"
   },
   "dependencies": {
-    "@types/clone": "^0.1.30",
-    "clone": "^2.1.2",
-    "fast-deep-equal": "^2.0.1",
-    "fast-json-stable-stringify": "^2.0.0",
-    "json-stringify-pretty-compact": "^2.0.0",
-    "tslib": "^1.9.3",
-    "vega-event-selector": "^2.0.0",
-    "vega-expression": "^2.5.0",
+    "@types/clone": "~0.1.30",
+    "clone": "~2.1.2",
+    "fast-deep-equal": "~2.0.1",
+    "fast-json-stable-stringify": "~2.0.0",
+    "json-stringify-pretty-compact": "~2.0.0",
+    "tslib": "~1.9.3",
+    "vega-event-selector": "~2.0.0",
+    "vega-expression": "~2.5.0",
     "vega-typings": "0.5.7",
-    "vega-util": "^1.9.0",
-    "yargs": "^13.2.2"
+    "vega-util": "~1.9.0",
+    "yargs": "~13.2.2"
   },
   "peerDependencies": {
-    "vega": "5.1.0"
+    "vega": "~5.1.0"
   },
   "jest": {
     "preset": "jest-puppeteer",
