@@ -115,7 +115,7 @@ Under the hood, Vega-Lite translates this spec with `"facet"` channel to the mor
 
 The default [resolutions](resolve.html) for row/column facet are shared scales, axes, and legends.
 
-To overrride this behavior, tou can set `resolve` to `"independent"`:
+To override this behavior, tou can set `resolve` to `"independent"`:
 
 <span class="vl-example" data-name="trellis_barley_independent"></span>
 
