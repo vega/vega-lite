@@ -1,5 +1,6 @@
 import {SignalRef} from 'vega';
 import {isArray, isNumber} from 'vega-util';
+import {isBinning} from '../../bin';
 import {
   Channel,
   COLOR,
@@ -18,6 +19,7 @@ import {
   Y
 } from '../../channel';
 import {Config} from '../../config';
+import {vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {
@@ -40,8 +42,6 @@ import {Rename, SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
-import {isBinning} from '../../bin';
-import {vgField} from '../../fielddef';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'rangeStep', 'scheme'];
 
