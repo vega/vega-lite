@@ -125,7 +125,12 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_0", "field": "__count"},
-      "range": [0, 361],
+      "range": [
+        0,
+        {
+          "signal": "pow(0.95 * min(width / ((bin_maxbins_10_IMDB_Rating_bins.stop - bin_maxbins_10_IMDB_Rating_bins.start) / bin_maxbins_10_IMDB_Rating_bins.step), height / ((bin_maxbins_10_Rotten_Tomatoes_Rating_bins.stop - bin_maxbins_10_Rotten_Tomatoes_Rating_bins.start) / bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step)), 2)"
+        }
+      ],
       "zero": true
     }
   ],
