@@ -162,28 +162,28 @@ describe('compile/legend', () => {
         sel2: {type: 'multi', fields: ['Cylinders']}
       });
       const def = legendParse.interactiveLegendExists(model);
-      assert.isTrue(Boolean(def.length));
+      expect(Boolean(def.length)).toBeTruthy();
     });
     it('should correctly determine if interactive legend is present', () => {
       model.component.selection = parseUnitSelection(model, {
         sel1: {type: 'multi', fields: ['Origin', 'Cylinders']}
       });
       const def = legendParse.interactiveLegendExists(model);
-      assert.isTrue(Boolean(def.length));
+      expect(def.length).toBeTruthy();
     });
     it('should correctly determine if interactive legend is present', () => {
       model.component.selection = parseUnitSelection(model, {
         sel1: {type: 'multi', fields: ['Origin']}
       });
       const def = legendParse.interactiveLegendExists(model);
-      assert.isTrue(Boolean(def.length));
+      expect(def.length).toBeTruthy();
     });
     it('should correctly determine if interactive legend is present', () => {
       model.component.selection = parseUnitSelection(model, {
         sel1: {type: 'multi', fields: ['Origin', 'Cylinders', 'Year']}
       });
       const def = legendParse.interactiveLegendExists(model);
-      assert.isFalse(Boolean(def.length));
+      expect(def.length).toBeFalsy();
     });
   });
 
