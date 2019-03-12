@@ -103,6 +103,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "date (year-month)",
       "encode": {
         "labels": {

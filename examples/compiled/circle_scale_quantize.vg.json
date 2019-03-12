@@ -96,6 +96,7 @@
       "title": "Quantize",
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "encode": {
         "symbols": {
           "update": {"shape": {"value": "circle"}, "opacity": {"value": 0.7}}

@@ -147,10 +147,7 @@
       "name": "brush_tuple",
       "on": [
         {
-          "events": [
-            {"signal": "brush_Horsepower"},
-            {"signal": "brush_Miles_per_Gallon"}
-          ],
+          "events": [{"signal": "brush_Horsepower || brush_Miles_per_Gallon"}],
           "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
         }
       ]
@@ -247,7 +244,7 @@
     },
     {
       "name": "hoverbrush_tuple_fields",
-      "value": [{"field": "_vgsid_", "type": "E"}]
+      "value": [{"type": "E", "field": "_vgsid_"}]
     },
     {
       "name": "hoverbrush_toggle",

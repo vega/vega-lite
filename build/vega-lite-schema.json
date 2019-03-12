@@ -85,19 +85,6 @@
       ],
       "type": "string"
     },
-    "AnchorValue": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/TitleAnchor"
-        },
-        {
-          "$ref": "#/definitions/AnchorValueRef"
-        }
-      ]
-    },
-    "AnchorValueRef": {
-      "$ref": "#/definitions/ScaledValueRef<TitleAnchor>"
-    },
     "AnyMark": {
       "anyOf": [
         {
@@ -218,6 +205,13 @@
           "maximum": 1,
           "minimum": 0,
           "type": "number"
+        },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
         },
         "orient": {
           "$ref": "#/definitions/Orientation",
@@ -404,7 +398,15 @@
           "type": "number"
         },
         "format": {
-          "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more information.\n\n__Default value:__  derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for quantitative fields and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for temporal fields.",
+          "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field. To override the default type, set `formatType`.\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more information.\n\n__Default value:__  derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for quantitative fields and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for temporal fields.",
+          "type": "string"
+        },
+        "formatType": {
+          "description": "The format type for labels (number or time).",
+          "enum": [
+            "number",
+            "time"
+          ],
           "type": "string"
         },
         "grid": {
@@ -528,7 +530,7 @@
         },
         "orient": {
           "$ref": "#/definitions/AxisOrient",
-          "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).\n\n__Default value:__ `\"bottom\"` for x-axes and `\"left\"` for y-axes."
+          "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y-axis oriented towards the right edge of the chart).\n\n__Default value:__ `\"bottom\"` for x-axes and `\"left\"` for y-axes."
         },
         "position": {
           "description": "The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
@@ -599,7 +601,7 @@
           "description": "Horizontal text alignment of axis titles."
         },
         "titleAnchor": {
-          "$ref": "#/definitions/AnchorValue",
+          "$ref": "#/definitions/TitleAnchor",
           "description": "Text anchor position for placing axis titles."
         },
         "titleAngle": {
@@ -838,6 +840,10 @@
           "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30` for y-axis; `undefined` for x-axis.",
           "type": "number"
         },
+        "orient": {
+          "$ref": "#/definitions/AxisOrient",
+          "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y-axis oriented towards the right edge of the chart).\n\n__Default value:__ `\"bottom\"` for x-axes and `\"left\"` for y-axes."
+        },
         "shortTimeLabels": {
           "description": "Whether month names and weekday names should be abbreviated.\n\n__Default value:__  `false`",
           "type": "boolean"
@@ -896,7 +902,7 @@
           "description": "Horizontal text alignment of axis titles."
         },
         "titleAnchor": {
-          "$ref": "#/definitions/AnchorValue",
+          "$ref": "#/definitions/TitleAnchor",
           "description": "Text anchor position for placing axis titles."
         },
         "titleAngle": {
@@ -1081,6 +1087,13 @@
           "maximum": 1,
           "minimum": 0,
           "type": "number"
+        },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
         },
         "orient": {
           "$ref": "#/definitions/Orientation",
@@ -1497,59 +1510,6 @@
         }
       },
       "type": "object"
-    },
-    "BaseValueRef<TitleAnchor>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/SignalRef"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "value": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/TitleAnchor"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            }
-          },
-          "required": [
-            "value"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "field": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "field"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "range": {
-              "type": [
-                "number",
-                "boolean"
-              ]
-            }
-          },
-          "required": [
-            "range"
-          ],
-          "type": "object"
-        }
-      ]
     },
     "Baseline": {
       "enum": [
@@ -3735,18 +3695,6 @@
       },
       "type": "object"
     },
-    "DatumFieldRef": {
-      "additionalProperties": false,
-      "properties": {
-        "datum": {
-          "$ref": "#/definitions/Field"
-        }
-      },
-      "required": [
-        "datum"
-      ],
-      "type": "object"
-    },
     "Day": {
       "maximum": 7,
       "minimum": 1,
@@ -4547,16 +4495,7 @@
           "type": "string"
         },
         {
-          "$ref": "#/definitions/SignalRef"
-        },
-        {
-          "$ref": "#/definitions/DatumFieldRef"
-        },
-        {
-          "$ref": "#/definitions/GroupFieldRef"
-        },
-        {
-          "$ref": "#/definitions/ParentFieldRef"
+          "$ref": "#/definitions/RepeatRef"
         }
       ]
     },
@@ -6008,27 +5947,20 @@
       ],
       "type": "object"
     },
-    "GroupFieldRef": {
-      "additionalProperties": false,
-      "properties": {
-        "group": {
-          "$ref": "#/definitions/Field"
-        },
-        "level": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "group"
-      ],
-      "type": "object"
-    },
     "Header": {
       "additionalProperties": false,
       "description": "Headers of row / column channels for faceted plots.",
       "properties": {
         "format": {
-          "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more information.\n\n__Default value:__  derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for quantitative fields and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for temporal fields.",
+          "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field. To override the default type, set `formatType`.\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more information.\n\n__Default value:__  derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for quantitative fields and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for temporal fields.",
+          "type": "string"
+        },
+        "formatType": {
+          "description": "The format type for labels (number or time).",
+          "enum": [
+            "number",
+            "time"
+          ],
           "type": "string"
         },
         "labelAngle": {
@@ -6791,7 +6723,15 @@
           "description": "Background fill color for the full legend."
         },
         "format": {
-          "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more information.\n\n__Default value:__  derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for quantitative fields and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for temporal fields.",
+          "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field. To override the default type, set `formatType`.\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more information.\n\n__Default value:__  derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for quantitative fields and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for temporal fields.",
+          "type": "string"
+        },
+        "formatType": {
+          "description": "The format type for labels (number or time).",
+          "enum": [
+            "number",
+            "time"
+          ],
           "type": "string"
         },
         "gradientLength": {
@@ -7537,6 +7477,13 @@
           "minimum": 0,
           "type": "number"
         },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "orient": {
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
@@ -7979,6 +7926,13 @@
           "minimum": 0,
           "type": "number"
         },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "orient": {
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
@@ -8195,6 +8149,13 @@
           "maximum": 1,
           "minimum": 0,
           "type": "number"
+        },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
         },
         "orient": {
           "$ref": "#/definitions/Orientation",
@@ -8709,6 +8670,13 @@
           "minimum": 0,
           "type": "number"
         },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "orient": {
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
@@ -8867,21 +8835,6 @@
         }
       ],
       "minimum": 0
-    },
-    "ParentFieldRef": {
-      "additionalProperties": false,
-      "properties": {
-        "level": {
-          "type": "number"
-        },
-        "parent": {
-          "$ref": "#/definitions/Field"
-        }
-      },
-      "required": [
-        "parent"
-      ],
-      "type": "object"
     },
     "Parse": {
       "additionalProperties": {
@@ -9882,44 +9835,6 @@
       ],
       "type": "string"
     },
-    "ScaledValueRef<TitleAnchor>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/BaseValueRef<TitleAnchor>"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "scale": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "scale"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "band": {
-              "type": [
-                "boolean",
-                "number"
-              ]
-            },
-            "scale": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "scale",
-            "band"
-          ],
-          "type": "object"
-        }
-      ]
-    },
     "SchemeConfig": {
       "additionalProperties": false,
       "properties": {
@@ -10677,6 +10592,13 @@
           "minimum": 0,
           "type": "number"
         },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
         "orient": {
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
@@ -10944,6 +10866,13 @@
           "maximum": 1,
           "minimum": 0,
           "type": "number"
+        },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
         },
         "orient": {
           "$ref": "#/definitions/Orientation",

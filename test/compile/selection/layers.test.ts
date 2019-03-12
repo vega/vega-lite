@@ -1,6 +1,6 @@
 /* tslint:disable quotemark */
 
-import * as selection from '../../../src/compile/selection/selection';
+import * as selection from '../../../src/compile/selection';
 import {UnitModel} from '../../../src/compile/unit';
 import {parseLayerModel} from '../../util';
 

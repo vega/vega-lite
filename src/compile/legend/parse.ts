@@ -124,7 +124,7 @@ function getProperty<K extends keyof VgLegend>(
   channel: NonPositionScaleChannel,
   model: UnitModel
 ): VgLegend[K] {
-  const {encoding} = model;
+  const {encoding, mark} = model;
   const fieldDef = getTypedFieldDef(encoding[channel]);
   const legendConfig = model.config.legend;
   const {timeUnit} = fieldDef;
@@ -163,6 +163,9 @@ function getProperty<K extends keyof VgLegend>(
           scaleType
         })
       );
+
+    case 'symbolType':
+      return getFirstDefined(legend.symbolType, properties.defaultSymbolType(mark));
 
     case 'values':
       return properties.values(legend, fieldDef);
@@ -238,6 +241,8 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
       // Tie breaker function
       (v1: Explicit<any>, v2: Explicit<any>): any => {
         switch (prop) {
+          case 'symbolType':
+            return mergeSymbolType(v1, v2);
           case 'title':
             return mergeTitleComponent(v1, v2);
           case 'type':
@@ -260,4 +265,12 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
   }
 
   return mergedLegend;
+}
+
+function mergeSymbolType(st1: Explicit<string>, st2: Explicit<string>) {
+  if (st2.value === 'circle') {
+    // prefer "circle" over "stroke"
+    return st2;
+  }
+  return st1;
 }

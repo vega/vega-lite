@@ -30,7 +30,7 @@
     },
     {
       "name": "pts_tuple_fields",
-      "value": [{"field": "Cylinders", "type": "E"}]
+      "value": [{"type": "E", "field": "Cylinders"}]
     },
     {
       "name": "pts_toggle",
@@ -167,6 +167,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Cylinders",
       "encode": {
         "symbols": {

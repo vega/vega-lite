@@ -237,6 +237,7 @@
           "title": "All Movies",
           "size": "size",
           "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
+          "symbolType": "circle",
           "encode": {
             "symbols": {
               "update": {
@@ -252,6 +253,7 @@
           "title": "In Selected Category",
           "size": "size",
           "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
+          "symbolType": "circle",
           "encode": {
             "symbols": {
               "update": {
@@ -330,8 +332,8 @@
           "orient": "bottom",
           "grid": false,
           "title": "Major_Genre",
-          "labelAlign": "right",
           "labelAngle": 320,
+          "labelAlign": "right",
           "labelBaseline": "top",
           "zindex": 1
         },

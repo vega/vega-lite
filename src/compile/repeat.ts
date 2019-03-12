@@ -1,4 +1,4 @@
-import {isArray} from 'vega';
+import {isArray} from 'vega-util';
 import {Config} from '../config';
 import * as log from '../log';
 import {NormalizedRepeatSpec} from '../spec';

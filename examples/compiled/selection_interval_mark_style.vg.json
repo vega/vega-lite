@@ -152,7 +152,7 @@
       "name": "alex_tuple",
       "on": [
         {
-          "events": [{"signal": "alex_Cylinders"}, {"signal": "alex_Origin"}],
+          "events": [{"signal": "alex_Cylinders || alex_Origin"}],
           "update": "alex_Cylinders && alex_Origin ? {unit: \"\", fields: alex_tuple_fields, values: [alex_Cylinders,alex_Origin]} : null"
         }
       ]
@@ -356,10 +356,7 @@
       "name": "morgan_tuple",
       "on": [
         {
-          "events": [
-            {"signal": "morgan_Cylinders"},
-            {"signal": "morgan_Origin"}
-          ],
+          "events": [{"signal": "morgan_Cylinders || morgan_Origin"}],
           "update": "morgan_Cylinders && morgan_Origin ? {unit: \"\", fields: morgan_tuple_fields, values: [morgan_Cylinders,morgan_Origin]} : null"
         }
       ]
@@ -693,6 +690,7 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Count of Records"
     }
   ]

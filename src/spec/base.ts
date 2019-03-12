@@ -1,5 +1,4 @@
-import {isArray} from 'vega';
-import {isNumber} from 'vega-util';
+import {isArray, isNumber} from 'vega-util';
 import {Config} from '../config';
 import {Data} from '../data';
 import {Resolve} from '../resolve';

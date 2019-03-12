@@ -48,10 +48,7 @@
       "name": "grid_tuple",
       "on": [
         {
-          "events": [
-            {"signal": "grid_Horsepower"},
-            {"signal": "grid_Miles_per_Gallon"}
-          ],
+          "events": [{"signal": "grid_Horsepower || grid_Miles_per_Gallon"}],
           "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Miles_per_Gallon]} : null"
         }
       ]
@@ -249,6 +246,7 @@
     {
       "size": "size",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Cylinders",
       "encode": {
         "symbols": {

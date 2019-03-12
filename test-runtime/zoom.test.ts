@@ -19,7 +19,7 @@ function zoom(key: string, idx: number, direction: InOut, parent?: string, targe
 const cmp = (a: number, b: number) => a - b;
 
 for (const bind of [bound, unbound]) {
-  describe(`Zoom ${bind} interval selections at runtime`, async () => {
+  describe(`Zoom ${bind} interval selections at runtime`, () => {
     beforeAll(async () => {
       await page.goto('http://0.0.0.0:8000/test-runtime/');
     });

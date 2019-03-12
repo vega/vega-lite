@@ -4,7 +4,7 @@ import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {Model} from '../../../src/compile/model';
-import * as selection from '../../../src/compile/selection/selection';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {NormalizedUnitSpec} from '../../../src/spec';
 import {parseModel, parseUnitModel} from '../../util';
 
@@ -55,15 +55,15 @@ describe('Selection time unit', () => {
         y: {field: 'date', type: 'temporal', timeUnit: 'minutes'}
       }
     });
-    const selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+    const selCmpts = (model.component.selection = parseUnitSelection(model, {
       one: {type: 'single'},
       two: {type: 'single', encodings: ['x', 'y']}
     }));
 
-    expect(selCmpts['one'].timeUnit).not.toBeDefined();
-    expect(selCmpts['two'].timeUnit).toBeInstanceOf(TimeUnitNode);
+    expect(selCmpts['one'].project.timeUnit).not.toBeDefined();
+    expect(selCmpts['two'].project.timeUnit).toBeInstanceOf(TimeUnitNode);
 
-    const as = selCmpts['two'].timeUnit.assemble().map(tx => tx.as);
+    const as = selCmpts['two'].project.timeUnit.assemble().map(tx => tx.as);
     expect(as).toEqual(['seconds_date', 'minutes_date']);
   });
 

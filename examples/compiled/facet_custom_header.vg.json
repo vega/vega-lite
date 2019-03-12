@@ -60,9 +60,9 @@
       "role": "column-title",
       "title": {
         "text": "gender",
-        "offset": 10,
         "style": "guide-title",
-        "fontSize": 20
+        "fontSize": 20,
+        "offset": 10
       }
     },
     {
@@ -90,10 +90,10 @@
       "sort": {"field": "datum[\"gender\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"gender\"]"},
-        "offset": 10,
         "style": "guide-label",
         "frame": "group",
-        "fontSize": 15
+        "fontSize": 15,
+        "offset": 10
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
     },
@@ -207,6 +207,7 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "symbolType": "circle",
       "title": "gender",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }
