@@ -640,10 +640,13 @@ export interface BaseMarkConfig {
   tension?: number;
 
   /**
-   * The default symbol shape to use. One of: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
+   * Shape of the point marks. Supported values include:
+   * - plotting shapes: `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, `"triangle-down"`, `"triangle-right"`, or `"triangle-left"`.
+   * - the line symbol `"stroke"`
+   * - centered directional shapes `"arrow"`, `"wedge"`, or `"triangle"`
+   * - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)
    *
    * __Default value:__ `"circle"`
-   *
    */
   shape?: string;
 
