@@ -39,7 +39,7 @@
     },
     {
       "name": "paintbrush_tuple_fields",
-      "value": [{"field": "_vgsid_", "type": "E"}]
+      "value": [{"type": "E", "field": "_vgsid_"}]
     },
     {
       "name": "paintbrush_toggle",
@@ -185,6 +185,7 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Cylinders",
       "encode": {
         "symbols": {

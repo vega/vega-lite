@@ -1,4 +1,4 @@
-import {TUPLE, unitName} from '../selection';
+import {TUPLE, unitName} from '..';
 import {TransformCompiler} from './transforms';
 
 const TOGGLE = '_toggle';

@@ -47,4 +47,4 @@ The default [resolutions](resolve.html) for layer are shared scales, axes, and l
 
 In the chart below, we set the y-scales of the different layers to be independent with `"resolve": {"scale": {"y": "independent"}}`.
 
-<div class="vl-example" data-name="layer_bar_dual_axis"></div>
+<div class="vl-example" data-name="layer_dual_axis"></div>

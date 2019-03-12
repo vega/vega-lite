@@ -108,6 +108,7 @@
         {
           "stroke": "child__repeat_column_Origin_color",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
+          "symbolType": "circle",
           "title": "Origin",
           "encode": {
             "symbols": {
@@ -219,6 +220,7 @@
         {
           "stroke": "child__repeat_column_Cylinders_color",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
+          "symbolType": "circle",
           "title": "Cylinders",
           "encode": {
             "symbols": {

@@ -28,7 +28,7 @@
         }
       ]
     },
-    {"name": "pts_tuple_fields", "value": [{"field": "Origin", "type": "E"}]},
+    {"name": "pts_tuple_fields", "value": [{"type": "E", "field": "Origin"}]},
     {"name": "pts_modify", "update": "modify(\"pts_store\", pts_tuple, true)"}
   ],
   "marks": [
@@ -165,6 +165,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Cylinders",
       "encode": {
         "symbols": {
@@ -179,6 +180,7 @@
     {
       "shape": "shape",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Origin",
       "encode": {
         "symbols": {

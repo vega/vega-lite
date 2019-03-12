@@ -14,6 +14,7 @@ import {
   SignalRef,
   SortField as VgSortField,
   TextBaseline as VgTextBaseline,
+  Title as VgTitle,
   UnionSortField as VgUnionSortField
 } from 'vega';
 import {isArray} from 'vega-util';
@@ -23,7 +24,7 @@ import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
-export {VgSortField, VgUnionSortField, VgCompare, LayoutAlign, ProjectionType};
+export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType};
 
 export type Color = string;
 

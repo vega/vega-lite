@@ -2,7 +2,8 @@ import {Channel, ScaleChannel} from '../../channel';
 import {keys} from '../../util';
 import {isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
 import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
-import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
+import {isRawSelectionDomain} from '../selection';
+import {assembleSelectionScaleDomain} from '../selection/assemble';
 import {assembleDomain} from './domain';
 
 export function assembleScales(model: Model): VgScale[] {
@@ -40,7 +41,7 @@ export function assembleScalesForModel(model: Model): VgScale[] {
       // is set, and replace it with the correct domainRaw signal.
       // For more information, see isRawSelectionDomain in selection.ts.
       if (domainRaw && isRawSelectionDomain(domainRaw)) {
-        domainRaw = selectionScaleDomain(model, domainRaw);
+        domainRaw = assembleSelectionScaleDomain(model, domainRaw);
       }
 
       const domain = assembleDomain(model, channel);

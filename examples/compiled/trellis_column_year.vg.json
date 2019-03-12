@@ -54,7 +54,7 @@
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "date (year)", "offset": 10, "style": "guide-title"}
+      "title": {"text": "date (year)", "style": "guide-title", "offset": 10}
     },
     {
       "name": "row_header",
@@ -81,9 +81,9 @@
       "sort": {"field": "datum[\"year_date\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "timeFormat(parent[\"year_date\"], '%Y')"},
-        "offset": 10,
         "style": "guide-label",
-        "frame": "group"
+        "frame": "group",
+        "offset": 10
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
     },
@@ -216,6 +216,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "symbolType": "stroke",
       "title": "symbol"
     }
   ]

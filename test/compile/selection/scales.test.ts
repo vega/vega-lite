@@ -2,7 +2,7 @@
 
 import {X} from '../../../src/channel';
 import {assembleScalesForModel} from '../../../src/compile/scale/assemble';
-import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/selection';
+import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {UnitModel} from '../../../src/compile/unit';
 import * as log from '../../../src/log';
 import {Domain} from '../../../src/scale';

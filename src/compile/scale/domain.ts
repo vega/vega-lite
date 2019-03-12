@@ -26,7 +26,7 @@ import {
 import {sortArrayIndexField} from '../data/calculate';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
-import {SELECTION_DOMAIN} from '../selection/selection';
+import {SELECTION_DOMAIN} from '../selection';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
 

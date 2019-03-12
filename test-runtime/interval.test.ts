@@ -105,10 +105,7 @@ describe('interval selections at runtime in unit views', () => {
 
   it('should brush over ordinal/nominal domains', async () => {
     const xextents = [[2, 3, 4], [6, 7, 8]];
-    const yextents = [
-      [48, 49, 52, 53, 54, 55, 66, 67, 68, 76, 81, 87, 91],
-      [16, 17, 19, 23, 24, 27, 28, 35, 39, 43, 48]
-    ];
+    const yextents = [[49, 52, 53, 54, 55, 66, 67, 68, 76, 81, 87, 91], [17, 19, 23, 24, 27, 28, 35, 39, 43, 48]];
 
     for (let i = 0; i < hits.drag.length; i++) {
       await embed(spec('unit', i, {type}, {x: {type: 'ordinal'}, y: {type: 'nominal'}}));

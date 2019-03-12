@@ -1,9 +1,9 @@
 import {NewSignal, Signal} from 'vega';
+import {SelectionComponent} from '..';
 import {SelectionDef} from '../../../selection';
 import {Dict} from '../../../util';
 import {Model} from '../../model';
 import {UnitModel} from '../../unit';
-import {SelectionComponent} from '../selection';
 import inputs from './inputs';
 import nearest from './nearest';
 import project from './project';

@@ -1,9 +1,10 @@
 import {NewSignal} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
+import {SelectionComponent} from '..';
 import {ScaleChannel, X, Y} from '../../../channel';
 import {UnitModel} from '../../unit';
 import {BRUSH as INTERVAL_BRUSH} from '../interval';
-import {channelSignalName, positionalProjections, SelectionComponent} from '../selection';
+import {SelectionProjection} from './project';
 import scalesCompiler, {domain} from './scales';
 import {TransformCompiler} from './transforms';
 
@@ -19,7 +20,7 @@ const translate: TransformCompiler = {
     const name = selCmpt.name;
     const hasScales = scalesCompiler.has(selCmpt);
     const anchor = name + ANCHOR;
-    const {x, y} = positionalProjections(selCmpt);
+    const {x, y} = selCmpt.project.has;
     let events = parseSelector(selCmpt.translate, 'scope');
 
     if (!hasScales) {
@@ -35,14 +36,8 @@ const translate: TransformCompiler = {
             events: events.map(e => e.between[0]),
             update:
               '{x: x(unit), y: y(unit)' +
-              (x !== null
-                ? ', extent_x: ' +
-                  (hasScales ? domain(model, X) : `slice(${channelSignalName(selCmpt, 'x', 'visual')})`)
-                : '') +
-              (y !== null
-                ? ', extent_y: ' +
-                  (hasScales ? domain(model, Y) : `slice(${channelSignalName(selCmpt, 'y', 'visual')})`)
-                : '') +
+              (x !== undefined ? ', extent_x: ' + (hasScales ? domain(model, X) : `slice(${x.signals.visual})`) : '') +
+              (y !== undefined ? ', extent_y: ' + (hasScales ? domain(model, Y) : `slice(${y.signals.visual})`) : '') +
               '}'
           }
         ]
@@ -59,12 +54,12 @@ const translate: TransformCompiler = {
       }
     );
 
-    if (x !== null) {
-      onDelta(model, selCmpt, X, 'width', signals);
+    if (x !== undefined) {
+      onDelta(model, selCmpt, x, 'width', signals);
     }
 
-    if (y !== null) {
-      onDelta(model, selCmpt, Y, 'height', signals);
+    if (y !== undefined) {
+      onDelta(model, selCmpt, y, 'height', signals);
     }
 
     return signals;
@@ -76,17 +71,16 @@ export default translate;
 function onDelta(
   model: UnitModel,
   selCmpt: SelectionComponent,
-  channel: ScaleChannel,
+  proj: SelectionProjection,
   size: 'width' | 'height',
   signals: NewSignal[]
 ) {
   const name = selCmpt.name;
-  const hasScales = scalesCompiler.has(selCmpt);
-  const signal = signals.filter(s => {
-    return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
-  })[0];
   const anchor = name + ANCHOR;
   const delta = name + DELTA;
+  const channel = proj.channel as ScaleChannel;
+  const hasScales = scalesCompiler.has(selCmpt);
+  const signal = signals.filter(s => s.name === proj.signals[hasScales ? 'data' : 'visual'])[0];
   const sizeSg = model.getSizeSignalRef(size).signal;
   const scaleCmpt = model.getScaleComponent(channel);
   const scaleType = scaleCmpt.get('type');

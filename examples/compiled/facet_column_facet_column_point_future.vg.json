@@ -29,8 +29,8 @@
       "role": "column-title",
       "title": {
         "text": "Origin / Cylinders",
-        "offset": 10,
-        "style": "guide-title"
+        "style": "guide-title",
+        "offset": 10
       }
     },
     {
@@ -41,9 +41,9 @@
       "sort": {"field": "datum[\"Origin\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"Origin\"]"},
-        "offset": 10,
         "style": "guide-label",
-        "frame": "group"
+        "frame": "group",
+        "offset": 10
       }
     },
     {
@@ -97,9 +97,9 @@
           "sort": {"field": "datum[\"Cylinders\"]", "order": "ascending"},
           "title": {
             "text": {"signal": "''+parent[\"Cylinders\"]"},
-            "offset": 10,
             "style": "guide-label",
-            "frame": "group"
+            "frame": "group",
+            "offset": 10
           },
           "encode": {"update": {"width": {"signal": "child_child_width"}}}
         },

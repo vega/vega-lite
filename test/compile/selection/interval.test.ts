@@ -1,9 +1,9 @@
 /* tslint:disable quotemark */
 
 import {selector as parseSelector} from 'vega-event-selector';
-
+import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import interval from '../../../src/compile/selection/interval';
-import * as selection from '../../../src/compile/selection/selection';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {parseUnitModel} from '../../util';
 
 describe('Interval Selections', () => {
@@ -17,7 +17,7 @@ describe('Interval Selections', () => {
   });
   model.parseScale();
 
-  const selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+  const selCmpts = (model.component.selection = parseUnitSelection(model, {
     one: {type: 'interval', encodings: ['x'], translate: false, zoom: false},
     two: {
       type: 'interval',
@@ -367,7 +367,7 @@ describe('Interval Selections', () => {
         name: 'thr_ee_tuple',
         on: [
           {
-            events: [{signal: 'thr_ee_Horsepower'}, {signal: 'thr_ee_Miles_per_Gallon'}],
+            events: [{signal: 'thr_ee_Horsepower || thr_ee_Miles_per_Gallon'}],
             update:
               'thr_ee_Horsepower && thr_ee_Miles_per_Gallon ? {unit: "", fields: thr_ee_tuple_fields, values: [thr_ee_Horsepower,thr_ee_Miles_per_Gallon]} : null'
           }
@@ -392,7 +392,7 @@ describe('Interval Selections', () => {
         init: '{unit: "", fields: five_tuple_fields, values: [[50, 60], [23, 54]]}',
         on: [
           {
-            events: [{signal: 'five_Horsepower'}, {signal: 'five_Miles_per_Gallon'}],
+            events: [{signal: 'five_Horsepower || five_Miles_per_Gallon'}],
             update:
               'five_Horsepower && five_Miles_per_Gallon ? {unit: "", fields: five_tuple_fields, values: [five_Horsepower,five_Miles_per_Gallon]} : null'
           }
@@ -411,7 +411,7 @@ describe('Interval Selections', () => {
 
       model2.parseScale();
 
-      const selCmpts2 = (model2.component.selection = selection.parseUnitSelection(model2, {
+      const selCmpts2 = (model2.component.selection = parseUnitSelection(model2, {
         one: {
           type: 'interval',
           encodings: ['x'],
@@ -421,8 +421,8 @@ describe('Interval Selections', () => {
       }));
 
       const sg = interval.signals(model, selCmpts2['one']);
-      expect(sg[0].name).toEqual('one_x');
-      expect(sg[1].name).toEqual('one_x_1');
+      expect(sg[0].name).toEqual('one_x_1');
+      expect(sg[1].name).toEqual('one_x');
     });
   });
 
@@ -436,7 +436,7 @@ describe('Interval Selections', () => {
     const threeExpr = interval.modifyExpr(model, selCmpts['thr_ee']);
     expect(threeExpr).toEqual('thr_ee_tuple, {unit: ""}');
 
-    const signals = selection.assembleUnitSelectionSignals(model, []);
+    const signals = assembleUnitSelectionSignals(model, []);
     expect(signals).toEqual(
       expect.arrayContaining([
         {

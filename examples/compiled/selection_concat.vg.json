@@ -158,8 +158,7 @@
           "on": [
             {
               "events": [
-                {"signal": "brush_Miles_per_Gallon"},
-                {"signal": "brush_Horsepower"}
+                {"signal": "brush_Miles_per_Gallon || brush_Horsepower"}
               ],
               "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Horsepower]} : null"
             }
@@ -459,10 +458,7 @@
           "name": "grid_tuple",
           "on": [
             {
-              "events": [
-                {"signal": "grid_Displacement"},
-                {"signal": "grid_Acceleration"}
-              ],
+              "events": [{"signal": "grid_Displacement || grid_Acceleration"}],
               "update": "grid_Displacement && grid_Acceleration ? {unit: \"concat_1\", fields: grid_tuple_fields, values: [grid_Displacement,grid_Acceleration]} : null"
             }
           ]

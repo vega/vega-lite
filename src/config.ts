@@ -250,6 +250,7 @@ export const defaultConfig: Config = {
   axisBottom: {},
   axisBand: {},
   legend: defaultLegendConfig,
+  header: {titlePadding: 10, labelPadding: 10},
 
   selection: defaultSelectionConfig,
   style: {},
@@ -275,6 +276,7 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'numberFormat',
   'timeFormat',
   'countTitle',
+  'header',
   'stack',
   'scale',
   'selection',
