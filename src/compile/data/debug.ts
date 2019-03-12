@@ -1,5 +1,6 @@
 import {entries, uniqueId} from './../../util';
 import {DataFlowNode} from './dataflow';
+import {SourceNode} from './source';
 
 /**
  * Print debug information for dataflow tree.
@@ -40,6 +41,10 @@ export function draw(roots: DataFlowNode[]) {
 
     if (node.debugName) {
       out.push(`<i>${node.debugName}</i>`);
+    } else if (node instanceof SourceNode) {
+      if (node.data.name || node.data.url) {
+        out.push(`<i>${node.data.name || node.data.url}</i>`);
+      }
     }
 
     const dep = node.dependentFields();
@@ -58,7 +63,10 @@ export function draw(roots: DataFlowNode[]) {
     nodes[id] = {
       id: id,
       label: getLabel(node),
-      hash: String(node.hash()).replace(/"/g, '')
+      hash:
+        node instanceof SourceNode
+          ? node.data.url || node.data.name || node.debugName
+          : String(node.hash()).replace(/"/g, '')
     };
 
     for (const child of node.children) {
@@ -96,7 +104,7 @@ export function checkLinks(nodes: DataFlowNode[]): boolean {
   for (const node of nodes) {
     for (const child of node.children) {
       if (child.parent !== node) {
-        console.error('Dataflow graph is inconsistent.', parent, child);
+        console.error('Dataflow graph is inconsistent.', node, child);
         return false;
       }
     }
