@@ -40,6 +40,8 @@ import {Rename, SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
+import {isBinning} from '../../bin';
+import {vgField} from '../../fielddef';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'rangeStep', 'scheme'];
 
@@ -101,13 +103,25 @@ function getRangeStep(model: UnitModel, channel: 'x' | 'y'): number | SignalRef 
   }
 
   const scaleType = scaleCmpt.get('type');
+  const fieldDef = model.fieldDef(channel);
 
   if (hasDiscreteDomain(scaleType)) {
     const range = scaleCmpt && scaleCmpt.get('range');
     if (range && isVgRangeStep(range) && isNumber(range.step)) {
       return range.step;
+      // TODO: support the case without range step
     }
-    // TODO: support the case without range step
+  } else if (fieldDef && fieldDef.bin && isBinning(fieldDef.bin)) {
+    const binSignal = model.getName(vgField(fieldDef, {suffix: 'bins'}));
+
+    // TODO: extract this to be range step signal
+    const sizeType = getSizeType(channel);
+    const sizeSignal = model.getName(sizeType);
+    return new SignalRefWrapper(() => {
+      const updatedName = model.getSignalName(binSignal);
+      const binCount = `(${updatedName}.stop - ${updatedName}.start) / ${updatedName}.step`;
+      return `${model.getSignalName(sizeSignal)} / (${binCount})`;
+    });
   }
   return undefined;
 }
