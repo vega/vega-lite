@@ -104,7 +104,7 @@ export function checkLinks(nodes: DataFlowNode[]): boolean {
   for (const node of nodes) {
     for (const child of node.children) {
       if (child.parent !== node) {
-        console.error('Dataflow graph is inconsistent.', parent, child);
+        console.error('Dataflow graph is inconsistent.', node, child);
         return false;
       }
     }
