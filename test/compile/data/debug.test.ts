@@ -1,4 +1,4 @@
-import {checkLinks, draw, debug} from '../../../src/compile/data/debug';
+import {checkLinks, debug, draw} from '../../../src/compile/data/debug';
 import {resetIdCounter} from '../../../src/util';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
