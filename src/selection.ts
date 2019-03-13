@@ -58,14 +58,15 @@ export interface BaseSelectionDef {
 
 export interface SingleSelectionConfig extends BaseSelectionDef {
   /**
-   * Controls clearing selections. Is a `string` that is one of the
-   * [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).
+   * Controls clearing selections. Can be `true`, `false`, or a `string` that is
+   * one of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).
    *
-   * __Default value:__ `dblclick` (i.e. user doubleclick clears current selection).
+   * __Default value:__ `true`, which corresponds to `dblclick` (i.e.
+   * user doubleclick clears current selection).
    *
    * See the [TODO: clear] documentation for more information.
    */
-  clear?: string;
+  clear?: string | boolean;
   /**
    * Establish a two-way binding between a single selection and input elements
    * (also known as dynamic query widgets). A binding takes the form of
@@ -92,14 +93,15 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
 
 export interface MultiSelectionConfig extends BaseSelectionDef {
   /**
-   * Controls clearing selections. Is a `string` that is one of the
-   * [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).
+   * Controls clearing selections. Can be `true`, `false`, or a `string` that is
+   * one of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).
    *
-   * __Default value:__ `dblclick` (i.e. user doubleclick clears current selection).
+   * __Default value:__ `true`, which corresponds to `dblclick` (i.e.
+   * user doubleclick clears current selection).
    *
    * See the [TODO: clear] documentation for more information.
    */
-  clear?: string;
+  clear?: string | boolean;
 
   /**
    * Controls whether data values should be toggled or only ever inserted into
@@ -169,15 +171,15 @@ export interface BrushConfig {
 
 export interface IntervalSelectionConfig extends BaseSelectionDef {
   /**
-   * TODO: Update this
-   * Controls clearing selections. Is a `string` that is one of the
-   * [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).
+   * Controls clearing selections. Can be `true`, `false`, or a `string` that is
+   * one of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).
    *
-   * __Default value:__ `dblclick` (i.e. user doubleclick clears current selection).
+   * __Default value:__ `true`, which corresponds to `dblclick` (i.e.
+   * user doubleclick clears current selection).
    *
    * See the [TODO: clear] documentation for more information.
    */
-  clear?: string;
+  clear?: string | boolean;
   /**
    * When truthy, allows a user to interactively move an interval selection
    * back-and-forth. Can be `true`, `false` (to disable panning), or a
