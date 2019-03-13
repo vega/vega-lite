@@ -3983,6 +3983,68 @@
       "type": "string"
     },
     "EventStream": {
+      "additionalProperties": false,
+      "properties": {
+        "between": {
+          "items": {
+            "$ref": "#/definitions/Stream"
+          },
+          "type": "array"
+        },
+        "consume": {
+          "type": "boolean"
+        },
+        "debounce": {
+          "type": "number"
+        },
+        "filter": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "markname": {
+          "type": "string"
+        },
+        "marktype": {
+          "$ref": "#/definitions/MarkType"
+        },
+        "throttle": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "EventType": {
+      "enum": [
+        "click",
+        "dblclick",
+        "dragenter",
+        "dragleave",
+        "dragover",
+        "keydown",
+        "keypress",
+        "keyup",
+        "mousedown",
+        "mousemove",
+        "mouseout",
+        "mouseover",
+        "mouseup",
+        "mousewheel",
+        "timer",
+        "touchend",
+        "touchmove",
+        "touchstart",
+        "wheel"
+      ],
+      "type": "string"
     },
     "FacetFieldDef": {
       "additionalProperties": false,
@@ -6347,7 +6409,14 @@
           "description": "An interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark."
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -6421,7 +6490,14 @@
           "description": "An interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark."
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -8319,6 +8395,23 @@
       ],
       "type": "object"
     },
+    "MarkType": {
+      "enum": [
+        "arc",
+        "area",
+        "image",
+        "group",
+        "line",
+        "path",
+        "rect",
+        "rule",
+        "shape",
+        "symbol",
+        "text",
+        "trail"
+      ],
+      "type": "string"
+    },
     "Month": {
       "maximum": 12,
       "minimum": 1,
@@ -8368,7 +8461,14 @@
           "type": "boolean"
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -8438,7 +8538,14 @@
           "type": "boolean"
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -10189,7 +10296,14 @@
           "type": "boolean"
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -10256,7 +10370,14 @@
           "type": "boolean"
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -10447,6 +10568,108 @@
         "nominal"
       ],
       "type": "string"
+    },
+    "Stream": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/EventStream"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "between": {
+              "items": {
+                "$ref": "#/definitions/Stream"
+              },
+              "type": "array"
+            },
+            "consume": {
+              "type": "boolean"
+            },
+            "debounce": {
+              "type": "number"
+            },
+            "filter": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "markname": {
+              "type": "string"
+            },
+            "marktype": {
+              "$ref": "#/definitions/MarkType"
+            },
+            "stream": {
+              "$ref": "#/definitions/Stream"
+            },
+            "throttle": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "stream"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "between": {
+              "items": {
+                "$ref": "#/definitions/Stream"
+              },
+              "type": "array"
+            },
+            "consume": {
+              "type": "boolean"
+            },
+            "debounce": {
+              "type": "number"
+            },
+            "filter": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "markname": {
+              "type": "string"
+            },
+            "marktype": {
+              "$ref": "#/definitions/MarkType"
+            },
+            "merge": {
+              "items": {
+                "$ref": "#/definitions/Stream"
+              },
+              "type": "array"
+            },
+            "throttle": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "merge"
+          ],
+          "type": "object"
+        }
+      ]
     },
     "StringFieldDefWithCondition<TypeForShape>": {
       "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef<TypeForShape>,string>"

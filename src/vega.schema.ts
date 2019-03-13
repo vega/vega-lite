@@ -2,12 +2,14 @@ import {
   AggregateOp,
   Align,
   Compare as VgCompare,
+  EventType,
   Field as VgField,
   FlattenTransform as VgFlattenTransform,
   FoldTransform as VgFoldTransform,
   FontStyle as VgFontStyle,
   FontWeight as VgFontWeight,
   LayoutAlign,
+  MarkType,
   Orientation,
   ProjectionType,
   SampleTransform as VgSampleTransform,
@@ -53,7 +55,59 @@ export function isSignalRef(o: any): o is SignalRef {
   return !!o['signal'];
 }
 
-export type EventStream = any;
+interface StreamParameters {
+  between?: Stream[];
+  marktype?: MarkType;
+  markname?: string;
+  filter?: string | string[];
+  throttle?: number;
+  debounce?: number;
+  consume?: boolean;
+}
+
+type HTMLBodyEventType =
+  | EventType
+  | 'orientationchange'
+  | 'fullscreenchange'
+  | 'fullscreenerror'
+  | 'afterprint'
+  | 'beforeprint'
+  | 'beforeunload'
+  | 'hashchange'
+  | 'languagechange'
+  | 'message'
+  | 'messageerror'
+  | 'offline'
+  | 'online'
+  | 'pagehide'
+  | 'pageshow'
+  | 'popstate'
+  | 'rejectionhandled'
+  | 'storage'
+  | 'unhandledrejection'
+  | 'unload'
+  | 'copy'
+  | 'cut'
+  | 'paste';
+
+interface DerivedStream extends StreamParameters {
+  stream: Stream;
+}
+interface MergedStream extends StreamParameters {
+  merge: Stream[];
+}
+export type Stream = EventStream | DerivedStream | MergedStream;
+
+export type EventStream = StreamParameters &
+  (
+    | {
+        source?: 'view' | 'scope';
+        type: EventType;
+      }
+    | {
+        source: 'window';
+        type: HTMLBodyEventType;
+      });
 
 // TODO: add type of value (Make it VgValueRef<T> {value?:T ...})
 export interface VgValueRef {

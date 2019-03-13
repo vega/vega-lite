@@ -1,4 +1,4 @@
-import {stringValue} from 'vega-util';
+import {isArray, stringValue} from 'vega-util';
 import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
 import {ScaleChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
@@ -27,7 +27,7 @@ const interval: SelectionCompiler<'interval'> = {
       const filterExpr = `!event.item || event.item.mark.name !== ${stringValue(name + BRUSH)}`;
       events(selCmpt, (_: any[], evt: EventStream) => {
         const filters = evt.between[0].filter || (evt.between[0].filter = []);
-        if (filters.indexOf(filterExpr) < 0) {
+        if (isArray(filters) && filters.indexOf(filterExpr) < 0) {
           filters.push(filterExpr);
         }
       });
@@ -228,7 +228,7 @@ function channelSignals(
       ];
 }
 
-function events(selCmpt: SelectionComponent<'interval'>, cb: (...args: any[]) => void) {
+function events(selCmpt: SelectionComponent<'interval'>, cb: (...args: any[]) => any) {
   return selCmpt.events.reduce((on: any[], evt: EventStream) => {
     if (!evt.between) {
       warn(`${evt} is not an ordered event stream for interval selections`);

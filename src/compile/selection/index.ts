@@ -36,7 +36,7 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
     : T extends 'single'
     ? SelectionInit
     : SelectionInit | SelectionInit[])[]; // multi
-  events: EventStream;
+  events: EventStream[];
   // predicate?: string;
   bind?: 'scales' | Binding | Dict<Binding>;
   resolve: SelectionResolution;
