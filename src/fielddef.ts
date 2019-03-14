@@ -473,8 +473,8 @@ export function isTextFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<
 export interface FieldRefOption {
   /** Exclude bin, aggregate, timeUnit */
   nofn?: boolean;
-  /** Wrap the field with datum or parent (e.g., datum['...'] for Vega Expression */
-  expr?: 'datum' | 'parent';
+  /** Wrap the field with datum, parent, or datum.datum (e.g., datum['...'] for Vega Expression */
+  expr?: 'datum' | 'parent' | 'datum.datum';
   /** Prepend fn with custom function prefix */
   prefix?: string;
   /** Append suffix to the field ref for bin (default='start') */
