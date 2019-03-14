@@ -1474,6 +1474,14 @@
           "$ref": "#/definitions/Color",
           "description": "Text color for title text."
         },
+        "dx": {
+          "description": "Delta offset for title text x-coordinate.",
+          "type": "number"
+        },
+        "dy": {
+          "description": "Delta offset for title text y-coordinate.",
+          "type": "number"
+        },
         "font": {
           "description": "Font name for title text.",
           "type": "string"
@@ -11068,6 +11076,14 @@
         "color": {
           "$ref": "#/definitions/Color",
           "description": "Text color for title text."
+        },
+        "dx": {
+          "description": "Delta offset for title text x-coordinate.",
+          "type": "number"
+        },
+        "dy": {
+          "description": "Delta offset for title text y-coordinate.",
+          "type": "number"
         },
         "font": {
           "description": "Font name for title text.",
