@@ -55,8 +55,8 @@ const project: TransformCompiler = {
       return {[range]: signals[sg] = sg};
     };
 
-    // If no explicit encodings are specified, set some defaults.
-    // If an initial value is set, try to infer projections for more concise specification.
+    // If no explicit projection (either fields or encodings) is specified, set some defaults.
+    // If an initial value is set, try to infer projections.
     // Otherwise, use the default configuration.
     if (!selDef.fields && !selDef.encodings) {
       const cfg = model.config.selection[selDef.type];
