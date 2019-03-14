@@ -133,7 +133,13 @@
     },
     {
       "name": "brush_scale_trigger",
-      "update": "(!isArray(brush_Horsepower) || (+invert(\"x\", brush_x)[0] === +brush_Horsepower[0] && +invert(\"x\", brush_x)[1] === +brush_Horsepower[1])) && (!isArray(brush_Miles_per_Gallon) || (+invert(\"y\", brush_y)[0] === +brush_Miles_per_Gallon[0] && +invert(\"y\", brush_y)[1] === +brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
+      "value": {},
+      "on": [
+        {
+          "events": [{"scale": "x"}, {"scale": "y"}],
+          "update": "(!isArray(brush_Horsepower) || (+invert(\"x\", brush_x)[0] === +brush_Horsepower[0] && +invert(\"x\", brush_x)[1] === +brush_Horsepower[1])) && (!isArray(brush_Miles_per_Gallon) || (+invert(\"y\", brush_y)[0] === +brush_Miles_per_Gallon[0] && +invert(\"y\", brush_y)[1] === +brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
+        }
+      ]
     },
     {
       "name": "brush_tuple",

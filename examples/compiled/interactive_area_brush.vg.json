@@ -119,7 +119,13 @@
     },
     {
       "name": "brush_scale_trigger",
-      "update": "(!isArray(brush_yearmonth_date) || (+invert(\"x\", brush_x)[0] === +brush_yearmonth_date[0] && +invert(\"x\", brush_x)[1] === +brush_yearmonth_date[1])) ? brush_scale_trigger : {}"
+      "value": {},
+      "on": [
+        {
+          "events": [{"scale": "x"}],
+          "update": "(!isArray(brush_yearmonth_date) || (+invert(\"x\", brush_x)[0] === +brush_yearmonth_date[0] && +invert(\"x\", brush_x)[1] === +brush_yearmonth_date[1])) ? brush_scale_trigger : {}"
+        }
+      ]
     },
     {
       "name": "brush_tuple",
