@@ -19,6 +19,8 @@ export namespace Channel {
   // Position
   export const X: 'x' = 'x';
   export const Y: 'y' = 'y';
+  export const XOFFSET: 'xOffset' = 'xOffset';
+  export const YOFFSET: 'yOffset' = 'yOffset';
   export const X2: 'x2' = 'x2';
   export const Y2: 'y2' = 'y2';
   // Geo Position
@@ -59,6 +61,8 @@ export const X = Channel.X;
 export const Y = Channel.Y;
 export const X2 = Channel.X2;
 export const Y2 = Channel.Y2;
+export const XOFFSET = Channel.XOFFSET;
+export const YOFFSET = Channel.YOFFSET;
 
 export const LATITUDE = Channel.LATITUDE;
 export const LATITUDE2 = Channel.LATITUDE2;
@@ -108,6 +112,9 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   y: 1,
   x2: 1,
   y2: 1,
+
+  xOffset: 1,
+  yOffset: 1,
 
   ...GEOPOSITION_CHANNEL_INDEX,
 
@@ -181,6 +188,8 @@ export type SingleDefUnitChannel =
   | 'y'
   | 'x2'
   | 'y2'
+  | 'xOffset'
+  | 'yOffset'
   | 'longitude'
   | 'latitude'
   | 'longitude2'
@@ -238,6 +247,9 @@ const {
   // x2 and y2 share the same scale as x and y
   x2: _x2,
   y2: _y2,
+  //
+  xOffset: _xo,
+  yOffset: _yo,
   latitude: _latitude,
   longitude: _longitude,
   latitude2: _latitude2,
@@ -254,7 +266,13 @@ const POSITION_SCALE_CHANNEL_INDEX: {x: 1; y: 1} = {x: 1, y: 1};
 export const POSITION_SCALE_CHANNELS = flagKeys(POSITION_SCALE_CHANNEL_INDEX);
 export type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
 
-// NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without X, Y
+const OFFSET_SCALE_CHANNEL_INDEX: {xOffset: 1; yOffset: 1} = {xOffset: 1, yOffset: 1};
+
+export const OFFSET_SCALE_CHANNELS = flagKeys(OFFSET_SCALE_CHANNEL_INDEX);
+
+export type OffsetScaleChannel = typeof OFFSET_SCALE_CHANNELS[0];
+
+// NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without position / offset
 const {
   // x2 and y2 share the same scale as x and y
   // text and tooltip have format instead of scale,
@@ -298,6 +316,7 @@ export function supportLegend(channel: NonPositionScaleChannel) {
 // Declare SCALE_CHANNEL_INDEX
 const SCALE_CHANNEL_INDEX = {
   ...POSITION_SCALE_CHANNEL_INDEX,
+  ...OFFSET_SCALE_CHANNEL_INDEX,
   ...NONPOSITION_SCALE_CHANNEL_INDEX
 };
 
@@ -362,6 +381,8 @@ function getSupportedMark(channel: Channel): SupportedMark {
       };
     case X:
     case Y:
+    case XOFFSET:
+    case YOFFSET:
     case LATITUDE:
     case LONGITUDE:
       return {
@@ -415,6 +436,8 @@ export function rangeType(channel: Channel): RangeType {
   switch (channel) {
     case X:
     case Y:
+    case XOFFSET:
+    case YOFFSET:
     case SIZE:
     case STROKEWIDTH:
     case OPACITY:
@@ -452,6 +475,4 @@ export function rangeType(channel: Channel): RangeType {
     case ORDER:
       return undefined;
   }
-  /* istanbul ignore next: should never reach here. */
-  throw new Error('rangeType not implemented for ' + channel);
 }

@@ -1,5 +1,5 @@
 import {isBinning} from '../../bin';
-import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
+import {isColorChannel, isScaleChannel, rangeType, ScaleChannel} from '../../channel';
 import {TypedFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
@@ -15,7 +15,7 @@ export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 // NOTE: CompassQL uses this method.
 export function scaleType(
   specifiedScale: Scale,
-  channel: Channel,
+  channel: ScaleChannel,
   fieldDef: TypedFieldDef<string>,
   mark: Mark,
   scaleConfig: ScaleConfig
@@ -51,7 +51,7 @@ export function scaleType(
  */
 // NOTE: Voyager uses this method.
 function defaultType(
-  channel: Channel,
+  channel: ScaleChannel,
   fieldDef: TypedFieldDef<string>,
   mark: Mark,
   specifiedScale: Scale,

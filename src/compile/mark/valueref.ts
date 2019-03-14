@@ -34,6 +34,7 @@ import {contains, getFirstDefined} from '../../util';
 import {VgValueRef} from '../../vega.schema';
 import {formatSignalRef, getMarkConfig} from '../common';
 import {ScaleComponent} from '../scale/component';
+import {UnitModel} from '../unit';
 
 function midPointWithPositionInvalidTest(
   params: MidPointParams & {
@@ -157,11 +158,36 @@ export function position2({
   });
 }
 
-export function getOffset(channel: PositionChannel, markDef: MarkDef) {
-  const offsetChannel = (channel + 'Offset') as 'xOffset' | 'yOffset' | 'x2Offset' | 'y2Offset'; // Need to cast as the type can't be inferred automatically
+export function positionOffset({
+  channel: baseChannel,
+  markDef,
+  encoding = {},
+  model
+}: {
+  channel: PositionChannel;
+  markDef: MarkDef;
+  encoding?: Encoding<string>;
+  model?: UnitModel;
+}) {
+  const channel = (baseChannel + 'Offset') as 'xOffset' | 'yOffset' | 'x2Offset' | 'y2Offset'; // Need to cast as the type can't be inferred automatically
 
-  // TODO: in the future read from encoding channel too
-  const markDefOffsetValue = markDef[offsetChannel];
+  const defaultValue = markDef[channel];
+
+  const channelDef = encoding[channel];
+
+  if ((channel === 'xOffset' || channel === 'yOffset') && model) {
+    // FIXME: think about x/y2Offset too
+    return midPoint({
+      channel: channel,
+      channelDef,
+      scaleName: model.scaleName(channel),
+      scale: model.getScaleComponent(channel),
+      stack: null,
+      defaultRef: {value: defaultValue}
+    });
+  }
+
+  const markDefOffsetValue = markDef[channel];
   if (markDefOffsetValue) {
     return markDefOffsetValue;
   }
@@ -239,8 +265,8 @@ function binMidSignal({
   scaleName: string;
   fieldDef: TypedFieldDef<string>;
   fieldDef2?: SecondaryFieldDef<string>;
-  offset: number;
-}) {
+  offset: number | VgValueRef;
+}): VgValueRef {
   const start = vgField(fieldDef, {expr: 'datum'});
   const end =
     fieldDef2 !== undefined
@@ -260,7 +286,7 @@ export interface MidPointParams {
   scaleName: string;
   scale: ScaleComponent;
   stack?: StackProperties;
-  offset?: number;
+  offset?: number | VgValueRef;
   defaultRef: VgValueRef | (() => VgValueRef);
 }
 

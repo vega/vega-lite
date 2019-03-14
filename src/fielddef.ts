@@ -312,6 +312,8 @@ export interface ScaleFieldDef<F extends Field, T extends Type = StandardType> e
   scale?: Scale | null;
 }
 
+export type OffsetFieldDef<F extends Field, T extends Type = StandardType> = ScaleFieldDef<F, T>;
+
 /**
  * A field definition of a secondary channel that shares a scale with another primary channel.  For example, `x2`, `xError` and `xError2` share the same scale with `x`.
  */
@@ -827,6 +829,8 @@ export function channelCompatibility(
 
     case 'x':
     case 'y':
+    case 'xOffset':
+    case 'yOffset':
     case 'color':
     case 'fill':
     case 'stroke':
@@ -835,6 +839,7 @@ export function channelCompatibility(
     case 'key':
     case 'tooltip':
     case 'href':
+      // FIXME type !== geojson
       return COMPATIBLE;
 
     case 'longitude':
@@ -882,7 +887,6 @@ export function channelCompatibility(
       }
       return COMPATIBLE;
   }
-  throw new Error('channelCompatability not implemented for channel ' + channel);
 }
 
 export function isNumberFieldDef(fieldDef: TypedFieldDef<any>) {

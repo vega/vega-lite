@@ -305,13 +305,22 @@ export function bandPosition(fieldDef: TypedFieldDef<string>, channel: 'x' | 'y'
   const scaleName = model.scaleName(channel);
   const sizeChannel = channel === 'x' ? 'width' : 'height';
 
+  const {markDef, encoding} = model;
+
+  const offset = ref.positionOffset({
+    channel,
+    markDef,
+    encoding,
+    model
+  });
+
   if (model.encoding.size || model.markDef.size !== undefined) {
     const orient = model.markDef.orient;
     if (orient) {
       const centeredBandPositionMixins = {
         // Use xc/yc and place the mark at the middle of the band
         // This way we never have to deal with size's condition for x/y position.
-        [channel + 'c']: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5})
+        [channel + 'c']: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5, offset})
       };
 
       if (getTypedFieldDef(model.encoding.size)) {
@@ -335,8 +344,7 @@ export function bandPosition(fieldDef: TypedFieldDef<string>, channel: 'x' | 'y'
     }
   }
   return {
-    // FIXME: make offset works correctly here when we support group bar (https://github.com/vega/vega-lite/issues/396)
-    [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, {}),
+    [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, {offset}),
     [sizeChannel]: ref.bandRef(scaleName)
   };
 }
@@ -380,6 +388,8 @@ export function binPosition({
   };
   const channel2 = channel === X ? X2 : Y2;
   if (isBinning(fieldDef.bin)) {
+    // FIXME support bin jittering
+
     return {
       [channel2]: ref.bin({
         channel,
@@ -420,7 +430,7 @@ export function pointPosition(
   const scaleName = model.scaleName(channel);
   const scale = model.getScaleComponent(channel);
 
-  const offset = ref.getOffset(channel, model.markDef);
+  const offset = ref.positionOffset({channel, markDef, encoding, model});
 
   const valueRef =
     !channelDef && (encoding.latitude || encoding.longitude)
@@ -464,7 +474,7 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
   const scaleName = model.scaleName(baseChannel);
   const scale = model.getScaleComponent(baseChannel);
 
-  const offset = ref.getOffset(channel, model.markDef);
+  const offset = ref.positionOffset({channel, markDef, encoding, model});
 
   const valueRef =
     !channelDef && (encoding.latitude || encoding.longitude)

@@ -1,19 +1,19 @@
 /* tslint:disable:quotemark */
-import {getOffset, midPoint} from '../../../src/compile/mark/valueref';
+import {midPoint, positionOffset} from '../../../src/compile/mark/valueref';
 import {SecondaryFieldDef, TypedFieldDef} from '../../../src/fielddef';
 import {MarkDef} from '../../../src/mark';
 
 describe('compile/mark/valueref', () => {
-  describe('getOffset', () => {
+  describe('positionOffset', () => {
     const markDef: MarkDef = {
       type: 'point',
       x2Offset: 100
     };
     it('should correctly get the offset value for the given channel', () => {
-      expect(getOffset('x2', markDef)).toEqual(100);
+      expect(positionOffset({channel: 'x2', markDef})).toEqual(100);
     });
     it('should return undefined when the offset value for the given channel is not defined', () => {
-      expect(getOffset('x', markDef)).toEqual(undefined);
+      expect(positionOffset({channel: 'x', markDef})).toEqual(undefined);
     });
   });
 

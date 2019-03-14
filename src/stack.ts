@@ -4,6 +4,7 @@ import {NONPOSITION_CHANNELS, NonPositionChannel, X, X2, Y2} from './channel';
 import {channelHasField, Encoding} from './encoding';
 import {
   Field,
+  getFieldDef,
   getTypedFieldDef,
   isFieldDef,
   isStringFieldDef,
@@ -103,6 +104,12 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
   const dimensionChannel = fieldChannel === 'x' ? 'y' : 'x';
   const dimensionDef = encoding[dimensionChannel];
   const dimensionField = isStringFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
+
+  // If the dimension has offset, don't stack anymore
+  const dimensionOffsetChannel = dimensionChannel === 'x' ? 'xOffset' : 'yOffset';
+  if (getFieldDef(encoding[dimensionOffsetChannel])) {
+    return null;
+  }
 
   // Should have grouping level of detail that is different from the dimension field
   const stackBy = NONPOSITION_CHANNELS.reduce((sc, channel) => {

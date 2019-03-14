@@ -12,12 +12,6 @@ const defaultScaleConfig = defaultConfig.scale;
 
 describe('compile/scale', () => {
   describe('type()', () => {
-    it('should return null for channel without scale', () => {
-      expect(scaleType({}, 'detail', {type: 'temporal', timeUnit: 'yearmonth'}, 'point', defaultScaleConfig)).toEqual(
-        null
-      );
-    });
-
     it(
       'should show warning if users try to override the scale and use bin',
       log.wrap(localLogger => {

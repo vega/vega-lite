@@ -16,7 +16,9 @@ import {
   STROKEOPACITY,
   STROKEWIDTH,
   X,
-  Y
+  XOFFSET,
+  Y,
+  YOFFSET
 } from '../../channel';
 import {Config} from '../../config';
 import {vgField} from '../../fielddef';
@@ -141,7 +143,7 @@ function getXYRangeStep(model: UnitModel) {
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
  */
 export function parseRangeForChannel(
-  channel: Channel,
+  channel: ScaleChannel,
   getSignalName: Rename,
   scaleType: ScaleType,
   type: Type,
@@ -214,7 +216,7 @@ function parseScheme(scheme: Scheme): SchemeConfig {
 }
 
 function defaultRange(
-  channel: Channel,
+  channel: ScaleChannel,
   getSignalName: Rename,
   scaleType: ScaleType,
   type: Type,
@@ -254,6 +256,14 @@ function defaultRange(
       } else {
         return [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
       }
+
+    case XOFFSET:
+    case YOFFSET:
+      // TODO: properly read rangeStep and bandPaddingInner
+      const {rangeStep, barBandPaddingInner} = config.scale;
+      const delta = (rangeStep * (1 - barBandPaddingInner)) / 3;
+      return [-delta, delta];
+
     case SIZE:
       // TODO: support custom rangeMin, rangeMax
       const rangeMin = sizeRangeMin(mark, zero, config);
@@ -287,8 +297,6 @@ function defaultRange(
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minOpacity, config.scale.maxOpacity];
   }
-  /* istanbul ignore next: should never reach here */
-  throw new Error(`Scale range undefined for channel ${channel}`);
 }
 
 export function defaultContinuousToDiscreteCount(

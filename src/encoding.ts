@@ -24,6 +24,7 @@ import {
   normalizeFieldDef,
   NumericFieldDefWithCondition,
   NumericValueDefWithCondition,
+  OffsetFieldDef,
   OrderFieldDef,
   PositionFieldDef,
   SecondaryFieldDef,
@@ -61,6 +62,16 @@ export interface Encoding<F extends Field> {
    * The `value` of this channel can be a number or a string `"height"`.
    */
   y?: PositionFieldDef<F> | ValueDef<number | 'height'>;
+
+  /**
+   * Offset of x-position of the marks
+   */
+  xOffset?: OffsetFieldDef<F> | ValueDef<number>;
+
+  /**
+   * Offset of y-position of the marks
+   */
+  yOffset?: OffsetFieldDef<F> | ValueDef<number>;
 
   /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
