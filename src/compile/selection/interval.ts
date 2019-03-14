@@ -65,7 +65,13 @@ const interval: SelectionCompiler<'interval'> = {
     if (!hasScales) {
       signals.push({
         name: name + SCALE_TRIGGER,
-        update: scaleTriggers.map(t => t.expr).join(' && ') + ` ? ${name + SCALE_TRIGGER} : {}`
+        value: {},
+        on: [
+          {
+            events: scaleTriggers.map(t => ({scale: t.scaleName})),
+            update: scaleTriggers.map(t => t.expr).join(' && ') + ` ? ${name + SCALE_TRIGGER} : {}`
+          }
+        ]
       });
     }
 
