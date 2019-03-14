@@ -6335,7 +6335,7 @@
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
-            "$ref": "#/definitions/SingleDefChannel"
+            "$ref": "#/definitions/SingleDefUnitChannel"
           },
           "type": "array"
         },
@@ -6409,7 +6409,7 @@
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
-            "$ref": "#/definitions/SingleDefChannel"
+            "$ref": "#/definitions/SingleDefUnitChannel"
           },
           "type": "array"
         },
@@ -8346,7 +8346,7 @@
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
-            "$ref": "#/definitions/SingleDefChannel"
+            "$ref": "#/definitions/SingleDefUnitChannel"
           },
           "type": "array"
         },
@@ -8416,7 +8416,7 @@
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
-            "$ref": "#/definitions/SingleDefChannel"
+            "$ref": "#/definitions/SingleDefUnitChannel"
           },
           "type": "array"
         },
@@ -10098,31 +10098,6 @@
       ],
       "type": "object"
     },
-    "SingleDefChannel": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/SingleDefUnitChannel"
-        },
-        {
-          "enum": [
-            "row"
-          ],
-          "type": "string"
-        },
-        {
-          "enum": [
-            "column"
-          ],
-          "type": "string"
-        },
-        {
-          "enum": [
-            "facet"
-          ],
-          "type": "string"
-        }
-      ]
-    },
     "SingleDefUnitChannel": {
       "enum": [
         "x",
@@ -10177,7 +10152,7 @@
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
-            "$ref": "#/definitions/SingleDefChannel"
+            "$ref": "#/definitions/SingleDefUnitChannel"
           },
           "type": "array"
         },
@@ -10244,7 +10219,7 @@
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values\nmust match for a data tuple to fall within the selection.",
           "items": {
-            "$ref": "#/definitions/SingleDefChannel"
+            "$ref": "#/definitions/SingleDefUnitChannel"
           },
           "type": "array"
         },
