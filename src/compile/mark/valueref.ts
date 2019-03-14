@@ -338,7 +338,11 @@ export function midPoint({
   return isFunction(defaultRef) ? defaultRef() : defaultRef;
 }
 
-export function tooltipForEncoding(encoding: Encoding<string>, config: Config) {
+export function tooltipForEncoding(
+  encoding: Encoding<string>,
+  config: Config,
+  {reactiveGeom}: {reactiveGeom?: boolean}
+) {
   const keyValues: string[] = [];
   const usedKey = {};
 
@@ -352,7 +356,7 @@ export function tooltipForEncoding(encoding: Encoding<string>, config: Config) {
     }
 
     const key = title(fieldDef, config, {allowDisabling: false});
-    const value = text(fieldDef, config).signal;
+    const value = text(fieldDef, config, reactiveGeom ? 'datum.datum' : 'datum').signal;
 
     if (!usedKey[key]) {
       keyValues.push(`${stringValue(key)}: ${value}`);
@@ -372,7 +376,8 @@ export function tooltipForEncoding(encoding: Encoding<string>, config: Config) {
 
 export function text(
   channelDef: ChannelDefWithCondition<FieldDef<string>, string | number | boolean>,
-  config: Config
+  config: Config,
+  expr: 'datum' | 'datum.datum' = 'datum'
 ): VgValueRef {
   // text
   if (channelDef) {
@@ -380,7 +385,7 @@ export function text(
       return {value: channelDef.value};
     }
     if (isTypedFieldDef(channelDef)) {
-      return formatSignalRef(channelDef, format(channelDef), 'datum', config);
+      return formatSignalRef(channelDef, format(channelDef), expr, config);
     }
   }
   return undefined;

@@ -73,7 +73,7 @@ export function getStyleConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDe
 export function formatSignalRef(
   fieldDef: TypedFieldDef<string>,
   specifiedFormat: string,
-  expr: 'datum' | 'parent',
+  expr: 'datum' | 'parent' | 'datum.datum',
   config: Config
 ) {
   const format = numberFormat(fieldDef, specifiedFormat, config);
