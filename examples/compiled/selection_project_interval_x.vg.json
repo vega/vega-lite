@@ -88,7 +88,13 @@
     },
     {
       "name": "pts_scale_trigger",
-      "update": "(!isArray(pts_Cylinders) || (invert(\"x\", pts_x)[0] === pts_Cylinders[0] && invert(\"x\", pts_x)[1] === pts_Cylinders[1])) ? pts_scale_trigger : {}"
+      "value": {},
+      "on": [
+        {
+          "events": [{"scale": "x"}],
+          "update": "(!isArray(pts_Cylinders) || (invert(\"x\", pts_x)[0] === pts_Cylinders[0] && invert(\"x\", pts_x)[1] === pts_Cylinders[1])) ? pts_scale_trigger : {}"
+        }
+      ]
     },
     {
       "name": "pts_tuple",

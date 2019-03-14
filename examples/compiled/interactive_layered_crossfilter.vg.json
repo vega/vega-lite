@@ -235,7 +235,13 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_distance) || (+invert(\"child__repeat_column_distance_x\", brush_x)[0] === +brush_distance[0] && +invert(\"child__repeat_column_distance_x\", brush_x)[1] === +brush_distance[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [{"scale": "child__repeat_column_distance_x"}],
+              "update": "(!isArray(brush_distance) || (+invert(\"child__repeat_column_distance_x\", brush_x)[0] === +brush_distance[0] && +invert(\"child__repeat_column_distance_x\", brush_x)[1] === +brush_distance[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -605,7 +611,13 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_delay) || (+invert(\"child__repeat_column_delay_x\", brush_x)[0] === +brush_delay[0] && +invert(\"child__repeat_column_delay_x\", brush_x)[1] === +brush_delay[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [{"scale": "child__repeat_column_delay_x"}],
+              "update": "(!isArray(brush_delay) || (+invert(\"child__repeat_column_delay_x\", brush_x)[0] === +brush_delay[0] && +invert(\"child__repeat_column_delay_x\", brush_x)[1] === +brush_delay[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -975,7 +987,13 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_time) || (+invert(\"child__repeat_column_time_x\", brush_x)[0] === +brush_time[0] && +invert(\"child__repeat_column_time_x\", brush_x)[1] === +brush_time[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [{"scale": "child__repeat_column_time_x"}],
+              "update": "(!isArray(brush_time) || (+invert(\"child__repeat_column_time_x\", brush_x)[0] === +brush_time[0] && +invert(\"child__repeat_column_time_x\", brush_x)[1] === +brush_time[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",

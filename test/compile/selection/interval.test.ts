@@ -100,8 +100,14 @@ describe('Interval Selections', () => {
           },
           {
             name: 'one_scale_trigger',
-            update:
-              '(!isArray(one_Horsepower) || (+invert("x", one_x)[0] === +one_Horsepower[0] && +invert("x", one_x)[1] === +one_Horsepower[1])) ? one_scale_trigger : {}'
+            value: {},
+            on: [
+              {
+                events: [{scale: 'x'}],
+                update:
+                  '(!isArray(one_Horsepower) || (+invert("x", one_x)[0] === +one_Horsepower[0] && +invert("x", one_x)[1] === +one_Horsepower[1])) ? one_scale_trigger : {}'
+              }
+            ]
           }
         ])
       );
@@ -187,8 +193,14 @@ describe('Interval Selections', () => {
           },
           {
             name: 'thr_ee_scale_trigger',
-            update:
-              '(!isArray(thr_ee_Horsepower) || (+invert("x", thr_ee_x)[0] === +thr_ee_Horsepower[0] && +invert("x", thr_ee_x)[1] === +thr_ee_Horsepower[1])) && (!isArray(thr_ee_Miles_per_Gallon) || (+invert("y", thr_ee_y)[0] === +thr_ee_Miles_per_Gallon[0] && +invert("y", thr_ee_y)[1] === +thr_ee_Miles_per_Gallon[1])) ? thr_ee_scale_trigger : {}'
+            value: {},
+            on: [
+              {
+                events: [{scale: 'x'}, {scale: 'y'}],
+                update:
+                  '(!isArray(thr_ee_Horsepower) || (+invert("x", thr_ee_x)[0] === +thr_ee_Horsepower[0] && +invert("x", thr_ee_x)[1] === +thr_ee_Horsepower[1])) && (!isArray(thr_ee_Miles_per_Gallon) || (+invert("y", thr_ee_y)[0] === +thr_ee_Miles_per_Gallon[0] && +invert("y", thr_ee_y)[1] === +thr_ee_Miles_per_Gallon[1])) ? thr_ee_scale_trigger : {}'
+              }
+            ]
           }
         ])
       );
@@ -226,8 +238,14 @@ describe('Interval Selections', () => {
           },
           {
             name: 'four_scale_trigger',
-            update:
-              '(!isArray(four_Horsepower) || (+invert("x", four_x)[0] === +four_Horsepower[0] && +invert("x", four_x)[1] === +four_Horsepower[1])) ? four_scale_trigger : {}'
+            value: {},
+            on: [
+              {
+                events: [{scale: 'x'}],
+                update:
+                  '(!isArray(four_Horsepower) || (+invert("x", four_x)[0] === +four_Horsepower[0] && +invert("x", four_x)[1] === +four_Horsepower[1])) ? four_scale_trigger : {}'
+              }
+            ]
           }
         ])
       );
@@ -293,8 +311,14 @@ describe('Interval Selections', () => {
           },
           {
             name: 'five_scale_trigger',
-            update:
-              '(!isArray(five_Horsepower) || (+invert("x", five_x)[0] === +five_Horsepower[0] && +invert("x", five_x)[1] === +five_Horsepower[1])) && (!isArray(five_Miles_per_Gallon) || (+invert("y", five_y)[0] === +five_Miles_per_Gallon[0] && +invert("y", five_y)[1] === +five_Miles_per_Gallon[1])) ? five_scale_trigger : {}'
+            value: {},
+            on: [
+              {
+                events: [{scale: 'x'}, {scale: 'y'}],
+                update:
+                  '(!isArray(five_Horsepower) || (+invert("x", five_x)[0] === +five_Horsepower[0] && +invert("x", five_x)[1] === +five_Horsepower[1])) && (!isArray(five_Miles_per_Gallon) || (+invert("y", five_y)[0] === +five_Miles_per_Gallon[0] && +invert("y", five_y)[1] === +five_Miles_per_Gallon[1])) ? five_scale_trigger : {}'
+              }
+            ]
           }
         ])
       );
@@ -332,8 +356,14 @@ describe('Interval Selections', () => {
           },
           {
             name: 'six_scale_trigger',
-            update:
-              '(!isArray(six_Horsepower) || (+invert("x", six_x)[0] === +six_Horsepower[0] && +invert("x", six_x)[1] === +six_Horsepower[1])) ? six_scale_trigger : {}'
+            value: {},
+            on: [
+              {
+                events: [{scale: 'x'}],
+                update:
+                  '(!isArray(six_Horsepower) || (+invert("x", six_x)[0] === +six_Horsepower[0] && +invert("x", six_x)[1] === +six_Horsepower[1])) ? six_scale_trigger : {}'
+              }
+            ]
           }
         ])
       );
