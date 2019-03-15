@@ -152,7 +152,8 @@
         {
           "events": [{"signal": "pts_Cylinders || pts_Origin"}],
           "update": "pts_Cylinders && pts_Origin ? {unit: \"\", fields: pts_tuple_fields, values: [pts_Cylinders,pts_Origin]} : null"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {

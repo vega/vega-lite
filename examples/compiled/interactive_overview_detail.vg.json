@@ -189,6 +189,10 @@
             {
               "events": [{"signal": "brush_date"}],
               "update": "brush_date ? {unit: \"concat_1\", fields: brush_tuple_fields, values: [brush_date]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },

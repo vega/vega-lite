@@ -70,6 +70,10 @@
                 {"signal": "grid_Miles_per_Gallon || grid_Horsepower"}
               ],
               "update": "grid_Miles_per_Gallon && grid_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon,grid_Horsepower]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -264,6 +268,10 @@
             {
               "events": [{"signal": "grid_Acceleration || grid_Horsepower"}],
               "update": "grid_Acceleration && grid_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration,grid_Horsepower]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -444,6 +452,10 @@
             {
               "events": [{"signal": "grid_Horsepower"}],
               "update": "grid_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -637,6 +649,10 @@
                 {"signal": "grid_Miles_per_Gallon || grid_Acceleration"}
               ],
               "update": "grid_Miles_per_Gallon && grid_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon,grid_Acceleration]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -817,6 +833,10 @@
             {
               "events": [{"signal": "grid_Acceleration"}],
               "update": "grid_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -1008,6 +1028,10 @@
             {
               "events": [{"signal": "grid_Horsepower || grid_Acceleration"}],
               "update": "grid_Horsepower && grid_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Acceleration]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -1188,6 +1212,10 @@
             {
               "events": [{"signal": "grid_Miles_per_Gallon"}],
               "update": "grid_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -1381,6 +1409,10 @@
                 {"signal": "grid_Acceleration || grid_Miles_per_Gallon"}
               ],
               "update": "grid_Acceleration && grid_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration,grid_Miles_per_Gallon]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -1577,6 +1609,10 @@
                 {"signal": "grid_Horsepower || grid_Miles_per_Gallon"}
               ],
               "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Miles_per_Gallon]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },

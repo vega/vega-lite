@@ -407,6 +407,10 @@
             {
               "events": [{"signal": "brush_Country"}],
               "update": "brush_Country ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Country]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -721,6 +725,10 @@
             {
               "events": [{"signal": "brush_Country"}],
               "update": "brush_Country ? {unit: \"concat_1\", fields: brush_tuple_fields, values: [brush_Country]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -1097,6 +1105,10 @@
                 }
               ],
               "update": "brush_Population_ages_65_and_above_of_total && brush_Population_ages_15_64_of_total ? {unit: \"concat_2\", fields: brush_tuple_fields, values: [brush_Population_ages_65_and_above_of_total,brush_Population_ages_15_64_of_total]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
