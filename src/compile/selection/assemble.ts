@@ -89,7 +89,6 @@ function assembleInteractiveLegendSignals(
           on: [
             {
               events: [{source: 'scope', type: 'click'}],
-              // update: `${ignoreLegendExpression} item().mark.marktype !== 'group' ? (item().mark.marktype === 'group' ? ${name}_${field}_legend : ${datum}['${field}']) : null`
               update: `${ignoreLegendExpression} item().mark.marktype !== 'group' ? ${datum}['${field}'] : (!(${ignoreLegendExpression.slice(
                 0,
                 -4
@@ -110,8 +109,10 @@ function assembleInteractiveLegendSignals(
         )}, fields: ${name}_tuple_fields, values: [ ${fieldSignals.join(',')} ]} : ${signal.name}`
       });
 
-      const toggleSignal = signals.filter(s => s.name === name + '_toggle')[0];
-      toggleSignal.on[0].update = `${ignoreLegendExpression.slice(0, -4)} ? event.shiftKey : false`;
+      const toggleSignal = signals.filter(s => s.name === name + '_toggle');
+      if (toggleSignal.length) {
+        toggleSignal[0].on[0].update = `${ignoreLegendExpression.slice(0, -4)} ? event.shiftKey : false`;
+      }
     } else {
       signal.on.push({
         events: eventExpression,
