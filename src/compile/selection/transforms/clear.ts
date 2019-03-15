@@ -3,7 +3,7 @@ import {TransformCompiler} from './transforms';
 
 const clear: TransformCompiler = {
   has: selCmpt => {
-    return selCmpt.type === 'multi' && selCmpt.clear;
+    return selCmpt.clear;
   },
 
   signals: (model, selCmpt, signals) => {

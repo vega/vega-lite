@@ -185,6 +185,10 @@
               "events": [{"source": "scope", "type": "click"}],
               "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child__repeat_column_distance_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_distance\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_distance_end\"]]]} : null",
               "force": true
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -351,6 +355,10 @@
               "events": [{"source": "scope", "type": "click"}],
               "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child__repeat_column_delay_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_delay\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_delay_end\"]]]} : null",
               "force": true
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -517,6 +525,10 @@
               "events": [{"source": "scope", "type": "click"}],
               "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child__repeat_column_time_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_time\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_time_end\"]]]} : null",
               "force": true
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },

@@ -6483,6 +6483,13 @@
           ],
           "type": "string"
         },
+        "clear": {
+          "description": "Controls clearing selections. Can be `true`, `false`, or a `string` that is\none of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information.",
+          "type": [
+            "string",
+            "boolean"
+          ]
+        },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
           "enum": [
@@ -6556,6 +6563,13 @@
             "scales"
           ],
           "type": "string"
+        },
+        "clear": {
+          "description": "Controls clearing selections. Can be `true`, `false`, or a `string` that is\none of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information.",
+          "type": [
+            "string",
+            "boolean"
+          ]
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -8494,6 +8508,13 @@
     "MultiSelection": {
       "additionalProperties": false,
       "properties": {
+        "clear": {
+          "description": "Controls clearing selections. Can be `true`, `false`, or a `string` that is\none of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information.",
+          "type": [
+            "string",
+            "boolean"
+          ]
+        },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
           "enum": [
@@ -8564,6 +8585,13 @@
     "MultiSelectionConfig": {
       "additionalProperties": false,
       "properties": {
+        "clear": {
+          "description": "Controls clearing selections. Can be `true`, `false`, or a `string` that is\none of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information.",
+          "type": [
+            "string",
+            "boolean"
+          ]
+        },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
           "enum": [
@@ -10397,6 +10425,13 @@
           ],
           "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\nSee the [bind transform](https://vega.github.io/vega-lite/docs/bind.html) documentation for more information."
         },
+        "clear": {
+          "description": "Controls clearing selections. Can be `true`, `false`, or a `string` that is\none of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information.",
+          "type": [
+            "string",
+            "boolean"
+          ]
+        },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
           "enum": [
@@ -10463,6 +10498,13 @@
             }
           ],
           "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\nSee the [bind transform](https://vega.github.io/vega-lite/docs/bind.html) documentation for more information."
+        },
+        "clear": {
+          "description": "Controls clearing selections. Can be `true`, `false`, or a `string` that is\none of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information.",
+          "type": [
+            "string",
+            "boolean"
+          ]
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
