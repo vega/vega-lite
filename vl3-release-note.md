@@ -2,14 +2,15 @@
 
 - Migrated to Vega 5 
 
+- Composite Marks
+  - New `boxplot` and `errorbar` marks
+
 - Multi-View Composition 
   - Support for wrapped `facet`, `concat`, and `repeat`
   - Add `config` for `facet`, `concat`, and `repeat`
   - Single-View specifications with `row`/`column` channels (for faceting) now support `resolve`
   - Improve default layouts
-
-- Composite Marks
-  - New `boxplot` and `errorbar` marks
+  - Support title anchor for multi-view composition
 
 - Sorting
   - Make sort `"op"` optional and make `"mean"` the default op (#4475)
@@ -19,21 +20,29 @@
   - Support `init`ializing selection (#4139)
 
 - Scale & Guides
+  - Add support for quantize, quantile, and threshold scales (by @sirahd)
   - Support binning and schemes for all continuous scales.
   - Add `rect/barBandPaddingInner/Outer` to `config.scale`
   - Change default scale `rangeStep` to `20` to makes bar boundaries fall on full pixels.
   - Improve default point size range for binned scatterplot
-  - Improve axis format and . layout (`minExtent` is no longer set by default)
-  - Revise default `legendDirection` and `gradientLength`
   - Change default color interpolation for continuous scales to `hcl`
-  - Add support for quantize, quantile, and threshold scales (by @sirahd)
+
+- Guides
   - New axis and legend properties from Vega 4 & 5 (Thanks by @melissatdiamond)
   - Changes: `maxTitleLength` is now `titleLimit` (**Breaking Changes**)
-  - More customization support for `header` properties
+  - Axis
+    - Improve axis format and . layout (`minExtent` is no longer set by default)
+    - Add `config.axisX/Y.orient`
+  - Legend
+    - Revise default `legendDirection` and `gradientLength`
+    - Switch to stroke symbol type by default for line marks
+  - Header
+    - More customization support for `header` properties
+    
 
 -  Encoding / Mark Properties
   - Add `fill/strokeOpacity` and `strokeWidth` channels
-  - `x`, `y`, `x2`, `y` now work in `mark` definition and `config`  
+  - `x`, `y`, `x2`, `y`, `order` now work in `mark` definition and `config`  
   - Added `view` as a property for Layer and Unit specs for customizing view background
   - Make tooltip include all fields in encoding by default.  
   
@@ -63,6 +72,8 @@ https://vega.github.io/vega-lite/examples/interactive_multi_line_tooltip.html)
 - New Emoji IsoType Bar Chart (by @chanwutk)
 
 - TODO: highlight cool new examples 
+  - `brush_table`
+  - `layer_line_mean_point_raw`
 
 - Paper figure tutorial (#4189)
 
