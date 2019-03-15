@@ -272,7 +272,6 @@ export const defaultConfig: SelectionConfig = {
   single: {
     on: 'click',
     fields: [SELECTION_ID],
-    clear: 'dblclick',
     resolve: 'global',
     empty: 'all'
   },
