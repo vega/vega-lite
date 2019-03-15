@@ -96,7 +96,8 @@
         {
           "events": [{"signal": "pts_Origin"}],
           "update": "pts_Origin ? {unit: \"\", fields: pts_tuple_fields, values: [pts_Origin]} : null"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {

@@ -161,6 +161,10 @@
                 {"signal": "brush_Miles_per_Gallon || brush_Horsepower"}
               ],
               "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Horsepower]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -460,6 +464,10 @@
             {
               "events": [{"signal": "grid_Displacement || grid_Acceleration"}],
               "update": "grid_Displacement && grid_Acceleration ? {unit: \"concat_1\", fields: grid_tuple_fields, values: [grid_Displacement,grid_Acceleration]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },

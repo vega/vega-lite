@@ -164,6 +164,10 @@
                 {"signal": "brush_Horsepower || brush_Miles_per_Gallon"}
               ],
               "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },

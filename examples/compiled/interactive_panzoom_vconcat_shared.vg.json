@@ -73,6 +73,10 @@
                 {"signal": "region_Horsepower || region_Miles_per_Gallon"}
               ],
               "update": "region_Horsepower && region_Miles_per_Gallon ? {unit: \"concat_0\", fields: region_tuple_fields, values: [region_Horsepower,region_Miles_per_Gallon]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },

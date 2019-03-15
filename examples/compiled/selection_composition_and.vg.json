@@ -154,7 +154,8 @@
         {
           "events": [{"signal": "alex_Cylinders || alex_Origin"}],
           "update": "alex_Cylinders && alex_Origin ? {unit: \"\", fields: alex_tuple_fields, values: [alex_Cylinders,alex_Origin]} : null"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -358,7 +359,8 @@
         {
           "events": [{"signal": "morgan_Cylinders || morgan_Origin"}],
           "update": "morgan_Cylinders && morgan_Origin ? {unit: \"\", fields: morgan_tuple_fields, values: [morgan_Cylinders,morgan_Origin]} : null"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
