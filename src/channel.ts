@@ -158,6 +158,7 @@ const CHANNEL_INDEX = {
 export const CHANNELS = flagKeys(CHANNEL_INDEX);
 
 const {order: _o, detail: _d, ...SINGLE_DEF_CHANNEL_INDEX} = CHANNEL_INDEX;
+const {order: _o1, detail: _d1, row: _r, column: _c, facet: _f, ...SINGLE_DEF_UNIT_CHANNEL_INDEX} = CHANNEL_INDEX;
 /**
  * Channels that cannot have an array of channelDef.
  * model.fieldDef, getFieldDef only work for these channels.
@@ -168,6 +169,8 @@ const {order: _o, detail: _d, ...SINGLE_DEF_CHANNEL_INDEX} = CHANNEL_INDEX;
  */
 
 export const SINGLE_DEF_CHANNELS: SingleDefChannel[] = flagKeys(SINGLE_DEF_CHANNEL_INDEX);
+
+export const SINGLE_DEF_UNIT_CHANNELS: SingleDefUnitChannel[] = flagKeys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
 
 // Using the following line leads to TypeError: Cannot read property 'elementTypes' of undefined
 // when running the schema generator
@@ -197,6 +200,10 @@ export type SingleDefUnitChannel =
   | 'key';
 
 export type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column' | 'facet';
+
+export function isSingleDefUnitChannel(str: string): str is SingleDefUnitChannel {
+  return !!SINGLE_DEF_UNIT_CHANNEL_INDEX[str];
+}
 
 export function isChannel(str: string): str is Channel {
   return !!CHANNEL_INDEX[str];

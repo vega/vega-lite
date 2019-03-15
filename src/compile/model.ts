@@ -392,18 +392,17 @@ export abstract class Model {
     };
 
     if (title.text) {
-      if (!contains(['unit', 'layer'], this.type)) {
-        // As described in https://github.com/vega/vega-lite/issues/2875:
-        // Due to vega/vega#960 (comment), we only support title's anchor for unit and layered spec for now.
-
-        if (title.anchor && title.anchor !== 'start') {
-          log.warn(log.message.cannotSetTitleAnchor(this.type));
+      if (contains(['unit', 'layer'], this.type)) {
+        // Unit/Layer
+        if (contains<AnchorValue>(['middle', undefined], title.anchor)) {
+          title.frame = title.frame || 'group';
         }
-        title.anchor = 'start';
-      }
+      } else {
+        // composition with Vega layout
 
-      if (contains<AnchorValue>(['middle', undefined], title.anchor) && title.frame === undefined) {
-        title.frame = 'group';
+        // Set title = "start" by default for composition as "middle" does not look nice
+        // https://github.com/vega/vega/issues/960#issuecomment-471360328
+        title.anchor = title.anchor || 'start';
       }
 
       return keys(title).length > 0 ? title : undefined;

@@ -260,11 +260,11 @@ export function wrapCondition(
   }
 }
 
-export function tooltip(model: UnitModel) {
+export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   const {encoding, markDef, config} = model;
   const channelDef = encoding.tooltip;
   if (isArray(channelDef)) {
-    return {tooltip: ref.tooltipForEncoding({tooltip: channelDef}, config)};
+    return {tooltip: ref.tooltipForEncoding({tooltip: channelDef}, config, opt)};
   } else {
     return wrapCondition(model, channelDef, 'tooltip', cDef => {
       // use valueRef based on channelDef first
@@ -285,7 +285,7 @@ export function tooltip(model: UnitModel) {
       } else if (isObject(markTooltip)) {
         // `tooltip` is `{fields: 'encodings' | 'fields'}`
         if (markTooltip.content === 'encoding') {
-          return ref.tooltipForEncoding(encoding, config);
+          return ref.tooltipForEncoding(encoding, config, opt);
         } else {
           return {signal: 'datum'};
         }

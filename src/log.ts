@@ -50,6 +50,11 @@ export class LocalLogger implements LoggerInterface {
     this.debugs.push(...args);
     return this;
   }
+
+  public error(...args: any[]) {
+    throw Error(...args);
+    return this; // @ts-ignore
+  }
 }
 
 export function wrap(f: (logger: LocalLogger) => void) {
@@ -137,11 +142,6 @@ export namespace message {
   // REPEAT
   export const REPEAT_CANNOT_SHARE_AXIS =
     'Axes cannot be shared in repeated views yet (https://github.com/vega/vega-lite/issues/2415).';
-
-  // TITLE
-  export function cannotSetTitleAnchor(type: string) {
-    return `Cannot set title "anchor" for a ${type} spec`;
-  }
 
   // DATA
   export function unrecognizedParse(p: string) {

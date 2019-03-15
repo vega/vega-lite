@@ -134,7 +134,13 @@
     },
     {
       "name": "paintbrush_scale_trigger",
-      "update": "(!isArray(paintbrush_Horsepower) || (+invert(\"x\", paintbrush_x)[0] === +paintbrush_Horsepower[0] && +invert(\"x\", paintbrush_x)[1] === +paintbrush_Horsepower[1])) && (!isArray(paintbrush_Miles_per_Gallon) || (+invert(\"y\", paintbrush_y)[0] === +paintbrush_Miles_per_Gallon[0] && +invert(\"y\", paintbrush_y)[1] === +paintbrush_Miles_per_Gallon[1])) ? paintbrush_scale_trigger : {}"
+      "value": {},
+      "on": [
+        {
+          "events": [{"scale": "x"}, {"scale": "y"}],
+          "update": "(!isArray(paintbrush_Horsepower) || (+invert(\"x\", paintbrush_x)[0] === +paintbrush_Horsepower[0] && +invert(\"x\", paintbrush_x)[1] === +paintbrush_Horsepower[1])) && (!isArray(paintbrush_Miles_per_Gallon) || (+invert(\"y\", paintbrush_y)[0] === +paintbrush_Miles_per_Gallon[0] && +invert(\"y\", paintbrush_y)[1] === +paintbrush_Miles_per_Gallon[1])) ? paintbrush_scale_trigger : {}"
+        }
+      ]
     },
     {
       "name": "paintbrush_tuple",

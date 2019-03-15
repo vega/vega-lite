@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
 import {SelectionComponent} from '..';
-import {ScaleChannel, SingleDefChannel} from '../../../channel';
+import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
 import {isIntervalSelection, SelectionDef, SelectionInitArrayMapping, SelectionInitMapping} from '../../../selection';
@@ -20,12 +20,12 @@ export type TupleStoreType = 'E' | 'R' | 'R-RE';
 export interface SelectionProjection {
   type: TupleStoreType;
   field: string;
-  channel?: SingleDefChannel;
+  channel?: SingleDefUnitChannel;
   signals?: {data?: string; visual?: string};
 }
 
 export class SelectionProjectionComponent extends Array<SelectionProjection> {
-  public has: {[key in SingleDefChannel]?: SelectionProjection};
+  public has: {[key in SingleDefUnitChannel]?: SelectionProjection};
   public timeUnit?: TimeUnitNode;
   constructor(...items: SelectionProjection[]) {
     super(...items);
@@ -36,8 +36,7 @@ export class SelectionProjectionComponent extends Array<SelectionProjection> {
 
 const project: TransformCompiler = {
   has: (selDef: SelectionComponent | SelectionDef) => {
-    const def = selDef as SelectionDef;
-    return def.fields !== undefined || def.encodings !== undefined;
+    return true; // This transform handles its own defaults, so always run parse.
   },
 
   parse: (model, selDef, selCmpt) => {
@@ -55,6 +54,31 @@ const project: TransformCompiler = {
       }
       return {[range]: signals[sg] = sg};
     };
+
+    // If no explicit projection (either fields or encodings) is specified, set some defaults.
+    // If an initial value is set, try to infer projections.
+    // Otherwise, use the default configuration.
+    if (!selDef.fields && !selDef.encodings) {
+      const cfg = model.config.selection[selDef.type];
+
+      if (selDef.init) {
+        for (const key of keys(selDef.init)) {
+          if (isSingleDefUnitChannel(key)) {
+            (selDef.encodings || (selDef.encodings = [])).push(key as SingleDefUnitChannel);
+          } else {
+            if (isIntervalSelection(selDef)) {
+              log.warn('Interval selections should be initialized using "x" and/or "y" keys.');
+              selDef.encodings = cfg.encodings;
+            } else {
+              (selDef.fields || (selDef.fields = [])).push(key);
+            }
+          }
+        }
+      } else {
+        selDef.encodings = cfg.encodings;
+        selDef.fields = cfg.fields;
+      }
+    }
 
     // TODO: find a possible channel mapping for these fields.
     for (const field of selDef.fields || []) {

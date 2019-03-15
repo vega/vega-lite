@@ -1,5 +1,6 @@
 import * as log from '../../../log';
 import {isPathMark} from '../../../mark';
+import {tooltip} from '../../mark/mixins';
 import {TransformCompiler} from './transforms';
 
 const VORONOI = 'voronoi';
@@ -26,7 +27,8 @@ const nearest: TransformCompiler = {
           fill: {value: 'transparent'},
           strokeWidth: {value: 0.35},
           stroke: {value: 'transparent'},
-          isVoronoi: {value: true}
+          isVoronoi: {value: true},
+          ...tooltip(model, {reactiveGeom: true})
         }
       },
       transform: [

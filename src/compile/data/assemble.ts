@@ -203,8 +203,8 @@ export function assembleFacetData(root: FacetNode): VgData[] {
 export function assembleRootData(dataComponent: DataComponent, datasets: Dict<InlineDataset>): VgData[] {
   const data: VgData[] = [];
 
-  // roots.forEach(debug);
-  // draw(roots);
+  // dataComponent.sources.forEach(debug);
+  // draw(dataComponent.sources);
 
   const walkTree = makeWalkTree(data);
 

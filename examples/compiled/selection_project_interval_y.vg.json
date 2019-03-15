@@ -88,7 +88,13 @@
     },
     {
       "name": "pts_scale_trigger",
-      "update": "(!isArray(pts_Origin) || (invert(\"y\", pts_y)[0] === pts_Origin[0] && invert(\"y\", pts_y)[1] === pts_Origin[1])) ? pts_scale_trigger : {}"
+      "value": {},
+      "on": [
+        {
+          "events": [{"scale": "y"}],
+          "update": "(!isArray(pts_Origin) || (invert(\"y\", pts_y)[0] === pts_Origin[0] && invert(\"y\", pts_y)[1] === pts_Origin[1])) ? pts_scale_trigger : {}"
+        }
+      ]
     },
     {
       "name": "pts_tuple",
