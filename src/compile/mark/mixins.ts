@@ -341,7 +341,7 @@ export function bandPosition(fieldDef: TypedFieldDef<string>, channel: 'x' | 'y'
   };
 }
 
-export function centeredBandPosition(
+export function centeredPointPositionWithSize(
   channel: 'x' | 'y',
   model: UnitModel,
   defaultPosRef: VgValueRef,

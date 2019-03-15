@@ -64,7 +64,7 @@ function barPosition(model: UnitModel, channel: 'x' | 'y'): VgEncodeEntry {
     }
     // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
 
-    return mixins.centeredBandPosition(
+    return mixins.centeredPointPositionWithSize(
       channel,
       model,
       {...ref.mid(channel === 'x' ? model.width : model.height)},
