@@ -93,6 +93,30 @@ export type PositionChannel = 'x' | 'y' | 'x2' | 'y2';
 
 export type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
 
+export function isGeoPositionChannel(c: Channel): c is GeoPositionChannel {
+  switch (c) {
+    case LATITUDE:
+    case LATITUDE2:
+    case LONGITUDE:
+    case LONGITUDE2:
+      return true;
+  }
+  return false;
+}
+
+export function getPositionChannelFromLatLong(channel: GeoPositionChannel): PositionChannel {
+  switch (channel) {
+    case LATITUDE:
+      return 'y';
+    case LATITUDE2:
+      return 'y2';
+    case LONGITUDE:
+      return 'x';
+    case LONGITUDE2:
+      return 'x2';
+  }
+}
+
 export const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel> = {
   longitude: 1,
   longitude2: 1,

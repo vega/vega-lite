@@ -1,17 +1,18 @@
 import {AggregateOp} from 'vega';
 import {isBinning} from '../../bin';
-import {Channel, isScaleChannel} from '../../channel';
+import {Channel, getPositionChannelFromLatLong, isGeoPositionChannel, isScaleChannel} from '../../channel';
 import {binRequiresRange, FieldDef, isTypedFieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
+import {ModelWithField} from '../model';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
 type Measures = Dict<{[key in AggregateOp]?: Set<string>}>;
 
-function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<string>) {
+function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<string>, model: ModelWithField) {
   if (isTypedFieldDef(fieldDef) && isBinning(fieldDef.bin)) {
     dims.add(vgField(fieldDef, {}));
     dims.add(vgField(fieldDef, {binSuffix: 'end'}));
@@ -19,6 +20,9 @@ function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<st
     if (binRequiresRange(fieldDef, channel)) {
       dims.add(vgField(fieldDef, {binSuffix: 'range'}));
     }
+  } else if (isGeoPositionChannel(channel)) {
+    const posChannel = getPositionChannelFromLatLong(channel);
+    dims.add(model.getName(posChannel));
   } else {
     dims.add(vgField(fieldDef));
   }
@@ -90,7 +94,7 @@ export class AggregateNode extends DataFlowNode {
           }
         }
       } else {
-        addDimension(dims, channel, fieldDef);
+        addDimension(dims, channel, fieldDef, model);
       }
     });
 
