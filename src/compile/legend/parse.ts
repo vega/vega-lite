@@ -125,6 +125,9 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
 }
 
 export function interactiveLegendExists(model: UnitModel) {
+  if (model.parent) {
+    return [];
+  }
   const selections: InteractiveSelections[] = [];
   // Look over all selections
   forEachSelection(model, selCmpt => {
@@ -145,7 +148,10 @@ export function interactiveLegendExists(model: UnitModel) {
   let encodingFields: string[] = [];
   [COLOR, OPACITY, SIZE, SHAPE].forEach(channel => {
     const fieldDef = model.fieldDef(channel);
-    if (fieldDef) {
+    if (
+      fieldDef &&
+      !(fieldDef.hasOwnProperty('bin') || fieldDef.hasOwnProperty('aggregate') || fieldDef.hasOwnProperty('timeUnit'))
+    ) {
       encodingFields.push(fieldDef.field);
     }
   });
@@ -197,39 +203,29 @@ function updateInteractiveLegendComponent(
     } else {
       updateValue = {opacity: {value: 0.7}};
     }
-    // Replace VlSeclectionTest datapoint to accomodate multiple fields selection
-    updateValue.opacity = [
-      {
-        test: `!(length(data(${maxProjSelection.store}))) || ${VL_SELECTION_TEST}(${
-          maxProjSelection.store
-        }, {${field}: datum.value})`,
-        value: updateValue.opacity.value
-      },
-      {value: 0.2}
-    ];
+
+    let test = `!(length(data(${maxProjSelection.store}))) || ${VL_SELECTION_TEST}(${
+      maxProjSelection.store
+    }, {${field}: datum.value})`;
+    if (maxProjSelection.fields.length > 1) {
+      test = `!${maxProjSelection.name}_${field}_legend || datum.value === ${maxProjSelection.name}_${field}_legend`;
+    }
+    if (part === 'symbols' && channel === OPACITY) {
+      let strokeValue = '#000000';
+      if (updateValue.stroke) {
+        strokeValue = updateValue.stroke.value;
+      }
+      updateValue.stroke = [{test, value: strokeValue}, {value: '#aaaaaa'}];
+    } else {
+      let opacityValue = 0.7;
+      if (updateValue.opacity) {
+        opacityValue = updateValue.opacity.value;
+      }
+      updateValue.opacity = [{test, value: opacityValue}, {value: 0.2}];
+    }
+
     updatedLegendEncode[part] = {name: `${part}_${field}${LEGEND}`, interactive: true, update: updateValue};
   });
-  // For Opacity-symbols
-  // let updatedValue;
-  // if (part === 'symbols' && channel === OPACITY) {
-  //   updatedValue = value;
-  //   if (updatedValue.stroke.value === 'transparent') {
-  //     updatedValue.stroke = [
-  //       {test: `vlSelectionTest(${maxProjSelection.store}, {${field}: datum.value})`, value: '#000000'},
-  //       {value: 'transparent'}
-  //     ];
-  //   } else {
-  //     updatedValue.stroke = [
-  //       {
-  //         test: `length(data(${maxProjSelection.store}))) && vlSelectionTest(${
-  //           maxProjSelection.store
-  //           }, {${field}: datum.value})`,
-  //         value: '#000000'
-  //       },
-  //       updatedValue.stroke
-  //     ];
-  //   }
-  // }
   return updatedLegendEncode;
 }
 
