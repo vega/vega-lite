@@ -7,20 +7,21 @@ import {FACET_CHANNELS, FacetChannel} from '../../channel';
 import {Config} from '../../config';
 import {vgField} from '../../fielddef';
 import {
+  CoreHeader,
   HEADER_LABEL_PROPERTIES,
   HEADER_LABEL_PROPERTIES_MAP,
   HEADER_TITLE_PROPERTIES,
-  HEADER_TITLE_PROPERTIES_MAP,
-  HeaderConfig
+  HEADER_TITLE_PROPERTIES_MAP
 } from '../../header';
 import {isSortField} from '../../sort';
 import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
-import {keys} from '../../util';
+import {contains, keys} from '../../util';
 import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema';
 import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties';
 import {formatSignalRef} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
 import {isFacetModel, Model} from '../model';
+import {getHeaderChannel, getHeaderProperties, getHeaderProperty} from './common';
 import {
   HEADER_TYPES,
   HeaderChannel,
@@ -38,31 +39,44 @@ export function assembleTitleGroup(model: Model, channel: FacetChannel) {
     ? model.component.layoutHeaders[channel].facetFieldDef
     : undefined;
 
-  const titleAnchor = (facetFieldDef && facetFieldDef.header && facetFieldDef.header.titleAnchor) || undefined;
+  const {titleAnchor, titleAngle, titleOrient} = getHeaderProperties(
+    ['titleAnchor', 'titleAngle', 'titleOrient'],
+    facetFieldDef,
+    config,
+    channel
+  );
+  const headerChannel = getHeaderChannel(channel, titleOrient);
 
   return {
     name: `${channel}-title`,
     type: 'group',
-    role: `${channel === 'facet' ? 'column' : channel}-title`,
+    role: `${headerChannel}-title`,
     title: {
       text: title,
       ...(channel === 'row' ? {orient: 'left'} : {}),
       style: 'guide-title',
-      ...titleAlign(titleAnchor),
-      ...getHeaderProperties(config, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP)
+      ...defaultHeaderGuideBaseline(titleAngle, headerChannel),
+      ...defaultHeaderGuideAlign(headerChannel, titleAngle, titleAnchor),
+      ...assembleHeaderProperties(config, facetFieldDef, channel, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP)
     }
   };
 }
 
-export function titleAlign(titleAnchor: TitleAnchor) {
-  switch (titleAnchor) {
+export function defaultHeaderGuideAlign(headerChannel: HeaderChannel, angle: number, anchor: TitleAnchor = 'middle') {
+  switch (anchor) {
     case 'start':
       return {align: 'left'};
     case 'end':
       return {align: 'right'};
   }
-  // TODO: take TitleAngle into account for the "middle" case
-  return {};
+
+  const align = defaultLabelAlign(angle, headerChannel === 'row' ? 'left' : 'top');
+  return align ? {align} : {};
+}
+
+export function defaultHeaderGuideBaseline(angle: number, channel: FacetChannel) {
+  const baseline = defaultLabelBaseline(angle, channel === 'row' ? 'left' : 'top');
+  return baseline ? {baseline} : {};
 }
 
 export function assembleHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGroup[] {
@@ -76,16 +90,6 @@ export function assembleHeaderGroups(model: Model, channel: HeaderChannel): VgMa
     }
   }
   return groups;
-}
-
-export function labelAlign(angle: number, channel: FacetChannel) {
-  const align = defaultLabelAlign(angle, channel === 'row' ? 'left' : 'top');
-  return align ? {align} : {};
-}
-
-export function labelBaseline(angle: number, channel: FacetChannel) {
-  const baseline = defaultLabelBaseline(angle, channel === 'row' ? 'left' : 'top');
-  return baseline ? {baseline} : {};
 }
 
 function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): VgComparator {
@@ -109,17 +113,22 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): 
 }
 
 export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel: FacetChannel, config: Config) {
-  const {header = {}} = facetFieldDef;
-  const {format, labelAngle} = header;
+  const {format, labelAngle, labelAnchor, labelOrient} = getHeaderProperties(
+    ['format', 'labelAngle', 'labelAnchor', 'labelOrient'],
+    facetFieldDef,
+    config,
+    channel
+  );
 
+  const headerChannel = getHeaderChannel(channel, labelOrient);
   return {
     text: formatSignalRef(facetFieldDef, format, 'parent', config),
     ...(channel === 'row' ? {orient: 'left'} : {}),
     style: 'guide-label',
     frame: 'group',
-    ...labelBaseline(labelAngle, channel),
-    ...labelAlign(labelAngle, channel),
-    ...getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP)
+    ...defaultHeaderGuideBaseline(labelAngle, headerChannel),
+    ...defaultHeaderGuideAlign(headerChannel, labelAngle, labelAnchor),
+    ...assembleHeaderProperties(config, facetFieldDef, channel, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP)
   };
 }
 
@@ -135,7 +144,15 @@ export function assembleHeaderGroup(
     const {facetFieldDef} = layoutHeader;
     const config = model.config ? model.config : undefined;
     if (facetFieldDef && headerCmpt.labels) {
-      title = assembleLabelTitle(facetFieldDef, channel, config);
+      const {labelOrient} = getHeaderProperties(['labelOrient'], facetFieldDef, config, channel);
+
+      // Include label title in the header if orient aligns with the channel
+      if (
+        (channel === 'row' && !contains(['top', 'bottom'], labelOrient)) ||
+        (channel === 'column' && !contains(['left', 'right'], labelOrient))
+      ) {
+        title = assembleLabelTitle(facetFieldDef, channel, config);
+      }
     }
 
     const isFacetWithoutRowCol = isFacetModel(model) && !isFacetMapping(model.facet);
@@ -180,25 +197,41 @@ export function assembleHeaderGroup(
   return null;
 }
 
-export function getLayoutTitleBand(titleAnchor: TitleAnchor) {
-  if (titleAnchor === 'start') {
-    return 0;
-  } else if (titleAnchor === 'end') {
-    return 1;
+const LAYOUT_TITLE_BAND = {
+  column: {
+    start: 0,
+    end: 1
+  },
+  row: {
+    start: 1,
+    end: 0
   }
-  return undefined;
+};
+
+export function getLayoutTitleBand(titleAnchor: TitleAnchor, headerChannel: HeaderChannel) {
+  return LAYOUT_TITLE_BAND[headerChannel][titleAnchor];
 }
 
-export function assembleLayoutTitleBand(headerComponentIndex: LayoutHeaderComponentIndex): RowCol<number> {
+export function assembleLayoutTitleBand(
+  headerComponentIndex: LayoutHeaderComponentIndex,
+  config: Config
+): RowCol<number> {
   const titleBand = {};
 
   for (const channel of FACET_CHANNELS) {
     const headerComponent = headerComponentIndex[channel];
-    if (headerComponent && headerComponent.facetFieldDef && headerComponent.facetFieldDef.header) {
-      const {titleAnchor} = headerComponent.facetFieldDef.header;
-      const band = getLayoutTitleBand(titleAnchor);
+    if (headerComponent && headerComponent.facetFieldDef) {
+      const {titleAnchor, titleOrient} = getHeaderProperties(
+        ['titleAnchor', 'titleOrient'],
+        headerComponent.facetFieldDef,
+        config,
+        channel
+      );
+
+      const headerChannel = getHeaderChannel(channel, titleOrient);
+      const band = getLayoutTitleBand(titleAnchor, headerChannel);
       if (band !== undefined) {
-        titleBand[channel === 'facet' ? 'column' : channel] = band;
+        titleBand[headerChannel] = band;
       }
     }
   }
@@ -206,26 +239,22 @@ export function assembleLayoutTitleBand(headerComponentIndex: LayoutHeaderCompon
   return keys(titleBand).length > 0 ? titleBand : undefined;
 }
 
-export function getHeaderProperties(
+export function assembleHeaderProperties(
   config: Config,
   facetFieldDef: FacetFieldDef<string>,
-  properties: (keyof HeaderConfig)[],
-  propertiesMap: {[k in keyof HeaderConfig]: keyof TitleConfig}
+  channel: FacetChannel,
+  properties: (keyof CoreHeader)[],
+  propertiesMap: {[k in keyof CoreHeader]: keyof TitleConfig}
 ): Partial<VgTitle> {
   const props = {};
   for (const prop of properties) {
     if (!propertiesMap[prop]) {
       continue;
     }
-    if (config && config.header) {
-      if (config.header[prop] !== undefined) {
-        props[propertiesMap[prop]] = config.header[prop];
-      }
-    }
-    if (facetFieldDef && facetFieldDef.header) {
-      if (facetFieldDef.header[prop] !== undefined) {
-        props[propertiesMap[prop]] = facetFieldDef.header[prop];
-      }
+
+    const value = getHeaderProperty(prop, facetFieldDef, config, channel);
+    if (value !== undefined) {
+      props[propertiesMap[prop]] = value;
     }
   }
   return props;

@@ -85,6 +85,19 @@
       ],
       "type": "string"
     },
+    "AlignValue": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Align"
+        },
+        {
+          "$ref": "#/definitions/AlignValueRef"
+        }
+      ]
+    },
+    "AlignValueRef": {
+      "$ref": "#/definitions/ScaledValueRef<Align>"
+    },
     "AnyMark": {
       "anyOf": [
         {
@@ -894,7 +907,7 @@
           "type": "boolean"
         },
         "title": {
-          "description": "Set to null to disable title for the axis or legend",
+          "description": "Set to null to disable title for the axis, legend, or header.",
           "type": "null"
         },
         "titleAlign": {
@@ -1518,6 +1531,44 @@
         }
       },
       "type": "object"
+    },
+    "BaseValueRef<Align>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SignalRef"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Align"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "$ref": "#/definitions/Field"
+            }
+          },
+          "required": [
+            "field"
+          ],
+          "type": "object"
+        }
+      ]
     },
     "Baseline": {
       "enum": [
@@ -3428,7 +3479,19 @@
         },
         "header": {
           "$ref": "#/definitions/HeaderConfig",
-          "description": "Header configuration, which determines default properties for all [header](https://vega.github.io/vega-lite/docs/header.html). For a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config)."
+          "description": "Header configuration, which determines default properties for all [headers](https://vega.github.io/vega-lite/docs/header.html).\n\nFor a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config)."
+        },
+        "headerColumn": {
+          "$ref": "#/definitions/HeaderConfig",
+          "description": "Header configuration, which determines default properties for column [headers](https://vega.github.io/vega-lite/docs/header.html).\n\nFor a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config)."
+        },
+        "headerFacet": {
+          "$ref": "#/definitions/HeaderConfig",
+          "description": "Header configuration, which determines default properties for non-row/column facet [headers](https://vega.github.io/vega-lite/docs/header.html).\n\nFor a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config)."
+        },
+        "headerRow": {
+          "$ref": "#/definitions/HeaderConfig",
+          "description": "Header configuration, which determines default properties for row [headers](https://vega.github.io/vega-lite/docs/header.html).\n\nFor a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config)."
         },
         "invalidValues": {
           "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
@@ -3701,6 +3764,18 @@
           "type": "number"
         }
       },
+      "type": "object"
+    },
+    "DatumFieldRef": {
+      "additionalProperties": false,
+      "properties": {
+        "datum": {
+          "$ref": "#/definitions/Field"
+        }
+      },
+      "required": [
+        "datum"
+      ],
       "type": "object"
     },
     "Day": {
@@ -4503,7 +4578,16 @@
           "type": "string"
         },
         {
-          "$ref": "#/definitions/RepeatRef"
+          "$ref": "#/definitions/SignalRef"
+        },
+        {
+          "$ref": "#/definitions/DatumFieldRef"
+        },
+        {
+          "$ref": "#/definitions/GroupFieldRef"
+        },
+        {
+          "$ref": "#/definitions/ParentFieldRef"
         }
       ]
     },
@@ -5955,6 +6039,21 @@
       ],
       "type": "object"
     },
+    "GroupFieldRef": {
+      "additionalProperties": false,
+      "properties": {
+        "group": {
+          "$ref": "#/definitions/Field"
+        },
+        "level": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "group"
+      ],
+      "type": "object"
+    },
     "Header": {
       "additionalProperties": false,
       "description": "Headers of row / column channels for faceted plots.",
@@ -5971,6 +6070,14 @@
           ],
           "type": "string"
         },
+        "labelAlign": {
+          "$ref": "#/definitions/AlignValue",
+          "description": "Horizontal text alignment of header labels."
+        },
+        "labelAnchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor position for placing the labels. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with a label orientation of top these anchor positions map to a left-, center-, or right-aligned label."
+        },
         "labelAngle": {
           "description": "The rotation angle of the header labels.\n\n__Default value:__ `0` for column header, `-90` for row header.",
           "maximum": 360,
@@ -5993,6 +6100,10 @@
         "labelLimit": {
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
+        },
+        "labelOrient": {
+          "$ref": "#/definitions/Orient",
+          "description": "The orientation of the header label. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`."
         },
         "labelPadding": {
           "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
@@ -6005,6 +6116,10 @@
             "null"
           ]
         },
+        "titleAlign": {
+          "$ref": "#/definitions/AlignValue",
+          "description": "Horizontal text alignment (to the anchor) of header titles."
+        },
         "titleAnchor": {
           "$ref": "#/definitions/TitleAnchor",
           "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
@@ -6040,6 +6155,10 @@
           "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
+        "titleOrient": {
+          "$ref": "#/definitions/Orient",
+          "description": "The orientation of the header title. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`."
+        },
         "titlePadding": {
           "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
           "type": "number"
@@ -6050,6 +6169,26 @@
     "HeaderConfig": {
       "additionalProperties": false,
       "properties": {
+        "format": {
+          "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field. To override the default type, set `formatType`.\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more information.\n\n__Default value:__  derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for quantitative fields and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for temporal fields.",
+          "type": "string"
+        },
+        "formatType": {
+          "description": "The format type for labels (number or time).",
+          "enum": [
+            "number",
+            "time"
+          ],
+          "type": "string"
+        },
+        "labelAlign": {
+          "$ref": "#/definitions/AlignValue",
+          "description": "Horizontal text alignment of header labels."
+        },
+        "labelAnchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor position for placing the labels. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with a label orientation of top these anchor positions map to a left-, center-, or right-aligned label."
+        },
         "labelAngle": {
           "description": "The rotation angle of the header labels.\n\n__Default value:__ `0` for column header, `-90` for row header.",
           "maximum": 360,
@@ -6073,9 +6212,25 @@
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
+        "labelOrient": {
+          "$ref": "#/definitions/Orient",
+          "description": "The orientation of the header label. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`."
+        },
         "labelPadding": {
           "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
           "type": "number"
+        },
+        "shortTimeLabels": {
+          "description": "Whether month names and weekday names should be abbreviated.\n\n__Default value:__  `false`",
+          "type": "boolean"
+        },
+        "title": {
+          "description": "Set to null to disable title for the axis, legend, or header.",
+          "type": "null"
+        },
+        "titleAlign": {
+          "$ref": "#/definitions/AlignValue",
+          "description": "Horizontal text alignment (to the anchor) of header titles."
         },
         "titleAnchor": {
           "$ref": "#/definitions/TitleAnchor",
@@ -6111,6 +6266,10 @@
         "titleLimit": {
           "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
+        },
+        "titleOrient": {
+          "$ref": "#/definitions/Orient",
+          "description": "The orientation of the header title. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`."
         },
         "titlePadding": {
           "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
@@ -7207,7 +7366,7 @@
           "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   * In addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n   *\n   * __Default value:__ `\"circle\"`.\n   *"
         },
         "title": {
-          "description": "Set to null to disable title for the axis or legend",
+          "description": "Set to null to disable title for the axis, legend, or header.",
           "type": "null"
         },
         "titleAlign": {
@@ -8844,6 +9003,21 @@
       ],
       "minimum": 0
     },
+    "ParentFieldRef": {
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "type": "number"
+        },
+        "parent": {
+          "$ref": "#/definitions/Field"
+        }
+      },
+      "required": [
+        "parent"
+      ],
+      "type": "object"
+    },
     "Parse": {
       "additionalProperties": {
         "$ref": "#/definitions/ParseValue"
@@ -9842,6 +10016,88 @@
         "band"
       ],
       "type": "string"
+    },
+    "ScaledValueRef<Align>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/BaseValueRef<Align>"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "scale": {
+              "$ref": "#/definitions/Field"
+            },
+            "value": {
+              "type": [
+                "boolean",
+                "number",
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "scale",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "$ref": "#/definitions/Field"
+            },
+            "scale": {
+              "$ref": "#/definitions/Field"
+            }
+          },
+          "required": [
+            "scale",
+            "field"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "band": {
+              "type": [
+                "boolean",
+                "number"
+              ]
+            },
+            "scale": {
+              "$ref": "#/definitions/Field"
+            }
+          },
+          "required": [
+            "scale",
+            "band"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "range": {
+              "type": [
+                "number",
+                "boolean"
+              ]
+            },
+            "scale": {
+              "$ref": "#/definitions/Field"
+            }
+          },
+          "required": [
+            "scale",
+            "range"
+          ],
+          "type": "object"
+        }
+      ]
     },
     "SchemeConfig": {
       "additionalProperties": false,
