@@ -1487,6 +1487,14 @@
           "$ref": "#/definitions/Color",
           "description": "Text color for title text."
         },
+        "dx": {
+          "description": "Delta offset for title text x-coordinate.",
+          "type": "number"
+        },
+        "dy": {
+          "description": "Delta offset for title text y-coordinate.",
+          "type": "number"
+        },
         "font": {
           "description": "Font name for title text.",
           "type": "string"
@@ -1557,21 +1565,6 @@
           },
           "required": [
             "field"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "range": {
-              "type": [
-                "number",
-                "boolean"
-              ]
-            }
-          },
-          "required": [
-            "range"
           ],
           "type": "object"
         }
@@ -10034,10 +10027,35 @@
           "properties": {
             "scale": {
               "$ref": "#/definitions/Field"
+            },
+            "value": {
+              "type": [
+                "boolean",
+                "number",
+                "string",
+                "null"
+              ]
             }
           },
           "required": [
-            "scale"
+            "scale",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "$ref": "#/definitions/Field"
+            },
+            "scale": {
+              "$ref": "#/definitions/Field"
+            }
+          },
+          "required": [
+            "scale",
+            "field"
           ],
           "type": "object"
         },
@@ -10057,6 +10075,25 @@
           "required": [
             "scale",
             "band"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "range": {
+              "type": [
+                "number",
+                "boolean"
+              ]
+            },
+            "scale": {
+              "$ref": "#/definitions/Field"
+            }
+          },
+          "required": [
+            "scale",
+            "range"
           ],
           "type": "object"
         }
@@ -11270,6 +11307,14 @@
         "color": {
           "$ref": "#/definitions/Color",
           "description": "Text color for title text."
+        },
+        "dx": {
+          "description": "Delta offset for title text x-coordinate.",
+          "type": "number"
+        },
+        "dy": {
+          "description": "Delta offset for title text y-coordinate.",
+          "type": "number"
         },
         "font": {
           "description": "Font name for title text.",
