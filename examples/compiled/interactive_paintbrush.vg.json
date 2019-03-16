@@ -39,7 +39,7 @@
     },
     {
       "name": "paintbrush_tuple_fields",
-      "value": [{"field": "_vgsid_", "type": "E"}]
+      "value": [{"type": "E", "field": "_vgsid_"}]
     },
     {
       "name": "paintbrush_toggle",
@@ -103,7 +103,10 @@
           "fill": {"value": "transparent"},
           "strokeWidth": {"value": 0.35},
           "stroke": {"value": "transparent"},
-          "isVoronoi": {"value": true}
+          "isVoronoi": {"value": true},
+          "tooltip": {
+            "signal": "{\"Horsepower\": format(datum.datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum.datum[\"Miles_per_Gallon\"], \"\")}"
+          }
         }
       },
       "transform": [

@@ -18,7 +18,7 @@ import {contains, Dict, getFirstDefined, keys} from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {expression} from '../predicate';
-import {selectionPredicate} from '../selection/selection';
+import {assembleSelectionPredicate} from '../selection/assemble';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
 import {fieldInvalidPredicate} from './valueref';
@@ -244,7 +244,9 @@ export function wrapCondition(
     const conditions = isArray(condition) ? condition : [condition];
     const vgConditions = conditions.map(c => {
       const conditionValueRef = refFn(c);
-      const test = isConditionalSelection(c) ? selectionPredicate(model, c.selection) : expression(model, c.test);
+      const test = isConditionalSelection(c)
+        ? assembleSelectionPredicate(model, c.selection)
+        : expression(model, c.test);
       return {
         test,
         ...conditionValueRef
@@ -258,11 +260,11 @@ export function wrapCondition(
   }
 }
 
-export function tooltip(model: UnitModel) {
+export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   const {encoding, markDef, config} = model;
   const channelDef = encoding.tooltip;
   if (isArray(channelDef)) {
-    return {tooltip: ref.tooltipForEncoding({tooltip: channelDef}, config)};
+    return {tooltip: ref.tooltipForEncoding({tooltip: channelDef}, config, opt)};
   } else {
     return wrapCondition(model, channelDef, 'tooltip', cDef => {
       // use valueRef based on channelDef first
@@ -283,7 +285,7 @@ export function tooltip(model: UnitModel) {
       } else if (isObject(markTooltip)) {
         // `tooltip` is `{fields: 'encodings' | 'fields'}`
         if (markTooltip.content === 'encoding') {
-          return ref.tooltipForEncoding(encoding, config);
+          return ref.tooltipForEncoding(encoding, config, opt);
         } else {
           return {signal: 'datum'};
         }
@@ -339,7 +341,7 @@ export function bandPosition(fieldDef: TypedFieldDef<string>, channel: 'x' | 'y'
   };
 }
 
-export function centeredBandPosition(
+export function centeredPointPositionWithSize(
   channel: 'x' | 'y',
   model: UnitModel,
   defaultPosRef: VgValueRef,

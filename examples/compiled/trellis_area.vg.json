@@ -52,9 +52,9 @@
       "role": "row-title",
       "title": {
         "text": "Symbol",
-        "offset": 10,
         "orient": "left",
-        "style": "guide-title"
+        "style": "guide-title",
+        "offset": 10
       }
     },
     {
@@ -65,11 +65,10 @@
       "sort": {"field": "datum[\"symbol\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"symbol\"]"},
-        "offset": 10,
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
       "axes": [

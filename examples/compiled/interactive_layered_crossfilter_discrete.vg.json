@@ -11,101 +11,6 @@
       "url": "data/flights-2k.json",
       "format": {"type": "json", "parse": {"date": "date"}},
       "transform": [
-        {"type": "formula", "expr": "hours(datum.date)", "as": "time"}
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "extent",
-          "field": "distance",
-          "signal": "child__repeat_column_distance_layer_0_bin_maxbins_20_distance_extent"
-        },
-        {
-          "type": "bin",
-          "field": "distance",
-          "as": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
-          "signal": "child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins",
-          "maxbins": 20,
-          "extent": {
-            "signal": "child__repeat_column_distance_layer_0_bin_maxbins_20_distance_extent"
-          }
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "extent",
-          "field": "distance",
-          "signal": "child__repeat_column_distance_layer_1_bin_maxbins_20_distance_extent"
-        },
-        {
-          "type": "bin",
-          "field": "distance",
-          "as": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
-          "signal": "child__repeat_column_distance_layer_1_bin_maxbins_20_distance_bins",
-          "maxbins": 20,
-          "extent": {
-            "signal": "child__repeat_column_distance_layer_1_bin_maxbins_20_distance_extent"
-          }
-        },
-        {
-          "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "extent",
-          "field": "delay",
-          "signal": "child__repeat_column_delay_layer_0_bin_maxbins_20_delay_extent"
-        },
-        {
-          "type": "bin",
-          "field": "delay",
-          "as": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
-          "signal": "child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins",
-          "maxbins": 20,
-          "extent": {
-            "signal": "child__repeat_column_delay_layer_0_bin_maxbins_20_delay_extent"
-          }
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "source_0",
-      "transform": [
         {
           "type": "extent",
           "field": "delay",
@@ -122,48 +27,25 @@
           }
         },
         {
-          "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        }
-      ]
-    },
-    {
-      "name": "data_4",
-      "source": "source_0",
-      "transform": [
-        {
           "type": "extent",
-          "field": "time",
-          "signal": "child__repeat_column_time_layer_0_bin_maxbins_20_time_extent"
+          "field": "distance",
+          "signal": "child__repeat_column_distance_layer_0_bin_maxbins_20_distance_extent"
         },
         {
           "type": "bin",
-          "field": "time",
-          "as": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
-          "signal": "child__repeat_column_time_layer_0_bin_maxbins_20_time_bins",
+          "field": "distance",
+          "as": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
+          "signal": "child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins",
           "maxbins": 20,
           "extent": {
-            "signal": "child__repeat_column_time_layer_0_bin_maxbins_20_time_extent"
+            "signal": "child__repeat_column_distance_layer_0_bin_maxbins_20_distance_extent"
           }
         },
-        {
-          "type": "aggregate",
-          "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        }
+        {"type": "formula", "expr": "hours(datum.date)", "as": "time"}
       ]
     },
     {
-      "name": "data_5",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
         {
@@ -180,7 +62,13 @@
           "extent": {
             "signal": "child__repeat_column_time_layer_1_bin_maxbins_20_time_extent"
           }
-        },
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
         {
           "type": "filter",
           "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
@@ -188,6 +76,81 @@
         {
           "type": "aggregate",
           "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
+        }
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "data_3",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_5",
+      "source": "data_3",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_6",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_7",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
@@ -249,7 +212,7 @@
           "name": "child__repeat_column_distance_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_6"},
           "encode": {
             "update": {
               "fill": [
@@ -295,7 +258,7 @@
           "name": "child__repeat_column_distance_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_5"},
           "encode": {
             "update": {
               "fill": [
@@ -415,7 +378,7 @@
           "name": "child__repeat_column_delay_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_7"},
           "encode": {
             "update": {
               "fill": [
@@ -461,7 +424,7 @@
           "name": "child__repeat_column_delay_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_3"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
               "fill": [
@@ -581,7 +544,7 @@
           "name": "child__repeat_column_time_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_4"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": [
@@ -624,7 +587,7 @@
           "name": "child__repeat_column_time_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_5"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": [
@@ -705,14 +668,7 @@
       "name": "child__repeat_column_distance_x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {
-            "signal": "[child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins.start, child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins.stop]"
-          },
-          {
-            "signal": "[child__repeat_column_distance_layer_1_bin_maxbins_20_distance_bins.start, child__repeat_column_distance_layer_1_bin_maxbins_20_distance_bins.stop]"
-          }
-        ]
+        "signal": "[child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins.start, child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
       "bins": {
@@ -725,8 +681,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "__count"},
-          {"data": "data_1", "field": "__count"}
+          {"data": "data_6", "field": "__count"},
+          {"data": "data_5", "field": "__count"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -737,18 +693,11 @@
       "name": "child__repeat_column_delay_x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {
-            "signal": "[child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins.start, child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins.stop]"
-          },
-          {
-            "signal": "[child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins.start, child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins.stop]"
-          }
-        ]
+        "signal": "[child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins.start, child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
       "bins": {
-        "signal": "child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins"
+        "signal": "child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins"
       },
       "zero": false
     },
@@ -757,8 +706,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "__count"},
-          {"data": "data_3", "field": "__count"}
+          {"data": "data_7", "field": "__count"},
+          {"data": "data_4", "field": "__count"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -769,18 +718,11 @@
       "name": "child__repeat_column_time_x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {
-            "signal": "[child__repeat_column_time_layer_0_bin_maxbins_20_time_bins.start, child__repeat_column_time_layer_0_bin_maxbins_20_time_bins.stop]"
-          },
-          {
-            "signal": "[child__repeat_column_time_layer_1_bin_maxbins_20_time_bins.start, child__repeat_column_time_layer_1_bin_maxbins_20_time_bins.stop]"
-          }
-        ]
+        "signal": "[child__repeat_column_time_layer_1_bin_maxbins_20_time_bins.start, child__repeat_column_time_layer_1_bin_maxbins_20_time_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
       "bins": {
-        "signal": "child__repeat_column_time_layer_0_bin_maxbins_20_time_bins"
+        "signal": "child__repeat_column_time_layer_1_bin_maxbins_20_time_bins"
       },
       "zero": false
     },
@@ -789,8 +731,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_4", "field": "__count"},
-          {"data": "data_5", "field": "__count"}
+          {"data": "data_2", "field": "__count"},
+          {"data": "data_1", "field": "__count"}
         ]
       },
       "range": [{"signal": "height"}, 0],

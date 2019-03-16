@@ -138,7 +138,13 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_monthdate_date) || (+invert(\"concat_0_x\", brush_x)[0] === +brush_monthdate_date[0] && +invert(\"concat_0_x\", brush_x)[1] === +brush_monthdate_date[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [{"scale": "concat_0_x"}],
+              "update": "(!isArray(brush_monthdate_date) || (+invert(\"concat_0_x\", brush_x)[0] === +brush_monthdate_date[0] && +invert(\"concat_0_x\", brush_x)[1] === +brush_monthdate_date[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -561,6 +567,7 @@
       "title": "Weather",
       "stroke": "color",
       "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
+      "symbolType": "circle",
       "encode": {
         "symbols": {
           "update": {
@@ -575,6 +582,7 @@
       "title": "Precipitation",
       "size": "size",
       "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
+      "symbolType": "circle",
       "encode": {
         "symbols": {
           "update": {

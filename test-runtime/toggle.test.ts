@@ -17,7 +17,7 @@ function toggle(key: string, idx: number, shiftKey: boolean, parent?: string) {
   return `${fn}(${hits[key][idx]}, ${stringValue(parent)}, ${!!shiftKey})`;
 }
 
-describe('Toggle multi selections at runtime', async () => {
+describe('Toggle multi selections at runtime', () => {
   beforeAll(async () => {
     await page.goto('http://0.0.0.0:8000/test-runtime/');
   });

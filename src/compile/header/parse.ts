@@ -1,9 +1,11 @@
 import {AxisOrient} from 'vega';
 import {FACET_CHANNELS, FacetChannel} from '../../channel';
 import {title as fieldDefTitle} from '../../fielddef';
+import {contains} from '../../util';
 import {assembleAxis} from '../axis/assemble';
 import {FacetModel} from '../facet';
 import {parseGuideResolve} from '../resolve';
+import {getHeaderProperty} from './common';
 import {HeaderChannel, HeaderComponent} from './component';
 
 export function getHeaderType(orient: AxisOrient) {
@@ -25,7 +27,11 @@ export function parseFacetHeaders(model: FacetModel) {
 function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
   if (model.channelHasField(channel)) {
     const fieldDef = model.facet[channel];
-    let title = fieldDefTitle(fieldDef, model.config, {allowDisabling: true});
+    const titleConfig = getHeaderProperty('title', null, model.config, channel);
+    let title = fieldDefTitle(fieldDef, model.config, {
+      allowDisabling: true,
+      includeDefault: titleConfig === undefined || !!titleConfig
+    });
 
     if (model.child.component.layoutHeaders[channel].title) {
       // merge title with child to produce "Title / Subtitle / Sub-subtitle"
@@ -33,11 +39,14 @@ function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
       model.child.component.layoutHeaders[channel].title = null;
     }
 
+    const labelOrient = getHeaderProperty('labelOrient', fieldDef, model.config, channel);
+
+    const headerType = contains(['bottom', 'right'], labelOrient) ? 'footer' : 'header';
+
     model.component.layoutHeaders[channel] = {
       title,
       facetFieldDef: fieldDef,
-      // TODO: support adding label to footer as well
-      header: channel === 'facet' ? [] : [makeHeaderComponent(model, channel, true)]
+      [headerType]: channel === 'facet' ? [] : [makeHeaderComponent(model, channel, true)]
     };
   }
 }

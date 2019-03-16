@@ -12,7 +12,7 @@ import {parseLayerLayoutSize} from './layoutsize/parse';
 import {assembleLegends} from './legend/assemble';
 import {Model} from './model';
 import {RepeaterValue} from './repeater';
-import {assembleLayerSelectionMarks} from './selection/selection';
+import {assembleLayerSelectionMarks} from './selection/assemble';
 import {UnitModel} from './unit';
 
 export class LayerModel extends Model {

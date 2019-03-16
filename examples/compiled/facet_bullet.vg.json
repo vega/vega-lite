@@ -99,13 +99,13 @@
       "sort": {"field": "datum[\"title\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"title\"]"},
-        "offset": 10,
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
-        "angle": 0,
         "baseline": "middle",
-        "encode": {"update": {"align": {"value": "right"}}}
+        "align": "right",
+        "angle": 0,
+        "offset": 10
       },
       "encode": {"update": {"height": {"signal": "child_height"}}}
     },

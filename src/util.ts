@@ -74,6 +74,10 @@ export function hash(a: any): string | number {
   return h;
 }
 
+export function isNullOrFalse(x: any): x is false | null {
+  return x === false || x === null;
+}
+
 export function contains<T>(array: T[], item: T) {
   return array.indexOf(item) > -1;
 }
@@ -363,7 +367,7 @@ export function accessPathWithDatum(path: string, datum = 'datum') {
  * @param path The field name.
  * @param datum The string to use for `datum`.
  */
-export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' = 'datum') {
+export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' | 'datum.datum' = 'datum') {
   return `${datum}[${stringValue(splitAccessPath(path).join('.'))}]`;
 }
 
@@ -433,4 +437,11 @@ export function internalField(name: string) {
 
 export function isInternalField(name: string) {
   return name.indexOf('__') === 0;
+}
+
+/**
+ * Normalize angle to be within [0,360).
+ */
+export function normalizeAngle(angle: number) {
+  return ((angle % 360) + 360) % 360;
 }

@@ -67,9 +67,9 @@
       "role": "row-title",
       "title": {
         "text": "site",
-        "offset": 10,
         "orient": "left",
-        "style": "guide-title"
+        "style": "guide-title",
+        "offset": 10
       }
     },
     {
@@ -80,11 +80,10 @@
       "sort": {"field": "datum[\"median_yield\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"site\"]"},
-        "offset": 10,
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {
         "update": {"height": {"signal": "trellis_barley_child_height"}}
@@ -294,6 +293,7 @@
       "gradientLength": {
         "signal": "clamp(trellis_barley_child_height, 64, 200)"
       },
+      "symbolType": "circle",
       "title": "year",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }

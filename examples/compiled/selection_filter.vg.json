@@ -154,15 +154,20 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Horsepower) || (+invert(\"concat_0_x\", brush_x)[0] === +brush_Horsepower[0] && +invert(\"concat_0_x\", brush_x)[1] === +brush_Horsepower[1])) && (!isArray(brush_Miles_per_Gallon) || (+invert(\"concat_0_y\", brush_y)[0] === +brush_Miles_per_Gallon[0] && +invert(\"concat_0_y\", brush_y)[1] === +brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [{"scale": "concat_0_x"}, {"scale": "concat_0_y"}],
+              "update": "(!isArray(brush_Horsepower) || (+invert(\"concat_0_x\", brush_x)[0] === +brush_Horsepower[0] && +invert(\"concat_0_x\", brush_x)[1] === +brush_Horsepower[1])) && (!isArray(brush_Miles_per_Gallon) || (+invert(\"concat_0_y\", brush_y)[0] === +brush_Miles_per_Gallon[0] && +invert(\"concat_0_y\", brush_y)[1] === +brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
           "on": [
             {
               "events": [
-                {"signal": "brush_Horsepower"},
-                {"signal": "brush_Miles_per_Gallon"}
+                {"signal": "brush_Horsepower || brush_Miles_per_Gallon"}
               ],
               "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
             }

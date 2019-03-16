@@ -6,7 +6,7 @@ import {TypedFieldDef, valueArray} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL} from '../../type';
-import {contains} from '../../util';
+import {contains, normalizeAngle} from '../../util';
 import {UnitModel} from '../unit';
 import {getAxisConfig} from './config';
 
@@ -35,8 +35,7 @@ export function labelAngle(
 ) {
   // try axis value
   if (specifiedAxis.labelAngle !== undefined) {
-    // Make angle within [0,360)
-    return ((specifiedAxis.labelAngle % 360) + 360) % 360;
+    return normalizeAngle(specifiedAxis.labelAngle);
   } else {
     // try axis config value
     const angle = getAxisConfig(
@@ -47,7 +46,7 @@ export function labelAngle(
       model.getScaleComponent(channel).get('type')
     );
     if (angle !== undefined) {
-      return ((angle % 360) + 360) % 360;
+      return normalizeAngle(angle);
     } else {
       // get default value
       if (channel === X && contains([NOMINAL, ORDINAL], fieldDef.type)) {
@@ -61,6 +60,7 @@ export function labelAngle(
 
 export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient) {
   if (angle !== undefined) {
+    angle = normalizeAngle(angle);
     if (axisOrient === 'top' || axisOrient === 'bottom') {
       if (angle <= 45 || 315 <= angle) {
         return axisOrient === 'top' ? 'bottom' : 'top';
@@ -84,7 +84,7 @@ export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient) {
 
 export function defaultLabelAlign(angle: number, axisOrient: AxisOrient): Align {
   if (angle !== undefined) {
-    angle = ((angle % 360) + 360) % 360;
+    angle = normalizeAngle(angle);
     if (axisOrient === 'top' || axisOrient === 'bottom') {
       if (angle % 180 === 0) {
         return 'center';

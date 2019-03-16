@@ -28,11 +28,11 @@
           "groupby": []
         },
         {
-          "calculate": "datum.center_Miles_per_Gallon + datum.extent_Miles_per_Gallon",
+          "calculate": "datum[\"center_Miles_per_Gallon\"] + datum[\"extent_Miles_per_Gallon\"]",
           "as": "upper_Miles_per_Gallon"
         },
         {
-          "calculate": "datum.center_Miles_per_Gallon - datum.extent_Miles_per_Gallon",
+          "calculate": "datum[\"center_Miles_per_Gallon\"] - datum[\"extent_Miles_per_Gallon\"]",
           "as": "lower_Miles_per_Gallon"
         }
       ],

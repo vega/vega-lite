@@ -3,7 +3,7 @@ import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
 import {FieldDefBase, toFieldDefBase} from '../../fielddef';
-import {getFirstDefined, keys} from '../../util';
+import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {LayerModel} from '../layer';
@@ -92,6 +92,15 @@ export function parseLayerAxes(model: LayerModel) {
 
       // After merging, make sure to remove axes from child
       delete child.component.axes[channel];
+    }
+
+    // Suppress grid lines for dual axis charts (https://github.com/vega/vega-lite/issues/4676)
+    if (resolve.axis[channel] === 'independent' && axes[channel] && axes[channel].length > 1) {
+      for (const axisCmpt of axes[channel]) {
+        if (!!axisCmpt.get('grid') && !axisCmpt.explicit.grid) {
+          axisCmpt.implicit.grid = false;
+        }
+      }
     }
   }
 }
@@ -190,6 +199,9 @@ function isExplicit<T extends string | number | object | boolean>(
   channel: PositionScaleChannel
 ) {
   switch (property) {
+    case 'titleAngle':
+    case 'labelAngle':
+      return value === normalizeAngle(axis[property]);
     case 'values':
       return !!axis.values;
     // specified axis.values is already respected, but may get transformed.
@@ -229,8 +241,9 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
       if (explicit || configValue === undefined) {
         // Do not apply implicit rule if there is a config value
         axisComponent.set(property, value, explicit);
-      } else if (property === 'grid' && configValue) {
-        // Grid is an exception because we need to set grid = true to generate another grid axis
+      } else if (contains(['grid', 'orient'], property) && configValue) {
+        // - Grid is an exception because we need to set grid = true to generate another grid axis
+        // - Orient is not an axis config in Vega, so we need to set too.
         axisComponent.set(property, configValue, false);
       }
     }

@@ -14,6 +14,7 @@ import {
   SignalRef,
   SortField as VgSortField,
   TextBaseline as VgTextBaseline,
+  Title as VgTitle,
   UnionSortField as VgUnionSortField
 } from 'vega';
 import {isArray} from 'vega-util';
@@ -23,7 +24,7 @@ import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
-export {VgSortField, VgUnionSortField, VgCompare, LayoutAlign, ProjectionType};
+export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType};
 
 export type Color = string;
 
@@ -212,6 +213,8 @@ export interface VgLayout {
   padding?: number | RowCol<number>;
   headerBand?: number | RowCol<number>;
   footerBand?: number | RowCol<number>;
+
+  titleAnchor?: 'start' | 'end' | RowCol<'start' | 'end'>;
   offset?:
     | number
     | {
@@ -639,10 +642,13 @@ export interface BaseMarkConfig {
   tension?: number;
 
   /**
-   * The default symbol shape to use. One of: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
+   * Shape of the point marks. Supported values include:
+   * - plotting shapes: `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, `"triangle-down"`, `"triangle-right"`, or `"triangle-left"`.
+   * - the line symbol `"stroke"`
+   * - centered directional shapes `"arrow"`, `"wedge"`, or `"triangle"`
+   * - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)
    *
    * __Default value:__ `"circle"`
-   *
    */
   shape?: string;
 

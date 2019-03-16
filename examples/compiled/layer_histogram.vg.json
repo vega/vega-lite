@@ -9,37 +9,7 @@
     {
       "name": "source_0",
       "url": "data/flights-2k.json",
-      "format": {"type": "json"}
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "extent",
-          "field": "distance",
-          "signal": "layer_0_bin_maxbins_10_distance_extent"
-        },
-        {
-          "type": "bin",
-          "field": "distance",
-          "as": ["bin_maxbins_10_distance", "bin_maxbins_10_distance_end"],
-          "signal": "layer_0_bin_maxbins_10_distance_bins",
-          "maxbins": 10,
-          "extent": {"signal": "layer_0_bin_maxbins_10_distance_extent"}
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["bin_maxbins_10_distance", "bin_maxbins_10_distance_end"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "extent",
@@ -53,8 +23,27 @@
           "signal": "layer_1_bin_maxbins_10_distance_bins",
           "maxbins": 10,
           "extent": {"signal": "layer_1_bin_maxbins_10_distance_extent"}
-        },
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {"type": "filter", "expr": "datum.delay < 500"},
+        {
+          "type": "aggregate",
+          "groupby": ["bin_maxbins_10_distance", "bin_maxbins_10_distance_end"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
         {
           "type": "aggregate",
           "groupby": ["bin_maxbins_10_distance", "bin_maxbins_10_distance_end"],
@@ -70,7 +59,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": [
@@ -106,7 +95,7 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": [
@@ -144,17 +133,10 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {
-            "signal": "[layer_0_bin_maxbins_10_distance_bins.start, layer_0_bin_maxbins_10_distance_bins.stop]"
-          },
-          {
-            "signal": "[layer_1_bin_maxbins_10_distance_bins.start, layer_1_bin_maxbins_10_distance_bins.stop]"
-          }
-        ]
+        "signal": "[layer_1_bin_maxbins_10_distance_bins.start, layer_1_bin_maxbins_10_distance_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
-      "bins": {"signal": "layer_0_bin_maxbins_10_distance_bins"},
+      "bins": {"signal": "layer_1_bin_maxbins_10_distance_bins"},
       "zero": false
     },
     {
@@ -162,8 +144,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "__count"},
-          {"data": "data_1", "field": "__count"}
+          {"data": "data_1", "field": "__count"},
+          {"data": "data_0", "field": "__count"}
         ]
       },
       "range": [{"signal": "height"}, 0],

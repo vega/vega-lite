@@ -43,7 +43,7 @@
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "key", "offset": 10, "style": "guide-title"}
+      "title": {"text": "key", "style": "guide-title", "offset": 10}
     },
     {
       "name": "row_header",
@@ -70,10 +70,9 @@
       "sort": {"field": "datum[\"key\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"key\"]"},
-        "offset": 10,
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
     },
@@ -183,6 +182,7 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "symbolType": "circle",
       "title": "country",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }

@@ -2,6 +2,7 @@ import {LabelOverlap, LegendOrient, LegendType} from 'vega';
 import {Channel, isColorChannel} from '../../channel';
 import {TypedFieldDef, valueArray} from '../../fielddef';
 import {Legend, LegendConfig} from '../../legend';
+import {Mark} from '../../mark';
 import {isContinuousToContinuous, ScaleType} from '../../scale';
 import {TimeUnit} from '../../timeunit';
 import {contains, getFirstDefined} from '../../util';
@@ -14,6 +15,10 @@ export function values(legend: Legend, fieldDef: TypedFieldDef<string>) {
     return valueArray(fieldDef, vals);
   }
   return undefined;
+}
+
+export function defaultSymbolType(mark: Mark) {
+  return mark === 'line' ? 'stroke' : 'circle';
 }
 
 export function clipHeight(legendType: LegendType) {

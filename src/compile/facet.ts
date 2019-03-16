@@ -16,12 +16,14 @@ import {assembleFacetData} from './data/assemble';
 import {sortArrayIndexField} from './data/calculate';
 import {parseData} from './data/parse';
 import {assembleLabelTitle} from './header/assemble';
+import {getHeaderChannel, getHeaderProperty} from './header/common';
+import {HEADER_CHANNELS, HEADER_TYPES} from './header/component';
 import {parseFacetHeaders} from './header/parse';
 import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
-import {assembleFacetSignals} from './selection/selection';
+import {assembleFacetSignals} from './selection/assemble';
 
 export function facetSortFieldName(
   fieldDef: FacetFieldDef<string>,
@@ -134,15 +136,27 @@ export class FacetModel extends ModelWithField {
   private getHeaderLayoutMixins(): VgLayout {
     const layoutMixins: VgLayout = {};
 
-    ['row', 'column'].forEach((channel: 'row' | 'column') => {
-      ['header', 'footer'].forEach((headerType: 'header' | 'footer') => {
+    for (const channel of FACET_CHANNELS) {
+      for (const headerType of HEADER_TYPES) {
         const layoutHeaderComponent = this.component.layoutHeaders[channel];
         const headerComponent = layoutHeaderComponent[headerType];
+
+        const {facetFieldDef} = layoutHeaderComponent;
+        if (facetFieldDef) {
+          const titleOrient = getHeaderProperty('titleOrient', facetFieldDef, this.config, channel);
+
+          if (contains(['right', 'bottom'], titleOrient)) {
+            const headerChannel = getHeaderChannel(channel, titleOrient);
+            layoutMixins.titleAnchor = layoutMixins.titleAnchor || {};
+            layoutMixins.titleAnchor[headerChannel] = 'end';
+          }
+        }
+
         if (headerComponent && headerComponent[0]) {
           // set header/footerBand
           const sizeType = channel === 'row' ? 'height' : 'width';
           const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
-          if (!this.child.component.layoutSize.get(sizeType)) {
+          if (channel !== 'facet' && !this.child.component.layoutSize.get(sizeType)) {
             // If facet child does not have size signal, then apply headerBand
             layoutMixins[bandType] = layoutMixins[bandType] || {};
             layoutMixins[bandType][channel] = 0.5;
@@ -153,8 +167,8 @@ export class FacetModel extends ModelWithField {
             layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
           }
         }
-      });
-    });
+      }
+    }
     return layoutMixins;
   }
 
@@ -340,8 +354,32 @@ export class FacetModel extends ModelWithField {
     return [];
   }
 
+  private assembleLabelTitle() {
+    const {facet, config} = this;
+    if (facet.facet) {
+      // Facet always uses title to display labels
+      return assembleLabelTitle(facet.facet, 'facet', config);
+    }
+
+    const ORTHOGONAL_ORIENT = {
+      row: ['top', 'bottom'],
+      column: ['left', 'right']
+    };
+
+    for (const channel of HEADER_CHANNELS) {
+      if (facet[channel]) {
+        const labelOrient = getHeaderProperty('labelOrient', facet[channel], config, channel);
+        if (contains(ORTHOGONAL_ORIENT[channel], labelOrient)) {
+          // Row/Column with orthogonal labelOrient must use title to display labels
+          return assembleLabelTitle(facet[channel], channel, config);
+        }
+      }
+    }
+    return undefined;
+  }
+
   public assembleMarks(): VgMarkGroup[] {
-    const {child, facet, config} = this;
+    const {child} = this;
 
     // If we facet by two dimensions, we need to add a cross operator to the aggregation
     // so that we create all groups
@@ -350,7 +388,7 @@ export class FacetModel extends ModelWithField {
 
     const encodeEntry = child.assembleGroupEncodeEntry(false);
 
-    const title = (facet.facet && assembleLabelTitle(facet.facet, 'facet', config)) || child.assembleTitle();
+    const title = this.assembleLabelTitle() || child.assembleTitle();
     const style = child.assembleGroupStyle();
 
     const markGroup = {

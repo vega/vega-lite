@@ -5,11 +5,29 @@
   "width": 200,
   "height": 200,
   "data": [
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
     {
-      "name": "data_0",
-      "source": "source_0",
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json"},
       "transform": [
+        {
+          "type": "extent",
+          "field": "Displacement",
+          "signal": "child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_extent"
+        },
+        {
+          "type": "bin",
+          "field": "Displacement",
+          "as": [
+            "bin_maxbins_10_Displacement",
+            "bin_maxbins_10_Displacement_end"
+          ],
+          "signal": "child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_bins",
+          "maxbins": 10,
+          "extent": {
+            "signal": "child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_extent"
+          }
+        },
         {
           "type": "extent",
           "field": "Horsepower",
@@ -25,6 +43,76 @@
             "signal": "child__repeat_repeat_Horsepower_bin_maxbins_10_Horsepower_extent"
           }
         },
+        {
+          "type": "extent",
+          "field": "Miles_per_Gallon",
+          "signal": "child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_extent"
+        },
+        {
+          "type": "bin",
+          "field": "Miles_per_Gallon",
+          "as": [
+            "bin_maxbins_10_Miles_per_Gallon",
+            "bin_maxbins_10_Miles_per_Gallon_end"
+          ],
+          "signal": "child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins",
+          "maxbins": 10,
+          "extent": {
+            "signal": "child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_extent"
+          }
+        },
+        {
+          "type": "extent",
+          "field": "Acceleration",
+          "signal": "child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_extent"
+        },
+        {
+          "type": "bin",
+          "field": "Acceleration",
+          "as": [
+            "bin_maxbins_10_Acceleration",
+            "bin_maxbins_10_Acceleration_end"
+          ],
+          "signal": "child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_bins",
+          "maxbins": 10,
+          "extent": {
+            "signal": "child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_extent"
+          }
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_10_Displacement",
+            "bin_maxbins_10_Displacement_end",
+            "Origin"
+          ],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        },
+        {
+          "type": "stack",
+          "groupby": [
+            "bin_maxbins_10_Displacement",
+            "bin_maxbins_10_Displacement_end"
+          ],
+          "field": "__count",
+          "sort": {"field": ["Origin"], "order": ["descending"]},
+          "as": ["__count_start", "__count_end"],
+          "offset": "zero"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
         {
           "type": "aggregate",
           "groupby": [
@@ -50,27 +138,9 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_2",
       "source": "source_0",
       "transform": [
-        {
-          "type": "extent",
-          "field": "Miles_per_Gallon",
-          "signal": "child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_extent"
-        },
-        {
-          "type": "bin",
-          "field": "Miles_per_Gallon",
-          "as": [
-            "bin_maxbins_10_Miles_per_Gallon",
-            "bin_maxbins_10_Miles_per_Gallon_end"
-          ],
-          "signal": "child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins",
-          "maxbins": 10,
-          "extent": {
-            "signal": "child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_extent"
-          }
-        },
         {
           "type": "aggregate",
           "groupby": [
@@ -96,27 +166,9 @@
       ]
     },
     {
-      "name": "data_2",
+      "name": "data_3",
       "source": "source_0",
       "transform": [
-        {
-          "type": "extent",
-          "field": "Acceleration",
-          "signal": "child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_extent"
-        },
-        {
-          "type": "bin",
-          "field": "Acceleration",
-          "as": [
-            "bin_maxbins_10_Acceleration",
-            "bin_maxbins_10_Acceleration_end"
-          ],
-          "signal": "child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_bins",
-          "maxbins": 10,
-          "extent": {
-            "signal": "child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_extent"
-          }
-        },
         {
           "type": "aggregate",
           "groupby": [
@@ -140,52 +192,6 @@
           "offset": "zero"
         }
       ]
-    },
-    {
-      "name": "data_3",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "extent",
-          "field": "Displacement",
-          "signal": "child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_extent"
-        },
-        {
-          "type": "bin",
-          "field": "Displacement",
-          "as": [
-            "bin_maxbins_10_Displacement",
-            "bin_maxbins_10_Displacement_end"
-          ],
-          "signal": "child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_bins",
-          "maxbins": 10,
-          "extent": {
-            "signal": "child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_extent"
-          }
-        },
-        {
-          "type": "aggregate",
-          "groupby": [
-            "bin_maxbins_10_Displacement",
-            "bin_maxbins_10_Displacement_end",
-            "Origin"
-          ],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        },
-        {
-          "type": "stack",
-          "groupby": [
-            "bin_maxbins_10_Displacement",
-            "bin_maxbins_10_Displacement_end"
-          ],
-          "field": "__count",
-          "sort": {"field": ["Origin"], "order": ["descending"]},
-          "as": ["__count_start", "__count_end"],
-          "offset": "zero"
-        }
-      ]
     }
   ],
   "layout": {"padding": 20, "bounds": "full", "align": "all", "columns": 2},
@@ -202,7 +208,7 @@
           "name": "child__repeat_repeat_Horsepower_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": [
@@ -295,7 +301,7 @@
           "name": "child__repeat_repeat_Miles_per_Gallon_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": [
@@ -388,7 +394,7 @@
           "name": "child__repeat_repeat_Acceleration_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "fill": [
@@ -481,7 +487,7 @@
           "name": "child__repeat_repeat_Displacement_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_3"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": [
@@ -569,10 +575,10 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Origin"},
           {"data": "data_1", "field": "Origin"},
           {"data": "data_2", "field": "Origin"},
-          {"data": "data_3", "field": "Origin"}
+          {"data": "data_3", "field": "Origin"},
+          {"data": "data_0", "field": "Origin"}
         ],
         "sort": true
       },
@@ -594,7 +600,7 @@
     {
       "name": "child__repeat_repeat_Horsepower_y",
       "type": "linear",
-      "domain": {"data": "data_0", "fields": ["__count_start", "__count_end"]},
+      "domain": {"data": "data_1", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -614,7 +620,7 @@
     {
       "name": "child__repeat_repeat_Miles_per_Gallon_y",
       "type": "linear",
-      "domain": {"data": "data_1", "fields": ["__count_start", "__count_end"]},
+      "domain": {"data": "data_2", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -634,7 +640,7 @@
     {
       "name": "child__repeat_repeat_Acceleration_y",
       "type": "linear",
-      "domain": {"data": "data_2", "fields": ["__count_start", "__count_end"]},
+      "domain": {"data": "data_3", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -654,7 +660,7 @@
     {
       "name": "child__repeat_repeat_Displacement_y",
       "type": "linear",
-      "domain": {"data": "data_3", "fields": ["__count_start", "__count_end"]},
+      "domain": {"data": "data_0", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -664,6 +670,7 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Origin",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }

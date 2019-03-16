@@ -59,9 +59,9 @@
       "role": "row-title",
       "title": {
         "text": "Acceleration (binned)",
-        "offset": 10,
         "orient": "left",
-        "style": "guide-title"
+        "style": "guide-title",
+        "offset": 10
       }
     },
     {
@@ -77,11 +77,10 @@
         "text": {
           "signal": "parent[\"bin_maxbins_6_Acceleration\"] === null || isNaN(parent[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(parent[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(parent[\"bin_maxbins_6_Acceleration_end\"], \"\")"
         },
-        "offset": 10,
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
       "axes": [

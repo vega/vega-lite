@@ -2,7 +2,7 @@ import {isObject} from 'vega-util';
 import {AxisConfigMixins} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
 import {VL_ONLY_GUIDE_CONFIG, VL_ONLY_LEGEND_CONFIG} from './guide';
-import {HeaderConfig} from './header';
+import {HeaderConfigMixins} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import * as mark from './mark';
 import {
@@ -153,6 +153,7 @@ export interface Config
     MarkConfigMixins,
     CompositeMarkConfigMixins,
     AxisConfigMixins,
+    HeaderConfigMixins,
     CompositionConfigMixins {
   /**
    * CSS color property to use as the background of the whole Vega-Lite view
@@ -171,11 +172,6 @@ export interface Config
    * Legend configuration, which determines default properties for all [legends](https://vega.github.io/vega-lite/docs/legend.html). For a full list of legend configuration options, please see the [corresponding section of in the legend documentation](https://vega.github.io/vega-lite/docs/legend.html#config).
    */
   legend?: LegendConfig;
-
-  /**
-   * Header configuration, which determines default properties for all [header](https://vega.github.io/vega-lite/docs/header.html). For a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config).
-   */
-  header?: HeaderConfig;
 
   /**
    * Title configuration, which determines default properties for all [titles](https://vega.github.io/vega-lite/docs/title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](https://vega.github.io/vega-lite/docs/title.html#config).
@@ -250,6 +246,10 @@ export const defaultConfig: Config = {
   axisBottom: {},
   axisBand: {},
   legend: defaultLegendConfig,
+  header: {titlePadding: 10, labelPadding: 10},
+  headerColumn: {},
+  headerRow: {},
+  headerFacet: {},
 
   selection: defaultSelectionConfig,
   style: {},
@@ -275,6 +275,7 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'numberFormat',
   'timeFormat',
   'countTitle',
+  'header',
   'stack',
   'scale',
   'selection',

@@ -60,7 +60,7 @@
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "Series", "offset": 10, "style": "guide-title"}
+      "title": {"text": "Series", "style": "guide-title", "offset": 10}
     },
     {
       "name": "row_header",
@@ -87,10 +87,9 @@
       "sort": {"field": "datum[\"Series\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"Series\"]"},
-        "offset": 10,
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
     },
@@ -197,7 +196,13 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_X) || (+invert(\"x\", brush_x)[0] === +brush_X[0] && +invert(\"x\", brush_x)[1] === +brush_X[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [{"scale": "x"}],
+              "update": "(!isArray(brush_X) || (+invert(\"x\", brush_x)[0] === +brush_X[0] && +invert(\"x\", brush_x)[1] === +brush_X[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -322,7 +327,7 @@
           "name": "grid_tuple",
           "on": [
             {
-              "events": [{"signal": "grid_X"}, {"signal": "grid_Y"}],
+              "events": [{"signal": "grid_X || grid_Y"}],
               "update": "grid_X && grid_Y ? {unit: \"child\" + '__facet_column_' + (facet[\"Series\"]), fields: grid_tuple_fields, values: [grid_X,grid_Y]} : null"
             }
           ]
@@ -400,7 +405,7 @@
           "name": "xenc_tuple",
           "update": "xenc_X !== null ? {fields: xenc_tuple_fields, values: [xenc_X]} : null"
         },
-        {"name": "xenc_tuple_fields", "value": [{"field": "X", "type": "E"}]},
+        {"name": "xenc_tuple_fields", "value": [{"type": "E", "field": "X"}]},
         {
           "name": "xenc_modify",
           "update": "modify(\"xenc_store\", xenc_tuple, true)"
@@ -481,7 +486,10 @@
               "fill": {"value": "transparent"},
               "strokeWidth": {"value": 0.35},
               "stroke": {"value": "transparent"},
-              "isVoronoi": {"value": true}
+              "isVoronoi": {"value": true},
+              "tooltip": {
+                "signal": "{\"X\": format(datum.datum[\"X\"], \"\"), \"Y\": format(datum.datum[\"Y\"], \"\")}"
+              }
             }
           },
           "transform": [

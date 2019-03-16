@@ -33,17 +33,16 @@
       "name": "facet-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "site", "offset": 10, "style": "guide-title"}
+      "title": {"text": "site", "style": "guide-title", "offset": 10}
     },
     {
       "name": "trellis_barley_cell",
       "type": "group",
       "title": {
         "text": {"signal": "''+parent[\"site\"]"},
-        "offset": 10,
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "style": "cell",
       "from": {
@@ -189,9 +188,9 @@
       "gradientLength": {
         "signal": "clamp(trellis_barley_child_height, 64, 200)"
       },
+      "symbolType": "circle",
       "title": "year",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

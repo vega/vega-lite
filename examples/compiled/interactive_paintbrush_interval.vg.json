@@ -134,15 +134,20 @@
     },
     {
       "name": "paintbrush_scale_trigger",
-      "update": "(!isArray(paintbrush_Horsepower) || (+invert(\"x\", paintbrush_x)[0] === +paintbrush_Horsepower[0] && +invert(\"x\", paintbrush_x)[1] === +paintbrush_Horsepower[1])) && (!isArray(paintbrush_Miles_per_Gallon) || (+invert(\"y\", paintbrush_y)[0] === +paintbrush_Miles_per_Gallon[0] && +invert(\"y\", paintbrush_y)[1] === +paintbrush_Miles_per_Gallon[1])) ? paintbrush_scale_trigger : {}"
+      "value": {},
+      "on": [
+        {
+          "events": [{"scale": "x"}, {"scale": "y"}],
+          "update": "(!isArray(paintbrush_Horsepower) || (+invert(\"x\", paintbrush_x)[0] === +paintbrush_Horsepower[0] && +invert(\"x\", paintbrush_x)[1] === +paintbrush_Horsepower[1])) && (!isArray(paintbrush_Miles_per_Gallon) || (+invert(\"y\", paintbrush_y)[0] === +paintbrush_Miles_per_Gallon[0] && +invert(\"y\", paintbrush_y)[1] === +paintbrush_Miles_per_Gallon[1])) ? paintbrush_scale_trigger : {}"
+        }
+      ]
     },
     {
       "name": "paintbrush_tuple",
       "on": [
         {
           "events": [
-            {"signal": "paintbrush_Horsepower"},
-            {"signal": "paintbrush_Miles_per_Gallon"}
+            {"signal": "paintbrush_Horsepower || paintbrush_Miles_per_Gallon"}
           ],
           "update": "paintbrush_Horsepower && paintbrush_Miles_per_Gallon ? {unit: \"\", fields: paintbrush_tuple_fields, values: [paintbrush_Horsepower,paintbrush_Miles_per_Gallon]} : null"
         }

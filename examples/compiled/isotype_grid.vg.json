@@ -236,13 +236,19 @@
     },
     {
       "name": "highlight_scale_trigger",
-      "update": "(!isArray(highlight_col) || (invert(\"x\", highlight_x)[0] === highlight_col[0] && invert(\"x\", highlight_x)[1] === highlight_col[1])) && (!isArray(highlight_row) || (invert(\"y\", highlight_y)[0] === highlight_row[0] && invert(\"y\", highlight_y)[1] === highlight_row[1])) ? highlight_scale_trigger : {}"
+      "value": {},
+      "on": [
+        {
+          "events": [{"scale": "x"}, {"scale": "y"}],
+          "update": "(!isArray(highlight_col) || (invert(\"x\", highlight_x)[0] === highlight_col[0] && invert(\"x\", highlight_x)[1] === highlight_col[1])) && (!isArray(highlight_row) || (invert(\"y\", highlight_y)[0] === highlight_row[0] && invert(\"y\", highlight_y)[1] === highlight_row[1])) ? highlight_scale_trigger : {}"
+        }
+      ]
     },
     {
       "name": "highlight_tuple",
       "on": [
         {
-          "events": [{"signal": "highlight_col"}, {"signal": "highlight_row"}],
+          "events": [{"signal": "highlight_col || highlight_row"}],
           "update": "highlight_col && highlight_row ? {unit: \"\", fields: highlight_tuple_fields, values: [highlight_col,highlight_row]} : null"
         }
       ]
