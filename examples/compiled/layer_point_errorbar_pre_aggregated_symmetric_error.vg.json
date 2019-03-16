@@ -28,12 +28,12 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "datum.yield_center + datum.yield_error",
+          "expr": "datum[\"yield_center\"] + datum[\"yield_error\"]",
           "as": "upper_yield_center"
         },
         {
           "type": "formula",
-          "expr": "datum.yield_center - datum.yield_error",
+          "expr": "datum[\"yield_center\"] - datum[\"yield_error\"]",
           "as": "lower_yield_center"
         }
       ]

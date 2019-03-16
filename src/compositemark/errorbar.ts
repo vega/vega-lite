@@ -444,11 +444,11 @@ function errorBarAggregationAndCalculation<
 
       postAggregateCalculates = [
         {
-          calculate: `datum.center_${continuousFieldName} + datum.extent_${continuousFieldName}`,
+          calculate: `datum["center_${continuousFieldName}"] + datum["extent_${continuousFieldName}"]`,
           as: 'upper_' + continuousFieldName
         },
         {
-          calculate: `datum.center_${continuousFieldName} - datum.extent_${continuousFieldName}`,
+          calculate: `datum["center_${continuousFieldName}"] - datum["extent_${continuousFieldName}"]`,
           as: 'lower_' + continuousFieldName
         }
       ];
@@ -512,27 +512,27 @@ function errorBarAggregationAndCalculation<
     if (inputType === 'aggregated-upper-lower') {
       tooltipSummary = [];
       postAggregateCalculates = [
-        {calculate: `datum.${continuousAxisChannelDef2.field}`, as: `upper_` + continuousFieldName},
-        {calculate: `datum.${continuousFieldName}`, as: `lower_` + continuousFieldName}
+        {calculate: `datum["${continuousAxisChannelDef2.field}"]`, as: 'upper_' + continuousFieldName},
+        {calculate: `datum["${continuousFieldName}"]`, as: 'lower_' + continuousFieldName}
       ];
     } else if (inputType === 'aggregated-error') {
       tooltipSummary = [{fieldPrefix: '', titlePrefix: continuousFieldName}];
       postAggregateCalculates = [
         {
-          calculate: `datum.${continuousFieldName} + datum.${continuousAxisChannelDefError.field}`,
-          as: `upper_` + continuousFieldName
+          calculate: `datum["${continuousFieldName}"] + datum["${continuousAxisChannelDefError.field}"]`,
+          as: 'upper_' + continuousFieldName
         }
       ];
 
       if (continuousAxisChannelDefError2) {
         postAggregateCalculates.push({
-          calculate: `datum.${continuousFieldName} + datum.${continuousAxisChannelDefError2.field}`,
-          as: `lower_` + continuousFieldName
+          calculate: `datum["${continuousFieldName}"] + datum["${continuousAxisChannelDefError2.field}"]`,
+          as: 'lower_' + continuousFieldName
         });
       } else {
         postAggregateCalculates.push({
-          calculate: `datum.${continuousFieldName} - datum.${continuousAxisChannelDefError.field}`,
-          as: `lower_` + continuousFieldName
+          calculate: `datum["${continuousFieldName}"] - datum["${continuousAxisChannelDefError.field}"]`,
+          as: 'lower_' + continuousFieldName
         });
       }
     }
@@ -540,7 +540,9 @@ function errorBarAggregationAndCalculation<
     for (const postAggregateCalculate of postAggregateCalculates) {
       tooltipSummary.push({
         fieldPrefix: postAggregateCalculate.as.substring(0, 6),
-        titlePrefix: postAggregateCalculate.calculate.replace(new RegExp('datum.', 'g'), '')
+        titlePrefix: postAggregateCalculate.calculate
+          .replace(new RegExp('datum\\[\\"', 'g'), '')
+          .replace(new RegExp('\\"\\]', 'g'), '')
       });
     }
   }

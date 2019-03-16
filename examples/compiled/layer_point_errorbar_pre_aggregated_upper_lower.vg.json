@@ -40,12 +40,12 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "datum.lower_yield",
+          "expr": "datum[\"lower_yield\"]",
           "as": "upper_upper_yield"
         },
         {
           "type": "formula",
-          "expr": "datum.upper_yield",
+          "expr": "datum[\"upper_yield\"]",
           "as": "lower_upper_yield"
         }
       ]
