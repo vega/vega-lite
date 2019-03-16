@@ -32,11 +32,11 @@
     {
       "transform": [
         {
-          "calculate": "datum.yield_center + datum.yield_error",
+          "calculate": "datum[\"yield_center\"] + datum[\"yield_error\"]",
           "as": "upper_yield_center"
         },
         {
-          "calculate": "datum.yield_center + datum.yield_error2",
+          "calculate": "datum[\"yield_center\"] + datum[\"yield_error2\"]",
           "as": "lower_yield_center"
         }
       ],

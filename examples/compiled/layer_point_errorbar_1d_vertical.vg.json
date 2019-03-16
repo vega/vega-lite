@@ -26,12 +26,12 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "datum.center_yield + datum.extent_yield",
+          "expr": "datum[\"center_yield\"] + datum[\"extent_yield\"]",
           "as": "upper_yield"
         },
         {
           "type": "formula",
-          "expr": "datum.center_yield - datum.extent_yield",
+          "expr": "datum[\"center_yield\"] - datum[\"extent_yield\"]",
           "as": "lower_yield"
         }
       ]
