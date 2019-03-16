@@ -4,8 +4,8 @@ import { isAggregate } from '../../encoding';
 import { getTypedFieldDef, isFieldDef, isValueDef, vgField } from '../../fielddef';
 import { AREA, isPathMark, LINE, TRAIL } from '../../mark';
 import { isSortField } from '../../sort';
-import { contains, getFirstDefined, keys } from '../../util';
-import { getStyles, sortParams } from '../common';
+import { contains, getFirstDefined, isNullOrFalse, keys } from '../../util';
+import { getMarkConfig, getStyles, sortParams } from '../common';
 import { area } from './area';
 import { bar } from './bar';
 import { geoshape } from './geoshape';
@@ -73,9 +73,10 @@ function parsePathMark(model) {
     }
 }
 export function getSort(model) {
-    const { encoding, stack, mark, markDef } = model;
+    const { encoding, stack, mark, markDef, config } = model;
     const order = encoding.order;
-    if (!isArray(order) && isValueDef(order)) {
+    if ((!isArray(order) && isValueDef(order) && isNullOrFalse(order.value)) ||
+        ((!order && isNullOrFalse(markDef.order)) || isNullOrFalse(getMarkConfig('order', markDef, config)))) {
         return undefined;
     }
     else if ((isArray(order) || isFieldDef(order)) && !stack) {

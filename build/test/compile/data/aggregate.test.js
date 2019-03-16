@@ -2,7 +2,7 @@ import { AggregateNode } from '../../../src/compile/data/aggregate';
 import { internalField } from '../../../src/util';
 import { parseUnitModel } from '../../util';
 import { DataFlowNode } from './../../../src/compile/data/dataflow';
-describe('compile/data/summary', () => {
+describe('compile/data/aggregate', () => {
     describe('clone', () => {
         it('should have correct type', () => {
             const agg = new AggregateNode(null, new Set(), {});
@@ -68,6 +68,29 @@ describe('compile/data/summary', () => {
                 ops: ['sum', 'count'],
                 fields: ['Acceleration', null],
                 as: ['sum_Acceleration', internalField('count')]
+            });
+        });
+        it('should produce the correct aggregate component for maps', () => {
+            const model = parseUnitModel({
+                mark: 'rule',
+                encoding: {
+                    latitude: { field: 'latitude', type: 'quantitative' },
+                    longitude: { field: 'longitude', type: 'quantitative' },
+                    latitude2: { field: 'latitude2', type: 'quantitative' },
+                    longitude2: { field: 'longitude2', type: 'quantitative' },
+                    color: {
+                        aggregate: 'count',
+                        type: 'quantitative'
+                    }
+                }
+            });
+            const agg = AggregateNode.makeFromEncoding(null, model);
+            expect(agg.assemble()).toEqual({
+                type: 'aggregate',
+                groupby: ['y', 'x', 'y2', 'x2'],
+                ops: ['count'],
+                fields: [null],
+                as: [internalField('count')]
             });
         });
         it('should produce the correct summary component for aggregated plot with detail arrays', () => {

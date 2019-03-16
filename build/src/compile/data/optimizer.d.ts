@@ -21,6 +21,10 @@ export declare abstract class BottomUpOptimizer extends OptimizerBase {
     readonly continueFlag: boolean;
     flags: OptimizerFlags;
     abstract run(node: DataFlowNode): OptimizerFlags;
+    /**
+     * Reset the state of the optimizer after it has completed a run from the bottom of the tree to the top.
+     */
+    reset(): void;
     optimizeNextFromLeaves(node: DataFlowNode): boolean;
 }
 /**

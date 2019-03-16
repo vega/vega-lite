@@ -60,6 +60,8 @@ export declare const TOOLTIP: "tooltip";
 export declare const HREF: "href";
 export declare type PositionChannel = 'x' | 'y' | 'x2' | 'y2';
 export declare type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
+export declare function isGeoPositionChannel(c: Channel): c is GeoPositionChannel;
+export declare function getPositionChannelFromLatLong(channel: GeoPositionChannel): PositionChannel;
 export declare const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel>;
 export declare const GEOPOSITION_CHANNELS: ("longitude" | "latitude" | "longitude2" | "latitude2")[];
 export declare type ColorChannel = 'color' | 'fill' | 'stroke';
@@ -76,8 +78,10 @@ export declare const CHANNELS: Channel[];
  * are not applicable for them.  Similarly, selection projection won't work with "detail" and "order".)
  */
 export declare const SINGLE_DEF_CHANNELS: SingleDefChannel[];
+export declare const SINGLE_DEF_UNIT_CHANNELS: SingleDefUnitChannel[];
 export declare type SingleDefUnitChannel = 'x' | 'y' | 'x2' | 'y2' | 'longitude' | 'latitude' | 'longitude2' | 'latitude2' | 'color' | 'fill' | 'stroke' | 'strokeWidth' | 'size' | 'shape' | 'fillOpacity' | 'strokeOpacity' | 'opacity' | 'text' | 'tooltip' | 'href' | 'key';
 export declare type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column' | 'facet';
+export declare function isSingleDefUnitChannel(str: string): str is SingleDefUnitChannel;
 export declare function isChannel(str: string): str is Channel;
 export declare function isSecondaryRangeChannel(c: Channel): c is 'x2' | 'y2' | 'latitude2' | 'longitude2';
 export declare function getMainRangeChannel(channel: Channel): Channel;

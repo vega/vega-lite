@@ -83,10 +83,10 @@ export class CoreNormalizer extends SpecMapper {
         if (facet && (row || column)) {
             log.warn(log.message.facetChannelDropped([...(row ? [ROW] : []), ...(column ? [COLUMN] : [])]));
         }
-        return Object.assign({}, outerSpec, { 
+        return this.mapFacet(Object.assign({}, outerSpec, { 
             // row / column has higher precedence than facet
             facet: row || column
-                ? Object.assign({}, (row ? { row } : {}), (column ? { column } : {})) : facet, spec: this.mapUnit(Object.assign({}, (projection ? { projection } : {}), { mark }, (width ? { width } : {}), (height ? { height } : {}), { encoding }, (selection ? { selection } : {})), params) });
+                ? Object.assign({}, (row ? { row } : {}), (column ? { column } : {})) : facet, spec: Object.assign({}, (projection ? { projection } : {}), { mark }, (width ? { width } : {}), (height ? { height } : {}), { encoding }, (selection ? { selection } : {})) }), params);
     }
     mapLayer(spec, _a) {
         // Special handling for extended layer spec

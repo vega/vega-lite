@@ -5,13 +5,13 @@ for (const type of selectionTypes) {
     const isInterval = type === 'interval';
     const hits = isInterval ? hitsMaster.interval : hitsMaster.discrete;
     const fn = isInterval ? brush : pt;
-    describe(`${type} selections at runtime`, () => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    describe(`${type} selections at runtime`, () => {
         beforeAll(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
             yield page.goto('http://0.0.0.0:8000/test-runtime/');
         }));
         compositeTypes.forEach(specType => {
             const testRender = testRenderFn(page, `${type}/${specType}`);
-            describe(`in ${specType} views`, () => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            describe(`in ${specType} views`, () => {
                 /**
                  * Loop through the views, click to add a selection instance.
                  * Store size should stay constant, but unit names should vary.
@@ -65,8 +65,8 @@ for (const type of selectionTypes) {
                         }
                     }));
                 }
-            }));
+            });
         });
-    }));
+    });
 }
 //# sourceMappingURL=resolve.test.js.map

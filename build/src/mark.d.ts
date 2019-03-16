@@ -75,6 +75,10 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
      * @minimum 0
      */
     size?: number;
+    /**
+     * For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.
+     */
+    order?: null | boolean;
 }
 export interface BarBinSpacingMixins {
     /**

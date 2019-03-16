@@ -25,6 +25,7 @@ export declare class LocalLogger implements LoggerInterface {
     warn(...args: any[]): this;
     info(...args: any[]): this;
     debug(...args: any[]): this;
+    error(...args: any[]): this;
 }
 export declare function wrap(f: (logger: LocalLogger) => void): () => void;
 /**
@@ -55,7 +56,6 @@ export declare namespace message {
     function columnsNotSupportByRowCol(type: 'facet' | 'repeat'): string;
     const CONCAT_CANNOT_SHARE_AXIS = "Axes cannot be shared in concatenated views yet (https://github.com/vega/vega-lite/issues/2415).";
     const REPEAT_CANNOT_SHARE_AXIS = "Axes cannot be shared in repeated views yet (https://github.com/vega/vega-lite/issues/2415).";
-    function cannotSetTitleAnchor(type: string): string;
     function unrecognizedParse(p: string): string;
     function differentParse(field: string, local: string, ancestor: string): string;
     function invalidTransformIgnored(transform: any): string;

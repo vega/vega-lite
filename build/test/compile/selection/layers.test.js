@@ -1,5 +1,5 @@
 /* tslint:disable quotemark */
-import * as selection from '../../../src/compile/selection/selection';
+import * as selection from '../../../src/compile/selection';
 import { parseLayerModel } from '../../util';
 describe('Layered Selections', () => {
     const layers = parseLayerModel({

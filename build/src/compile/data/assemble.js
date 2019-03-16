@@ -171,8 +171,8 @@ export function assembleFacetData(root) {
  */
 export function assembleRootData(dataComponent, datasets) {
     const data = [];
-    // roots.forEach(debug);
-    // draw(roots);
+    // dataComponent.sources.forEach(debug);
+    // draw(dataComponent.sources);
     const walkTree = makeWalkTree(data);
     let sourceIndex = 0;
     dataComponent.sources.forEach(root => {

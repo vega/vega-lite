@@ -172,14 +172,15 @@ export function setTitleFormatter(formatter) {
 export function resetTitleFormatter() {
     setTitleFormatter(defaultTitleFormatter);
 }
-export function title(fieldDef, config, { allowDisabling }) {
+export function title(fieldDef, config, { allowDisabling, includeDefault = true }) {
     const guide = getGuide(fieldDef) || {};
     const guideTitle = guide.title;
+    const def = includeDefault ? defaultTitle(fieldDef, config) : undefined;
     if (allowDisabling) {
-        return getFirstDefined(guideTitle, fieldDef.title, defaultTitle(fieldDef, config));
+        return getFirstDefined(guideTitle, fieldDef.title, def);
     }
     else {
-        return guideTitle || fieldDef.title || defaultTitle(fieldDef, config);
+        return guideTitle || fieldDef.title || def;
     }
 }
 export function getGuide(fieldDef) {

@@ -1,5 +1,5 @@
+import { TUPLE, unitName } from '.';
 import { singleOrMultiSignals } from './multi';
-import { TUPLE, unitName } from './selection';
 const single = {
     signals: singleOrMultiSignals,
     modifyExpr: (model, selCmpt) => {

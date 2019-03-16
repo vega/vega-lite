@@ -1,10 +1,11 @@
 import { stringValue } from 'vega-util';
+import { STORE, TUPLE, unitName } from '.';
 import { accessPathWithDatum } from '../../util';
-import { assembleInit, STORE, TUPLE, unitName } from './selection';
+import { assembleInit } from './assemble';
 import { TUPLE_FIELDS } from './transforms/project';
 export function singleOrMultiSignals(model, selCmpt) {
     const name = selCmpt.name;
-    const fieldsSg = name + TUPLE + TUPLE_FIELDS;
+    const fieldsSg = name + TUPLE_FIELDS;
     const proj = selCmpt.project;
     const datum = '(item().isVoronoi ? datum.datum : datum)';
     const values = proj

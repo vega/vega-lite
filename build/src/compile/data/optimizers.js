@@ -1,8 +1,10 @@
 import { MAIN } from '../../data';
 import { fieldIntersection, flatten, hash, hasIntersection, keys } from '../../util';
 import { AggregateNode } from './aggregate';
+import { BinNode } from './bin';
 import { OutputNode } from './dataflow';
 import { FacetNode } from './facet';
+import { FilterNode } from './filter';
 import { ParseNode } from './formatparse';
 import { JoinAggregateTransformNode } from './joinaggregate';
 import { FACET_SCALE_PREFIX } from './optimize';
@@ -143,6 +145,9 @@ export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
             }
         }
         return this.flags;
+    }
+    reset() {
+        this.fields.clear();
     }
 }
 /**
@@ -300,6 +305,53 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
                     }
                 }
             }
+        }
+        this.setContinue();
+        return this.flags;
+    }
+}
+/**
+ * Merge bin nodes and move bin nodes up through forks but stop at filters and parse as we want them to stay before the bin node.
+ */
+export class MergeBins extends BottomUpOptimizer {
+    constructor(model) {
+        super();
+        this.model = model;
+    }
+    run(node) {
+        const parent = node.parent;
+        const moveBinsUp = !(parent instanceof SourceNode || parent instanceof FilterNode || parent instanceof ParseNode);
+        const promotableBins = [];
+        const remainingBins = [];
+        for (const child of parent.children) {
+            if (child instanceof BinNode) {
+                if (moveBinsUp && !fieldIntersection(parent.producedFields(), child.dependentFields())) {
+                    promotableBins.push(child);
+                }
+                else {
+                    remainingBins.push(child);
+                }
+            }
+        }
+        if (promotableBins.length > 0) {
+            const promotedBin = promotableBins.pop();
+            for (const bin of promotableBins) {
+                promotedBin.merge(bin, this.model);
+            }
+            this.setMutated();
+            if (parent instanceof BinNode) {
+                parent.merge(promotedBin, this.model);
+            }
+            else {
+                promotedBin.swapWithParent();
+            }
+        }
+        if (remainingBins.length > 1) {
+            const remainingBin = remainingBins.pop();
+            for (const bin of remainingBins) {
+                remainingBin.merge(bin, this.model);
+            }
+            this.setMutated();
         }
         this.setContinue();
         return this.flags;

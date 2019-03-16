@@ -1,5 +1,6 @@
+import { TUPLE } from '..';
 import { accessPathWithDatum, varName } from '../../../util';
-import { assembleInit, TUPLE } from '../selection';
+import { assembleInit } from '../assemble';
 import nearest from './nearest';
 import { TUPLE_FIELDS } from './project';
 const inputBindings = {
@@ -30,7 +31,7 @@ const inputBindings = {
         const name = selCmpt.name;
         const proj = selCmpt.project;
         const signal = signals.filter(s => s.name === name + TUPLE)[0];
-        const fields = name + TUPLE + TUPLE_FIELDS;
+        const fields = name + TUPLE_FIELDS;
         const values = proj.map(p => varName(`${name}_${p.field}`));
         const valid = values.map(v => `${v} !== null`).join(' && ');
         if (values.length) {

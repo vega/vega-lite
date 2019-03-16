@@ -1,13 +1,13 @@
 import * as log from '../../../log';
 import { isPathMark } from '../../../mark';
-import { positionalProjections } from '../selection';
+import { tooltip } from '../../mark/mixins';
 const VORONOI = 'voronoi';
 const nearest = {
     has: selCmpt => {
         return selCmpt.type !== 'interval' && selCmpt.nearest;
     },
     marks: (model, selCmpt, marks) => {
-        const { x, y } = positionalProjections(selCmpt);
+        const { x, y } = selCmpt.project.has;
         const markType = model.mark;
         if (isPathMark(markType)) {
             log.warn(log.message.nearestNotSupportForContinuous(markType));
@@ -18,12 +18,7 @@ const nearest = {
             type: 'path',
             from: { data: model.getName('marks') },
             encode: {
-                update: {
-                    fill: { value: 'transparent' },
-                    strokeWidth: { value: 0.35 },
-                    stroke: { value: 'transparent' },
-                    isVoronoi: { value: true }
-                }
+                update: Object.assign({ fill: { value: 'transparent' }, strokeWidth: { value: 0.35 }, stroke: { value: 'transparent' }, isVoronoi: { value: true } }, tooltip(model, { reactiveGeom: true }))
             },
             transform: [
                 {

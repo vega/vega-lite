@@ -1,16 +1,20 @@
 import { isBinning } from '../../bin';
-import { isScaleChannel } from '../../channel';
+import { getPositionChannelFromLatLong, isGeoPositionChannel, isScaleChannel } from '../../channel';
 import { binRequiresRange, isTypedFieldDef, vgField } from '../../fielddef';
 import * as log from '../../log';
 import { duplicate, hash, keys, replacePathInField, setEqual } from '../../util';
 import { DataFlowNode } from './dataflow';
-function addDimension(dims, channel, fieldDef) {
+function addDimension(dims, channel, fieldDef, model) {
     if (isTypedFieldDef(fieldDef) && isBinning(fieldDef.bin)) {
         dims.add(vgField(fieldDef, {}));
         dims.add(vgField(fieldDef, { binSuffix: 'end' }));
         if (binRequiresRange(fieldDef, channel)) {
             dims.add(vgField(fieldDef, { binSuffix: 'range' }));
         }
+    }
+    else if (isGeoPositionChannel(channel)) {
+        const posChannel = getPositionChannelFromLatLong(channel);
+        dims.add(model.getName(posChannel));
     }
     else {
         dims.add(vgField(fieldDef));
@@ -79,7 +83,7 @@ export class AggregateNode extends DataFlowNode {
                 }
             }
             else {
-                addDimension(dims, channel, fieldDef);
+                addDimension(dims, channel, fieldDef, model);
             }
         });
         if (dims.size + keys(meas).length === 0) {

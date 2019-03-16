@@ -331,7 +331,9 @@ export declare function nonPosition(channel: NonPositionScaleChannel, model: Uni
  * or a simple mixin if channel def has no condition.
  */
 export declare function wrapCondition(model: UnitModel, channelDef: ChannelDef, vgChannel: string, refFn: (cDef: ChannelDef) => VgValueRef): VgEncodeEntry;
-export declare function tooltip(model: UnitModel): VgEncodeEntry | {
+export declare function tooltip(model: UnitModel, opt?: {
+    reactiveGeom?: boolean;
+}): VgEncodeEntry | {
     tooltip: {
         signal: string;
     };
@@ -492,7 +494,7 @@ export declare function bandPosition(fieldDef: TypedFieldDef<string>, channel: '
         test?: string;
     })[];
 };
-export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitModel, defaultPosRef: VgValueRef, defaultSizeRef: VgValueRef): {
+export declare function centeredPointPositionWithSize(channel: 'x' | 'y', model: UnitModel, defaultPosRef: VgValueRef, defaultSizeRef: VgValueRef): {
     dir?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];

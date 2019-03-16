@@ -16,7 +16,7 @@ export declare function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark:
     skipGeneralMarkConfig?: boolean;
 }): MarkConfig[P];
 export declare function getStyleConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, styleConfigIndex: StyleConfigIndex): any;
-export declare function formatSignalRef(fieldDef: TypedFieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config): {
+export declare function formatSignalRef(fieldDef: TypedFieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent' | 'datum.datum', config: Config): {
     signal: string;
 };
 /**

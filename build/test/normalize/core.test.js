@@ -176,11 +176,11 @@ describe('normalize()', () => {
                                     groupby: ['age']
                                 },
                                 {
-                                    calculate: 'datum.center_people + datum.extent_people',
+                                    calculate: 'datum["center_people"] + datum["extent_people"]',
                                     as: 'upper_people'
                                 },
                                 {
-                                    calculate: 'datum.center_people - datum.extent_people',
+                                    calculate: 'datum["center_people"] - datum["extent_people"]',
                                     as: 'lower_people'
                                 }
                             ],

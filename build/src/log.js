@@ -32,6 +32,10 @@ export class LocalLogger {
         this.debugs.push(...args);
         return this;
     }
+    error(...args) {
+        throw Error(...args);
+        return this; // @ts-ignore
+    }
 }
 export function wrap(f) {
     return () => {
@@ -104,11 +108,6 @@ export var message;
     message.CONCAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in concatenated views yet (https://github.com/vega/vega-lite/issues/2415).';
     // REPEAT
     message.REPEAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in repeated views yet (https://github.com/vega/vega-lite/issues/2415).';
-    // TITLE
-    function cannotSetTitleAnchor(type) {
-        return `Cannot set title "anchor" for a ${type} spec`;
-    }
-    message.cannotSetTitleAnchor = cannotSetTitleAnchor;
     // DATA
     function unrecognizedParse(p) {
         return `Unrecognized parse "${p}".`;

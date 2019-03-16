@@ -1,4 +1,4 @@
-import { isArray } from 'vega';
+import { isArray } from 'vega-util';
 import { some } from '../../util';
 import { Split } from '../split';
 export class ScaleComponent extends Split {

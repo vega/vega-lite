@@ -75,8 +75,23 @@ export class BinNode extends DataFlowNode {
             [key]: binComponent
         });
     }
-    merge(other) {
-        this.bins = Object.assign({}, this.bins, other.bins);
+    /**
+     * Merge bin nodes. This method either integrates the bin config from the other node
+     * or if this node already has a bin config, renames the corresponding signal in the model.
+     */
+    merge(other, model) {
+        for (const key of keys(other.bins)) {
+            if (key in this.bins) {
+                model.renameSignal(other.bins[key].signal, this.bins[key].signal);
+            }
+            else {
+                this.bins[key] = other.bins[key];
+            }
+        }
+        for (const child of other.children) {
+            other.removeChild(child);
+            child.parent = this;
+        }
         other.remove();
     }
     producedFields() {

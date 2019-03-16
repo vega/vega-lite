@@ -2,7 +2,8 @@ import * as tslib_1 from "tslib";
 import { keys } from '../../util';
 import { isVgRangeStep } from '../../vega.schema';
 import { isConcatModel, isLayerModel, isRepeatModel } from '../model';
-import { isRawSelectionDomain, selectionScaleDomain } from '../selection/selection';
+import { isRawSelectionDomain } from '../selection';
+import { assembleSelectionScaleDomain } from '../selection/assemble';
 import { assembleDomain } from './domain';
 export function assembleScales(model) {
     if (isLayerModel(model) || isConcatModel(model) || isRepeatModel(model)) {
@@ -34,7 +35,7 @@ export function assembleScalesForModel(model) {
         // is set, and replace it with the correct domainRaw signal.
         // For more information, see isRawSelectionDomain in selection.ts.
         if (domainRaw && isRawSelectionDomain(domainRaw)) {
-            domainRaw = selectionScaleDomain(model, domainRaw);
+            domainRaw = assembleSelectionScaleDomain(model, domainRaw);
         }
         const domain = assembleDomain(model, channel);
         scales.push(Object.assign({ name,

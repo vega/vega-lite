@@ -88,5 +88,15 @@ describe('compile/legend', () => {
             expect(overlap).toEqual('greedy');
         });
     });
+    describe('defaultSymbolType()', () => {
+        it('return stroke for line', () => {
+            const overlap = properties.defaultSymbolType('line');
+            expect(overlap).toEqual('stroke');
+        });
+        it('return undefined otherwise', () => {
+            const overlap = properties.defaultSymbolType('circle');
+            expect(overlap).toEqual('circle');
+        });
+    });
 });
 //# sourceMappingURL=properties.test.js.map

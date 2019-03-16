@@ -23,7 +23,11 @@ export declare class BinNode extends DataFlowNode {
      * The optional parameter should provide
      */
     static makeFromTransform(parent: DataFlowNode, t: BinTransform, model: Model): BinNode;
-    merge(other: BinNode): void;
+    /**
+     * Merge bin nodes. This method either integrates the bin config from the other node
+     * or if this node already has a bin config, renames the corresponding signal in the model.
+     */
+    merge(other: BinNode, model: Model): void;
     producedFields(): Set<string>;
     dependentFields(): Set<string>;
     hash(): string;

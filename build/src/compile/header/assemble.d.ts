@@ -4,9 +4,9 @@
 import { TitleAnchor, TitleConfig } from 'vega';
 import { FacetChannel } from '../../channel';
 import { Config } from '../../config';
-import { HeaderConfig } from '../../header';
+import { CoreHeader } from '../../header';
 import { FacetFieldDef } from '../../spec/facet';
-import { RowCol, VgComparator, VgMarkGroup } from '../../vega.schema';
+import { RowCol, VgComparator, VgMarkGroup, VgTitle } from '../../vega.schema';
 import { Model } from '../model';
 import { HeaderChannel, HeaderComponent, HeaderType, LayoutHeaderComponent, LayoutHeaderComponentIndex } from './component';
 export declare function assembleTitleGroup(model: Model, channel: FacetChannel): {
@@ -14,153 +14,642 @@ export declare function assembleTitleGroup(model: Model, channel: FacetChannel):
     type: string;
     role: string;
     title: {
-        align: string;
-        style: string;
-        orient: string;
-        text: string;
-        offset: number;
+        text: string | import("vega").SignalRef;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame?: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
     } | {
-        align?: undefined;
-        style: string;
-        orient: string;
-        text: string;
-        offset: number;
+        text: string | import("vega").SignalRef;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame?: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
     } | {
-        align: string;
-        style: string;
-        text: string;
-        offset: number;
+        text: string | import("vega").SignalRef;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame?: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
     } | {
-        align?: undefined;
-        style: string;
-        text: string;
-        offset: number;
+        text: string | import("vega").SignalRef;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame?: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame?: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame?: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame?: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame?: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
     };
 };
-export declare function titleAlign(titleAnchor: TitleAnchor): {
+export declare function defaultHeaderGuideAlign(headerChannel: HeaderChannel, angle: number, anchor?: TitleAnchor): {
     align: string;
 } | {
     align?: undefined;
 };
+export declare function defaultHeaderGuideBaseline(angle: number, channel: FacetChannel): {
+    baseline: string;
+} | {
+    baseline?: undefined;
+};
 export declare function assembleHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGroup[];
-export declare function labelAlign(angle: number): {
-    align?: undefined;
-} | {
-    align: {
-        value: string;
-    };
-};
-export declare function labelBaseline(angle: number): {
-    baseline: string;
-};
 export declare function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel: FacetChannel, config: Config): {
-    encode: {
-        update: {
-            align?: undefined;
-        } | {
-            align: {
-                value: string;
-            };
-        };
-    };
-    baseline: string;
-    angle: number;
-    style: string;
-    frame: string;
-    orient: string;
-    text: {
+    text: string | import("vega").SignalRef | {
         signal: string;
     };
-    offset: number;
+    name?: string;
+    interactive?: boolean;
+    style: string | string[];
+    zindex?: number;
+    encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+    anchor?: import("vega").AnchorValue;
+    frame: import("vega").StringValue;
+    offset?: import("vega").NumberValue;
+    align: string | import("vega").SignalRef | {
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        value: string | number | boolean;
+    } | {
+        scale: import("vega").Field;
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        band: number | boolean;
+    } | {
+        scale: import("vega").Field;
+        range: number | boolean;
+    } | {
+        value: import("vega").Align;
+    };
+    angle?: import("vega").NumberValue;
+    baseline: string | import("vega").SignalRef | {
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        value: string | number | boolean;
+    } | {
+        scale: import("vega").Field;
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        band: number | boolean;
+    } | {
+        scale: import("vega").Field;
+        range: number | boolean;
+    } | {
+        value: import("vega").TextBaseline;
+    };
+    color?: import("vega").ColorValue;
+    dx?: import("vega").NumberValue;
+    dy?: import("vega").NumberValue;
+    font?: import("vega").StringValue;
+    fontSize?: import("vega").NumberValue;
+    fontStyle?: import("vega").StringValue;
+    fontWeight?: import("vega").FontWeightValue;
+    limit?: import("vega").NumberValue;
+    orient: string | import("vega").SignalRef;
 } | {
-    baseline: string;
-    angle: number;
-    style: string;
-    frame: string;
-    orient: string;
-    text: {
+    text: string | import("vega").SignalRef | {
         signal: string;
     };
-    offset: number;
+    name?: string;
+    interactive?: boolean;
+    style: string | string[];
+    zindex?: number;
+    encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+    anchor?: import("vega").AnchorValue;
+    frame: import("vega").StringValue;
+    offset?: import("vega").NumberValue;
+    align?: import("vega").AlignValue;
+    angle?: import("vega").NumberValue;
+    baseline: string | import("vega").SignalRef | {
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        value: string | number | boolean;
+    } | {
+        scale: import("vega").Field;
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        band: number | boolean;
+    } | {
+        scale: import("vega").Field;
+        range: number | boolean;
+    } | {
+        value: import("vega").TextBaseline;
+    };
+    color?: import("vega").ColorValue;
+    dx?: import("vega").NumberValue;
+    dy?: import("vega").NumberValue;
+    font?: import("vega").StringValue;
+    fontSize?: import("vega").NumberValue;
+    fontStyle?: import("vega").StringValue;
+    fontWeight?: import("vega").FontWeightValue;
+    limit?: import("vega").NumberValue;
+    orient: string | import("vega").SignalRef;
 } | {
-    encode: {
-        update: {
-            align?: undefined;
-        } | {
-            align: {
-                value: string;
-            };
-        };
-    };
-    baseline: string;
-    style: string;
-    frame: string;
-    orient: string;
-    text: {
+    text: string | import("vega").SignalRef | {
         signal: string;
     };
-    offset: number;
+    name?: string;
+    interactive?: boolean;
+    style: string | string[];
+    zindex?: number;
+    encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+    anchor?: import("vega").AnchorValue;
+    frame: import("vega").StringValue;
+    offset?: import("vega").NumberValue;
+    align: string | import("vega").SignalRef | {
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        value: string | number | boolean;
+    } | {
+        scale: import("vega").Field;
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        band: number | boolean;
+    } | {
+        scale: import("vega").Field;
+        range: number | boolean;
+    } | {
+        value: import("vega").Align;
+    };
+    angle?: import("vega").NumberValue;
+    baseline?: import("vega").TextBaselineValue;
+    color?: import("vega").ColorValue;
+    dx?: import("vega").NumberValue;
+    dy?: import("vega").NumberValue;
+    font?: import("vega").StringValue;
+    fontSize?: import("vega").NumberValue;
+    fontStyle?: import("vega").StringValue;
+    fontWeight?: import("vega").FontWeightValue;
+    limit?: import("vega").NumberValue;
+    orient: string | import("vega").SignalRef;
 } | {
-    baseline: string;
-    style: string;
-    frame: string;
-    orient: string;
-    text: {
+    text: string | import("vega").SignalRef | {
         signal: string;
     };
-    offset: number;
+    name?: string;
+    interactive?: boolean;
+    style: string | string[];
+    zindex?: number;
+    encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+    anchor?: import("vega").AnchorValue;
+    frame: import("vega").StringValue;
+    offset?: import("vega").NumberValue;
+    align?: import("vega").AlignValue;
+    angle?: import("vega").NumberValue;
+    baseline?: import("vega").TextBaselineValue;
+    color?: import("vega").ColorValue;
+    dx?: import("vega").NumberValue;
+    dy?: import("vega").NumberValue;
+    font?: import("vega").StringValue;
+    fontSize?: import("vega").NumberValue;
+    fontStyle?: import("vega").StringValue;
+    fontWeight?: import("vega").FontWeightValue;
+    limit?: import("vega").NumberValue;
+    orient: string | import("vega").SignalRef;
 } | {
-    encode: {
-        update: {
-            align?: undefined;
-        } | {
-            align: {
-                value: string;
-            };
-        };
-    };
-    baseline: string;
-    angle: number;
-    style: string;
-    frame: string;
-    text: {
+    text: string | import("vega").SignalRef | {
         signal: string;
     };
-    offset: number;
+    name?: string;
+    interactive?: boolean;
+    style: string | string[];
+    zindex?: number;
+    encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+    anchor?: import("vega").AnchorValue;
+    frame: import("vega").StringValue;
+    offset?: import("vega").NumberValue;
+    align: string | import("vega").SignalRef | {
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        value: string | number | boolean;
+    } | {
+        scale: import("vega").Field;
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        band: number | boolean;
+    } | {
+        scale: import("vega").Field;
+        range: number | boolean;
+    } | {
+        value: import("vega").Align;
+    };
+    angle?: import("vega").NumberValue;
+    baseline: string | import("vega").SignalRef | {
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        value: string | number | boolean;
+    } | {
+        scale: import("vega").Field;
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        band: number | boolean;
+    } | {
+        scale: import("vega").Field;
+        range: number | boolean;
+    } | {
+        value: import("vega").TextBaseline;
+    };
+    color?: import("vega").ColorValue;
+    dx?: import("vega").NumberValue;
+    dy?: import("vega").NumberValue;
+    font?: import("vega").StringValue;
+    fontSize?: import("vega").NumberValue;
+    fontStyle?: import("vega").StringValue;
+    fontWeight?: import("vega").FontWeightValue;
+    limit?: import("vega").NumberValue;
+    orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
 } | {
-    baseline: string;
-    angle: number;
-    style: string;
-    frame: string;
-    text: {
+    text: string | import("vega").SignalRef | {
         signal: string;
     };
-    offset: number;
+    name?: string;
+    interactive?: boolean;
+    style: string | string[];
+    zindex?: number;
+    encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+    anchor?: import("vega").AnchorValue;
+    frame: import("vega").StringValue;
+    offset?: import("vega").NumberValue;
+    align?: import("vega").AlignValue;
+    angle?: import("vega").NumberValue;
+    baseline: string | import("vega").SignalRef | {
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        value: string | number | boolean;
+    } | {
+        scale: import("vega").Field;
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        band: number | boolean;
+    } | {
+        scale: import("vega").Field;
+        range: number | boolean;
+    } | {
+        value: import("vega").TextBaseline;
+    };
+    color?: import("vega").ColorValue;
+    dx?: import("vega").NumberValue;
+    dy?: import("vega").NumberValue;
+    font?: import("vega").StringValue;
+    fontSize?: import("vega").NumberValue;
+    fontStyle?: import("vega").StringValue;
+    fontWeight?: import("vega").FontWeightValue;
+    limit?: import("vega").NumberValue;
+    orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
 } | {
-    encode: {
-        update: {
-            align?: undefined;
-        } | {
-            align: {
-                value: string;
-            };
-        };
-    };
-    baseline: string;
-    style: string;
-    frame: string;
-    text: {
+    text: string | import("vega").SignalRef | {
         signal: string;
     };
-    offset: number;
+    name?: string;
+    interactive?: boolean;
+    style: string | string[];
+    zindex?: number;
+    encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+    anchor?: import("vega").AnchorValue;
+    frame: import("vega").StringValue;
+    offset?: import("vega").NumberValue;
+    align: string | import("vega").SignalRef | {
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        value: string | number | boolean;
+    } | {
+        scale: import("vega").Field;
+        field: import("vega").Field;
+    } | {
+        scale: import("vega").Field;
+        band: number | boolean;
+    } | {
+        scale: import("vega").Field;
+        range: number | boolean;
+    } | {
+        value: import("vega").Align;
+    };
+    angle?: import("vega").NumberValue;
+    baseline?: import("vega").TextBaselineValue;
+    color?: import("vega").ColorValue;
+    dx?: import("vega").NumberValue;
+    dy?: import("vega").NumberValue;
+    font?: import("vega").StringValue;
+    fontSize?: import("vega").NumberValue;
+    fontStyle?: import("vega").StringValue;
+    fontWeight?: import("vega").FontWeightValue;
+    limit?: import("vega").NumberValue;
+    orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
 } | {
-    baseline: string;
-    style: string;
-    frame: string;
-    text: {
+    text: string | import("vega").SignalRef | {
         signal: string;
     };
-    offset: number;
+    name?: string;
+    interactive?: boolean;
+    style: string | string[];
+    zindex?: number;
+    encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+    anchor?: import("vega").AnchorValue;
+    frame: import("vega").StringValue;
+    offset?: import("vega").NumberValue;
+    align?: import("vega").AlignValue;
+    angle?: import("vega").NumberValue;
+    baseline?: import("vega").TextBaselineValue;
+    color?: import("vega").ColorValue;
+    dx?: import("vega").NumberValue;
+    dy?: import("vega").NumberValue;
+    font?: import("vega").StringValue;
+    fontSize?: import("vega").NumberValue;
+    fontStyle?: import("vega").StringValue;
+    fontWeight?: import("vega").FontWeightValue;
+    limit?: import("vega").NumberValue;
+    orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
 };
 export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, headerCmpt: HeaderComponent): {
     axes: import("vega").Axis[];
@@ -172,13 +661,325 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         };
     };
     title: {
-        baseline: string;
-        style: string;
-        frame: string;
-        text: {
+        text: string | import("vega").SignalRef | {
             signal: string;
         };
-        offset: number;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
     };
     from: {
         data: string;
@@ -196,13 +997,325 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         };
     };
     title: {
-        baseline: string;
-        style: string;
-        frame: string;
-        text: {
+        text: string | import("vega").SignalRef | {
             signal: string;
         };
-        offset: number;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
     };
     from: {
         data: string;
@@ -214,13 +1327,325 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
 } | {
     axes: import("vega").Axis[];
     title: {
-        baseline: string;
-        style: string;
-        frame: string;
-        text: {
+        text: string | import("vega").SignalRef | {
             signal: string;
         };
-        offset: number;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
     };
     from: {
         data: string;
@@ -231,13 +1656,325 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
     role: string;
 } | {
     title: {
-        baseline: string;
-        style: string;
-        frame: string;
-        text: {
+        text: string | import("vega").SignalRef | {
             signal: string;
         };
-        offset: number;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
     };
     from: {
         data: string;
@@ -304,13 +2041,325 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         };
     };
     title: {
-        baseline: string;
-        style: string;
-        frame: string;
-        text: {
+        text: string | import("vega").SignalRef | {
             signal: string;
         };
-        offset: number;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
     };
     from: {
         data: string;
@@ -327,13 +2376,325 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         };
     };
     title: {
-        baseline: string;
-        style: string;
-        frame: string;
-        text: {
+        text: string | import("vega").SignalRef | {
             signal: string;
         };
-        offset: number;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
     };
     from: {
         data: string;
@@ -344,13 +2705,325 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
 } | {
     axes: import("vega").Axis[];
     title: {
-        baseline: string;
-        style: string;
-        frame: string;
-        text: {
+        text: string | import("vega").SignalRef | {
             signal: string;
         };
-        offset: number;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
     };
     from: {
         data: string;
@@ -360,13 +3033,325 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
     role: string;
 } | {
     title: {
-        baseline: string;
-        style: string;
-        frame: string;
-        text: {
+        text: string | import("vega").SignalRef | {
             signal: string;
         };
-        offset: number;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
     };
     from: {
         data: string;
@@ -428,13 +3413,325 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         };
     };
     title: {
-        baseline: string;
-        style: string;
-        frame: string;
-        text: {
+        text: string | import("vega").SignalRef | {
             signal: string;
         };
-        offset: number;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
     };
     name: string;
     type: string;
@@ -448,13 +3745,325 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         };
     };
     title: {
-        baseline: string;
-        style: string;
-        frame: string;
-        text: {
+        text: string | import("vega").SignalRef | {
             signal: string;
         };
-        offset: number;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
     };
     name: string;
     type: string;
@@ -462,26 +4071,650 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
 } | {
     axes: import("vega").Axis[];
     title: {
-        baseline: string;
-        style: string;
-        frame: string;
-        text: {
+        text: string | import("vega").SignalRef | {
             signal: string;
         };
-        offset: number;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
     };
     name: string;
     type: string;
     role: string;
 } | {
     title: {
-        baseline: string;
-        style: string;
-        frame: string;
-        text: {
+        text: string | import("vega").SignalRef | {
             signal: string;
         };
-        offset: number;
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
     };
     name: string;
     type: string;
@@ -519,8 +4752,8 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
     type: string;
     role: string;
 };
-export declare function getLayoutTitleBand(titleAnchor: TitleAnchor): 1 | 0;
-export declare function assembleLayoutTitleBand(headerComponentIndex: LayoutHeaderComponentIndex): RowCol<number>;
-export declare function getHeaderProperties(config: Config, facetFieldDef: FacetFieldDef<string>, properties: (keyof HeaderConfig)[], propertiesMap: {
-    [k in keyof HeaderConfig]: keyof TitleConfig;
-}): {};
+export declare function getLayoutTitleBand(titleAnchor: TitleAnchor, headerChannel: HeaderChannel): any;
+export declare function assembleLayoutTitleBand(headerComponentIndex: LayoutHeaderComponentIndex, config: Config): RowCol<number>;
+export declare function assembleHeaderProperties(config: Config, facetFieldDef: FacetFieldDef<string>, channel: FacetChannel, properties: (keyof CoreHeader)[], propertiesMap: {
+    [k in keyof CoreHeader]: keyof TitleConfig;
+}): Partial<VgTitle>;

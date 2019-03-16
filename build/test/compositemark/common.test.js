@@ -2,6 +2,7 @@
 import { isMarkDef } from '../../src/mark';
 import { normalize } from '../../src/normalize/index';
 import { isLayerSpec, isUnitSpec } from '../../src/spec';
+import { isCalculate } from '../../src/transform';
 import { defaultConfig } from '.././../src/config';
 describe('common feature of composite marks', () => {
     it('should clip all the part when clip property in composite mark def is true', () => {
@@ -17,6 +18,19 @@ describe('common feature of composite marks', () => {
             expect(markDef).toBeTruthy();
             expect(markDef.clip).toBe(true);
         }
+    });
+    it('should produce correct calculate transform when field name contains space or punctuation', () => {
+        const outputSpec = normalize({
+            data: { url: 'data/barley.json' },
+            mark: 'errorbar',
+            encoding: { x: { field: 'yield space,punctuation', type: 'quantitative' } }
+        }, defaultConfig);
+        const transforms = outputSpec.transform;
+        expect(transforms).toBeTruthy();
+        const upperCalculate = transforms[1];
+        expect(isCalculate(upperCalculate) && upperCalculate.calculate).toEqual('datum["center_yield space,punctuation"] + datum["extent_yield space,punctuation"]');
+        const lowerCalculate = transforms[2];
+        expect(isCalculate(lowerCalculate) && lowerCalculate.calculate).toEqual('datum["center_yield space,punctuation"] - datum["extent_yield space,punctuation"]');
     });
 });
 //# sourceMappingURL=common.test.js.map

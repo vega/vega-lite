@@ -13,6 +13,7 @@ const COMMON_LEGEND_PROPERTY_INDEX = {
     direction: 1,
     fillColor: 1,
     format: 1,
+    formatType: 1,
     gradientLength: 1,
     gradientOpacity: 1,
     gradientStrokeColor: 1,

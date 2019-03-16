@@ -11,7 +11,7 @@ function getVgData(selection, x, y, mark, enc, transform) {
         encoding: Object.assign({ x: Object.assign({ field: 'Horsepower', type: 'quantitative' }, x), y: Object.assign({ field: 'Miles-per-Gallon', type: 'quantitative' }, y), color: { field: 'Origin', type: 'nominal' } }, enc)
     });
     model.parse();
-    optimizeDataflow(model.component.data);
+    optimizeDataflow(model.component.data, null);
     return assembleRootData(model.component.data, {});
 }
 describe('Identifier transform', () => {

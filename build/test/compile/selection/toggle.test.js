@@ -1,5 +1,6 @@
 /* tslint:disable quotemark */
-import * as selection from '../../../src/compile/selection/selection';
+import { assembleUnitSelectionSignals } from '../../../src/compile/selection/assemble';
+import { parseUnitSelection } from '../../../src/compile/selection/parse';
 import toggle from '../../../src/compile/selection/transforms/toggle';
 import { parseUnitModel } from '../../util';
 describe('Toggle Selection Transform', () => {
@@ -12,7 +13,7 @@ describe('Toggle Selection Transform', () => {
         }
     });
     model.parseScale();
-    const selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+    const selCmpts = (model.component.selection = parseUnitSelection(model, {
         one: { type: 'multi' },
         two: {
             type: 'multi',
@@ -61,7 +62,7 @@ describe('Toggle Selection Transform', () => {
                 ]
             }
         ]);
-        const signals = selection.assembleUnitSelectionSignals(model, []);
+        const signals = assembleUnitSelectionSignals(model, []);
         expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg]));
     });
     it('builds modify expr', () => {
@@ -69,7 +70,7 @@ describe('Toggle Selection Transform', () => {
         expect(oneExpr).toEqual('one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null');
         const twoExpr = toggle.modifyExpr(model, selCmpts['two'], '');
         expect(twoExpr).toEqual('two_toggle ? null : two_tuple, two_toggle ? null : {unit: ""}, two_toggle ? two_tuple : null');
-        const signals = selection.assembleUnitSelectionSignals(model, []);
+        const signals = assembleUnitSelectionSignals(model, []);
         expect(signals).toEqual(expect.arrayContaining([
             {
                 name: 'one_modify',

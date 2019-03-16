@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 import { X } from '../../../src/channel';
 import { assembleScalesForModel } from '../../../src/compile/scale/assemble';
-import { assembleTopLevelSignals, assembleUnitSelectionSignals } from '../../../src/compile/selection/selection';
+import { assembleTopLevelSignals, assembleUnitSelectionSignals } from '../../../src/compile/selection/assemble';
 import * as log from '../../../src/log';
 import { parseConcatModel, parseRepeatModel, parseUnitModelWithScale } from '../../util';
 describe('Selection + Scales', () => {

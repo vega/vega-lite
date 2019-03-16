@@ -13,7 +13,8 @@ import { isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain } from '
 import { sortArrayIndexField } from '../data/calculate';
 import { FACET_SCALE_PREFIX } from '../data/optimize';
 import { isFacetModel, isUnitModel } from '../model';
-import { SELECTION_DOMAIN } from '../selection/selection';
+import { SELECTION_DOMAIN } from '../selection';
+import { SignalRefWrapper } from '../signal';
 export function parseScaleDomain(model) {
     if (isUnitModel(model)) {
         parseUnitScaleDomain(model);
@@ -215,7 +216,12 @@ function parseSingleChannelDomain(scaleType, domain, model, channel) {
             // continuous scales
             if (isBinning(fieldDef.bin)) {
                 const signalName = model.getName(vgField(fieldDef, { suffix: 'bins' }));
-                return [{ signal: `[${signalName}.start, ${signalName}.stop]` }];
+                return [
+                    new SignalRefWrapper(() => {
+                        const signal = model.getSignalName(signalName);
+                        return `[${signal}.start, ${signal}.stop]`;
+                    })
+                ];
             }
             else {
                 return [

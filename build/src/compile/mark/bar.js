@@ -48,7 +48,7 @@ function barPosition(model, channel) {
             }
         }
         // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
-        return mixins.centeredBandPosition(channel, model, Object.assign({}, ref.mid(channel === 'x' ? model.width : model.height)), defaultSizeRef(markDef, scaleName, scale, config));
+        return mixins.centeredPointPositionWithSize(channel, model, Object.assign({}, ref.mid(channel === 'x' ? model.width : model.height)), defaultSizeRef(markDef, scaleName, scale, config));
     }
 }
 function defaultSizeRef(markDef, scaleName, scale, config) {

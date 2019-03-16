@@ -1,4 +1,4 @@
-import { SelectionCompiler } from './selection';
+import { SelectionCompiler } from '.';
 export declare const BRUSH = "_brush";
 export declare const SCALE_TRIGGER = "_scale_trigger";
 declare const interval: SelectionCompiler<'interval'>;

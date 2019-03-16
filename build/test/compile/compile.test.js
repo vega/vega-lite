@@ -166,7 +166,7 @@ describe('compile/compile', () => {
         }).spec;
         expect(spec.title).toEqual({ text: 'test', frame: 'group' });
     });
-    it('should return a title for a concat spec, throw warning if anchor is set to other values than "start" and automatically set anchor to "start".', log.wrap(localLogger => {
+    it('should return a title for a concat spec', () => {
         const spec = compile({
             data: {
                 values: [{ a: 'A', b: 28 }]
@@ -182,10 +182,9 @@ describe('compile/compile', () => {
         }).spec;
         expect(spec.title).toEqual({
             text: 'test',
-            anchor: 'start' // We only support anchor as start for concat
+            anchor: 'middle' // We only support anchor as start for concat
         });
-        expect(localLogger.warns[0]).toEqual(log.message.cannotSetTitleAnchor('concat'));
-    }));
+    });
     it('should return a title for a concat spec, automatically set anchor to "start", and augment the title with non-mark title config (e.g., offset).', () => {
         const spec = compile({
             data: {

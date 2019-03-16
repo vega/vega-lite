@@ -22,7 +22,7 @@ import { ProjectionComponent } from './projection/component';
 import { RepeatModel } from './repeat';
 import { RepeaterValue } from './repeater';
 import { ScaleComponent, ScaleComponentIndex } from './scale/component';
-import { SelectionComponent } from './selection/selection';
+import { SelectionComponent } from './selection';
 import { UnitModel } from './unit';
 /**
  * Composable Components that are intermediate results of the parsing phase of the

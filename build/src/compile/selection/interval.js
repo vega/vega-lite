@@ -1,10 +1,11 @@
 import * as tslib_1 from "tslib";
 import { stringValue } from 'vega-util';
+import { STORE, TUPLE, unitName } from '.';
 import { X, Y } from '../../channel';
 import { warn } from '../../log';
 import { hasContinuousDomain } from '../../scale';
 import { keys } from '../../util';
-import { assembleInit, channelSignalName, positionalProjections, STORE, TUPLE, unitName } from './selection';
+import { assembleInit } from './assemble';
 import { TUPLE_FIELDS } from './transforms/project';
 import scales from './transforms/scales';
 export const BRUSH = '_brush';
@@ -12,7 +13,7 @@ export const SCALE_TRIGGER = '_scale_trigger';
 const interval = {
     signals: (model, selCmpt) => {
         const name = selCmpt.name;
-        const fieldsSg = name + TUPLE + TUPLE_FIELDS;
+        const fieldsSg = name + TUPLE_FIELDS;
         const hasScales = scales.has(selCmpt);
         const signals = [];
         const dataSignals = [];
@@ -26,16 +27,17 @@ const interval = {
                 }
             });
         }
-        selCmpt.project.forEach((p, i) => {
-            const channel = p.channel;
+        selCmpt.project.forEach((proj, i) => {
+            const channel = proj.channel;
             if (channel !== X && channel !== Y) {
                 warn('Interval selections only support x and y encoding channels.');
                 return;
             }
-            const cs = channelSignals(model, selCmpt, channel, i);
-            const dname = channelSignalName(selCmpt, channel, 'data');
-            const vname = channelSignalName(selCmpt, channel, 'visual');
-            const scaleStr = stringValue(model.scaleName(channel));
+            const init = selCmpt.init ? selCmpt.init[i] : null;
+            const cs = channelSignals(model, selCmpt, proj, init);
+            const dname = proj.signals.data;
+            const vname = proj.signals.visual;
+            const scaleName = stringValue(model.scaleName(channel));
             const scaleType = model.getScaleComponent(channel).get('type');
             const toNum = hasContinuousDomain(scaleType) ? '+' : '';
             signals.push(...cs);
@@ -43,8 +45,8 @@ const interval = {
             scaleTriggers.push({
                 scaleName: model.scaleName(channel),
                 expr: `(!isArray(${dname}) || ` +
-                    `(${toNum}invert(${scaleStr}, ${vname})[0] === ${toNum}${dname}[0] && ` +
-                    `${toNum}invert(${scaleStr}, ${vname})[1] === ${toNum}${dname}[1]))`
+                    `(${toNum}invert(${scaleName}, ${vname})[0] === ${toNum}${dname}[0] && ` +
+                    `${toNum}invert(${scaleName}, ${vname})[1] === ${toNum}${dname}[1]))`
             });
         });
         // Proxy scale reactions to ensure that an infinite loop doesn't occur
@@ -52,7 +54,13 @@ const interval = {
         if (!hasScales) {
             signals.push({
                 name: name + SCALE_TRIGGER,
-                update: scaleTriggers.map(t => t.expr).join(' && ') + ` ? ${name + SCALE_TRIGGER} : {}`
+                value: {},
+                on: [
+                    {
+                        events: scaleTriggers.map(t => ({ scale: t.scaleName })),
+                        update: scaleTriggers.map(t => t.expr).join(' && ') + ` ? ${name + SCALE_TRIGGER} : {}`
+                    }
+                ]
             });
         }
         // Only add an interval to the store if it has valid data extents. Data extents
@@ -62,7 +70,7 @@ const interval = {
         const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
         return signals.concat(Object.assign({ name: name + TUPLE }, (init ? { init: `{${update}: ${assembleInit(init)}}` } : {}), { on: [
                 {
-                    events: dataSignals.map(t => ({ signal: t })),
+                    events: [{ signal: dataSignals.join(' || ') }],
                     update: dataSignals.join(' && ') + ` ? {${update}: [${dataSignals}]} : null`
                 }
             ] }));
@@ -73,17 +81,17 @@ const interval = {
     },
     marks: (model, selCmpt, marks) => {
         const name = selCmpt.name;
-        const { xi, yi } = positionalProjections(selCmpt);
+        const { x, y } = selCmpt.project.has;
         const store = `data(${stringValue(selCmpt.name + STORE)})`;
         // Do not add a brush if we're binding to scales.
         if (scales.has(selCmpt)) {
             return marks;
         }
         const update = {
-            x: xi !== null ? { signal: `${name}_x[0]` } : { value: 0 },
-            y: yi !== null ? { signal: `${name}_y[0]` } : { value: 0 },
-            x2: xi !== null ? { signal: `${name}_x[1]` } : { field: { group: 'width' } },
-            y2: yi !== null ? { signal: `${name}_y[1]` } : { field: { group: 'height' } }
+            x: x !== undefined ? { signal: `${name}_x[0]` } : { value: 0 },
+            y: y !== undefined ? { signal: `${name}_y[0]` } : { value: 0 },
+            x2: x !== undefined ? { signal: `${name}_x[1]` } : { field: { group: 'width' } },
+            y2: y !== undefined ? { signal: `${name}_y[1]` } : { field: { group: 'height' } }
         };
         // If the selection is resolved to global, only a single interval is in
         // the store. Wrap brush mark's encodings with a production rule to test
@@ -104,8 +112,8 @@ const interval = {
         const vgStroke = keys(stroke).reduce((def, k) => {
             def[k] = [
                 {
-                    test: [xi !== null && `${name}_x[0] !== ${name}_x[1]`, yi != null && `${name}_y[0] !== ${name}_y[1]`]
-                        .filter(x => x)
+                    test: [x !== undefined && `${name}_x[0] !== ${name}_x[1]`, y !== undefined && `${name}_y[0] !== ${name}_y[1]`]
+                        .filter(t => t)
                         .join(' && '),
                     value: stroke[k]
                 },
@@ -145,10 +153,10 @@ export default interval;
 /**
  * Returns the visual and data signals for an interval selection.
  */
-function channelSignals(model, selCmpt, channel, idx) {
-    const vname = channelSignalName(selCmpt, channel, 'visual');
-    const dname = channelSignalName(selCmpt, channel, 'data');
-    const init = selCmpt.init && selCmpt.init[idx];
+function channelSignals(model, selCmpt, proj, init) {
+    const channel = proj.channel;
+    const vname = proj.signals.visual;
+    const dname = proj.signals.data;
     const hasScales = scales.has(selCmpt);
     const scaleName = stringValue(model.scaleName(channel));
     const scale = model.getScaleComponent(channel);

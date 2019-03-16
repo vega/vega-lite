@@ -14,7 +14,8 @@ import { normalizeMarkDef } from './mark/init';
 import { parseMarkGroups } from './mark/mark';
 import { isLayerModel, ModelWithField } from './model';
 import { replaceRepeaterInEncoding } from './repeater';
-import { assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection } from './selection/selection';
+import { assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals } from './selection/assemble';
+import { parseUnitSelection } from './selection/parse';
 /**
  * Internal model of Vega-Lite specification for the compiler.
  */

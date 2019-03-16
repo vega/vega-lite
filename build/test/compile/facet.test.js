@@ -1,5 +1,6 @@
 /* tslint:disable quotemark */
 import { ROW } from '../../src/channel';
+import { assembleLabelTitle } from '../../src/compile/header/assemble';
 import * as log from '../../src/log';
 import { DEFAULT_SPACING } from '../../src/spec/base';
 import { ORDINAL } from '../../src/type';
@@ -316,8 +317,63 @@ describe('FacetModel', () => {
             const layout = model.assembleLayout();
             expect(layout.headerBand).toEqual({ row: 0.5 });
         });
+        it('returns a layout with titleAnchor ="end" when titleOrient is right', () => {
+            const model = parseFacetModelWithScale({
+                $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+                data: { url: 'data/cars.json' },
+                facet: { row: { field: 'Origin', type: 'ordinal', header: { titleOrient: 'right' } } },
+                spec: {
+                    mark: 'point',
+                    encoding: {
+                        x: { field: 'Horsepower', type: 'quantitative' },
+                        y: { field: 'Acceleration', type: 'quantitative' }
+                    }
+                }
+                // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
+            });
+            model.parseLayoutSize();
+            model.parseAxesAndHeaders();
+            const layout = model.assembleLayout();
+            expect(layout.titleAnchor).toEqual({ row: 'end' });
+        });
+        it('returns a layout with titleAnchor ="end" when titleOrient is bottom', () => {
+            const model = parseFacetModelWithScale({
+                $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+                data: { url: 'data/cars.json' },
+                facet: { column: { field: 'Origin', type: 'ordinal', header: { titleOrient: 'bottom' } } },
+                spec: {
+                    mark: 'point',
+                    encoding: {
+                        x: { field: 'Horsepower', type: 'quantitative' },
+                        y: { field: 'Acceleration', type: 'quantitative' }
+                    }
+                }
+                // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
+            });
+            model.parseLayoutSize();
+            model.parseAxesAndHeaders();
+            const layout = model.assembleLayout();
+            expect(layout.titleAnchor).toEqual({ column: 'end' });
+        });
     });
     describe('assembleMarks', () => {
+        it('add label title for orthogonal orient label', () => {
+            const facet = {
+                row: { field: 'a', type: 'ordinal', header: { labelOrient: 'top' } }
+            };
+            const model = parseFacetModelWithScale({
+                facet,
+                spec: {
+                    mark: 'point',
+                    encoding: {
+                        x: { field: 'c', type: 'quantitative' }
+                    }
+                }
+            });
+            model.parse();
+            const marks = model.assembleMarks();
+            expect(marks[0].title).toEqual(assembleLabelTitle(facet.row, 'row', model.config));
+        });
         it('should add cross and sort if we facet by multiple dimensions', () => {
             const model = parseFacetModelWithScale({
                 facet: {

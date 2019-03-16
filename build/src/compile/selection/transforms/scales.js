@@ -1,9 +1,9 @@
 import { stringValue } from 'vega-util';
+import { VL_SELECTION_RESOLVE } from '..';
 import { isScaleChannel, X, Y } from '../../../channel';
 import * as log from '../../../log';
 import { hasContinuousDomain } from '../../../scale';
 import { accessPathWithDatum, varName } from '../../../util';
-import { channelSignalName, VL_SELECTION_RESOLVE } from '../selection';
 const scaleBindings = {
     has: selCmpt => {
         return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
@@ -11,8 +11,8 @@ const scaleBindings = {
     parse: (model, selDef, selCmpt) => {
         const name = varName(selCmpt.name);
         const bound = (selCmpt.scales = []);
-        for (const p of selCmpt.project) {
-            const channel = p.channel;
+        for (const proj of selCmpt.project) {
+            const channel = proj.channel;
             if (!isScaleChannel(channel)) {
                 continue;
             }
@@ -22,26 +22,20 @@ const scaleBindings = {
                 log.warn(log.message.SCALE_BINDINGS_CONTINUOUS);
                 continue;
             }
-            scale.set('domainRaw', { signal: accessPathWithDatum(p.field, name) }, true);
-            bound.push(channel);
+            scale.set('domainRaw', { signal: accessPathWithDatum(proj.field, name) }, true);
+            bound.push(proj);
             // Bind both x/y for diag plot of repeated views.
             if (model.repeater && model.repeater.row === model.repeater.column) {
                 const scale2 = model.getScaleComponent(channel === X ? Y : X);
-                scale2.set('domainRaw', { signal: accessPathWithDatum(p.field, name) }, true);
+                scale2.set('domainRaw', { signal: accessPathWithDatum(proj.field, name) }, true);
             }
         }
     },
     topLevelSignals: (model, selCmpt, signals) => {
-        const channelSignals = selCmpt.scales
-            .filter(channel => {
-            return !signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data')).length;
-        })
-            .map(channel => {
-            return { channel, signal: channelSignalName(selCmpt, channel, 'data') };
-        });
+        const bound = selCmpt.scales.filter(proj => !signals.filter(s => s.name === proj.signals.data).length);
         // Top-level signals are only needed for multiview displays and if this
         // view's top-level signals haven't already been generated.
-        if (!model.parent || !channelSignals.length) {
+        if (!model.parent || !bound.length) {
             return signals;
         }
         // vlSelectionResolve does not account for the behavior of bound scales in
@@ -53,25 +47,23 @@ const scaleBindings = {
         const namedSg = signals.filter(s => s.name === selCmpt.name)[0];
         const update = namedSg.update;
         if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
-            namedSg.update =
-                '{' + channelSignals.map(cs => `${stringValue(selCmpt.fields[cs.channel])}: ${cs.signal}`).join(', ') + '}';
+            namedSg.update = `{${bound.map(proj => `${stringValue(proj.field)}: ${proj.signals.data}`).join(', ')}}`;
         }
         else {
-            for (const cs of channelSignals) {
-                const mapping = `, ${stringValue(selCmpt.fields[cs.channel])}: ${cs.signal}`;
+            for (const proj of bound) {
+                const mapping = `, ${stringValue(proj.field)}: ${proj.signals.data}`;
                 if (update.indexOf(mapping) < 0) {
                     namedSg.update = update.substring(0, update.length - 1) + mapping + '}';
                 }
             }
         }
-        return signals.concat(channelSignals.map(cs => ({ name: cs.signal })));
+        return signals.concat(bound.map(proj => ({ name: proj.signals.data })));
     },
     signals: (model, selCmpt, signals) => {
         // Nested signals need only push to top-level signals with multiview displays.
         if (model.parent) {
-            for (const channel of selCmpt.scales) {
-                const signal = signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data'))[0];
-                // convert to PushSignal
+            for (const proj of selCmpt.scales) {
+                const signal = signals.filter(s => s.name === proj.signals.data)[0];
                 signal.push = 'outer';
                 delete signal.value;
                 delete signal.update;

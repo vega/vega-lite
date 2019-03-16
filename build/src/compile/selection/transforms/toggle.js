@@ -1,4 +1,4 @@
-import { TUPLE, unitName } from '../selection';
+import { TUPLE, unitName } from '..';
 const TOGGLE = '_toggle';
 const toggle = {
     has: selCmpt => {

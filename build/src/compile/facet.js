@@ -13,12 +13,14 @@ import { assembleFacetData } from './data/assemble';
 import { sortArrayIndexField } from './data/calculate';
 import { parseData } from './data/parse';
 import { assembleLabelTitle } from './header/assemble';
+import { getHeaderChannel, getHeaderProperty } from './header/common';
+import { HEADER_CHANNELS, HEADER_TYPES } from './header/component';
 import { parseFacetHeaders } from './header/parse';
 import { parseChildrenLayoutSize } from './layoutsize/parse';
 import { ModelWithField } from './model';
 import { replaceRepeaterInFacet } from './repeater';
 import { assembleDomain, getFieldFromDomain } from './scale/domain';
-import { assembleFacetSignals } from './selection/selection';
+import { assembleFacetSignals } from './selection/assemble';
 export function facetSortFieldName(fieldDef, sort, opt) {
     return vgField(sort, Object.assign({ suffix: `by_${vgField(fieldDef)}` }, (opt || {})));
 }
@@ -89,15 +91,24 @@ export class FacetModel extends ModelWithField {
     }
     getHeaderLayoutMixins() {
         const layoutMixins = {};
-        ['row', 'column'].forEach((channel) => {
-            ['header', 'footer'].forEach((headerType) => {
+        for (const channel of FACET_CHANNELS) {
+            for (const headerType of HEADER_TYPES) {
                 const layoutHeaderComponent = this.component.layoutHeaders[channel];
                 const headerComponent = layoutHeaderComponent[headerType];
+                const { facetFieldDef } = layoutHeaderComponent;
+                if (facetFieldDef) {
+                    const titleOrient = getHeaderProperty('titleOrient', facetFieldDef, this.config, channel);
+                    if (contains(['right', 'bottom'], titleOrient)) {
+                        const headerChannel = getHeaderChannel(channel, titleOrient);
+                        layoutMixins.titleAnchor = layoutMixins.titleAnchor || {};
+                        layoutMixins.titleAnchor[headerChannel] = 'end';
+                    }
+                }
                 if (headerComponent && headerComponent[0]) {
                     // set header/footerBand
                     const sizeType = channel === 'row' ? 'height' : 'width';
                     const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
-                    if (!this.child.component.layoutSize.get(sizeType)) {
+                    if (channel !== 'facet' && !this.child.component.layoutSize.get(sizeType)) {
                         // If facet child does not have size signal, then apply headerBand
                         layoutMixins[bandType] = layoutMixins[bandType] || {};
                         layoutMixins[bandType][channel] = 0.5;
@@ -107,8 +118,8 @@ export class FacetModel extends ModelWithField {
                         layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
                     }
                 }
-            });
-        });
+            }
+        }
         return layoutMixins;
     }
     assembleDefaultLayout() {
@@ -267,14 +278,35 @@ export class FacetModel extends ModelWithField {
         }
         return [];
     }
+    assembleLabelTitle() {
+        const { facet, config } = this;
+        if (facet.facet) {
+            // Facet always uses title to display labels
+            return assembleLabelTitle(facet.facet, 'facet', config);
+        }
+        const ORTHOGONAL_ORIENT = {
+            row: ['top', 'bottom'],
+            column: ['left', 'right']
+        };
+        for (const channel of HEADER_CHANNELS) {
+            if (facet[channel]) {
+                const labelOrient = getHeaderProperty('labelOrient', facet[channel], config, channel);
+                if (contains(ORTHOGONAL_ORIENT[channel], labelOrient)) {
+                    // Row/Column with orthogonal labelOrient must use title to display labels
+                    return assembleLabelTitle(facet[channel], channel, config);
+                }
+            }
+        }
+        return undefined;
+    }
     assembleMarks() {
-        const { child, facet, config } = this;
+        const { child } = this;
         // If we facet by two dimensions, we need to add a cross operator to the aggregation
         // so that we create all groups
         const facetRoot = this.component.data.facetRoot;
         const data = assembleFacetData(facetRoot);
         const encodeEntry = child.assembleGroupEncodeEntry(false);
-        const title = (facet.facet && assembleLabelTitle(facet.facet, 'facet', config)) || child.assembleTitle();
+        const title = this.assembleLabelTitle() || child.assembleTitle();
         const style = child.assembleGroupStyle();
         const markGroup = Object.assign({ name: this.getName('cell'), type: 'group' }, (title ? { title } : {}), (style ? { style } : {}), { from: {
                 facet: this.assembleFacet()

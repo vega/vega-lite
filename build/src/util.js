@@ -64,6 +64,9 @@ export function hash(a) {
     }
     return h;
 }
+export function isNullOrFalse(x) {
+    return x === false || x === null;
+}
 export function contains(array, item) {
     return array.indexOf(item) > -1;
 }
@@ -372,5 +375,11 @@ export function internalField(name) {
 }
 export function isInternalField(name) {
     return name.indexOf('__') === 0;
+}
+/**
+ * Normalize angle to be within [0,360).
+ */
+export function normalizeAngle(angle) {
+    return ((angle % 360) + 360) % 360;
 }
 //# sourceMappingURL=util.js.map

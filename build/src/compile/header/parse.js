@@ -1,7 +1,9 @@
 import { FACET_CHANNELS } from '../../channel';
 import { title as fieldDefTitle } from '../../fielddef';
+import { contains } from '../../util';
 import { assembleAxis } from '../axis/assemble';
 import { parseGuideResolve } from '../resolve';
+import { getHeaderProperty } from './common';
 export function getHeaderType(orient) {
     if (orient === 'top' || orient === 'left') {
         return 'header';
@@ -18,17 +20,22 @@ export function parseFacetHeaders(model) {
 function parseFacetHeader(model, channel) {
     if (model.channelHasField(channel)) {
         const fieldDef = model.facet[channel];
-        let title = fieldDefTitle(fieldDef, model.config, { allowDisabling: true });
+        const titleConfig = getHeaderProperty('title', null, model.config, channel);
+        let title = fieldDefTitle(fieldDef, model.config, {
+            allowDisabling: true,
+            includeDefault: titleConfig === undefined || !!titleConfig
+        });
         if (model.child.component.layoutHeaders[channel].title) {
             // merge title with child to produce "Title / Subtitle / Sub-subtitle"
             title += ' / ' + model.child.component.layoutHeaders[channel].title;
             model.child.component.layoutHeaders[channel].title = null;
         }
+        const labelOrient = getHeaderProperty('labelOrient', fieldDef, model.config, channel);
+        const headerType = contains(['bottom', 'right'], labelOrient) ? 'footer' : 'header';
         model.component.layoutHeaders[channel] = {
             title,
             facetFieldDef: fieldDef,
-            // TODO: support adding label to footer as well
-            header: channel === 'facet' ? [] : [makeHeaderComponent(model, channel, true)]
+            [headerType]: channel === 'facet' ? [] : [makeHeaderComponent(model, channel, true)]
         };
     }
 }

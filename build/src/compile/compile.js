@@ -7,6 +7,7 @@ import { extractTopLevelProperties, normalizeAutoSize } from '../spec/toplevel';
 import { keys, mergeDeep } from '../util';
 import { buildModel } from './buildmodel';
 import { assembleRootData } from './data/assemble';
+// import {draw} from './data/debug';
 import { optimizeDataflow } from './data/optimize';
 /**
  * Vega-Lite's main function, for compiling Vega-lite spec into Vega spec.
@@ -68,8 +69,9 @@ export function compile(inputSpec, opt = {}) {
         //
         // Please see inside model.parse() for order of different components parsed.
         model.parse();
+        // draw(model.component.data.sources);
         // 5. Optimize the dataflow.  This will modify the data component of the model.
-        optimizeDataflow(model.component.data);
+        optimizeDataflow(model.component.data, model);
         // 6. Assemble: convert model components --> Vega Spec.
         return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config, autosize), inputSpec.datasets, inputSpec.usermeta);
     }

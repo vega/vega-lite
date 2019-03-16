@@ -3,7 +3,7 @@ import { assert } from 'chai';
 import { bound, brush, compositeTypes, embedFn, hits as hitsMaster, parentSelector, spec, testRenderFn, tuples, unbound } from './util';
 // declare const jestPuppeteer: any;
 for (const bind of [bound, unbound]) {
-    describe(`Translate ${bind} interval selections at runtime`, () => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    describe(`Translate ${bind} interval selections at runtime`, () => {
         beforeAll(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
             yield page.goto('http://0.0.0.0:8000/test-runtime/');
         }));
@@ -126,6 +126,6 @@ for (const bind of [bound, unbound]) {
                 }));
             });
         }
-    }));
+    });
 }
 //# sourceMappingURL=translate.test.js.map

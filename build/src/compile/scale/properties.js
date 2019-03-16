@@ -124,8 +124,9 @@ export function parseNonUnitScaleProperty(model, property) {
 export function bins(model, fieldDef, channel) {
     const bin = fieldDef.bin;
     if (isBinning(bin)) {
+        const signal = model.getName(vgField(fieldDef, { suffix: 'bins' }));
         return new SignalRefWrapper(() => {
-            return model.getName(vgField(fieldDef, { suffix: 'bins' }));
+            return model.getSignalName(signal);
         });
     }
     else if (isBinned(bin) && isBinParams(bin) && bin.step !== undefined) {

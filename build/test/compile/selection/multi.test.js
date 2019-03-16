@@ -1,6 +1,7 @@
 /* tslint:disable quotemark */
+import { assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals } from '../../../src/compile/selection/assemble';
 import multi from '../../../src/compile/selection/multi';
-import * as selection from '../../../src/compile/selection/selection';
+import { parseUnitSelection } from '../../../src/compile/selection/parse';
 import { parseUnitModelWithScale } from '../../util';
 describe('Multi Selection', () => {
     const model = parseUnitModelWithScale({
@@ -11,7 +12,7 @@ describe('Multi Selection', () => {
             color: { field: 'Origin', type: 'nominal' }
         }
     });
-    const selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+    const selCmpts = (model.component.selection = parseUnitSelection(model, {
         one: { type: 'multi' },
         two: {
             type: 'multi',
@@ -123,12 +124,12 @@ describe('Multi Selection', () => {
                 init: 'modify("five_store", [{unit: "", fields: five_tuple_fields, values: [datetime(1970, 1, 1+1, 0, 0, 0, 0), "Japan"]},{unit: "", fields: five_tuple_fields, values: [datetime(1980, 1, 1+1, 0, 0, 0, 0), "USA"]}])'
             }
         ]);
-        const signals = selection.assembleUnitSelectionSignals(model, []);
+        const signals = assembleUnitSelectionSignals(model, []);
         expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg, ...fiveSg]));
     });
     it('builds unit datasets', () => {
         const data = [];
-        expect(selection.assembleUnitSelectionData(model, data)).toEqual([
+        expect(assembleUnitSelectionData(model, data)).toEqual([
             { name: 'one_store' },
             { name: 'two_store' },
             { name: 'thr_ee_store' },
@@ -139,7 +140,7 @@ describe('Multi Selection', () => {
     it('leaves marks alone', () => {
         const marks = [];
         model.component.selection = { one: selCmpts['one'] };
-        expect(selection.assembleUnitSelectionMarks(model, marks)).toEqual(marks);
+        expect(assembleUnitSelectionMarks(model, marks)).toEqual(marks);
     });
 });
 //# sourceMappingURL=multi.test.js.map

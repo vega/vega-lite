@@ -49,19 +49,19 @@ function getRangeStep(model, channel) {
         const range = scaleCmpt && scaleCmpt.get('range');
         if (range && isVgRangeStep(range) && isNumber(range.step)) {
             return range.step;
+            // TODO: support the case without range step
         }
-        // TODO: support the case without range step
     }
-    else if (fieldDef && fieldDef.bin) {
-        if (isBinning(fieldDef.bin)) {
-            const binSignal = model.getName(vgField(fieldDef, { suffix: 'bins' }));
-            // TODO: extract this to be range step signal
-            const binCount = `(${binSignal}.stop - ${binSignal}.start) / ${binSignal}.step`;
-            const sizeType = getSizeType(channel);
-            const sizeSignal = model.getName(sizeType);
-            return new SignalRefWrapper(() => `${model.getSignalName(sizeSignal)} / (${model.getSignalName(binCount)})`);
-        }
-        // TODO: handle binned case
+    else if (fieldDef && fieldDef.bin && isBinning(fieldDef.bin)) {
+        const binSignal = model.getName(vgField(fieldDef, { suffix: 'bins' }));
+        // TODO: extract this to be range step signal
+        const sizeType = getSizeType(channel);
+        const sizeSignal = model.getName(sizeType);
+        return new SignalRefWrapper(() => {
+            const updatedName = model.getSignalName(binSignal);
+            const binCount = `(${updatedName}.stop - ${updatedName}.start) / ${updatedName}.step`;
+            return `${model.getSignalName(sizeSignal)} / (${binCount})`;
+        });
     }
     return undefined;
 }

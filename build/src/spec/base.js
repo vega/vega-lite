@@ -1,5 +1,4 @@
-import { isArray } from 'vega';
-import { isNumber } from 'vega-util';
+import { isArray, isNumber } from 'vega-util';
 import { flagKeys } from '../util';
 import { isConcatSpec } from './concat';
 import { isFacetMapping, isFacetSpec } from './facet';

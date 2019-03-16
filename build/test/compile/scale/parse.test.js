@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 import { toSet } from 'vega-util';
 import { parseScaleCore, parseScales } from '../../../src/compile/scale/parse';
-import { SELECTION_DOMAIN } from '../../../src/compile/selection/selection';
+import { SELECTION_DOMAIN } from '../../../src/compile/selection';
 import * as log from '../../../src/log';
 import { NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES } from '../../../src/scale';
 import { without } from '../../../src/util';

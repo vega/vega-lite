@@ -35,11 +35,11 @@ describe('normalizeErrorBar with raw data input', () => {
                     groupby: ['age']
                 },
                 {
-                    calculate: 'datum.center_people + datum.extent_people',
+                    calculate: 'datum["center_people"] + datum["extent_people"]',
                     as: 'upper_people'
                 },
                 {
-                    calculate: 'datum.center_people - datum.extent_people',
+                    calculate: 'datum["center_people"] - datum["extent_people"]',
                     as: 'lower_people'
                 }
             ],
@@ -609,7 +609,10 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
             }
         }, defaultConfig)).toEqual({
             data,
-            transform: [{ calculate: 'datum.people2', as: 'upper_people' }, { calculate: 'datum.people', as: 'lower_people' }],
+            transform: [
+                { calculate: 'datum["people2"]', as: 'upper_people' },
+                { calculate: 'datum["people"]', as: 'lower_people' }
+            ],
             layer: [
                 {
                     mark: { type: 'rule', style: 'errorbar-rule' },
@@ -644,8 +647,8 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
         for (let i = 0; i < 2; i++) {
             const calculate = outputSpec.transform[i];
             if (isCalculate(calculate)) {
-                expect((calculate.calculate === 'datum.people' && calculate.as === 'lower_people') ||
-                    (calculate.calculate === 'datum.people2' && calculate.as === 'upper_people')).toBe(true);
+                expect((calculate.calculate === 'datum["people"]' && calculate.as === 'lower_people') ||
+                    (calculate.calculate === 'datum["people2"]' && calculate.as === 'upper_people')).toBe(true);
             }
             else {
                 expect(false).toBe(true);
@@ -755,8 +758,8 @@ describe('normalizeErrorBar with aggregated error input', () => {
         }, defaultConfig)).toEqual({
             data,
             transform: [
-                { calculate: 'datum.people + datum.people_error', as: 'upper_people' },
-                { calculate: 'datum.people - datum.people_error', as: 'lower_people' }
+                { calculate: 'datum["people"] + datum["people_error"]', as: 'upper_people' },
+                { calculate: 'datum["people"] - datum["people_error"]', as: 'lower_people' }
             ],
             layer: [
                 {
@@ -793,8 +796,8 @@ describe('normalizeErrorBar with aggregated error input', () => {
         for (let i = 0; i < 2; i++) {
             const calculate = outputSpec.transform[i];
             if (isCalculate(calculate)) {
-                expect((calculate.calculate === 'datum.people - datum.people_error' && calculate.as === 'lower_people') ||
-                    (calculate.calculate === 'datum.people + datum.people_error' && calculate.as === 'upper_people')).toBe(true);
+                expect((calculate.calculate === 'datum["people"] - datum["people_error"]' && calculate.as === 'lower_people') ||
+                    (calculate.calculate === 'datum["people"] + datum["people_error"]' && calculate.as === 'upper_people')).toBe(true);
             }
             else {
                 expect(false).toBe(true);
@@ -827,8 +830,8 @@ describe('normalizeErrorBar with aggregated error input', () => {
         for (let i = 0; i < 2; i++) {
             const calculate = outputSpec.transform[i];
             if (isCalculate(calculate)) {
-                expect((calculate.calculate === 'datum.people + datum.people_error' && calculate.as === 'upper_people') ||
-                    (calculate.calculate === 'datum.people + datum.people_error2' && calculate.as === 'lower_people')).toBe(true);
+                expect((calculate.calculate === 'datum["people"] + datum["people_error"]' && calculate.as === 'upper_people') ||
+                    (calculate.calculate === 'datum["people"] + datum["people_error2"]' && calculate.as === 'lower_people')).toBe(true);
             }
             else {
                 expect(false).toBe(true);

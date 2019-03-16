@@ -3,7 +3,7 @@ import * as log from '../../log';
 import { isAggregate, isBin, isCalculate, isFilter, isFlatten, isFold, isImpute, isJoinAggregate, isLookup, isSample, isStack, isTimeUnit, isWindow } from '../../transform';
 import { deepEqual, mergeDeep } from '../../util';
 import { isFacetModel, isLayerModel, isUnitModel } from '../model';
-import { requiresSelectionId } from '../selection/selection';
+import { requiresSelectionId } from '../selection';
 import { AggregateNode } from './aggregate';
 import { BinNode } from './bin';
 import { CalculateNode } from './calculate';

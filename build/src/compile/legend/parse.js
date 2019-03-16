@@ -83,7 +83,7 @@ export function parseLegendForChannel(model, channel) {
     return legendCmpt;
 }
 function getProperty(property, legend, channel, model) {
-    const { encoding } = model;
+    const { encoding, mark } = model;
     const fieldDef = getTypedFieldDef(encoding[channel]);
     const legendConfig = model.config.legend;
     const { timeUnit } = fieldDef;
@@ -115,6 +115,8 @@ function getProperty(property, legend, channel, model) {
                 channel,
                 scaleType
             }));
+        case 'symbolType':
+            return getFirstDefined(legend.symbolType, properties.defaultSymbolType(mark));
         case 'values':
             return properties.values(legend, fieldDef);
     }
@@ -172,6 +174,8 @@ export function mergeLegendComponent(mergedLegend, childLegend) {
         // Tie breaker function
         (v1, v2) => {
             switch (prop) {
+                case 'symbolType':
+                    return mergeSymbolType(v1, v2);
                 case 'title':
                     return mergeTitleComponent(v1, v2);
                 case 'type':
@@ -192,5 +196,12 @@ export function mergeLegendComponent(mergedLegend, childLegend) {
         }
     }
     return mergedLegend;
+}
+function mergeSymbolType(st1, st2) {
+    if (st2.value === 'circle') {
+        // prefer "circle" over "stroke"
+        return st2;
+    }
+    return st1;
 }
 //# sourceMappingURL=parse.js.map

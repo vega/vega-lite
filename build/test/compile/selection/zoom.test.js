@@ -1,6 +1,7 @@
 /* tslint:disable quotemark */
 import { selector as parseSelector } from 'vega-event-selector';
-import * as selection from '../../../src/compile/selection/selection';
+import { assembleUnitSelectionSignals } from '../../../src/compile/selection/assemble';
+import { parseUnitSelection } from '../../../src/compile/selection/parse';
 import zoom from '../../../src/compile/selection/transforms/zoom';
 import { parseUnitModel } from '../../util';
 function getModel(xscale, yscale) {
@@ -13,7 +14,7 @@ function getModel(xscale, yscale) {
         }
     });
     model.parseScale();
-    const selCmpts = selection.parseUnitSelection(model, {
+    const selCmpts = parseUnitSelection(model, {
         one: {
             type: 'single'
         },
@@ -57,7 +58,7 @@ describe('Zoom Selection Transform', () => {
         it('builds then for default invocation', () => {
             const { model, selCmpts } = getModel();
             model.component.selection = { four: selCmpts['four'] };
-            const signals = selection.assembleUnitSelectionSignals(model, []);
+            const signals = assembleUnitSelectionSignals(model, []);
             expect(signals).toEqual(expect.arrayContaining([
                 {
                     name: 'four_zoom_anchor',
@@ -83,7 +84,7 @@ describe('Zoom Selection Transform', () => {
         it('builds them for custom events', () => {
             const { model, selCmpts } = getModel();
             model.component.selection = { five: selCmpts['five'] };
-            const signals = selection.assembleUnitSelectionSignals(model, []);
+            const signals = assembleUnitSelectionSignals(model, []);
             expect(signals).toEqual(expect.arrayContaining([
                 {
                     name: 'five_zoom_anchor',
@@ -109,7 +110,7 @@ describe('Zoom Selection Transform', () => {
         it('builds them for scale-bound zoom', () => {
             const { model, selCmpts } = getModel();
             model.component.selection = { six: selCmpts['six'] };
-            const signals = selection.assembleUnitSelectionSignals(model, []);
+            const signals = assembleUnitSelectionSignals(model, []);
             expect(signals).toEqual(expect.arrayContaining([
                 {
                     name: 'six_zoom_anchor',
@@ -137,7 +138,7 @@ describe('Zoom Selection Transform', () => {
         it('always builds zoomLinear exprs for brushes', () => {
             const { model, selCmpts } = getModel();
             model.component.selection = { four: selCmpts['four'] };
-            let signals = selection.assembleUnitSelectionSignals(model, []);
+            let signals = assembleUnitSelectionSignals(model, []);
             expect(signals.filter(s => s.name === 'four_x')[0].on).toContainEqual({
                 events: { signal: 'four_zoom_delta' },
                 update: 'clampRange(zoomLinear(four_x, four_zoom_anchor.x, four_zoom_delta), 0, width)'
@@ -148,7 +149,7 @@ describe('Zoom Selection Transform', () => {
             });
             const model2 = getModel('log', 'pow').model;
             model2.component.selection = { four: selCmpts['four'] };
-            signals = selection.assembleUnitSelectionSignals(model2, []);
+            signals = assembleUnitSelectionSignals(model2, []);
             expect(signals.filter(s => s.name === 'four_x')[0].on).toContainEqual({
                 events: { signal: 'four_zoom_delta' },
                 update: 'clampRange(zoomLinear(four_x, four_zoom_anchor.x, four_zoom_delta), 0, width)'
@@ -161,7 +162,7 @@ describe('Zoom Selection Transform', () => {
         it('builds zoomLinear exprs for scale-bound zoom', () => {
             const { model, selCmpts } = getModel();
             model.component.selection = { six: selCmpts['six'] };
-            const signals = selection.assembleUnitSelectionSignals(model, []);
+            const signals = assembleUnitSelectionSignals(model, []);
             expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
                 events: { signal: 'six_zoom_delta' },
                 update: 'zoomLinear(domain("x"), six_zoom_anchor.x, six_zoom_delta)'
@@ -174,7 +175,7 @@ describe('Zoom Selection Transform', () => {
         it('builds zoomLog/Pow exprs for scale-bound zoom', () => {
             const { model, selCmpts } = getModel('log', 'pow');
             model.component.selection = { six: selCmpts['six'] };
-            const signals = selection.assembleUnitSelectionSignals(model, []);
+            const signals = assembleUnitSelectionSignals(model, []);
             expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
                 events: { signal: 'six_zoom_delta' },
                 update: 'zoomLog(domain("x"), six_zoom_anchor.x, six_zoom_delta)'

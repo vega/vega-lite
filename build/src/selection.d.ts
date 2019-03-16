@@ -1,5 +1,5 @@
 import { Binding } from 'vega';
-import { SingleDefChannel } from './channel';
+import { SingleDefUnitChannel } from './channel';
 import { DateTime } from './datetime';
 import { EventStream } from './vega.schema';
 export declare const SELECTION_ID = "_vgsid_";
@@ -30,7 +30,7 @@ export interface BaseSelectionDef {
      * An array of encoding channels. The corresponding data field values
      * must match for a data tuple to fall within the selection.
      */
-    encodings?: SingleDefChannel[];
+    encodings?: SingleDefUnitChannel[];
     /**
      * An array of field names whose values must match for a data tuple to
      * fall within the selection.

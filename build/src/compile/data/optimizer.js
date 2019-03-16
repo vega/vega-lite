@@ -41,6 +41,12 @@ export class BottomUpOptimizer extends OptimizerBase {
             this.setMutated();
         }
     }
+    /**
+     * Reset the state of the optimizer after it has completed a run from the bottom of the tree to the top.
+     */
+    reset() {
+        // do nothing
+    }
     optimizeNextFromLeaves(node) {
         if (node instanceof SourceNode) {
             return false;

@@ -9,6 +9,9 @@ export function values(legend, fieldDef) {
     }
     return undefined;
 }
+export function defaultSymbolType(mark) {
+    return mark === 'line' ? 'stroke' : 'circle';
+}
 export function clipHeight(legendType) {
     if (legendType === 'gradient') {
         return 20;

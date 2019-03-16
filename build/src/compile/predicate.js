@@ -1,7 +1,7 @@
 import { isString } from 'vega-util';
 import { fieldFilterExpression, isSelectionPredicate } from '../predicate';
 import { logicalExpr } from '../util';
-import { selectionPredicate } from './selection/selection';
+import { assembleSelectionPredicate } from './selection/assemble';
 /**
  * Converts a predicate into an expression.
  */
@@ -12,7 +12,7 @@ export function expression(model, filterOp, node) {
             return predicate;
         }
         else if (isSelectionPredicate(predicate)) {
-            return selectionPredicate(model, predicate.selection, node);
+            return assembleSelectionPredicate(model, predicate.selection, node);
         }
         else {
             // Filter Object

@@ -107,12 +107,12 @@ export function normalizeBoxPlot(spec, { config }) {
     // ## Filtered Layers
     let filteredLayersMixins;
     if (boxPlotType !== 'min-max') {
-        const lowerBoxExpr = 'datum.lower_box_' + continuousAxisChannelDef.field;
-        const upperBoxExpr = 'datum.upper_box_' + continuousAxisChannelDef.field;
+        const lowerBoxExpr = `datum["lower_box_${continuousAxisChannelDef.field}"]`;
+        const upperBoxExpr = `datum["upper_box_${continuousAxisChannelDef.field}"]`;
         const iqrExpr = `(${upperBoxExpr} - ${lowerBoxExpr})`;
         const lowerWhiskerExpr = `${lowerBoxExpr} - ${extent} * ${iqrExpr}`;
         const upperWhiskerExpr = `${upperBoxExpr} + ${extent} * ${iqrExpr}`;
-        const fieldExpr = `datum.${continuousAxisChannelDef.field}`;
+        const fieldExpr = `datum["${continuousAxisChannelDef.field}"]`;
         const joinaggregateTransform = {
             joinaggregate: boxParamsQuartiles(continuousAxisChannelDef.field),
             groupby
@@ -232,15 +232,15 @@ function boxParams(spec, extent, config) {
         : [
             // This is for the  original k-IQR, which we do not expose
             {
-                calculate: `datum.upper_box_${continuousFieldName} - datum.lower_box_${continuousFieldName}`,
+                calculate: `datum["upper_box_${continuousFieldName}"] - datum["lower_box_${continuousFieldName}"]`,
                 as: 'iqr_' + continuousFieldName
             },
             {
-                calculate: `min(datum.upper_box_${continuousFieldName} + datum.iqr_${continuousFieldName} * ${extent}, datum.max_${continuousFieldName})`,
+                calculate: `min(datum["upper_box_${continuousFieldName}"] + datum["iqr_${continuousFieldName}"] * ${extent}, datum["max_${continuousFieldName}"])`,
                 as: 'upper_whisker_' + continuousFieldName
             },
             {
-                calculate: `max(datum.lower_box_${continuousFieldName} - datum.iqr_${continuousFieldName} * ${extent}, datum.min_${continuousFieldName})`,
+                calculate: `max(datum["lower_box_${continuousFieldName}"] - datum["iqr_${continuousFieldName}"] * ${extent}, datum["min_${continuousFieldName}"])`,
                 as: 'lower_whisker_' + continuousFieldName
             }
         ];

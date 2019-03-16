@@ -1,3 +1,4 @@
+import { Model } from '../model';
 import { DataFlowNode } from './dataflow';
 import { BottomUpOptimizer, TopDownOptimizer } from './optimizer';
 import * as optimizers from './optimizers';
@@ -48,6 +49,7 @@ export declare class RemoveUnusedSubtrees extends BottomUpOptimizer {
 export declare class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
     private fields;
     run(node: DataFlowNode): OptimizerFlags;
+    reset(): void;
 }
 /**
  * Move facet nodes down to the next fork or output node. Also pull the main output with the facet node.
@@ -68,4 +70,12 @@ export declare class MergeParse extends BottomUpOptimizer {
 }
 export declare class MergeAggregateNodes extends BottomUpOptimizer {
     run(node: DataFlowNode): optimizers.OptimizerFlags;
+}
+/**
+ * Merge bin nodes and move bin nodes up through forks but stop at filters and parse as we want them to stay before the bin node.
+ */
+export declare class MergeBins extends BottomUpOptimizer {
+    private model;
+    constructor(model: Model);
+    run(node: DataFlowNode): OptimizerFlags;
 }

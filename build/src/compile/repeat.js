@@ -1,4 +1,4 @@
-import { isArray } from 'vega';
+import { isArray } from 'vega-util';
 import * as log from '../log';
 import { BaseConcatModel } from './baseconcat';
 import { buildModel } from './buildmodel';

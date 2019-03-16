@@ -9,7 +9,7 @@ import { contains, getFirstDefined, keys } from '../../util';
 import { VG_MARK_CONFIGS } from '../../vega.schema';
 import { getMarkConfig } from '../common';
 import { expression } from '../predicate';
-import { selectionPredicate } from '../selection/selection';
+import { assembleSelectionPredicate } from '../selection/assemble';
 import * as ref from './valueref';
 import { fieldInvalidPredicate } from './valueref';
 function isVisible(c) {
@@ -166,7 +166,9 @@ export function wrapCondition(model, channelDef, vgChannel, refFn) {
         const conditions = isArray(condition) ? condition : [condition];
         const vgConditions = conditions.map(c => {
             const conditionValueRef = refFn(c);
-            const test = isConditionalSelection(c) ? selectionPredicate(model, c.selection) : expression(model, c.test);
+            const test = isConditionalSelection(c)
+                ? assembleSelectionPredicate(model, c.selection)
+                : expression(model, c.test);
             return Object.assign({ test }, conditionValueRef);
         });
         return {
@@ -177,11 +179,11 @@ export function wrapCondition(model, channelDef, vgChannel, refFn) {
         return valueRef !== undefined ? { [vgChannel]: valueRef } : {};
     }
 }
-export function tooltip(model) {
+export function tooltip(model, opt = {}) {
     const { encoding, markDef, config } = model;
     const channelDef = encoding.tooltip;
     if (isArray(channelDef)) {
-        return { tooltip: ref.tooltipForEncoding({ tooltip: channelDef }, config) };
+        return { tooltip: ref.tooltipForEncoding({ tooltip: channelDef }, config, opt) };
     }
     else {
         return wrapCondition(model, channelDef, 'tooltip', cDef => {
@@ -202,7 +204,7 @@ export function tooltip(model) {
             else if (isObject(markTooltip)) {
                 // `tooltip` is `{fields: 'encodings' | 'fields'}`
                 if (markTooltip.content === 'encoding') {
-                    return ref.tooltipForEncoding(encoding, config);
+                    return ref.tooltipForEncoding(encoding, config, opt);
                 }
                 else {
                     return { signal: 'datum' };
@@ -247,7 +249,7 @@ export function bandPosition(fieldDef, channel, model) {
         [sizeChannel]: ref.bandRef(scaleName)
     };
 }
-export function centeredBandPosition(channel, model, defaultPosRef, defaultSizeRef) {
+export function centeredPointPositionWithSize(channel, model, defaultPosRef, defaultSizeRef) {
     const centerChannel = channel === 'x' ? 'xc' : 'yc';
     const sizeChannel = channel === 'x' ? 'width' : 'height';
     return Object.assign({}, pointPosition(channel, model, defaultPosRef, centerChannel), nonPosition('size', model, { defaultRef: defaultSizeRef, vgChannel: sizeChannel }));

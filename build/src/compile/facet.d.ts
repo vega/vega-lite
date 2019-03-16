@@ -37,6 +37,7 @@ export declare class FacetModel extends ModelWithField {
     private assembleFacet;
     private facetSortFields;
     private facetSortOrder;
+    private assembleLabelTitle;
     assembleMarks(): VgMarkGroup[];
     protected getMapping(): EncodingFacetMapping<string>;
 }

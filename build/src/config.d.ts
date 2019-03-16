@@ -1,6 +1,6 @@
 import { AxisConfigMixins } from './axis';
 import { CompositeMarkConfigMixins } from './compositemark';
-import { HeaderConfig } from './header';
+import { HeaderConfigMixins } from './header';
 import { LegendConfig } from './legend';
 import { MarkConfigMixins } from './mark';
 import { ProjectionConfig } from './projection';
@@ -112,7 +112,7 @@ export interface VLOnlyConfig {
 export interface StyleConfigIndex {
     [style: string]: BaseMarkConfig;
 }
-export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins, CompositionConfigMixins {
+export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins, HeaderConfigMixins, CompositionConfigMixins {
     /**
      * CSS color property to use as the background of the whole Vega-Lite view
      *
@@ -128,10 +128,6 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
      * Legend configuration, which determines default properties for all [legends](https://vega.github.io/vega-lite/docs/legend.html). For a full list of legend configuration options, please see the [corresponding section of in the legend documentation](https://vega.github.io/vega-lite/docs/legend.html#config).
      */
     legend?: LegendConfig;
-    /**
-     * Header configuration, which determines default properties for all [header](https://vega.github.io/vega-lite/docs/header.html). For a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config).
-     */
-    header?: HeaderConfig;
     /**
      * Title configuration, which determines default properties for all [titles](https://vega.github.io/vega-lite/docs/title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](https://vega.github.io/vega-lite/docs/title.html#config).
      */

@@ -192,7 +192,7 @@ export function midPoint({ channel, channelDef, channel2Def, scaleName, scale, s
     }
     return isFunction(defaultRef) ? defaultRef() : defaultRef;
 }
-export function tooltipForEncoding(encoding, config) {
+export function tooltipForEncoding(encoding, config, { reactiveGeom }) {
     const keyValues = [];
     const usedKey = {};
     function add(fieldDef, channel) {
@@ -201,7 +201,7 @@ export function tooltipForEncoding(encoding, config) {
             fieldDef = Object.assign({}, fieldDef, { type: encoding[mainChannel].type });
         }
         const key = title(fieldDef, config, { allowDisabling: false });
-        const value = text(fieldDef, config).signal;
+        const value = text(fieldDef, config, reactiveGeom ? 'datum.datum' : 'datum').signal;
         if (!usedKey[key]) {
             keyValues.push(`${stringValue(key)}: ${value}`);
         }
@@ -217,14 +217,14 @@ export function tooltipForEncoding(encoding, config) {
     });
     return keyValues.length ? { signal: `{${keyValues.join(', ')}}` } : undefined;
 }
-export function text(channelDef, config) {
+export function text(channelDef, config, expr = 'datum') {
     // text
     if (channelDef) {
         if (isValueDef(channelDef)) {
             return { value: channelDef.value };
         }
         if (isTypedFieldDef(channelDef)) {
-            return formatSignalRef(channelDef, format(channelDef), 'datum', config);
+            return formatSignalRef(channelDef, format(channelDef), expr, config);
         }
     }
     return undefined;

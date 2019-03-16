@@ -67,10 +67,12 @@ export interface MidPointParams {
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
 export declare function midPoint({ channel, channelDef, channel2Def, scaleName, scale, stack, offset, defaultRef }: MidPointParams): VgValueRef;
-export declare function tooltipForEncoding(encoding: Encoding<string>, config: Config): {
+export declare function tooltipForEncoding(encoding: Encoding<string>, config: Config, { reactiveGeom }: {
+    reactiveGeom?: boolean;
+}): {
     signal: string;
 };
-export declare function text(channelDef: ChannelDefWithCondition<FieldDef<string>, string | number | boolean>, config: Config): VgValueRef;
+export declare function text(channelDef: ChannelDefWithCondition<FieldDef<string>, string | number | boolean>, config: Config, expr?: 'datum' | 'datum.datum'): VgValueRef;
 export declare function mid(sizeRef: SignalRef): VgValueRef;
 export declare function positionDefault({ markDef, config, defaultRef, channel, scaleName, scale, mark, checkBarAreaWithoutZero: checkBarAreaWithZero }: {
     markDef: MarkDef;

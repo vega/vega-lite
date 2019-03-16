@@ -25,6 +25,7 @@ export declare const stringify: typeof stableStringify;
  * Converts any object to a string of limited size, or a number.
  */
 export declare function hash(a: any): string | number;
+export declare function isNullOrFalse(x: any): x is false | null;
 export declare function contains<T>(array: T[], item: T): boolean;
 /** Returns the array without the elements in item */
 export declare function without<T>(array: T[], excludedItems: T[]): T[];
@@ -101,7 +102,7 @@ export declare function accessPathWithDatum(path: string, datum?: string): strin
  * @param path The field name.
  * @param datum The string to use for `datum`.
  */
-export declare function flatAccessWithDatum(path: string, datum?: 'datum' | 'parent'): string;
+export declare function flatAccessWithDatum(path: string, datum?: 'datum' | 'parent' | 'datum.datum'): string;
 /**
  * Replaces path accesses with access to non-nested field.
  * For example, `foo["bar"].baz` becomes `foo\\.bar\\.baz`.
@@ -132,3 +133,7 @@ export declare function uniqueId(prefix?: string): string | number;
 export declare function resetIdCounter(): void;
 export declare function internalField(name: string): string;
 export declare function isInternalField(name: string): boolean;
+/**
+ * Normalize angle to be within [0,360).
+ */
+export declare function normalizeAngle(angle: number): number;

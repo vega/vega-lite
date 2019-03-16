@@ -8,7 +8,7 @@ import { assembleLayoutSignals } from './layoutsize/assemble';
 import { parseLayerLayoutSize } from './layoutsize/parse';
 import { assembleLegends } from './legend/assemble';
 import { Model } from './model';
-import { assembleLayerSelectionMarks } from './selection/selection';
+import { assembleLayerSelectionMarks } from './selection/assemble';
 import { UnitModel } from './unit';
 export class LayerModel extends Model {
     constructor(spec, parent, parentGivenName, parentGivenSize, repeater, config, fit) {

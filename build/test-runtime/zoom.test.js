@@ -11,7 +11,7 @@ function zoom(key, idx, direction, parent, targetBrush) {
 }
 const cmp = (a, b) => a - b;
 for (const bind of [bound, unbound]) {
-    describe(`Zoom ${bind} interval selections at runtime`, () => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    describe(`Zoom ${bind} interval selections at runtime`, () => {
         beforeAll(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
             yield page.goto('http://0.0.0.0:8000/test-runtime/');
         }));
@@ -147,6 +147,6 @@ for (const bind of [bound, unbound]) {
                 }));
             }
         }
-    }));
+    });
 }
 //# sourceMappingURL=zoom.test.js.map

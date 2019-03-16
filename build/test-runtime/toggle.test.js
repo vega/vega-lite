@@ -12,7 +12,7 @@ function toggle(key, idx, shiftKey, parent) {
     const fn = key.match('_clear') ? 'clear' : 'pt';
     return `${fn}(${hits[key][idx]}, ${stringValue(parent)}, ${!!shiftKey})`;
 }
-describe('Toggle multi selections at runtime', () => tslib_1.__awaiter(this, void 0, void 0, function* () {
+describe('Toggle multi selections at runtime', () => {
     beforeAll(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
         yield page.goto('http://0.0.0.0:8000/test-runtime/');
     }));
@@ -84,5 +84,5 @@ describe('Toggle multi selections at runtime', () => tslib_1.__awaiter(this, voi
             }
         }));
     });
-}));
+});
 //# sourceMappingURL=toggle.test.js.map

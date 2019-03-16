@@ -1,8 +1,8 @@
-import { Align, Axis as VgAxis, AxisOrient, BaseAxis, FontStyle, FontWeight, LabelOverlap, TextBaseline } from 'vega';
+import { Align, Axis as VgAxis, AxisOrient, BaseAxis, FontStyle, FontWeight, LabelOverlap, TextBaseline, TitleAnchor } from 'vega';
 import { DateTime } from './datetime';
 import { Guide, GuideEncodingEntry, VlOnlyGuideConfig } from './guide';
 import { Color, LayoutAlign } from './vega.schema';
-declare type BaseAxisNoSignals = AxisMixins & BaseAxis<number, number, boolean, number | boolean, string, Color, FontWeight, FontStyle, Align, TextBaseline, LayoutAlign, LabelOverlap, number[]>;
+declare type BaseAxisNoSignals = AxisMixins & BaseAxis<number, number, boolean, number | boolean, string, Color, FontWeight, FontStyle, Align, TextBaseline, LayoutAlign, LabelOverlap, number[], TitleAnchor>;
 declare type VgAxisConfigNoSignals = BaseAxisNoSignals;
 interface AxisMixins {
     /**
@@ -24,14 +24,16 @@ interface AxisMixins {
      */
     labelOverlap?: LabelOverlap;
 }
-export declare type AxisConfig = VgAxisConfigNoSignals & VlOnlyGuideConfig;
-export interface Axis extends BaseAxisNoSignals, Guide {
+export interface AxisOrientMixins {
     /**
-     * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
+     * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y-axis oriented towards the right edge of the chart).
      *
      * __Default value:__ `"bottom"` for x-axes and `"left"` for y-axes.
      */
     orient?: AxisOrient;
+}
+export declare type AxisConfig = VgAxisConfigNoSignals & VlOnlyGuideConfig & AxisOrientMixins;
+export interface Axis extends AxisOrientMixins, BaseAxisNoSignals, Guide {
     /**
      * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
      *
@@ -115,8 +117,8 @@ export interface AxisEncoding {
     title?: GuideEncodingEntry;
 }
 export declare function isAxisProperty(prop: string): prop is keyof Axis;
-export declare const VG_AXIS_PROPERTIES: ("title" | "domain" | "values" | "format" | "orient" | "ticks" | "tickCount" | "tickMinStep" | "zindex" | "encode" | "offset" | "titleAlign" | "titleAnchor" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontStyle" | "titleFontWeight" | "titleLimit" | "titleOpacity" | "titlePadding" | "labelAlign" | "labelBaseline" | "labelColor" | "labelFont" | "labelFontSize" | "labelFontStyle" | "labelFontWeight" | "labelLimit" | "labelOpacity" | "labelPadding" | "labelOverlap" | "labelSeparation" | "titleAngle" | "labelAngle" | "scale" | "grid" | "labels" | "gridScale" | "position" | "minExtent" | "maxExtent" | "bandPosition" | "titleX" | "titleY" | "domainDash" | "domainDashOffset" | "domainColor" | "domainOpacity" | "domainWidth" | "tickColor" | "tickDash" | "tickDashOffset" | "tickExtra" | "tickOffset" | "tickOpacity" | "tickRound" | "tickSize" | "tickWidth" | "gridColor" | "gridDash" | "gridDashOffset" | "gridOpacity" | "gridWidth" | "labelBound" | "labelFlush" | "labelFlushOffset")[];
-export declare const AXIS_PROPERTIES: ("title" | "domain" | "values" | "format" | "encoding" | "orient" | "ticks" | "tickCount" | "tickMinStep" | "zindex" | "offset" | "titleAlign" | "titleAnchor" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontStyle" | "titleFontWeight" | "titleLimit" | "titleOpacity" | "titlePadding" | "labelAlign" | "labelBaseline" | "labelColor" | "labelFont" | "labelFontSize" | "labelFontStyle" | "labelFontWeight" | "labelLimit" | "labelOpacity" | "labelPadding" | "labelOverlap" | "labelSeparation" | "titleAngle" | "labelAngle" | "grid" | "labels" | "position" | "minExtent" | "maxExtent" | "bandPosition" | "titleX" | "titleY" | "domainDash" | "domainDashOffset" | "domainColor" | "domainOpacity" | "domainWidth" | "tickColor" | "tickDash" | "tickDashOffset" | "tickExtra" | "tickOffset" | "tickOpacity" | "tickRound" | "tickSize" | "tickWidth" | "gridColor" | "gridDash" | "gridDashOffset" | "gridOpacity" | "gridWidth" | "labelBound" | "labelFlush" | "labelFlushOffset")[];
+export declare const VG_AXIS_PROPERTIES: ("title" | "domain" | "values" | "format" | "orient" | "ticks" | "formatType" | "tickCount" | "tickMinStep" | "zindex" | "encode" | "offset" | "titleAlign" | "titleAnchor" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontStyle" | "titleFontWeight" | "titleLimit" | "titleOpacity" | "titlePadding" | "labelAlign" | "labelBaseline" | "labelColor" | "labelFont" | "labelFontSize" | "labelFontStyle" | "labelFontWeight" | "labelLimit" | "labelOpacity" | "labelPadding" | "labelOverlap" | "labelSeparation" | "titleAngle" | "labelAngle" | "scale" | "grid" | "labels" | "gridScale" | "position" | "minExtent" | "maxExtent" | "bandPosition" | "titleX" | "titleY" | "domainDash" | "domainDashOffset" | "domainColor" | "domainOpacity" | "domainWidth" | "tickColor" | "tickDash" | "tickDashOffset" | "tickExtra" | "tickOffset" | "tickOpacity" | "tickRound" | "tickSize" | "tickWidth" | "gridColor" | "gridDash" | "gridDashOffset" | "gridOpacity" | "gridWidth" | "labelBound" | "labelFlush" | "labelFlushOffset")[];
+export declare const AXIS_PROPERTIES: ("title" | "domain" | "values" | "format" | "encoding" | "orient" | "ticks" | "formatType" | "tickCount" | "tickMinStep" | "zindex" | "offset" | "titleAlign" | "titleAnchor" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontStyle" | "titleFontWeight" | "titleLimit" | "titleOpacity" | "titlePadding" | "labelAlign" | "labelBaseline" | "labelColor" | "labelFont" | "labelFontSize" | "labelFontStyle" | "labelFontWeight" | "labelLimit" | "labelOpacity" | "labelPadding" | "labelOverlap" | "labelSeparation" | "titleAngle" | "labelAngle" | "grid" | "labels" | "position" | "minExtent" | "maxExtent" | "bandPosition" | "titleX" | "titleY" | "domainDash" | "domainDashOffset" | "domainColor" | "domainOpacity" | "domainWidth" | "tickColor" | "tickDash" | "tickDashOffset" | "tickExtra" | "tickOffset" | "tickOpacity" | "tickRound" | "tickSize" | "tickWidth" | "gridColor" | "gridDash" | "gridDashOffset" | "gridOpacity" | "gridWidth" | "labelBound" | "labelFlush" | "labelFlushOffset")[];
 export interface AxisConfigMixins {
     /**
      * Axis configuration, which determines default properties for all `x` and `y` [axes](https://vega.github.io/vega-lite/docs/axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](https://vega.github.io/vega-lite/docs/axis.html#config).

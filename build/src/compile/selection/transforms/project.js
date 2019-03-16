@@ -1,26 +1,69 @@
+import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
+import { isSingleDefUnitChannel } from '../../../channel';
 import * as log from '../../../log';
 import { hasContinuousDomain } from '../../../scale';
 import { isIntervalSelection } from '../../../selection';
-import { keys } from '../../../util';
+import { keys, varName } from '../../../util';
 import { TimeUnitNode } from '../../data/timeunit';
-import { TUPLE } from '../selection';
 import scales from './scales';
-export const TUPLE_FIELDS = '_fields';
+export const TUPLE_FIELDS = '_tuple_fields';
+export class SelectionProjectionComponent extends Array {
+    constructor(...items) {
+        super(...items);
+        this.__proto__ = SelectionProjectionComponent.prototype;
+        this.has = {};
+    }
+}
 const project = {
     has: (selDef) => {
-        const def = selDef;
-        return def.fields !== undefined || def.encodings !== undefined;
+        return true; // This transform handles its own defaults, so always run parse.
     },
     parse: (model, selDef, selCmpt) => {
+        const name = selCmpt.name;
+        const proj = selCmpt.project || (selCmpt.project = new SelectionProjectionComponent());
+        const parsed = {};
         const timeUnits = {};
-        const f = {};
-        // Selection component may already have a projection from the config. (Interval selection will have `encodings: ['x', 'y'].)
-        const proj = selCmpt.project || (selCmpt.project = []);
-        selCmpt.fields = {};
+        const signals = {};
+        const signalName = (p, range) => {
+            const suffix = range === 'visual' ? p.channel : p.field;
+            let sg = varName(`${name}_${suffix}`);
+            for (let counter = 1; signals[sg]; counter++) {
+                sg = varName(`${name}_${suffix}_${counter}`);
+            }
+            return { [range]: signals[sg] = sg };
+        };
+        // If no explicit projection (either fields or encodings) is specified, set some defaults.
+        // If an initial value is set, try to infer projections.
+        // Otherwise, use the default configuration.
+        if (!selDef.fields && !selDef.encodings) {
+            const cfg = model.config.selection[selDef.type];
+            if (selDef.init) {
+                for (const key of keys(selDef.init)) {
+                    if (isSingleDefUnitChannel(key)) {
+                        (selDef.encodings || (selDef.encodings = [])).push(key);
+                    }
+                    else {
+                        if (isIntervalSelection(selDef)) {
+                            log.warn('Interval selections should be initialized using "x" and/or "y" keys.');
+                            selDef.encodings = cfg.encodings;
+                        }
+                        else {
+                            (selDef.fields || (selDef.fields = [])).push(key);
+                        }
+                    }
+                }
+            }
+            else {
+                selDef.encodings = cfg.encodings;
+                selDef.fields = cfg.fields;
+            }
+        }
         // TODO: find a possible channel mapping for these fields.
-        if (selDef.fields) {
-            proj.push(...selDef.fields.map(field => ({ field, type: 'E' })));
+        for (const field of selDef.fields || []) {
+            const p = { type: 'E', field };
+            p.signals = Object.assign({}, signalName(p, 'data'));
+            proj.push(p);
         }
         for (const channel of selDef.encodings || []) {
             const fieldDef = model.fieldDef(channel);
@@ -40,7 +83,7 @@ const project = {
                 }
                 // Prevent duplicate projections on the same field.
                 // TODO: what if the same field is bound to multiple channels (e.g., SPLOM diag).
-                if (!f[field]) {
+                if (!parsed[field]) {
                     // Determine whether the tuple will store enumerated or ranged values.
                     // Interval selections store ranges for continuous scales, and enumerations otherwise.
                     // Single/multi selections store ranges for binned fields, and enumerations otherwise.
@@ -54,9 +97,11 @@ const project = {
                     else if (fieldDef.bin) {
                         type = 'R-RE';
                     }
-                    proj.push((f[field] = { field, channel, type }));
+                    const p = { field, channel, type };
+                    p.signals = Object.assign({}, signalName(p, 'data'), signalName(p, 'visual'));
+                    proj.push((parsed[field] = p));
+                    proj.has[channel] = parsed[field];
                 }
-                selCmpt.fields[channel] = field;
             }
             else {
                 log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
@@ -80,17 +125,20 @@ const project = {
             }
         }
         if (keys(timeUnits).length) {
-            selCmpt.timeUnit = new TimeUnitNode(null, timeUnits);
+            proj.timeUnit = new TimeUnitNode(null, timeUnits);
         }
     },
-    signals: (model, selCmpt, signals) => {
-        const name = selCmpt.name + TUPLE + TUPLE_FIELDS;
-        const hasSignal = signals.filter(s => s.name === name);
+    signals: (model, selCmpt, allSignals) => {
+        const name = selCmpt.name + TUPLE_FIELDS;
+        const hasSignal = allSignals.filter(s => s.name === name);
         return hasSignal.length
-            ? signals
-            : signals.concat({
+            ? allSignals
+            : allSignals.concat({
                 name,
-                value: selCmpt.project
+                value: selCmpt.project.map(proj => {
+                    const { signals } = proj, rest = tslib_1.__rest(proj, ["signals"]);
+                    return rest;
+                })
             });
     }
 };

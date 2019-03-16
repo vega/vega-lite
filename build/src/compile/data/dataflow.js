@@ -39,11 +39,13 @@ export class DataFlowNode {
         return this._parent;
     }
     /**
-     * Set the parent of the node and also add this not to the parent's children.
+     * Set the parent of the node and also add this node to the parent's children.
      */
     set parent(parent) {
         this._parent = parent;
-        parent.addChild(this);
+        if (parent) {
+            parent.addChild(this);
+        }
     }
     get children() {
         return this._children;

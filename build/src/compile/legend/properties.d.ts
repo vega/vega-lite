@@ -2,12 +2,14 @@ import { LabelOverlap, LegendType } from 'vega';
 import { Channel } from '../../channel';
 import { TypedFieldDef } from '../../fielddef';
 import { Legend, LegendConfig } from '../../legend';
+import { Mark } from '../../mark';
 import { ScaleType } from '../../scale';
 import { TimeUnit } from '../../timeunit';
 import { Model } from '../model';
 export declare function values(legend: Legend, fieldDef: TypedFieldDef<string>): (string | number | boolean | import("../../datetime").DateTime | {
     signal: string;
 })[];
+export declare function defaultSymbolType(mark: Mark): "circle" | "stroke";
 export declare function clipHeight(legendType: LegendType): number;
 export declare function type(params: {
     legend: Legend;

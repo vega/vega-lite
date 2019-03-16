@@ -44,7 +44,7 @@ describe('compile/data/optimize', () => {
             const outputOne = new OutputNode(parseOne, 'foo', null, { foo: 1 });
             // @ts-ignore
             const outputTwo = new OutputNode(parseTwo, 'bar', null, { bar: 1 });
-            optimizeDataflow({ sources: [source] });
+            optimizeDataflow({ sources: [source] }, null);
             expect(source.children).toHaveLength(1);
             expect(source.children[0]).toBeInstanceOf(ParseNode);
             const commonParse = source.children[0];
@@ -64,7 +64,7 @@ describe('compile/data/optimize', () => {
             const outputOne = new OutputNode(parseOne, 'foo', null, { foo: 1 });
             // @ts-ignore
             const outputTwo = new OutputNode(parseThree, 'bar', null, { bar: 1 });
-            optimizeDataflow({ sources: [source] });
+            optimizeDataflow({ sources: [source] }, null);
             expect(source.children).toHaveLength(1);
             expect(source.children[0]).toBeInstanceOf(ParseNode);
             const commonParse = source.children[0];

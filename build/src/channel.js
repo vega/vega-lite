@@ -64,6 +64,28 @@ export const STROKEOPACITY = Channel.STROKEOPACITY;
 export const STROKEWIDTH = Channel.STROKEWIDTH;
 export const TOOLTIP = Channel.TOOLTIP;
 export const HREF = Channel.HREF;
+export function isGeoPositionChannel(c) {
+    switch (c) {
+        case LATITUDE:
+        case LATITUDE2:
+        case LONGITUDE:
+        case LONGITUDE2:
+            return true;
+    }
+    return false;
+}
+export function getPositionChannelFromLatLong(channel) {
+    switch (channel) {
+        case LATITUDE:
+            return 'y';
+        case LATITUDE2:
+            return 'y2';
+        case LONGITUDE:
+            return 'x';
+        case LONGITUDE2:
+            return 'x2';
+    }
+}
 export const GEOPOSITION_CHANNEL_INDEX = {
     longitude: 1,
     longitude2: 1,
@@ -92,6 +114,7 @@ export const FACET_CHANNELS = flagKeys(FACET_CHANNEL_INDEX);
 const CHANNEL_INDEX = Object.assign({}, UNIT_CHANNEL_INDEX, FACET_CHANNEL_INDEX);
 export const CHANNELS = flagKeys(CHANNEL_INDEX);
 const { order: _o, detail: _d } = CHANNEL_INDEX, SINGLE_DEF_CHANNEL_INDEX = tslib_1.__rest(CHANNEL_INDEX, ["order", "detail"]);
+const { order: _o1, detail: _d1, row: _r, column: _c, facet: _f } = CHANNEL_INDEX, SINGLE_DEF_UNIT_CHANNEL_INDEX = tslib_1.__rest(CHANNEL_INDEX, ["order", "detail", "row", "column", "facet"]);
 /**
  * Channels that cannot have an array of channelDef.
  * model.fieldDef, getFieldDef only work for these channels.
@@ -101,6 +124,10 @@ const { order: _o, detail: _d } = CHANNEL_INDEX, SINGLE_DEF_CHANNEL_INDEX = tsli
  * are not applicable for them.  Similarly, selection projection won't work with "detail" and "order".)
  */
 export const SINGLE_DEF_CHANNELS = flagKeys(SINGLE_DEF_CHANNEL_INDEX);
+export const SINGLE_DEF_UNIT_CHANNELS = flagKeys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
+export function isSingleDefUnitChannel(str) {
+    return !!SINGLE_DEF_UNIT_CHANNEL_INDEX[str];
+}
 export function isChannel(str) {
     return !!CHANNEL_INDEX[str];
 }

@@ -1,5 +1,6 @@
 /* tslint:disable quotemark */
-import * as selection from '../../../src/compile/selection/selection';
+import { unitName } from '../../../src/compile/selection';
+import { assembleFacetSignals } from '../../../src/compile/selection/assemble';
 import { parseModel } from '../../util';
 describe('Faceted Selections', () => {
     const model = parseModel({
@@ -31,7 +32,7 @@ describe('Faceted Selections', () => {
     model.parse();
     const unit = model.children[0].children[1];
     it('should assemble a facet signal', () => {
-        expect(selection.assembleFacetSignals(model, [])).toContainEqual({
+        expect(assembleFacetSignals(model, [])).toContainEqual({
             name: 'facet',
             value: {},
             on: [
@@ -43,7 +44,7 @@ describe('Faceted Selections', () => {
         });
     });
     it('should name the unit with the facet keys', () => {
-        expect(selection.unitName(unit)).toEqual(`"child_layer_1" + '__facet_row_' + (facet["bin_maxbins_6_X"]) + '__facet_column_' + (facet["Series"])`);
+        expect(unitName(unit)).toEqual(`"child_layer_1" + '__facet_row_' + (facet["bin_maxbins_6_X"]) + '__facet_column_' + (facet["Series"])`);
     });
 });
 //# sourceMappingURL=facets.test.js.map
