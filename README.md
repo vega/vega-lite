@@ -1,6 +1,6 @@
 <p align="center">
    <a href="https://vega.github.io/vega-lite/">
-      <img src="https://github.com/vega/logos/blob/master/assets/VL%20Color@4x.png?raw=true" width=220></img>
+      <img src="https://github.com/vega/logos/blob/master/assets/VL_Color@512.png?raw=true" width=220></img>
    </a>
 </p>
 
