@@ -1,4 +1,5 @@
 import {Axis as VgAxis, AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 'vega';
+import {isObject} from 'vega-util';
 import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
@@ -250,7 +251,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   });
 
   // 2) Add guide encode definition groups
-  const axisEncoding = axis.encoding || {};
+
   const axisEncode = AXIS_PARTS.reduce(
     (e: VgAxisEncode, part) => {
       if (!axisComponent.hasAxisPart(part)) {
@@ -258,7 +259,9 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
         return e;
       }
 
-      const axisEncodingPart = guideEncodeEntry(axisEncoding[part] || {}, model);
+      const axisPart = axis[part];
+
+      const axisEncodingPart = guideEncodeEntry(isObject(axisPart) ? axisPart : {}, model);
 
       const value = part === 'labels' ? encode.labels(model, channel, axisEncodingPart) : axisEncodingPart;
 

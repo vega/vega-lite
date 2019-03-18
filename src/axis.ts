@@ -11,7 +11,7 @@ import {
 } from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {Flag, flagKeys} from './util';
+import {Flag, flagKeys, Omit} from './util';
 import {Color, LayoutAlign} from './vega.schema';
 
 type BaseAxisNoSignals = AxisMixins &
@@ -70,7 +70,12 @@ export interface AxisOrientMixins {
 
 export type AxisConfig = VgAxisConfigNoSignals & VlOnlyGuideConfig & AxisOrientMixins;
 
-export interface Axis extends AxisOrientMixins, BaseAxisNoSignals, Guide {
+export interface Axis
+  extends AxisOrientMixins,
+    // FIXME what about 'axis'
+    Omit<BaseAxisNoSignals, 'domain' | 'grid' | 'labels' | 'ticks'>,
+    Omit<Guide, 'title'>,
+    AxisEncodingMixins {
   /**
    * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
    *
@@ -116,16 +121,9 @@ export interface Axis extends AxisOrientMixins, BaseAxisNoSignals, Guide {
    * @minimum 0
    */
   zindex?: number;
-
-  /**
-   * Mark definitions for custom axis encoding.
-   *
-   * @hide
-   */
-  encoding?: AxisEncoding;
 }
 
-export type AxisPart = keyof AxisEncoding;
+export type AxisPart = keyof AxisEncodingMixins;
 export const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
 
 /**
@@ -199,39 +197,39 @@ export const AXIS_PROPERTY_TYPE: {
   zindex: 'both' // this is actually set afterward, so it doesn't matter
 };
 
-export interface AxisEncoding {
+export interface AxisEncodingMixins {
   /**
    * Custom encoding for the axis container.
    */
-  axis?: GuideEncodingEntry;
+  axis?: boolean | GuideEncodingEntry;
 
   /**
    * Custom encoding for the axis domain rule mark.
    */
-  domain?: GuideEncodingEntry;
+  domain?: boolean | GuideEncodingEntry;
 
   /**
    * Custom encoding for axis gridline rule marks.
    */
-  grid?: GuideEncodingEntry;
+  grid?: boolean | GuideEncodingEntry;
 
   /**
    * Custom encoding for axis label text marks.
    */
-  labels?: GuideEncodingEntry;
+  labels?: boolean | GuideEncodingEntry;
 
   /**
    * Custom encoding for axis tick rule marks.
    */
-  ticks?: GuideEncodingEntry;
+  ticks?: boolean | GuideEncodingEntry;
 
   /**
    * Custom encoding for the axis title text mark.
    */
-  title?: GuideEncodingEntry;
+  title?: string | null | GuideEncodingEntry;
 }
 
-const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
+const AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   orient: 1, // other things can depend on orient
 
   bandPosition: 1,
@@ -301,15 +299,10 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   zindex: 1
 };
 
-const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
-  ...COMMON_AXIS_PROPERTIES_INDEX,
-  encoding: 1
-};
-
 const VG_AXIS_PROPERTIES_INDEX: Flag<keyof VgAxis> = {
   gridScale: 1,
   scale: 1,
-  ...COMMON_AXIS_PROPERTIES_INDEX,
+  ...AXIS_PROPERTIES_INDEX,
   encode: 1
 };
 
