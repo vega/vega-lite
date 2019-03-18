@@ -49,6 +49,8 @@ export interface Projection {
   ratio?: number;
   spacing?: number;
   tilt?: number;
+  reflectX?: boolean;
+  reflectY?: boolean;
 }
 
 /**
@@ -71,5 +73,7 @@ export const PROJECTION_PROPERTIES: (keyof Projection)[] = [
   'radius',
   'ratio',
   'spacing',
-  'tilt'
+  'tilt',
+  'reflectX',
+  'reflectY'
 ];
