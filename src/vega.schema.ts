@@ -172,6 +172,8 @@ export interface VgProjection {
   ratio?: number;
   spacing?: number;
   tilt?: number;
+  reflectX?: boolean;
+  reflectY?: boolean;  
 }
 
 // TODO: Eventually migrate to Vega-typings and make Vega typings take generic SR that can allow us to replace SignalRef with SignalComponent
