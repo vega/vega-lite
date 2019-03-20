@@ -70,7 +70,7 @@
     "@types/jest-environment-puppeteer": "^4.0.0",
     "@types/jest": "^24.0.11",
     "@types/mkdirp": "^0.5.2",
-    "@types/node": "^11.11.3",
+    "@types/node": "^11.11.4",
     "@types/puppeteer": "^1.12.3",
     "ajv": "^6.10.0",
     "chai": "^4.2.0",
@@ -85,7 +85,7 @@
     "mkdirp": "^0.5.1",
     "prettier": "^1.16.4",
     "puppeteer": "^1.13.0",
-    "rollup": "^1.6.0",
+    "rollup": "^1.7.0",
     "rollup-plugin-commonjs": "^9.2.1",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^4.0.1",
@@ -96,13 +96,13 @@
     "ts-json-schema-generator": "^0.40.0",
     "tslint": "5.14.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.3.3333",
-    "vega-cli": "^5.3.0",
-    "vega-datasets": "^1.22.0",
+    "typescript": "^3.3.4000",
+    "vega-cli": "^5.3.1",
+    "vega-datasets": "^1.23.0",
     "vega-embed": "^4.0.0-rc1",
     "vega-tooltip": "^0.16.0",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3",
+    "webpack-cli": "^3.3.0",
     "yaml-front-matter": "^4.0.0"
   },
   "dependencies": {
@@ -114,12 +114,12 @@
     "tslib": "~1.9.3",
     "vega-event-selector": "~2.0.0",
     "vega-expression": "~2.6.0",
-    "vega-typings": "0.6.1",
+    "vega-typings": "0.6.2",
     "vega-util": "~1.10.0",
     "yargs": "~13.2.2"
   },
   "peerDependencies": {
-    "vega": "^5.3.0"
+    "vega": "^5.3.1"
   },
   "jest": {
     "preset": "jest-puppeteer",
