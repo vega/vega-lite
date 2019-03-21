@@ -43,7 +43,8 @@
         {
           "events": [{"source": "scope", "type": "click"}],
           "update": "event.shiftKey"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {

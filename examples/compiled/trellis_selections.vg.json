@@ -182,6 +182,10 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, child_width)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
             }
           ]
         },
@@ -411,7 +415,13 @@
         },
         {
           "name": "xenc_tuple",
-          "update": "xenc_X !== null ? {fields: xenc_tuple_fields, values: [xenc_X]} : null"
+          "update": "xenc_X !== null ? {fields: xenc_tuple_fields, values: [xenc_X]} : null",
+          "on": [
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            }
+          ]
         },
         {"name": "xenc_tuple_fields", "value": [{"type": "E", "field": "X"}]},
         {

@@ -48,7 +48,8 @@
         {
           "events": [{"source": "scope", "type": "click"}],
           "update": "event.altKey && event.shiftKey"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {

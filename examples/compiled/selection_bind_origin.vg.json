@@ -31,7 +31,10 @@
     {"name": "org", "update": "vlSelectionResolve(\"org_store\")"},
     {
       "name": "org_tuple",
-      "update": "org_Origin !== null ? {fields: org_tuple_fields, values: [org_Origin]} : null"
+      "update": "org_Origin !== null ? {fields: org_tuple_fields, values: [org_Origin]} : null",
+      "on": [
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+      ]
     },
     {"name": "org_tuple_fields", "value": [{"type": "E", "field": "Origin"}]},
     {"name": "org_modify", "update": "modify(\"org_store\", org_tuple, true)"}
