@@ -21,7 +21,7 @@ export interface TransformCompiler {
   marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
 }
 
-const compilers: Array<TransformCompiler> = [project, toggle, scales, translate, zoom, inputs, nearest, clear];
+const compilers: TransformCompiler[] = [project, toggle, scales, translate, zoom, inputs, nearest, clear];
 
 export function forEachTransform(selCmpt: SelectionComponent, cb: (tx: TransformCompiler) => void) {
   for (const t of compilers) {

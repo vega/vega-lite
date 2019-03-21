@@ -19,15 +19,18 @@ describe('Inputs Selection Transform', () => {
   const selCmpts = parseUnitSelection(model, {
     one: {
       type: 'single',
+      clear: false,
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     two: {
       type: 'single',
+      clear: false,
       fields: ['Cylinders', 'Horsepower'],
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     three: {
       type: 'single',
+      clear: false,
       nearest: true,
       fields: ['Cylinders', 'Origin'],
       bind: {
@@ -37,14 +40,17 @@ describe('Inputs Selection Transform', () => {
     },
     four: {
       type: 'single',
+      clear: false,
       bind: null
     },
     six: {
       type: 'interval',
+      clear: false,
       bind: 'scales'
     },
     seven: {
       type: 'single',
+      clear: false,
       fields: ['Year'],
       bind: {
         Year: {input: 'range', min: 1970, max: 1980, step: 1}

@@ -17,18 +17,19 @@ describe('Toggle Selection Transform', () => {
 
   model.parseScale();
   const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'multi'},
+    one: {type: 'multi', clear: false},
     two: {
       type: 'multi',
       resolve: 'union',
       on: 'mouseover',
+      clear: false,
       toggle: 'event.ctrlKey',
       encodings: ['y', 'color']
     },
-    three: {type: 'multi', toggle: false},
-    four: {type: 'multi', toggle: null},
-    five: {type: 'single'},
-    six: {type: 'interval'}
+    three: {type: 'multi', clear: false, toggle: false},
+    four: {type: 'multi', clear: false, toggle: null},
+    five: {type: 'single', clear: false},
+    six: {type: 'interval', clear: false}
   }));
 
   it('identifies transform invocation', () => {

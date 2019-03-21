@@ -1,5 +1,6 @@
 /* tslint:disable quotemark */
 
+import {selector as parseSelector} from 'vega-event-selector';
 import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import interval from '../../../src/compile/selection/interval';
 import multi from '../../../src/compile/selection/multi';
@@ -8,7 +9,7 @@ import single from '../../../src/compile/selection/single';
 import clear from '../../../src/compile/selection/transforms/clear';
 import {parseUnitModel} from '../../util';
 
-describe('Clear Selection Transform', () => {
+describe('Clear selection transform, single and multi types', () => {
   const model = parseUnitModel({
     mark: 'circle',
     encoding: {
@@ -20,18 +21,12 @@ describe('Clear Selection Transform', () => {
 
   model.parseScale();
   const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'single', clear: true},
+    one: {type: 'single'},
     two: {type: 'multi'},
-    three: {type: 'interval', encodings: ['x']},
-    four: {type: 'single', clear: 'mouseout'},
-    five: {type: 'multi', clear: 'mouseout'},
-    six: {type: 'interval', encodings: ['x'], clear: 'mouseout'},
-    seven: {type: 'single'},
-    eight: {type: 'multi', clear: false},
-    nine: {type: 'interval', encodings: ['x'], clear: false},
-    ten: {type: 'single', clear: null},
-    eleven: {type: 'multi', clear: null},
-    twelve: {type: 'interval', encodings: ['x'], clear: null}
+    three: {type: 'single', clear: 'mouseout'},
+    four: {type: 'multi', clear: 'mouseout'},
+    five: {type: 'single', clear: false},
+    six: {type: 'multi', clear: false}
   }));
 
   it('identifies transform invocation', () => {
@@ -39,17 +34,11 @@ describe('Clear Selection Transform', () => {
     expect(clear.has(selCmpts['two'])).toBeTruthy();
     expect(clear.has(selCmpts['three'])).toBeTruthy();
     expect(clear.has(selCmpts['four'])).toBeTruthy();
-    expect(clear.has(selCmpts['five'])).toBeTruthy();
-    expect(clear.has(selCmpts['six'])).toBeTruthy();
-    expect(clear.has(selCmpts['seven'])).toBeFalsy();
-    expect(clear.has(selCmpts['eight'])).toBeFalsy();
-    expect(clear.has(selCmpts['nine'])).toBeFalsy();
-    expect(clear.has(selCmpts['ten'])).toBeFalsy();
-    expect(clear.has(selCmpts['eleven'])).toBeFalsy();
-    expect(clear.has(selCmpts['twelve'])).toBeFalsy();
+    expect(clear.has(selCmpts['five'])).toBeFalsy();
+    expect(clear.has(selCmpts['six'])).toBeFalsy();
   });
 
-  it('builds clear signals', () => {
+  it('appends clear transform', () => {
     const singleOneSg = single.signals(model, selCmpts['one']);
     const oneSg = clear.signals(model, selCmpts['one'], singleOneSg);
     expect(oneSg).toEqual([
@@ -62,7 +51,7 @@ describe('Clear Selection Transform', () => {
               'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: one_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
             force: true
           },
-          {events: [{source: 'scope', type: selCmpts['one'].clear}], update: 'null'}
+          {events: parseSelector(selCmpts['one'].clear, 'scope'), update: 'null'}
         ]
       }
     ]);
@@ -79,26 +68,30 @@ describe('Clear Selection Transform', () => {
               'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: two_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
             force: true
           },
-          {events: [{source: 'scope', type: selCmpts['two'].clear}], update: 'null'}
+          {events: parseSelector(selCmpts['two'].clear, 'scope'), update: 'null'}
         ]
       }
     ]);
 
-    const intervalThreeSg = interval.signals(model, selCmpts['three']);
-    const threeSg = clear.signals(model, selCmpts['three'], intervalThreeSg);
-    expect(threeSg).toContainEqual({
-      name: 'three_tuple',
-      on: [
-        {
-          events: [{signal: 'three_Horsepower'}],
-          update: 'three_Horsepower ? {unit: "", fields: three_tuple_fields, values: [three_Horsepower]} : null'
-        },
-        {events: [{source: 'scope', type: selCmpts['three'].clear}], update: 'null'}
-      ]
-    });
+    const singleThreeSg = single.signals(model, selCmpts['three']);
+    const threeSg = clear.signals(model, selCmpts['three'], singleThreeSg);
+    expect(threeSg).toEqual([
+      {
+        name: 'three_tuple',
+        on: [
+          {
+            events: selCmpts['three'].events,
+            update:
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: three_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
+            force: true
+          },
+          {events: parseSelector(selCmpts['three'].clear, 'scope'), update: 'null'}
+        ]
+      }
+    ]);
 
-    const singleFourSg = single.signals(model, selCmpts['four']);
-    const fourSg = clear.signals(model, selCmpts['four'], singleFourSg);
+    const multiFourSg = multi.signals(model, selCmpts['four']);
+    const fourSg = clear.signals(model, selCmpts['four'], multiFourSg);
     expect(fourSg).toEqual([
       {
         name: 'four_tuple',
@@ -109,42 +102,98 @@ describe('Clear Selection Transform', () => {
               'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: four_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
             force: true
           },
-          {events: [{source: 'scope', type: selCmpts['four'].clear}], update: 'null'}
+          {events: parseSelector(selCmpts['four'].clear, 'scope'), update: 'null'}
         ]
       }
     ]);
-
-    const multiFiveSg = multi.signals(model, selCmpts['five']);
-    const fiveSg = clear.signals(model, selCmpts['five'], multiFiveSg);
-    expect(fiveSg).toEqual([
-      {
-        name: 'five_tuple',
-        on: [
-          {
-            events: selCmpts['five'].events,
-            update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: five_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
-            force: true
-          },
-          {events: [{source: 'scope', type: selCmpts['five'].clear}], update: 'null'}
-        ]
-      }
-    ]);
-
-    const intervalSixSg = interval.signals(model, selCmpts['six']);
-    const sixSg = clear.signals(model, selCmpts['six'], intervalSixSg);
-    expect(sixSg).toContainEqual({
-      name: 'six_tuple',
-      on: [
-        {
-          events: [{signal: 'six_Horsepower'}],
-          update: 'six_Horsepower ? {unit: "", fields: six_tuple_fields, values: [six_Horsepower]} : null'
-        },
-        {events: [{source: 'scope', type: selCmpts['six'].clear}], update: 'null'}
-      ]
-    });
 
     const signals = assembleUnitSelectionSignals(model, []);
     expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg]));
+  });
+});
+
+describe('Clear selection transform, interval type', () => {
+  const model = parseUnitModel({
+    mark: 'point',
+    encoding: {
+      x: {field: 'Horsepower', type: 'quantitative'},
+      y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+      color: {field: 'Origin', type: 'nominal'}
+    }
+  });
+
+  model.parseScale();
+  const selCmpts = (model.component.selection = parseUnitSelection(model, {
+    one: {type: 'interval', encodings: ['x', 'y'], translate: false, zoom: false},
+    two: {type: 'interval', encodings: ['x', 'y'], clear: false, translate: false, zoom: false}
+  }));
+
+  it('identifies transform invocation', () => {
+    expect(clear.has(selCmpts['one'])).toBeTruthy();
+    expect(clear.has(selCmpts['two'])).toBeFalsy();
+  });
+
+  it('appends clear transform', () => {
+    const intervalOneSg = interval.signals(model, selCmpts['one']);
+    const oneSg = clear.signals(model, selCmpts['one'], intervalOneSg);
+    expect(oneSg).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'one_x',
+          value: [],
+          on: [
+            {
+              events: parseSelector('mousedown', 'scope')[0],
+              update: '[x(unit), x(unit)]'
+            },
+            {
+              events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+              update: '[one_x[0], clamp(x(unit), 0, width)]'
+            },
+            {
+              events: {signal: 'one_scale_trigger'},
+              update: '[scale("x", one_Horsepower[0]), scale("x", one_Horsepower[1])]'
+            },
+            {
+              events: parseSelector(selCmpts['one'].clear, 'scope'),
+              update: '[0, 0]'
+            }
+          ]
+        },
+        {
+          name: 'one_y',
+          value: [],
+          on: [
+            {
+              events: parseSelector('mousedown', 'scope')[0],
+              update: '[y(unit), y(unit)]'
+            },
+            {
+              events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+              update: '[one_y[0], clamp(y(unit), 0, height)]'
+            },
+            {
+              events: {signal: 'one_scale_trigger'},
+              update: '[scale("y", one_Miles_per_Gallon[0]), scale("y", one_Miles_per_Gallon[1])]'
+            },
+            {
+              events: parseSelector(selCmpts['one'].clear, 'scope'),
+              update: '[0, 0]'
+            }
+          ]
+        },
+        {
+          name: 'one_tuple',
+          on: [
+            {
+              events: [{signal: 'one_Horsepower || one_Miles_per_Gallon'}],
+              update:
+                'one_Horsepower && one_Miles_per_Gallon ? {unit: "", fields: one_tuple_fields, values: [one_Horsepower,one_Miles_per_Gallon]} : null'
+            },
+            {events: parseSelector(selCmpts['one'].clear, 'scope'), update: 'null'}
+          ]
+        }
+      ])
+    );
   });
 });
