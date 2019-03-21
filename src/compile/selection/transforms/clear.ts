@@ -1,5 +1,5 @@
-import {TUPLE} from '..';
 import {selector as parseSelector} from 'vega-event-selector';
+import {TUPLE} from '..';
 import {TransformCompiler} from './transforms';
 
 const CLEAR_DATA_SIGNALS = [TUPLE, '_toggle'];
@@ -14,10 +14,11 @@ const clear: TransformCompiler = {
   },
 
   signals: (model, selCmpt, signals) => {
-    let events = parseSelector(selCmpt.clear, 'scope');
+    const events = parseSelector(selCmpt.clear, 'scope');
+
     CLEAR_SIGNALS.forEach((signal, k) => {
-      for (let i = 0; i < signal.length; i++) {
-        const idx = signals.findIndex(n => n.name === selCmpt.name + signal[i]);
+      for (const ext of signal) {
+        const idx = signals.findIndex(n => n.name === selCmpt.name + ext);
         if (idx !== -1) {
           signals[idx].on = signals[idx].on
             ? signals[idx].on.concat({
