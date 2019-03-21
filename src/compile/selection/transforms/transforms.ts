@@ -1,7 +1,6 @@
 import {NewSignal, Signal} from 'vega';
 import {SelectionComponent} from '..';
 import {SelectionDef} from '../../../selection';
-import {Dict} from '../../../util';
 import {Model} from '../../model';
 import {UnitModel} from '../../unit';
 import clear from './clear';
@@ -22,21 +21,12 @@ export interface TransformCompiler {
   marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
 }
 
-const compilers: Dict<TransformCompiler> = {
-  project,
-  toggle,
-  scales,
-  translate,
-  zoom,
-  inputs,
-  nearest,
-  clear
-};
+const compilers: Array<TransformCompiler> = [project, toggle, scales, translate, zoom, inputs, nearest, clear];
 
 export function forEachTransform(selCmpt: SelectionComponent, cb: (tx: TransformCompiler) => void) {
-  for (const t in compilers) {
-    if (compilers[t].has(selCmpt)) {
-      cb(compilers[t]);
+  for (const t of compilers) {
+    if (t.has(selCmpt)) {
+      cb(t);
     }
   }
 }
