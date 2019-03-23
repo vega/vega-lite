@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Dominik Moritz, Kanit \"Ham\" Wongsuphasawat, Arvind Satyanarayan, Jeffrey Heer",
-  "version": "3.0.0-rc15",
+  "version": "3.0.0-rc16",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
