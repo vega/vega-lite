@@ -37,7 +37,7 @@ export function omit(obj, props) {
  * Monkey patch Set so that `stringify` produces a string representation of sets.
  */
 Set.prototype['toJSON'] = function () {
-    return `Set(${[...this].map(stableStringify).join(',')})`;
+    return `Set(${[...this].map(x => stableStringify(x)).join(',')})`;
 };
 /**
  * Converts any object to a string representation that can be consumed by humans.

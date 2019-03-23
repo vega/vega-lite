@@ -33,7 +33,7 @@ export function symbols(fieldDef, symbolsSpec, model, channel, legendCmp) {
             // use default circle
             break;
     }
-    const { markDef, encoding } = model;
+    const { markDef, encoding, config } = model;
     const filled = markDef.filled;
     const opacity = getMaxValue(encoding.opacity) || markDef.opacity;
     if (out.fill) {
@@ -48,7 +48,7 @@ export function symbols(fieldDef, symbolsSpec, model, channel, legendCmp) {
                     delete out.fill;
                 }
                 else {
-                    out.fill = { value: 'black' };
+                    out.fill = { value: config.legend.symbolBaseFillColor || 'black' };
                     out.fillOpacity = { value: opacity || 1 };
                 }
             }
