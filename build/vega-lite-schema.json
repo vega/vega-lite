@@ -12402,8 +12402,7 @@
           ],
           "type": "string"
         }
-      ],
-      "description": "Constants and utilities for data type \n Data type based on level of measurement"
+      ]
     },
     "TypeForShape": {
       "enum": [
