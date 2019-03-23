@@ -39,7 +39,7 @@ If the input data is simply an array of primitive values, each value is mapped t
 
 You can also inline a string that will be parsed according to the specified format type.
 
-<span class="vl-example" data-name="embed_csv"></span>
+<span class="vl-example" data-name="embedded_csv"></span>
 
 {:#url}
 
