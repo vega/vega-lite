@@ -155,7 +155,20 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Miles_per_Gallon) || (+invert(\"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_x\", brush_x)[0] === +brush_Miles_per_Gallon[0] && +invert(\"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_x\", brush_x)[1] === +brush_Miles_per_Gallon[1])) && (!isArray(brush_Horsepower) || (+invert(\"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_y\", brush_y)[0] === +brush_Horsepower[0] && +invert(\"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_y\", brush_y)[1] === +brush_Horsepower[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [
+                {
+                  "scale": "child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_x"
+                },
+                {
+                  "scale": "child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_y"
+                }
+              ],
+              "update": "(!isArray(brush_Miles_per_Gallon) || (+invert(\"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_x\", brush_x)[0] === +brush_Miles_per_Gallon[0] && +invert(\"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_x\", brush_x)[1] === +brush_Miles_per_Gallon[1])) && (!isArray(brush_Horsepower) || (+invert(\"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_y\", brush_y)[0] === +brush_Horsepower[0] && +invert(\"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_y\", brush_y)[1] === +brush_Horsepower[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -635,7 +648,20 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Acceleration) || (+invert(\"child__repeat_row_Horsepower__repeat_column_Acceleration_x\", brush_x)[0] === +brush_Acceleration[0] && +invert(\"child__repeat_row_Horsepower__repeat_column_Acceleration_x\", brush_x)[1] === +brush_Acceleration[1])) && (!isArray(brush_Horsepower) || (+invert(\"child__repeat_row_Horsepower__repeat_column_Acceleration_y\", brush_y)[0] === +brush_Horsepower[0] && +invert(\"child__repeat_row_Horsepower__repeat_column_Acceleration_y\", brush_y)[1] === +brush_Horsepower[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [
+                {
+                  "scale": "child__repeat_row_Horsepower__repeat_column_Acceleration_x"
+                },
+                {
+                  "scale": "child__repeat_row_Horsepower__repeat_column_Acceleration_y"
+                }
+              ],
+              "update": "(!isArray(brush_Acceleration) || (+invert(\"child__repeat_row_Horsepower__repeat_column_Acceleration_x\", brush_x)[0] === +brush_Acceleration[0] && +invert(\"child__repeat_row_Horsepower__repeat_column_Acceleration_x\", brush_x)[1] === +brush_Acceleration[1])) && (!isArray(brush_Horsepower) || (+invert(\"child__repeat_row_Horsepower__repeat_column_Acceleration_y\", brush_y)[0] === +brush_Horsepower[0] && +invert(\"child__repeat_row_Horsepower__repeat_column_Acceleration_y\", brush_y)[1] === +brush_Horsepower[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -1054,7 +1080,17 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Horsepower) || (+invert(\"child__repeat_row_Horsepower__repeat_column_Horsepower_x\", brush_x)[0] === +brush_Horsepower[0] && +invert(\"child__repeat_row_Horsepower__repeat_column_Horsepower_x\", brush_x)[1] === +brush_Horsepower[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [
+                {
+                  "scale": "child__repeat_row_Horsepower__repeat_column_Horsepower_x"
+                }
+              ],
+              "update": "(!isArray(brush_Horsepower) || (+invert(\"child__repeat_row_Horsepower__repeat_column_Horsepower_x\", brush_x)[0] === +brush_Horsepower[0] && +invert(\"child__repeat_row_Horsepower__repeat_column_Horsepower_x\", brush_x)[1] === +brush_Horsepower[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -1507,7 +1543,20 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Miles_per_Gallon) || (+invert(\"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_x\", brush_x)[0] === +brush_Miles_per_Gallon[0] && +invert(\"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_x\", brush_x)[1] === +brush_Miles_per_Gallon[1])) && (!isArray(brush_Acceleration) || (+invert(\"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_y\", brush_y)[0] === +brush_Acceleration[0] && +invert(\"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_y\", brush_y)[1] === +brush_Acceleration[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [
+                {
+                  "scale": "child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_x"
+                },
+                {
+                  "scale": "child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_y"
+                }
+              ],
+              "update": "(!isArray(brush_Miles_per_Gallon) || (+invert(\"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_x\", brush_x)[0] === +brush_Miles_per_Gallon[0] && +invert(\"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_x\", brush_x)[1] === +brush_Miles_per_Gallon[1])) && (!isArray(brush_Acceleration) || (+invert(\"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_y\", brush_y)[0] === +brush_Acceleration[0] && +invert(\"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_y\", brush_y)[1] === +brush_Acceleration[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -1930,7 +1979,17 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Acceleration) || (+invert(\"child__repeat_row_Acceleration__repeat_column_Acceleration_x\", brush_x)[0] === +brush_Acceleration[0] && +invert(\"child__repeat_row_Acceleration__repeat_column_Acceleration_x\", brush_x)[1] === +brush_Acceleration[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [
+                {
+                  "scale": "child__repeat_row_Acceleration__repeat_column_Acceleration_x"
+                }
+              ],
+              "update": "(!isArray(brush_Acceleration) || (+invert(\"child__repeat_row_Acceleration__repeat_column_Acceleration_x\", brush_x)[0] === +brush_Acceleration[0] && +invert(\"child__repeat_row_Acceleration__repeat_column_Acceleration_x\", brush_x)[1] === +brush_Acceleration[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -2383,7 +2442,20 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Horsepower) || (+invert(\"child__repeat_row_Acceleration__repeat_column_Horsepower_x\", brush_x)[0] === +brush_Horsepower[0] && +invert(\"child__repeat_row_Acceleration__repeat_column_Horsepower_x\", brush_x)[1] === +brush_Horsepower[1])) && (!isArray(brush_Acceleration) || (+invert(\"child__repeat_row_Acceleration__repeat_column_Horsepower_y\", brush_y)[0] === +brush_Acceleration[0] && +invert(\"child__repeat_row_Acceleration__repeat_column_Horsepower_y\", brush_y)[1] === +brush_Acceleration[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [
+                {
+                  "scale": "child__repeat_row_Acceleration__repeat_column_Horsepower_x"
+                },
+                {
+                  "scale": "child__repeat_row_Acceleration__repeat_column_Horsepower_y"
+                }
+              ],
+              "update": "(!isArray(brush_Horsepower) || (+invert(\"child__repeat_row_Acceleration__repeat_column_Horsepower_x\", brush_x)[0] === +brush_Horsepower[0] && +invert(\"child__repeat_row_Acceleration__repeat_column_Horsepower_x\", brush_x)[1] === +brush_Horsepower[1])) && (!isArray(brush_Acceleration) || (+invert(\"child__repeat_row_Acceleration__repeat_column_Horsepower_y\", brush_y)[0] === +brush_Acceleration[0] && +invert(\"child__repeat_row_Acceleration__repeat_column_Horsepower_y\", brush_y)[1] === +brush_Acceleration[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -2802,7 +2874,17 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Miles_per_Gallon) || (+invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_x\", brush_x)[0] === +brush_Miles_per_Gallon[0] && +invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_x\", brush_x)[1] === +brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [
+                {
+                  "scale": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_x"
+                }
+              ],
+              "update": "(!isArray(brush_Miles_per_Gallon) || (+invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_x\", brush_x)[0] === +brush_Miles_per_Gallon[0] && +invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_x\", brush_x)[1] === +brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -3255,7 +3337,20 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Acceleration) || (+invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_x\", brush_x)[0] === +brush_Acceleration[0] && +invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_x\", brush_x)[1] === +brush_Acceleration[1])) && (!isArray(brush_Miles_per_Gallon) || (+invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_y\", brush_y)[0] === +brush_Miles_per_Gallon[0] && +invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_y\", brush_y)[1] === +brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [
+                {
+                  "scale": "child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_x"
+                },
+                {
+                  "scale": "child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_y"
+                }
+              ],
+              "update": "(!isArray(brush_Acceleration) || (+invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_x\", brush_x)[0] === +brush_Acceleration[0] && +invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_x\", brush_x)[1] === +brush_Acceleration[1])) && (!isArray(brush_Miles_per_Gallon) || (+invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_y\", brush_y)[0] === +brush_Miles_per_Gallon[0] && +invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_y\", brush_y)[1] === +brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -3735,7 +3830,20 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Horsepower) || (+invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_x\", brush_x)[0] === +brush_Horsepower[0] && +invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_x\", brush_x)[1] === +brush_Horsepower[1])) && (!isArray(brush_Miles_per_Gallon) || (+invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_y\", brush_y)[0] === +brush_Miles_per_Gallon[0] && +invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_y\", brush_y)[1] === +brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [
+                {
+                  "scale": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_x"
+                },
+                {
+                  "scale": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_y"
+                }
+              ],
+              "update": "(!isArray(brush_Horsepower) || (+invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_x\", brush_x)[0] === +brush_Horsepower[0] && +invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_x\", brush_x)[1] === +brush_Horsepower[1])) && (!isArray(brush_Miles_per_Gallon) || (+invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_y\", brush_y)[0] === +brush_Miles_per_Gallon[0] && +invert(\"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_y\", brush_y)[1] === +brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",

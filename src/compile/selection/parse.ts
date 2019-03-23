@@ -20,7 +20,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
     }
 
     const selDef = selDefs[name];
-    const cfg = selectionConfig[selDef.type];
+    const {fields, encodings, ...cfg} = selectionConfig[selDef.type]; // Project transform applies its defaults.
 
     // Set default values from config if a property hasn't been specified,
     // or if it is true. E.g., "translate": true should use the default

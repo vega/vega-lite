@@ -62,7 +62,7 @@ export function symbols(
       break;
   }
 
-  const {markDef, encoding} = model;
+  const {markDef, encoding, config} = model;
   const filled = markDef.filled;
 
   const opacity = getMaxValue(encoding.opacity) || markDef.opacity;
@@ -77,7 +77,7 @@ export function symbols(
         if (legendCmp.get('symbolFillColor')) {
           delete out.fill;
         } else {
-          out.fill = {value: 'black'};
+          out.fill = {value: config.legend.symbolBaseFillColor || 'black'};
           out.fillOpacity = {value: opacity || 1};
         }
       } else if (isArray(out.fill)) {

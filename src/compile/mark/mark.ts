@@ -4,9 +4,9 @@ import {Encoding, isAggregate} from '../../encoding';
 import {getTypedFieldDef, isFieldDef, isValueDef, vgField} from '../../fielddef';
 import {AREA, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortField} from '../../sort';
-import {contains, getFirstDefined, keys} from '../../util';
+import {contains, getFirstDefined, isNullOrFalse, keys} from '../../util';
 import {VgCompare} from '../../vega.schema';
-import {getStyles, sortParams} from '../common';
+import {getMarkConfig, getStyles, sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {area} from './area';
 import {bar} from './bar';
@@ -82,9 +82,12 @@ function parsePathMark(model: UnitModel) {
 }
 
 export function getSort(model: UnitModel): VgCompare {
-  const {encoding, stack, mark, markDef} = model;
+  const {encoding, stack, mark, markDef, config} = model;
   const order = encoding.order;
-  if (!isArray(order) && isValueDef(order)) {
+  if (
+    (!isArray(order) && isValueDef(order) && isNullOrFalse(order.value)) ||
+    ((!order && isNullOrFalse(markDef.order)) || isNullOrFalse(getMarkConfig('order', markDef, config)))
+  ) {
     return undefined;
   } else if ((isArray(order) || isFieldDef(order)) && !stack) {
     // Sort by the order field if it is specified and the field is not stacked. (For stacked field, order specify stack order.)

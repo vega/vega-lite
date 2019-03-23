@@ -41,7 +41,7 @@ export function omit<T extends object, K extends keyof T>(obj: T, props: K[]): O
  * Monkey patch Set so that `stringify` produces a string representation of sets.
  */
 Set.prototype['toJSON'] = function() {
-  return `Set(${[...this].map(stableStringify).join(',')})`;
+  return `Set(${[...this].map(x => stableStringify(x)).join(',')})`;
 };
 
 /**
@@ -72,6 +72,10 @@ export function hash(a: any): string | number {
     h = h & h; // Convert to 32bit integer
   }
   return h;
+}
+
+export function isNullOrFalse(x: any): x is false | null {
+  return x === false || x === null;
 }
 
 export function contains<T>(array: T[], item: T) {
@@ -363,7 +367,7 @@ export function accessPathWithDatum(path: string, datum = 'datum') {
  * @param path The field name.
  * @param datum The string to use for `datum`.
  */
-export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' = 'datum') {
+export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' | 'datum.datum' = 'datum') {
   return `${datum}[${stringValue(splitAccessPath(path).join('.'))}]`;
 }
 

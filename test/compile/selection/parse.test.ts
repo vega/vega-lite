@@ -261,5 +261,29 @@ describe('Selection', () => {
         ])
       );
     });
+
+    it('infers from initial values', () => {
+      const component = parseUnitSelection(model, {
+        one: {type: 'single', init: {Origin: 5}},
+        two: {type: 'multi', init: {color: 10}},
+        three: {type: 'interval', init: {x: [10, 100]}}
+      });
+
+      expect<SelectionProjectionComponent>(component['one'].project).toEqual(
+        expect.arrayContaining([{field: 'Origin', type: 'E', signals: {data: 'one_Origin'}}])
+      );
+
+      expect<SelectionProjectionComponent>(component['two'].project).toEqual(
+        expect.arrayContaining([
+          {channel: 'color', field: 'Origin', type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}}
+        ])
+      );
+
+      expect<SelectionProjectionComponent>(component['three'].project).toEqual(
+        expect.arrayContaining([
+          {field: 'Horsepower', channel: 'x', type: 'R', signals: {data: 'three_Horsepower', visual: 'three_x'}}
+        ])
+      );
+    });
   });
 });
