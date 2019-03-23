@@ -17,6 +17,19 @@ import {Split} from '../split';
 import {DataFlowNode} from './dataflow';
 
 /**
+ * Remove quotes from a string.
+ */
+function unquote(pattern: string) {
+  if (
+    (pattern[0] === "'" && pattern[pattern.length - 1] === "'") ||
+    (pattern[0] === '"' && pattern[pattern.length - 1] === '"')
+  ) {
+    return pattern.slice(1, -1);
+  }
+  return pattern;
+}
+
+/**
  * @param field The field.
  * @param parse What to parse the field as.
  */
@@ -33,11 +46,11 @@ function parseExpression(field: string, parse: string): string {
   } else if (parse === 'flatten') {
     return f;
   } else if (parse.indexOf('date:') === 0) {
-    const specifier = parse.slice(5, parse.length);
-    return `timeParse(${f},${specifier})`;
+    const specifier = unquote(parse.slice(5, parse.length));
+    return `timeParse(${f},'${specifier}')`;
   } else if (parse.indexOf('utc:') === 0) {
-    const specifier = parse.slice(4, parse.length);
-    return `utcParse(${f},${specifier})`;
+    const specifier = unquote(parse.slice(4, parse.length));
+    return `utcParse(${f},'${specifier}')`;
   } else {
     log.warn(log.message.unrecognizedParse(parse));
     return null;
