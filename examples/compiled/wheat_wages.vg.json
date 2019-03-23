@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
-  "width": 800,
+  "width": 900,
   "height": 400,
   "style": "cell",
   "data": [
@@ -68,14 +68,14 @@
               "test": "datum[\"year\"] === null || isNaN(datum[\"year\"]) || datum[\"wheat\"] === null || isNaN(datum[\"wheat\"])",
               "value": null
             },
-            {"value": "#AAAAAA"}
+            {"value": "#aaa"}
           ],
           "stroke": [
             {
               "test": "datum[\"year\"] === null || isNaN(datum[\"year\"]) || datum[\"wheat\"] === null || isNaN(datum[\"wheat\"])",
               "value": null
             },
-            {"value": "#999999"}
+            {"value": "#999"}
           ],
           "x": [
             {
@@ -103,6 +103,7 @@
       "from": {"data": "source_1"},
       "encode": {
         "update": {
+          "opacity": {"value": 0.5},
           "stroke": [
             {
               "test": "datum[\"year\"] === null || isNaN(datum[\"year\"])",
@@ -110,7 +111,6 @@
             },
             {"value": "#000"}
           ],
-          "opacity": {"value": 0.5},
           "strokeWidth": {"value": 0.6},
           "x": [
             {
@@ -132,9 +132,9 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
+          "opacity": {"value": 0.7},
           "orient": {"value": "vertical"},
           "fill": {"value": "#a4cedb"},
-          "opacity": {"value": 0.7},
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages"},
           "y2": {"scale": "y", "value": 0},
@@ -152,8 +152,8 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "stroke": {"value": "#000"},
           "opacity": {"value": 0.7},
+          "stroke": {"value": "#000"},
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages"},
           "defined": {
@@ -186,19 +186,19 @@
       "from": {"data": "source_2"},
       "encode": {
         "update": {
+          "stroke": [
+            {
+              "test": "datum[\"start\"] === null || isNaN(datum[\"start\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
+              "value": null
+            },
+            {"value": "#000"}
+          ],
           "fill": [
             {
               "test": "datum[\"start\"] === null || isNaN(datum[\"start\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
               "value": null
             },
             {"scale": "fill", "field": "commonwealth"}
-          ],
-          "stroke": [
-            {
-              "test": "datum[\"start\"] === null || isNaN(datum[\"start\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
-              "value": null
-            },
-            {"value": "black"}
           ],
           "x": [
             {
@@ -226,7 +226,7 @@
       "from": {"data": "source_3"},
       "encode": {
         "update": {
-          "fontSize": {"value": 10},
+          "fontSize": {"value": 9},
           "fontStyle": {"value": "italic"},
           "fill": [
             {
