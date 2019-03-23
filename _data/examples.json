@@ -400,7 +400,7 @@
       {
         "name": "wheat_and_wages",
         "title": "Wheat and Wages Example",
-        "description": "A recreation of William Playfair’s classic chart visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Made by @manzt."
+        "description": "A recreation of William Playfair’s classic chart visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Based on a chart by @manzt."
       }
     ]
   },

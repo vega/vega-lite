@@ -1,13 +1,15 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-  "width": 800,
+  "width": 900,
   "height": 400,
   "data": { "url": "data/wheat.json"},
   "transform": [{"calculate": "+datum.year + 5", "as": "year_end"}],
   "layer": [
     {
       "mark": {
-        "type": "bar"
+        "type": "bar",
+        "fill": "#aaa",
+        "stroke": "#999"
       },
       "encoding": {
         "x": {
@@ -25,9 +27,7 @@
           "field": "wheat",
           "type": "quantitative",
           "axis": { "zindex": 1 }
-        },
-        "fill": { "value": "#AAAAAA" },
-        "stroke": { "value": "#999999" }
+        }
       }
     },
     {
@@ -40,51 +40,24 @@
           { "year": "1800" }
         ]
       },
-      "mark": "rule",
+      "mark": {
+        "type": "rule",
+        "stroke": "#000",
+        "strokeWidth": 0.6,
+        "opacity": 0.5
+      },
       "encoding": {
         "x": {
           "field": "year",
           "type": "quantitative"
-        },
-        "stroke": { "value": "#000" },
-        "strokeWidth": { "value": 0.6 },
-        "opacity": { "value": 0.5 }
-      }
-    },
-    {
-      "mark": "area",
-      "encoding": {
-        "x": {
-          "field": "year",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "wages",
-          "type": "quantitative"
-        },
-        "color": { "value": "#a4cedb" },
-        "opacity": { "value": 0.7 }
-      }
-    },
-    {
-      "mark": "line",
-      "encoding": {
-        "x": {
-          "field": "year",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "wages",
-          "type": "quantitative"
-        },
-        "color": { "value": "#000" },
-        "opacity": { "value": 0.7 }
+        }
       }
     },
     {
       "mark": {
-        "type": "line",
-        "yOffset": -2
+        "type": "area",
+        "color": "#a4cedb",
+        "opacity": 0.7
       },
       "encoding": {
         "x": {
@@ -94,8 +67,41 @@
         "y": {
           "field": "wages",
           "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "color": "#000",
+        "opacity": 0.7
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
         },
-        "color": { "value": "#EE8182" }
+        "y": {
+          "field": "wages",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "yOffset": -2,
+        "color": "#EE8182"
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "wages",
+          "type": "quantitative"
+        }
       }
     },
     {
@@ -104,7 +110,10 @@
         { "calculate": "((!datum.commonwealth && datum.index % 2) ? -1: 1) * 2 + 95", "as": "offset" },
         { "calculate": "95", "as": "y" }
       ],
-      "mark": "bar",
+      "mark": {
+        "type": "bar",
+        "stroke": "#000"
+      },
       "encoding": {
         "x": {
           "field": "start",
@@ -123,8 +132,7 @@
           "scale": { "range": ["black", "white"] },
           "legend": null,
           "type": "nominal"
-        },
-        "stroke": { "value": "black" }
+        }
       }
     },
     {
@@ -138,7 +146,7 @@
       "mark": {
         "type": "text",
         "yOffset": 14,
-        "fontSize": 10,
+        "fontSize": 9,
         "fontStyle": "italic"
       },
       "encoding": {
@@ -151,7 +159,6 @@
       }
     }
   ],
-  "resolve": {"axis": {"y": "shared"}},
   "config": {
     "axis": {
       "title": null,
