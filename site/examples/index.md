@@ -53,7 +53,6 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 - [Waterfall Chart](https://bl.ocks.org/italo-batista/5f93b3c9f87dffcf01bb489d90f60652/ef01271c72c57dc940bb357019be1c6cdf9eb51a) by @italo-batista
 - [Bar, Small Multiple, Heatmap, Gantt Charts: Exploring NYC Event Permits](https://medium.com/enigma-engineering/exploring-new-york-city-event-permits-with-vega-lite-f83178ff9a8d) by [@hydrosquall](https://twitter.com/hydrosquall)
 - [Image Pixel Render](https://beta.observablehq.com/@amitkaps/image-pixel-render-with-vega-lite) by @amitkaps
-- [Playfair's Wheat and Wages](https://beta.observablehq.com/@manzt/wheat-and-wages-in-vega-lite) by @manzt
 - [Top-K Plot with Others](https://beta.observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example) by @manzt
 - [Trafford Data Lab's Vega-Lite graphics companion](https://www.trafforddatalab.io/interactive_graphics_companion/) by @trafforddatalab
 - [International Flight Map](https://observablehq.com/@alhenry/international-flight-map) by [@alhenry](https://twitter.com/maha_albert)
