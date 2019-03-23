@@ -204,7 +204,7 @@ describe('Repeat', () => {
 
       expect(colorScale.domains).toHaveLength(4);
 
-      model.parseLegend();
+      model.parseLegends();
 
       expect(keys(model.component.legends)).toHaveLength(1);
     });

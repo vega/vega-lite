@@ -125,10 +125,10 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Miles_per_Gallon",
       "encode": {"gradient": {"update": {"opacity": {"value": 0.7}}}},
       "size": "size"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

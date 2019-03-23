@@ -50,6 +50,11 @@ export class LocalLogger implements LoggerInterface {
     this.debugs.push(...args);
     return this;
   }
+
+  public error(...args: any[]) {
+    throw Error(...args);
+    return this; // @ts-ignore
+  }
 }
 
 export function wrap(f: (logger: LocalLogger) => void) {
@@ -126,8 +131,9 @@ export namespace message {
     return `Unknown repeated value "${field}".`;
   }
 
-  export const COLUMNS_NOT_SUPPORTED_BY_REPEAT_ROWCOL =
-    'The "columns" property cannot be used when "repeat" has nested row/column.';
+  export function columnsNotSupportByRowCol(type: 'facet' | 'repeat') {
+    return `The "columns" property cannot be used when "${type}" has nested row/column.`;
+  }
 
   // CONCAT
   export const CONCAT_CANNOT_SHARE_AXIS =
@@ -136,15 +142,6 @@ export namespace message {
   // REPEAT
   export const REPEAT_CANNOT_SHARE_AXIS =
     'Axes cannot be shared in repeated views yet (https://github.com/vega/vega-lite/issues/2415).';
-
-  // REPEAT
-  export const FACET_1D_CANNOT_SHARE_AXIS =
-    'Axes cannot be shared in facet views without row/column yet (https://github.com/vega/vega-lite/issues/4543).';
-
-  // TITLE
-  export function cannotSetTitleAnchor(type: string) {
-    return `Cannot set title "anchor" for a ${type} spec`;
-  }
 
   // DATA
   export function unrecognizedParse(p: string) {

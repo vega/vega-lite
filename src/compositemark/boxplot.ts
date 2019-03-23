@@ -1,3 +1,4 @@
+import {Orientation} from 'vega';
 import {isNumber, isObject} from 'vega-util';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
@@ -8,7 +9,6 @@ import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
 import {Flag, getFirstDefined, keys} from '../util';
-import {Orient} from '../vega.schema';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -64,7 +64,7 @@ export type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> &
      *
      * __Default value:__ `"vertical"`.
      */
-    orient?: Orient;
+    orient?: Orientation;
   };
 
 export interface BoxPlotConfigMixins {
@@ -212,12 +212,12 @@ export function normalizeBoxPlot(
   let filteredLayersMixins: NormalizedUnitSpec | NormalizedLayerSpec;
 
   if (boxPlotType !== 'min-max') {
-    const lowerBoxExpr = 'datum.lower_box_' + continuousAxisChannelDef.field;
-    const upperBoxExpr = 'datum.upper_box_' + continuousAxisChannelDef.field;
+    const lowerBoxExpr = `datum["lower_box_${continuousAxisChannelDef.field}"]`;
+    const upperBoxExpr = `datum["upper_box_${continuousAxisChannelDef.field}"]`;
     const iqrExpr = `(${upperBoxExpr} - ${lowerBoxExpr})`;
     const lowerWhiskerExpr = `${lowerBoxExpr} - ${extent} * ${iqrExpr}`;
     const upperWhiskerExpr = `${upperBoxExpr} + ${extent} * ${iqrExpr}`;
-    const fieldExpr = `datum.${continuousAxisChannelDef.field}`;
+    const fieldExpr = `datum["${continuousAxisChannelDef.field}"]`;
 
     const joinaggregateTransform: JoinAggregateTransform = {
       joinaggregate: boxParamsQuartiles(continuousAxisChannelDef.field),
@@ -334,7 +334,7 @@ function boxParams(
   continuousAxisChannelDef: PositionFieldDef<string>;
   continuousAxis: 'x' | 'y';
   encodingWithoutContinuousAxis: Encoding<string>;
-  ticksOrient: Orient;
+  ticksOrient: Orientation;
 } {
   const orient = compositeMarkOrient(spec, BOXPLOT);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, BOXPLOT);
@@ -367,15 +367,15 @@ function boxParams(
       : [
           // This is for the  original k-IQR, which we do not expose
           {
-            calculate: `datum.upper_box_${continuousFieldName} - datum.lower_box_${continuousFieldName}`,
+            calculate: `datum["upper_box_${continuousFieldName}"] - datum["lower_box_${continuousFieldName}"]`,
             as: 'iqr_' + continuousFieldName
           },
           {
-            calculate: `min(datum.upper_box_${continuousFieldName} + datum.iqr_${continuousFieldName} * ${extent}, datum.max_${continuousFieldName})`,
+            calculate: `min(datum["upper_box_${continuousFieldName}"] + datum["iqr_${continuousFieldName}"] * ${extent}, datum["max_${continuousFieldName}"])`,
             as: 'upper_whisker_' + continuousFieldName
           },
           {
-            calculate: `max(datum.lower_box_${continuousFieldName} - datum.iqr_${continuousFieldName} * ${extent}, datum.min_${continuousFieldName})`,
+            calculate: `max(datum["lower_box_${continuousFieldName}"] - datum["iqr_${continuousFieldName}"] * ${extent}, datum["min_${continuousFieldName}"])`,
             as: 'lower_whisker_' + continuousFieldName
           }
         ];
@@ -387,7 +387,7 @@ function boxParams(
     config
   );
 
-  const ticksOrient: Orient = orient === 'vertical' ? 'horizontal' : 'vertical';
+  const ticksOrient: Orientation = orient === 'vertical' ? 'horizontal' : 'vertical';
 
   return {
     transform: [

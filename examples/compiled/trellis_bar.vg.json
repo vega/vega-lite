@@ -47,7 +47,7 @@
     {"name": "child_height", "value": 200}
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 20,
     "offset": {"rowTitle": 10},
     "columns": 1,
     "bounds": "full",
@@ -60,9 +60,9 @@
       "role": "row-title",
       "title": {
         "text": "gender",
-        "offset": 10,
         "orient": "left",
-        "style": "guide-title"
+        "style": "guide-title",
+        "offset": 10
       }
     },
     {
@@ -73,11 +73,10 @@
       "sort": {"field": "datum[\"gender\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"gender\"]"},
-        "offset": 10,
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
       "axes": [
@@ -200,9 +199,9 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "symbolType": "circle",
       "title": "gender",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

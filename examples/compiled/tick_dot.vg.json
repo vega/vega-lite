@@ -12,6 +12,7 @@
       "format": {"type": "csv"}
     }
   ],
+  "signals": [{"name": "height", "update": "height"}],
   "marks": [
     {
       "name": "marks",
@@ -72,6 +73,5 @@
       "ticks": false,
       "zindex": 0
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

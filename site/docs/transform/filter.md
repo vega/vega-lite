@@ -133,3 +133,5 @@ For example, with `{"filter": {"selection": "brush"}}`, only data values that fa
 <div class="vl-example" data-name="selection_filter"></div>
 
 All [selection composition](selection.html#compose) can be used here as well. For instance, `{"filter": {"selection": {"and": ["alex", "morgan"]}}}` filters for data values that are within both the `alex` and `morgan` selections.
+
+When you use a selection filter to dynamically filter the data, scale domains may change, which can lead to jumping titles. To prevent this, you can fix the `minExtent` of the axis whose scale domain changes. For example, to set the minimum extent to `30`, add `{"axis": {"minExtent": 30}}` to the corresponding encoding.

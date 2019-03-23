@@ -15,7 +15,7 @@
     {"name": "child_child_height", "value": 200}
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 20,
     "headerBand": {"column": 0.5},
     "offset": {"columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
@@ -27,7 +27,7 @@
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "Origin", "offset": 10, "style": "guide-title"}
+      "title": {"text": "Origin", "style": "guide-title", "offset": 10}
     },
     {
       "name": "column_header",
@@ -37,10 +37,9 @@
       "sort": {"field": "datum[\"Origin\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"Origin\"]"},
-        "offset": 10,
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       }
     },
     {
@@ -58,7 +57,7 @@
         }
       ],
       "layout": {
-        "padding": {"row": 20, "column": 20},
+        "padding": 20,
         "offset": {"rowTitle": 10},
         "columns": 1,
         "bounds": "full",
@@ -71,9 +70,9 @@
           "role": "row-title",
           "title": {
             "text": "Cylinders",
-            "offset": 10,
             "orient": "left",
-            "style": "guide-title"
+            "style": "guide-title",
+            "offset": 10
           }
         },
         {
@@ -84,11 +83,10 @@
           "sort": {"field": "datum[\"Cylinders\"]", "order": "ascending"},
           "title": {
             "text": {"signal": "''+parent[\"Cylinders\"]"},
-            "offset": 10,
             "orient": "left",
             "style": "guide-label",
             "frame": "group",
-            "baseline": "middle"
+            "offset": 10
           },
           "encode": {"update": {"height": {"signal": "child_child_height"}}},
           "axes": [
@@ -220,6 +218,5 @@
       "nice": true,
       "zero": true
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

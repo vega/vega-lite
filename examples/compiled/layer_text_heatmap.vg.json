@@ -124,11 +124,9 @@
       "direction": "horizontal",
       "gradientLength": 120,
       "title": "Count of Records",
-      "fill": "color"
+      "fill": "color",
+      "symbolType": "circle"
     }
   ],
-  "config": {
-    "axisY": {"minExtent": 30},
-    "style": {"text": {"baseline": "middle"}}
-  }
+  "config": {"style": {"text": {"baseline": "middle"}}}
 }

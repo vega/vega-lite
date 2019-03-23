@@ -3,34 +3,90 @@
   "autosize": "pad",
   "padding": 5,
   "data": [
-    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}}
+    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}},
+    {
+      "name": "facet_domain",
+      "source": "source_0",
+      "transform": [{"type": "aggregate", "groupby": ["MPAA_Rating"]}]
+    },
+    {
+      "name": "facet_domain_row",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {"signal": "ceil(length(data(\"facet_domain\")) / 2)"}
+        }
+      ]
+    },
+    {
+      "name": "facet_domain_column",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {"signal": "min(length(data(\"facet_domain\")), 2)"}
+        }
+      ]
+    }
   ],
   "signals": [
     {"name": "child_width", "value": 200},
     {"name": "child_height", "value": 200}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "bounds": "full",
-    "align": "all",
-    "columns": 2
-  },
+  "layout": {"padding": 20, "bounds": "full", "align": "all", "columns": 2},
   "marks": [
     {
       "name": "facet-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "MPAA_Rating", "offset": 10, "style": "guide-title"}
+      "title": {"text": "MPAA_Rating", "style": "guide-title", "offset": 10}
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {"data": "facet_domain_row"},
+      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "US_DVD_Sales",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "zindex": 1
+        }
+      ]
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "from": {"data": "facet_domain_column"},
+      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Worldwide_Gross",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_width/40)"},
+          "zindex": 1
+        }
+      ]
     },
     {
       "name": "cell",
       "type": "group",
       "title": {
         "text": {"signal": "''+parent[\"MPAA_Rating\"]"},
-        "offset": 10,
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "style": "cell",
       "from": {
@@ -83,16 +139,6 @@
         {
           "scale": "x",
           "orient": "bottom",
-          "grid": false,
-          "title": "Worldwide_Gross",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "x",
-          "orient": "bottom",
           "gridScale": "y",
           "grid": true,
           "tickCount": {"signal": "ceil(child_width/40)"},
@@ -102,15 +148,6 @@
           "minExtent": 0,
           "ticks": false,
           "zindex": 0
-        },
-        {
-          "scale": "y",
-          "orient": "left",
-          "grid": false,
-          "title": "US_DVD_Sales",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
         },
         {
           "scale": "y",
@@ -145,6 +182,5 @@
       "nice": true,
       "zero": true
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

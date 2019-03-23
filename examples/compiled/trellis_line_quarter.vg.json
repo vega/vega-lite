@@ -43,7 +43,7 @@
     {"name": "child_height", "value": 200}
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 20,
     "offset": {"columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -54,7 +54,7 @@
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "date (year)", "offset": 10, "style": "guide-title"}
+      "title": {"text": "date (year)", "style": "guide-title", "offset": 10}
     },
     {
       "name": "row_header",
@@ -81,10 +81,9 @@
       "sort": {"field": "datum[\"year_date\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "timeFormat(parent[\"year_date\"], '%Y')"},
-        "offset": 10,
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
     },
@@ -204,9 +203,9 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "symbolType": "circle",
       "title": "symbol",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

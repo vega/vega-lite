@@ -1,4 +1,14 @@
-import {Align, Axis as VgAxis, AxisOrient, BaseAxis, FontStyle, FontWeight, LabelOverlap, TextBaseline} from 'vega';
+import {
+  Align,
+  Axis as VgAxis,
+  AxisOrient,
+  BaseAxis,
+  FontStyle,
+  FontWeight,
+  LabelOverlap,
+  TextBaseline,
+  TitleAnchor
+} from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
@@ -18,7 +28,8 @@ type BaseAxisNoSignals = AxisMixins &
     TextBaseline,
     LayoutAlign,
     LabelOverlap,
-    number[]
+    number[],
+    TitleAnchor
   >;
 
 // Vega axis config is the same as vega axis base. If this is not the case, add specific type.
@@ -48,16 +59,18 @@ interface AxisMixins {
   labelOverlap?: LabelOverlap;
 }
 
-export type AxisConfig = VgAxisConfigNoSignals & VlOnlyGuideConfig;
-
-export interface Axis extends BaseAxisNoSignals, Guide {
+export interface AxisOrientMixins {
   /**
-   * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
+   * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y-axis oriented towards the right edge of the chart).
    *
    * __Default value:__ `"bottom"` for x-axes and `"left"` for y-axes.
    */
   orient?: AxisOrient;
+}
 
+export type AxisConfig = VgAxisConfigNoSignals & VlOnlyGuideConfig & AxisOrientMixins;
+
+export interface Axis extends AxisOrientMixins, BaseAxisNoSignals, Guide {
   /**
    * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
    *
@@ -138,6 +151,7 @@ export const AXIS_PROPERTY_TYPE: {
   domainOpacity: 'main',
   domainWidth: 'main',
   format: 'main',
+  formatType: 'main',
   labelAlign: 'main',
   labelAngle: 'main',
   labelBaseline: 'main',
@@ -223,12 +237,16 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   bandPosition: 1,
   domain: 1,
   domainColor: 1,
+  domainDash: 1,
+  domainDashOffset: 1,
   domainOpacity: 1,
   domainWidth: 1,
   format: 1,
+  formatType: 1,
   grid: 1,
   gridColor: 1,
   gridDash: 1,
+  gridDashOffset: 1,
   gridOpacity: 1,
   gridWidth: 1,
   labelAlign: 1,
@@ -254,6 +272,8 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   position: 1,
   tickColor: 1,
   tickCount: 1,
+  tickDash: 1,
+  tickDashOffset: 1,
   tickExtra: 1,
   tickMinStep: 1,
   tickOffset: 1,
@@ -264,6 +284,7 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   tickWidth: 1,
   title: 1,
   titleAlign: 1,
+  titleAnchor: 1,
   titleAngle: 1,
   titleBaseline: 1,
   titleColor: 1,

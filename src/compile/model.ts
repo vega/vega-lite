@@ -1,5 +1,5 @@
 import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
-import {isNumber, isString} from 'vega-util';
+import {isString} from 'vega-util';
 import {Channel, FACET_CHANNELS, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
@@ -9,7 +9,7 @@ import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
 import {isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
-import {DEFAULT_SPACING, extractCompositionLayout, GenericCompositionLayout, ViewBackground} from '../spec/base';
+import {extractCompositionLayout, GenericCompositionLayoutWithColumns, SpecType, ViewBackground} from '../spec/base';
 import {NormalizedSpec} from '../spec/index';
 import {extractTitleConfig, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
@@ -20,7 +20,8 @@ import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
 import {DataComponent} from './data';
 import {FacetModel} from './facet';
-import {assembleHeaderGroups, assembleTitleGroup, HEADER_CHANNELS, LayoutHeaderComponent} from './header/index';
+import {assembleHeaderGroups, assembleLayoutTitleBand, assembleTitleGroup} from './header/assemble';
+import {HEADER_CHANNELS, LayoutHeaderComponent} from './header/component';
 import {LayerModel} from './layer';
 import {sizeExpr} from './layoutsize/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';
@@ -35,8 +36,8 @@ import {RepeaterValue} from './repeater';
 import {assembleScales} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
-import {parseScale} from './scale/parse';
-import {SelectionComponent} from './selection/selection';
+import {parseScales} from './scale/parse';
+import {SelectionComponent} from './selection';
 import {Split} from './split';
 import {UnitModel} from './unit';
 
@@ -135,7 +136,6 @@ export function isLayerModel(model: Model): model is LayerModel {
 }
 
 export abstract class Model {
-  public abstract readonly type: 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
   public readonly name: string;
 
   public readonly title: TitleParams;
@@ -143,7 +143,7 @@ export abstract class Model {
 
   public readonly data: Data;
   public readonly transforms: Transform[];
-  public readonly layout: GenericCompositionLayout;
+  public readonly layout: GenericCompositionLayoutWithColumns;
 
   /** Name map for scales, which can be renamed by a model's parent. */
   protected scaleNameMap: NameMapInterface;
@@ -160,6 +160,7 @@ export abstract class Model {
 
   constructor(
     spec: NormalizedSpec,
+    public readonly type: SpecType,
     public readonly parent: Model,
     parentGivenName: string,
     public readonly config: Config,
@@ -184,7 +185,7 @@ export abstract class Model {
 
     this.description = spec.description;
     this.transforms = normalizeTransform(spec.transform || []);
-    this.layout = isUnitSpec(spec) || isLayerSpec(spec) ? {} : extractCompositionLayout(spec);
+    this.layout = isUnitSpec(spec) || isLayerSpec(spec) ? {} : extractCompositionLayout(spec, type, config);
 
     this.component = {
       data: {
@@ -236,20 +237,20 @@ export abstract class Model {
     this.parseLayoutSize(); // depends on scale
     this.renameTopLevelLayoutSizeSignal();
 
-    this.parseSelection();
+    this.parseSelections();
     this.parseProjection();
     this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections; depends on projection because some transforms require the finalized projection name.
-    this.parseAxisAndHeader(); // depends on scale and layout size
-    this.parseLegend(); // depends on scale, markDef
+    this.parseAxesAndHeaders(); // depends on scale and layout size
+    this.parseLegends(); // depends on scale, markDef
     this.parseMarkGroup(); // depends on data name, scale, layout size, axisGroup, and children's scale, axis, legend and mark.
   }
 
   public abstract parseData(): void;
 
-  public abstract parseSelection(): void;
+  public abstract parseSelections(): void;
 
   public parseScale() {
-    parseScale(this);
+    parseScales(this);
   }
 
   public parseProjection() {
@@ -274,14 +275,14 @@ export abstract class Model {
 
   public abstract parseMarkGroup(): void;
 
-  public abstract parseAxisAndHeader(): void;
+  public abstract parseAxesAndHeaders(): void;
 
-  public parseLegend() {
+  public parseLegends() {
     parseLegend(this);
   }
 
   public abstract assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
-  public abstract assembleSelectionSignals(): NewSignal[];
+  public abstract assembleSignals(): NewSignal[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
 
@@ -333,17 +334,16 @@ export abstract class Model {
       return undefined;
     }
 
-    const {spacing = {}, ...layout} = this.layout;
+    const {spacing, ...layout} = this.layout;
+
+    const {component, config} = this;
+    const titleBand = assembleLayoutTitleBand(component.layoutHeaders, config);
 
     return {
-      padding: isNumber(spacing)
-        ? spacing
-        : {
-            row: spacing.row || DEFAULT_SPACING,
-            column: spacing.column || DEFAULT_SPACING
-          },
+      padding: spacing,
       ...this.assembleDefaultLayout(),
-      ...layout
+      ...layout,
+      ...(titleBand ? {titleBand} : {})
     };
   }
 
@@ -393,18 +393,17 @@ export abstract class Model {
     };
 
     if (title.text) {
-      if (!contains(['unit', 'layer'], this.type)) {
-        // As described in https://github.com/vega/vega-lite/issues/2875:
-        // Due to vega/vega#960 (comment), we only support title's anchor for unit and layered spec for now.
-
-        if (title.anchor && title.anchor !== 'start') {
-          log.warn(log.message.cannotSetTitleAnchor(this.type));
+      if (contains(['unit', 'layer'], this.type)) {
+        // Unit/Layer
+        if (contains<AnchorValue>(['middle', undefined], title.anchor)) {
+          title.frame = title.frame || 'group';
         }
-        title.anchor = 'start';
-      }
+      } else {
+        // composition with Vega layout
 
-      if (contains<AnchorValue>(['middle', undefined], title.anchor) && title.frame === undefined) {
-        title.frame = 'group';
+        // Set title = "start" by default for composition as "middle" does not look nice
+        // https://github.com/vega/vega/issues/960#issuecomment-471360328
+        title.anchor = title.anchor || 'start';
       }
 
       return keys(title).length > 0 ? title : undefined;
@@ -418,7 +417,7 @@ export abstract class Model {
   public assembleGroup(signals: NewSignal[] = []) {
     const group: VgMarkGroup = {};
 
-    signals = signals.concat(this.assembleSelectionSignals());
+    signals = signals.concat(this.assembleSignals());
 
     if (signals.length > 0) {
       group.signals = signals;

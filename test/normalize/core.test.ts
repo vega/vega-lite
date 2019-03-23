@@ -11,7 +11,7 @@ import {TopLevelSpec} from '../../src/spec/index';
 describe('normalize()', () => {
   describe('normalizeRepeat', () => {
     it(
-      'should drop columns from facet with row/column',
+      'should drop columns from repeat with row/column',
       log.wrap((localLogger: LocalLogger) => {
         const spec: TopLevelSpec = {
           $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
@@ -33,7 +33,7 @@ describe('normalize()', () => {
         };
         const normalized = normalize(spec);
         expect(normalized['columns']).toBeUndefined();
-        expect(localLogger.warns[0]).toEqual(log.message.COLUMNS_NOT_SUPPORTED_BY_REPEAT_ROWCOL);
+        expect(localLogger.warns[0]).toEqual(log.message.columnsNotSupportByRowCol('repeat'));
       })
     );
   });
@@ -120,6 +120,33 @@ describe('normalize()', () => {
   });
 
   describe('normalizeFacet', () => {
+    it(
+      'should drop columns from facet with row/column',
+      log.wrap((localLogger: LocalLogger) => {
+        const spec: TopLevelSpec = {
+          $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+          data: {url: 'data/cars.json'},
+          facet: {column: {field: 'a', type: 'nominal'}},
+          columns: 2,
+          spec: {
+            mark: 'bar',
+            encoding: {
+              x: {
+                field: {repeat: 'column'},
+                bin: true,
+                type: 'quantitative'
+              },
+              y: {aggregate: 'count', type: 'quantitative'},
+              color: {field: 'Origin', type: 'nominal'}
+            }
+          }
+        };
+        const normalized = normalize(spec);
+        expect(normalized['columns']).toBeUndefined();
+        expect(localLogger.warns[0]).toEqual(log.message.columnsNotSupportByRowCol('facet'));
+      })
+    );
+
     it('should produce correct layered specs for mean point and vertical error bar', () => {
       expect(
         normalize(
@@ -177,11 +204,11 @@ describe('normalize()', () => {
                   groupby: ['age']
                 },
                 {
-                  calculate: 'datum.center_people + datum.extent_people',
+                  calculate: 'datum["center_people"] + datum["extent_people"]',
                   as: 'upper_people'
                 },
                 {
-                  calculate: 'datum.center_people - datum.extent_people',
+                  calculate: 'datum["center_people"] - datum["extent_people"]',
                   as: 'lower_people'
                 }
               ],

@@ -141,11 +141,9 @@
       "orient": "bottom-right",
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
   ],
-  "config": {
-    "axisY": {"minExtent": 30},
-    "style": {"cell": {"stroke": "transparent"}}
-  }
+  "config": {"style": {"cell": {"stroke": "transparent"}}}
 }

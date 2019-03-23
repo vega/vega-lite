@@ -1,9 +1,10 @@
-import {Axis as VgAxis} from 'vega';
+import {Axis as VgAxis, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE} from '../../axis';
 import {Config} from '../../config';
 import {defaultTitle, FieldDefBase} from '../../fielddef';
 import {getFirstDefined, keys} from '../../util';
+import {Model} from '../model';
 import {AxisComponent, AxisComponentIndex} from './component';
 
 function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {
@@ -94,6 +95,31 @@ export function assembleAxis(
       zindex: getFirstDefined(zindex, 1) // put axis line above marks by default
     };
   }
+}
+
+/**
+ * Add axis signals so grid line works correctly
+ * (Fix https://github.com/vega/vega-lite/issues/4226)
+ */
+export function assembleAxisSignals(model: Model): NewSignal[] {
+  const axisComponents = model.component.axes;
+  const {x, y} = axisComponents;
+  if (x && !y) {
+    return [
+      {
+        name: 'height',
+        update: model.getSizeSignalRef('height').signal
+      }
+    ];
+  } else if (y && !x) {
+    return [
+      {
+        name: 'width',
+        update: model.getSizeSignalRef('width').signal
+      }
+    ];
+  }
+  return [];
 }
 
 export function assembleAxes(axisComponents: AxisComponentIndex, config: Config): VgAxis[] {

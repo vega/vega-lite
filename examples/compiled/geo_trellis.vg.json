@@ -42,7 +42,7 @@
     {"name": "child_height", "value": 300}
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 20,
     "offset": {"rowTitle": 10},
     "columns": 1,
     "bounds": "full",
@@ -55,9 +55,9 @@
       "role": "row-title",
       "title": {
         "text": "group",
-        "offset": 10,
         "orient": "left",
-        "style": "guide-title"
+        "style": "guide-title",
+        "offset": 10
       }
     },
     {
@@ -68,11 +68,10 @@
       "sort": {"field": "datum[\"group\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"group\"]"},
-        "offset": 10,
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {"update": {"height": {"signal": "child_height"}}}
     },
@@ -135,8 +134,8 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "symbolType": "circle",
       "title": "pct"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

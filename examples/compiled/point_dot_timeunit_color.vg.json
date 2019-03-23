@@ -26,6 +26,7 @@
       ]
     }
   ],
+  "signals": [{"name": "height", "update": "height"}],
   "marks": [
     {
       "name": "marks",
@@ -102,6 +103,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "date (year-month)",
       "encode": {
         "labels": {
@@ -109,6 +111,5 @@
         }
       }
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

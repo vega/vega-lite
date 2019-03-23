@@ -24,12 +24,7 @@
     {"name": "region_Horsepower"},
     {"name": "region_Miles_per_Gallon"}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 1,
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
@@ -75,8 +70,7 @@
           "on": [
             {
               "events": [
-                {"signal": "region_Horsepower"},
-                {"signal": "region_Miles_per_Gallon"}
+                {"signal": "region_Horsepower || region_Miles_per_Gallon"}
               ],
               "update": "region_Horsepower && region_Miles_per_Gallon ? {unit: \"concat_0\", fields: region_tuple_fields, values: [region_Horsepower,region_Miles_per_Gallon]} : null"
             }
@@ -343,6 +337,5 @@
       "nice": true,
       "zero": true
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

@@ -7,7 +7,7 @@ import {channelHasField, Encoding} from '../encoding';
 import * as log from '../log';
 import {Projection} from '../projection';
 import {ExtendedLayerSpec, FacetedUnitSpec, GenericSpec, UnitSpec} from '../spec';
-import {NormalizedFacetSpec} from '../spec/facet';
+import {GenericFacetSpec, isFacetMapping, NormalizedFacetSpec} from '../spec/facet';
 import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer';
 import {SpecMapper} from '../spec/map';
 import {GenericRepeatSpec} from '../spec/repeat';
@@ -68,13 +68,28 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     if (!isArray(repeat) && spec.columns) {
       // is repeat with row/column
       spec = omit(spec, ['columns']);
-      log.warn(log.message.COLUMNS_NOT_SUPPORTED_BY_REPEAT_ROWCOL);
+      log.warn(log.message.columnsNotSupportByRowCol('repeat'));
     }
 
     return {
       ...spec,
       spec: this.map(spec.spec, params)
     };
+  }
+
+  protected mapFacet(
+    spec: GenericFacetSpec<UnitSpec, ExtendedLayerSpec>,
+    params: NormalizerParams
+  ): GenericFacetSpec<NormalizedUnitSpec, NormalizedLayerSpec> {
+    const {facet} = spec;
+
+    if (isFacetMapping(facet) && spec.columns) {
+      // is facet with row/column
+      spec = omit(spec, ['columns']);
+      log.warn(log.message.columnsNotSupportByRowCol('facet'));
+    }
+
+    return super.mapFacet(spec, params);
   }
 
   private mapUnitWithParentEncodingOrProjection(
@@ -107,29 +122,29 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       log.warn(log.message.facetChannelDropped([...(row ? [ROW] : []), ...(column ? [COLUMN] : [])]));
     }
 
-    return {
-      ...outerSpec,
+    return this.mapFacet(
+      {
+        ...outerSpec,
 
-      // row / column has higher precedence than facet
-      facet:
-        row || column
-          ? {
-              ...(row ? {row} : {}),
-              ...(column ? {column} : {})
-            }
-          : facet,
-      spec: this.mapUnit(
-        {
+        // row / column has higher precedence than facet
+        facet:
+          row || column
+            ? {
+                ...(row ? {row} : {}),
+                ...(column ? {column} : {})
+              }
+            : facet,
+        spec: {
           ...(projection ? {projection} : {}),
           mark,
           ...(width ? {width} : {}),
           ...(height ? {height} : {}),
           encoding,
           ...(selection ? {selection} : {})
-        },
-        params
-      )
-    };
+        }
+      },
+      params
+    );
   }
 
   public mapLayer(

@@ -124,6 +124,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Origin",
       "encode": {
         "symbols": {
@@ -135,6 +136,5 @@
       },
       "shape": "shape"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

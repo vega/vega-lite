@@ -123,11 +123,11 @@
     }
   ],
   "legends": [
-    {"fill": "color", "gradientLength": {"signal": "clamp(height, 64, 200)"}}
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle"
+    }
   ],
-  "config": {
-    "axis": {"domain": false},
-    "axisY": {"minExtent": 30},
-    "style": {"cell": {"strokeWidth": 0}}
-  }
+  "config": {"axis": {"domain": false}, "style": {"cell": {"strokeWidth": 0}}}
 }

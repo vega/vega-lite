@@ -25,11 +25,7 @@
       ]
     }
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "bounds": "full",
-    "align": "all"
-  },
+  "layout": {"padding": 20, "bounds": "full", "align": "all"},
   "marks": [
     {
       "type": "group",
@@ -406,8 +402,8 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "stroke",
       "title": "location"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

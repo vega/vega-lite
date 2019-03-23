@@ -199,10 +199,10 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "gender",
       "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
       "stroke": "color"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

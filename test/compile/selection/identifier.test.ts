@@ -20,7 +20,7 @@ function getVgData(selection: any, x?: any, y?: any, mark?: Mark, enc?: any, tra
     }
   });
   model.parse();
-  optimizeDataflow(model.component.data);
+  optimizeDataflow(model.component.data, null);
   return assembleRootData(model.component.data, {});
 }
 

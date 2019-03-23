@@ -26,11 +26,11 @@
           "groupby": ["variety"]
         },
         {
-          "calculate": "datum.center_yield + datum.extent_yield",
+          "calculate": "datum[\"center_yield\"] + datum[\"extent_yield\"]",
           "as": "upper_yield"
         },
         {
-          "calculate": "datum.center_yield - datum.extent_yield",
+          "calculate": "datum[\"center_yield\"] - datum[\"extent_yield\"]",
           "as": "lower_yield"
         }
       ],

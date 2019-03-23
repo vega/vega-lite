@@ -1,3 +1,4 @@
+import {Orientation} from 'vega';
 import {isBoolean, isString} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from '.';
 import {Encoding, fieldDefs} from '../encoding';
@@ -15,7 +16,6 @@ import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {StandardType} from '../type';
-import {Orient} from '../vega.schema';
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 
@@ -152,7 +152,7 @@ export function partLayerMixins<P extends PartsMixins<any>>(
 
 export function compositeMarkContinuousAxis<M extends CompositeMark>(
   spec: GenericUnitSpec<Encoding<string>, CompositeMark | CompositeMarkDef>,
-  orient: Orient,
+  orient: Orientation,
   compositeMark: M
 ): {
   continuousAxisChannelDef: PositionFieldDef<string>;
@@ -196,7 +196,7 @@ function filterAggregateFromChannelDef<M extends CompositeMark, F extends FieldD
 export function compositeMarkOrient<M extends CompositeMark>(
   spec: GenericUnitSpec<Encoding<Field>, CompositeMark | CompositeMarkDef>,
   compositeMark: M
-): Orient {
+): Orientation {
   const {mark, encoding} = spec;
 
   if (isFieldDef(encoding.x) && isContinuous(encoding.x)) {

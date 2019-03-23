@@ -152,12 +152,12 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "stroke",
       "title": "date (quarter)",
       "type": "symbol",
       "encode": {
         "labels": {"update": {"text": {"signal": "'Q' + quarter(datum.value)"}}}
       }
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

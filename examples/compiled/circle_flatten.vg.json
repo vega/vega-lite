@@ -107,6 +107,7 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "key",
       "encode": {
         "symbols": {
@@ -114,6 +115,5 @@
         }
       }
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

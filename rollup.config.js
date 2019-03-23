@@ -3,6 +3,17 @@ import json from 'rollup-plugin-json';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import sourcemaps from 'rollup-plugin-sourcemaps';
 
+export function disallowedImports() {
+  return {
+    resolveId: module => {
+      if (module === 'vega' || module === 'util') {
+        throw new Error('Cannot import from Vega or Node Util in Vega-Lite.');
+      }
+      return null;
+    }
+  };
+}
+
 export default {
   input: 'build/src/index.js',
   output: {
@@ -11,10 +22,5 @@ export default {
     sourcemap: true,
     name: 'vl'
   },
-  plugins: [
-    nodeResolve(),
-    commonjs(),
-    json(),
-    sourcemaps()
-  ]
+  plugins: [disallowedImports(), nodeResolve({browser: true}), commonjs(), json(), sourcemaps()]
 };

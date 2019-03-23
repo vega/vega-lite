@@ -7,12 +7,7 @@
   "data": [
     {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 2,
-    "bounds": "full",
-    "align": "all"
-  },
+  "layout": {"padding": 20, "columns": 2, "bounds": "full", "align": "all"},
   "marks": [
     {
       "type": "group",
@@ -113,6 +108,7 @@
         {
           "stroke": "child__repeat_column_Origin_color",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
+          "symbolType": "circle",
           "title": "Origin",
           "encode": {
             "symbols": {
@@ -224,6 +220,7 @@
         {
           "stroke": "child__repeat_column_Cylinders_color",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
+          "symbolType": "circle",
           "title": "Cylinders",
           "encode": {
             "symbols": {
@@ -284,6 +281,5 @@
       "range": "category",
       "interpolate": "hcl"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

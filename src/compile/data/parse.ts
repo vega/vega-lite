@@ -17,7 +17,7 @@ import {
 } from '../../transform';
 import {deepEqual, mergeDeep} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
-import {requiresSelectionId} from '../selection/selection';
+import {requiresSelectionId} from '../selection';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {CalculateNode} from './calculate';

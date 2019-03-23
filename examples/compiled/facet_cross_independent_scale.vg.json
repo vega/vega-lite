@@ -56,7 +56,7 @@
     {"name": "child_y_step", "value": 20}
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 20,
     "offset": {"rowTitle": 10, "columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -69,16 +69,16 @@
       "role": "row-title",
       "title": {
         "text": "r",
-        "offset": 10,
         "orient": "left",
-        "style": "guide-title"
+        "style": "guide-title",
+        "offset": 10
       }
     },
     {
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "c", "offset": 10, "style": "guide-title"}
+      "title": {"text": "c", "style": "guide-title", "offset": 10}
     },
     {
       "name": "row_header",
@@ -88,11 +88,10 @@
       "sort": {"field": "datum[\"r\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"r\"]"},
-        "offset": 10,
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {
         "update": {
@@ -110,10 +109,9 @@
       "sort": {"field": "datum[\"c\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"c\"]"},
-        "offset": 10,
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {
         "update": {
@@ -212,6 +210,5 @@
         }
       ]
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

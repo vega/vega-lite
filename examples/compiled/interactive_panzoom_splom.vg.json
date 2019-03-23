@@ -24,12 +24,7 @@
     {"name": "grid_Horsepower"},
     {"name": "grid_Acceleration"}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 3,
-    "bounds": "full",
-    "align": "all"
-  },
+  "layout": {"padding": 20, "columns": 3, "bounds": "full", "align": "all"},
   "marks": [
     {
       "type": "group",
@@ -72,8 +67,7 @@
           "on": [
             {
               "events": [
-                {"signal": "grid_Miles_per_Gallon"},
-                {"signal": "grid_Horsepower"}
+                {"signal": "grid_Miles_per_Gallon || grid_Horsepower"}
               ],
               "update": "grid_Miles_per_Gallon && grid_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon,grid_Horsepower]} : null"
             }
@@ -208,6 +202,7 @@
           "orient": "left",
           "grid": false,
           "title": "Horsepower",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -267,10 +262,7 @@
           "name": "grid_tuple",
           "on": [
             {
-              "events": [
-                {"signal": "grid_Acceleration"},
-                {"signal": "grid_Horsepower"}
-              ],
+              "events": [{"signal": "grid_Acceleration || grid_Horsepower"}],
               "update": "grid_Acceleration && grid_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration,grid_Horsepower]} : null"
             }
           ]
@@ -404,6 +396,7 @@
           "orient": "left",
           "grid": false,
           "title": "Horsepower",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -580,6 +573,7 @@
           "orient": "left",
           "grid": false,
           "title": "Horsepower",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -640,8 +634,7 @@
           "on": [
             {
               "events": [
-                {"signal": "grid_Miles_per_Gallon"},
-                {"signal": "grid_Acceleration"}
+                {"signal": "grid_Miles_per_Gallon || grid_Acceleration"}
               ],
               "update": "grid_Miles_per_Gallon && grid_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon,grid_Acceleration]} : null"
             }
@@ -776,6 +769,7 @@
           "orient": "left",
           "grid": false,
           "title": "Acceleration",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -952,6 +946,7 @@
           "orient": "left",
           "grid": false,
           "title": "Acceleration",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -1011,10 +1006,7 @@
           "name": "grid_tuple",
           "on": [
             {
-              "events": [
-                {"signal": "grid_Horsepower"},
-                {"signal": "grid_Acceleration"}
-              ],
+              "events": [{"signal": "grid_Horsepower || grid_Acceleration"}],
               "update": "grid_Horsepower && grid_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Acceleration]} : null"
             }
           ]
@@ -1148,6 +1140,7 @@
           "orient": "left",
           "grid": false,
           "title": "Acceleration",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -1324,6 +1317,7 @@
           "orient": "left",
           "grid": false,
           "title": "Miles_per_Gallon",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -1384,8 +1378,7 @@
           "on": [
             {
               "events": [
-                {"signal": "grid_Acceleration"},
-                {"signal": "grid_Miles_per_Gallon"}
+                {"signal": "grid_Acceleration || grid_Miles_per_Gallon"}
               ],
               "update": "grid_Acceleration && grid_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration,grid_Miles_per_Gallon]} : null"
             }
@@ -1520,6 +1513,7 @@
           "orient": "left",
           "grid": false,
           "title": "Miles_per_Gallon",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -1580,8 +1574,7 @@
           "on": [
             {
               "events": [
-                {"signal": "grid_Horsepower"},
-                {"signal": "grid_Miles_per_Gallon"}
+                {"signal": "grid_Horsepower || grid_Miles_per_Gallon"}
               ],
               "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Miles_per_Gallon]} : null"
             }
@@ -1716,6 +1709,7 @@
           "orient": "left",
           "grid": false,
           "title": "Miles_per_Gallon",
+          "minExtent": 30,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -1911,6 +1905,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Origin",
       "encode": {
         "symbols": {
@@ -1921,6 +1916,5 @@
         }
       }
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

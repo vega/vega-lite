@@ -1,3 +1,4 @@
+import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
 import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
 import {Config} from '../../config';
@@ -178,8 +179,9 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
 export function bins(model: Model, fieldDef: TypedFieldDef<string>, channel: Channel) {
   const bin = fieldDef.bin;
   if (isBinning(bin)) {
+    const signal = model.getName(vgField(fieldDef, {suffix: 'bins'}));
     return new SignalRefWrapper(() => {
-      return model.getName(vgField(fieldDef, {suffix: 'bins'}));
+      return model.getSignalName(signal);
     });
   } else if (isBinned(bin) && isBinParams(bin) && bin.step !== undefined) {
     // start and stop will be determined from the scale domain
@@ -297,14 +299,25 @@ export function reverse(scaleType: ScaleType, sort: Sort<string>) {
 export function zero(
   channel: Channel,
   fieldDef: TypedFieldDef<string>,
-  specifiedScale: Domain,
+  specifiedDomain: Domain,
   markDef: MarkDef,
   scaleType: ScaleType
 ) {
   // If users explicitly provide a domain range, we should not augment zero as that will be unexpected.
-  const hasCustomDomain = !!specifiedScale && specifiedScale !== 'unaggregated';
+  const hasCustomDomain = !!specifiedDomain && specifiedDomain !== 'unaggregated';
   if (hasCustomDomain) {
-    return false;
+    if (hasContinuousDomain(scaleType)) {
+      if (isArray(specifiedDomain)) {
+        const first = specifiedDomain[0];
+        const last = specifiedDomain[specifiedDomain.length - 1];
+
+        if (first <= 0 && last >= 0) {
+          // if the domain includes zero, make zero remains true
+          return true;
+        }
+      }
+      return false;
+    }
   }
 
   // If there is no custom domain, return true only for the following cases:

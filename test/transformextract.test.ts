@@ -45,8 +45,7 @@ describe('extractTransforms()', () => {
     'interactive_layered_crossfilter.vl.json',
     'interactive_seattle_weather.vl.json',
     'joinaggregate_mean_difference.vl.json',
-    'layer_bar_dual_axis_minmax.vl.json',
-    'layer_bar_dual_axis.vl.json',
+    'layer_dual_axis.vl.json',
     'layer_bar_month.vl.json',
     'layer_circle_independent_color.vl.json',
     'layer_falkensee.vl.json',
@@ -56,6 +55,7 @@ describe('extractTransforms()', () => {
     'layer_line_errorband_2d_horizontal_borders_strokedash.vl.json',
     'layer_line_errorband_ci.vl.json',
     'layer_line_errorband_pre_aggregated.vl.json',
+    'layer_line_mean_point_raw.vl.json',
     'layer_overlay.vl.json',
     'layer_point_errorbar_1d_horizontal.vl.json',
     'layer_point_errorbar_1d_vertical.vl.json',
@@ -105,11 +105,13 @@ describe('extractTransforms()', () => {
     'trellis_bar_histogram.vl.json',
     'trellis_barley_layer_median.vl.json',
     'trellis_barley.vl.json',
+    'trellis_barley_independent.vl.json',
     'trellis_column_year.vl.json',
     'trellis_cross_sort_array.vl.json',
     'trellis_cross_sort.vl.json',
     'trellis_line_quarter.vl.json',
-    'vconcat_weather.vl.json'
+    'vconcat_weather.vl.json',
+    'window_top_k_others.vl.json'
   ]);
   for (const file of fs.readdirSync(specsDir)) {
     const filepath = specsDir + file;

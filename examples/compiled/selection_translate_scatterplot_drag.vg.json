@@ -48,10 +48,7 @@
       "name": "grid_tuple",
       "on": [
         {
-          "events": [
-            {"signal": "grid_Horsepower"},
-            {"signal": "grid_Miles_per_Gallon"}
-          ],
+          "events": [{"signal": "grid_Horsepower || grid_Miles_per_Gallon"}],
           "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Miles_per_Gallon]} : null"
         }
       ]
@@ -137,8 +134,20 @@
           "tooltip": {
             "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
           },
-          "x": {"scale": "x", "field": "Horsepower"},
-          "y": {"scale": "y", "field": "Miles_per_Gallon"},
+          "x": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "Horsepower"}
+          ],
+          "y": [
+            {
+              "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "Miles_per_Gallon"}
+          ],
           "size": {"scale": "size", "field": "Cylinders"},
           "shape": {"value": "circle"}
         }
@@ -223,6 +232,7 @@
     {
       "size": "size",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Cylinders",
       "encode": {
         "symbols": {
@@ -235,6 +245,5 @@
         }
       }
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

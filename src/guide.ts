@@ -17,16 +17,24 @@ export interface TitleMixins {
   title?: string | null;
 }
 
-export interface Guide extends TitleMixins {
+export interface FormatMixins {
   /**
-   * The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.
+   * The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field. To override the default type, set `formatType`.
    *
    * See the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more information.
    *
    * __Default value:__  derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for quantitative fields and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for temporal fields.
    */
   format?: string;
+
+  /**
+   * The format type for labels (number or time).
+   */
+  formatType?: 'number' | 'time';
 }
+
+export interface Guide extends TitleMixins, FormatMixins {}
+
 export interface VlOnlyGuideConfig {
   /**
    * Whether month names and weekday names should be abbreviated.
@@ -34,6 +42,11 @@ export interface VlOnlyGuideConfig {
    * __Default value:__  `false`
    */
   shortTimeLabels?: boolean;
+
+  /**
+   * Set to null to disable title for the axis, legend, or header.
+   */
+  title?: null;
 }
 
 export type GuideEncodingEntry = {[k in VgEncodeChannel]?: ValueDef & ConditionValueDefMixins};

@@ -54,8 +54,8 @@
     {
       "name": "CylYr_tuple_fields",
       "value": [
-        {"field": "Cylinders", "type": "E"},
-        {"field": "Year", "type": "E"}
+        {"type": "E", "field": "Cylinders"},
+        {"type": "E", "field": "Year"}
       ]
     },
     {
@@ -177,6 +177,7 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Origin",
       "encode": {
         "symbols": {
@@ -184,6 +185,5 @@
         }
       }
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

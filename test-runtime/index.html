@@ -8,7 +8,14 @@
     <div id="vis"></div>
 
     <script type="text/javascript">
+      // global
+      var view = null;
+
       function embed(vlSpec) {
+        if (view) {
+          view.finalize();
+        }
+
         const vgSpec = vl.compile(vlSpec).spec;
         view = new vega.View(vega.parse(vgSpec))
           .renderer('svg')

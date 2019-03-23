@@ -326,11 +326,7 @@
     },
     {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 20, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
@@ -397,7 +393,13 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Country) || (invert(\"concat_0_y\", brush_y)[0] === brush_Country[0] && invert(\"concat_0_y\", brush_y)[1] === brush_Country[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [{"scale": "concat_0_y"}],
+              "update": "(!isArray(brush_Country) || (invert(\"concat_0_y\", brush_y)[0] === brush_Country[0] && invert(\"concat_0_y\", brush_y)[1] === brush_Country[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -705,7 +707,13 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Country) || (invert(\"concat_1_y\", brush_y)[0] === brush_Country[0] && invert(\"concat_1_y\", brush_y)[1] === brush_Country[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [{"scale": "concat_1_y"}],
+              "update": "(!isArray(brush_Country) || (invert(\"concat_1_y\", brush_y)[0] === brush_Country[0] && invert(\"concat_1_y\", brush_y)[1] === brush_Country[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -1071,15 +1079,22 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Population_ages_65_and_above_of_total) || (+invert(\"concat_2_x\", brush_x)[0] === +brush_Population_ages_65_and_above_of_total[0] && +invert(\"concat_2_x\", brush_x)[1] === +brush_Population_ages_65_and_above_of_total[1])) && (!isArray(brush_Population_ages_15_64_of_total) || (+invert(\"concat_2_y\", brush_y)[0] === +brush_Population_ages_15_64_of_total[0] && +invert(\"concat_2_y\", brush_y)[1] === +brush_Population_ages_15_64_of_total[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [{"scale": "concat_2_x"}, {"scale": "concat_2_y"}],
+              "update": "(!isArray(brush_Population_ages_65_and_above_of_total) || (+invert(\"concat_2_x\", brush_x)[0] === +brush_Population_ages_65_and_above_of_total[0] && +invert(\"concat_2_x\", brush_x)[1] === +brush_Population_ages_65_and_above_of_total[1])) && (!isArray(brush_Population_ages_15_64_of_total) || (+invert(\"concat_2_y\", brush_y)[0] === +brush_Population_ages_15_64_of_total[0] && +invert(\"concat_2_y\", brush_y)[1] === +brush_Population_ages_15_64_of_total[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
           "on": [
             {
               "events": [
-                {"signal": "brush_Population_ages_65_and_above_of_total"},
-                {"signal": "brush_Population_ages_15_64_of_total"}
+                {
+                  "signal": "brush_Population_ages_65_and_above_of_total || brush_Population_ages_15_64_of_total"
+                }
               ],
               "update": "brush_Population_ages_65_and_above_of_total && brush_Population_ages_15_64_of_total ? {unit: \"concat_2\", fields: brush_tuple_fields, values: [brush_Population_ages_65_and_above_of_total,brush_Population_ages_15_64_of_total]} : null"
             }
@@ -1249,14 +1264,26 @@
               "tooltip": {
                 "signal": "{\"Population_ages_15_64_of_total\": format(datum[\"Population_ages_15_64_of_total\"], \"\"), \"Population_ages_65_and_above_of_total\": format(datum[\"Population_ages_65_and_above_of_total\"], \"\")}"
               },
-              "x": {
-                "scale": "concat_2_x",
-                "field": "Population_ages_65_and_above_of_total"
-              },
-              "y": {
-                "scale": "concat_2_y",
-                "field": "Population_ages_15_64_of_total"
-              }
+              "x": [
+                {
+                  "test": "datum[\"Population_ages_65_and_above_of_total\"] === null || isNaN(datum[\"Population_ages_65_and_above_of_total\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "concat_2_x",
+                  "field": "Population_ages_65_and_above_of_total"
+                }
+              ],
+              "y": [
+                {
+                  "test": "datum[\"Population_ages_15_64_of_total\"] === null || isNaN(datum[\"Population_ages_15_64_of_total\"])",
+                  "field": {"group": "height"}
+                },
+                {
+                  "scale": "concat_2_y",
+                  "field": "Population_ages_15_64_of_total"
+                }
+              ]
             }
           }
         },
@@ -1426,6 +1453,5 @@
       "zero": false,
       "nice": true
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

@@ -68,12 +68,7 @@
     {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"},
     {"name": "click", "update": "vlSelectionResolve(\"click_store\")"}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 1,
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
@@ -143,7 +138,13 @@
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_monthdate_date) || (+invert(\"concat_0_x\", brush_x)[0] === +brush_monthdate_date[0] && +invert(\"concat_0_x\", brush_x)[1] === +brush_monthdate_date[1])) ? brush_scale_trigger : {}"
+          "value": {},
+          "on": [
+            {
+              "events": [{"scale": "concat_0_x"}],
+              "update": "(!isArray(brush_monthdate_date) || (+invert(\"concat_0_x\", brush_x)[0] === +brush_monthdate_date[0] && +invert(\"concat_0_x\", brush_x)[1] === +brush_monthdate_date[1])) ? brush_scale_trigger : {}"
+            }
+          ]
         },
         {
           "name": "brush_tuple",
@@ -527,8 +528,8 @@
       "name": "size",
       "type": "linear",
       "domain": [-1, 50],
-      "range": [9, 361],
-      "zero": false
+      "range": [0, 361],
+      "zero": true
     },
     {
       "name": "concat_0_x",
@@ -542,7 +543,7 @@
       "domain": [-5, 40],
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
-      "zero": false
+      "zero": true
     },
     {
       "name": "concat_1_x",
@@ -566,6 +567,7 @@
       "title": "Weather",
       "stroke": "color",
       "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
+      "symbolType": "circle",
       "encode": {
         "symbols": {
           "update": {
@@ -580,6 +582,7 @@
       "title": "Precipitation",
       "size": "size",
       "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
+      "symbolType": "circle",
       "encode": {
         "symbols": {
           "update": {
@@ -590,6 +593,5 @@
         }
       }
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

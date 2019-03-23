@@ -53,7 +53,7 @@
       "name": "view_tuple",
       "on": [
         {
-          "events": [{"signal": "view_income"}, {"signal": "view_health"}],
+          "events": [{"signal": "view_income || view_health"}],
           "update": "view_income && view_health ? {unit: \"\", fields: view_tuple_fields, values: [view_income,view_health]} : null"
         }
       ]
@@ -140,7 +140,13 @@
             "signal": "{\"health\": format(datum[\"health\"], \"\"), \"income\": format(datum[\"income\"], \"\"), \"population\": format(datum[\"population\"], \"\")}"
           },
           "x": {"scale": "x", "field": "income"},
-          "y": {"scale": "y", "field": "health"},
+          "y": [
+            {
+              "test": "datum[\"health\"] === null || isNaN(datum[\"health\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "health"}
+          ],
           "size": {"scale": "size", "field": "population"},
           "shape": {"value": "circle"}
         }
@@ -200,6 +206,7 @@
       "orient": "left",
       "grid": false,
       "title": "health",
+      "minExtent": 30,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1
@@ -222,6 +229,7 @@
     {
       "size": "size",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "population",
       "encode": {
         "symbols": {
@@ -234,6 +242,5 @@
         }
       }
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

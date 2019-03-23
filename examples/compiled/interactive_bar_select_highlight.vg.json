@@ -55,7 +55,7 @@
     },
     {
       "name": "highlight_tuple_fields",
-      "value": [{"field": "_vgsid_", "type": "E"}]
+      "value": [{"type": "E", "field": "_vgsid_"}]
     },
     {
       "name": "highlight_modify",
@@ -73,7 +73,7 @@
     },
     {
       "name": "select_tuple_fields",
-      "value": [{"field": "_vgsid_", "type": "E"}]
+      "value": [{"type": "E", "field": "_vgsid_"}]
     },
     {
       "name": "select_toggle",
@@ -194,6 +194,5 @@
       "ticks": false,
       "zindex": 0
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

@@ -45,7 +45,7 @@
     {"name": "child_height", "value": 200}
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 20,
     "offset": {"rowTitle": 10},
     "columns": 1,
     "bounds": "full",
@@ -58,9 +58,9 @@
       "role": "row-title",
       "title": {
         "text": "Origin",
-        "offset": 10,
         "orient": "left",
-        "style": "guide-title"
+        "style": "guide-title",
+        "offset": 10
       }
     },
     {
@@ -71,11 +71,10 @@
       "sort": {"field": "datum[\"Origin\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"Origin\"]"},
-        "offset": 10,
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
       "axes": [
@@ -140,12 +139,24 @@
               "tooltip": {
                 "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_15_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_15_Horsepower_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
-              "x2": {
-                "scale": "x",
-                "field": "bin_maxbins_15_Horsepower",
-                "offset": 1
-              },
-              "x": {"scale": "x", "field": "bin_maxbins_15_Horsepower_end"},
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "x",
+                  "field": "bin_maxbins_15_Horsepower",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"])",
+                  "value": 0
+                },
+                {"scale": "x", "field": "bin_maxbins_15_Horsepower_end"}
+              ],
               "y": {"scale": "y", "field": "__count"},
               "y2": {"scale": "y", "value": 0}
             }
@@ -188,6 +199,5 @@
       "nice": true,
       "zero": true
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

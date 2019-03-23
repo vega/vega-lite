@@ -38,7 +38,7 @@
     },
     {
       "name": "paintbrush_tuple_fields",
-      "value": [{"field": "_vgsid_", "type": "E"}]
+      "value": [{"type": "E", "field": "_vgsid_"}]
     },
     {
       "name": "paintbrush_toggle",
@@ -158,6 +158,5 @@
       "ticks": false,
       "zindex": 0
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

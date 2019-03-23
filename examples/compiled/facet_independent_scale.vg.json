@@ -51,7 +51,7 @@
     {"name": "child_height", "value": 200}
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 20,
     "offset": {"columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -62,7 +62,7 @@
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "gender", "offset": 10, "style": "guide-title"}
+      "title": {"text": "gender", "style": "guide-title", "offset": 10}
     },
     {
       "name": "row_header",
@@ -89,10 +89,9 @@
       "sort": {"field": "datum[\"gender\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"gender\"]"},
-        "offset": 10,
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {
         "update": {
@@ -215,9 +214,10 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "symbolType": "circle",
       "title": "gender",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }
   ],
-  "config": {"axisY": {"minExtent": 30}, "style": {"cell": {"fill": "yellow"}}}
+  "config": {"style": {"cell": {"fill": "yellow"}}}
 }

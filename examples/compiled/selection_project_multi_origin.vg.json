@@ -28,7 +28,7 @@
         }
       ]
     },
-    {"name": "pts_tuple_fields", "value": [{"field": "Origin", "type": "E"}]},
+    {"name": "pts_tuple_fields", "value": [{"type": "E", "field": "Origin"}]},
     {
       "name": "pts_toggle",
       "value": false,
@@ -178,6 +178,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Cylinders",
       "encode": {
         "symbols": {
@@ -192,6 +193,7 @@
     {
       "shape": "shape",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Origin",
       "encode": {
         "symbols": {
@@ -203,6 +205,5 @@
         }
       }
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

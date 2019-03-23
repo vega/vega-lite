@@ -25,7 +25,8 @@
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
-    }
+    },
+    {"name": "width", "update": "width"}
   ],
   "marks": [
     {
@@ -95,6 +96,7 @@
       "title": "Quantize",
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "encode": {
         "symbols": {
           "update": {"shape": {"value": "circle"}, "opacity": {"value": 0.7}}
@@ -102,6 +104,5 @@
       },
       "size": "size"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

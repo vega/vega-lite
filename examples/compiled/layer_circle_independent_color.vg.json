@@ -7,57 +7,10 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
     {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "extent",
-          "field": "Acceleration",
-          "signal": "layer_0_bin_maxbins_10_Acceleration_extent"
-        },
-        {
-          "type": "bin",
-          "field": "Acceleration",
-          "as": [
-            "bin_maxbins_10_Acceleration",
-            "bin_maxbins_10_Acceleration_end"
-          ],
-          "signal": "layer_0_bin_maxbins_10_Acceleration_bins",
-          "maxbins": 10,
-          "extent": {"signal": "layer_0_bin_maxbins_10_Acceleration_extent"}
-        },
-        {
-          "type": "extent",
-          "field": "Horsepower",
-          "signal": "layer_0_bin_maxbins_10_Horsepower_extent"
-        },
-        {
-          "type": "bin",
-          "field": "Horsepower",
-          "as": ["bin_maxbins_10_Horsepower", "bin_maxbins_10_Horsepower_end"],
-          "signal": "layer_0_bin_maxbins_10_Horsepower_bins",
-          "maxbins": 10,
-          "extent": {"signal": "layer_0_bin_maxbins_10_Horsepower_extent"}
-        },
-        {
-          "type": "aggregate",
-          "groupby": [
-            "bin_maxbins_10_Acceleration",
-            "bin_maxbins_10_Acceleration_end",
-            "bin_maxbins_10_Horsepower",
-            "bin_maxbins_10_Horsepower_end"
-          ],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "extent",
@@ -87,8 +40,32 @@
           "signal": "layer_1_bin_maxbins_10_Horsepower_bins",
           "maxbins": 10,
           "extent": {"signal": "layer_1_bin_maxbins_10_Horsepower_extent"}
-        },
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {"type": "filter", "expr": "datum.Origin === 'Japan'"},
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_10_Acceleration",
+            "bin_maxbins_10_Acceleration_end",
+            "bin_maxbins_10_Horsepower",
+            "bin_maxbins_10_Horsepower_end"
+          ],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
         {
           "type": "aggregate",
           "groupby": [
@@ -109,7 +86,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": [
@@ -122,12 +99,24 @@
           "tooltip": {
             "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"All Cars\": format(datum[\"__count\"], \"\")}"
           },
-          "x": {
-            "signal": "scale(\"x\", (datum[\"bin_maxbins_10_Acceleration\"] + datum[\"bin_maxbins_10_Acceleration_end\"]) / 2)"
-          },
-          "y": {
-            "signal": "scale(\"y\", (datum[\"bin_maxbins_10_Horsepower\"] + datum[\"bin_maxbins_10_Horsepower_end\"]) / 2)"
-          },
+          "x": [
+            {
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"])",
+              "value": 0
+            },
+            {
+              "signal": "scale(\"x\", (datum[\"bin_maxbins_10_Acceleration\"] + datum[\"bin_maxbins_10_Acceleration_end\"]) / 2)"
+            }
+          ],
+          "y": [
+            {
+              "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"])",
+              "field": {"group": "height"}
+            },
+            {
+              "signal": "scale(\"y\", (datum[\"bin_maxbins_10_Horsepower\"] + datum[\"bin_maxbins_10_Horsepower_end\"]) / 2)"
+            }
+          ],
           "size": {"scale": "size", "field": "__count"},
           "shape": {"value": "circle"}
         }
@@ -137,7 +126,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": [
@@ -150,12 +139,24 @@
           "tooltip": {
             "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"Cars from Japan\": format(datum[\"__count\"], \"\")}"
           },
-          "x": {
-            "signal": "scale(\"x\", (datum[\"bin_maxbins_10_Acceleration\"] + datum[\"bin_maxbins_10_Acceleration_end\"]) / 2)"
-          },
-          "y": {
-            "signal": "scale(\"y\", (datum[\"bin_maxbins_10_Horsepower\"] + datum[\"bin_maxbins_10_Horsepower_end\"]) / 2)"
-          },
+          "x": [
+            {
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"])",
+              "value": 0
+            },
+            {
+              "signal": "scale(\"x\", (datum[\"bin_maxbins_10_Acceleration\"] + datum[\"bin_maxbins_10_Acceleration_end\"]) / 2)"
+            }
+          ],
+          "y": [
+            {
+              "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"])",
+              "field": {"group": "height"}
+            },
+            {
+              "signal": "scale(\"y\", (datum[\"bin_maxbins_10_Horsepower\"] + datum[\"bin_maxbins_10_Horsepower_end\"]) / 2)"
+            }
+          ],
           "size": {"scale": "size", "field": "__count"},
           "shape": {"value": "circle"}
         }
@@ -167,34 +168,20 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {
-            "signal": "[layer_0_bin_maxbins_10_Acceleration_bins.start, layer_0_bin_maxbins_10_Acceleration_bins.stop]"
-          },
-          {
-            "signal": "[layer_1_bin_maxbins_10_Acceleration_bins.start, layer_1_bin_maxbins_10_Acceleration_bins.stop]"
-          }
-        ]
+        "signal": "[layer_1_bin_maxbins_10_Acceleration_bins.start, layer_1_bin_maxbins_10_Acceleration_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
-      "bins": {"signal": "layer_0_bin_maxbins_10_Acceleration_bins"},
+      "bins": {"signal": "layer_1_bin_maxbins_10_Acceleration_bins"},
       "zero": false
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
-        "fields": [
-          {
-            "signal": "[layer_0_bin_maxbins_10_Horsepower_bins.start, layer_0_bin_maxbins_10_Horsepower_bins.stop]"
-          },
-          {
-            "signal": "[layer_1_bin_maxbins_10_Horsepower_bins.start, layer_1_bin_maxbins_10_Horsepower_bins.stop]"
-          }
-        ]
+        "signal": "[layer_1_bin_maxbins_10_Horsepower_bins.start, layer_1_bin_maxbins_10_Horsepower_bins.stop]"
       },
       "range": [{"signal": "height"}, 0],
-      "bins": {"signal": "layer_0_bin_maxbins_10_Horsepower_bins"},
+      "bins": {"signal": "layer_1_bin_maxbins_10_Horsepower_bins"},
       "zero": false
     },
     {
@@ -202,14 +189,14 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "__count"},
-          {"data": "data_1", "field": "__count"}
+          {"data": "data_1", "field": "__count"},
+          {"data": "data_0", "field": "__count"}
         ]
       },
       "range": [
         0,
         {
-          "signal": "pow(0.95 * min(width / ((layer_0_bin_maxbins_10_Acceleration_bins.stop - layer_0_bin_maxbins_10_Acceleration_bins.start) / layer_0_bin_maxbins_10_Acceleration_bins.step), height / ((layer_0_bin_maxbins_10_Horsepower_bins.stop - layer_0_bin_maxbins_10_Horsepower_bins.start) / layer_0_bin_maxbins_10_Horsepower_bins.step)), 2)"
+          "signal": "pow(0.95 * min(width / ((layer_1_bin_maxbins_10_Acceleration_bins.stop - layer_1_bin_maxbins_10_Acceleration_bins.start) / layer_1_bin_maxbins_10_Acceleration_bins.step), height / ((layer_1_bin_maxbins_10_Horsepower_bins.stop - layer_1_bin_maxbins_10_Horsepower_bins.start) / layer_1_bin_maxbins_10_Horsepower_bins.step)), 2)"
         }
       ],
       "zero": true
@@ -241,6 +228,7 @@
       "title": "All Cars",
       "size": "size",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "encode": {
         "symbols": {
           "update": {
@@ -255,6 +243,7 @@
       "title": "Cars from Japan",
       "size": "size",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "encode": {
         "symbols": {
           "update": {
@@ -265,6 +254,5 @@
         }
       }
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

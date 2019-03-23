@@ -269,6 +269,12 @@
         "style": "background-size: 110%"
       },
       {
+        "name": "window_top_k_others",
+        "title": "Top-K plot with Others",
+        "description": "By [Trevor Manz](github.com/manzt), adapted from https://observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example.",
+        "style": "background-size: 110%"
+      },
+      {
         "name": "lookup",
         "title": "Using the lookup transform to combine data",
         "style": "background-size: 75%; background-position-x: center;"
@@ -282,6 +288,11 @@
       {
         "name": "layer_cumulative_histogram",
         "title": "Layered Histogram and Cumulative Histogram",
+        "style": "background-size: auto 105%; background-position: center center !important;"
+      },
+      {
+        "name": "parallel_coordinate",
+        "title": "Parallel Coordinate Plot",
         "style": "background-size: auto 105%; background-position: center center !important;"
       }
     ]
@@ -368,7 +379,7 @@
         "title": "Bullet Chart"
       },
       {
-        "name": "layer_bar_dual_axis",
+        "name": "layer_dual_axis",
         "title": "Layered Plot with Dual-Axis",
         "style": "background-size: 100% auto; background-position-y: center;"
       },
@@ -381,6 +392,10 @@
         "name": "bar_layered_weather",
         "title": "Weekly Weather Plot",
         "description": "Inspired by <a href='https://vega.github.io/vega-editor/?mode=vega&spec=weather'>this Vega example</a>. Weekly weather data plot representing high/low ranges of record temperatures (light grey), average temperatures (dark grey), and both predicted and observed temperatures (black) for the given week. The first five days have high/low ranges of observed temperatures, and the last five days have ranges of predicted temperatures, where the upper barbell represents the range of high temperature predictions and the lower barbell represents the range of low temperature predictions. Created by @melissatdiamond."
+      },
+      {
+        "name": "layer_line_mean_point_raw",
+        "title": "Layering mean values over raw values"
       }
     ]
   },
@@ -552,6 +567,10 @@
         "title": "Isotype Grid",
         "description": "Inspired by this [D3 example by Alan Smith](http://bl.ocks.org/alansmithy/d832fc03f6e6a91e99f4). Drag region to select. This example was created by [@jwoLondon](https://github.com/jwoLondon)",
         "png": true
+      },
+      {
+        "name": "brush_table",
+        "title": "Brushing Scatter Plot to show data on a table"
       }
     ],
     "Interactive Multi-View Displays": [

@@ -3,7 +3,7 @@ import {isArray} from 'vega-util';
 import {Channel, COLUMN, FACET_CHANNELS, FacetChannel, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {FieldRefOption, normalize, title as fieldDefTitle, TypedFieldDef, vgField} from '../fielddef';
+import {FieldRefOption, normalize, TypedFieldDef, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
@@ -11,18 +11,19 @@ import {NormalizedFacetSpec} from '../spec';
 import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
 import {contains, flatten} from '../util';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
-import {assembleAxis} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
 import {sortArrayIndexField} from './data/calculate';
 import {parseData} from './data/parse';
-import {assembleLabelTitle, getHeaderType, HeaderChannel, HeaderComponent} from './header/index';
+import {assembleLabelTitle} from './header/assemble';
+import {getHeaderChannel, getHeaderProperty} from './header/common';
+import {HEADER_CHANNELS, HEADER_TYPES} from './header/component';
+import {parseFacetHeaders} from './header/parse';
 import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
-import {parseGuideResolve} from './resolve';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
-import {assembleFacetSignals} from './selection/selection';
+import {assembleFacetSignals} from './selection/assemble';
 
 export function facetSortFieldName(
   fieldDef: FacetFieldDef<string>,
@@ -33,7 +34,6 @@ export function facetSortFieldName(
 }
 
 export class FacetModel extends ModelWithField {
-  public readonly type: 'facet' = 'facet';
   public readonly facet: EncodingFacetMapping<string>;
 
   public readonly child: Model;
@@ -47,7 +47,7 @@ export class FacetModel extends ModelWithField {
     repeater: RepeaterValue,
     config: Config
   ) {
-    super(spec, parent, parentGivenName, config, repeater, spec.resolve);
+    super(spec, 'facet', parent, parentGivenName, config, repeater, spec.resolve);
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config, false);
     this.children = [this.child];
@@ -55,19 +55,6 @@ export class FacetModel extends ModelWithField {
     const facet = replaceRepeaterInFacet(spec.facet, repeater);
 
     this.facet = this.initFacet(facet);
-
-    const {resolve} = this.component;
-
-    if (!isFacetMapping(facet)) {
-      if (resolve.axis.x === 'shared' || resolve.axis.y === 'shared') {
-        log.warn(log.message.FACET_1D_CANNOT_SHARE_AXIS);
-      }
-
-      resolve.axis = {
-        x: 'independent',
-        y: 'independent'
-      };
-    }
   }
 
   private initFacet(facet: FacetFieldDef<string> | FacetMapping<string>): EncodingFacetMapping<string> {
@@ -115,11 +102,11 @@ export class FacetModel extends ModelWithField {
     parseChildrenLayoutSize(this);
   }
 
-  public parseSelection() {
+  public parseSelections() {
     // As a facet has a single child, the selection components are the same.
     // The child maintains its selections to assemble signals, which remain
     // within its unit.
-    this.child.parseSelection();
+    this.child.parseSelections();
     this.component.selection = this.child.component.selection;
   }
 
@@ -127,79 +114,18 @@ export class FacetModel extends ModelWithField {
     this.child.parseMarkGroup();
   }
 
-  public parseAxisAndHeader() {
-    this.child.parseAxisAndHeader();
+  public parseAxesAndHeaders() {
+    this.child.parseAxesAndHeaders();
 
-    for (const channel of FACET_CHANNELS) {
-      this.parseHeader(channel);
-    }
-
-    this.mergeChildAxis('x');
-    this.mergeChildAxis('y');
-  }
-
-  private parseHeader(channel: FacetChannel) {
-    if (this.channelHasField(channel)) {
-      const fieldDef = this.facet[channel];
-      let title = fieldDefTitle(fieldDef, this.config, {allowDisabling: true});
-
-      if (this.child.component.layoutHeaders[channel].title) {
-        // merge title with child to produce "Title / Subtitle / Sub-subtitle"
-        title += ' / ' + this.child.component.layoutHeaders[channel].title;
-        this.child.component.layoutHeaders[channel].title = null;
-      }
-
-      this.component.layoutHeaders[channel] = {
-        title,
-        facetFieldDef: fieldDef,
-        // TODO: support adding label to footer as well
-        header: channel === 'facet' ? [] : [this.makeHeaderComponent(channel, true)]
-      };
-    }
-  }
-
-  private makeHeaderComponent(channel: HeaderChannel, labels: boolean): HeaderComponent {
-    const sizeType = channel === 'row' ? 'height' : 'width';
-
-    return {
-      labels,
-      sizeSignal: this.child.component.layoutSize.get(sizeType) ? this.child.getSizeSignalRef(sizeType) : undefined,
-      axes: []
-    };
-  }
-
-  private mergeChildAxis(channel: 'x' | 'y') {
-    const {child} = this;
-    if (child.component.axes[channel]) {
-      const {layoutHeaders, resolve} = this.component;
-      resolve.axis[channel] = parseGuideResolve(resolve, channel);
-
-      if (resolve.axis[channel] === 'shared') {
-        // For shared axis, move the axes to facet's header or footer
-        const headerChannel = channel === 'x' ? 'column' : 'row';
-
-        const layoutHeader = layoutHeaders[headerChannel];
-        for (const axisComponent of child.component.axes[channel]) {
-          const headerType = getHeaderType(axisComponent.get('orient'));
-          layoutHeader[headerType] = layoutHeader[headerType] || [this.makeHeaderComponent(headerChannel, false)];
-
-          const mainAxis = assembleAxis(axisComponent, 'main', this.config, {header: true});
-          // LayoutHeader no longer keep track of property precedence, thus let's combine.
-          layoutHeader[headerType][0].axes.push(mainAxis);
-          axisComponent.mainExtracted = true;
-        }
-      } else {
-        // Otherwise do nothing for independent axes
-      }
-    }
+    parseFacetHeaders(this);
   }
 
   public assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[] {
     return this.child.assembleSelectionTopLevelSignals(signals);
   }
 
-  public assembleSelectionSignals(): NewSignal[] {
-    this.child.assembleSelectionSignals();
+  public assembleSignals(): NewSignal[] {
+    this.child.assembleSignals();
     return [];
   }
 
@@ -210,15 +136,27 @@ export class FacetModel extends ModelWithField {
   private getHeaderLayoutMixins(): VgLayout {
     const layoutMixins: VgLayout = {};
 
-    ['row', 'column'].forEach((channel: 'row' | 'column') => {
-      ['header', 'footer'].forEach((headerType: 'header' | 'footer') => {
+    for (const channel of FACET_CHANNELS) {
+      for (const headerType of HEADER_TYPES) {
         const layoutHeaderComponent = this.component.layoutHeaders[channel];
         const headerComponent = layoutHeaderComponent[headerType];
+
+        const {facetFieldDef} = layoutHeaderComponent;
+        if (facetFieldDef) {
+          const titleOrient = getHeaderProperty('titleOrient', facetFieldDef, this.config, channel);
+
+          if (contains(['right', 'bottom'], titleOrient)) {
+            const headerChannel = getHeaderChannel(channel, titleOrient);
+            layoutMixins.titleAnchor = layoutMixins.titleAnchor || {};
+            layoutMixins.titleAnchor[headerChannel] = 'end';
+          }
+        }
+
         if (headerComponent && headerComponent[0]) {
           // set header/footerBand
           const sizeType = channel === 'row' ? 'height' : 'width';
           const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
-          if (!this.child.component.layoutSize.get(sizeType)) {
+          if (channel !== 'facet' && !this.child.component.layoutSize.get(sizeType)) {
             // If facet child does not have size signal, then apply headerBand
             layoutMixins[bandType] = layoutMixins[bandType] || {};
             layoutMixins[bandType][channel] = 0.5;
@@ -229,8 +167,8 @@ export class FacetModel extends ModelWithField {
             layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
           }
         }
-      });
-    });
+      }
+    }
     return layoutMixins;
   }
 
@@ -241,7 +179,7 @@ export class FacetModel extends ModelWithField {
 
     let align: LayoutAlign = 'all';
 
-    // Do not align the cells if the scale corresponding to the directin is indepent.
+    // Do not align the cells if the scale corresponding to the direction is indepent.
     // We always align when we facet into both row and column.
     if (!row && this.component.resolve.scale.x === 'independent') {
       align = 'none';
@@ -416,8 +354,32 @@ export class FacetModel extends ModelWithField {
     return [];
   }
 
+  private assembleLabelTitle() {
+    const {facet, config} = this;
+    if (facet.facet) {
+      // Facet always uses title to display labels
+      return assembleLabelTitle(facet.facet, 'facet', config);
+    }
+
+    const ORTHOGONAL_ORIENT = {
+      row: ['top', 'bottom'],
+      column: ['left', 'right']
+    };
+
+    for (const channel of HEADER_CHANNELS) {
+      if (facet[channel]) {
+        const labelOrient = getHeaderProperty('labelOrient', facet[channel], config, channel);
+        if (contains(ORTHOGONAL_ORIENT[channel], labelOrient)) {
+          // Row/Column with orthogonal labelOrient must use title to display labels
+          return assembleLabelTitle(facet[channel], channel, config);
+        }
+      }
+    }
+    return undefined;
+  }
+
   public assembleMarks(): VgMarkGroup[] {
-    const {child, facet, config} = this;
+    const {child} = this;
 
     // If we facet by two dimensions, we need to add a cross operator to the aggregation
     // so that we create all groups
@@ -426,7 +388,7 @@ export class FacetModel extends ModelWithField {
 
     const encodeEntry = child.assembleGroupEncodeEntry(false);
 
-    const title = (facet.facet && assembleLabelTitle(facet.facet, 'facet', config)) || child.assembleTitle();
+    const title = this.assembleLabelTitle() || child.assembleTitle();
     const style = child.assembleGroupStyle();
 
     const markGroup = {

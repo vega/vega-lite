@@ -1,6 +1,7 @@
 import {NewSignal} from 'vega';
 import {Config} from '../config';
 import {Resolve} from '../resolve';
+import {SpecType} from '../spec/base';
 import {NormalizedConcatSpec} from '../spec/concat';
 import {NormalizedRepeatSpec} from '../spec/repeat';
 import {keys} from '../util';
@@ -13,13 +14,14 @@ import {RepeaterValue} from './repeater';
 export abstract class BaseConcatModel extends Model {
   constructor(
     spec: NormalizedConcatSpec | NormalizedRepeatSpec,
+    specType: SpecType,
     parent: Model,
     parentGivenName: string,
     config: Config,
     repeater: RepeaterValue,
     resolve: Resolve
   ) {
-    super(spec, parent, parentGivenName, config, repeater, resolve);
+    super(spec, specType, parent, parentGivenName, config, repeater, resolve);
   }
 
   public parseData() {
@@ -28,13 +30,13 @@ export abstract class BaseConcatModel extends Model {
       child.parseData();
     });
   }
-  public parseSelection() {
+  public parseSelections() {
     // Merge selections up the hierarchy so that they may be referenced
     // across unit specs. Persist their definitions within each child
     // to assemble signals which remain within output Vega unit groups.
     this.component.selection = {};
     for (const child of this.children) {
-      child.parseSelection();
+      child.parseSelections();
       keys(child.component.selection).forEach(key => {
         this.component.selection[key] = child.component.selection[key];
       });
@@ -47,9 +49,9 @@ export abstract class BaseConcatModel extends Model {
     }
   }
 
-  public parseAxisAndHeader() {
+  public parseAxesAndHeaders() {
     for (const child of this.children) {
-      child.parseAxisAndHeader();
+      child.parseAxesAndHeaders();
     }
 
     // TODO(#2415): support shared axes
@@ -59,8 +61,8 @@ export abstract class BaseConcatModel extends Model {
     return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
   }
 
-  public assembleSelectionSignals(): NewSignal[] {
-    this.children.forEach(child => child.assembleSelectionSignals());
+  public assembleSignals(): NewSignal[] {
+    this.children.forEach(child => child.assembleSignals());
     return [];
   }
 

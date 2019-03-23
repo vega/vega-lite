@@ -162,8 +162,8 @@
       "title": "Year",
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "encode": {"symbols": {"update": {"opacity": {"value": 1}}}}
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

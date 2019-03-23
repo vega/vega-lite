@@ -25,12 +25,12 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "datum.center_yield + datum.extent_yield",
+          "expr": "datum[\"center_yield\"] + datum[\"extent_yield\"]",
           "as": "upper_yield"
         },
         {
           "type": "formula",
-          "expr": "datum.center_yield - datum.extent_yield",
+          "expr": "datum[\"center_yield\"] - datum[\"extent_yield\"]",
           "as": "lower_yield"
         }
       ]
@@ -59,8 +59,20 @@
             "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "variety", "band": 0.5},
-          "y": {"scale": "y", "field": "lower_yield"},
-          "y2": {"scale": "y", "field": "upper_yield"}
+          "y": [
+            {
+              "test": "datum[\"lower_yield\"] === null || isNaN(datum[\"lower_yield\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "lower_yield"}
+          ],
+          "y2": [
+            {
+              "test": "datum[\"upper_yield\"] === null || isNaN(datum[\"upper_yield\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "upper_yield"}
+          ]
         }
       }
     },
@@ -82,7 +94,13 @@
             "signal": "{\"Mean of yield\": format(datum[\"mean_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "variety", "band": 0.5},
-          "y": {"scale": "y", "field": "mean_yield"}
+          "y": [
+            {
+              "test": "datum[\"mean_yield\"] === null || isNaN(datum[\"mean_yield\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "mean_yield"}
+          ]
         }
       }
     }
@@ -151,6 +169,5 @@
       "ticks": false,
       "zindex": 0
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

@@ -10,41 +10,6 @@
       "url": "data/flights-2k.json",
       "format": {"type": "json", "parse": {"date": "date"}},
       "transform": [
-        {"type": "formula", "expr": "hours(datum.date)", "as": "time"}
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "extent",
-          "field": "distance",
-          "signal": "child__repeat_column_distance_bin_maxbins_20_distance_extent"
-        },
-        {
-          "type": "bin",
-          "field": "distance",
-          "as": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
-          "signal": "child__repeat_column_distance_bin_maxbins_20_distance_bins",
-          "maxbins": 20,
-          "extent": {
-            "signal": "child__repeat_column_distance_bin_maxbins_20_distance_extent"
-          }
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
         {
           "type": "extent",
           "field": "delay",
@@ -61,16 +26,25 @@
           }
         },
         {
-          "type": "aggregate",
-          "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        }
+          "type": "extent",
+          "field": "distance",
+          "signal": "child__repeat_column_distance_bin_maxbins_20_distance_extent"
+        },
+        {
+          "type": "bin",
+          "field": "distance",
+          "as": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
+          "signal": "child__repeat_column_distance_bin_maxbins_20_distance_bins",
+          "maxbins": 20,
+          "extent": {
+            "signal": "child__repeat_column_distance_bin_maxbins_20_distance_extent"
+          }
+        },
+        {"type": "formula", "expr": "hours(datum.date)", "as": "time"}
       ]
     },
     {
-      "name": "data_2",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
         {
@@ -96,14 +70,35 @@
           "as": ["__count"]
         }
       ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
     }
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 3,
-    "bounds": "full",
-    "align": "all"
-  },
+  "layout": {"padding": 20, "columns": 3, "bounds": "full", "align": "all"},
   "marks": [
     {
       "type": "group",
@@ -117,7 +112,7 @@
           "name": "child__repeat_column_distance_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": [
@@ -130,15 +125,27 @@
               "tooltip": {
                 "signal": "{\"distance (binned)\": datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_20_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_distance_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
-              "x2": {
-                "scale": "child__repeat_column_distance_x",
-                "field": "bin_maxbins_20_distance",
-                "offset": 1
-              },
-              "x": {
-                "scale": "child__repeat_column_distance_x",
-                "field": "bin_maxbins_20_distance_end"
-              },
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_distance_x",
+                  "field": "bin_maxbins_20_distance",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_distance_x",
+                  "field": "bin_maxbins_20_distance_end"
+                }
+              ],
               "y": {
                 "scale": "child__repeat_column_distance_y",
                 "field": "__count"
@@ -208,15 +215,27 @@
               "tooltip": {
                 "signal": "{\"delay (binned)\": datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_20_delay\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_delay_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
-              "x2": {
-                "scale": "child__repeat_column_delay_x",
-                "field": "bin_maxbins_20_delay",
-                "offset": 1
-              },
-              "x": {
-                "scale": "child__repeat_column_delay_x",
-                "field": "bin_maxbins_20_delay_end"
-              },
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_delay_x",
+                  "field": "bin_maxbins_20_delay",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_delay_x",
+                  "field": "bin_maxbins_20_delay_end"
+                }
+              ],
               "y": {
                 "scale": "child__repeat_column_delay_y",
                 "field": "__count"
@@ -273,7 +292,7 @@
           "name": "child__repeat_column_time_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": [
@@ -286,15 +305,27 @@
               "tooltip": {
                 "signal": "{\"time (binned)\": datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) ? \"null\" : format(datum[\"bin_maxbins_20_time\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_time_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
-              "x2": {
-                "scale": "child__repeat_column_time_x",
-                "field": "bin_maxbins_20_time",
-                "offset": 1
-              },
-              "x": {
-                "scale": "child__repeat_column_time_x",
-                "field": "bin_maxbins_20_time_end"
-              },
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_time_x",
+                  "field": "bin_maxbins_20_time",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "child__repeat_column_time_x",
+                  "field": "bin_maxbins_20_time_end"
+                }
+              ],
               "y": {"scale": "child__repeat_column_time_y", "field": "__count"},
               "y2": {"scale": "child__repeat_column_time_y", "value": 0}
             }
@@ -353,7 +384,7 @@
     {
       "name": "child__repeat_column_distance_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "__count"},
+      "domain": {"data": "data_2", "field": "__count"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -391,11 +422,10 @@
     {
       "name": "child__repeat_column_time_y",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "__count"},
+      "domain": {"data": "data_0", "field": "__count"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

@@ -17,7 +17,7 @@ declare const page: Page;
 // declare const jestPuppeteer: any;
 
 for (const bind of [bound, unbound]) {
-  describe(`Translate ${bind} interval selections at runtime`, async () => {
+  describe(`Translate ${bind} interval selections at runtime`, () => {
     beforeAll(async () => {
       await page.goto('http://0.0.0.0:8000/test-runtime/');
     });

@@ -108,7 +108,7 @@
       "domain": [0, 50],
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": false
+      "zero": true
     }
   ],
   "axes": [
@@ -158,8 +158,5 @@
       "zindex": 0
     }
   ],
-  "config": {
-    "axisY": {"minExtent": 30},
-    "style": {"area": {"interpolate": "monotone"}}
-  }
+  "config": {"style": {"area": {"interpolate": "monotone"}}}
 }

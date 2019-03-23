@@ -20,7 +20,7 @@
     {"name": "child_height", "value": 200}
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 20,
     "offset": {"columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -31,7 +31,7 @@
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "Series", "offset": 10, "style": "guide-title"}
+      "title": {"text": "Series", "style": "guide-title", "offset": 10}
     },
     {
       "name": "row_header",
@@ -58,10 +58,9 @@
       "sort": {"field": "datum[\"Series\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"Series\"]"},
-        "offset": 10,
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
     },
@@ -118,8 +117,20 @@
               "tooltip": {
                 "signal": "{\"X\": format(datum[\"X\"], \"\"), \"Y\": format(datum[\"Y\"], \"\")}"
               },
-              "x": {"scale": "x", "field": "X"},
-              "y": {"scale": "y", "field": "Y"},
+              "x": [
+                {
+                  "test": "datum[\"X\"] === null || isNaN(datum[\"X\"])",
+                  "value": 0
+                },
+                {"scale": "x", "field": "X"}
+              ],
+              "y": [
+                {
+                  "test": "datum[\"Y\"] === null || isNaN(datum[\"Y\"])",
+                  "field": {"group": "height"}
+                },
+                {"scale": "y", "field": "Y"}
+              ],
               "shape": {"value": "circle"}
             }
           }
@@ -172,6 +183,5 @@
       "zero": false,
       "nice": true
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

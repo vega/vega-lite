@@ -2,7 +2,7 @@ import {isObject} from 'vega-util';
 import {AxisConfigMixins} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
 import {VL_ONLY_GUIDE_CONFIG, VL_ONLY_LEGEND_CONFIG} from './guide';
-import {HeaderConfig} from './header';
+import {HeaderConfigMixins} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import * as mark from './mark';
 import {
@@ -15,7 +15,7 @@ import {
 import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
-import {BaseViewBackground} from './spec/base';
+import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING} from './spec/base';
 import {TopLevelProperties} from './spec/toplevel';
 import {StackOffset} from './stack';
 import {extractTitleConfig, TitleConfig} from './title';
@@ -152,7 +152,9 @@ export interface Config
     VLOnlyConfig,
     MarkConfigMixins,
     CompositeMarkConfigMixins,
-    AxisConfigMixins {
+    AxisConfigMixins,
+    HeaderConfigMixins,
+    CompositionConfigMixins {
   /**
    * CSS color property to use as the background of the whole Vega-Lite view
    *
@@ -170,11 +172,6 @@ export interface Config
    * Legend configuration, which determines default properties for all [legends](https://vega.github.io/vega-lite/docs/legend.html). For a full list of legend configuration options, please see the [corresponding section of in the legend documentation](https://vega.github.io/vega-lite/docs/legend.html#config).
    */
   legend?: LegendConfig;
-
-  /**
-   * Header configuration, which determines default properties for all [header](https://vega.github.io/vega-lite/docs/header.html). For a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config).
-   */
-  header?: HeaderConfig;
 
   /**
    * Title configuration, which determines default properties for all [titles](https://vega.github.io/vega-lite/docs/title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](https://vega.github.io/vega-lite/docs/title.html#config).
@@ -242,18 +239,26 @@ export const defaultConfig: Config = {
 
   axis: {},
   axisX: {},
-  axisY: {minExtent: 30},
+  axisY: {},
   axisLeft: {},
   axisRight: {},
   axisTop: {},
   axisBottom: {},
   axisBand: {},
   legend: defaultLegendConfig,
+  header: {titlePadding: 10, labelPadding: 10},
+  headerColumn: {},
+  headerRow: {},
+  headerFacet: {},
 
   selection: defaultSelectionConfig,
   style: {},
 
-  title: {}
+  title: {},
+
+  facet: {spacing: DEFAULT_SPACING},
+  repeat: {spacing: DEFAULT_SPACING},
+  concat: {spacing: DEFAULT_SPACING}
 };
 
 export function initConfig(config: Config) {
@@ -264,9 +269,13 @@ const MARK_STYLES = ['view', ...PRIMITIVE_MARKS] as ('view' | Mark)[];
 
 const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'padding',
+  'facet',
+  'concat',
+  'repeat',
   'numberFormat',
   'timeFormat',
   'countTitle',
+  'header',
   'stack',
   'scale',
   'selection',

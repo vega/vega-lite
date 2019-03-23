@@ -54,7 +54,7 @@
     }
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 20,
     "offset": {"rowTitle": 10},
     "columns": 1,
     "bounds": "full",
@@ -67,9 +67,9 @@
       "role": "row-title",
       "title": {
         "text": "site",
-        "offset": 10,
         "orient": "left",
-        "style": "guide-title"
+        "style": "guide-title",
+        "offset": 10
       }
     },
     {
@@ -80,11 +80,10 @@
       "sort": {"field": "datum[\"median_yield\"]", "order": "ascending"},
       "title": {
         "text": {"signal": "''+parent[\"site\"]"},
-        "offset": 10,
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
-        "baseline": "middle"
+        "offset": 10
       },
       "encode": {
         "update": {"height": {"signal": "trellis_barley_child_height"}}
@@ -197,7 +196,13 @@
               "tooltip": {
                 "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"year\": ''+datum[\"year\"]}"
               },
-              "x": {"scale": "trellis_barley_x", "field": "median_yield"},
+              "x": [
+                {
+                  "test": "datum[\"median_yield\"] === null || isNaN(datum[\"median_yield\"])",
+                  "value": 0
+                },
+                {"scale": "trellis_barley_x", "field": "median_yield"}
+              ],
               "y": {"scale": "trellis_barley_y", "field": "variety"}
             }
           }
@@ -219,7 +224,13 @@
               "tooltip": {
                 "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\")}"
               },
-              "x": {"scale": "trellis_barley_x", "field": "median_yield"},
+              "x": [
+                {
+                  "test": "datum[\"median_yield\"] === null || isNaN(datum[\"median_yield\"])",
+                  "value": 0
+                },
+                {"scale": "trellis_barley_x", "field": "median_yield"}
+              ],
               "y": {"field": {"group": "height"}},
               "y2": {"value": 0}
             }
@@ -282,9 +293,9 @@
       "gradientLength": {
         "signal": "clamp(trellis_barley_child_height, 64, 200)"
       },
+      "symbolType": "circle",
       "title": "year",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

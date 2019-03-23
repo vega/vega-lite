@@ -146,13 +146,19 @@
     },
     {
       "name": "alex_scale_trigger",
-      "update": "(!isArray(alex_Cylinders) || (invert(\"x\", alex_x)[0] === alex_Cylinders[0] && invert(\"x\", alex_x)[1] === alex_Cylinders[1])) && (!isArray(alex_Origin) || (invert(\"y\", alex_y)[0] === alex_Origin[0] && invert(\"y\", alex_y)[1] === alex_Origin[1])) ? alex_scale_trigger : {}"
+      "value": {},
+      "on": [
+        {
+          "events": [{"scale": "x"}, {"scale": "y"}],
+          "update": "(!isArray(alex_Cylinders) || (invert(\"x\", alex_x)[0] === alex_Cylinders[0] && invert(\"x\", alex_x)[1] === alex_Cylinders[1])) && (!isArray(alex_Origin) || (invert(\"y\", alex_y)[0] === alex_Origin[0] && invert(\"y\", alex_y)[1] === alex_Origin[1])) ? alex_scale_trigger : {}"
+        }
+      ]
     },
     {
       "name": "alex_tuple",
       "on": [
         {
-          "events": [{"signal": "alex_Cylinders"}, {"signal": "alex_Origin"}],
+          "events": [{"signal": "alex_Cylinders || alex_Origin"}],
           "update": "alex_Cylinders && alex_Origin ? {unit: \"\", fields: alex_tuple_fields, values: [alex_Cylinders,alex_Origin]} : null"
         }
       ]
@@ -350,16 +356,19 @@
     },
     {
       "name": "morgan_scale_trigger",
-      "update": "(!isArray(morgan_Cylinders) || (invert(\"x\", morgan_x)[0] === morgan_Cylinders[0] && invert(\"x\", morgan_x)[1] === morgan_Cylinders[1])) && (!isArray(morgan_Origin) || (invert(\"y\", morgan_y)[0] === morgan_Origin[0] && invert(\"y\", morgan_y)[1] === morgan_Origin[1])) ? morgan_scale_trigger : {}"
+      "value": {},
+      "on": [
+        {
+          "events": [{"scale": "x"}, {"scale": "y"}],
+          "update": "(!isArray(morgan_Cylinders) || (invert(\"x\", morgan_x)[0] === morgan_Cylinders[0] && invert(\"x\", morgan_x)[1] === morgan_Cylinders[1])) && (!isArray(morgan_Origin) || (invert(\"y\", morgan_y)[0] === morgan_Origin[0] && invert(\"y\", morgan_y)[1] === morgan_Origin[1])) ? morgan_scale_trigger : {}"
+        }
+      ]
     },
     {
       "name": "morgan_tuple",
       "on": [
         {
-          "events": [
-            {"signal": "morgan_Cylinders"},
-            {"signal": "morgan_Origin"}
-          ],
+          "events": [{"signal": "morgan_Cylinders || morgan_Origin"}],
           "update": "morgan_Cylinders && morgan_Origin ? {unit: \"\", fields: morgan_tuple_fields, values: [morgan_Cylinders,morgan_Origin]} : null"
         }
       ]
@@ -693,8 +702,8 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Count of Records"
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

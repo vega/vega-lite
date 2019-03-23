@@ -39,12 +39,7 @@
       "update": "bandspace(domain('concat_2_y').length, 1, 0.5) * concat_2_y_step"
     }
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "bounds": "full",
-    "align": "each",
-    "columns": 2
-  },
+  "layout": {"padding": 20, "bounds": "full", "align": "each", "columns": 2},
   "marks": [
     {
       "type": "group",
@@ -56,6 +51,7 @@
           "height": {"signal": "concat_0_height"}
         }
       },
+      "signals": [{"name": "width", "update": "concat_0_width"}],
       "marks": [
         {
           "name": "concat_0_marks",
@@ -98,6 +94,7 @@
           "title": "Quantize",
           "fill": "concat_0_color",
           "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
+          "symbolType": "circle",
           "encode": {
             "symbols": {
               "update": {
@@ -120,6 +117,7 @@
           "height": {"signal": "concat_1_height"}
         }
       },
+      "signals": [{"name": "width", "update": "concat_1_width"}],
       "marks": [
         {
           "name": "concat_1_marks",
@@ -164,6 +162,7 @@
           "fill": "concat_1_color",
           "gradientLength": {"signal": "clamp(concat_1_height, 64, 200)"},
           "labelOverlap": "greedy",
+          "symbolType": "circle",
           "encode": {
             "symbols": {
               "update": {
@@ -186,6 +185,7 @@
           "height": {"signal": "concat_2_height"}
         }
       },
+      "signals": [{"name": "width", "update": "concat_2_width"}],
       "marks": [
         {
           "name": "concat_2_marks",
@@ -229,6 +229,7 @@
           "fill": "concat_2_color",
           "gradientLength": {"signal": "clamp(concat_2_height, 64, 200)"},
           "labelOverlap": "greedy",
+          "symbolType": "circle",
           "encode": {
             "symbols": {
               "update": {
@@ -307,6 +308,5 @@
       "domain": [30, 70],
       "range": [80, 200, 320]
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

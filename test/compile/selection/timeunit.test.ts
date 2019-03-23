@@ -4,12 +4,12 @@ import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {Model} from '../../../src/compile/model';
-import * as selection from '../../../src/compile/selection/selection';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {NormalizedUnitSpec} from '../../../src/spec';
 import {parseModel, parseUnitModel} from '../../util';
 
 function getData(model: Model) {
-  optimizeDataflow(model.component.data);
+  optimizeDataflow(model.component.data, null);
   return assembleRootData(model.component.data, {});
 }
 
@@ -55,15 +55,15 @@ describe('Selection time unit', () => {
         y: {field: 'date', type: 'temporal', timeUnit: 'minutes'}
       }
     });
-    const selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+    const selCmpts = (model.component.selection = parseUnitSelection(model, {
       one: {type: 'single'},
       two: {type: 'single', encodings: ['x', 'y']}
     }));
 
-    expect(selCmpts['one'].timeUnit).not.toBeDefined();
-    expect(selCmpts['two'].timeUnit).toBeInstanceOf(TimeUnitNode);
+    expect(selCmpts['one'].project.timeUnit).not.toBeDefined();
+    expect(selCmpts['two'].project.timeUnit).toBeInstanceOf(TimeUnitNode);
 
-    const as = selCmpts['two'].timeUnit.assemble().map(tx => tx.as);
+    const as = selCmpts['two'].project.timeUnit.assemble().map(tx => tx.as);
     expect(as).toEqual(['seconds_date', 'minutes_date']);
   });
 
@@ -83,9 +83,8 @@ describe('Selection time unit', () => {
         }
       }
     });
-
-    const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
-    expect(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
+    const data1 = getData(model).filter(d => d.name === 'data_1')[0].transform;
+    expect(data1.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
   });
 
   it('is added before selection filters', () => {
@@ -134,8 +133,7 @@ describe('Selection time unit', () => {
         y: {field: 'price', type: 'quantitative'}
       }
     });
-
-    const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
-    expect(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
+    const data1 = getData(model).filter(d => d.name === 'data_1')[0].transform;
+    expect(data1.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
   });
 });

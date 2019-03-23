@@ -89,7 +89,33 @@ export const STROKEWIDTH = Channel.STROKEWIDTH;
 export const TOOLTIP = Channel.TOOLTIP;
 export const HREF = Channel.HREF;
 
+export type PositionChannel = 'x' | 'y' | 'x2' | 'y2';
+
 export type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
+
+export function isGeoPositionChannel(c: Channel): c is GeoPositionChannel {
+  switch (c) {
+    case LATITUDE:
+    case LATITUDE2:
+    case LONGITUDE:
+    case LONGITUDE2:
+      return true;
+  }
+  return false;
+}
+
+export function getPositionChannelFromLatLong(channel: GeoPositionChannel): PositionChannel {
+  switch (channel) {
+    case LATITUDE:
+      return 'y';
+    case LATITUDE2:
+      return 'y2';
+    case LONGITUDE:
+      return 'x';
+    case LONGITUDE2:
+      return 'x2';
+  }
+}
 
 export const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel> = {
   longitude: 1,
@@ -156,6 +182,7 @@ const CHANNEL_INDEX = {
 export const CHANNELS = flagKeys(CHANNEL_INDEX);
 
 const {order: _o, detail: _d, ...SINGLE_DEF_CHANNEL_INDEX} = CHANNEL_INDEX;
+const {order: _o1, detail: _d1, row: _r, column: _c, facet: _f, ...SINGLE_DEF_UNIT_CHANNEL_INDEX} = CHANNEL_INDEX;
 /**
  * Channels that cannot have an array of channelDef.
  * model.fieldDef, getFieldDef only work for these channels.
@@ -166,6 +193,8 @@ const {order: _o, detail: _d, ...SINGLE_DEF_CHANNEL_INDEX} = CHANNEL_INDEX;
  */
 
 export const SINGLE_DEF_CHANNELS: SingleDefChannel[] = flagKeys(SINGLE_DEF_CHANNEL_INDEX);
+
+export const SINGLE_DEF_UNIT_CHANNELS: SingleDefUnitChannel[] = flagKeys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
 
 // Using the following line leads to TypeError: Cannot read property 'elementTypes' of undefined
 // when running the schema generator
@@ -195,6 +224,10 @@ export type SingleDefUnitChannel =
   | 'key';
 
 export type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column' | 'facet';
+
+export function isSingleDefUnitChannel(str: string): str is SingleDefUnitChannel {
+  return !!SINGLE_DEF_UNIT_CHANNEL_INDEX[str];
+}
 
 export function isChannel(str: string): str is Channel {
   return !!CHANNEL_INDEX[str];

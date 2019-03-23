@@ -31,8 +31,8 @@
     {
       "name": "pts_tuple_fields",
       "value": [
-        {"field": "Cylinders", "type": "E"},
-        {"field": "Origin", "type": "E"}
+        {"type": "E", "field": "Cylinders"},
+        {"type": "E", "field": "Origin"}
       ]
     },
     {
@@ -184,6 +184,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Cylinders",
       "encode": {
         "symbols": {
@@ -198,6 +199,7 @@
     {
       "shape": "shape",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "Origin",
       "encode": {
         "symbols": {
@@ -209,6 +211,5 @@
         }
       }
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }
