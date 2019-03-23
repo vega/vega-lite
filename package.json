@@ -70,7 +70,7 @@
     "@types/jest": "^24.0.11",
     "@types/jest-environment-puppeteer": "^4.0.0",
     "@types/mkdirp": "^0.5.2",
-    "@types/node": "^11.11.4",
+    "@types/node": "^11.11.6",
     "@types/puppeteer": "^1.12.3",
     "ajv": "^6.10.0",
     "chai": "^4.2.0",
