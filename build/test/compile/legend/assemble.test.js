@@ -38,6 +38,7 @@ describe('legend/assemble', () => {
         expect(legends[0].title).toEqual('b');
         expect(legends[0].fill).toEqual('color');
         expect(legends[0].size).toEqual('size');
+        expect(legends[0].encode.symbols.update.fill).toBe(undefined);
     });
 });
 //# sourceMappingURL=assemble.test.js.map

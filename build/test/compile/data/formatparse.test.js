@@ -199,15 +199,19 @@ describe('compile/data/formatparse', () => {
                 s: 'string',
                 d1: 'date',
                 d2: 'date:"%y"',
-                d3: 'utc:"%y"'
+                d3: 'utc:"%y"',
+                d4: 'utc:%y',
+                d5: `utc:'%y'`
             });
             expect(p.assembleTransforms()).toEqual([
                 { type: 'formula', expr: 'toNumber(datum["n"])', as: 'n' },
                 { type: 'formula', expr: 'toBoolean(datum["b"])', as: 'b' },
                 { type: 'formula', expr: 'toString(datum["s"])', as: 's' },
                 { type: 'formula', expr: 'toDate(datum["d1"])', as: 'd1' },
-                { type: 'formula', expr: 'timeParse(datum["d2"],"%y")', as: 'd2' },
-                { type: 'formula', expr: 'utcParse(datum["d3"],"%y")', as: 'd3' }
+                { type: 'formula', expr: `timeParse(datum["d2"],'%y')`, as: 'd2' },
+                { type: 'formula', expr: `utcParse(datum["d3"],'%y')`, as: 'd3' },
+                { type: 'formula', expr: `utcParse(datum["d4"],'%y')`, as: 'd4' },
+                { type: 'formula', expr: `utcParse(datum["d5"],'%y')`, as: 'd5' }
             ]);
         });
         it('should assemble flatten for nested fields', () => {
