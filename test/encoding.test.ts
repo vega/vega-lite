@@ -86,8 +86,7 @@ describe('encoding', () => {
             type: 'temporal',
             title: 'a (year-month-date-hours-minutes)',
             axis: {
-              format: '%b %d, %Y %H:%M',
-              formatType: 'time'
+              format: '%b %d, %Y %H:%M'
             }
           },
           y: {field: 'b', type: 'quantitative'}
@@ -116,6 +115,27 @@ describe('encoding', () => {
         type: 'ordinal'
       });
     });
+    it('should not produce formatType in axis when there is timeUnit with type temporal', () => {
+      const output = extractTransformsFromEncoding(
+        normalizeEncoding(
+          {
+            x: {field: 'a', type: 'quantitative'},
+            y: {timeUnit: 'year', field: 'b', type: 'temporal'}
+          },
+          'line'
+        ),
+        defaultConfig
+      );
+
+      expect(output.encoding.y).toEqual({
+        axis: {
+          format: '%Y'
+        },
+        field: 'year_b',
+        title: 'b (year)',
+        type: 'temporal'
+      });
+    });
     it('should produce format and formatType in legend when there is timeUnit', () => {
       const output = extractTransformsFromEncoding(
         normalizeEncoding(
@@ -137,6 +157,28 @@ describe('encoding', () => {
         field: 'month_c',
         title: 'c (month)',
         type: 'nominal'
+      });
+    });
+    it('should not produce formatType in legend when there is timeUnit with type temporal', () => {
+      const output = extractTransformsFromEncoding(
+        normalizeEncoding(
+          {
+            x: {field: 'a', type: 'quantitative'},
+            y: {field: 'b', type: 'ordinal'},
+            detail: {field: 'c', timeUnit: 'month', type: 'temporal'}
+          },
+          'line'
+        ),
+        defaultConfig
+      );
+
+      expect(output.encoding.detail).toEqual({
+        legend: {
+          format: '%b'
+        },
+        field: 'month_c',
+        title: 'c (month)',
+        type: 'temporal'
       });
     });
     it('should produce format and formatType when there is timeUnit in tooltip channel or tooltip channel', () => {
