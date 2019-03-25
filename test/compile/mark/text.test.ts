@@ -118,7 +118,7 @@ describe('Mark: Text', () => {
     });
 
     it('should map text without template', () => {
-      expect(props.text).toEqual({signal: `''+datum["Origin"]`});
+      expect(props.text).toEqual({signal: `datum["Origin"]`});
     });
   });
 
