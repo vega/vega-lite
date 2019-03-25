@@ -40,7 +40,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"Origin\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"Origin\"]"},
+        "text": {"signal": "parent[\"Origin\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -96,7 +96,7 @@
           "from": {"data": "child_column_domain"},
           "sort": {"field": "datum[\"Cylinders\"]", "order": "ascending"},
           "title": {
-            "text": {"signal": "''+parent[\"Cylinders\"]"},
+            "text": {"signal": "parent[\"Cylinders\"]"},
             "style": "guide-label",
             "frame": "group",
             "offset": 10

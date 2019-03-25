@@ -57,7 +57,7 @@
           ],
           "opacity": {"value": 0.5},
           "tooltip": {
-            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Count of Records\": format(datum[\"__count\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Count of Records\": format(datum[\"__count\"], \"\"), \"weather\": datum[\"weather\"]}"
           },
           "xc": {"scale": "x", "field": "month_date", "band": 0.5},
           "width": {"scale": "size", "field": "weather"},

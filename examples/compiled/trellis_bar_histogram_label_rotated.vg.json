@@ -70,7 +70,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"Origin\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"Origin\"]"},
+        "text": {"signal": "parent[\"Origin\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",

@@ -116,7 +116,7 @@
             {"scale": "color", "field": "event"}
           ],
           "tooltip": {
-            "signal": "{\"start (year)\": timeFormat(datum[\"year_start\"], '%Y'), \"end (year)\": timeFormat(datum[\"year_end\"], '%Y'), \"event\": ''+datum[\"event\"]}"
+            "signal": "{\"start (year)\": timeFormat(datum[\"year_start\"], '%Y'), \"end (year)\": timeFormat(datum[\"year_end\"], '%Y'), \"event\": datum[\"event\"]}"
           },
           "x": {"scale": "x", "field": "year_start"},
           "x2": {"scale": "x", "field": "year_end"},

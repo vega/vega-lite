@@ -52,7 +52,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"MPAA_Rating\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"MPAA_Rating\"]"},
+        "text": {"signal": "parent[\"MPAA_Rating\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10

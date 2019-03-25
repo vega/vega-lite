@@ -316,7 +316,7 @@
                 {"value": "grey"}
               ],
               "tooltip": {
-                "signal": "{\"Major_Genre\": ''+datum[\"Major_Genre\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
+                "signal": "{\"Major_Genre\": datum[\"Major_Genre\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
               "x": {"scale": "concat_1_x", "field": "Major_Genre"},
               "width": {"scale": "concat_1_x", "band": true},

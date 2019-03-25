@@ -37,7 +37,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Name\": ''+datum[\"Name\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
+            "signal": "{\"Name\": datum[\"Name\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Name"},
           "width": {"scale": "x", "band": true},

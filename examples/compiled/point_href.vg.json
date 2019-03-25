@@ -44,8 +44,8 @@
             },
             {"scale": "color", "field": "Origin"}
           ],
-          "tooltip": {"signal": "''+datum[\"Name\"]"},
-          "href": {"signal": "''+datum[\"url\"]"},
+          "tooltip": {"signal": "datum[\"Name\"]"},
+          "href": {"signal": "datum[\"url\"]"},
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"}
         }

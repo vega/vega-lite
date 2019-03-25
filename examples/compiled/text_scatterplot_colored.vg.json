@@ -31,11 +31,11 @@
             {"scale": "color", "field": "Origin"}
           ],
           "tooltip": {
-            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"], \"OriginInitial\": ''+datum[\"OriginInitial\"]}"
+            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": datum[\"Origin\"], \"OriginInitial\": datum[\"OriginInitial\"]}"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
-          "text": {"signal": "''+datum[\"OriginInitial\"]"},
+          "text": {"signal": "datum[\"OriginInitial\"]"},
           "align": {"value": "center"}
         }
       }

@@ -49,7 +49,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\")}"
+            "signal": "{\"age\": datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "sum_people"},
           "x2": {"scale": "x", "value": 0},

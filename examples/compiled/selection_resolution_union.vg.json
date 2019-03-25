@@ -300,7 +300,7 @@
                 {"value": "grey"}
               ],
               "tooltip": {
-                "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Origin\": datum[\"Origin\"]}"
               },
               "x": {
                 "scale": "child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_x",
@@ -658,7 +658,7 @@
                 {"value": "grey"}
               ],
               "tooltip": {
-                "signal": "{\"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Origin\": datum[\"Origin\"]}"
               },
               "x": {
                 "scale": "child__repeat_row_Horsepower__repeat_column_Acceleration_x",
@@ -955,7 +955,7 @@
                 {"value": "grey"}
               ],
               "tooltip": {
-                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Origin\": datum[\"Origin\"]}"
               },
               "x": {
                 "scale": "child__repeat_row_Horsepower__repeat_column_Horsepower_x",
@@ -1312,7 +1312,7 @@
                 {"value": "grey"}
               ],
               "tooltip": {
-                "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Origin\": datum[\"Origin\"]}"
               },
               "x": {
                 "scale": "child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_x",
@@ -1609,7 +1609,7 @@
                 {"value": "grey"}
               ],
               "tooltip": {
-                "signal": "{\"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Origin\": datum[\"Origin\"]}"
               },
               "x": {
                 "scale": "child__repeat_row_Acceleration__repeat_column_Acceleration_x",
@@ -1964,7 +1964,7 @@
                 {"value": "grey"}
               ],
               "tooltip": {
-                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Origin\": datum[\"Origin\"]}"
               },
               "x": {
                 "scale": "child__repeat_row_Acceleration__repeat_column_Horsepower_x",
@@ -2261,7 +2261,7 @@
                 {"value": "grey"}
               ],
               "tooltip": {
-                "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": datum[\"Origin\"]}"
               },
               "x": {
                 "scale": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_x",
@@ -2618,7 +2618,7 @@
                 {"value": "grey"}
               ],
               "tooltip": {
-                "signal": "{\"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": datum[\"Origin\"]}"
               },
               "x": {
                 "scale": "child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_x",
@@ -2978,7 +2978,7 @@
                 {"value": "grey"}
               ],
               "tooltip": {
-                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": datum[\"Origin\"]}"
               },
               "x": {
                 "scale": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_x",

@@ -92,7 +92,7 @@
                 {"value": "black"}
               ],
               "tooltip": {
-                "signal": "{\"study\": ''+datum[\"study\"], \"lo\": format(datum[\"lo\"], \"\"), \"hi\": format(datum[\"hi\"], \"\")}"
+                "signal": "{\"study\": datum[\"study\"], \"lo\": format(datum[\"lo\"], \"\"), \"hi\": format(datum[\"hi\"], \"\")}"
               },
               "x": {"scale": "concat_0_x", "field": "lo"},
               "y": {"scale": "concat_0_y", "field": "study", "band": 0.5},
@@ -123,7 +123,7 @@
                 {"scale": "color", "field": "measure"}
               ],
               "tooltip": {
-                "signal": "{\"study\": ''+datum[\"study\"], \"mean\": format(datum[\"mean\"], \"\"), \"measure\": ''+datum[\"measure\"]}"
+                "signal": "{\"study\": datum[\"study\"], \"mean\": format(datum[\"mean\"], \"\"), \"measure\": datum[\"measure\"]}"
               },
               "x": {"scale": "concat_0_x", "field": "mean"},
               "y": {"scale": "concat_0_y", "field": "study", "band": 0.5},
@@ -282,7 +282,7 @@
                 {"value": "black"}
               ],
               "tooltip": {
-                "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": ''+datum[\"label\"]}"
+                "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": datum[\"label\"]}"
               },
               "x": [
                 {
@@ -292,7 +292,7 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"signal": "''+datum[\"label\"]"},
+              "text": {"signal": "datum[\"label\"]"},
               "fontSize": {"value": 9.5}
             }
           }
@@ -313,7 +313,7 @@
                 {"value": "black"}
               ],
               "tooltip": {
-                "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": ''+datum[\"label\"]}"
+                "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": datum[\"label\"]}"
               },
               "x": [
                 {
@@ -323,7 +323,7 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"signal": "''+datum[\"label\"]"},
+              "text": {"signal": "datum[\"label\"]"},
               "fontSize": {"value": 9.5}
             }
           }

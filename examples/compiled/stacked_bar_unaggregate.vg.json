@@ -52,7 +52,7 @@
             {"scale": "color", "field": "c"}
           ],
           "tooltip": {
-            "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\"), \"c\": ''+datum[\"c\"]}"
+            "signal": "{\"a\": datum[\"a\"], \"b\": format(datum[\"b\"], \"\"), \"c\": datum[\"c\"]}"
           },
           "x": {"scale": "x", "field": "a"},
           "width": {"scale": "x", "band": true},

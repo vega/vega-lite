@@ -133,7 +133,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"row_b_sort_index\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"b\"]"},
+        "text": {"signal": "parent[\"b\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -159,7 +159,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"column_a_sort_index\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"a\"]"},
+        "text": {"signal": "parent[\"a\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10

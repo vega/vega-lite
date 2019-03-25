@@ -87,7 +87,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"r\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"r\"]"},
+        "text": {"signal": "parent[\"r\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -108,7 +108,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"c\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"c\"]"},
+        "text": {"signal": "parent[\"c\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -162,7 +162,7 @@
             "update": {
               "fill": {"value": "#4c78a8"},
               "tooltip": {
-                "signal": "{\"b\": ''+datum[\"b\"], \"a\": ''+datum[\"a\"]}"
+                "signal": "{\"b\": datum[\"b\"], \"a\": datum[\"a\"]}"
               },
               "x": {"scale": "child_x", "field": "a"},
               "width": {"scale": "child_x", "band": true},

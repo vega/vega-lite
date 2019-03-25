@@ -72,7 +72,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"score\": format(datum[\"score\"], \"\"), \"student\": ''+datum[\"student\"]}"
+            "signal": "{\"score\": format(datum[\"score\"], \"\"), \"student\": datum[\"student\"]}"
           },
           "x": {"scale": "x", "field": "score"},
           "x2": {"scale": "x", "value": 0},

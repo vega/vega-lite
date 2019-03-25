@@ -40,7 +40,7 @@
             {"scale": "color", "field": "Entity"}
           ],
           "tooltip": {
-            "signal": "{\"Year\": ''+datum[\"Year\"], \"Entity\": ''+datum[\"Entity\"], \"Annual Global Deaths\": format(datum[\"Deaths\"], \"\")}"
+            "signal": "{\"Year\": datum[\"Year\"], \"Entity\": datum[\"Entity\"], \"Annual Global Deaths\": format(datum[\"Deaths\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Year"},
           "y": {"scale": "y", "field": "Entity"},

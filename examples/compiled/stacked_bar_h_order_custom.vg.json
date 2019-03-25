@@ -56,7 +56,7 @@
             {"scale": "color", "field": "site"}
           ],
           "tooltip": {
-            "signal": "{\"Sum of yield\": format(datum[\"sum_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"site\": ''+datum[\"site\"], \"siteOrder\": format(datum[\"siteOrder\"], \"\")}"
+            "signal": "{\"Sum of yield\": format(datum[\"sum_yield\"], \"\"), \"variety\": datum[\"variety\"], \"site\": datum[\"site\"], \"siteOrder\": format(datum[\"siteOrder\"], \"\")}"
           },
           "x": {"scale": "x", "field": "sum_yield_end"},
           "x2": {"scale": "x", "field": "sum_yield_start"},

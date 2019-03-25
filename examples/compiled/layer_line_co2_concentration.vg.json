@@ -74,7 +74,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "decade"},
               "tooltip": {
-                "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"decade\": ''+datum[\"decade\"]}"
+                "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"decade\": datum[\"decade\"]}"
               },
               "x": {"scale": "x", "field": "scaled_date"},
               "y": {"scale": "y", "field": "CO2"},
@@ -102,7 +102,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": ''+datum[\"year\"]}"
+            "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": datum[\"year\"]}"
           },
           "x": [
             {
@@ -118,7 +118,7 @@
             },
             {"scale": "y", "field": "CO2"}
           ],
-          "text": {"signal": "''+datum[\"year\"]"}
+          "text": {"signal": "datum[\"year\"]"}
         }
       }
     },
@@ -138,7 +138,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": ''+datum[\"year\"]}"
+            "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": datum[\"year\"]}"
           },
           "x": [
             {
@@ -154,7 +154,7 @@
             },
             {"scale": "y", "field": "CO2"}
           ],
-          "text": {"signal": "''+datum[\"year\"]"}
+          "text": {"signal": "datum[\"year\"]"}
         }
       }
     }

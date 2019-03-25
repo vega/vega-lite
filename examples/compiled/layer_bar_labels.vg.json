@@ -33,7 +33,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+            "signal": "{\"a\": datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
           },
           "x": {"scale": "x", "field": "b"},
           "x2": {"scale": "x", "value": 0},
@@ -60,7 +60,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+            "signal": "{\"a\": datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
           },
           "x": {"scale": "x", "field": "b"},
           "y": {"scale": "y", "field": "a", "band": 0.5},

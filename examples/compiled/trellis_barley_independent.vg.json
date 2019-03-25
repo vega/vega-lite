@@ -39,7 +39,7 @@
       "name": "trellis_barley_cell",
       "type": "group",
       "title": {
-        "text": {"signal": "''+parent[\"site\"]"},
+        "text": {"signal": "parent[\"site\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -105,7 +105,7 @@
                 {"scale": "trellis_barley_color", "field": "year"}
               ],
               "tooltip": {
-                "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"year\": ''+datum[\"year\"]}"
+                "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\"), \"variety\": datum[\"variety\"], \"year\": datum[\"year\"]}"
               },
               "x": [
                 {

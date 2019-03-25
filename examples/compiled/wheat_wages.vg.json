@@ -246,7 +246,7 @@
             {"scale": "x", "field": "x"}
           ],
           "y": {"scale": "y", "field": "off2", "offset": 14},
-          "text": {"signal": "''+datum[\"name\"]"},
+          "text": {"signal": "datum[\"name\"]"},
           "align": {"value": "center"}
         }
       }

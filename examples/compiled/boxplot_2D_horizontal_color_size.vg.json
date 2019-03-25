@@ -109,7 +109,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"people\": format(datum[\"people\"], \"\"), \"age\": ''+datum[\"age\"]}"
+            "signal": "{\"people\": format(datum[\"people\"], \"\"), \"age\": datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "people"},
           "y": {"scale": "y", "field": "age", "band": 0.5}
@@ -131,7 +131,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "lower_whisker_people"},
           "y": {"scale": "y", "field": "age", "band": 0.5},
@@ -154,7 +154,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "upper_box_people"},
           "y": {"scale": "y", "field": "age", "band": 0.5},
@@ -177,7 +177,7 @@
             {"value": "teal"}
           ],
           "tooltip": {
-            "signal": "{\"Max of people\": format(datum[\"max_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"min_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
+            "signal": "{\"Max of people\": format(datum[\"max_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"min_people\"], \"\"), \"age\": datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "lower_box_people"},
           "x2": {"scale": "x", "field": "upper_box_people"},
@@ -202,7 +202,7 @@
             {"value": "white"}
           ],
           "tooltip": {
-            "signal": "{\"Max of people\": format(datum[\"max_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"min_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
+            "signal": "{\"Max of people\": format(datum[\"max_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"min_people\"], \"\"), \"age\": datum[\"age\"]}"
           },
           "xc": {"scale": "x", "field": "mid_box_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},

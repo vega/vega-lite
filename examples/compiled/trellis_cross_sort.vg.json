@@ -127,7 +127,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"median_y\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"b\"]"},
+        "text": {"signal": "parent[\"b\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -153,7 +153,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"median_x\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"a\"]"},
+        "text": {"signal": "parent[\"a\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10

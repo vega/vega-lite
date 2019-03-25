@@ -32,7 +32,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
+            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Cylinders\": datum[\"Cylinders\"]}"
           },
           "xc": {"scale": "x", "field": "Horsepower"},
           "yc": {"scale": "y", "field": "Cylinders"},

@@ -99,7 +99,7 @@
               "stroke": {"scale": "color", "field": "species"},
               "opacity": {"value": 0.3},
               "tooltip": {
-                "signal": "{\"petalLength\": ''+datum[\"petalLength\"], \"petalWidth\": ''+datum[\"petalWidth\"], \"sepalLength\": ''+datum[\"sepalLength\"], \"sepalWidth\": ''+datum[\"sepalWidth\"]}"
+                "signal": "{\"petalLength\": datum[\"petalLength\"], \"petalWidth\": datum[\"petalWidth\"], \"sepalLength\": datum[\"sepalLength\"], \"sepalWidth\": datum[\"sepalWidth\"]}"
               },
               "x": {"scale": "x", "field": "key", "band": 0.5},
               "y": {"scale": "y", "field": "norm_val"},

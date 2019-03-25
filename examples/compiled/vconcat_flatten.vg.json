@@ -244,7 +244,7 @@
                 "update": {
                   "stroke": {"value": "steelblue"},
                   "tooltip": {
-                    "signal": "{\"lc.time\": format(datum[\"lc.time\"], \"\"), \"lc.mag\": format(datum[\"lc.mag\"], \"\"), \"id\": ''+datum[\"id\"]}"
+                    "signal": "{\"lc.time\": format(datum[\"lc.time\"], \"\"), \"lc.mag\": format(datum[\"lc.mag\"], \"\"), \"id\": datum[\"id\"]}"
                   },
                   "x": {"scale": "concat_1_x", "field": "lc\\.time"},
                   "y": {"scale": "concat_1_y", "field": "lc\\.mag"},

@@ -45,7 +45,7 @@
             {"scale": "color", "field": "b"}
           ],
           "tooltip": {
-            "signal": "{\"b\": ''+datum[\"b\"], \"Threshold\": format(datum[\"b\"], \"\")}"
+            "signal": "{\"b\": datum[\"b\"], \"Threshold\": format(datum[\"b\"], \"\")}"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "b"},

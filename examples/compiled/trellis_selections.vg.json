@@ -86,7 +86,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"Series\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"Series\"]"},
+        "text": {"signal": "parent[\"Series\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10

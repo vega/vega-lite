@@ -33,7 +33,7 @@
             {"scale": "color", "field": "Cylinders"}
           ],
           "tooltip": {
-            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"], \"Weight_in_lbs\": format(datum[\"Weight_in_lbs\"], \"\")}"
+            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": datum[\"Cylinders\"], \"Weight_in_lbs\": format(datum[\"Weight_in_lbs\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},

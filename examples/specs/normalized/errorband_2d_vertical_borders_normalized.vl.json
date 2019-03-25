@@ -39,7 +39,7 @@
           "title": "Year (year)",
           "type": "temporal",
           "field": "year_Year",
-          "axis": {"format": "%Y", "formatType": "time"}
+          "axis": {"format": "%Y"}
         },
         "tooltip": [
           {
@@ -61,7 +61,7 @@
             "title": "Year (year)",
             "type": "temporal",
             "field": "year_Year",
-            "axis": {"format": "%Y", "formatType": "time"}
+            "axis": {"format": "%Y"}
           }
         ]
       }
@@ -79,7 +79,7 @@
           "title": "Year (year)",
           "type": "temporal",
           "field": "year_Year",
-          "axis": {"format": "%Y", "formatType": "time"}
+          "axis": {"format": "%Y"}
         },
         "tooltip": [
           {
@@ -101,7 +101,7 @@
             "title": "Year (year)",
             "type": "temporal",
             "field": "year_Year",
-            "axis": {"format": "%Y", "formatType": "time"}
+            "axis": {"format": "%Y"}
           }
         ]
       }
@@ -119,7 +119,7 @@
           "title": "Year (year)",
           "type": "temporal",
           "field": "year_Year",
-          "axis": {"format": "%Y", "formatType": "time"}
+          "axis": {"format": "%Y"}
         },
         "tooltip": [
           {
@@ -141,7 +141,7 @@
             "title": "Year (year)",
             "type": "temporal",
             "field": "year_Year",
-            "axis": {"format": "%Y", "formatType": "time"}
+            "axis": {"format": "%Y"}
           }
         ]
       }

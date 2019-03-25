@@ -79,7 +79,7 @@
       "from": {"data": "trellis_barley_row_domain"},
       "sort": {"field": "datum[\"median_yield\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"site\"]"},
+        "text": {"signal": "parent[\"site\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -194,7 +194,7 @@
                 {"scale": "trellis_barley_color", "field": "year"}
               ],
               "tooltip": {
-                "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"year\": ''+datum[\"year\"]}"
+                "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\"), \"variety\": datum[\"variety\"], \"year\": datum[\"year\"]}"
               },
               "x": [
                 {

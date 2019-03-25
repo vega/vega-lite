@@ -69,7 +69,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"key\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"key\"]"},
+        "text": {"signal": "parent[\"key\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -126,7 +126,7 @@
                 {"scale": "color", "field": "country"}
               ],
               "tooltip": {
-                "signal": "{\"country\": ''+datum[\"country\"], \"value\": format(datum[\"value\"], \"\")}"
+                "signal": "{\"country\": datum[\"country\"], \"value\": format(datum[\"value\"], \"\")}"
               },
               "x": {"scale": "x", "field": "country"},
               "width": {"scale": "x", "band": true},

@@ -43,7 +43,7 @@
                 }
               ],
               "tooltip": {
-                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": datum[\"Origin\"]}"
               },
               "x": {
                 "scale": "child__repeat_column_Origin_x",
@@ -155,7 +155,7 @@
                 }
               ],
               "tooltip": {
-                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": datum[\"Cylinders\"]}"
               },
               "x": {
                 "scale": "child__repeat_column_Cylinders_x",

@@ -63,7 +63,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"age\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"age\"]"},
+        "text": {"signal": "parent[\"age\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -120,7 +120,7 @@
                 {"scale": "color", "field": "gender"}
               ],
               "tooltip": {
-                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"gender\": datum[\"gender\"]}"
               },
               "x": {"scale": "x", "field": "sum_people"},
               "x2": {"scale": "x", "value": 0},

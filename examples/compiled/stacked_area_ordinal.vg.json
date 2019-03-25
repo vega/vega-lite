@@ -72,7 +72,7 @@
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "Cylinders"},
               "tooltip": {
-                "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Sum of Weight_in_lbs\": format(datum[\"sum_Weight_in_lbs\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
+                "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Sum of Weight_in_lbs\": format(datum[\"sum_Weight_in_lbs\"], \"\"), \"Cylinders\": datum[\"Cylinders\"]}"
               },
               "x": {"scale": "x", "field": "year_Year"},
               "y": {"scale": "y", "field": "sum_Weight_in_lbs_end"},

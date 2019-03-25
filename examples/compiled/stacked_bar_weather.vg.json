@@ -56,7 +56,7 @@
             {"scale": "color", "field": "weather"}
           ],
           "tooltip": {
-            "signal": "{\"Month of the year\": timeFormat(datum[\"month_date\"], '%b'), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Weather type\": ''+datum[\"weather\"]}"
+            "signal": "{\"Month of the year\": timeFormat(datum[\"month_date\"], '%b'), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Weather type\": datum[\"weather\"]}"
           },
           "x": {"scale": "x", "field": "month_date"},
           "width": {"scale": "x", "band": true},

@@ -84,7 +84,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"country\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"country\"]"},
+        "text": {"signal": "parent[\"country\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -117,11 +117,11 @@
               "baseline": {"value": "middle"},
               "fill": {"value": "black"},
               "tooltip": {
-                "signal": "{\"rank\": ''+datum[\"rank\"], \"animal\": ''+datum[\"animal\"], \"emoji\": ''+datum[\"emoji\"]}"
+                "signal": "{\"rank\": datum[\"rank\"], \"animal\": datum[\"animal\"], \"emoji\": datum[\"emoji\"]}"
               },
               "x": {"scale": "x", "field": "rank"},
               "y": {"scale": "y", "field": "animal"},
-              "text": {"signal": "''+datum[\"emoji\"]"},
+              "text": {"signal": "datum[\"emoji\"]"},
               "fontSize": {"value": 65},
               "align": {"value": "center"}
             }

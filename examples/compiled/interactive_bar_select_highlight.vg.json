@@ -132,7 +132,7 @@
             {"value": 0}
           ],
           "tooltip": {
-            "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+            "signal": "{\"a\": datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
           },
           "x": {"scale": "x", "field": "a"},
           "width": {"scale": "x", "band": true},

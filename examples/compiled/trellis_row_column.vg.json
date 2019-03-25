@@ -51,7 +51,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"Cylinders\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"Cylinders\"]"},
+        "text": {"signal": "parent[\"Cylinders\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -77,7 +77,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"Origin\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"Origin\"]"},
+        "text": {"signal": "parent[\"Origin\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -150,7 +150,7 @@
                 {"scale": "color", "field": "Cylinders"}
               ],
               "tooltip": {
-                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": datum[\"Cylinders\"], \"Origin\": datum[\"Origin\"]}"
               },
               "x": {"scale": "x", "field": "Horsepower"},
               "y": {"scale": "y", "field": "Miles_per_Gallon"},

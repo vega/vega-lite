@@ -51,7 +51,7 @@
           ],
           "opacity": {"value": 0.7},
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+            "signal": "{\"age\": datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\"), \"gender\": datum[\"gender\"]}"
           },
           "x": {"scale": "x", "field": "age"},
           "width": {"scale": "x", "band": true},

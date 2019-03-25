@@ -75,7 +75,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"year\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"year\"]"},
+        "text": {"signal": "parent[\"year\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -132,7 +132,7 @@
                 {"scale": "color", "field": "site"}
               ],
               "tooltip": {
-                "signal": "{\"Sum of yield\": format(datum[\"sum_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"site\": ''+datum[\"site\"]}"
+                "signal": "{\"Sum of yield\": format(datum[\"sum_yield\"], \"\"), \"variety\": datum[\"variety\"], \"site\": datum[\"site\"]}"
               },
               "x": {"scale": "x", "field": "sum_yield_end"},
               "x2": {"scale": "x", "field": "sum_yield_start"},

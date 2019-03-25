@@ -61,7 +61,7 @@
           ],
           "opacity": {"scale": "opacity", "field": "Cylinders"},
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
+            "signal": "{\"Origin\": datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
           },
           "x": {"scale": "x", "field": "x"},
           "x2": {"scale": "x", "field": "x2"},
