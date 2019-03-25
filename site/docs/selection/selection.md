@@ -97,11 +97,7 @@ Vega-Lite provides a number of selection _transformations_ to further customize 
 
 Selections can be used to conditionally specify visual encodings -- encode data values one way if they fall within the selection, and another if they do not. For instance, in the first two examples on this page, rectangles are colored based on whether or not their data values fall within the `pts` selection. If they do, they are colored by the number of records; and, if they do not, they are left grey.
 
-In this example, a selection (named `paintbrush`) is used to resize the points in the scatterplot on hover. This example is also useful for understanding the difference when empty selections are set to contain <select onchange="changeSpec('interactive_paintbrush_simple', 'interactive_paintbrush_simple_' + this.value)">
-
-  <option>all</option>
-  <option>none</option>
-</select> of the data values.
+In this example, a selection (named `paintbrush`) is used to resize the points in the scatterplot on hover. This example is also useful for understanding the difference when empty selections are set to contain <select onchange="changeSpec('interactive_paintbrush_simple', 'interactive_paintbrush_simple_' + this.value)"><option>all</option><option>none</option></select> of the data values.
 
 <div class="vl-example" id="interactive_paintbrush_simple" data-name="interactive_paintbrush_simple_all"></div>
 
