@@ -26,7 +26,7 @@
           "update": "datum && item().mark.marktype !== 'group' ? datum[\"Origin\"] : null"
         }
       ],
-      "bind": {"input": "select", "options": ["Europe", "Japan", "USA"]}
+      "bind": {"input": "select", "options": [null, "Europe", "Japan", "USA"]}
     },
     {"name": "org", "update": "vlSelectionResolve(\"org_store\")"},
     {
