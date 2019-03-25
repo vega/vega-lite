@@ -53,7 +53,7 @@ For example, try the different types against the example selection (named `pts`)
 
 While selection types provide useful defaults, it can often be useful to override these properties to customize the interaction design. The following properties are available to do so:
 
-{% include table.html props="on,empty,resolve,mark" source="IntervalSelection" %}
+{% include table.html props="on,init,empty,resolve,mark" source="IntervalSelection" %}
 
 For instance, with the `on` property, a single rectangle in the heatmap below can now be selected on double-click instead.
 
