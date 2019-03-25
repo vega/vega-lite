@@ -1,7 +1,14 @@
 {
-  "extends": "../tsconfig",
+  "extends": "..",
   "compilerOptions": {
-    "outDir": "../build/",
+    "outDir": "../build/site/",
+    "rootDir": "static/"
   },
+  "references": [
+    {
+      "path": "../src"
+    }
+  ],
   "files": ["static/index.ts"],
+  "include": ["static/*.ts"]
 }

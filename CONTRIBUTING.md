@@ -168,7 +168,7 @@ During development, it can be convenient to rebuild automatically or to run test
 
 ### Deployment
 
-(For team members only) `yarn deploy` will publish latest code to NPM and also update github pages, which contains our webpage and documentation. If you want to update only github pages, use `yarn deploy:gh`.
+(For team members only) `yarn deploy` will publish latest code to NPM and also update GitHub Pages, which contains our webpage and documentation. If you want to update only GitHub Pages, use `yarn deploy:gh`.
 
 ## Suggested Programming Environment.
 
@@ -183,12 +183,12 @@ We use the [Visual Studio Code](https://code.visualstudio.com/) editor.
 
 To manually test your changes locally, you should have a local instance of [Vega Editor](https://github.com/vega/editor) and link Vega-Lite to the editor (See [Vega Editor's README](https://github.com/vega/editor#local-testing--debugging) for instructions).
 
-To update the Vega-Lite code in the editor, you need to compile TypeScript to JavaScript. The easiest way is to run `yarn tsc -w` in the Vega-Lite directory. This command will automatically recompile the code whenever you make changes.
+To update the Vega-Lite code in the editor, you need to compile TypeScript to JavaScript. The easiest way is to run `yarn tsc -b src -w` in the Vega-Lite directory. This command will automatically recompile the code whenever you make changes.
 
 ## Pull Requests and Travis
 
-All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `yarn test`, generate vega specs and SVG files from your updated code, compare them with the existing compiled outputs in `examples/compiled/`, and check code coverage of your code. (See `.travis.yml` for the commands it executes.) If you don't want your PR reviewed until Travis checks pass, just add the ":construction: WIP" label. Once you're ready for review, remove the label and comment that the PR is ready for review.
+All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `yarn test`, generate Vega specs and SVG files from your updated code, compare them with the existing compiled outputs in `examples/compiled/`, and check code coverage of your code. (See `.travis.yml` for the commands it executes.) If you don't want your PR reviewed until Travis checks pass, just add the ":construction: WIP" label. Once you're ready for review, remove the label and comment that the PR is ready for review.
 
 ### Code Coverage
 
-When checking for code coverage, we require that your PR tests cover at least the same percentage of code that was being covered before. To check the code coverage, you can see the link in the job log of your Travis test, from the Github page of your PR, or on `https://codecov.io/gh/vega/vega-lite/commits`. It'll be usually in the form of `https://codecov.io/gh/vega/vega-lite/commit/your-full-head-commit-number`. Under the _Files_ and _Diff_ tab, you can check your code coverage differences and total. In _Files_, you can check which lines in your files are being tested (marked in green) and which are not (marked in red). We appreciate PRs that improve our overall code coverage!
+When checking for code coverage, we require that your PR tests cover at least the same percentage of code that was being covered before. To check the code coverage, you can see the link in the job log of your Travis test, from the GitHub page of your PR, or on `https://codecov.io/gh/vega/vega-lite/commits`. It'll be usually in the form of `https://codecov.io/gh/vega/vega-lite/commit/your-full-head-commit-number`. Under the _Files_ and _Diff_ tab, you can check your code coverage differences and total. In _Files_, you can check which lines in your files are being tested (marked in green) and which are not (marked in red). We appreciate PRs that improve our overall code coverage!
