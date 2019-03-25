@@ -49,7 +49,7 @@ For example, try the different types against the example selection (named `pts`)
 
 ## Selection Properties
 
-{:#selection-on} 
+{:#selection-on}
 
 While selection types provide useful defaults, it can often be useful to override these properties to customize the interaction design. The following properties are available to do so:
 
