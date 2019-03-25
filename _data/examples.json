@@ -13,6 +13,11 @@
         "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
+        "name": "bar_binned_data",
+        "title": "Histogram (from Binned Data)",
+        "style": "background-size: auto 105%; background-position: center center !important;"
+      },
+      {
         "name": "bar_aggregate",
         "title": "Aggregate Bar Chart"
       },
