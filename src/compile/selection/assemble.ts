@@ -59,7 +59,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
   return signals;
 }
 
-function assembleInteractiveLegendSignals(
+export function assembleInteractiveLegendSignals(
   model: UnitModel,
   signals: any[],
   selections: InteractiveSelections[]

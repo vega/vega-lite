@@ -97,6 +97,50 @@ describe('compile/legend', () => {
       expect(def.title).toEqual('foo');
     });
 
+    it('should add correct attributes to parts when Interactive Legend Exists', () => {
+      const spec: NormalizedUnitSpec = {
+        data: {url: 'data/cars.json'},
+        mark: 'point',
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+          color: {field: 'Origin', type: 'nominal'}
+        }
+      };
+      const model = parseUnitModelWithScale(spec);
+      model.component.selection = parseUnitSelection(model, {
+        sel: {type: 'multi', fields: ['Origin']}
+      });
+      const def = legendParse.parseLegendForChannel(model, COLOR).combine();
+      expect(typeof def).toBe('object');
+      expect(def.encode.labels.update).toBeDefined();
+      expect(def.encode.symbols.update).toBeDefined();
+      expect(def.encode.labels.interactive).toBeTruthy();
+      expect(def.encode.symbols.interactive).toBeTruthy();
+      expect(def.encode.labels.name).toBe('labels_Origin_legend');
+      expect(def.encode.symbols.name).toBe('symbols_Origin_legend');
+    });
+
+    it('should not add attributes to parts when interactive legend is not present for channel', () => {
+      const spec: NormalizedUnitSpec = {
+        data: {url: 'data/cars.json'},
+        mark: 'point',
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+          color: {field: 'Cylinders', type: 'nominal'},
+          size: {field: 'Origin', type: 'nominal'}
+        }
+      };
+      const model = parseUnitModelWithScale(spec);
+      model.component.selection = parseUnitSelection(model, {
+        sel: {type: 'multi', fields: ['Origin']}
+      });
+      const def = legendParse.parseLegendForChannel(model, COLOR).combine();
+      expect(def.encode.labels).not.toBeDefined();
+      expect(def.encode.symbols.interactive).not.toBeDefined();
+    });
+
     [SIZE, SHAPE, OPACITY].forEach(channel => {
       it(`should produce a Vega legend object with correct type and scale for ${channel}`, () => {
         const spec: NormalizedUnitSpec = {
@@ -181,6 +225,13 @@ describe('compile/legend', () => {
     it('should correctly determine if interactive legend is present', () => {
       model.component.selection = parseUnitSelection(model, {
         sel1: {type: 'multi', fields: ['Origin', 'Cylinders', 'Year']}
+      });
+      const def = legendParse.interactiveLegendExists(model);
+      expect(def.length).toBeFalsy();
+    });
+    it('should correctly determine if interactive legend is present', () => {
+      model.component.selection = parseUnitSelection(model, {
+        sel1: {type: 'single'}
       });
       const def = legendParse.interactiveLegendExists(model);
       expect(def.length).toBeFalsy();
