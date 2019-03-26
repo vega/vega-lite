@@ -21,6 +21,7 @@ codecov.yml
 CONTRIBUTING.md
 Gemfile
 Gemfile.lock
+jest-puppeteer.config.js
 npm-debug.log*
 rollup.config.js
 tsconfig.json

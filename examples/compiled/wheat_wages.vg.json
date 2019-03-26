@@ -17,6 +17,11 @@
       ]
     },
     {
+      "name": "source_2",
+      "url": "data/monarchs.json",
+      "format": {"type": "json"}
+    },
+    {
       "name": "source_0",
       "url": "data/wheat.json",
       "format": {"type": "json"},
@@ -25,9 +30,8 @@
       ]
     },
     {
-      "name": "source_2",
-      "url": "data/monarchs.json",
-      "format": {"type": "json"},
+      "name": "data_0",
+      "source": "source_2",
       "transform": [
         {
           "type": "formula",
@@ -38,9 +42,8 @@
       ]
     },
     {
-      "name": "source_3",
-      "url": "https://vega.github.io/vega-datasets/data/monarchs.json",
-      "format": {"type": "json"},
+      "name": "data_1",
+      "source": "source_2",
       "transform": [
         {
           "type": "formula",
@@ -183,7 +186,7 @@
       "name": "layer_5_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "source_2"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": [
@@ -223,7 +226,7 @@
       "name": "layer_6_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "source_3"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fontSize": {"value": 9},
@@ -258,9 +261,9 @@
           {"data": "source_0", "field": "year"},
           {"data": "source_0", "field": "year_end"},
           {"data": "source_1", "field": "year"},
-          {"data": "source_2", "field": "start"},
-          {"data": "source_2", "field": "end"},
-          {"data": "source_3", "field": "x"}
+          {"data": "data_0", "field": "start"},
+          {"data": "data_0", "field": "end"},
+          {"data": "data_1", "field": "x"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -275,9 +278,9 @@
         "fields": [
           {"data": "source_0", "field": "wheat"},
           {"data": "source_0", "field": "wages"},
-          {"data": "source_2", "field": "y"},
-          {"data": "source_2", "field": "offset"},
-          {"data": "source_3", "field": "off2"}
+          {"data": "data_0", "field": "y"},
+          {"data": "data_0", "field": "offset"},
+          {"data": "data_1", "field": "off2"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -287,7 +290,7 @@
     {
       "name": "fill",
       "type": "ordinal",
-      "domain": {"data": "source_2", "field": "commonwealth", "sort": true},
+      "domain": {"data": "data_0", "field": "commonwealth", "sort": true},
       "range": ["black", "white"],
       "interpolate": "hcl"
     }

@@ -3,51 +3,35 @@ import {CompositeMark, CompositeMarkDef} from './compositemark/index';
 import {contains, flagKeys} from './util';
 import {BaseMarkConfig} from './vega.schema';
 
-export namespace Mark {
-  export const AREA: 'area' = 'area';
-  export const BAR: 'bar' = 'bar';
-  export const LINE: 'line' = 'line';
-  export const POINT: 'point' = 'point';
-  export const RECT: 'rect' = 'rect';
-  export const RULE: 'rule' = 'rule';
-  export const TEXT: 'text' = 'text';
-  export const TICK: 'tick' = 'tick';
-  export const TRAIL: 'trail' = 'trail';
-  export const CIRCLE: 'circle' = 'circle';
-  export const SQUARE: 'square' = 'square';
-  export const GEOSHAPE: 'geoshape' = 'geoshape';
-}
+export const AREA: 'area' = 'area';
+export const BAR: 'bar' = 'bar';
+export const LINE: 'line' = 'line';
+export const POINT: 'point' = 'point';
+export const RECT: 'rect' = 'rect';
+export const RULE: 'rule' = 'rule';
+export const TEXT: 'text' = 'text';
+export const TICK: 'tick' = 'tick';
+export const TRAIL: 'trail' = 'trail';
+export const CIRCLE: 'circle' = 'circle';
+export const SQUARE: 'square' = 'square';
+export const GEOSHAPE: 'geoshape' = 'geoshape';
 
 /**
  * All types of primitive marks.
  */
 export type Mark =
-  | typeof Mark.AREA
-  | typeof Mark.BAR
-  | typeof Mark.LINE
-  | typeof Mark.TRAIL
-  | typeof Mark.POINT
-  | typeof Mark.TEXT
-  | typeof Mark.TICK
-  | typeof Mark.RECT
-  | typeof Mark.RULE
-  | typeof Mark.CIRCLE
-  | typeof Mark.SQUARE
-  | typeof Mark.GEOSHAPE;
-
-export const AREA = Mark.AREA;
-export const BAR = Mark.BAR;
-export const LINE = Mark.LINE;
-export const POINT = Mark.POINT;
-export const TEXT = Mark.TEXT;
-export const TICK = Mark.TICK;
-export const TRAIL = Mark.TRAIL;
-export const RECT = Mark.RECT;
-export const RULE = Mark.RULE;
-export const GEOSHAPE = Mark.GEOSHAPE;
-
-export const CIRCLE = Mark.CIRCLE;
-export const SQUARE = Mark.SQUARE;
+  | typeof AREA
+  | typeof BAR
+  | typeof LINE
+  | typeof TRAIL
+  | typeof POINT
+  | typeof TEXT
+  | typeof TICK
+  | typeof RECT
+  | typeof RULE
+  | typeof CIRCLE
+  | typeof SQUARE
+  | typeof GEOSHAPE;
 
 // Using mapped type to declare index, ensuring we always have all marks when we add more.
 const MARK_INDEX: {[M in Mark]: 1} = {

@@ -5308,13 +5308,13 @@ vega-canvas@^1.2.0:
   resolved "https://registry.yarnpkg.com/vega-canvas/-/vega-canvas-1.2.1.tgz#ee0586e2a1f096f6a5d1710df61ef501562c2bd4"
   integrity sha512-k/S3EPeJ37D7fYDhv4sEg7fNWVpLheQY7flfLyAmJU7aSwCMgw8cZJi0CKHchJeculssfH+41NCqvRB1QtaJnw==
 
-vega-cli@^5.3.1:
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/vega-cli/-/vega-cli-5.3.1.tgz#8c55ee78777797f7fbfc6ccff875bac4eee23725"
-  integrity sha512-27SATgJ0KbPc95Spm4eoSNygCfgMW/6YMnZc3DYMUhjVlluw+dWHEY9al1BxcyoOzQTN9LPabuco9eouV4N7Zg==
+vega-cli@^5.3.2:
+  version "5.3.2"
+  resolved "https://npm.apple.com/vega-cli/-/vega-cli-5.3.2.tgz#8d2f283d9e7d063c72a49307bcb925e5ae5da04f"
+  integrity sha1-jS8oPZ59BjxypJMHvLkl5a5doE8=
   dependencies:
     canvas "^2.4.1"
-    vega "5.3.1"
+    vega "5.3.2"
     yargs "13"
 
 vega-crossfilter@^4.0.1:
@@ -5351,10 +5351,10 @@ vega-embed@^4.0.0-rc1:
     vega-themes "^2.2.0"
     vega-tooltip "^0.16.0"
 
-vega-encode@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/vega-encode/-/vega-encode-4.2.0.tgz#53c8c885f782562dfe99baf68d69ae7a9fb86d39"
-  integrity sha512-LFOM4ystQoyixEuk0pRdsYiam85dY9hxJbMECGwUiEm7BxWBhpa8YG8EFh165qK2CjUMqLxzysu5r8rj2Qmt3w==
+vega-encode@^4.2.1:
+  version "4.2.1"
+  resolved "https://npm.apple.com/vega-encode/-/vega-encode-4.2.1.tgz#239d68d0c60e2a9be799d54be79baa98b52d4098"
+  integrity sha1-I51o0MYOKpvnmdVL55uqmLUtQJg=
   dependencies:
     d3-array "^2.0.3"
     d3-format "^1.3.2"
@@ -5435,10 +5435,10 @@ vega-loader@^4.0.0:
     topojson-client "^3.0.0"
     vega-util "^1.8.0"
 
-vega-parser@^5.6.1:
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-5.6.1.tgz#856dd51c4f49489f1636bb5f6d86c03e5d75a61b"
-  integrity sha512-vjmHo3Ftt01if+gOgbGlMfRhUJwFEsQnuDuaNFnZV3+qpnhL0tRguQA6+dX94+4KxQT7W0wq5iE0y3jnogCDQA==
+vega-parser@^5.6.2:
+  version "5.6.2"
+  resolved "https://npm.apple.com/vega-parser/-/vega-parser-5.6.2.tgz#d51b9fba56feb9302e17b9c8ec7490dda017ac29"
+  integrity sha1-1Rufulb+uTAuF7nI7HSQ3aAXrCk=
   dependencies:
     vega-dataflow "^5.2.1"
     vega-event-selector "^2.0.0"
@@ -5518,6 +5518,13 @@ vega-tooltip@^0.16.0:
   dependencies:
     vega-util "^1.7.1"
 
+vega-tooltip@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.17.0.tgz#16bb5b57fb727823bb15f4ca4e350622471db2b9"
+  integrity sha512-/Ha3ho2xZ8N22dCfGg76gpaqyXqwrJBO3X+3H7so73xjIFW0iwHrZeMN0O6zxt5wefdp2+0I+91V4mWjWcP4ng==
+  dependencies:
+    vega-util "^1.10.0"
+
 vega-transforms@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/vega-transforms/-/vega-transforms-4.0.2.tgz#67969776bc9c62b1c7ef5c42a53af351e17da73a"
@@ -5528,7 +5535,7 @@ vega-transforms@^4.0.2:
     vega-statistics "^1.3.1"
     vega-util "^1.10.0"
 
-vega-typings@*, vega-typings@0.6.2:
+vega-typings@0.6.2, vega-typings@^0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.6.2.tgz#2951bf7a4208a5aca3aa8e1316c4df81e759b02b"
   integrity sha512-k1VBtlj+Ls8cgl1zvdUD6iX7YGsxkHSWmeG0C8DGOxKU7Q3imOCb7uUytexVjVKuWqwCrMnmNTYspelgLBMO+Q==
@@ -5578,25 +5585,25 @@ vega-voronoi@^4.0.1:
     vega-dataflow "^5.1.0"
     vega-util "^1.8.0"
 
-vega-wordcloud@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/vega-wordcloud/-/vega-wordcloud-4.0.1.tgz#2302e2c5c8ab080b2a3a70555fc31273ea7373be"
-  integrity sha512-PUxKhQWcdrCa5QIUL/UQV+DN5MdrkftQYJpNVB/PomgcSyF7nIzw9FDW8ugXTt/1k7QucqXwli2D7ZzbH6w4Vw==
+vega-wordcloud@^4.0.2:
+  version "4.0.2"
+  resolved "https://npm.apple.com/vega-wordcloud/-/vega-wordcloud-4.0.2.tgz#6e6f711e83195f764e1b0ace80f98091af94a3a6"
+  integrity sha1-bm9xHoMZX3ZOGwrOgPmAka+Uo6Y=
   dependencies:
     vega-canvas "^1.2.0"
-    vega-dataflow "^5.1.0"
+    vega-dataflow "^5.1.1"
     vega-scale "^4.0.0"
     vega-statistics "^1.2.5"
     vega-util "^1.8.0"
 
-vega@5.3.1:
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/vega/-/vega-5.3.1.tgz#62d2b795d5a38c8153713b59814b24356fd5a2bb"
-  integrity sha512-rROt1B6PPKSf52g/pZOrQv5ImkS+XEa7/dIJBP6vfdMS9mBlWXZm67WgqFGCz0z1uJXwPsvtcpEPh9DWvIEPdw==
+vega@5.3.2:
+  version "5.3.2"
+  resolved "https://npm.apple.com/vega/-/vega-5.3.2.tgz#aa123e8992a9a0849cbebb756668822f6479a416"
+  integrity sha1-qhI+iZKpoIScvrt1ZmiCL2R5pBY=
   dependencies:
     vega-crossfilter "^4.0.1"
     vega-dataflow "^5.2.1"
-    vega-encode "^4.2.0"
+    vega-encode "^4.2.1"
     vega-event-selector "^2.0.0"
     vega-expression "^2.6.0"
     vega-force "^4.0.1"
@@ -5604,19 +5611,19 @@ vega@5.3.1:
     vega-geo "^4.0.1"
     vega-hierarchy "^4.0.1"
     vega-loader "^4.0.0"
-    vega-parser "^5.6.1"
+    vega-parser "^5.6.2"
     vega-projection "^1.2.1"
     vega-runtime "^5.0.1"
     vega-scale "^4.1.1"
     vega-scenegraph "^4.1.0"
     vega-statistics "^1.3.1"
     vega-transforms "^4.0.2"
-    vega-typings "*"
+    vega-typings "^0.6.2"
     vega-util "^1.10.0"
     vega-view "^5.2.1"
     vega-view-transforms "^4.3.0"
     vega-voronoi "^4.0.1"
-    vega-wordcloud "^4.0.1"
+    vega-wordcloud "^4.0.2"
 
 verror@1.10.0:
   version "1.10.0"

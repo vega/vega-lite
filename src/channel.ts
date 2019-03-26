@@ -9,85 +9,49 @@ import {Mark} from './mark';
 import {EncodingFacetMapping, EncodingFacetMapping as ExtendedFacetMapping} from './spec/facet';
 import {Flag, flagKeys} from './util';
 
-export namespace Channel {
-  // Facet
-  export const ROW: 'row' = 'row';
-  export const COLUMN: 'column' = 'column';
-
-  export const FACET: 'facet' = 'facet';
-
-  // Position
-  export const X: 'x' = 'x';
-  export const Y: 'y' = 'y';
-  export const X2: 'x2' = 'x2';
-  export const Y2: 'y2' = 'y2';
-  // Geo Position
-  export const LATITUDE: 'latitude' = 'latitude';
-  export const LONGITUDE: 'longitude' = 'longitude';
-  export const LATITUDE2: 'latitude2' = 'latitude2';
-  export const LONGITUDE2: 'longitude2' = 'longitude2';
-
-  // Mark property with scale
-  export const COLOR: 'color' = 'color';
-
-  export const FILL: 'fill' = 'fill';
-
-  export const STROKE: 'stroke' = 'stroke';
-
-  export const SHAPE: 'shape' = 'shape';
-  export const SIZE: 'size' = 'size';
-  export const OPACITY: 'opacity' = 'opacity';
-  export const FILLOPACITY: 'fillOpacity' = 'fillOpacity';
-
-  export const STROKEOPACITY: 'strokeOpacity' = 'strokeOpacity';
-
-  export const STROKEWIDTH: 'strokeWidth' = 'strokeWidth';
-
-  // Non-scale channel
-  export const TEXT: 'text' = 'text';
-  export const ORDER: 'order' = 'order';
-  export const DETAIL: 'detail' = 'detail';
-  export const KEY: 'key' = 'key';
-
-  export const TOOLTIP: 'tooltip' = 'tooltip';
-  export const HREF: 'href' = 'href';
-}
-
 export type Channel = keyof Encoding<any> | keyof ExtendedFacetMapping<any>;
 
-export const X = Channel.X;
-export const Y = Channel.Y;
-export const X2 = Channel.X2;
-export const Y2 = Channel.Y2;
+// Facet
+export const ROW: 'row' = 'row';
+export const COLUMN: 'column' = 'column';
 
-export const LATITUDE = Channel.LATITUDE;
-export const LATITUDE2 = Channel.LATITUDE2;
-export const LONGITUDE = Channel.LONGITUDE;
-export const LONGITUDE2 = Channel.LONGITUDE2;
+export const FACET: 'facet' = 'facet';
 
-export const FACET = Channel.FACET;
+// Position
+export const X: 'x' = 'x';
+export const Y: 'y' = 'y';
+export const X2: 'x2' = 'x2';
+export const Y2: 'y2' = 'y2';
+// Geo Position
+export const LATITUDE: 'latitude' = 'latitude';
+export const LONGITUDE: 'longitude' = 'longitude';
+export const LATITUDE2: 'latitude2' = 'latitude2';
+export const LONGITUDE2: 'longitude2' = 'longitude2';
 
-export const ROW = Channel.ROW;
-export const COLUMN = Channel.COLUMN;
-export const SHAPE = Channel.SHAPE;
-export const SIZE = Channel.SIZE;
-export const COLOR = Channel.COLOR;
+// Mark property with scale
+export const COLOR: 'color' = 'color';
 
-export const FILL = Channel.FILL;
-export const STROKE = Channel.STROKE;
-export const TEXT = Channel.TEXT;
-export const DETAIL = Channel.DETAIL;
-export const KEY = Channel.KEY;
-export const ORDER = Channel.ORDER;
-export const OPACITY = Channel.OPACITY;
-export const FILLOPACITY = Channel.FILLOPACITY;
+export const FILL: 'fill' = 'fill';
 
-export const STROKEOPACITY = Channel.STROKEOPACITY;
+export const STROKE: 'stroke' = 'stroke';
 
-export const STROKEWIDTH = Channel.STROKEWIDTH;
+export const SHAPE: 'shape' = 'shape';
+export const SIZE: 'size' = 'size';
+export const OPACITY: 'opacity' = 'opacity';
+export const FILLOPACITY: 'fillOpacity' = 'fillOpacity';
 
-export const TOOLTIP = Channel.TOOLTIP;
-export const HREF = Channel.HREF;
+export const STROKEOPACITY: 'strokeOpacity' = 'strokeOpacity';
+
+export const STROKEWIDTH: 'strokeWidth' = 'strokeWidth';
+
+// Non-scale channel
+export const TEXT: 'text' = 'text';
+export const ORDER: 'order' = 'order';
+export const DETAIL: 'detail' = 'detail';
+export const KEY: 'key' = 'key';
+
+export const TOOLTIP: 'tooltip' = 'tooltip';
+export const HREF: 'href' = 'href';
 
 export type PositionChannel = 'x' | 'y' | 'x2' | 'y2';
 

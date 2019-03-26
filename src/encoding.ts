@@ -44,7 +44,6 @@ import {Mark} from './mark';
 import {EncodingFacetMapping} from './spec/facet';
 import {getDateTimeComponents} from './timeunit';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
-import {Type} from './type';
 import {keys, some} from './util';
 
 export interface Encoding<F extends Field> {
@@ -270,7 +269,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
           // Always overwrite field
           field: newField
         };
-        const isPositionChannel: boolean = channel === Channel.X || channel === Channel.Y;
+        const isPositionChannel: boolean = channel === 'x' || channel === 'y';
         if (aggOp && isAggregateOp(aggOp)) {
           const aggregateEntry: AggregatedFieldDef = {
             op: aggOp,
@@ -296,7 +295,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
           }
           newChannelDef['bin'] = 'binned';
           if (!isSecondaryRangeChannel(channel)) {
-            newChannelDef['type'] = Type.QUANTITATIVE;
+            newChannelDef['type'] = 'quantitative';
           }
         } else if (timeUnit) {
           timeUnits.push({timeUnit, field, as: newField});
