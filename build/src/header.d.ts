@@ -1,4 +1,4 @@
-import { AlignValue, FontWeight, Orient, TextBaseline, TitleAnchor, TitleConfig } from 'vega';
+import { Align, FontWeight, Orient, TextBaseline, TitleAnchor, TitleConfig } from 'vega';
 import { FormatMixins, Guide, VlOnlyGuideConfig } from './guide';
 export declare const HEADER_TITLE_PROPERTIES_MAP: {
     [k in keyof CoreHeader]: keyof TitleConfig;
@@ -16,7 +16,7 @@ export interface CoreHeader extends FormatMixins {
     /**
      * Horizontal text alignment (to the anchor) of header titles.
      */
-    titleAlign?: AlignValue;
+    titleAlign?: Align;
     /**
      * The rotation angle of the header title.
      *
@@ -70,7 +70,7 @@ export interface CoreHeader extends FormatMixins {
     /**
      * Horizontal text alignment of header labels.
      */
-    labelAlign?: AlignValue;
+    labelAlign?: Align;
     /**
      * The anchor position for placing the labels. One of `"start"`, `"middle"`, or `"end"`. For example, with a label orientation of top these anchor positions map to a left-, center-, or right-aligned label.
      */
