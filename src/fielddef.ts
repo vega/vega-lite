@@ -182,7 +182,7 @@ export interface ConditionOnlyDef<
  * Reference to a repeated value.
  */
 export interface RepeatRef {
-  repeat: 'row' | 'column';
+  repeat: 'row' | 'column' | 'repeat';
 }
 
 export type Field = string | RepeatRef;
