@@ -2,11 +2,10 @@ import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
 import { isAggregateOp } from './aggregate';
 import { isBinning } from './bin';
-import { Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark } from './channel';
+import { CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark } from './channel';
 import { binRequiresRange, getFieldDef, getGuide, getTypedFieldDef, hasConditionalFieldDef, isConditionalDef, isFieldDef, isTypedFieldDef, isValueDef, normalize, normalizeFieldDef, title, vgField } from './fielddef';
 import * as log from './log';
 import { getDateTimeComponents } from './timeunit';
-import { Type } from './type';
 import { keys, some } from './util';
 export function channelHasField(encoding, channel) {
     const channelDef = encoding && encoding[channel];
@@ -52,7 +51,7 @@ export function extractTransformsFromEncoding(oldEncoding, config) {
                 const newChannelDef = Object.assign({}, (isTitleDefined ? [] : { title: title(channelDef, config, { allowDisabling: true }) }), remaining, { 
                     // Always overwrite field
                     field: newField });
-                const isPositionChannel = channel === Channel.X || channel === Channel.Y;
+                const isPositionChannel = channel === 'x' || channel === 'y';
                 if (aggOp && isAggregateOp(aggOp)) {
                     const aggregateEntry = {
                         op: aggOp,
@@ -79,7 +78,7 @@ export function extractTransformsFromEncoding(oldEncoding, config) {
                     }
                     newChannelDef['bin'] = 'binned';
                     if (!isSecondaryRangeChannel(channel)) {
-                        newChannelDef['type'] = Type.QUANTITATIVE;
+                        newChannelDef['type'] = 'quantitative';
                     }
                 }
                 else if (timeUnit) {

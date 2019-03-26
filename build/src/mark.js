@@ -1,32 +1,17 @@
 import { toSet } from 'vega-util';
 import { contains, flagKeys } from './util';
-export var Mark;
-(function (Mark) {
-    Mark.AREA = 'area';
-    Mark.BAR = 'bar';
-    Mark.LINE = 'line';
-    Mark.POINT = 'point';
-    Mark.RECT = 'rect';
-    Mark.RULE = 'rule';
-    Mark.TEXT = 'text';
-    Mark.TICK = 'tick';
-    Mark.TRAIL = 'trail';
-    Mark.CIRCLE = 'circle';
-    Mark.SQUARE = 'square';
-    Mark.GEOSHAPE = 'geoshape';
-})(Mark || (Mark = {}));
-export const AREA = Mark.AREA;
-export const BAR = Mark.BAR;
-export const LINE = Mark.LINE;
-export const POINT = Mark.POINT;
-export const TEXT = Mark.TEXT;
-export const TICK = Mark.TICK;
-export const TRAIL = Mark.TRAIL;
-export const RECT = Mark.RECT;
-export const RULE = Mark.RULE;
-export const GEOSHAPE = Mark.GEOSHAPE;
-export const CIRCLE = Mark.CIRCLE;
-export const SQUARE = Mark.SQUARE;
+export const AREA = 'area';
+export const BAR = 'bar';
+export const LINE = 'line';
+export const POINT = 'point';
+export const RECT = 'rect';
+export const RULE = 'rule';
+export const TEXT = 'text';
+export const TICK = 'tick';
+export const TRAIL = 'trail';
+export const CIRCLE = 'circle';
+export const SQUARE = 'square';
+export const GEOSHAPE = 'geoshape';
 // Using mapped type to declare index, ensuring we always have all marks when we add more.
 const MARK_INDEX = {
     area: 1,

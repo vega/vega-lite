@@ -4,66 +4,37 @@
  */
 import * as tslib_1 from "tslib";
 import { flagKeys } from './util';
-export var Channel;
-(function (Channel) {
-    // Facet
-    Channel.ROW = 'row';
-    Channel.COLUMN = 'column';
-    Channel.FACET = 'facet';
-    // Position
-    Channel.X = 'x';
-    Channel.Y = 'y';
-    Channel.X2 = 'x2';
-    Channel.Y2 = 'y2';
-    // Geo Position
-    Channel.LATITUDE = 'latitude';
-    Channel.LONGITUDE = 'longitude';
-    Channel.LATITUDE2 = 'latitude2';
-    Channel.LONGITUDE2 = 'longitude2';
-    // Mark property with scale
-    Channel.COLOR = 'color';
-    Channel.FILL = 'fill';
-    Channel.STROKE = 'stroke';
-    Channel.SHAPE = 'shape';
-    Channel.SIZE = 'size';
-    Channel.OPACITY = 'opacity';
-    Channel.FILLOPACITY = 'fillOpacity';
-    Channel.STROKEOPACITY = 'strokeOpacity';
-    Channel.STROKEWIDTH = 'strokeWidth';
-    // Non-scale channel
-    Channel.TEXT = 'text';
-    Channel.ORDER = 'order';
-    Channel.DETAIL = 'detail';
-    Channel.KEY = 'key';
-    Channel.TOOLTIP = 'tooltip';
-    Channel.HREF = 'href';
-})(Channel || (Channel = {}));
-export const X = Channel.X;
-export const Y = Channel.Y;
-export const X2 = Channel.X2;
-export const Y2 = Channel.Y2;
-export const LATITUDE = Channel.LATITUDE;
-export const LATITUDE2 = Channel.LATITUDE2;
-export const LONGITUDE = Channel.LONGITUDE;
-export const LONGITUDE2 = Channel.LONGITUDE2;
-export const FACET = Channel.FACET;
-export const ROW = Channel.ROW;
-export const COLUMN = Channel.COLUMN;
-export const SHAPE = Channel.SHAPE;
-export const SIZE = Channel.SIZE;
-export const COLOR = Channel.COLOR;
-export const FILL = Channel.FILL;
-export const STROKE = Channel.STROKE;
-export const TEXT = Channel.TEXT;
-export const DETAIL = Channel.DETAIL;
-export const KEY = Channel.KEY;
-export const ORDER = Channel.ORDER;
-export const OPACITY = Channel.OPACITY;
-export const FILLOPACITY = Channel.FILLOPACITY;
-export const STROKEOPACITY = Channel.STROKEOPACITY;
-export const STROKEWIDTH = Channel.STROKEWIDTH;
-export const TOOLTIP = Channel.TOOLTIP;
-export const HREF = Channel.HREF;
+// Facet
+export const ROW = 'row';
+export const COLUMN = 'column';
+export const FACET = 'facet';
+// Position
+export const X = 'x';
+export const Y = 'y';
+export const X2 = 'x2';
+export const Y2 = 'y2';
+// Geo Position
+export const LATITUDE = 'latitude';
+export const LONGITUDE = 'longitude';
+export const LATITUDE2 = 'latitude2';
+export const LONGITUDE2 = 'longitude2';
+// Mark property with scale
+export const COLOR = 'color';
+export const FILL = 'fill';
+export const STROKE = 'stroke';
+export const SHAPE = 'shape';
+export const SIZE = 'size';
+export const OPACITY = 'opacity';
+export const FILLOPACITY = 'fillOpacity';
+export const STROKEOPACITY = 'strokeOpacity';
+export const STROKEWIDTH = 'strokeWidth';
+// Non-scale channel
+export const TEXT = 'text';
+export const ORDER = 'order';
+export const DETAIL = 'detail';
+export const KEY = 'key';
+export const TOOLTIP = 'tooltip';
+export const HREF = 'href';
 export function isGeoPositionChannel(c) {
     switch (c) {
         case LATITUDE:

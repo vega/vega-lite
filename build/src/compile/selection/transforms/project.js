@@ -1,5 +1,5 @@
 import * as tslib_1 from "tslib";
-import { isArray } from 'vega-util';
+import { array, isArray } from 'vega-util';
 import { isSingleDefUnitChannel } from '../../../channel';
 import * as log from '../../../log';
 import { hasContinuousDomain } from '../../../scale';
@@ -39,17 +39,19 @@ const project = {
         if (!selDef.fields && !selDef.encodings) {
             const cfg = model.config.selection[selDef.type];
             if (selDef.init) {
-                for (const key of keys(selDef.init)) {
-                    if (isSingleDefUnitChannel(key)) {
-                        (selDef.encodings || (selDef.encodings = [])).push(key);
-                    }
-                    else {
-                        if (isIntervalSelection(selDef)) {
-                            log.warn('Interval selections should be initialized using "x" and/or "y" keys.');
-                            selDef.encodings = cfg.encodings;
+                for (const init of array(selDef.init)) {
+                    for (const key of keys(init)) {
+                        if (isSingleDefUnitChannel(key)) {
+                            (selDef.encodings || (selDef.encodings = [])).push(key);
                         }
                         else {
-                            (selDef.fields || (selDef.fields = [])).push(key);
+                            if (isIntervalSelection(selDef)) {
+                                log.warn('Interval selections should be initialized using "x" and/or "y" keys.');
+                                selDef.encodings = cfg.encodings;
+                            }
+                            else {
+                                (selDef.fields || (selDef.fields = [])).push(key);
+                            }
                         }
                     }
                 }

@@ -1,13 +1,5 @@
 /** Constants and utilities for data type */
 /** Data type based on level of measurement */
-export var Type;
-(function (Type) {
-    Type.QUANTITATIVE = 'quantitative';
-    Type.ORDINAL = 'ordinal';
-    Type.TEMPORAL = 'temporal';
-    Type.NOMINAL = 'nominal';
-    Type.GEOJSON = 'geojson';
-})(Type || (Type = {}));
 export const TYPE_INDEX = {
     quantitative: 1,
     ordinal: 1,
@@ -18,11 +10,11 @@ export const TYPE_INDEX = {
 export function isType(t) {
     return !!TYPE_INDEX[t];
 }
-export const QUANTITATIVE = Type.QUANTITATIVE;
-export const ORDINAL = Type.ORDINAL;
-export const TEMPORAL = Type.TEMPORAL;
-export const NOMINAL = Type.NOMINAL;
-export const GEOJSON = Type.GEOJSON;
+export const QUANTITATIVE = 'quantitative';
+export const ORDINAL = 'ordinal';
+export const TEMPORAL = 'temporal';
+export const NOMINAL = 'nominal';
+export const GEOJSON = 'geojson';
 /**
  * Get full, lowercase type name for a given type.
  * @param  type

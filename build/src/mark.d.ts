@@ -1,35 +1,21 @@
 import { CompositeMark, CompositeMarkDef } from './compositemark/index';
 import { BaseMarkConfig } from './vega.schema';
-export declare namespace Mark {
-    const AREA: 'area';
-    const BAR: 'bar';
-    const LINE: 'line';
-    const POINT: 'point';
-    const RECT: 'rect';
-    const RULE: 'rule';
-    const TEXT: 'text';
-    const TICK: 'tick';
-    const TRAIL: 'trail';
-    const CIRCLE: 'circle';
-    const SQUARE: 'square';
-    const GEOSHAPE: 'geoshape';
-}
+export declare const AREA: 'area';
+export declare const BAR: 'bar';
+export declare const LINE: 'line';
+export declare const POINT: 'point';
+export declare const RECT: 'rect';
+export declare const RULE: 'rule';
+export declare const TEXT: 'text';
+export declare const TICK: 'tick';
+export declare const TRAIL: 'trail';
+export declare const CIRCLE: 'circle';
+export declare const SQUARE: 'square';
+export declare const GEOSHAPE: 'geoshape';
 /**
  * All types of primitive marks.
  */
-export declare type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.TRAIL | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE | typeof Mark.GEOSHAPE;
-export declare const AREA: "area";
-export declare const BAR: "bar";
-export declare const LINE: "line";
-export declare const POINT: "point";
-export declare const TEXT: "text";
-export declare const TICK: "tick";
-export declare const TRAIL: "trail";
-export declare const RECT: "rect";
-export declare const RULE: "rule";
-export declare const GEOSHAPE: "geoshape";
-export declare const CIRCLE: "circle";
-export declare const SQUARE: "square";
+export declare type Mark = typeof AREA | typeof BAR | typeof LINE | typeof TRAIL | typeof POINT | typeof TEXT | typeof TICK | typeof RECT | typeof RULE | typeof CIRCLE | typeof SQUARE | typeof GEOSHAPE;
 export declare function isMark(m: string): m is Mark;
 export declare function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'trail';
 export declare const PRIMITIVE_MARKS: Mark[];
