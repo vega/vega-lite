@@ -108,7 +108,7 @@ export interface ConditionOnlyDef<F extends FieldDef<any>, V extends number | st
  * Reference to a repeated value.
  */
 export interface RepeatRef {
-    repeat: 'row' | 'column';
+    repeat: 'row' | 'column' | 'repeat';
 }
 export declare type Field = string | RepeatRef;
 export declare function isRepeatRef(field: Field): field is RepeatRef;
