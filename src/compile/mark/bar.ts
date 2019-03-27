@@ -58,7 +58,7 @@ function barPosition(model: UnitModel, channel: 'x' | 'y'): VgEncodeEntry {
         return mixins.binPosition({fieldDef, channel, scaleName, mark, spacing, reverse});
       } else {
         if (scaleType === ScaleType.BAND) {
-          return mixins.bandPosition(fieldDef, channel, model);
+          return mixins.bandPosition(fieldDef, channel, model, defaultSizeRef(markDef, scaleName, scale, config));
         }
       }
     }

@@ -730,12 +730,16 @@ describe('Mark: Bar', () => {
       encoding: {
         y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
         x: {type: 'nominal', field: 'Major_Genre'}
+      },
+      config: {
+        bar: {discreteBandSize: 5}
       }
     });
     const props = bar.encodeEntry(model);
 
     it('should have width = 5', () => {
-      expect(props.width).toEqual({scale: 'x', band: true});
+      expect(props.xc).toEqual({field: 'Major_Genre', scale: 'x', band: 0.5});
+      expect(props.width).toEqual({value: 5});
     });
   });
 

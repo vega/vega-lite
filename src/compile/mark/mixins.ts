@@ -301,11 +301,20 @@ export function text(model: UnitModel, channel: 'text' | 'href' = 'text') {
   return wrapCondition(model, channelDef, channel, cDef => ref.text(cDef, model.config));
 }
 
-export function bandPosition(fieldDef: TypedFieldDef<string>, channel: 'x' | 'y', model: UnitModel) {
+export function bandPosition(
+  fieldDef: TypedFieldDef<string>,
+  channel: 'x' | 'y',
+  model: UnitModel,
+  defaultSizeRef?: VgValueRef
+) {
   const scaleName = model.scaleName(channel);
   const sizeChannel = channel === 'x' ? 'width' : 'height';
 
-  if (model.encoding.size || model.markDef.size !== undefined) {
+  if (
+    model.encoding.size ||
+    model.markDef.size !== undefined ||
+    (defaultSizeRef && defaultSizeRef.value !== undefined)
+  ) {
     const orient = model.markDef.orient;
     if (orient) {
       const centeredBandPositionMixins = {
@@ -329,15 +338,21 @@ export function bandPosition(fieldDef: TypedFieldDef<string>, channel: 'x' | 'y'
           ...centeredBandPositionMixins,
           [sizeChannel]: {value: model.markDef.size}
         };
+      } else if (defaultSizeRef && defaultSizeRef.value !== undefined) {
+        return {
+          ...centeredBandPositionMixins,
+          [sizeChannel]: defaultSizeRef
+        };
       }
     } else {
       log.warn(log.message.cannotApplySizeToNonOrientedMark(model.markDef.type));
     }
   }
+
   return {
     // FIXME: make offset works correctly here when we support group bar (https://github.com/vega/vega-lite/issues/396)
     [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, {}),
-    [sizeChannel]: ref.bandRef(scaleName)
+    [sizeChannel]: defaultSizeRef || ref.bandRef(scaleName)
   };
 }
 
