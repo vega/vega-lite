@@ -102,16 +102,17 @@ export function assembleAxis(
  * (Fix https://github.com/vega/vega-lite/issues/4226)
  */
 export function assembleAxisSignals(model: Model): NewSignal[] {
-  const axisComponents = model.component.axes;
-  const {x, y} = axisComponents;
-  if (x && !y) {
+  const {axes, scales} = model.component;
+  if (axes.x && !scales.y) {
+    // If there is x-axis but no y-scale, need to set height so x-axis can draw the grid with the right height
     return [
       {
         name: 'height',
         update: model.getSizeSignalRef('height').signal
       }
     ];
-  } else if (y && !x) {
+  } else if (axes.y && !scales.x) {
+    // If there is y-axis but no x-scale, need to set height so y-axis can draw the grid with the right width
     return [
       {
         name: 'width',
