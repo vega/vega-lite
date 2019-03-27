@@ -32,7 +32,6 @@
       ]
     }
   ],
-  "signals": [{"name": "height", "update": "height"}],
   "marks": [
     {
       "name": "layer_0_marks",
