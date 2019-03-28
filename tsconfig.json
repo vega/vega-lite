@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "outDir": "./build/",
     "target": "es6",
     "module": "es2015",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
+    "declarationMap": true,
     "forceConsistentCasingInFileNames": false,
     "sourceMap": true,
     "inlineSources": true,
@@ -22,8 +22,23 @@
     "suppressImplicitAnyIndexErrors": true,
     "importHelpers": true,
     "resolveJsonModule": true,
-    "typeRoots": ["./node_modules/@types", "./typings"]
+    "typeRoots": ["./node_modules/@types", "./typings"],
+    "composite": true
   },
-  "files": ["src/index.ts"],
-  "include": ["src/**/*.ts", "test/**/*.ts", "test-runtime/**/*.ts"]
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./src"
+    },
+    {
+      "path": "./site"
+    },
+    {
+      "path": "./test"
+    },
+    {
+      "path": "./test-runtime"
+    }
+  ]
 }

@@ -5,8 +5,6 @@
 /.*
 /build/examples
 /build/site
-/build/test
-/build/test-runtime
 /coverage
 /data
 /examples/
