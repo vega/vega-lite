@@ -9243,6 +9243,12 @@
         "ratio": {
           "type": "number"
         },
+        "reflectX": {
+          "type": "boolean"
+        },
+        "reflectY": {
+          "type": "boolean"
+        },
         "rotate": {
           "description": "Sets the projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`",
           "items": {
