@@ -234,7 +234,11 @@ export function parseData(model: Model): DataComponent {
   // field is available for all subsequent datasets. Additional identifier
   // transforms will be necessary when new tuples are constructed
   // (e.g., post-aggregation).
-  if (requiresSelectionId(model) && (isUnitModel(model) || isLayerModel(model))) {
+  if (
+    requiresSelectionId(model) &&
+    // only add identifier to unit/layer models that do not have layer parents to avoid redundant identifier transforms
+    ((isUnitModel(model) || isLayerModel(model)) && (!model.parent || !isLayerModel(model.parent)))
+  ) {
     head = new IdentifierNode(head);
   }
 

@@ -15,11 +15,6 @@
     {
       "name": "data_0",
       "source": "source_0",
-      "transform": [{"type": "identifier", "as": "_vgsid_"}]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
       "transform": [
         {"type": "filter", "expr": "(vlSelectionTest(\"hover_store\", datum))"}
       ]
@@ -74,7 +69,7 @@
           "name": "concat_0_layer_0_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -104,7 +99,7 @@
           "name": "concat_0_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -214,7 +209,7 @@
           "name": "concat_1_layer_0_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -244,7 +239,7 @@
           "name": "concat_1_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -326,8 +321,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Horsepower"},
-          {"data": "data_1", "field": "Horsepower"}
+          {"data": "source_0", "field": "Horsepower"},
+          {"data": "data_0", "field": "Horsepower"}
         ]
       },
       "range": [0, {"signal": "concat_0_width"}],
@@ -339,8 +334,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Miles_per_Gallon"},
-          {"data": "data_1", "field": "Miles_per_Gallon"}
+          {"data": "source_0", "field": "Miles_per_Gallon"},
+          {"data": "data_0", "field": "Miles_per_Gallon"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -352,8 +347,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Horsepower"},
-          {"data": "data_1", "field": "Horsepower"}
+          {"data": "source_0", "field": "Horsepower"},
+          {"data": "data_0", "field": "Horsepower"}
         ]
       },
       "range": [0, {"signal": "concat_1_width"}],
@@ -365,8 +360,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Acceleration"},
-          {"data": "data_1", "field": "Acceleration"}
+          {"data": "source_0", "field": "Acceleration"},
+          {"data": "data_0", "field": "Acceleration"}
         ]
       },
       "range": [{"signal": "height"}, 0],

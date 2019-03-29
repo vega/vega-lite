@@ -11,22 +11,6 @@
       "name": "source_0",
       "url": "data/seattle-weather.csv",
       "format": {"type": "csv", "parse": {"date": "date"}},
-      "transform": [{"type": "identifier", "as": "_vgsid_"}]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "as": "yearmonthdate_date",
-          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
       "transform": [
         {"type": "identifier", "as": "_vgsid_"},
         {
@@ -71,7 +55,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"yearmonthdate_date\"]", "order": "descending"},
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "orange"},
@@ -91,7 +75,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"yearmonthdate_date\"]", "order": "descending"},
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "red"},
@@ -110,7 +94,7 @@
       "name": "layer_2_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": [
@@ -138,18 +122,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "yearmonthdate_date"},
-          {"data": "data_1", "field": "yearmonthdate_date"}
-        ]
-      },
+      "domain": {"data": "source_0", "field": "yearmonthdate_date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "fields": ["temp_max", "temp_min"]},
+      "domain": {"data": "source_0", "fields": ["temp_max", "temp_min"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
