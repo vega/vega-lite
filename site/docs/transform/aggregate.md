@@ -119,4 +119,14 @@ The supported **aggregation operations** are:
 | argmin    | An input data object containing the minimum field value.                                                                                                                                                                                                               |
 | argmax    | An input data object containing the maximum field value.                                                                                                                                                                                                               |
 
+## Argmin / Argmax
+
+The argmax and argmin operation can be specified in an encoding field definition by setting `aggregate` to an object with `argmax/min` describing the field to maximize/minimize. For example, the following plot shows the production budget of the movie that has the highest US Gross in each major genre.
+
+<div class="vl-example" data-name="bar_argmax"></div>
+
+This is equivalent to specifying argmax in an aggregate transform and encode its nested data.
+
+<div class="vl-example" data-name="bar_argmax_transform"></div>
+
 **Note:** When accessing aggregated argmax/argmin fields, the aggregated fields must be flattened, due to the [nested field issue](https://github.com/vega/vega-lite/issues/3361). The aggregated fields can be flattened with the calculate transform as done in the [CO2 example]({{site.baseurl}}/examples/layer_line_co2_concentration.html).

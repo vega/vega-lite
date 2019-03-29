@@ -1,4 +1,5 @@
 import {AggregateOp} from 'vega';
+import {isArgmaxDef, isArgminDef} from '../../aggregate';
 import {isBinning} from '../../bin';
 import {Channel, getPositionChannelFromLatLong, isGeoPositionChannel, isScaleChannel} from '../../channel';
 import {binRequiresRange, FieldDef, isTypedFieldDef, vgField} from '../../channeldef';
@@ -80,7 +81,14 @@ export class AggregateNode extends DataFlowNode {
     model.forEachFieldDef((fieldDef, channel) => {
       const {aggregate, field} = fieldDef;
       if (aggregate) {
-        if (aggregate === 'count') {
+        if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
+          const op = isArgminDef(aggregate) ? 'argmin' : 'argmax';
+          const argField = aggregate[op];
+          meas[argField] = meas[argField] || {};
+          meas[argField][op] = new Set([vgField({op, field: argField}, {forAs: true})]);
+
+          // FIXME how about  domain === 'unaggregated'
+        } else if (aggregate === 'count') {
           meas['*'] = meas['*'] || {};
           meas['*']['count'] = new Set([vgField(fieldDef, {forAs: true})]);
         } else {

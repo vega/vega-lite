@@ -4,8 +4,9 @@
 
 import {AggregateOp} from 'vega';
 import {logger, LoggerInterface, Warn} from 'vega-util';
+import {Aggregate} from './aggregate';
 import {Channel, FacetChannel, GeoPositionChannel} from './channel';
-import {Aggregate, TypedFieldDef} from './channeldef';
+import {TypedFieldDef} from './channeldef';
 import {CompositeMark} from './compositemark';
 import {ErrorBarCenter, ErrorBarExtent} from './compositemark/errorbar';
 import {DateTime, DateTimeExpr} from './datetime';
@@ -200,7 +201,7 @@ export namespace message {
     } of the ${mark} can be arbitrary based on the scale domain. You may want to use point mark instead.`;
   }
 
-  export function invalidFieldTypeForCountAggregate(type: Type, aggregate: string) {
+  export function invalidFieldTypeForCountAggregate(type: Type, aggregate: Aggregate | string) {
     return `Invalid field type "${type}" for aggregate: "${aggregate}", using "quantitative" instead.`;
   }
 
@@ -275,7 +276,7 @@ export namespace message {
     return `Using unaggregated domain with raw field has no effect (${stringify(fieldDef)}).`;
   }
 
-  export function unaggregateDomainWithNonSharedDomainOp(aggregate: string) {
+  export function unaggregateDomainWithNonSharedDomainOp(aggregate: Aggregate | string) {
     return `Unaggregated domain not applicable for "${aggregate}" since it produces values outside the origin domain of the source data.`;
   }
 
@@ -343,7 +344,7 @@ export namespace message {
     return `Cannot stack non-linear scale (${scaleType})`;
   }
 
-  export function stackNonSummativeAggregate(aggregate: string) {
+  export function stackNonSummativeAggregate(aggregate: Aggregate | string) {
     return `Stacking is applied even though the aggregate function is non-summative ("${aggregate}")`;
   }
 
@@ -377,7 +378,10 @@ export namespace message {
     return `${center} is not usually used with ${extent} for ${mark}.`;
   }
 
-  export function errorBarContinuousAxisHasCustomizedAggregate(aggregate: Aggregate, compositeMark: CompositeMark) {
+  export function errorBarContinuousAxisHasCustomizedAggregate(
+    aggregate: Aggregate | string,
+    compositeMark: CompositeMark
+  ) {
     return `Continuous axis should not have customized aggregation function ${aggregate}; ${compositeMark} already agregates the axis.`;
   }
 

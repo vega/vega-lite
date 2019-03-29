@@ -387,21 +387,23 @@ export function canUseUnaggregatedDomain(
   fieldDef: TypedFieldDef<string>,
   scaleType: ScaleType
 ): {valid: boolean; reason?: string} {
-  if (!fieldDef.aggregate) {
+  const {aggregate, type} = fieldDef;
+
+  if (!aggregate) {
     return {
       valid: false,
       reason: log.message.unaggregateDomainHasNoEffectForRawField(fieldDef)
     };
   }
 
-  if (!SHARED_DOMAIN_OP_INDEX[fieldDef.aggregate]) {
+  if (isString(aggregate) && !SHARED_DOMAIN_OP_INDEX[aggregate]) {
     return {
       valid: false,
-      reason: log.message.unaggregateDomainWithNonSharedDomainOp(fieldDef.aggregate)
+      reason: log.message.unaggregateDomainWithNonSharedDomainOp(aggregate)
     };
   }
 
-  if (fieldDef.type === 'quantitative') {
+  if (type === 'quantitative') {
     if (scaleType === 'log') {
       return {
         valid: false,

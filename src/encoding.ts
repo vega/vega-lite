@@ -1,5 +1,6 @@
+import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
-import {isAggregateOp} from './aggregate';
+import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinning} from './bin';
 import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark} from './channel';
 import {
@@ -262,8 +263,8 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
       if (aggOp || timeUnit || bin) {
         const guide = getGuide(channelDef);
         const isTitleDefined = guide && guide.title;
-        const newField = vgField(channelDef, {forAs: true});
-        const newChannelDef = {
+        let newField = vgField(channelDef, {forAs: true});
+        const newFieldDef: FieldDef<string> = {
           // Only add title if it doesn't exist
           ...(isTitleDefined ? [] : {title: title(channelDef, config, {allowDisabling: true})}),
           ...remaining,
@@ -271,15 +272,32 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
           field: newField
         };
         const isPositionChannel: boolean = channel === 'x' || channel === 'y';
-        if (aggOp && isAggregateOp(aggOp)) {
-          const aggregateEntry: AggregatedFieldDef = {
-            op: aggOp,
-            as: newField
-          };
-          if (field) {
-            aggregateEntry.field = field;
+
+        if (aggOp) {
+          let op: AggregateOp;
+
+          if (isArgmaxDef(aggOp)) {
+            op = 'argmax';
+            newField = vgField({aggregate: 'argmax', field: aggOp.argmax}, {forAs: true});
+            newFieldDef.field = `${newField}.${field}`;
+          } else if (isArgminDef(aggOp)) {
+            op = 'argmin';
+            newField = vgField({aggregate: 'argmin', field: aggOp.argmin}, {forAs: true});
+            newFieldDef.field = `${newField}.${field}`;
+          } else if (aggOp !== 'boxplot' && aggOp !== 'errorbar' && aggOp !== 'errorband') {
+            op = aggOp;
           }
-          aggregate.push(aggregateEntry);
+
+          if (op) {
+            const aggregateEntry: AggregatedFieldDef = {
+              op,
+              as: newField
+            };
+            if (field) {
+              aggregateEntry.field = field;
+            }
+            aggregate.push(aggregateEntry);
+          }
         } else if (isTypedFieldDef(channelDef) && isBinning(bin)) {
           bins.push({bin, field, as: newField});
           // Add additional groupbys for range and end of bins
@@ -294,9 +312,9 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
             };
             encoding[channel + '2'] = secondaryChannel;
           }
-          newChannelDef['bin'] = 'binned';
+          newFieldDef.bin = 'binned';
           if (!isSecondaryRangeChannel(channel)) {
-            newChannelDef['type'] = 'quantitative';
+            newFieldDef['type'] = 'quantitative';
           }
         } else if (timeUnit) {
           timeUnits.push({timeUnit, field, as: newField});
@@ -305,21 +323,21 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
           const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
           const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';
           if (channel === 'text' || channel === 'tooltip') {
-            newChannelDef['format'] = newChannelDef['format'] || format;
+            newFieldDef['format'] = newFieldDef['format'] || format;
             if (formatType) {
-              newChannelDef['formatType'] = formatType;
+              newFieldDef['formatType'] = formatType;
             }
           } else if (isNonPositionScaleChannel(channel)) {
-            newChannelDef['legend'] = {format, ...(formatType ? {formatType} : {}), ...newChannelDef['legend']};
+            newFieldDef['legend'] = {format, ...(formatType ? {formatType} : {}), ...newFieldDef['legend']};
           } else if (isPositionChannel) {
-            newChannelDef['axis'] = {format, ...(formatType ? {formatType} : {}), ...newChannelDef['axis']};
+            newFieldDef['axis'] = {format, ...(formatType ? {formatType} : {}), ...newFieldDef['axis']};
           }
         }
         if (!aggOp) {
           groupby.push(newField);
         }
         // now the field should refer to post-transformed field instead
-        encoding[channel] = newChannelDef;
+        encoding[channel] = newFieldDef;
       } else {
         groupby.push(field);
         encoding[channel] = oldEncoding[channel];

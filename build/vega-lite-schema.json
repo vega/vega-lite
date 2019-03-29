@@ -3,7 +3,17 @@
   "$schema": "http://json-schema.org/draft-06/schema#",
   "definitions": {
     "Aggregate": {
-      "$ref": "#/definitions/AggregateOp"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/AggregateOp"
+        },
+        {
+          "$ref": "#/definitions/ArgmaxDef"
+        },
+        {
+          "$ref": "#/definitions/ArgminDef"
+        }
+      ]
     },
     "AggregateOp": {
       "enum": [
@@ -331,6 +341,30 @@
           "type": "number"
         }
       },
+      "type": "object"
+    },
+    "ArgmaxDef": {
+      "additionalProperties": false,
+      "properties": {
+        "argmax": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "argmax"
+      ],
+      "type": "object"
+    },
+    "ArgminDef": {
+      "additionalProperties": false,
+      "properties": {
+        "argmin": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "argmin"
+      ],
       "type": "object"
     },
     "AutoSizeParams": {

@@ -13,6 +13,8 @@ describe('extractTransforms()', () => {
   // various bugs.
   const failsList = new Set([
     'area_temperature_range.vl.json',
+    'bar_argmax.vl.json',
+    'bar_argmax_transform.vl.json',
     'bar_aggregate_count.vl.json',
     'bar_aggregate_sort_by_encoding.vl.json',
     'bar_aggregate_sort_mean.vl.json',
@@ -111,8 +113,8 @@ describe('extractTransforms()', () => {
   ]);
   for (const file of fs.readdirSync(specsDir)) {
     const filepath = specsDir + file;
-    if (filepath.slice(-5) === '.json') {
-      it(`should${failsList.has(file) ? ' NOT ' : ' '}compile ${filepath} to the same spec`, () => {
+    if (filepath.slice(-5) === '.json' && !failsList.has(file)) {
+      it(`should compile ${filepath} to the same spec`, () => {
         const specString = fs.readFileSync(filepath, 'utf8');
 
         const spec = JSON.parse(specString);
@@ -123,11 +125,7 @@ describe('extractTransforms()', () => {
         const originalCompiled = compile(spec);
         const transformCompiled = compile(extractSpec);
 
-        if (failsList.has(file)) {
-          expect(transformCompiled).not.toEqual(originalCompiled);
-        } else {
-          expect(transformCompiled).toEqual(originalCompiled);
-        }
+        expect(transformCompiled).toEqual(originalCompiled);
       });
     }
   }

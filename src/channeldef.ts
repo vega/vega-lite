@@ -1,7 +1,6 @@
 // Declaration and utility for variants of a field definition object
-import {AggregateOp} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
-import {isAggregateOp, isCountingAggregateOp} from './aggregate';
+import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString, isBinned, isBinning} from './bin';
 import {Channel, isScaleChannel, isSecondaryRangeChannel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
@@ -197,8 +196,6 @@ export function isRepeatRef(field: Field): field is RepeatRef {
 /** @hide */
 export type HiddenCompositeAggregate = CompositeAggregate;
 
-export type Aggregate = AggregateOp | HiddenCompositeAggregate;
-
 export interface GenericBinMixins<B> {
   /**
    * A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`"binned"`).
@@ -244,7 +241,7 @@ export interface FieldDefBase<F> extends BaseBinMixins {
    *
    * __Default value:__ `undefined` (None)
    */
-  aggregate?: Aggregate;
+  aggregate?: Aggregate | HiddenCompositeAggregate;
 }
 
 export function toFieldDefBase(fieldDef: TypedFieldDef<string>): FieldDefBase<string> {
@@ -513,6 +510,8 @@ export function vgField(
   const prefix = opt.prefix;
   let suffix = opt.suffix;
 
+  let accessor = ''; // for accessing argmin/argmax field at the end without getting escaped
+
   if (isCount(fieldDef)) {
     field = internalField('count');
   } else {
@@ -521,13 +520,24 @@ export function vgField(
     if (!opt.nofn) {
       if (isOpFieldDef(fieldDef)) {
         fn = fieldDef.op;
-      } else if (isBinning(fieldDef.bin)) {
-        fn = binToString(fieldDef.bin);
-        suffix = (opt.binSuffix || '') + (opt.suffix || '');
-      } else if (fieldDef.aggregate) {
-        fn = String(fieldDef.aggregate);
-      } else if (fieldDef.timeUnit) {
-        fn = String(fieldDef.timeUnit);
+      } else {
+        const {bin, aggregate, timeUnit} = fieldDef;
+        if (isBinning(bin)) {
+          fn = binToString(bin);
+          suffix = (opt.binSuffix || '') + (opt.suffix || '');
+        } else if (aggregate) {
+          if (isArgmaxDef(aggregate)) {
+            accessor = `.${field}`;
+            field = `argmax_${aggregate.argmax}`;
+          } else if (isArgminDef(aggregate)) {
+            accessor = `.${field}`;
+            field = `argmin_${aggregate.argmin}`;
+          } else {
+            fn = String(aggregate);
+          }
+        } else if (timeUnit) {
+          fn = String(timeUnit);
+        }
       }
     }
 
@@ -548,10 +558,10 @@ export function vgField(
     return field;
   } else if (opt.expr) {
     // Expression to access flattened field. No need to escape dots.
-    return flatAccessWithDatum(field, opt.expr);
+    return flatAccessWithDatum(field, opt.expr) + accessor;
   } else {
     // We flattened all fields so paths should have become dot.
-    return replacePathInField(field);
+    return replacePathInField(field) + accessor;
   }
 }
 
@@ -580,7 +590,7 @@ export function isCount(fieldDef: FieldDefBase<Field>) {
 export type FieldTitleFormatter = (fieldDef: FieldDefBase<string>, config: Config) => string;
 
 export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config) {
-  const {field: field, bin, timeUnit, aggregate} = fieldDef;
+  const {field, bin, timeUnit, aggregate} = fieldDef;
   if (aggregate === 'count') {
     return config.countTitle;
   } else if (isBinning(bin)) {
@@ -589,17 +599,30 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
     const units = getTimeUnitParts(timeUnit).join('-');
     return `${field} (${units})`;
   } else if (aggregate) {
-    return `${titlecase(aggregate)} of ${field}`;
+    if (isArgmaxDef(aggregate)) {
+      return `${field} for max ${aggregate.argmax}`;
+    } else if (isArgminDef(aggregate)) {
+      return `${field} for min ${aggregate.argmin}`;
+    } else {
+      return `${titlecase(aggregate)} of ${field}`;
+    }
   }
   return field;
 }
 
 export function functionalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config) {
-  const fn = fieldDef.aggregate || fieldDef.timeUnit || (isBinning(fieldDef.bin) && 'bin');
+  const {aggregate, bin, timeUnit, field} = fieldDef;
+  if (isArgmaxDef(aggregate)) {
+    return `${field} for argmax(${aggregate.argmax})`;
+  } else if (isArgminDef(aggregate)) {
+    return `${field} for argmin(${aggregate.argmin})`;
+  }
+
+  const fn = aggregate || timeUnit || (isBinning(bin) && 'bin');
   if (fn) {
-    return fn.toUpperCase() + '(' + fieldDef.field + ')';
+    return fn.toUpperCase() + '(' + field + ')';
   } else {
-    return fieldDef.field;
+    return field;
   }
 }
 
@@ -729,46 +752,48 @@ export function normalize(channelDef: ChannelDef, channel: Channel): ChannelDef<
   return channelDef;
 }
 export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
+  const {aggregate, timeUnit, bin} = fieldDef;
   // Drop invalid aggregate
-  if (fieldDef.aggregate && !isAggregateOp(fieldDef.aggregate)) {
-    const {aggregate, ...fieldDefWithoutAggregate} = fieldDef;
-    log.warn(log.message.invalidAggregate(fieldDef.aggregate));
+  if (aggregate && !isAggregateOp(aggregate) && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
+    const {aggregate: _, ...fieldDefWithoutAggregate} = fieldDef;
+    log.warn(log.message.invalidAggregate(aggregate));
     fieldDef = fieldDefWithoutAggregate;
   }
 
   // Normalize Time Unit
-  if (fieldDef.timeUnit) {
+  if (timeUnit) {
     fieldDef = {
       ...fieldDef,
-      timeUnit: normalizeTimeUnit(fieldDef.timeUnit)
+      timeUnit: normalizeTimeUnit(timeUnit)
     };
   }
 
   // Normalize bin
-  if (isBinning(fieldDef.bin)) {
+  if (isBinning(bin)) {
     fieldDef = {
       ...fieldDef,
-      bin: normalizeBin(fieldDef.bin, channel)
+      bin: normalizeBin(bin, channel)
     };
   }
 
-  if (isBinned(fieldDef.bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {
+  if (isBinned(bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {
     log.warn(`Channel ${channel} should not be used with "binned" bin`);
   }
 
   // Normalize Type
   if (isTypedFieldDef(fieldDef)) {
-    const fullType = getFullName(fieldDef.type);
-    if (fieldDef.type !== fullType) {
+    const {type} = fieldDef;
+    const fullType = getFullName(type);
+    if (type !== fullType) {
       // convert short type to full type
       fieldDef = {
         ...fieldDef,
         type: fullType
       };
     }
-    if (fieldDef.type !== 'quantitative') {
-      if (isCountingAggregateOp(fieldDef.aggregate)) {
-        log.warn(log.message.invalidFieldTypeForCountAggregate(fieldDef.type, fieldDef.aggregate));
+    if (type !== 'quantitative') {
+      if (isCountingAggregateOp(aggregate)) {
+        log.warn(log.message.invalidFieldTypeForCountAggregate(type, aggregate));
         fieldDef = {
           ...fieldDef,
           type: 'quantitative'
