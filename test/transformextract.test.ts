@@ -116,12 +116,15 @@ describe('extractTransforms()', () => {
         const specString = fs.readFileSync(filepath, 'utf8');
 
         const spec = JSON.parse(specString);
-        const config = initConfig(spec.config);
+
+        // Use invalidValues =  "hide" so we don't include filterInvalid in the comparison
+        const config = initConfig({...spec.config, invalidValues: 'hide'});
+
         const extractSpec = extractTransforms(normalize(spec, config), config) as TopLevelSpec;
 
         // convert to JSON to resolve `SignalRefWrapper`s that are lazily evaluated
-        const originalCompiled = compile(spec);
-        const transformCompiled = compile(extractSpec);
+        const originalCompiled = compile(spec, {config});
+        const transformCompiled = compile(extractSpec, {config});
 
         if (failsList.has(file)) {
           expect(transformCompiled).not.toEqual(originalCompiled);

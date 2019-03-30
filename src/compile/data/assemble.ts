@@ -8,6 +8,7 @@ import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
+import {FilterInvalidNode} from './filterinvalid';
 import {FlattenTransformNode} from './flatten';
 import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
@@ -22,9 +23,6 @@ import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
-
-// @ts-ignore
-import {debug, draw} from './debug';
 
 function makeWalkTree(data: VgData[]) {
   // to name datasources
@@ -83,6 +81,7 @@ function makeWalkTree(data: VgData[]) {
     }
 
     if (
+      node instanceof FilterInvalidNode ||
       node instanceof FilterNode ||
       node instanceof CalculateNode ||
       node instanceof GeoPointNode ||
