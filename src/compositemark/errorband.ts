@@ -109,9 +109,10 @@ export function normalizeErrorBand(
     outerSpec,
     tooltipEncoding
   } = errorBarParams(spec, ERRORBAND, config);
+  const errorBandDef: ErrorBandDef = markDef;
 
   const makeErrorBandPart = makeCompositeAggregatePartFactory<ErrorBandPartsMixins>(
-    markDef,
+    errorBandDef,
     continuousAxis,
     continuousAxisChannelDef,
     encodingWithoutContinuousAxis,
@@ -123,8 +124,8 @@ export function normalizeErrorBand(
   let bandMark: MarkDef = {type: is2D ? 'area' : 'rect'};
   let bordersMark: MarkDef = {type: is2D ? 'line' : 'rule'};
   const interpolate = {
-    ...(markDef.interpolate ? {interpolate: markDef.interpolate} : {}),
-    ...(markDef.tension && markDef.interpolate ? {interpolate: markDef.tension} : {})
+    ...(errorBandDef.interpolate ? {interpolate: errorBandDef.interpolate} : {}),
+    ...(errorBandDef.tension && errorBandDef.interpolate ? {interpolate: errorBandDef.tension} : {})
   };
 
   if (is2D) {
@@ -136,9 +137,9 @@ export function normalizeErrorBand(
       ...bordersMark,
       ...interpolate
     };
-  } else if (markDef.interpolate) {
+  } else if (errorBandDef.interpolate) {
     log.warn(log.message.errorBand1DNotSupport('interpolate'));
-  } else if (markDef.tension) {
+  } else if (errorBandDef.tension) {
     log.warn(log.message.errorBand1DNotSupport('tension'));
   }
 

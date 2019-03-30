@@ -23,7 +23,8 @@
     "importHelpers": true,
     "resolveJsonModule": true,
     "typeRoots": ["./node_modules/@types", "./typings"],
-    "composite": true
+    "composite": true,
+    "incremental": true
   },
   "files": [],
   "include": [],
