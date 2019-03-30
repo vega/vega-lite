@@ -231,6 +231,14 @@ nav a:hover {
   text-decoration: none;
 }
 
+/* Search */
+
+.search input,
+.search button {
+  font-size: 1em;
+  padding: 4px;
+}
+
 /* Special classes */
 
 .page-centered {
