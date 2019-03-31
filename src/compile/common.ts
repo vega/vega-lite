@@ -39,18 +39,21 @@ export function getStyles(mark: MarkDef): string[] {
  * Otherwise, return general mark specific config.
  */
 export function getMarkConfig<P extends keyof MarkConfig>(
-  prop: P,
+  channel: P,
   mark: MarkDef,
   config: Config,
-  {skipGeneralMarkConfig = false}: {skipGeneralMarkConfig?: boolean} = {}
+  {vgChannel}: {vgChannel?: any} = {} // Note: Ham: I use `any` here as it's too hard to make TS knows that MarkConfig[vgChannel] would have the same type as MarkConfig[P]
 ): MarkConfig[P] {
   return getFirstDefined(
     // style config has highest precedence
-    getStyleConfig(prop, mark, config.style),
+    vgChannel ? getStyleConfig(channel, mark, config.style) : undefined,
+    getStyleConfig(channel, mark, config.style),
     // then mark-specific config
-    config[mark.type][prop],
-    // then general mark config (if not skipped)
-    skipGeneralMarkConfig ? undefined : config.mark[prop]
+    vgChannel ? config[mark.type][vgChannel] : undefined,
+    config[mark.type][channel],
+    // If there is vgChannel, skip vl channel.
+    // For example, vl size for text is vg fontSize, but config.mark.size is only for point size.
+    vgChannel ? config.mark[vgChannel] : config.mark[channel]
   );
 }
 

@@ -51,6 +51,8 @@ function barPosition(model: UnitModel, channel: 'x' | 'y'): VgEncodeEntry {
       ...mixins.pointPosition2(model, 'zeroOrMin', channel2)
     };
   } else {
+    const sizeChannel = channel === 'x' ? 'width' : 'height';
+
     // vertical
     if (isFieldDef(fieldDef)) {
       const scaleType = scale.get('type');
@@ -58,32 +60,41 @@ function barPosition(model: UnitModel, channel: 'x' | 'y'): VgEncodeEntry {
         return mixins.binPosition({fieldDef, channel, scaleName, mark, spacing, reverse});
       } else {
         if (scaleType === ScaleType.BAND) {
-          return mixins.bandPosition(fieldDef, channel, model, defaultSizeRef(markDef, scaleName, scale, config));
+          return mixins.bandPosition(
+            fieldDef,
+            channel,
+            model,
+            defaultSizeRef(markDef, sizeChannel, scaleName, scale, config)
+          );
         }
       }
     }
-    // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
 
+    // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
     return mixins.centeredPointPositionWithSize(
       channel,
       model,
-      {...ref.mid(channel === 'x' ? model.width : model.height)},
-      defaultSizeRef(markDef, scaleName, scale, config)
+      ref.mid(model[sizeChannel]),
+      defaultSizeRef(markDef, sizeChannel, scaleName, scale, config)
     );
   }
 }
 
-function defaultSizeRef(markDef: MarkDef, scaleName: string, scale: ScaleComponent, config: Config): VgValueRef {
-  if (markDef.size !== undefined) {
-    return {value: markDef.size};
-  }
-  const sizeConfig = getMarkConfig('size', markDef, config, {
-    // config.mark.size shouldn't affect bar size
-    skipGeneralMarkConfig: true
-  });
+function defaultSizeRef(
+  markDef: MarkDef,
+  sizeChannel: 'width' | 'height',
+  scaleName: string,
+  scale: ScaleComponent,
+  config: Config
+): VgValueRef {
+  const markPropOrConfig = getFirstDefined(
+    markDef[sizeChannel],
+    markDef.size,
+    getMarkConfig('size', markDef, config, {vgChannel: sizeChannel})
+  );
 
-  if (sizeConfig !== undefined) {
-    return {value: sizeConfig};
+  if (markPropOrConfig !== undefined) {
+    return {value: markPropOrConfig};
   }
 
   if (scale) {

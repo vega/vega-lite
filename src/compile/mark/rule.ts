@@ -26,8 +26,7 @@ export const rule: MarkCompiler = {
       ...(orient !== 'horizontal' ? mixins.pointPosition2(model, 'zeroOrMax', 'y2') : {}),
 
       ...mixins.nonPosition('size', model, {
-        vgChannel: 'strokeWidth', // VL's rule size is strokeWidth
-        defaultValue: markDef.size
+        vgChannel: 'strokeWidth' // VL's rule size is strokeWidth
       })
     };
   }

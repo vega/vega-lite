@@ -15,7 +15,7 @@ import * as log from '../../log';
 import {isPathMark, Mark, MarkDef} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
 import {contains, Dict, getFirstDefined, keys} from '../../util';
-import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
+import {VG_MARK_CONFIGS, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {expression} from '../predicate';
 import {assembleSelectionPredicate} from '../selection/assemble';
@@ -206,13 +206,27 @@ export function defined(model: UnitModel): VgEncodeEntry {
 export function nonPosition(
   channel: NonPositionScaleChannel,
   model: UnitModel,
-  opt: {defaultValue?: number | string | boolean; vgChannel?: string; defaultRef?: VgValueRef} = {}
+  opt: {
+    defaultValue?: number | string | boolean;
+    vgChannel?: VgEncodeChannel;
+    defaultRef?: VgValueRef;
+  } = {}
 ): VgEncodeEntry {
-  const {markDef, encoding} = model;
+  const {markDef, encoding, config} = model;
   const {vgChannel = channel} = opt;
+  let {defaultRef, defaultValue} = opt;
 
-  const {defaultValue = markDef[vgChannel]} = opt;
-  const defaultRef = opt.defaultRef || (defaultValue !== undefined ? {value: defaultValue} : undefined);
+  if (defaultRef === undefined) {
+    // prettier-ignore
+    defaultValue = defaultValue ||
+      (vgChannel === channel
+        ? // When vl channel is the same as Vega's, no need to read from config as Vega will apply them correctly
+          markDef[channel]
+        : // However, when they are different (e.g, vl's text size is vg fontSize), need to read "size" from configs
+          getFirstDefined(markDef[channel], markDef[vgChannel], getMarkConfig(channel, markDef, config, {vgChannel})));
+
+    defaultRef = defaultValue ? {value: defaultValue} : undefined;
+  }
 
   const channelDef = encoding[channel];
 

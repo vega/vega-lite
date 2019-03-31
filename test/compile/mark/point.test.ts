@@ -231,16 +231,16 @@ describe('Mark: Point', () => {
   describe('with config.mark.size', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(pointXY({}, {mark: {size: 23}}));
     const props = point.encodeEntry(model);
-    it('should have correct size', () => {
-      expect(props.size).toEqual({value: 23});
+    it('should have no size as Vega config will already apply it correctly', () => {
+      expect(props.size).toBeUndefined();
     });
   });
 
   describe('with config.point.size', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(pointXY({}, {point: {size: 23}}));
     const props = point.encodeEntry(model);
-    it('should have correct size', () => {
-      expect(props.size).toEqual({value: 23});
+    it('should have no size as Vega config will already apply it correctly', () => {
+      expect(props.size).toBeUndefined();
     });
   });
 
