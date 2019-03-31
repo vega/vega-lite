@@ -5,9 +5,10 @@ permalink: /docs/value.html
 ---
 
 ```js
-// Specification of a Single View
+// A Single View or a Layer Specification
 {
   ...,
+  "mark/layer": ...,
   "encoding": {     // Encoding
     ...: {
       "value": ..., // Value

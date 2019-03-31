@@ -21,10 +21,10 @@ The impute transform groups data and determines missing values of the `key` fiel
 ## Impute in Encoding Field Definition
 
 ```js
-// A Single View Specification
+// A Single View or a Layer Specification
 {
-  "data": ... ,
-  "mark": ... ,
+  ...,
+  "mark/layer": ...,
   "encoding": {
     "x": {
       "field": ...,

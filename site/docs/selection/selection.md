@@ -6,13 +6,15 @@ permalink: /docs/selection.html
 ---
 
 ```js
-// Specification of a Single View
+// A Single View Specification
 {
   ...,
   "selection": {  // Key-value mappings between selection names and definitions.
     ...: {"type": "single"},
     ...
   },
+  "mark": ...,
+  "encoding": ...,
   ...
 }
 ```

@@ -7,6 +7,18 @@ permalink: /docs/flatten.html
 
 The **flatten** transform maps array-valued _fields_ to a set of individual data objects, one per array entry. This transform generates a new data stream in which each data object consists of an extracted array value as well as all the original fields of the corresponding input data object.
 
+```js
+// Any View Specification
+{
+  ...
+  "transform": [
+    {"flatten": ...} // Flatten Transform
+     ...
+  ],
+  ...
+}
+```
+
 ## Flatten Transform Definition
 
 {% include table.html props="flatten,as" source="FlattenTransform" %}

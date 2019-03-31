@@ -19,9 +19,10 @@ To stack fields in Vega-Lite, users can either use the `stack` property of an [e
 ## Stack in Encoding Field Definition
 
 ```js
-// Specification of a Single View
+// A Single View or a Layer Specification
 {
   ...,
+  "mark/layer": ...,
   "encoding": {     // Encoding
     "x" or "y": {
       "field": ...,
@@ -112,16 +113,18 @@ Since `line` marks are not stacked by default, to layer lines on top of stacked 
 ## Stack Transform
 
 ```js
-// A View Specification
+// Any View Specification
 {
   ...
   "transform": [
+    // Stack Transform
     {
       "stack": ...,
       "groupby": ...,
       "offset": ...,
       "sort": ...,
-      "as" ...} // Stack Transform
+      "as": ...
+    }
     ...
   ],
   ...

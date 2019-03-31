@@ -21,10 +21,10 @@ To aggregate data in Vega-Lite, users can either use the `aggregate` property of
 <!-- TODO why aggregation -->
 
 ```js
-// A Single View Specification
+// A Single View or a Layer Specification
 {
-  "data": ... ,
-  "mark": ... ,
+  ...,
+  "mark/layer": ...,
   "encoding": {
     "x": {
       "aggregate": ...,               // aggregate
@@ -58,7 +58,7 @@ The `detail` channel can be used to specify additional summary and group-by fiel
 ## Aggregate Transform
 
 ```js
-// A View Specification
+// Any View Specification
 {
   ...
   "transform": [

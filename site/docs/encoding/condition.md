@@ -4,6 +4,32 @@ title: Condition
 permalink: /docs/condition.html
 ---
 
+```js
+// A Single View or a Layer Specification
+{
+  ...,
+  "mark/layer": ...,
+  "encoding": {
+    ...: {
+      // Conditional encoding channel definition (if-clause)
+      "condition": {
+        // Selection name or a test predicate
+        "selection/test": ...,
+        // Field / value definition if the data is included in the `selection` or if the `test` precidate is satisfied
+        "field/value": ...,
+        ...
+      },
+
+      // (Optional else-clause) Field / value definition if the data is NOT included in the `selection` / if the `test` precidate is NOT satisfied
+      "field/value": ...,
+      ...
+    },
+    ...
+  },
+  ...
+}
+```
+
 For [mark property channels](encoding.html#mark-prop) as well as [text and tooltip channels](encoding.html#text), the `condition` property of their channel definitions can be used to determine encoding rules based on whether data values fall within a [selection](selection.html) or satisfy a `test` predicate.
 
 {:#condition}
@@ -29,18 +55,25 @@ In addition, there are two ways to encode the data that satisfy the specified co
 ## Conditional Field Definition
 
 ```js
-// Specification of a Single View
+// A Single View or a Layer Specification
 {
   ...,
-  "encoding": {           // Encoding
+  "mark/layer": ...,
+  "encoding": {
     ...: {
-      "condition": {      // Conditional rule for data inside the selection
+      // A conditional field definition (if-clause)
+      "condition": {
         // Selection name or a test predicate
         "selection/test": ...,
-        // Field definition if the data is included in the selection (if)
-        "field": ..., "type": "quantitative"
+
+        // Field if the data is included in the `selection` or if the `test` precidate is satisfied
+        "field": ...,
+        "type": ...,
+        ...
       },
-      "value": ...        // The (optional) encoding value set for data outside the selection (else)
+
+      // (Optional else-clause) value if the data is NOT included in the `selection` / if the `test` precidate is NOT satisfied
+      "value": ...
     },
     ...
   },
@@ -62,24 +95,17 @@ For example, in the following plot, the color of `rect` marks is driven by a con
 
 ## Conditional Value Definition
 
-```js
-// Specification of a Single View
-{
-  ...,
-  "encoding": {           // Encoding
-    ...: {
-      "condition": {      // Conditional rule for data inside the selection
-        // Selection name or a test predicate
-        "selection/test": ...,
-        // Value if the data is included in the selection (if)
-        "value": ...
-      },
-      ... // A field definition or a value definition for data outside the selection (else)
+// A Single View or a Layer Specification { ..., "mark/layer": ..., "encoding": { ...: { // A conditional value definition (if-clause) "condition": { // Selection name or a test predicate "selection/test": ..., // Value if the data is included in the `selection` or if the `test` precidate is satisfied "value": ... },
+
+      // (Optional else-clause) field if the data is NOT included in the `selection` / if the `test` precidate is NOT satisfied
+      "field": ... ,
+      "type": ...,
+      ...
     },
     ...
-  },
-  ...
-}
+
+}, ... }
+
 ```
 
 A condition value definition uses a constant value encoding when data fall within a selection or satisfy a logical predicate. A field or value definition can be specified as the "else" case when the condition is not satisfied.
@@ -103,3 +129,4 @@ This plot uses a conditional value definition value to use a black label for a l
 The next plot uses a conditional value definition to color data points with null values in grey. Note that if the "else" case value is not specified, default mark color will be applied.
 
 <div class="vl-example" data-name="point_invalid_color"></div>
+```

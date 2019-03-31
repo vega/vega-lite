@@ -18,7 +18,7 @@ The joinaggregate transform extends the input data objects with aggregate values
 ## Join Aggregate Field Definition
 
 ```js
-// A View Specification
+// Any View Specification
 {
   ...
   "transform": [

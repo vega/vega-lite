@@ -34,10 +34,10 @@ If multiple channels encode the same fields, Vega-lite automatically combines th
 ## Legend Properties
 
 ```js
-// Single View Specification
+// A Single View or a Layer Specification
 {
-  "data": ... ,
-  "mark": ... ,
+  ...,
+  "mark/layer": ...,
   "encoding": {
     "x": ...,
     "y": ...,

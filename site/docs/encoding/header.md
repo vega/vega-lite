@@ -22,17 +22,15 @@ In addition to the `header` property of a row- or column-field definition, users
 ## Header Properties
 
 ```js
-// Single View Specification
+// A Single View or a Layer Specification
 {
-  "data": ... ,
-  "mark": ... ,
+  ...,
+  "mark/layer": ...,
   "encoding": {
     "row": {
       "field": ...,
       "type": ...,
-      "header": {                // Header
-        ...
-      },
+      "header": {...}, // Header
       ...
     },
     "x": ...,
@@ -42,7 +40,24 @@ In addition to the `header` property of a row- or column-field definition, users
 }
 ```
 
-To customize header, a `header` object in row- or column-[field definitions](facet.html#mapping) can contain the following groups of properties:
+```js
+// A Facet Specification
+{
+  ...,
+  "facet": {
+    "row/column": {
+      "field": ...,
+      "type": ...,
+      "header": {...}, // Header
+      ...
+    },
+    ...
+  },
+  "spec": ...
+}
+```
+
+To customize header, a `header` definiton in row- or column-[field definitions](facet.html#mapping) can contain the following groups of properties:
 
 {:#general}
 

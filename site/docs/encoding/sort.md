@@ -5,9 +5,10 @@ permalink: /docs/sort.html
 ---
 
 ```js
+// A Single View or a Layer Specification
 {
-  "data": ... ,
-  "mark": ... ,
+  ...,
+  "mark/layer": ...,
   "encoding": {
     "x": {
       "field": ...,

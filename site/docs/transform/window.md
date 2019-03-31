@@ -18,7 +18,7 @@ The window transform performs calculations over sorted groups of data objects. T
 ## Window Field Definition
 
 ```js
-// A View Specification
+// Any View Specification
 {
   ...
   "transform": [

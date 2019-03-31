@@ -22,10 +22,10 @@ Besides `axis` property of a field definition, the configuration object ([`confi
 ## Axis Properties
 
 ```js
-// Single View Specification
+// A Single View or a Layer Specification
 {
-  "data": ... ,
-  "mark": ... ,
+  ...,
+  "mark/layer": ...,
   "encoding": {
     "x": {
       "field": ...,
