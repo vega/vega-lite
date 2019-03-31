@@ -42,7 +42,8 @@ function defaultSize(model: UnitModel): number {
   const markPropOrConfig = getFirstDefined(
     markDef[vgSizeChannel],
     markDef.size,
-    getMarkConfig('size', markDef, config, {vgChannel: vgSizeChannel})
+    getMarkConfig('size', markDef, config, {vgChannel: vgSizeChannel}),
+    config.tick.bandSize
   );
 
   if (markPropOrConfig !== undefined) {
