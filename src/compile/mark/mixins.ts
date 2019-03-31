@@ -225,7 +225,7 @@ export function nonPosition(
         : // However, when they are different (e.g, vl's text size is vg fontSize), need to read "size" from configs
           getFirstDefined(markDef[channel], markDef[vgChannel], getMarkConfig(channel, markDef, config, {vgChannel})));
 
-    defaultRef = defaultValue && {value: defaultValue};
+    defaultRef = defaultValue ? {value: defaultValue} : undefined;
   }
 
   const channelDef = encoding[channel];
