@@ -1,5 +1,6 @@
+import {getMainRangeChannel, SECONDARY_RANGE_CHANNEL} from '../channel';
 import {Encoding} from '../encoding';
-import {Field} from '../fielddef';
+import {Field, isFieldDef} from '../fielddef';
 import * as log from '../log';
 import {GenericSpec} from '../spec/index';
 import {GenericUnitSpec, isUnitSpec} from '../spec/unit';
@@ -21,7 +22,16 @@ export class RuleForRangedLineNormalizer implements NonFacetUnitNormalizer<Range
   public hasMatchingType(spec: GenericSpec<any, any>): spec is RangedLineSpec {
     if (isUnitSpec(spec)) {
       const {encoding, mark} = spec;
-      return mark === 'line' && (!!encoding['x2'] || !!encoding['y2']);
+      if (mark === 'line') {
+        for (const channel of SECONDARY_RANGE_CHANNEL) {
+          const mainChannel = getMainRangeChannel(channel);
+          const mainChannelDef = encoding[mainChannel];
+
+          if (!!encoding[channel] && isFieldDef(mainChannelDef) && mainChannelDef.bin !== 'binned') {
+            return true;
+          }
+        }
+      }
     }
     return false;
   }
