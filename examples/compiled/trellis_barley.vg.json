@@ -235,8 +235,7 @@
       "name": "trellis_barley_color",
       "type": "ordinal",
       "domain": {"data": "data_1", "field": "year", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     }
   ],
   "legends": [

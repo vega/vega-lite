@@ -210,8 +210,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     },
     {
       "name": "shape",

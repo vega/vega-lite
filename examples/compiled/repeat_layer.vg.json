@@ -527,8 +527,7 @@
         ],
         "sort": true
       },
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     },
     {
       "name": "child__repeat_column_temp_max_x",

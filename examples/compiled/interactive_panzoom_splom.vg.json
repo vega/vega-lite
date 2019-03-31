@@ -1735,8 +1735,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     },
     {
       "name": "child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_x",

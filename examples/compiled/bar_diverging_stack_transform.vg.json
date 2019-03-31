@@ -345,8 +345,7 @@
         "Agree",
         "Strongly agree"
       ],
-      "range": ["#c30d24", "#f3a583", "#cccccc", "#94c6da", "#1770ab"],
-      "interpolate": "hcl"
+      "range": ["#c30d24", "#f3a583", "#cccccc", "#94c6da", "#1770ab"]
     }
   ],
   "axes": [
