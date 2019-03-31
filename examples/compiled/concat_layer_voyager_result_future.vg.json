@@ -292,8 +292,7 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"signal": "''+datum[\"label\"]"},
-              "fontSize": {"value": 9.5}
+              "text": {"signal": "''+datum[\"label\"]"}
             }
           }
         },
@@ -323,8 +322,7 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"signal": "''+datum[\"label\"]"},
-              "fontSize": {"value": 9.5}
+              "text": {"signal": "''+datum[\"label\"]"}
             }
           }
         },
@@ -354,8 +352,7 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"value": "more valuable"},
-              "fontSize": {"value": 9.5}
+              "text": {"value": "more valuable"}
             }
           }
         },
@@ -385,8 +382,7 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"value": "more valuable"},
-              "fontSize": {"value": 9.5}
+              "text": {"value": "more valuable"}
             }
           }
         }
