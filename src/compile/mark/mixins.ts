@@ -210,20 +210,23 @@ export function nonPosition(
     defaultValue?: number | string | boolean;
     vgChannel?: VgEncodeChannel;
     defaultRef?: VgValueRef;
-    skipGeneralMarkConfig?: boolean;
   } = {}
 ): VgEncodeEntry {
   const {markDef, encoding, config} = model;
-  const {
-    vgChannel = channel,
-    skipGeneralMarkConfig,
-    defaultValue = getFirstDefined(
-      markDef[channel],
-      markDef[vgChannel],
-      getMarkConfig(channel, markDef, config, {prop2: vgChannel, skipGeneralMarkConfig})
-    ),
-    defaultRef = defaultValue !== undefined ? {value: defaultValue} : undefined
-  } = opt;
+  const {vgChannel = channel} = opt;
+  let {defaultRef, defaultValue} = opt;
+
+  if (defaultRef === undefined) {
+    // prettier-ignore
+    defaultValue = defaultValue ||
+      (vgChannel === channel
+        ? // When vl channel is the same as Vega's, no need to read from config as Vega will apply them correctly
+          markDef[channel]
+        : // However, when they are different (e.g, vl's text size is vg fontSize), need to read "size" from configs
+          getFirstDefined(markDef[channel], markDef[vgChannel], getMarkConfig(channel, markDef, config, {vgChannel})));
+
+    defaultRef = defaultValue && {value: defaultValue};
+  }
 
   const channelDef = encoding[channel];
 

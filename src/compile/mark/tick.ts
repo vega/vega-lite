@@ -36,6 +36,7 @@ function defaultSize(model: UnitModel): number {
   const orient = markDef.orient;
   const scale = model.getScaleComponent(orient === 'horizontal' ? 'x' : 'y');
 
+  // TODO:
   if (markDef.size !== undefined) {
     return markDef.size;
   } else if (config.tick.bandSize !== undefined) {

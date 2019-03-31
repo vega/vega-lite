@@ -19,7 +19,6 @@ export const text: MarkCompiler = {
       ...mixins.pointPosition('y', model, ref.mid(height)),
       ...mixins.text(model),
       ...mixins.nonPosition('size', model, {
-        skipGeneralMarkConfig: true, // general mark config shouldn't be used as they are only for point/circle/square
         vgChannel: 'fontSize' // VL's text size is fontSize
       }),
       ...mixins.valueIfDefined('align', align(model.markDef, encoding, config))
