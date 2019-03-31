@@ -8,7 +8,7 @@ import {terser} from 'rollup-plugin-terser';
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
-  input: 'build/site/index.js',
+  input: 'build/site/static/index.js',
   output: {
     file: 'build/site/bundle.js',
     format: 'iife',
