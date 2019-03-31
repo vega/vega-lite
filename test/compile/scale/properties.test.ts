@@ -128,11 +128,16 @@ describe('compile/scale', () => {
   });
 
   describe('interpolate', () => {
-    it('should return hcl for color channel', () => {
-      expect(rules.interpolate('color')).toBe('hcl');
+    it('should return hcl for sequential color channel', () => {
+      expect(rules.interpolate('color', 'linear')).toBe('hcl');
     });
+
+    it('should return undefined for ordinal color channel', () => {
+      expect(rules.interpolate('color', 'ordinal')).toBeUndefined();
+    });
+
     it('should return undefined for size', () => {
-      expect(rules.interpolate('size')).toBeUndefined();
+      expect(rules.interpolate('size', 'linear')).toBeUndefined();
     });
   });
 

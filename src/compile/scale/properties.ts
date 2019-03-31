@@ -107,7 +107,7 @@ export function getDefaultValue(
     case 'bins':
       return bins(model, fieldDef, channel);
     case 'interpolate':
-      return interpolate(channel);
+      return interpolate(channel, scaleType);
     case 'nice':
       return nice(scaleType, channel, fieldDef);
     case 'padding':
@@ -192,8 +192,8 @@ export function bins(model: Model, fieldDef: TypedFieldDef<string>, channel: Cha
   return undefined;
 }
 
-export function interpolate(channel: Channel) {
-  if (contains([COLOR, FILL, STROKE], channel)) {
+export function interpolate(channel: Channel, scaleType: ScaleType) {
+  if (contains([COLOR, FILL, STROKE], channel) && scaleType !== 'ordinal') {
     return 'hcl';
   }
   return undefined;
