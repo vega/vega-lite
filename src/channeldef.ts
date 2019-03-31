@@ -8,7 +8,7 @@ import {Channel, isScaleChannel, isSecondaryRangeChannel, POSITION_SCALE_CHANNEL
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
-import {Guide, TitleMixins} from './guide';
+import {FormatMixins, Guide, TitleMixins} from './guide';
 import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
@@ -391,17 +391,7 @@ export interface OrderFieldDef<F extends Field> extends FieldDefWithoutScale<F> 
   sort?: SortOrder;
 }
 
-export interface TextFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType> {
-  /**
-   * The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
-   */
-  format?: string;
-
-  /**
-   * The type of the `format` property.
-   */
-  formatType?: 'number' | 'time';
-}
+export interface TextFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
 
 export type FieldDef<F extends Field> = SecondaryFieldDef<F> | TypedFieldDef<F>;
 export type ChannelDef<FD extends FieldDef<any> = FieldDef<string>, V extends Value = Value> = ChannelDefWithCondition<
