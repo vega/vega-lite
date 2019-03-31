@@ -1,8 +1,7 @@
 {
   "extends": "..",
   "compilerOptions": {
-    "outDir": "../build/site/",
-    "rootDir": "static/"
+    "outDir": "../build/site/"
   },
   "references": [
     {
