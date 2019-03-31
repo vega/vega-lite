@@ -17,7 +17,7 @@ import {
   isTimeFormatFieldDef,
   title as fieldDefTitle,
   TypedFieldDef
-} from '../../fielddef';
+} from '../../channeldef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, getFirstDefined, keys} from '../../util';

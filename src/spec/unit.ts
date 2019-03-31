@@ -1,6 +1,6 @@
 import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark/index';
 import {Encoding} from '../encoding';
-import {Field} from '../fielddef';
+import {Field} from '../channeldef';
 import {AnyMark, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {SelectionDef} from '../selection';

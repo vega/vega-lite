@@ -1,9 +1,9 @@
 /* tslint:disable:quotemark */
 
 import {COLOR, FILLOPACITY, OPACITY, SHAPE, SIZE, STROKEOPACITY, STROKEWIDTH} from '../../../src/channel';
+import {isFieldDef} from '../../../src/channeldef';
 import * as legendParse from '../../../src/compile/legend/parse';
 import {parseLegend} from '../../../src/compile/legend/parse';
-import {isFieldDef} from '../../../src/fielddef';
 import {NormalizedUnitSpec} from '../../../src/spec';
 import {GEOJSON} from '../../../src/type';
 import {parseLayerModel, parseUnitModelWithScale} from '../../util';

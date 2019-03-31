@@ -1,6 +1,6 @@
 import {COUNTING_OPS} from '../src/aggregate';
 import {Channel, CHANNELS} from '../src/channel';
-import {channelCompatibility, defaultTitle, defaultType, normalize, TypedFieldDef, vgField} from '../src/fielddef';
+import {channelCompatibility, defaultTitle, defaultType, normalize, TypedFieldDef, vgField} from '../src/channeldef';
 import * as log from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';

@@ -1,6 +1,5 @@
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
-import {Config, StyleConfigIndex} from '../config';
 import {
   FieldDefBase,
   FieldRefOption,
@@ -9,7 +8,8 @@ import {
   OrderFieldDef,
   TypedFieldDef,
   vgField
-} from '../fielddef';
+} from '../channeldef';
+import {Config, StyleConfigIndex} from '../config';
 import {MarkConfig, MarkDef} from '../mark';
 import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';

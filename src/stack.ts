@@ -1,7 +1,6 @@
 import {isArray} from 'vega-util';
 import {SUM_OPS} from './aggregate';
-import {NONPOSITION_CHANNELS, NonPositionChannel, X, X2, Y2} from './channel';
-import {channelHasField, Encoding} from './encoding';
+import {NonPositionChannel, NONPOSITION_CHANNELS, X, X2, Y2} from './channel';
 import {
   Field,
   getTypedFieldDef,
@@ -10,7 +9,8 @@ import {
   PositionFieldDef,
   TypedFieldDef,
   vgField
-} from './fielddef';
+} from './channeldef';
+import {channelHasField, Encoding} from './encoding';
 import * as log from './log';
 import {AREA, BAR, CIRCLE, isMarkDef, isPathMark, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';

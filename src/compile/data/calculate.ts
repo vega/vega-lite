@@ -1,6 +1,6 @@
 import {SingleDefChannel} from '../../channel';
+import {FieldRefOption, isScaleFieldDef, TypedFieldDef, vgField} from '../../channeldef';
 import {DateTime} from '../../datetime';
-import {FieldRefOption, isScaleFieldDef, TypedFieldDef, vgField} from '../../fielddef';
 import {fieldFilterExpression} from '../../predicate';
 import {isSortArray} from '../../sort';
 import {CalculateTransform} from '../../transform';

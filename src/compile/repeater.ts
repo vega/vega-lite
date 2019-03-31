@@ -1,5 +1,4 @@
 import {isArray} from 'vega-util';
-import {Encoding} from '../encoding';
 import {
   ChannelDef,
   Field,
@@ -11,7 +10,8 @@ import {
   isSortableFieldDef,
   ScaleFieldDef,
   ValueDef
-} from '../fielddef';
+} from '../channeldef';
+import {Encoding} from '../encoding';
 import * as log from '../log';
 import {isSortField} from '../sort';
 import {FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';

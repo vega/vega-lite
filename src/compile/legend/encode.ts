@@ -12,7 +12,7 @@ import {
   Value,
   ValueDef,
   ValueDefWithCondition
-} from '../../fielddef';
+} from '../../channeldef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, GEOSHAPE, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {getFirstDefined, keys} from '../../util';

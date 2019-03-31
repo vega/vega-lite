@@ -1,6 +1,6 @@
 import {getMainRangeChannel, SECONDARY_RANGE_CHANNEL} from '../channel';
+import {Field, isFieldDef} from '../channeldef';
 import {Encoding} from '../encoding';
-import {Field, isFieldDef} from '../fielddef';
 import * as log from '../log';
 import {GenericSpec} from '../spec/index';
 import {GenericUnitSpec, isUnitSpec} from '../spec/unit';

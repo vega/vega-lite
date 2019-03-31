@@ -1,8 +1,8 @@
 import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
 import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
+import {ScaleFieldDef, TypedFieldDef, vgField} from '../../channeldef';
 import {Config} from '../../config';
-import {ScaleFieldDef, TypedFieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {BarConfig, Mark, MarkDef} from '../../mark';
 import {

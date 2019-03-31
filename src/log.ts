@@ -5,10 +5,10 @@
 import {AggregateOp} from 'vega';
 import {logger, LoggerInterface, Warn} from 'vega-util';
 import {Channel, FacetChannel, GeoPositionChannel} from './channel';
+import {Aggregate, TypedFieldDef} from './channeldef';
 import {CompositeMark} from './compositemark';
 import {ErrorBarCenter, ErrorBarExtent} from './compositemark/errorbar';
 import {DateTime, DateTimeExpr} from './datetime';
-import {Aggregate, TypedFieldDef} from './fielddef';
 import {Mark} from './mark';
 import {Projection} from './projection';
 import {ScaleType} from './scale';

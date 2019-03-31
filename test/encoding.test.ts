@@ -1,7 +1,7 @@
 import {X2, Y2} from '../src/channel';
+import {isPositionFieldDef} from '../src/channeldef';
 import {defaultConfig} from '../src/config';
 import {Encoding, extractTransformsFromEncoding, markChannelCompatible, normalizeEncoding} from '../src/encoding';
-import {isPositionFieldDef} from '../src/fielddef';
 import * as log from '../src/log';
 import {CIRCLE, POINT, SQUARE, TICK} from '../src/mark';
 import {internalField} from '../src/util';

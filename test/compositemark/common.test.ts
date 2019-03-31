@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
+import {RepeatRef} from '../../src/channeldef';
 import {Encoding} from '../../src/encoding';
-import {RepeatRef} from '../../src/fielddef';
 import {isMarkDef, MarkDef} from '../../src/mark';
 import {normalize} from '../../src/normalize/index';
 import {isLayerSpec, isUnitSpec} from '../../src/spec';

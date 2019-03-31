@@ -1,6 +1,6 @@
 import {AggregateOp} from 'vega';
 import {isAggregateOp} from '../../aggregate';
-import {vgField} from '../../fielddef';
+import {vgField} from '../../channeldef';
 import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {VgComparator, VgComparatorOrder, VgJoinAggregateTransform, VgWindowTransform} from '../../vega.schema';

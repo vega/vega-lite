@@ -1,8 +1,8 @@
 import {Axis as VgAxis, AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
-import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
-import {FieldDefBase, isTimeFormatFieldDef, toFieldDefBase} from '../../fielddef';
+import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
+import {FieldDefBase, isTimeFormatFieldDef, toFieldDefBase} from '../../channeldef';
 import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';

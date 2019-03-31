@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
 import {isBinning} from '../../bin';
 import {Channel, getPositionChannelFromLatLong, isGeoPositionChannel, isScaleChannel} from '../../channel';
-import {binRequiresRange, FieldDef, isTypedFieldDef, vgField} from '../../fielddef';
+import {binRequiresRange, FieldDef, isTypedFieldDef, vgField} from '../../channeldef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util';

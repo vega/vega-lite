@@ -1,5 +1,5 @@
 import {SignalRef} from 'vega';
-import {isFieldDef} from '../../fielddef';
+import {isFieldDef} from '../../channeldef';
 import {ImputeSequence, ImputeTransform, isImputeSequence} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {VgFormulaTransform, VgImputeTransform, VgWindowTransform} from '../../vega.schema';
