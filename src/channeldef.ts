@@ -510,7 +510,7 @@ export function vgField(
   const prefix = opt.prefix;
   let suffix = opt.suffix;
 
-  let accessor = ''; // for accessing argmin/argmax field at the end without getting escaped
+  let argAccessor = ''; // for accessing argmin/argmax field at the end without getting escaped
 
   if (isCount(fieldDef)) {
     field = internalField('count');
@@ -527,10 +527,10 @@ export function vgField(
           suffix = (opt.binSuffix || '') + (opt.suffix || '');
         } else if (aggregate) {
           if (isArgmaxDef(aggregate)) {
-            accessor = `.${field}`;
+            argAccessor = `.${field}`;
             field = `argmax_${aggregate.argmax}`;
           } else if (isArgminDef(aggregate)) {
-            accessor = `.${field}`;
+            argAccessor = `.${field}`;
             field = `argmin_${aggregate.argmin}`;
           } else {
             fn = String(aggregate);
@@ -558,10 +558,10 @@ export function vgField(
     return field;
   } else if (opt.expr) {
     // Expression to access flattened field. No need to escape dots.
-    return flatAccessWithDatum(field, opt.expr) + accessor;
+    return flatAccessWithDatum(field, opt.expr) + argAccessor;
   } else {
     // We flattened all fields so paths should have become dot.
-    return replacePathInField(field) + accessor;
+    return replacePathInField(field) + argAccessor;
   }
 }
 

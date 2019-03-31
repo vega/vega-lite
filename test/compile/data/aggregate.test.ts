@@ -55,7 +55,7 @@ describe('compile/data/aggregate', () => {
     });
   });
 
-  describe('parseUnit', () => {
+  describe('makeFromEncoding', () => {
     it('should produce the correct summary component for sum(Acceleration) and count(*)', () => {
       const model = parseUnitModel({
         mark: 'point',
@@ -193,6 +193,27 @@ describe('compile/data/aggregate', () => {
       });
     });
 
+    it('adds correct measure for argmin/max', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {aggregate: {argmin: 'a'}, field: 'b', type: 'quantitative'},
+          y: {aggregate: {argmax: 'c'}, field: 'd', type: 'quantitative'}
+        }
+      });
+
+      const agg = AggregateNode.makeFromEncoding(null, model);
+      expect(agg.assemble()).toEqual({
+        type: 'aggregate',
+        groupby: [],
+        ops: ['argmin', 'argmax'],
+        fields: ['a', 'c'],
+        as: ['argmin_a', 'argmax_c']
+      });
+    });
+  });
+
+  describe('makeFromTransform', () => {
     it('should produce the correct summary component from transform array', () => {
       const t: AggregateTransform = {
         aggregate: [
