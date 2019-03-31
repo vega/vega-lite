@@ -197,7 +197,11 @@ export function isChannel(str: string): str is Channel {
   return !!CHANNEL_INDEX[str];
 }
 
-export function isSecondaryRangeChannel(c: Channel): c is 'x2' | 'y2' | 'latitude2' | 'longitude2' {
+export type SecondaryRangeChannel = 'x2' | 'y2' | 'latitude2' | 'longitude2';
+
+export const SECONDARY_RANGE_CHANNEL: SecondaryRangeChannel[] = ['x2', 'y2', 'latitude2', 'longitude2'];
+
+export function isSecondaryRangeChannel(c: Channel): c is SecondaryRangeChannel {
   const main = getMainRangeChannel(c);
   return main !== c;
 }
