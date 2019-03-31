@@ -15,7 +15,7 @@ import * as log from '../../log';
 import {isPathMark, Mark, MarkDef} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
 import {contains, Dict, getFirstDefined, keys} from '../../util';
-import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
+import {VG_MARK_CONFIGS, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {expression} from '../predicate';
 import {assembleSelectionPredicate} from '../selection/assemble';
@@ -206,13 +206,24 @@ export function defined(model: UnitModel): VgEncodeEntry {
 export function nonPosition(
   channel: NonPositionScaleChannel,
   model: UnitModel,
-  opt: {defaultValue?: number | string | boolean; vgChannel?: string; defaultRef?: VgValueRef} = {}
+  opt: {
+    defaultValue?: number | string | boolean;
+    vgChannel?: VgEncodeChannel;
+    defaultRef?: VgValueRef;
+    skipGeneralMarkConfig?: boolean;
+  } = {}
 ): VgEncodeEntry {
-  const {markDef, encoding} = model;
-  const {vgChannel = channel} = opt;
-
-  const {defaultValue = markDef[vgChannel]} = opt;
-  const defaultRef = opt.defaultRef || (defaultValue !== undefined ? {value: defaultValue} : undefined);
+  const {markDef, encoding, config} = model;
+  const {
+    vgChannel = channel,
+    skipGeneralMarkConfig,
+    defaultValue = getFirstDefined(
+      markDef[channel],
+      markDef[vgChannel],
+      getMarkConfig(channel, markDef, config, {prop2: vgChannel, skipGeneralMarkConfig})
+    ),
+    defaultRef = defaultValue !== undefined ? {value: defaultValue} : undefined
+  } = opt;
 
   const channelDef = encoding[channel];
 
