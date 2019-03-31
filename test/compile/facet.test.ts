@@ -556,18 +556,12 @@ describe('FacetModel', () => {
           column: {bin: true, field: 'a', type: 'quantitative'}
         },
         spec: {
-          facet: {
-            column: {field: 'c', type: 'quantitative'}
-          },
-          spec: {
-            mark: 'point',
-            encoding: {
-              x: {field: 'b', type: 'quantitative'}
-            }
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'}
           }
         }
-        // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
-      } as any);
+      });
       model.parse();
 
       const marks = model.assembleMarks();
