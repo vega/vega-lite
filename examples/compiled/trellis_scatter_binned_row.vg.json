@@ -121,7 +121,10 @@
         "facet": {
           "name": "facet",
           "data": "source_0",
-          "groupby": ["bin_maxbins_6_Acceleration"]
+          "groupby": [
+            "bin_maxbins_6_Acceleration",
+            "bin_maxbins_6_Acceleration_end"
+          ]
         }
       },
       "sort": {
