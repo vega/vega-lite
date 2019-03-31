@@ -192,7 +192,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "decade", "sort": true},
-      "range": {"scheme": "magma"}
+      "range": {"scheme": "magma"},
+      "interpolate": "hcl"
     }
   ],
   "axes": [

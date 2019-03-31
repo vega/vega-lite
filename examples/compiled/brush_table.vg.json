@@ -595,7 +595,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
-      "range": "ordinal"
+      "range": "ordinal",
+      "interpolate": "hcl"
     },
     {
       "name": "concat_0_x",
