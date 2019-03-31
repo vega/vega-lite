@@ -221,9 +221,9 @@ Text and tooltip channels directly encode text values of the data fields. By def
 
 In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html), [field definitions](#field-def) for `text` and `tooltip` channels may also include these properties:
 
-<!-- {% include table.html props="format,condition" source="TextFieldDefWithCondition" %} -->
+<!-- {% include table.html props="format,formatType,condition" source="TextFieldDefWithCondition" %} -->
 
-{% include table.html props="format,condition" source="FieldDefWithCondition<TextFieldDef,(string|number|boolean)>" %}
+{% include table.html props="format,formatType,condition" source="FieldDefWithCondition<TextFieldDef,(string|number|boolean)>" %}
 
 {:#text-value-def}
 

@@ -48,7 +48,7 @@ To customize header, a `header` object in row- or column-[field definitions](fac
 
 ### General
 
-{% include table.html props="format,title" source="Header" %}
+{% include table.html props="title" source="Header" %}
 
 **See also:** You may also use `guide-title` and `guide-label` [style configs](mark.html#style-config) to customize common styles for [axis](axis.html), [legend](legend.html), and [header](header.html) labels and titles.
 
@@ -56,7 +56,7 @@ To customize header, a `header` object in row- or column-[field definitions](fac
 
 ### Labels
 
-{% include table.html props="labelAlign,labelAnchor,labelAngle,labelColor,labelFont,labelFontSize,labelLimit,labelOrient,labelPadding" source= "Header" %}
+{% include table.html props="format,formatType,labelAlign,labelAnchor,labelAngle,labelColor,labelFont,labelFontSize,labelLimit,labelOrient,labelPadding" source= "Header" %}
 
 {:#title}
 
