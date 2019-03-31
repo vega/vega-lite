@@ -87,13 +87,14 @@ function defaultSizeRef(
   scale: ScaleComponent,
   config: Config
 ): VgValueRef {
-  if (markDef.size !== undefined) {
-    return {value: markDef.size};
-  }
-  const sizeConfig = getMarkConfig('size', markDef, config, {vgChannel: sizeChannel});
+  const markPropOrConfig = getFirstDefined(
+    markDef[sizeChannel],
+    markDef.size,
+    getMarkConfig('size', markDef, config, {vgChannel: sizeChannel})
+  );
 
-  if (sizeConfig !== undefined) {
-    return {value: sizeConfig};
+  if (markPropOrConfig !== undefined) {
+    return {value: markPropOrConfig};
   }
 
   if (scale) {
