@@ -22,6 +22,14 @@ describe('fieldDef', () => {
     it('should access flattened fields in expression', () => {
       expect(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'})).toEqual('datum["foo.bar.baz"]');
     });
+
+    it('should access argmin field in expression', () => {
+      expect(vgField({aggregate: {argmin: 'b'}, field: 'a'})).toEqual('argmin_b.a');
+    });
+
+    it('should access argmax field in expression', () => {
+      expect(vgField({aggregate: {argmax: 'b'}, field: 'a'})).toEqual('argmax_b.a');
+    });
   });
 
   describe('defaultType()', () => {
