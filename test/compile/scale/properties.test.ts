@@ -128,16 +128,16 @@ describe('compile/scale', () => {
   });
 
   describe('interpolate', () => {
-    it('should return hcl for sequential color channel', () => {
-      expect(rules.interpolate('color', 'linear')).toBe('hcl');
+    it('should return hcl for colored quantitative field', () => {
+      expect(rules.interpolate('color', 'quantitative')).toBe('hcl');
     });
 
-    it('should return undefined for ordinal color channel', () => {
-      expect(rules.interpolate('color', 'ordinal')).toBeUndefined();
+    it('should return undefined for colored nominal field', () => {
+      expect(rules.interpolate('color', 'nominal')).toBeUndefined();
     });
 
     it('should return undefined for size', () => {
-      expect(rules.interpolate('size', 'linear')).toBeUndefined();
+      expect(rules.interpolate('size', 'quantitative')).toBeUndefined();
     });
   });
 
