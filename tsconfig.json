@@ -4,11 +4,14 @@
     "module": "es2015",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
+
+    "allowSyntheticDefaultImports": true,
     "inlineSources": true,
+    "importHelpers": true,
     "isolatedModules": false,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -16,9 +19,8 @@
     "noUnusedLocals": true,
     "preserveConstEnums": true,
     "removeComments": false,
-    "suppressImplicitAnyIndexErrors": true,
-    "importHelpers": true,
     "resolveJsonModule": true,
+    "suppressImplicitAnyIndexErrors": true,
     "typeRoots": ["./node_modules/@types", "./typings"],
     "composite": true,
     "incremental": true
