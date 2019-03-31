@@ -1,5 +1,6 @@
 import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
+import {isBinning} from '../bin';
 import {Channel, COLUMN, FACET_CHANNELS, FacetChannel, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
@@ -286,7 +287,13 @@ export class FacetModel extends ModelWithField {
       const fieldDef = this.facet[channel];
       if (fieldDef) {
         groupby.push(vgField(fieldDef));
-        const {sort} = fieldDef;
+
+        const {bin, sort} = fieldDef;
+
+        if (isBinning(bin)) {
+          groupby.push(vgField(fieldDef, {binSuffix: 'end'}));
+        }
+
         if (isSortField(sort)) {
           const {field, op = DEFAULT_SORT_OP} = sort;
           const outputName = facetSortFieldName(fieldDef, sort);
