@@ -90,6 +90,9 @@ export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<
 export type Conditional<CD extends FieldDef<any> | ValueDef<any>> = ConditionalPredicate<CD> | ConditionalSelection<CD>;
 
 export type ConditionalPredicate<CD extends FieldDef<any> | ValueDef<any>> = {
+  /**
+   * Predicate for triggering the condition
+   */
   test: LogicalOperand<Predicate>;
 } & CD;
 
@@ -106,9 +109,9 @@ export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSe
 
 export interface ConditionValueDefMixins<V extends Value = Value> {
   /**
-   * One or more value definition(s) with a selection predicate.
+   * One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).
    *
-   * __Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)
+   * __Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)
    * since Vega-Lite only allows at most one encoded field per encoding channel.
    */
   condition?: Conditional<ValueDef<V>> | Conditional<ValueDef<V>>[];
