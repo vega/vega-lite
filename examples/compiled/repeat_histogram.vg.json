@@ -582,8 +582,7 @@
         ],
         "sort": true
       },
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     },
     {
       "name": "child__repeat_repeat_Horsepower_x",

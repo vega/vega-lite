@@ -215,8 +215,7 @@
         ],
         "sort": true
       },
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     },
     {
       "name": "opacity",

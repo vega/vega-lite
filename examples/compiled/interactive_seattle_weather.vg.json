@@ -521,8 +521,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": ["sun", "fog", "drizzle", "rain", "snow"],
-      "range": ["#e7ba52", "#a7a7a7", "#aec7e8", "#1f77b4", "#9467bd"],
-      "interpolate": "hcl"
+      "range": ["#e7ba52", "#a7a7a7", "#aec7e8", "#1f77b4", "#9467bd"]
     },
     {
       "name": "size",

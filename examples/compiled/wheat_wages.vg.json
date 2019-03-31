@@ -291,8 +291,7 @@
       "name": "fill",
       "type": "ordinal",
       "domain": {"data": "data_0", "field": "commonwealth", "sort": true},
-      "range": ["black", "white"],
-      "interpolate": "hcl"
+      "range": ["black", "white"]
     }
   ],
   "axes": [

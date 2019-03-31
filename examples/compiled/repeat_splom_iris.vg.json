@@ -1695,8 +1695,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "species", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     },
     {
       "name": "child__repeat_row_petalWidth__repeat_column_sepalLength_x",

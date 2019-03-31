@@ -88,8 +88,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "gender", "sort": true},
-      "range": ["#EA98D2", "#659CCA"],
-      "interpolate": "hcl"
+      "range": ["#EA98D2", "#659CCA"]
     }
   ],
   "axes": [

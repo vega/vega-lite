@@ -171,8 +171,7 @@
         ],
         "sort": true
       },
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     }
   ],
   "axes": [

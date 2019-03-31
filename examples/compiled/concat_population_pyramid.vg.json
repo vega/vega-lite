@@ -252,8 +252,7 @@
         ],
         "sort": true
       },
-      "range": ["#e377c2", "#1f77b4"],
-      "interpolate": "hcl"
+      "range": ["#e377c2", "#1f77b4"]
     },
     {
       "name": "concat_0_x",

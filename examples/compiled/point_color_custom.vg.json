@@ -61,8 +61,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
-      "range": ["purple", "#ff0000", "teal"],
-      "interpolate": "hcl"
+      "range": ["purple", "#ff0000", "teal"]
     }
   ],
   "axes": [
