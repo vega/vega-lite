@@ -10,11 +10,11 @@ For [mark property channels](encoding.html#mark-prop) as well as [text and toolt
 
 There are two ways to specify the condition:
 
-1. Specifying `selection` name:
+(1) Specifying `selection` name:
 
 {% include table.html props="selection" source="ConditionalSelection<MarkPropFieldDef>" %}
 
-2. Specifying a `test` predicate:
+(2) Specifying a `test` predicate:
 
 {% include table.html props="test" source="ConditionalPredicate<MarkPropFieldDef>" %}
 
