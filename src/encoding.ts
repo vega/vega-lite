@@ -44,6 +44,7 @@ import {Mark} from './mark';
 import {EncodingFacetMapping} from './spec/facet';
 import {getDateTimeComponents} from './timeunit';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
+import {TEMPORAL} from './type';
 import {keys, some} from './util';
 
 export interface Encoding<F extends Field> {
@@ -302,12 +303,16 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
 
           // Add formatting to appropriate property based on the type of channel we're processing
           const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
-          if (isNonPositionScaleChannel(channel)) {
-            newChannelDef['legend'] = {format, ...newChannelDef['legend']};
-          } else if (isPositionChannel) {
-            newChannelDef['axis'] = {format, ...newChannelDef['axis']};
-          } else if (channel === 'text' || channel === 'tooltip') {
+          const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';
+          if (channel === 'text' || channel === 'tooltip') {
             newChannelDef['format'] = newChannelDef['format'] || format;
+            if (formatType) {
+              newChannelDef['formatType'] = formatType;
+            }
+          } else if (isNonPositionScaleChannel(channel)) {
+            newChannelDef['legend'] = {format, ...(formatType ? {formatType} : {}), ...newChannelDef['legend']};
+          } else if (isPositionChannel) {
+            newChannelDef['axis'] = {format, ...(formatType ? {formatType} : {}), ...newChannelDef['axis']};
           }
         }
         if (!aggOp) {

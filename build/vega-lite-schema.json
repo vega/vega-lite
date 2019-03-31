@@ -2790,6 +2790,14 @@
           "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
+        "formatType": {
+          "description": "The type of the `format` property.",
+          "enum": [
+            "number",
+            "time"
+          ],
+          "type": "string"
+        },
         "test": {
           "$ref": "#/definitions/LogicalOperand<Predicate>"
         },
@@ -3197,6 +3205,14 @@
         },
         "format": {
           "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "type": "string"
+        },
+        "formatType": {
+          "description": "The type of the `format` property.",
+          "enum": [
+            "number",
+            "time"
+          ],
           "type": "string"
         },
         "selection": {
@@ -4942,6 +4958,14 @@
         },
         "format": {
           "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "type": "string"
+        },
+        "formatType": {
+          "description": "The type of the `format` property.",
+          "enum": [
+            "number",
+            "time"
+          ],
           "type": "string"
         },
         "timeUnit": {
@@ -10801,6 +10825,14 @@
         },
         "format": {
           "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "type": "string"
+        },
+        "formatType": {
+          "description": "The type of the `format` property.",
+          "enum": [
+            "number",
+            "time"
+          ],
           "type": "string"
         },
         "timeUnit": {

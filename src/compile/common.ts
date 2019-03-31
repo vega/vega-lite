@@ -5,7 +5,7 @@ import {
   FieldDefBase,
   FieldRefOption,
   isScaleFieldDef,
-  isTimeFieldDef,
+  isTimeFormatFieldDef,
   OrderFieldDef,
   TypedFieldDef,
   vgField
@@ -76,22 +76,13 @@ export function formatSignalRef(
   expr: 'datum' | 'parent' | 'datum.datum',
   config: Config
 ) {
-  const format = numberFormat(fieldDef, specifiedFormat, config);
-  if (isBinning(fieldDef.bin)) {
-    const startField = vgField(fieldDef, {expr});
-    const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
-    return {
-      signal: binFormatExpression(startField, endField, format, config)
-    };
-  } else if (fieldDef.type === 'quantitative') {
-    return {
-      signal: `${formatExpr(vgField(fieldDef, {expr, binSuffix: 'range'}), format)}`
-    };
-  } else if (isTimeFieldDef(fieldDef)) {
+  if (isTimeFormatFieldDef(fieldDef)) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
       signal: timeFormatExpression(
-        vgField(fieldDef, {expr}),
+        vgField(fieldDef, {
+          expr
+        }),
         fieldDef.timeUnit,
         specifiedFormat,
         config.text.shortTimeLabels,
@@ -101,9 +92,20 @@ export function formatSignalRef(
       )
     };
   } else {
-    return {
-      signal: `''+${vgField(fieldDef, {expr})}`
-    };
+    const format = numberFormat(fieldDef, specifiedFormat, config);
+    if (isBinning(fieldDef.bin)) {
+      const startField = vgField(fieldDef, {expr});
+      const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
+      return {
+        signal: binFormatExpression(startField, endField, format, config)
+      };
+    } else if (fieldDef.type === 'quantitative') {
+      return {
+        signal: `${formatExpr(vgField(fieldDef, {expr, binSuffix: 'range'}), format)}`
+      };
+    } else {
+      return {signal: `''+${vgField(fieldDef, {expr})}`};
+    }
   }
 }
 
@@ -111,10 +113,6 @@ export function formatSignalRef(
  * Returns number format for a fieldDef
  */
 export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: string, config: Config) {
-  if (isTimeFieldDef(fieldDef)) {
-    return undefined;
-  }
-
   // Specified format in axis/legend has higher precedence than fieldDef.format
   if (specifiedFormat) {
     return specifiedFormat;

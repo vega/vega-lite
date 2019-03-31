@@ -2,7 +2,7 @@ import {Axis as VgAxis, AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 
 import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
-import {FieldDefBase, toFieldDefBase} from '../../fielddef';
+import {FieldDefBase, isTimeFormatFieldDef, toFieldDefBase} from '../../fielddef';
 import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
@@ -302,7 +302,16 @@ function getProperty<K extends keyof AxisComponentProps>(
       return properties.gridScale(model, channel);
     case 'format':
       // We don't include temporal field here as we apply format in encode block
+      if (isTimeFormatFieldDef(fieldDef)) {
+        return undefined;
+      }
       return numberFormat(fieldDef, specifiedAxis.format, model.config);
+    case 'formatType':
+      // Same as format, We don't include temporal field here as we apply format in encode block
+      if (isTimeFormatFieldDef(fieldDef)) {
+        return undefined;
+      }
+      return specifiedAxis.formatType;
     case 'grid': {
       if (isBinned(model.fieldDef(channel).bin)) {
         return false;
