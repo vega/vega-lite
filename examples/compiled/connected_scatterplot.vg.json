@@ -10,6 +10,16 @@
       "name": "source_0",
       "url": "data/driving.json",
       "format": {"type": "json", "parse": {"year": "date"}}
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
+        }
+      ]
     }
   ],
   "marks": [
@@ -38,17 +48,11 @@
       "type": "symbol",
       "style": ["point"],
       "sort": {"field": ["datum[\"year\"]"], "order": ["ascending"]},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
-          "fill": [
-            {
-              "test": "datum[\"miles\"] === null || isNaN(datum[\"miles\"]) || datum[\"gas\"] === null || isNaN(datum[\"gas\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"miles\": format(datum[\"miles\"], \"\"), \"gas\": format(datum[\"gas\"], \"\"), \"year\": timeFormat(datum[\"year\"], '%b %d, %Y')}"
           },
@@ -74,7 +78,12 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "miles"},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "miles"},
+          {"data": "data_0", "field": "miles"}
+        ]
+      },
       "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
@@ -82,7 +91,12 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "gas"},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "gas"},
+          {"data": "data_0", "field": "gas"}
+        ]
+      },
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true

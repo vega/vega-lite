@@ -48,13 +48,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"average_b\"] === null || isNaN(datum[\"average_b\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"a\": ''+datum[\"a\"], \"Average of b\": format(datum[\"average_b\"], \"\")}"
           },

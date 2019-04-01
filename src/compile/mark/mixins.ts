@@ -130,7 +130,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
 function wrapAllFieldsInvalid(model: UnitModel, channel: Channel, valueRef: VgValueRef | VgValueRef[]): VgEncodeEntry {
   const {config, mark} = model;
 
-  if (config.invalidValues && valueRef && !isPathMark(mark)) {
+  if (config.invalidValues === 'hide' && valueRef && !isPathMark(mark)) {
     // For non-path marks, we have to exclude invalid values (null and NaN) for scales with continuous domains.
     // For path marks, we will use "defined" property and skip these values instead.
     const test = allFieldsInvalidPredicate(model, {invalid: true, channels: SCALE_CHANNELS});
@@ -190,7 +190,7 @@ function allFieldsInvalidPredicate(
   return undefined;
 }
 export function defined(model: UnitModel): VgEncodeEntry {
-  if (model.config.invalidValues === 'filter') {
+  if (model.config.invalidValues) {
     const signal = allFieldsInvalidPredicate(model, {channels: ['x', 'y']});
 
     if (signal) {

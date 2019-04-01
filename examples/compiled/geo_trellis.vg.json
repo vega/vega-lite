@@ -20,7 +20,11 @@
           "fields": ["id"],
           "as": ["geo"]
         },
-        {"type": "geojson", "geojson": "geo", "signal": "child_geojson_0"}
+        {"type": "geojson", "geojson": "geo", "signal": "child_geojson_0"},
+        {
+          "type": "filter",
+          "expr": "datum[\"pct\"] !== null && !isNaN(datum[\"pct\"])"
+        }
       ]
     },
     {
@@ -97,13 +101,7 @@
           "from": {"data": "facet"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"pct\"] === null || isNaN(datum[\"pct\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "pct"}
-              ],
+              "fill": {"scale": "color", "field": "pct"},
               "tooltip": {
                 "signal": "{\"geo\": ''+datum[\"geo\"], \"pct\": format(datum[\"pct\"], \"\")}"
               }

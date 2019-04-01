@@ -23,6 +23,10 @@
           "ops": ["mean"],
           "fields": ["Horsepower"],
           "as": ["mean_Horsepower"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
         }
       ]
     }
@@ -35,13 +39,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"year_Year\"] === null || isNaN(datum[\"year_Year\"]) || datum[\"mean_Horsepower\"] === null || isNaN(datum[\"mean_Horsepower\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
+          "fill": {"value": "black"},
           "tooltip": {
             "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\")}"
           },

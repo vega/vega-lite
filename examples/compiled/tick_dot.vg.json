@@ -9,7 +9,13 @@
     {
       "name": "source_0",
       "url": "data/seattle-weather.csv",
-      "format": {"type": "csv"}
+      "format": {"type": "csv"},
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"precipitation\"] !== null && !isNaN(datum[\"precipitation\"])"
+        }
+      ]
     }
   ],
   "signals": [{"name": "height", "update": "height"}],
@@ -22,13 +28,7 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"precipitation\"] === null || isNaN(datum[\"precipitation\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"precipitation\": format(datum[\"precipitation\"], \"\")}"
           },

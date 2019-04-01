@@ -5,6 +5,7 @@ import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {Model} from '../../../src/compile/model';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
+import {Config} from '../../../src/config';
 import {NormalizedUnitSpec} from '../../../src/spec';
 import {parseModel, parseUnitModel} from '../../util';
 
@@ -13,7 +14,7 @@ function getData(model: Model) {
   return assembleRootData(model.component.data, {});
 }
 
-function getModel(unit2: NormalizedUnitSpec) {
+function getModel(unit2: NormalizedUnitSpec, config?: Config) {
   const model = parseModel({
     data: {
       values: [
@@ -40,7 +41,8 @@ function getModel(unit2: NormalizedUnitSpec) {
         }
       },
       unit2
-    ]
+    ],
+    ...(config ? {config} : {})
   });
   model.parse();
   return model;
@@ -88,18 +90,21 @@ describe('Selection time unit', () => {
   });
 
   it('is added before selection filters', () => {
-    const model = getModel({
-      transform: [{filter: {selection: 'two'}}],
-      mark: 'point',
-      encoding: {
-        x: {
-          field: 'date',
-          type: 'temporal',
-          timeUnit: 'minutes'
-        },
-        y: {field: 'price', type: 'quantitative'}
-      }
-    });
+    const model = getModel(
+      {
+        transform: [{filter: {selection: 'two'}}],
+        mark: 'point',
+        encoding: {
+          x: {
+            field: 'date',
+            type: 'temporal',
+            timeUnit: 'minutes'
+          },
+          y: {field: 'price', type: 'quantitative'}
+        }
+      },
+      {invalidValues: 'hide'}
+    );
     const data0 = getData(model).filter(d => d.name === 'data_0')[0].transform;
     const data1 = getData(model).filter(d => d.name === 'data_1')[0].transform;
     let tuIdx = -1;

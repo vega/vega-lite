@@ -11,6 +11,16 @@
       "name": "source_0",
       "url": "data/stocks.csv",
       "format": {"type": "csv", "parse": {"date": "date"}}
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+        }
+      ]
     }
   ],
   "marks": [
@@ -57,17 +67,11 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "symbol"}
-          ],
+          "fill": {"scale": "color", "field": "symbol"},
           "tooltip": {
             "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
           },
@@ -81,13 +85,23 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "date"},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "date"},
+          {"data": "data_0", "field": "date"}
+        ]
+      },
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "price"},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "price"},
+          {"data": "data_0", "field": "price"}
+        ]
+      },
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -95,7 +109,13 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "symbol", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "symbol"},
+          {"data": "data_0", "field": "symbol"}
+        ],
+        "sort": true
+      },
       "range": "category"
     }
   ],

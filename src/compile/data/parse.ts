@@ -24,6 +24,7 @@ import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
+import {FilterInvalidNode} from './filterinvalid';
 import {FlattenTransformNode} from './flatten';
 import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
@@ -288,6 +289,10 @@ export function parseData(model: Model): DataComponent {
     }
     head = ImputeNode.makeFromEncoding(head, model) || head;
     head = StackNode.makeFromEncoding(head, model) || head;
+  }
+
+  if (isUnitModel(model)) {
+    head = FilterInvalidNode.make(head, model) || head;
   }
 
   // output node for marks

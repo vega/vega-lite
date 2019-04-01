@@ -134,13 +134,7 @@
           "from": {"data": "facet"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"sum_people\"] === null || isNaN(datum[\"sum_people\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "gender"}
-              ],
+              "fill": {"scale": "color", "field": "gender"},
               "tooltip": {
                 "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
               },

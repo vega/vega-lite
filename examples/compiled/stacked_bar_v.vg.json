@@ -43,13 +43,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"sum_yield\"] === null || isNaN(datum[\"sum_yield\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "site"}
-          ],
+          "fill": {"scale": "color", "field": "site"},
           "tooltip": {
             "signal": "{\"variety\": ''+datum[\"variety\"], \"Sum of yield\": format(datum[\"sum_yield\"], \"\"), \"site\": ''+datum[\"site\"]}"
           },

@@ -179,20 +179,8 @@
           "from": {"data": "data_0"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"median_yield\"] === null || isNaN(datum[\"median_yield\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
-              "stroke": [
-                {
-                  "test": "datum[\"median_yield\"] === null || isNaN(datum[\"median_yield\"])",
-                  "value": null
-                },
-                {"scale": "trellis_barley_color", "field": "year"}
-              ],
+              "fill": {"value": "transparent"},
+              "stroke": {"scale": "trellis_barley_color", "field": "year"},
               "tooltip": {
                 "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"year\": ''+datum[\"year\"]}"
               },
@@ -214,13 +202,7 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "stroke": [
-                {
-                  "test": "datum[\"median_yield\"] === null || isNaN(datum[\"median_yield\"])",
-                  "value": null
-                },
-                {"value": "black"}
-              ],
+              "stroke": {"value": "black"},
               "tooltip": {
                 "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\")}"
               },

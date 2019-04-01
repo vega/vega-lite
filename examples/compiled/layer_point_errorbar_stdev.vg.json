@@ -32,6 +32,10 @@
           "type": "formula",
           "expr": "datum[\"center_yield\"] - datum[\"extent_yield\"]",
           "as": "lower_yield"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
         }
       ]
     }
@@ -48,13 +52,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"mean_yield\"] === null || isNaN(datum[\"mean_yield\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
+          "fill": {"value": "black"},
           "tooltip": {
             "signal": "{\"variety\": ''+datum[\"variety\"], \"Barley Yield\": format(datum[\"mean_yield\"], \"\")}"
           },
@@ -76,13 +74,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "stroke": [
-            {
-              "test": "datum[\"lower_yield\"] === null || isNaN(datum[\"lower_yield\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
+          "stroke": {"value": "black"},
           "tooltip": {
             "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stdev of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stdev of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
