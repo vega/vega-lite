@@ -34,7 +34,7 @@ describe('compile/data/geojson', () => {
     while (node != null) {
       expect(node).toBeInstanceOf(GeoJSONNode);
       const transform = (node as GeoJSONNode).assemble();
-      expect(transform.type).toEqual('geojson');
+      expect(transform.type).toBe('geojson');
       expect(every(['longitude', 'latitude'], field => contains(transform.fields, field))).toBe(true);
       expect(transform.geojson).not.toBeDefined();
 

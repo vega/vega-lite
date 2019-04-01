@@ -68,7 +68,7 @@ describe('compile/legend', () => {
         COLOR,
         symbolLegend
       );
-      expect(symbol.shape['value']).toEqual('square');
+      expect(symbol.shape['value']).toBe('square');
     });
 
     it('should have default opacity', () => {

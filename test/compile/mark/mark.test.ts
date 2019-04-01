@@ -34,7 +34,7 @@ describe('Mark', () => {
       });
       it('should have a facet directive and a nested mark group that uses the faceted data.', () => {
         const markGroup = parseMarkGroups(model)[0];
-        expect(markGroup.name).toEqual('pathgroup');
+        expect(markGroup.name).toBe('pathgroup');
         expect(markGroup.from).toEqual({
           facet: {
             name: 'faceted_path_main',
@@ -43,15 +43,15 @@ describe('Mark', () => {
           }
         });
         const submarkGroup = markGroup.marks[0];
-        expect(submarkGroup.name).toEqual('marks');
-        expect(submarkGroup.type).toEqual('line');
+        expect(submarkGroup.name).toBe('marks');
+        expect(submarkGroup.type).toBe('line');
         expect(submarkGroup.style).toEqual(['line', 'trend']);
-        expect(submarkGroup.from.data).toEqual('faceted_path_main');
+        expect(submarkGroup.from.data).toBe('faceted_path_main');
       });
 
       it('should not have post encoding transform', () => {
         const markGroup = parseMarkGroups(model)[0];
-        expect(markGroup.name).toEqual('pathgroup');
+        expect(markGroup.name).toBe('pathgroup');
         expect(markGroup.from).toEqual({
           facet: {
             name: 'faceted_path_main',
@@ -74,9 +74,9 @@ describe('Mark', () => {
       });
       it('should have mark group with proper data and key', () => {
         const markGroup = parseMarkGroups(model)[0];
-        expect(markGroup.name).toEqual('marks');
-        expect(markGroup.type).toEqual('line');
-        expect(markGroup.from.data).toEqual('main');
+        expect(markGroup.name).toBe('marks');
+        expect(markGroup.type).toBe('line');
+        expect(markGroup.from.data).toBe('main');
       });
 
       it('should not have post encoding transform', () => {
@@ -97,9 +97,9 @@ describe('Mark', () => {
       });
       it('should have mark group with proper data and key', () => {
         const markGroup = parseMarkGroups(model)[0];
-        expect(markGroup.type).toEqual('symbol');
-        expect(markGroup.key.field).toEqual('k');
-        expect(markGroup.from.data).toEqual('main');
+        expect(markGroup.type).toBe('symbol');
+        expect(markGroup.key.field).toBe('k');
+        expect(markGroup.from.data).toBe('main');
       });
 
       it('should not have post encoding transform', () => {
@@ -167,7 +167,7 @@ describe('Mark', () => {
         model.parseLayoutSize();
 
         const markGroup = parseMarkGroups(model.child as UnitModel);
-        expect(markGroup[0].from.data).toEqual('child_main');
+        expect(markGroup[0].from.data).toBe('child_main');
       });
 
       it('should not have post encoding transform', () => {
@@ -190,7 +190,7 @@ describe('Mark', () => {
 
       it('should use main aggregated data source', () => {
         const markGroup = parseMarkGroups(model);
-        expect(markGroup[0].from.data).toEqual('main');
+        expect(markGroup[0].from.data).toBe('main');
       });
 
       it('should not have post encoding transform', () => {

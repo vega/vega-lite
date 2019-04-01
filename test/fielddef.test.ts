@@ -16,40 +16,40 @@ import {QUANTITATIVE, TEMPORAL} from '../src/type';
 describe('fieldDef', () => {
   describe('vgField()', () => {
     it('should access flattened fields', () => {
-      expect(vgField({field: 'foo.bar\\.baz'})).toEqual('foo\\.bar\\.baz');
+      expect(vgField({field: 'foo.bar\\.baz'})).toBe('foo\\.bar\\.baz');
     });
 
     it('should access flattened fields in expression', () => {
-      expect(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'})).toEqual('datum["foo.bar.baz"]');
+      expect(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'})).toBe('datum["foo.bar.baz"]');
     });
 
     it('should access argmin field in expression', () => {
-      expect(vgField({aggregate: {argmin: 'b'}, field: 'a'})).toEqual('argmin_b.a');
+      expect(vgField({aggregate: {argmin: 'b'}, field: 'a'})).toBe('argmin_b.a');
     });
 
     it('should access argmax field in expression', () => {
-      expect(vgField({aggregate: {argmax: 'b'}, field: 'a'})).toEqual('argmax_b.a');
+      expect(vgField({aggregate: {argmax: 'b'}, field: 'a'})).toBe('argmax_b.a');
     });
   });
 
   describe('defaultType()', () => {
     it('should return temporal if there is timeUnit', () => {
-      expect(defaultType({timeUnit: 'month', field: 'a'} as TypedFieldDef<string>, 'x')).toEqual('temporal');
+      expect(defaultType({timeUnit: 'month', field: 'a'} as TypedFieldDef<string>, 'x')).toBe('temporal');
     });
 
     it('should return quantitative if there is bin', () => {
-      expect(defaultType({bin: true, field: 'a'} as TypedFieldDef<string>, 'x')).toEqual('quantitative');
+      expect(defaultType({bin: true, field: 'a'} as TypedFieldDef<string>, 'x')).toBe('quantitative');
     });
 
     it('should return quantitative for a channel that supports measure', () => {
       for (const c of ['x', 'y', 'size', 'opacity', 'order'] as Channel[]) {
-        expect(defaultType({field: 'a'} as TypedFieldDef<string>, c)).toEqual('quantitative');
+        expect(defaultType({field: 'a'} as TypedFieldDef<string>, c)).toBe('quantitative');
       }
     });
 
     it('should return nominal for a channel that does not support measure', () => {
       for (const c of ['color', 'shape', 'row', 'column'] as Channel[]) {
-        expect(defaultType({field: 'a'} as TypedFieldDef<string>, c)).toEqual('nominal');
+        expect(defaultType({field: 'a'} as TypedFieldDef<string>, c)).toBe('nominal');
       }
     });
   });
@@ -197,62 +197,62 @@ describe('fieldDef', () => {
 
   describe('functionalTitleFormatter', () => {
     it('should return correct title for argmin', () => {
-      expect(functionalTitleFormatter({field: 'f', aggregate: {argmin: 'a'}}, {})).toEqual('f for argmin(a)');
+      expect(functionalTitleFormatter({field: 'f', aggregate: {argmin: 'a'}}, {})).toBe('f for argmin(a)');
     });
     it('should return correct title for aggregate', () => {
-      expect(functionalTitleFormatter({field: 'f', aggregate: {argmax: 'a'}}, {})).toEqual('f for argmax(a)');
+      expect(functionalTitleFormatter({field: 'f', aggregate: {argmax: 'a'}}, {})).toBe('f for argmax(a)');
     });
   });
 
   describe('defaultTitle()', () => {
     it('should return correct title for aggregate', () => {
-      expect(defaultTitle({field: 'f', aggregate: 'mean'}, {})).toEqual('Mean of f');
+      expect(defaultTitle({field: 'f', aggregate: 'mean'}, {})).toBe('Mean of f');
     });
 
     it('should return correct title for argmin', () => {
-      expect(defaultTitle({field: 'f', aggregate: {argmin: 'a'}}, {})).toEqual('f for min a');
+      expect(defaultTitle({field: 'f', aggregate: {argmin: 'a'}}, {})).toBe('f for min a');
     });
     it('should return correct title for aggregate', () => {
-      expect(defaultTitle({field: 'f', aggregate: {argmax: 'a'}}, {})).toEqual('f for max a');
+      expect(defaultTitle({field: 'f', aggregate: {argmax: 'a'}}, {})).toBe('f for max a');
     });
 
     it('should return correct title for count', () => {
-      expect(defaultTitle({aggregate: 'count'}, {countTitle: 'baz!'})).toEqual('baz!');
+      expect(defaultTitle({aggregate: 'count'}, {countTitle: 'baz!'})).toBe('baz!');
     });
 
     it('should return correct title for bin', () => {
       const fieldDef = {field: 'f', type: QUANTITATIVE, bin: true};
-      expect(defaultTitle(fieldDef, {})).toEqual('f (binned)');
+      expect(defaultTitle(fieldDef, {})).toBe('f (binned)');
     });
 
     it('should return correct title for bin', () => {
       const fieldDef = {field: 'f', type: QUANTITATIVE, bin: true};
-      expect(defaultTitle(fieldDef, {fieldTitle: 'functional'})).toEqual('BIN(f)');
+      expect(defaultTitle(fieldDef, {fieldTitle: 'functional'})).toBe('BIN(f)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
-      expect(defaultTitle(fieldDef, {})).toEqual('f (month)');
+      expect(defaultTitle(fieldDef, {})).toBe('f (month)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARMONTHDATE};
-      expect(defaultTitle(fieldDef, {})).toEqual('f (year-month-date)');
+      expect(defaultTitle(fieldDef, {})).toBe('f (year-month-date)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.DAY};
-      expect(defaultTitle(fieldDef, {})).toEqual('f (day)');
+      expect(defaultTitle(fieldDef, {})).toBe('f (day)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARQUARTER};
-      expect(defaultTitle(fieldDef, {})).toEqual('f (year-quarter)');
+      expect(defaultTitle(fieldDef, {})).toBe('f (year-quarter)');
     });
 
     it('should return correct title for raw field', () => {
       const fieldDef = {field: 'f', type: TEMPORAL};
-      expect(defaultTitle(fieldDef, {})).toEqual('f');
+      expect(defaultTitle(fieldDef, {})).toBe('f');
     });
   });
 });

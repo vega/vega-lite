@@ -37,7 +37,7 @@ describe('Layered Selections', () => {
 
   it('should appropriately name the unit', () => {
     const unit = layers.children[0] as UnitModel;
-    expect(selection.unitName(unit)).toEqual('"layer_0"');
+    expect(selection.unitName(unit)).toBe('"layer_0"');
   });
 
   // Selections should augment layered marks together, rather than each

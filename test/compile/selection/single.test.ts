@@ -117,10 +117,10 @@ describe('Single Selection', () => {
 
   it('builds modify signals', () => {
     const oneExpr = single.modifyExpr(model, selCmpts['one']);
-    expect(oneExpr).toEqual('one_tuple, true');
+    expect(oneExpr).toBe('one_tuple, true');
 
     const twoExpr = single.modifyExpr(model, selCmpts['two']);
-    expect(twoExpr).toEqual('two_tuple, {unit: ""}');
+    expect(twoExpr).toBe('two_tuple, {unit: ""}');
 
     const signals = assembleUnitSelectionSignals(model, []);
     expect(signals).toEqual(

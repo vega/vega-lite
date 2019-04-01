@@ -179,7 +179,7 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should create vertical rule that emulates bar chart', () => {
-      expect(model.markDef.orient).toEqual('vertical');
+      expect(model.markDef.orient).toBe('vertical');
 
       expect(props.x).toEqual({scale: X, field: 'a', band: 0.5});
       expect(props.y).toEqual({scale: Y, field: 'b'});
@@ -199,7 +199,7 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should create horizontal rule that emulates bar chart', () => {
-      expect(model.markDef.orient).toEqual('horizontal');
+      expect(model.markDef.orient).toBe('horizontal');
 
       expect(props.x).toEqual({scale: X, field: 'b'});
       expect(props.x2).toEqual({scale: X, value: 0});
