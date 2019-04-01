@@ -1,6 +1,6 @@
 import {AxisOrient} from 'vega';
-import {FACET_CHANNELS, FacetChannel} from '../../channel';
-import {title as fieldDefTitle} from '../../fielddef';
+import {FacetChannel, FACET_CHANNELS} from '../../channel';
+import {title as fieldDefTitle} from '../../channeldef';
 import {contains} from '../../util';
 import {assembleAxis} from '../axis/assemble';
 import {FacetModel} from '../facet';

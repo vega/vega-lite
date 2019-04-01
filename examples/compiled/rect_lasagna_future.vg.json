@@ -35,13 +35,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"sum_price\"] === null || isNaN(datum[\"sum_price\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "sum_price"}
-          ],
+          "fill": {"scale": "color", "field": "sum_price"},
           "tooltip": {
             "signal": "{\"Time\": timeFormat(datum[\"yearmonthdate_date\"], '%Y'), \"Price\": format(datum[\"sum_price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
           },

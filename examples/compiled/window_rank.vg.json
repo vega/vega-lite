@@ -110,8 +110,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": ["Germany", "Mexico", "South Korea", "Sweden"],
-      "range": ["black", "#127153", "#C91A3C", "#0C71AB"],
-      "interpolate": "hcl"
+      "range": ["black", "#127153", "#C91A3C", "#0C71AB"]
     }
   ],
   "axes": [

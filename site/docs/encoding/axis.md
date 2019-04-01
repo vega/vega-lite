@@ -22,10 +22,10 @@ Besides `axis` property of a field definition, the configuration object ([`confi
 ## Axis Properties
 
 ```js
-// Single View Specification
+// A Single View or a Layer Specification
 {
-  "data": ... ,
-  "mark": ... ,
+  ...,
+  "mark/layer": ...,
   "encoding": {
     "x": {
       "field": ...,
@@ -65,7 +65,7 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### Labels
 
-{% include table.html props="format,labels,labelAlign,labelAngle,labelBaseline,labelBound,labelColor,labelFlush,labelFlushOffset,labelFont,labelFontSize,labelFontWeight,labelLimit,labelOpacity,labelOverlap,labelPadding" source= "Axis" %}
+{% include table.html props="format,formatType,labels,labelAlign,labelAngle,labelBaseline,labelBound,labelColor,labelFlush,labelFlushOffset,labelFont,labelFontSize,labelFontWeight,labelLimit,labelOpacity,labelOverlap,labelPadding" source= "Axis" %}
 
 **See also:** [`guide-label` style config](mark.html#style-config) (common styles for axis, [legend](legend.html), and [header](facet.html#header) labels).
 

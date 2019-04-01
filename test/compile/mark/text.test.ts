@@ -182,7 +182,10 @@ describe('Mark: Text', () => {
         color: {field: 'Acceleration', type: 'quantitative', aggregate: 'mean'},
         size: {field: 'Acceleration', type: 'quantitative', aggregate: 'mean'}
       },
-      data: {url: 'data/cars.json'}
+      data: {url: 'data/cars.json'},
+      config: {
+        invalidValues: 'hide'
+      }
     };
     const model = parseModelWithScale(spec);
     model.parseLayoutSize();

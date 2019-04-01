@@ -11,7 +11,13 @@
     {
       "name": "source_0",
       "url": "data/gapminder-health-income.csv",
-      "format": {"type": "csv"}
+      "format": {"type": "csv"},
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"health\"] !== null && !isNaN(datum[\"health\"]) && datum[\"income\"] !== null && !isNaN(datum[\"income\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -129,13 +135,7 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"income\"] === null || isNaN(datum[\"income\"]) || datum[\"health\"] === null || isNaN(datum[\"health\"]) || datum[\"population\"] === null || isNaN(datum[\"population\"])",
-              "value": null
-            },
-            {"value": "#000"}
-          ],
+          "fill": {"value": "#000"},
           "tooltip": {
             "signal": "{\"health\": format(datum[\"health\"], \"\"), \"income\": format(datum[\"income\"], \"\"), \"population\": format(datum[\"population\"], \"\")}"
           },

@@ -19,7 +19,6 @@ const ajv = new Ajv({
 });
 
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
-ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json')); // for Vega
 
 const validateVl = ajv.compile(vlSchema);
 const validateVg = ajv.compile(vgSchema);

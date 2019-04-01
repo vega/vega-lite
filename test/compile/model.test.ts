@@ -105,7 +105,7 @@ describe('Model', () => {
         mark: 'point'
       });
 
-      expect(model.assembleGroupStyle()).toEqual('cell');
+      expect(model.assembleGroupStyle()).toBe('cell');
     });
 
     it('returns the specified style', () => {
@@ -115,7 +115,7 @@ describe('Model', () => {
         view: {style: 'notcell'}
       });
 
-      expect(model.assembleGroupStyle()).toEqual('notcell');
+      expect(model.assembleGroupStyle()).toBe('notcell');
     });
   });
 

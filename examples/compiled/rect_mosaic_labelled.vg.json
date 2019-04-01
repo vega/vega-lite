@@ -55,6 +55,26 @@
           "as": ["min_xc"]
         }
       ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"xc\"] !== null && !isNaN(datum[\"xc\"]) && datum[\"yc\"] !== null && !isNaN(datum[\"yc\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -84,13 +104,7 @@
             "update": {
               "align": {"value": "center"},
               "baseline": {"value": "middle"},
-              "fill": [
-                {
-                  "test": "datum[\"min_xc\"] === null || isNaN(datum[\"min_xc\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "Origin"}
-              ],
+              "fill": {"scale": "color", "field": "Origin"},
               "tooltip": {
                 "signal": "{\"Origin\": format(datum[\"min_xc\"], \"\")}"
               },
@@ -129,16 +143,10 @@
           "name": "concat_1_layer_0_marks",
           "type": "rect",
           "style": ["rect"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"]) || datum[\"Cylinders\"] === null || isNaN(datum[\"Cylinders\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "Origin"}
-              ],
+              "fill": {"scale": "color", "field": "Origin"},
               "opacity": {"scale": "opacity", "field": "Cylinders"},
               "tooltip": {
                 "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
@@ -154,17 +162,11 @@
           "name": "concat_1_layer_1_marks",
           "type": "text",
           "style": ["text"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "baseline": {"value": "middle"},
-              "fill": [
-                {
-                  "test": "datum[\"xc\"] === null || isNaN(datum[\"xc\"]) || datum[\"yc\"] === null || isNaN(datum[\"yc\"])",
-                  "value": null
-                },
-                {"value": "black"}
-              ],
+              "fill": {"value": "black"},
               "tooltip": {
                 "signal": "{\"xc\": format(datum[\"xc\"], \"\"), \"Cylinders\": format(datum[\"yc\"], \"\")}"
               },
@@ -196,9 +198,9 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "min_xc"},
-          {"data": "source_0", "field": "x"},
-          {"data": "source_0", "field": "x2"},
-          {"data": "source_0", "field": "xc"}
+          {"data": "data_1", "field": "x"},
+          {"data": "data_1", "field": "x2"},
+          {"data": "data_2", "field": "xc"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -211,24 +213,29 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "Origin"},
-          {"data": "source_0", "field": "Origin"}
+          {"data": "data_1", "field": "Origin"}
         ],
         "sort": true
       },
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     },
     {
       "name": "opacity",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Cylinders"},
+      "domain": {"data": "data_1", "field": "Cylinders"},
       "range": [0.3, 0.8],
       "zero": false
     },
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "source_0", "fields": ["y", "y2", "yc"]},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "y"},
+          {"data": "data_1", "field": "y2"},
+          {"data": "data_2", "field": "yc"}
+        ]
+      },
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

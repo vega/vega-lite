@@ -142,7 +142,7 @@ To see a list of additional properties for each type of encoding channels, pleas
 
 To map a constant value to an encoding channel, the channel's value definition must describe the `value` property. (See the [`value`](value.html) page for more examples.)
 
-{% include table.html props="value" source="ValueDef" %}
+<!--{% include table.html props="value" source="ValueDef" %}-->
 
 {:#position}
 
@@ -190,7 +190,9 @@ Here are the list of mark property channels:
 
 In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html), [field definitions](#field-def) for mark property channels may also include these properties:
 
-{% include table.html props="scale,legend,condition" source="MarkPropFieldDefWithCondition" %}
+<!-- {% include table.html props="scale,legend,condition" source="ColorFieldDefWithCondition" %} -->
+
+{% include table.html props="scale,legend,condition" source="FieldDefWithCondition<MarkPropFieldDef,(string|null)>" %}
 
 {:#mark-prop-value-def}
 
@@ -198,7 +200,10 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 In addition to the constant `value`, [value definitions](#value-def) of mark properties channels can include the `condition` property to specify conditional logic.
 
-{% include table.html props="condition" source="MarkPropValueDefWithCondition" %}
+<!-- {% include table.html props="condition"
+source="ColorValueDefWithCondition" %} -->
+
+{% include table.html props="condition" source="ValueDefWithOptionalCondition<MarkPropFieldDef,(string|null)>" %}
 
 See [the `condition`](condition.html) page for examples how to specify condition logic.
 
@@ -216,7 +221,9 @@ Text and tooltip channels directly encode text values of the data fields. By def
 
 In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html), [field definitions](#field-def) for `text` and `tooltip` channels may also include these properties:
 
-{% include table.html props="format,condition" source="TextFieldDefWithCondition" %}
+<!-- {% include table.html props="format,formatType,condition" source="TextFieldDefWithCondition" %} -->
+
+{% include table.html props="format,formatType,condition" source="FieldDefWithCondition<TextFieldDef,(string|number|boolean)>" %}
 
 {:#text-value-def}
 
@@ -224,7 +231,9 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 In addition to the constant `value`, [value definitions](#value-def) of `text` and `tooltip` channels can include the `condition` property to specify conditional logic.
 
-{% include table.html props="condition" source="TextValueDefWithCondition" %}
+<!-- {% include table.html props="condition" source="TextValueDefWithCondition" %} -->
+
+{% include table.html props="condition" source="ValueDefWithOptionalCondition<TextFieldDef,(string|number|boolean)>" %}
 
 ### Multiple Field Definitions for Tooltips
 
@@ -244,7 +253,9 @@ By setting the `href` channel, a mark becomes a hyperlink. The specified URL is 
 
 In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html), [field definitions](#field-def) for the `href` channel can include the `condition` property to specify conditional logic.
 
-{% include table.html props="condition" source="FieldDefWithCondition" %}
+<!-- {% include table.html props="condition" source="StringFieldDefWithCondition" %} -->
+
+{% include table.html props="condition" source="FieldDefWithCondition<MarkPropFieldDef<\"nominal\">,string>" %}
 
 The example below show how the href channel can be used to provide links to external resources with more details.
 
@@ -256,7 +267,9 @@ The example below show how the href channel can be used to provide links to exte
 
 In addition to the constant `value`, [value definitions](#value-def) of the `href` channel can include the `condition` property to specify conditional logic.
 
-{% include table.html props="condition" source="ValueDefWithCondition" %}
+<!-- {% include table.html props="condition" source="StringValueDefWithCondition" %} -->
+
+{% include table.html props="condition" source="ValueDefWithOptionalCondition<MarkPropFieldDef<\"nominal\">,string>" %}
 
 {:#detail}
 

@@ -1,4 +1,4 @@
-import {vgField} from '../../fielddef';
+import {vgField} from '../../channeldef';
 import {fieldExpr, TimeUnit} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, vals} from '../../util';

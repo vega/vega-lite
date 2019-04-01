@@ -47,13 +47,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"max_temp\"] === null || isNaN(datum[\"max_temp\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "max_temp"}
-          ],
+          "fill": {"scale": "color", "field": "max_temp"},
           "tooltip": {
             "signal": "{\"Day\": timeFormat(datum[\"date_date\"], '%e'), \"Month\": timeFormat(datum[\"month_date\"], '%b'), \"Max of temp\": format(datum[\"max_temp\"], \"\")}"
           },

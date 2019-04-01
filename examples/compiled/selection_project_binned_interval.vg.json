@@ -47,6 +47,10 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && !isNaN(datum[\"bin_maxbins_10_Acceleration\"])"
         }
       ]
     },
@@ -63,6 +67,10 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && !isNaN(datum[\"bin_maxbins_10_Acceleration\"])"
         }
       ]
     }
@@ -274,13 +282,7 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
@@ -310,13 +312,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-              "value": null
-            },
-            {"value": "goldenrod"}
-          ],
+          "fill": {"value": "goldenrod"},
           "tooltip": {
             "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },

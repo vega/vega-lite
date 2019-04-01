@@ -1,5 +1,5 @@
 import {isBinned, isBinning} from '../../bin';
-import {isFieldDef} from '../../fielddef';
+import {isFieldDef} from '../../channeldef';
 import * as log from '../../log';
 import {RECT} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';

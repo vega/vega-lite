@@ -1,8 +1,8 @@
 import {Orientation} from 'vega';
 import {isBinned, isBinning} from '../../bin';
+import {isContinuous, isFieldDef, TypedFieldDef} from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
-import {isContinuous, isFieldDef, TypedFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
 import {QUANTITATIVE, TEMPORAL} from '../../type';

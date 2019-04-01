@@ -1,5 +1,5 @@
 import {AggregateOp} from 'vega';
-import {toSet} from 'vega-util';
+import {isString, toSet} from 'vega-util';
 import {contains, Flag, flagKeys} from './util';
 
 const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
@@ -27,20 +27,38 @@ const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   variancep: 1
 };
 
+export interface ArgminDef {
+  argmin: string;
+}
+
+export interface ArgmaxDef {
+  argmax: string;
+}
+
+export type Aggregate = AggregateOp | ArgmaxDef | ArgminDef;
+
+export function isArgminDef(a: Aggregate | string): a is ArgminDef {
+  return !!a && !!a['argmin'];
+}
+
+export function isArgmaxDef(a: Aggregate | string): a is ArgmaxDef {
+  return !!a && !!a['argmax'];
+}
+
 export const AGGREGATE_OPS = flagKeys(AGGREGATE_OP_INDEX);
 
-export function isAggregateOp(a: string): a is AggregateOp {
-  return !!AGGREGATE_OP_INDEX[a];
+export function isAggregateOp(a: string | ArgminDef | ArgmaxDef): a is AggregateOp {
+  return isString(a) && !!AGGREGATE_OP_INDEX[a];
 }
 
 export const COUNTING_OPS: AggregateOp[] = ['count', 'valid', 'missing', 'distinct'];
 
-export function isCountingAggregateOp(aggregate: string): boolean {
-  return aggregate && contains(COUNTING_OPS, aggregate);
+export function isCountingAggregateOp(aggregate: string | Aggregate): boolean {
+  return aggregate && isString(aggregate) && contains(COUNTING_OPS, aggregate);
 }
 
-export function isMinMaxOp(aggregate: string): boolean {
-  return aggregate && contains(['min', 'max'], aggregate);
+export function isMinMaxOp(aggregate: Aggregate | string): boolean {
+  return aggregate && isString(aggregate) && contains(['min', 'max'], aggregate);
 }
 
 /** Additive-based aggregation operations.  These can be applied to stack. */

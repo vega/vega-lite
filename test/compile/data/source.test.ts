@@ -30,11 +30,11 @@ describe('compile/data/source', () => {
       });
 
       it('should have values', () => {
-        expect(source.data.values).toEqual('a\n1\n2\n3');
+        expect(source.data.values).toBe('a\n1\n2\n3');
       });
 
       it('should have correct type', () => {
-        expect(source.data.format.type).toEqual('csv');
+        expect(source.data.format.type).toBe('csv');
       });
     });
 
@@ -44,10 +44,10 @@ describe('compile/data/source', () => {
       });
 
       it('should have format.type csv', () => {
-        expect(source.data.format.type).toEqual('csv');
+        expect(source.data.format.type).toBe('csv');
       });
       it('should have correct url', () => {
-        expect(source.data.url).toEqual('http://foo.bar/file.csv');
+        expect(source.data.url).toBe('http://foo.bar/file.csv');
       });
     });
 
@@ -57,7 +57,7 @@ describe('compile/data/source', () => {
       });
 
       it('should have format.type json', () => {
-        expect(source.data.format.type).toEqual('json');
+        expect(source.data.format.type).toBe('json');
       });
     });
 
@@ -65,7 +65,7 @@ describe('compile/data/source', () => {
       const source = parse(undefined);
 
       it('should provide placeholder source data', () => {
-        expect(source.dataName).toEqual('source');
+        expect(source.dataName).toBe('source');
       });
     });
 
@@ -73,7 +73,7 @@ describe('compile/data/source', () => {
       const source = parse({name: 'foo'});
 
       it('should provide named source data', () => {
-        expect(source.dataName).toEqual('foo');
+        expect(source.dataName).toBe('foo');
       });
     });
 
@@ -85,7 +85,7 @@ describe('compile/data/source', () => {
             format: {type: 'json', property: 'baz'}
           });
 
-          expect(source.data.format.property).toEqual('baz');
+          expect(source.data.format.property).toBe('baz');
         });
       });
 
@@ -97,10 +97,10 @@ describe('compile/data/source', () => {
           });
 
           it('should have format.type topojson', () => {
-            expect(source.data.format.type).toEqual('topojson');
+            expect(source.data.format.type).toBe('topojson');
           });
           it('should have format.feature baz', () => {
-            expect(source.data.format.feature).toEqual('baz');
+            expect(source.data.format.feature).toBe('baz');
           });
         });
 
@@ -111,10 +111,10 @@ describe('compile/data/source', () => {
           });
 
           it('should have format.type topojson', () => {
-            expect(source.data.format.type).toEqual('topojson');
+            expect(source.data.format.type).toBe('topojson');
           });
           it('should have format.mesh baz', () => {
-            expect(source.data.format.mesh).toEqual('baz');
+            expect(source.data.format.mesh).toBe('baz');
           });
         });
       });

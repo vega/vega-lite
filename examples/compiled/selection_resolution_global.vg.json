@@ -6,7 +6,97 @@
   "height": 200,
   "data": [
     {"name": "brush_store"},
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_5",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_6",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_7",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_8",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
+      ]
+    }
   ],
   "signals": [
     {
@@ -297,22 +387,12 @@
           "name": "child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
+              "fill": {"value": "transparent"},
               "stroke": [
-                {
-                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
@@ -703,22 +783,12 @@
           "name": "child__repeat_row_Horsepower__repeat_column_Acceleration_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"]) || datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
+              "fill": {"value": "transparent"},
               "stroke": [
-                {
-                  "test": "datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"]) || datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
@@ -1048,22 +1118,12 @@
           "name": "child__repeat_row_Horsepower__repeat_column_Horsepower_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
+              "fill": {"value": "transparent"},
               "stroke": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
@@ -1453,22 +1513,12 @@
           "name": "child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
+              "fill": {"value": "transparent"},
               "stroke": [
-                {
-                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
@@ -1798,22 +1848,12 @@
           "name": "child__repeat_row_Acceleration__repeat_column_Acceleration_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
+              "fill": {"value": "transparent"},
               "stroke": [
-                {
-                  "test": "datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
@@ -2201,22 +2241,12 @@
           "name": "child__repeat_row_Acceleration__repeat_column_Horsepower_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_5"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
+              "fill": {"value": "transparent"},
               "stroke": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
@@ -2546,22 +2576,12 @@
           "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_6"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
+              "fill": {"value": "transparent"},
               "stroke": [
-                {
-                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
@@ -2951,22 +2971,12 @@
           "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_7"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
+              "fill": {"value": "transparent"},
               "stroke": [
-                {
-                  "test": "datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
@@ -3359,22 +3369,12 @@
           "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_8"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
+              "fill": {"value": "transparent"},
               "stroke": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
@@ -3495,14 +3495,26 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "Origin", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "Origin"},
+          {"data": "data_1", "field": "Origin"},
+          {"data": "data_2", "field": "Origin"},
+          {"data": "data_3", "field": "Origin"},
+          {"data": "data_4", "field": "Origin"},
+          {"data": "data_5", "field": "Origin"},
+          {"data": "data_6", "field": "Origin"},
+          {"data": "data_7", "field": "Origin"},
+          {"data": "data_8", "field": "Origin"}
+        ],
+        "sort": true
+      },
+      "range": "category"
     },
     {
       "name": "child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_0", "field": "Miles_per_Gallon"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -3510,7 +3522,7 @@
     {
       "name": "child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {"data": "data_0", "field": "Horsepower"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -3518,7 +3530,7 @@
     {
       "name": "child__repeat_row_Horsepower__repeat_column_Acceleration_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Acceleration"},
+      "domain": {"data": "data_1", "field": "Acceleration"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -3526,7 +3538,7 @@
     {
       "name": "child__repeat_row_Horsepower__repeat_column_Acceleration_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {"data": "data_1", "field": "Horsepower"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -3534,7 +3546,7 @@
     {
       "name": "child__repeat_row_Horsepower__repeat_column_Horsepower_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {"data": "data_2", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -3542,7 +3554,7 @@
     {
       "name": "child__repeat_row_Horsepower__repeat_column_Horsepower_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {"data": "data_2", "field": "Horsepower"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -3550,7 +3562,7 @@
     {
       "name": "child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_3", "field": "Miles_per_Gallon"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -3558,7 +3570,7 @@
     {
       "name": "child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Acceleration"},
+      "domain": {"data": "data_3", "field": "Acceleration"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -3566,7 +3578,7 @@
     {
       "name": "child__repeat_row_Acceleration__repeat_column_Acceleration_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Acceleration"},
+      "domain": {"data": "data_4", "field": "Acceleration"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -3574,7 +3586,7 @@
     {
       "name": "child__repeat_row_Acceleration__repeat_column_Acceleration_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Acceleration"},
+      "domain": {"data": "data_4", "field": "Acceleration"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -3582,7 +3594,7 @@
     {
       "name": "child__repeat_row_Acceleration__repeat_column_Horsepower_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {"data": "data_5", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -3590,7 +3602,7 @@
     {
       "name": "child__repeat_row_Acceleration__repeat_column_Horsepower_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Acceleration"},
+      "domain": {"data": "data_5", "field": "Acceleration"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -3598,7 +3610,7 @@
     {
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_6", "field": "Miles_per_Gallon"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -3606,7 +3618,7 @@
     {
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_6", "field": "Miles_per_Gallon"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -3614,7 +3626,7 @@
     {
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Acceleration"},
+      "domain": {"data": "data_7", "field": "Acceleration"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -3622,7 +3634,7 @@
     {
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_7", "field": "Miles_per_Gallon"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -3630,7 +3642,7 @@
     {
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {"data": "data_8", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -3638,7 +3650,7 @@
     {
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_8", "field": "Miles_per_Gallon"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

@@ -2,7 +2,7 @@ import {Orientation} from 'vega';
 import {isNumber, isObject} from 'vega-util';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
-import {PositionFieldDef} from '../fielddef';
+import {PositionFieldDef} from '../channeldef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';

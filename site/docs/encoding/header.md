@@ -22,17 +22,15 @@ In addition to the `header` property of a row- or column-field definition, users
 ## Header Properties
 
 ```js
-// Single View Specification
+// A Single View or a Layer Specification
 {
-  "data": ... ,
-  "mark": ... ,
+  ...,
+  "mark/layer": ...,
   "encoding": {
     "row": {
       "field": ...,
       "type": ...,
-      "header": {                // Header
-        ...
-      },
+      "header": {...}, // Header
       ...
     },
     "x": ...,
@@ -42,13 +40,30 @@ In addition to the `header` property of a row- or column-field definition, users
 }
 ```
 
-To customize header, a `header` object in row- or column-[field definitions](facet.html#mapping) can contain the following groups of properties:
+```js
+// A Facet Specification
+{
+  ...,
+  "facet": {
+    "row/column": {
+      "field": ...,
+      "type": ...,
+      "header": {...}, // Header
+      ...
+    },
+    ...
+  },
+  "spec": ...
+}
+```
+
+To customize header, a `header` definiton in row- or column-[field definitions](facet.html#mapping) can contain the following groups of properties:
 
 {:#general}
 
 ### General
 
-{% include table.html props="format,title" source="Header" %}
+{% include table.html props="title" source="Header" %}
 
 **See also:** You may also use `guide-title` and `guide-label` [style configs](mark.html#style-config) to customize common styles for [axis](axis.html), [legend](legend.html), and [header](header.html) labels and titles.
 
@@ -56,7 +71,7 @@ To customize header, a `header` object in row- or column-[field definitions](fac
 
 ### Labels
 
-{% include table.html props="labelAlign,labelAnchor,labelAngle,labelColor,labelFont,labelFontSize,labelLimit,labelOrient,labelPadding" source= "Header" %}
+{% include table.html props="format,formatType,labelAlign,labelAnchor,labelAngle,labelColor,labelFont,labelFontSize,labelLimit,labelOrient,labelPadding" source= "Header" %}
 
 {:#title}
 

@@ -49,15 +49,15 @@ describe('config', () => {
       expect(output.style.bar['binSpacing']).not.toBeDefined();
       expect(output.style.cell['width']).not.toBeDefined();
       expect(output.style.cell['height']).not.toBeDefined();
-      expect(output.style.cell['fill']).toEqual('#eee');
+      expect(output.style.cell['fill']).toBe('#eee');
 
       expect(output.style.bar.opacity).toEqual(0.5);
     });
 
     it('should redirect config.title to config.style.group-title and rename color to fill', () => {
       expect(output).not.toHaveProperty('title');
-      expect(output.style['group-title'].fontWeight).toEqual('bold');
-      expect(output.style['group-title'].fill).toEqual('red');
+      expect(output.style['group-title'].fontWeight).toBe('bold');
+      expect(output.style['group-title'].fill).toBe('red');
     });
 
     it('should remove empty config object', () => {

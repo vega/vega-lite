@@ -41,6 +41,10 @@ Bin:
 BinParams:
   link: "bin.html#bin-parameters"
 "LogicalOperand<Predicate>":
+  name: Predicate
+  link: "transform.html#predicate"
+"LogicalOperand&lt;Predicate&gt;":
+  name: Predicate
   link: "transform.html#predicate"
 AggregateOpDef:
   link: "transform.html#aggregate-op-def"
@@ -133,6 +137,8 @@ ColorValueDefWithCondition:
   name: MarkPropValueDef
   link: "encoding.html#mark-prop-value-def"
 
+
+
 NumericFieldDefWithCondition:
   name: MarkPropFieldDef
   link: "encoding.html#mark-prop-field-def"
@@ -175,6 +181,15 @@ ConditionalTextFieldDef:
 ConditionalFieldDef:
   link: "condition.html#field"
 ConditionalValueDef:
+  link: "condition.html#value"
+ConditionalColorValueDef:
+  name: ConditionalValueDef
+  link: "condition.html#value"
+ConditionalTextValueDef:
+  name: ConditionalValueDef
+  link: "condition.html#value"
+ConditionalStringValueDef:
+  name: ConditionalValueDef
   link: "condition.html#value"
 
 FieldDef:

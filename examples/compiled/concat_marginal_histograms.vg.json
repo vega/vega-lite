@@ -57,6 +57,10 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])"
         }
       ]
     },
@@ -73,6 +77,10 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_10_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"])"
         }
       ]
     },
@@ -91,6 +99,10 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_10_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) && datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])"
         }
       ]
     }
@@ -122,13 +134,7 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                  "value": null
-                },
-                {"value": "#4c78a8"}
-              ],
+              "fill": {"value": "#4c78a8"},
               "tooltip": {
                 "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
@@ -206,13 +212,7 @@
               "from": {"data": "data_2"},
               "encode": {
                 "update": {
-                  "fill": [
-                    {
-                      "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) || datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                      "value": null
-                    },
-                    {"scale": "color", "field": "__count"}
-                  ],
+                  "fill": {"scale": "color", "field": "__count"},
                   "tooltip": {
                     "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
                   },
@@ -300,13 +300,7 @@
               "from": {"data": "data_0"},
               "encode": {
                 "update": {
-                  "fill": [
-                    {
-                      "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"]) || datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])",
-                      "value": null
-                    },
-                    {"value": "#4c78a8"}
-                  ],
+                  "fill": {"value": "#4c78a8"},
                   "tooltip": {
                     "signal": "{\"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
                   },

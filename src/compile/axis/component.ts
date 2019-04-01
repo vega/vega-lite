@@ -1,6 +1,6 @@
 import {Axis as VgAxis} from 'vega';
 import {Axis, AxisPart} from '../../axis';
-import {FieldDefBase} from '../../fielddef';
+import {FieldDefBase} from '../../channeldef';
 import {duplicate, Omit} from '../../util';
 import {Split} from '../split';
 

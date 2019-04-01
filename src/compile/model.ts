@@ -1,10 +1,10 @@
 import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
 import {isString} from 'vega-util';
 import {Channel, FACET_CHANNELS, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
+import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../fielddef';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';

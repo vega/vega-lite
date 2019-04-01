@@ -47,13 +47,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"mean_age\"] === null || isNaN(datum[\"mean_age\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"group\": ''+datum[\"group\"], \"Mean of age\": format(datum[\"mean_age\"], \"\")}"
           },

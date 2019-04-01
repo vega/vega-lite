@@ -12,7 +12,11 @@
       "url": "data/cars.json",
       "format": {"type": "json"},
       "transform": [
-        {"type": "formula", "expr": "year(datum.Year)", "as": "Year"}
+        {"type": "formula", "expr": "year(datum.Year)", "as": "Year"},
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
       ]
     }
   ],
@@ -74,10 +78,6 @@
           "opacity": {"value": 0.7},
           "fill": [
             {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-              "value": null
-            },
-            {
               "test": "!(length(data(\"CylYr_store\"))) || (vlSelectionTest(\"CylYr_store\", datum))",
               "scale": "color",
               "field": "Origin"
@@ -122,8 +122,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     }
   ],
   "axes": [

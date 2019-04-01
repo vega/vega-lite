@@ -38,13 +38,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"sum_Acceleration\"] === null || isNaN(datum[\"sum_Acceleration\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "Origin"}
-          ],
+          "fill": {"scale": "color", "field": "Origin"},
           "tooltip": {
             "signal": "{\"Sum of Acceleration\": format(datum[\"sum_Acceleration\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
           },
@@ -72,8 +66,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     }
   ],
   "axes": [

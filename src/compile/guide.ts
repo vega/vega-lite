@@ -1,4 +1,4 @@
-import {ValueDef} from '../fielddef';
+import {ValueDef} from '../channeldef';
 import {GuideEncodingEntry} from '../guide';
 import {keys} from '../util';
 import {VgEncodeChannel} from '../vega.schema';

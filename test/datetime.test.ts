@@ -11,7 +11,7 @@ describe('datetime', () => {
           day: 'monday'
         };
         const expr = dateTimeExpr(d, true);
-        expect(expr).toEqual('datetime(2007, 0, 1, 0, 0, 0, 0)');
+        expect(expr).toBe('datetime(2007, 0, 1, 0, 0, 0, 0)');
         expect(localLogger.warns[0]).toEqual(log.message.droppedDay(d));
       })
     );
@@ -23,7 +23,7 @@ describe('datetime', () => {
         },
         true
       );
-      expect(expr).toEqual('datetime(0, 1*3, 1, 0, 0, 0, 0)');
+      expect(expr).toBe('datetime(0, 1*3, 1, 0, 0, 0, 0)');
     });
 
     it(
@@ -36,7 +36,7 @@ describe('datetime', () => {
             },
             true
           )
-        ).toEqual('datetime(0, 4*3, 1, 0, 0, 0, 0)');
+        ).toBe('datetime(0, 4*3, 1, 0, 0, 0, 0)');
         expect(localLogger.warns[0]).toEqual(log.message.invalidTimeUnit('quarter', 5));
       })
     );
@@ -54,7 +54,7 @@ describe('datetime', () => {
         },
         true
       );
-      expect(expr).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
+      expect(expr).toBe('datetime(0, 0, 1, 0, 0, 0, 0)');
     });
 
     it('should normalize month name correctly', () => {
@@ -65,7 +65,7 @@ describe('datetime', () => {
           },
           true
         )
-      ).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(0, 0, 1, 0, 0, 0, 0)');
       expect(
         dateTimeExpr(
           {
@@ -73,7 +73,7 @@ describe('datetime', () => {
           },
           true
         )
-      ).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(0, 0, 1, 0, 0, 0, 0)');
       expect(
         dateTimeExpr(
           {
@@ -81,7 +81,7 @@ describe('datetime', () => {
           },
           true
         )
-      ).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(0, 0, 1, 0, 0, 0, 0)');
       expect(
         dateTimeExpr(
           {
@@ -89,7 +89,7 @@ describe('datetime', () => {
           },
           true
         )
-      ).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(0, 0, 1, 0, 0, 0, 0)');
     });
 
     it('should throw error for invalid month', () => {
@@ -106,7 +106,7 @@ describe('datetime', () => {
           },
           true
         )
-      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      ).toBe('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
       expect(
         dateTimeExpr(
           {
@@ -114,7 +114,7 @@ describe('datetime', () => {
           },
           true
         )
-      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      ).toBe('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
     });
 
     it('should normalize day name correctly and use year 2006 to ensure correct', () => {
@@ -125,7 +125,7 @@ describe('datetime', () => {
           },
           true
         )
-      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      ).toBe('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
       expect(
         dateTimeExpr(
           {
@@ -133,7 +133,7 @@ describe('datetime', () => {
           },
           true
         )
-      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      ).toBe('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
       expect(
         dateTimeExpr(
           {
@@ -141,7 +141,7 @@ describe('datetime', () => {
           },
           true
         )
-      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      ).toBe('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
       expect(
         dateTimeExpr(
           {
@@ -149,7 +149,7 @@ describe('datetime', () => {
           },
           true
         )
-      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      ).toBe('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
     });
 
     it('should throw error for invalid day', () => {
@@ -165,7 +165,7 @@ describe('datetime', () => {
         utc: true
       };
       const expr = dateTimeExpr(d, true);
-      expect(expr).toEqual('utc(2007, 0, 1, 0, 0, 0, 0)');
+      expect(expr).toBe('utc(2007, 0, 1, 0, 0, 0, 0)');
     });
 
     // Note: Other part of coverage handled by timeUnit.fieldExpr's test

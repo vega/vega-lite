@@ -48,13 +48,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "opacity": {"value": 0.5},
           "tooltip": {
             "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Count of Records\": format(datum[\"__count\"], \"\"), \"weather\": ''+datum[\"weather\"]}"

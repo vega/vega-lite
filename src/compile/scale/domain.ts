@@ -3,9 +3,9 @@ import {isObject, isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {isBinning} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
+import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
-import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
@@ -387,21 +387,23 @@ export function canUseUnaggregatedDomain(
   fieldDef: TypedFieldDef<string>,
   scaleType: ScaleType
 ): {valid: boolean; reason?: string} {
-  if (!fieldDef.aggregate) {
+  const {aggregate, type} = fieldDef;
+
+  if (!aggregate) {
     return {
       valid: false,
       reason: log.message.unaggregateDomainHasNoEffectForRawField(fieldDef)
     };
   }
 
-  if (!SHARED_DOMAIN_OP_INDEX[fieldDef.aggregate]) {
+  if (isString(aggregate) && !SHARED_DOMAIN_OP_INDEX[aggregate]) {
     return {
       valid: false,
-      reason: log.message.unaggregateDomainWithNonSharedDomainOp(fieldDef.aggregate)
+      reason: log.message.unaggregateDomainWithNonSharedDomainOp(aggregate)
     };
   }
 
-  if (fieldDef.type === 'quantitative') {
+  if (type === 'quantitative') {
     if (scaleType === 'log') {
       return {
         valid: false,

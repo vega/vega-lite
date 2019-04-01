@@ -42,15 +42,23 @@ The rest of this page outlines different types of config properties:
 
 A Vega-Lite `config` object can have the following top-level properties:
 
+{% include table.html props="autosize,background,countTitle,fieldTitle,invalidValues,padding" source="Config" %}
+
 {:#format}
 
-{% include table.html props="autosize,background,countTitle,fieldTitle,invalidValues,numberFormat,padding,stack,timeFormat" source="Config" %}
+## Format Configuration
+
+These two config properties define the default number and time formats for text marks as well as axes, headers, and legends:
+
+{% include table.html props="numberFormat,timeFormat" source="Config" %}
 
 {:#axis-config}
 
-## Axis Configurations
+## Guide Configurations
 
-Axis configuration defines default settings for axes. Properties defined under the `"axis"` property in the config object are applied to _all_ axes.
+### Axis Configurations
+
+Axis configurations define default settings for axes. Properties defined under the main `"axis"` object are applied to _all_ axes.
 
 Additional property blocks can target more specific axis types based on the orientation (`"axisX"`, `"axisY"`, `"axisLeft"`, `"axisTop"`, etc.) or band scale type (`"axisBand"`). For example, properties defined under the `"axisBand"` property will only apply to axes visualizing `"band"` scales. If multiple axis config blocks apply to a single axis, type-based options take precedence over orientation-based options, which in turn take precedence over general options.
 
@@ -58,13 +66,13 @@ Additional property blocks can target more specific axis types based on the orie
 
 {:#header-config}
 
-## Header Configuration
+### Header Configuration
 
 {% include table.html props="header" source="Config" %}
 
 {:#legend-config}
 
-## Legend Configuration
+### Legend Configuration
 
 {% include table.html props="legend" source="Config" %}
 

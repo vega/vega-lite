@@ -58,13 +58,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"mean_precipitation\"] === null || isNaN(datum[\"mean_precipitation\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\")}"
           },
@@ -82,13 +76,7 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "stroke": [
-            {
-              "test": "datum[\"mean_precipitation\"] === null || isNaN(datum[\"mean_precipitation\"])",
-              "value": null
-            },
-            {"value": "red"}
-          ],
+          "stroke": {"value": "red"},
           "tooltip": {
             "signal": "{\"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\")}"
           },

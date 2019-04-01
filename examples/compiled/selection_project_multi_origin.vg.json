@@ -7,7 +7,17 @@
   "style": "cell",
   "data": [
     {"name": "pts_store"},
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
+      ]
+    }
   ],
   "signals": [
     {
@@ -53,18 +63,8 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-              "value": null
-            },
-            {"value": "transparent"}
-          ],
+          "fill": {"value": "transparent"},
           "stroke": [
-            {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-              "value": null
-            },
             {
               "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
               "scale": "color",

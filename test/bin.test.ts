@@ -24,7 +24,7 @@ describe('autoMaxBins', () => {
 
 describe('binToString', () => {
   it('should generate the corrrect key for boolean', () => {
-    expect(binToString(true)).toEqual('bin_maxbins_10');
+    expect(binToString(true)).toBe('bin_maxbins_10');
   });
 });
 

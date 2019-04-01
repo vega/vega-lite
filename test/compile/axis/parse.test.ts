@@ -175,7 +175,7 @@ describe('Axis', () => {
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
-      expect(axisComponent['x'][0].explicit.title).toEqual('foo');
+      expect(axisComponent['x'][0].explicit.title).toBe('foo');
     });
 
     it('should merge title of fieldDef and fieldDef2', () => {
@@ -196,7 +196,7 @@ describe('Axis', () => {
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
-      expect(axisComponent['x'][0].explicit.title).toEqual('foo, bar');
+      expect(axisComponent['x'][0].explicit.title).toBe('foo, bar');
     });
 
     it('should use title of fieldDef2', () => {
@@ -216,7 +216,7 @@ describe('Axis', () => {
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
-      expect(axisComponent['x'][0].explicit.title).toEqual('bar');
+      expect(axisComponent['x'][0].explicit.title).toBe('bar');
     });
 
     it('should store both x and x2 for ranged mark', () => {
@@ -270,7 +270,7 @@ describe('Axis', () => {
     it('correctly merges gridScale if one layer does not have one of the axis', () => {
       const axisComponents = globalRuleOverlay.component.axes;
       expect(axisComponents.y.length).toEqual(1);
-      expect(axisComponents.y[0].get('gridScale')).toEqual('x');
+      expect(axisComponents.y[0].get('gridScale')).toBe('x');
     });
 
     it('correctly merges similar title', () => {

@@ -19,6 +19,16 @@
           "as": "x_a_sort_index"
         }
       ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -33,16 +43,10 @@
       "name": "marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"b\"] === null || isNaN(datum[\"b\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
           },
@@ -70,7 +74,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "data_1", "field": "b"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

@@ -31,6 +31,10 @@
           "type": "geojson",
           "geojson": "geo",
           "signal": "child__repeat_row_population_geojson_0"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
         }
       ]
     },
@@ -49,6 +53,10 @@
           "type": "geojson",
           "geojson": "geo",
           "signal": "child__repeat_row_engineers_geojson_0"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"engineers\"] !== null && !isNaN(datum[\"engineers\"])"
         }
       ]
     },
@@ -67,6 +75,10 @@
           "type": "geojson",
           "geojson": "geo",
           "signal": "child__repeat_row_hurricanes_geojson_0"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"hurricanes\"] !== null && !isNaN(datum[\"hurricanes\"])"
         }
       ]
     }
@@ -98,16 +110,10 @@
           "from": {"data": "data_0"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"population\"] === null || isNaN(datum[\"population\"])",
-                  "value": null
-                },
-                {
-                  "scale": "child__repeat_row_population_color",
-                  "field": "population"
-                }
-              ],
+              "fill": {
+                "scale": "child__repeat_row_population_color",
+                "field": "population"
+              },
               "tooltip": {
                 "signal": "{\"geo\": ''+datum[\"geo\"], \"population\": format(datum[\"population\"], \"\")}"
               }
@@ -146,16 +152,10 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"engineers\"] === null || isNaN(datum[\"engineers\"])",
-                  "value": null
-                },
-                {
-                  "scale": "child__repeat_row_engineers_color",
-                  "field": "engineers"
-                }
-              ],
+              "fill": {
+                "scale": "child__repeat_row_engineers_color",
+                "field": "engineers"
+              },
               "tooltip": {
                 "signal": "{\"geo\": ''+datum[\"geo\"], \"engineers\": format(datum[\"engineers\"], \"\")}"
               }
@@ -194,16 +194,10 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"hurricanes\"] === null || isNaN(datum[\"hurricanes\"])",
-                  "value": null
-                },
-                {
-                  "scale": "child__repeat_row_hurricanes_color",
-                  "field": "hurricanes"
-                }
-              ],
+              "fill": {
+                "scale": "child__repeat_row_hurricanes_color",
+                "field": "hurricanes"
+              },
               "tooltip": {
                 "signal": "{\"geo\": ''+datum[\"geo\"], \"hurricanes\": format(datum[\"hurricanes\"], \"\")}"
               }
