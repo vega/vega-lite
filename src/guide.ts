@@ -31,7 +31,7 @@ export interface FormatMixins {
   format?: string;
 
   /**
-   * The format type for labels (number or time).
+   * The format type for labels (`"number"` or `"time"`).
    *
    * __Default value:__
    * - `"time"` for temporal fields and ordinal and nomimal fields with `timeUnit`.

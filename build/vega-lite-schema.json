@@ -402,7 +402,7 @@
           "type": "string"
         },
         "formatType": {
-          "description": "The format type for labels (number or time).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels (`\"number\"` or `\"time\"`).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
           "enum": [
             "number",
             "time"
@@ -2794,7 +2794,7 @@
           "type": "string"
         },
         "formatType": {
-          "description": "The format type for labels (number or time).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels (`\"number\"` or `\"time\"`).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
           "enum": [
             "number",
             "time"
@@ -3217,7 +3217,7 @@
           "type": "string"
         },
         "formatType": {
-          "description": "The format type for labels (number or time).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels (`\"number\"` or `\"time\"`).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
           "enum": [
             "number",
             "time"
@@ -4970,7 +4970,7 @@
           "type": "string"
         },
         "formatType": {
-          "description": "The format type for labels (number or time).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels (`\"number\"` or `\"time\"`).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
           "enum": [
             "number",
             "time"
@@ -6009,7 +6009,7 @@
           "type": "string"
         },
         "formatType": {
-          "description": "The format type for labels (number or time).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels (`\"number\"` or `\"time\"`).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
           "enum": [
             "number",
             "time"
@@ -6120,7 +6120,7 @@
           "type": "string"
         },
         "formatType": {
-          "description": "The format type for labels (number or time).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels (`\"number\"` or `\"time\"`).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
           "enum": [
             "number",
             "time"
@@ -6840,7 +6840,7 @@
           "type": "string"
         },
         "formatType": {
-          "description": "The format type for labels (number or time).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels (`\"number\"` or `\"time\"`).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
           "enum": [
             "number",
             "time"
@@ -10837,7 +10837,7 @@
           "type": "string"
         },
         "formatType": {
-          "description": "The format type for labels (number or time).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels (`\"number\"` or `\"time\"`).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
           "enum": [
             "number",
             "time"
