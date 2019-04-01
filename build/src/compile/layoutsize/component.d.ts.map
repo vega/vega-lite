@@ -1,0 +1,1 @@
+{"version":3,"file":"component.d.ts","sourceRoot":"","sources":["../../../../src/compile/layoutsize/component.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,KAAK,EAAC,MAAM,UAAU,CAAC;AAE/B,oBAAY,UAAU,GAAG,MAAM,GAAG,YAAY,GAAG,QAAQ,CAAC;AAE1D,MAAM,WAAW,eAAe;IAC9B,KAAK,CAAC,EAAE,UAAU,CAAC;IACnB,MAAM,CAAC,EAAE,UAAU,CAAC;CACrB;AAED,oBAAY,mBAAmB,GAAG,KAAK,CAAC,eAAe,CAAC,CAAC"}
