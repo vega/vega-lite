@@ -13,3 +13,4 @@ export declare class RepeatModel extends BaseConcatModel {
     parseLayoutSize(): void;
     protected assembleDefaultLayout(): VgLayout;
 }
+//# sourceMappingURL=repeat.d.ts.map

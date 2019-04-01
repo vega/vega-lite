@@ -14,3 +14,4 @@ export declare class FilterNode extends DataFlowNode {
     assemble(): VgFilterTransform;
     hash(): string;
 }
+//# sourceMappingURL=filter.d.ts.map

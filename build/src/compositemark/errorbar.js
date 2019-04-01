@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
+import { isContinuous, isFieldDef, title } from '../channeldef';
 import { extractTransformsFromEncoding } from '../encoding';
-import { isContinuous, isFieldDef, title } from '../fielddef';
 import * as log from '../log';
 import { isMarkDef } from '../mark';
 import { keys, titlecase } from '../util';

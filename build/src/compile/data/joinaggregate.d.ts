@@ -15,3 +15,4 @@ export declare class JoinAggregateTransformNode extends DataFlowNode {
     hash(): string;
     assemble(): VgJoinAggregateTransform;
 }
+//# sourceMappingURL=joinaggregate.d.ts.map

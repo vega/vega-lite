@@ -13,3 +13,4 @@ export declare class SourceNode extends DataFlowNode {
     hash(): string | number;
     assemble(): VgData;
 }
+//# sourceMappingURL=source.d.ts.map

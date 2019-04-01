@@ -1,5 +1,5 @@
 import { ScaleChannel } from '../../channel';
-import { TypedFieldDef } from '../../fielddef';
+import { TypedFieldDef } from '../../channeldef';
 import { ScaleType } from '../../scale';
 import { VgDomain, VgNonUnionDomain, VgSortField } from '../../vega.schema';
 import { Model } from '../model';
@@ -29,3 +29,4 @@ export declare function mergeDomains(domains: VgNonUnionDomain[]): VgDomain;
  */
 export declare function getFieldFromDomain(domain: VgDomain): string;
 export declare function assembleDomain(model: Model, channel: ScaleChannel): VgDomain;
+//# sourceMappingURL=domain.d.ts.map

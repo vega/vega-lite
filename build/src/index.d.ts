@@ -5,3 +5,4 @@ export { Config } from './config';
 export { TopLevelSpec } from './spec';
 export { extractTransforms } from './transformextract';
 export { normalize, version };
+//# sourceMappingURL=index.d.ts.map

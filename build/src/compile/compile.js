@@ -1,5 +1,5 @@
+import * as vlFieldDef from '../channeldef';
 import { initConfig, stripAndRedirectConfig } from '../config';
-import * as vlFieldDef from '../fielddef';
 import * as log from '../log';
 import { normalize } from '../normalize/index';
 import { isLayerSpec, isUnitSpec } from '../spec';

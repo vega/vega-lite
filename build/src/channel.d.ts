@@ -35,7 +35,7 @@ export declare type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2'
 export declare function isGeoPositionChannel(c: Channel): c is GeoPositionChannel;
 export declare function getPositionChannelFromLatLong(channel: GeoPositionChannel): PositionChannel;
 export declare const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel>;
-export declare const GEOPOSITION_CHANNELS: ("longitude" | "latitude" | "longitude2" | "latitude2")[];
+export declare const GEOPOSITION_CHANNELS: GeoPositionChannel[];
 export declare type ColorChannel = 'color' | 'fill' | 'stroke';
 export declare function isColorChannel(channel: Channel): channel is ColorChannel;
 export declare type FacetChannel = keyof EncodingFacetMapping<any>;
@@ -55,14 +55,16 @@ export declare type SingleDefUnitChannel = 'x' | 'y' | 'x2' | 'y2' | 'longitude'
 export declare type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column' | 'facet';
 export declare function isSingleDefUnitChannel(str: string): str is SingleDefUnitChannel;
 export declare function isChannel(str: string): str is Channel;
-export declare function isSecondaryRangeChannel(c: Channel): c is 'x2' | 'y2' | 'latitude2' | 'longitude2';
+export declare type SecondaryRangeChannel = 'x2' | 'y2' | 'latitude2' | 'longitude2';
+export declare const SECONDARY_RANGE_CHANNEL: SecondaryRangeChannel[];
+export declare function isSecondaryRangeChannel(c: Channel): c is SecondaryRangeChannel;
 export declare function getMainRangeChannel(channel: Channel): Channel;
-export declare const UNIT_CHANNELS: ("text" | "stroke" | "shape" | "x" | "y" | "x2" | "y2" | "longitude" | "latitude" | "longitude2" | "latitude2" | "color" | "fill" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "detail" | "key" | "tooltip" | "href" | "order")[];
-export declare const NONPOSITION_CHANNELS: ("text" | "stroke" | "shape" | "color" | "fill" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "detail" | "key" | "tooltip" | "href" | "order")[];
+export declare const UNIT_CHANNELS: ("x" | "y" | "x2" | "y2" | "longitude" | "latitude" | "longitude2" | "latitude2" | "color" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "shape" | "detail" | "key" | "text" | "tooltip" | "href" | "order")[];
+export declare const NONPOSITION_CHANNELS: ("color" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "shape" | "detail" | "key" | "text" | "tooltip" | "href" | "order")[];
 export declare type NonPositionChannel = typeof NONPOSITION_CHANNELS[0];
 export declare const POSITION_SCALE_CHANNELS: ("x" | "y")[];
 export declare type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
-export declare const NONPOSITION_SCALE_CHANNELS: ("stroke" | "shape" | "color" | "fill" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size")[];
+export declare const NONPOSITION_SCALE_CHANNELS: ("color" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "shape")[];
 export declare type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
 export declare function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel;
 /**
@@ -70,7 +72,7 @@ export declare function isNonPositionScaleChannel(channel: Channel): channel is 
  */
 export declare function supportLegend(channel: NonPositionScaleChannel): boolean;
 /** List of channels with scales */
-export declare const SCALE_CHANNELS: ("stroke" | "shape" | "x" | "y" | "color" | "fill" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size")[];
+export declare const SCALE_CHANNELS: ("x" | "y" | "color" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "shape")[];
 export declare type ScaleChannel = typeof SCALE_CHANNELS[0];
 export declare function isScaleChannel(channel: Channel): channel is ScaleChannel;
 export declare type SupportedMark = {
@@ -84,3 +86,4 @@ export declare type SupportedMark = {
  */
 export declare function supportMark(channel: Channel, mark: Mark): "binned" | "always";
 export declare function rangeType(channel: Channel): RangeType;
+//# sourceMappingURL=channel.d.ts.map

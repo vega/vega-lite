@@ -1,6 +1,6 @@
 import { isNumber } from 'vega-util';
 import { isBinned, isBinning } from '../../bin';
-import { isFieldDef } from '../../fielddef';
+import { isFieldDef } from '../../channeldef';
 import * as log from '../../log';
 import { hasDiscreteDomain, ScaleType } from '../../scale';
 import { getFirstDefined } from '../../util';
@@ -35,6 +35,7 @@ function barPosition(model, channel) {
         return Object.assign({}, mixins.pointPosition(channel, model, 'zeroOrMin'), mixins.pointPosition2(model, 'zeroOrMin', channel2));
     }
     else {
+        const sizeChannel = channel === 'x' ? 'width' : 'height';
         // vertical
         if (isFieldDef(fieldDef)) {
             const scaleType = scale.get('type');
@@ -43,24 +44,18 @@ function barPosition(model, channel) {
             }
             else {
                 if (scaleType === ScaleType.BAND) {
-                    return mixins.bandPosition(fieldDef, channel, model);
+                    return mixins.bandPosition(fieldDef, channel, model, defaultSizeRef(markDef, sizeChannel, scaleName, scale, config));
                 }
             }
         }
         // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
-        return mixins.centeredPointPositionWithSize(channel, model, Object.assign({}, ref.mid(channel === 'x' ? model.width : model.height)), defaultSizeRef(markDef, scaleName, scale, config));
+        return mixins.centeredPointPositionWithSize(channel, model, ref.mid(model[sizeChannel]), defaultSizeRef(markDef, sizeChannel, scaleName, scale, config));
     }
 }
-function defaultSizeRef(markDef, scaleName, scale, config) {
-    if (markDef.size !== undefined) {
-        return { value: markDef.size };
-    }
-    const sizeConfig = getMarkConfig('size', markDef, config, {
-        // config.mark.size shouldn't affect bar size
-        skipGeneralMarkConfig: true
-    });
-    if (sizeConfig !== undefined) {
-        return { value: sizeConfig };
+function defaultSizeRef(markDef, sizeChannel, scaleName, scale, config) {
+    const markPropOrConfig = getFirstDefined(markDef[sizeChannel], markDef.size, getMarkConfig('size', markDef, config, { vgChannel: sizeChannel }));
+    if (markPropOrConfig !== undefined) {
+        return { value: markPropOrConfig };
     }
     if (scale) {
         const scaleType = scale.get('type');

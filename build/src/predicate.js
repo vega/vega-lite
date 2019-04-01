@@ -1,5 +1,5 @@
 import { isArray } from 'vega-util';
-import { valueExpr, vgField } from './fielddef';
+import { valueExpr, vgField } from './channeldef';
 import { fieldExpr as timeUnitFieldExpr, normalizeTimeUnit } from './timeunit';
 export function isSelectionPredicate(predicate) {
     return predicate && predicate['selection'];

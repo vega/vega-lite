@@ -45,3 +45,4 @@ export declare function extractTitleConfig(titleConfig: TitleConfig): {
     nonMark: BaseTitleNoSignals;
 };
 export {};
+//# sourceMappingURL=title.d.ts.map

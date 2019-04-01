@@ -1,6 +1,6 @@
 import { isBinned, isBinning } from '../../bin';
+import { isContinuous, isFieldDef } from '../../channeldef';
 import { isAggregate } from '../../encoding';
-import { isContinuous, isFieldDef } from '../../fielddef';
 import * as log from '../../log';
 import { AREA, BAR, CIRCLE, isMarkDef, LINE, POINT, RECT, RULE, SQUARE, TEXT, TICK } from '../../mark';
 import { QUANTITATIVE, TEMPORAL } from '../../type';

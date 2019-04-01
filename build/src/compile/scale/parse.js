@@ -1,5 +1,5 @@
 import { SCALE_CHANNELS, SHAPE } from '../../channel';
-import { hasConditionalFieldDef, isFieldDef } from '../../fielddef';
+import { hasConditionalFieldDef, isFieldDef } from '../../channeldef';
 import { GEOSHAPE } from '../../mark';
 import { NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, scaleCompatible, scaleTypePrecedence } from '../../scale';
 import { GEOJSON } from '../../type';

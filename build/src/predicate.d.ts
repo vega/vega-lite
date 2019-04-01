@@ -83,3 +83,4 @@ export declare function isFieldValidPredicate(predicate: any): predicate is Fiel
 export declare function isFieldPredicate(predicate: Predicate): predicate is FieldOneOfPredicate | FieldEqualPredicate | FieldRangePredicate | FieldLTPredicate | FieldGTPredicate | FieldLTEPredicate | FieldGTEPredicate;
 export declare function fieldFilterExpression(predicate: FieldPredicate, useInRange?: boolean): string;
 export declare function normalizePredicate(f: Predicate): Predicate;
+//# sourceMappingURL=predicate.d.ts.map

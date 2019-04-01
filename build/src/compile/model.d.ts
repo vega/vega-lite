@@ -1,8 +1,8 @@
 import { Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle } from 'vega';
 import { Channel, ScaleChannel, SingleDefChannel } from '../channel';
+import { FieldDef, FieldRefOption } from '../channeldef';
 import { Config } from '../config';
 import { Data, DataSourceType } from '../data';
-import { FieldDef, FieldRefOption } from '../fielddef';
 import { Resolve } from '../resolve';
 import { GenericCompositionLayoutWithColumns, SpecType, ViewBackground } from '../spec/base';
 import { NormalizedSpec } from '../spec/index';
@@ -172,3 +172,4 @@ export declare abstract class ModelWithField extends Model {
     forEachFieldDef(f: (fd: FieldDef<string>, c: Channel) => void, t?: any): void;
     abstract channelHasField(channel: Channel): boolean;
 }
+//# sourceMappingURL=model.d.ts.map

@@ -1,7 +1,7 @@
 import { isArray } from 'vega-util';
 import { isBinned, isBinning, isBinParams } from '../../bin';
 import { COLOR, FILL, STROKE, X, Y } from '../../channel';
-import { vgField } from '../../fielddef';
+import { vgField } from '../../channeldef';
 import * as log from '../../log';
 import { channelScalePropertyIncompatability, hasContinuousDomain, isContinuousToContinuous, isContinuousToDiscrete, ScaleType, scaleTypeSupportProperty } from '../../scale';
 import * as util from '../../util';
@@ -57,12 +57,13 @@ function parseUnitScaleProperty(model, property) {
 // Note: This method is used in Voyager.
 export function getDefaultValue(property, model, channel, fieldDef, scaleType, scalePadding, scalePaddingInner, specifiedDomain, markDef, config) {
     const scaleConfig = config.scale;
+    const { type, sort } = fieldDef;
     // If we have default rule-base, determine default value first
     switch (property) {
         case 'bins':
             return bins(model, fieldDef, channel);
         case 'interpolate':
-            return interpolate(channel);
+            return interpolate(channel, type);
         case 'nice':
             return nice(scaleType, channel, fieldDef);
         case 'padding':
@@ -72,7 +73,7 @@ export function getDefaultValue(property, model, channel, fieldDef, scaleType, s
         case 'paddingOuter':
             return paddingOuter(scalePadding, channel, scaleType, markDef.type, scalePaddingInner, scaleConfig);
         case 'reverse':
-            return reverse(scaleType, fieldDef.sort);
+            return reverse(scaleType, sort);
         case 'zero':
             return zero(channel, fieldDef, specifiedDomain, markDef, scaleType);
     }
@@ -137,8 +138,8 @@ export function bins(model, fieldDef, channel) {
     }
     return undefined;
 }
-export function interpolate(channel) {
-    if (contains([COLOR, FILL, STROKE], channel)) {
+export function interpolate(channel, type) {
+    if (contains([COLOR, FILL, STROKE], channel) && type !== 'nominal') {
         return 'hcl';
     }
     return undefined;

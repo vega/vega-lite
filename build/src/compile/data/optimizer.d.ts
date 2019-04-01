@@ -34,3 +34,4 @@ export declare abstract class TopDownOptimizer extends OptimizerBase {
     abstract run(node: DataFlowNode): boolean;
 }
 export {};
+//# sourceMappingURL=optimizer.d.ts.map

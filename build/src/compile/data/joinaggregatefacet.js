@@ -1,4 +1,4 @@
-import { vgField } from '../../fielddef';
+import { vgField } from '../../channeldef';
 import { DEFAULT_SORT_OP, isSortField } from '../../sort';
 import { facetSortFieldName } from '../facet';
 import { JoinAggregateTransformNode } from './joinaggregate';

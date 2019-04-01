@@ -1,8 +1,8 @@
 import { isArray } from 'vega-util';
 import { SUM_OPS } from './aggregate';
 import { NONPOSITION_CHANNELS, X, X2, Y2 } from './channel';
+import { getTypedFieldDef, isFieldDef, isStringFieldDef, vgField } from './channeldef';
 import { channelHasField } from './encoding';
-import { getTypedFieldDef, isFieldDef, isStringFieldDef, vgField } from './fielddef';
 import * as log from './log';
 import { AREA, BAR, CIRCLE, isMarkDef, isPathMark, LINE, POINT, RULE, SQUARE, TEXT, TICK } from './mark';
 import { ScaleType } from './scale';

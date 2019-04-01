@@ -1,6 +1,6 @@
 import { Spec as VgSpec } from 'vega';
+import * as vlFieldDef from '../channeldef';
 import { Config } from '../config';
-import * as vlFieldDef from '../fielddef';
 import * as log from '../log';
 import { TopLevelSpec } from '../spec';
 export interface CompileOptions {
@@ -38,3 +38,4 @@ export interface CompileOptions {
 export declare function compile(inputSpec: TopLevelSpec, opt?: CompileOptions): {
     spec: VgSpec;
 };
+//# sourceMappingURL=compile.d.ts.map

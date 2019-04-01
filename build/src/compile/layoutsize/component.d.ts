@@ -5,3 +5,4 @@ export interface LayoutSizeIndex {
     height?: LayoutSize;
 }
 export declare type LayoutSizeComponent = Split<LayoutSizeIndex>;
+//# sourceMappingURL=component.d.ts.map

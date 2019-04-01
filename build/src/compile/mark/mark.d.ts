@@ -9,3 +9,4 @@ export declare function getSort(model: UnitModel): VgCompare;
  * that the model's spec contains.
  */
 export declare function pathGroupingFields(mark: Mark, encoding: Encoding<string>): string[];
+//# sourceMappingURL=mark.d.ts.map

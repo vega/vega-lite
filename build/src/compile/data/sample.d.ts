@@ -11,3 +11,4 @@ export declare class SampleTransformNode extends DataFlowNode {
     hash(): string;
     assemble(): VgSampleTransform;
 }
+//# sourceMappingURL=sample.d.ts.map

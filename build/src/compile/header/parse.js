@@ -1,5 +1,5 @@
 import { FACET_CHANNELS } from '../../channel';
-import { title as fieldDefTitle } from '../../fielddef';
+import { title as fieldDefTitle } from '../../channeldef';
 import { contains } from '../../util';
 import { assembleAxis } from '../axis/assemble';
 import { parseGuideResolve } from '../resolve';

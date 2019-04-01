@@ -29,3 +29,4 @@ export declare class FacetNode extends DataFlowNode {
     private assembleFacetHeaderData;
     assemble(): VgData[];
 }
+//# sourceMappingURL=facet.d.ts.map

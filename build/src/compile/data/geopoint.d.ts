@@ -10,3 +10,4 @@ export declare class GeoPointNode extends DataFlowNode {
     static parseAll(parent: DataFlowNode, model: UnitModel): DataFlowNode;
     assemble(): VgGeoPointTransform;
 }
+//# sourceMappingURL=geopoint.d.ts.map

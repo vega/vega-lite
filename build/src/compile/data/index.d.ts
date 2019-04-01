@@ -53,3 +53,4 @@ export declare class AncestorParse extends Split<Parse> {
     constructor(explicit?: Partial<Parse>, implicit?: Partial<Parse>, parseNothing?: boolean);
     clone(): AncestorParse;
 }
+//# sourceMappingURL=index.d.ts.map

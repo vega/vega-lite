@@ -21,3 +21,4 @@ export declare class TimeUnitNode extends DataFlowNode {
     hash(): string;
     assemble(): VgFormulaTransform[];
 }
+//# sourceMappingURL=timeunit.d.ts.map

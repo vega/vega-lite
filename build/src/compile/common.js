@@ -1,6 +1,6 @@
 import { isArray } from 'vega-util';
 import { isBinning } from '../bin';
-import { isScaleFieldDef, isTimeFieldDef, vgField } from '../fielddef';
+import { isScaleFieldDef, isTimeFormatFieldDef, vgField } from '../channeldef';
 import { ScaleType } from '../scale';
 import { formatExpression } from '../timeunit';
 import { QUANTITATIVE } from '../type';
@@ -21,14 +21,16 @@ export function getStyles(mark) {
  * Return property value from style or mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
-export function getMarkConfig(prop, mark, config, { skipGeneralMarkConfig = false } = {}) {
+export function getMarkConfig(channel, mark, config, { vgChannel } = {} // Note: Ham: I use `any` here as it's too hard to make TS knows that MarkConfig[vgChannel] would have the same type as MarkConfig[P]
+) {
     return getFirstDefined(
     // style config has highest precedence
-    getStyleConfig(prop, mark, config.style), 
+    vgChannel ? getStyleConfig(channel, mark, config.style) : undefined, getStyleConfig(channel, mark, config.style), 
     // then mark-specific config
-    config[mark.type][prop], 
-    // then general mark config (if not skipped)
-    skipGeneralMarkConfig ? undefined : config.mark[prop]);
+    vgChannel ? config[mark.type][vgChannel] : undefined, config[mark.type][channel], 
+    // If there is vgChannel, skip vl channel.
+    // For example, vl size for text is vg fontSize, but config.mark.size is only for point size.
+    vgChannel ? config.mark[vgChannel] : config.mark[channel]);
 }
 export function getStyleConfig(prop, mark, styleConfigIndex) {
     const styles = getStyles(mark);
@@ -45,38 +47,37 @@ export function getStyleConfig(prop, mark, styleConfigIndex) {
     return value;
 }
 export function formatSignalRef(fieldDef, specifiedFormat, expr, config) {
-    const format = numberFormat(fieldDef, specifiedFormat, config);
-    if (isBinning(fieldDef.bin)) {
-        const startField = vgField(fieldDef, { expr });
-        const endField = vgField(fieldDef, { expr, binSuffix: 'end' });
-        return {
-            signal: binFormatExpression(startField, endField, format, config)
-        };
-    }
-    else if (fieldDef.type === 'quantitative') {
-        return {
-            signal: `${formatExpr(vgField(fieldDef, { expr, binSuffix: 'range' }), format)}`
-        };
-    }
-    else if (isTimeFieldDef(fieldDef)) {
+    if (isTimeFormatFieldDef(fieldDef)) {
         const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
         return {
-            signal: timeFormatExpression(vgField(fieldDef, { expr }), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale, true)
+            signal: timeFormatExpression(vgField(fieldDef, {
+                expr
+            }), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale, true)
         };
     }
     else {
-        return {
-            signal: `''+${vgField(fieldDef, { expr })}`
-        };
+        const format = numberFormat(fieldDef, specifiedFormat, config);
+        if (isBinning(fieldDef.bin)) {
+            const startField = vgField(fieldDef, { expr });
+            const endField = vgField(fieldDef, { expr, binSuffix: 'end' });
+            return {
+                signal: binFormatExpression(startField, endField, format, config)
+            };
+        }
+        else if (fieldDef.type === 'quantitative') {
+            return {
+                signal: `${formatExpr(vgField(fieldDef, { expr, binSuffix: 'range' }), format)}`
+            };
+        }
+        else {
+            return { signal: `''+${vgField(fieldDef, { expr })}` };
+        }
     }
 }
 /**
  * Returns number format for a fieldDef
  */
 export function numberFormat(fieldDef, specifiedFormat, config) {
-    if (isTimeFieldDef(fieldDef)) {
-        return undefined;
-    }
     // Specified format in axis/legend has higher precedence than fieldDef.format
     if (specifiedFormat) {
         return specifiedFormat;

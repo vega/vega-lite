@@ -9,3 +9,4 @@ export declare function findSource(data: Data, sources: SourceNode[]): SourceNod
  */
 export declare function parseTransformArray(head: DataFlowNode, model: Model, ancestorParse: AncestorParse): DataFlowNode;
 export declare function parseData(model: Model): DataComponent;
+//# sourceMappingURL=parse.d.ts.map

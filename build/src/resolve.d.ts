@@ -17,3 +17,4 @@ export declare type AxisResolveMap = {
 export declare type LegendResolveMap = {
     [C in NonPositionScaleChannel]?: ResolveMode;
 };
+//# sourceMappingURL=resolve.d.ts.map

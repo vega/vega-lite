@@ -1,6 +1,6 @@
 import { isArray } from 'vega-util';
 import { FACET_CHANNELS } from '../../channel';
-import { vgField } from '../../fielddef';
+import { vgField } from '../../channeldef';
 import { HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP } from '../../header';
 import { isSortField } from '../../sort';
 import { isFacetMapping } from '../../spec/facet';

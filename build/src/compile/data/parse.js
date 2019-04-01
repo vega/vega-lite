@@ -10,6 +10,7 @@ import { CalculateNode } from './calculate';
 import { OutputNode } from './dataflow';
 import { FacetNode } from './facet';
 import { FilterNode } from './filter';
+import { FilterInvalidNode } from './filterinvalid';
 import { FlattenTransformNode } from './flatten';
 import { FoldTransformNode } from './fold';
 import { ParseNode } from './formatparse';
@@ -219,7 +220,9 @@ export function parseData(model) {
     // field is available for all subsequent datasets. Additional identifier
     // transforms will be necessary when new tuples are constructed
     // (e.g., post-aggregation).
-    if (requiresSelectionId(model) && (isUnitModel(model) || isLayerModel(model))) {
+    if (requiresSelectionId(model) &&
+        // only add identifier to unit/layer models that do not have layer parents to avoid redundant identifier transforms
+        ((isUnitModel(model) || isLayerModel(model)) && (!model.parent || !isLayerModel(model.parent)))) {
         head = new IdentifierNode(head);
     }
     // HACK: This is equivalent for merging bin extent for union scale.
@@ -260,6 +263,9 @@ export function parseData(model) {
         }
         head = ImputeNode.makeFromEncoding(head, model) || head;
         head = StackNode.makeFromEncoding(head, model) || head;
+    }
+    if (isUnitModel(model)) {
+        head = FilterInvalidNode.make(head, model) || head;
     }
     // output node for marks
     const mainName = model.getName(MAIN);

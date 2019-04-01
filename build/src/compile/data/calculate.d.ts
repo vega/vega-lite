@@ -1,5 +1,5 @@
 import { SingleDefChannel } from '../../channel';
-import { FieldRefOption, TypedFieldDef } from '../../fielddef';
+import { FieldRefOption, TypedFieldDef } from '../../channeldef';
 import { CalculateTransform } from '../../transform';
 import { VgFormulaTransform } from '../../vega.schema';
 import { ModelWithField } from '../model';
@@ -19,3 +19,4 @@ export declare class CalculateNode extends DataFlowNode {
     hash(): string;
 }
 export declare function sortArrayIndexField(fieldDef: TypedFieldDef<string>, channel: SingleDefChannel, opt?: FieldRefOption): string;
+//# sourceMappingURL=calculate.d.ts.map

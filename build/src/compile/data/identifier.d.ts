@@ -4,5 +4,7 @@ export declare class IdentifierNode extends DataFlowNode {
     clone(): IdentifierNode;
     constructor(parent: DataFlowNode);
     producedFields(): Set<string>;
+    hash(): string;
     assemble(): VgIdentifierTransform;
 }
+//# sourceMappingURL=identifier.d.ts.map

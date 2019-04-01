@@ -1,5 +1,5 @@
+import { Field } from '../channeldef';
 import { Encoding } from '../encoding';
-import { Field } from '../fielddef';
 import { GenericSpec } from '../spec/index';
 import { GenericUnitSpec } from '../spec/unit';
 import { NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams } from './base';
@@ -13,6 +13,7 @@ declare type RangedLineSpec = GenericUnitSpec<Encoding<Field> & (EncodingX2Mixin
 export declare class RuleForRangedLineNormalizer implements NonFacetUnitNormalizer<RangedLineSpec> {
     name: string;
     hasMatchingType(spec: GenericSpec<any, any>): spec is RangedLineSpec;
-    run(spec: RangedLineSpec, params: NormalizerParams, normalize: NormalizeLayerOrUnit): GenericUnitSpec<Encoding<Field>, "square" | "area" | "circle" | "line" | "rect" | "text" | "rule" | "trail" | "point" | "geoshape" | "bar" | "tick" | import("../mark").MarkDef<import("../mark").Mark>> | import("../spec").GenericLayerSpec<GenericUnitSpec<Encoding<Field>, "square" | "area" | "circle" | "line" | "rect" | "text" | "rule" | "trail" | "point" | "geoshape" | "bar" | "tick" | import("../mark").MarkDef<import("../mark").Mark>>>;
+    run(spec: RangedLineSpec, params: NormalizerParams, normalize: NormalizeLayerOrUnit): GenericUnitSpec<Encoding<Field>, "text" | "area" | "bar" | "line" | "trail" | "point" | "tick" | "rect" | "rule" | "circle" | "square" | "geoshape" | import("../mark").MarkDef<import("../mark").Mark>> | import("../spec").GenericLayerSpec<GenericUnitSpec<Encoding<Field>, "text" | "area" | "bar" | "line" | "trail" | "point" | "tick" | "rect" | "rule" | "circle" | "square" | "geoshape" | import("../mark").MarkDef<import("../mark").Mark>>>;
 }
 export {};
+//# sourceMappingURL=ruleforrangedline.d.ts.map

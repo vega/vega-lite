@@ -12,3 +12,4 @@ export declare class LookupNode extends DataFlowNode {
     hash(): string;
     assemble(): VgLookupTransform;
 }
+//# sourceMappingURL=lookup.d.ts.map

@@ -13,3 +13,4 @@ export declare class ConcatModel extends BaseConcatModel {
     parseAxisGroup(): void;
     protected assembleDefaultLayout(): VgLayout;
 }
+//# sourceMappingURL=concat.d.ts.map

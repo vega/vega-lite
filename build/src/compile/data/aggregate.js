@@ -1,6 +1,7 @@
+import { isArgmaxDef, isArgminDef } from '../../aggregate';
 import { isBinning } from '../../bin';
 import { getPositionChannelFromLatLong, isGeoPositionChannel, isScaleChannel } from '../../channel';
-import { binRequiresRange, isTypedFieldDef, vgField } from '../../fielddef';
+import { binRequiresRange, isTypedFieldDef, vgField } from '../../channeldef';
 import * as log from '../../log';
 import { duplicate, hash, keys, replacePathInField, setEqual } from '../../util';
 import { DataFlowNode } from './dataflow';
@@ -73,10 +74,19 @@ export class AggregateNode extends DataFlowNode {
                     meas['*']['count'] = new Set([vgField(fieldDef, { forAs: true })]);
                 }
                 else {
-                    meas[field] = meas[field] || {};
-                    meas[field][aggregate] = new Set([vgField(fieldDef, { forAs: true })]);
+                    if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
+                        const op = isArgminDef(aggregate) ? 'argmin' : 'argmax';
+                        const argField = aggregate[op];
+                        meas[argField] = meas[argField] || {};
+                        meas[argField][op] = new Set([vgField({ op, field: argField }, { forAs: true })]);
+                    }
+                    else {
+                        meas[field] = meas[field] || {};
+                        meas[field][aggregate] = new Set([vgField(fieldDef, { forAs: true })]);
+                    }
                     // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
                     if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
+                        meas[field] = meas[field] || {};
                         meas[field]['min'] = new Set([vgField({ field, aggregate: 'min' }, { forAs: true })]);
                         meas[field]['max'] = new Set([vgField({ field, aggregate: 'max' }, { forAs: true })]);
                     }

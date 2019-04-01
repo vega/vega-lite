@@ -11,3 +11,4 @@ export declare class CompositeMarkNormalizer<M extends string> implements NonFac
     constructor(name: string, run: (spec: CompositeMarkUnitSpec<M>, params: NormalizerParams, normalize: Normalize<GenericUnitSpec<any, any> | GenericLayerSpec<any>, NormalizedLayerSpec | NormalizedUnitSpec>) => NormalizedLayerSpec);
     hasMatchingType(spec: GenericSpec<any, any>, config: Config): spec is CompositeMarkUnitSpec<M>;
 }
+//# sourceMappingURL=base.d.ts.map

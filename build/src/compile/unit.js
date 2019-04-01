@@ -1,7 +1,7 @@
 import { GEOPOSITION_CHANNELS, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, supportLegend, X, Y } from '../channel';
-import { normalizeEncoding } from '../encoding';
+import { getTypedFieldDef, hasConditionalFieldDef, isFieldDef } from '../channeldef';
 import * as vlEncoding from '../encoding';
-import { getTypedFieldDef, hasConditionalFieldDef, isFieldDef } from '../fielddef';
+import { normalizeEncoding } from '../encoding';
 import { GEOSHAPE, isMarkDef } from '../mark';
 import { stack } from '../stack';
 import { duplicate } from '../util';

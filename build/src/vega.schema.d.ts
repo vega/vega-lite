@@ -78,6 +78,8 @@ export interface VgProjection {
     fit?: SignalRef | object | any[];
     extent?: SignalRef | number[][];
     size?: SignalRef | (number | SignalRef)[];
+    reflectX?: boolean;
+    reflectY?: boolean;
     coefficient?: number;
     distance?: number;
     fraction?: number;
@@ -487,7 +489,7 @@ export interface BaseMarkConfig {
      */
     cornerRadius?: number;
 }
-export declare const VG_MARK_CONFIGS: ("dir" | "font" | "cursor" | "text" | "stroke" | "shape" | "interpolate" | "x" | "y" | "x2" | "y2" | "fill" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "tooltip" | "href" | "strokeCap" | "strokeDash" | "strokeDashOffset" | "strokeMiterLimit" | "strokeJoin" | "tension" | "orient" | "align" | "baseline" | "ellipsis" | "limit" | "dx" | "dy" | "radius" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "cornerRadius")[];
+export declare const VG_MARK_CONFIGS: ("x" | "y" | "x2" | "y2" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "shape" | "text" | "tooltip" | "href" | "cornerRadius" | "strokeCap" | "strokeDash" | "strokeDashOffset" | "strokeJoin" | "strokeMiterLimit" | "cursor" | "interpolate" | "tension" | "orient" | "align" | "baseline" | "dir" | "ellipsis" | "limit" | "dx" | "dy" | "radius" | "theta" | "angle" | "font" | "fontSize" | "fontWeight" | "fontStyle")[];
 export declare type VgComparatorOrder = 'ascending' | 'descending';
 export interface VgComparator {
     field?: string | string[];
@@ -511,3 +513,4 @@ export interface VgJoinAggregateTransform {
     fields?: string[];
     groupby?: string[];
 }
+//# sourceMappingURL=vega.schema.d.ts.map

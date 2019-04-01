@@ -15,3 +15,4 @@ export declare function assembleFacetData(root: FacetNode): VgData[];
  * @return modified data array
  */
 export declare function assembleRootData(dataComponent: DataComponent, datasets: Dict<InlineDataset>): VgData[];
+//# sourceMappingURL=assemble.d.ts.map

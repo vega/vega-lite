@@ -7,3 +7,4 @@ export declare function isTrue(x: boolean): boolean;
  * Optimizes the dataflow of the passed in data component.
  */
 export declare function optimizeDataflow(data: DataComponent, model: Model): void;
+//# sourceMappingURL=optimize.d.ts.map

@@ -15,3 +15,4 @@ export declare abstract class SpecMapper<P, UI extends GenericUnitSpec<any, any>
     protected mapFacet(spec: GenericFacetSpec<UI, LI>, params: P): GenericFacetSpec<UO, GenericLayerSpec<UO>>;
     protected mapRepeat(spec: GenericRepeatSpec<UI, LI>, params: P): GenericRepeatSpec<UO, GenericLayerSpec<UO>>;
 }
+//# sourceMappingURL=map.d.ts.map

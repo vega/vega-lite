@@ -3,9 +3,9 @@
  */
 import { SignalRef } from 'vega';
 import { Channel, PositionChannel } from '../../channel';
+import { ChannelDef, ChannelDefWithCondition, FieldDef, FieldDefBase, FieldRefOption, SecondaryFieldDef, TypedFieldDef } from '../../channeldef';
 import { Config } from '../../config';
 import { Encoding } from '../../encoding';
-import { ChannelDef, ChannelDefWithCondition, FieldDef, FieldDefBase, FieldRefOption, SecondaryFieldDef, TypedFieldDef } from '../../fielddef';
 import { Mark, MarkDef } from '../../mark';
 import { StackProperties } from '../../stack';
 import { VgValueRef } from '../../vega.schema';
@@ -84,3 +84,4 @@ export declare function positionDefault({ markDef, config, defaultRef, channel, 
     mark: Mark;
     checkBarAreaWithoutZero: boolean;
 }): () => VgValueRef;
+//# sourceMappingURL=valueref.d.ts.map

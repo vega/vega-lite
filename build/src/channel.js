@@ -102,6 +102,7 @@ export function isSingleDefUnitChannel(str) {
 export function isChannel(str) {
     return !!CHANNEL_INDEX[str];
 }
+export const SECONDARY_RANGE_CHANNEL = ['x2', 'y2', 'latitude2', 'longitude2'];
 export function isSecondaryRangeChannel(c) {
     const main = getMainRangeChannel(c);
     return main !== c;

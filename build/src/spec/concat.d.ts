@@ -52,3 +52,4 @@ export declare function isAnyConcatSpec(spec: BaseSpec): spec is GenericVConcatS
 export declare function isConcatSpec(spec: BaseSpec): spec is GenericConcatSpec<any, any>;
 export declare function isVConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any, any>;
 export declare function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<any, any>;
+//# sourceMappingURL=concat.d.ts.map

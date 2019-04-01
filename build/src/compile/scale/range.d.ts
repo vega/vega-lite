@@ -24,3 +24,4 @@ export declare function defaultContinuousToDiscreteCount(scaleType: 'quantile' |
  */
 export declare function interpolateRange(rangeMin: number, rangeMax: number | SignalRef, cardinality: number): SignalRef;
 export declare const MAX_SIZE_RANGE_STEP_RATIO = 0.95;
+//# sourceMappingURL=range.d.ts.map

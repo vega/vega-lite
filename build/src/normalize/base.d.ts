@@ -19,3 +19,4 @@ export interface NormalizerParams {
     parentEncoding?: Encoding<any>;
     parentProjection?: Projection;
 }
+//# sourceMappingURL=base.d.ts.map

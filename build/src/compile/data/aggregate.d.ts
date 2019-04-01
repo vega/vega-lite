@@ -27,3 +27,4 @@ export declare class AggregateNode extends DataFlowNode {
     assemble(): VgAggregateTransform;
 }
 export {};
+//# sourceMappingURL=aggregate.d.ts.map

@@ -1,9 +1,10 @@
 import { NewSignal } from 'vega';
 import { Axis } from '../axis';
 import { Channel, ScaleChannel, SingleDefChannel } from '../channel';
+import { TypedFieldDef } from '../channeldef';
 import { Config } from '../config';
+import * as vlEncoding from '../encoding';
 import { Encoding } from '../encoding';
-import { TypedFieldDef } from '../fielddef';
 import { Legend } from '../legend';
 import { Mark, MarkDef } from '../mark';
 import { Projection } from '../projection';
@@ -55,9 +56,10 @@ export declare class UnitModel extends ModelWithField {
     assembleLayout(): VgLayout;
     assembleLayoutSignals(): NewSignal[];
     assembleMarks(): any[];
-    protected getMapping(): Encoding<string>;
+    protected getMapping(): vlEncoding.Encoding<string>;
     toSpec(excludeConfig?: any, excludeData?: any): any;
     readonly mark: Mark;
     channelHasField(channel: Channel): boolean;
     fieldDef(channel: SingleDefChannel): TypedFieldDef<string, import("../type").Type>;
 }
+//# sourceMappingURL=unit.d.ts.map

@@ -13,3 +13,4 @@ export declare class ImputeNode extends DataFlowNode {
     hash(): string;
     assemble(): (VgFormulaTransform | VgImputeTransform | VgWindowTransform)[];
 }
+//# sourceMappingURL=impute.d.ts.map

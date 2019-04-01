@@ -12,19 +12,20 @@ export const ERRORBAND_PARTS = keys(ERRORBAND_PART_INDEX);
 export const errorBandNormalizer = new CompositeMarkNormalizer(ERRORBAND, normalizeErrorBand);
 export function normalizeErrorBand(spec, { config }) {
     const { transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis, markDef, outerSpec, tooltipEncoding } = errorBarParams(spec, ERRORBAND, config);
-    const makeErrorBandPart = makeCompositeAggregatePartFactory(markDef, continuousAxis, continuousAxisChannelDef, encodingWithoutContinuousAxis, config.errorband);
+    const errorBandDef = markDef;
+    const makeErrorBandPart = makeCompositeAggregatePartFactory(errorBandDef, continuousAxis, continuousAxisChannelDef, encodingWithoutContinuousAxis, config.errorband);
     const is2D = spec.encoding.x !== undefined && spec.encoding.y !== undefined;
     let bandMark = { type: is2D ? 'area' : 'rect' };
     let bordersMark = { type: is2D ? 'line' : 'rule' };
-    const interpolate = Object.assign({}, (markDef.interpolate ? { interpolate: markDef.interpolate } : {}), (markDef.tension && markDef.interpolate ? { interpolate: markDef.tension } : {}));
+    const interpolate = Object.assign({}, (errorBandDef.interpolate ? { interpolate: errorBandDef.interpolate } : {}), (errorBandDef.tension && errorBandDef.interpolate ? { interpolate: errorBandDef.tension } : {}));
     if (is2D) {
         bandMark = Object.assign({}, bandMark, interpolate);
         bordersMark = Object.assign({}, bordersMark, interpolate);
     }
-    else if (markDef.interpolate) {
+    else if (errorBandDef.interpolate) {
         log.warn(log.message.errorBand1DNotSupport('interpolate'));
     }
-    else if (markDef.tension) {
+    else if (errorBandDef.tension) {
         log.warn(log.message.errorBand1DNotSupport('tension'));
     }
     return Object.assign({}, outerSpec, { transform, layer: [

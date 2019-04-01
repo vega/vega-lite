@@ -9,3 +9,4 @@ export declare class SignalRefWrapper implements SignalRef {
     signal: string;
     static fromName(rename: Rename, signalName: string): SignalRefWrapper;
 }
+//# sourceMappingURL=signal.d.ts.map

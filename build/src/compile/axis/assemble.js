@@ -2,7 +2,7 @@ import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
 import { AXIS_PARTS, AXIS_PROPERTY_TYPE } from '../../axis';
 import { POSITION_SCALE_CHANNELS } from '../../channel';
-import { defaultTitle } from '../../fielddef';
+import { defaultTitle } from '../../channeldef';
 import { getFirstDefined, keys } from '../../util';
 function assembleTitle(title, config) {
     if (isArray(title)) {

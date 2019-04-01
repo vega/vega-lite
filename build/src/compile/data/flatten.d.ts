@@ -12,3 +12,4 @@ export declare class FlattenTransformNode extends DataFlowNode {
     hash(): string;
     assemble(): VgFlattenTransform;
 }
+//# sourceMappingURL=flatten.d.ts.map

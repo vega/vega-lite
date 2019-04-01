@@ -1,9 +1,9 @@
 import { Orientation } from 'vega';
 import { PositionChannel } from '../channel';
+import { Field, PositionFieldDef, SecondaryFieldDef, ValueDef } from '../channeldef';
 import { Config } from '../config';
 import { Data } from '../data';
 import { Encoding } from '../encoding';
-import { Field, PositionFieldDef, SecondaryFieldDef, ValueDef } from '../fielddef';
 import { NormalizerParams } from '../normalize/index';
 import { GenericUnitSpec, NormalizedLayerSpec } from '../spec';
 import { TitleParams } from '../title';
@@ -92,3 +92,4 @@ export declare function errorBarParams<M extends ErrorBar | ErrorBand, MD extend
     };
     tooltipEncoding: ErrorEncoding<string>;
 };
+//# sourceMappingURL=errorbar.d.ts.map

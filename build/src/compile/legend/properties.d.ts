@@ -1,6 +1,6 @@
 import { LabelOverlap, LegendType } from 'vega';
 import { Channel } from '../../channel';
-import { TypedFieldDef } from '../../fielddef';
+import { TypedFieldDef } from '../../channeldef';
 import { Legend, LegendConfig } from '../../legend';
 import { Mark } from '../../mark';
 import { ScaleType } from '../../scale';
@@ -41,3 +41,4 @@ export declare function defaultGradientLength({ legend, legendConfig, model, cha
     signal: string;
 };
 export declare function defaultLabelOverlap(scaleType: ScaleType): LabelOverlap;
+//# sourceMappingURL=properties.d.ts.map

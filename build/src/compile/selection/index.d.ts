@@ -36,3 +36,4 @@ export declare function forEachSelection(model: Model, cb: (selCmpt: SelectionCo
 export declare function unitName(model: Model): string;
 export declare function requiresSelectionId(model: Model): boolean;
 export declare function isRawSelectionDomain(domainRaw: SignalRef): boolean;
+//# sourceMappingURL=index.d.ts.map

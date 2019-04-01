@@ -25,3 +25,4 @@ export declare class SelectionProjectionComponent extends Array<SelectionProject
 }
 declare const project: TransformCompiler;
 export default project;
+//# sourceMappingURL=project.d.ts.map

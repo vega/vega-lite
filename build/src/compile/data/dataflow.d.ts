@@ -65,3 +65,4 @@ export declare class OutputNode extends DataFlowNode {
     isRequired(): boolean;
     setSource(source: string): void;
 }
+//# sourceMappingURL=dataflow.d.ts.map

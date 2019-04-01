@@ -5,6 +5,8 @@ export const PROJECTION_PROPERTIES = [
     'center',
     'rotate',
     'precision',
+    'reflectX',
+    'reflectY',
     'coefficient',
     'distance',
     'fraction',

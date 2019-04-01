@@ -1,6 +1,6 @@
 import { Channel } from '../../channel';
+import { ScaleFieldDef, TypedFieldDef } from '../../channeldef';
 import { Config } from '../../config';
-import { ScaleFieldDef, TypedFieldDef } from '../../fielddef';
 import { BarConfig, Mark, MarkDef } from '../../mark';
 import { Domain, NiceTime, Scale, ScaleConfig, ScaleType } from '../../scale';
 import { Sort } from '../../sort';
@@ -15,10 +15,11 @@ export declare function parseNonUnitScaleProperty(model: Model, property: keyof 
 export declare function bins(model: Model, fieldDef: TypedFieldDef<string>, channel: Channel): SignalRefWrapper | {
     step: number;
 };
-export declare function interpolate(channel: Channel): string;
+export declare function interpolate(channel: Channel, type: Type): string;
 export declare function nice(scaleType: ScaleType, channel: Channel, fieldDef: TypedFieldDef<string>): boolean | NiceTime;
 export declare function padding(channel: Channel, scaleType: ScaleType, scaleConfig: ScaleConfig, fieldDef: TypedFieldDef<string>, markDef: MarkDef, barConfig: BarConfig): number;
 export declare function paddingInner(paddingValue: number, channel: Channel, mark: Mark, scaleConfig: ScaleConfig): number;
 export declare function paddingOuter(paddingValue: number, channel: Channel, scaleType: ScaleType, mark: Mark, paddingInnerValue: number, scaleConfig: ScaleConfig): number;
 export declare function reverse(scaleType: ScaleType, sort: Sort<string>): boolean;
 export declare function zero(channel: Channel, fieldDef: TypedFieldDef<string>, specifiedDomain: Domain, markDef: MarkDef, scaleType: ScaleType): boolean;
+//# sourceMappingURL=properties.d.ts.map

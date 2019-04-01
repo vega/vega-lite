@@ -79,3 +79,4 @@ export declare class MergeBins extends BottomUpOptimizer {
     constructor(model: Model);
     run(node: DataFlowNode): OptimizerFlags;
 }
+//# sourceMappingURL=optimizers.d.ts.map

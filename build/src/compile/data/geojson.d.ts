@@ -10,3 +10,4 @@ export declare class GeoJSONNode extends DataFlowNode {
     constructor(parent: DataFlowNode, fields?: string[], geojson?: string, signal?: string);
     assemble(): VgGeoJSONTransform;
 }
+//# sourceMappingURL=geojson.d.ts.map

@@ -6,3 +6,4 @@ export declare const parseRepeatLayoutSize: typeof parseLayerLayoutSize;
 export declare function parseConcatLayoutSize(model: ConcatModel): void;
 export declare function parseChildrenLayoutSize(model: Model): void;
 export declare function parseUnitLayoutSize(model: UnitModel): void;
+//# sourceMappingURL=parse.d.ts.map

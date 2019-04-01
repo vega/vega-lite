@@ -79,3 +79,4 @@ export declare function isBinning(bin: BinParams | boolean | 'binned'): bin is B
 export declare function isBinned(bin: BinParams | boolean | 'binned'): bin is 'binned';
 export declare function isBinParams(bin: BinParams | boolean | 'binned'): bin is BinParams;
 export declare function autoMaxBins(channel: Channel): number;
+//# sourceMappingURL=bin.d.ts.map

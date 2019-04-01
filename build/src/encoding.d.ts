@@ -1,6 +1,6 @@
 import { Channel } from './channel';
+import { ChannelDef, ColorFieldDefWithCondition, ColorValueDefWithCondition, Field, FieldDef, FieldDefWithoutScale, LatLongFieldDef, NumericFieldDefWithCondition, NumericValueDefWithCondition, OrderFieldDef, PositionFieldDef, SecondaryFieldDef, ShapeFieldDefWithCondition, ShapeValueDefWithCondition, StringFieldDefWithCondition, StringValueDefWithCondition, TextFieldDef, TextFieldDefWithCondition, TextValueDefWithCondition, TypedFieldDef, ValueDef } from './channeldef';
 import { Config } from './config';
-import { ChannelDef, ColorFieldDefWithCondition, ColorValueDefWithCondition, Field, FieldDef, FieldDefWithoutScale, LatLongFieldDef, NumericFieldDefWithCondition, NumericValueDefWithCondition, OrderFieldDef, PositionFieldDef, SecondaryFieldDef, ShapeFieldDefWithCondition, ShapeValueDefWithCondition, StringFieldDefWithCondition, StringValueDefWithCondition, TextFieldDef, TextFieldDefWithCondition, TextValueDefWithCondition, TypedFieldDef, ValueDef } from './fielddef';
 import { Mark } from './mark';
 import { EncodingFacetMapping } from './spec/facet';
 import { AggregatedFieldDef, BinTransform, TimeUnitTransform } from './transform';
@@ -169,3 +169,4 @@ export declare function forEach<U extends {
 export declare function reduce<T, U extends {
     [k in Channel]?: any;
 }>(mapping: U, f: (acc: any, fd: TypedFieldDef<string>, c: Channel) => U, init: T, thisArg?: any): any;
+//# sourceMappingURL=encoding.d.ts.map

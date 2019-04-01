@@ -206,3 +206,4 @@ export interface SelectionConfig {
     interval?: IntervalSelectionConfig;
 }
 export declare const defaultConfig: SelectionConfig;
+//# sourceMappingURL=selection.d.ts.map

@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
-import { hasConditionalFieldDef, isConditionalDef, isFieldDef, isRepeatRef, isSortableFieldDef } from '../fielddef';
+import { hasConditionalFieldDef, isConditionalDef, isFieldDef, isRepeatRef, isSortableFieldDef } from '../channeldef';
 import * as log from '../log';
 import { isSortField } from '../sort';
 import { isFacetMapping } from '../spec/facet';

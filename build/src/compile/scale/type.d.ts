@@ -1,5 +1,5 @@
 import { Channel } from '../../channel';
-import { TypedFieldDef } from '../../fielddef';
+import { TypedFieldDef } from '../../channeldef';
 import { Mark } from '../../mark';
 import { Scale, ScaleConfig, ScaleType } from '../../scale';
 export declare type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
@@ -8,3 +8,4 @@ export declare type RangeType = 'continuous' | 'discrete' | 'flexible' | undefin
  * or determine default type if type is unspecified or inappropriate.
  */
 export declare function scaleType(specifiedScale: Scale, channel: Channel, fieldDef: TypedFieldDef<string>, mark: Mark, scaleConfig: ScaleConfig): ScaleType;
+//# sourceMappingURL=type.d.ts.map

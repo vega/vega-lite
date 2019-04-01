@@ -1,6 +1,6 @@
 import { CompositeEncoding, FacetedCompositeEncoding } from '../compositemark/index';
 import { Encoding } from '../encoding';
-import { Field } from '../fielddef';
+import { Field } from '../channeldef';
 import { AnyMark, Mark, MarkDef } from '../mark';
 import { Projection } from '../projection';
 import { SelectionDef } from '../selection';
@@ -45,3 +45,4 @@ export declare type UnitSpec = GenericUnitSpec<CompositeEncoding, AnyMark>;
 export declare type FacetedUnitSpec = GenericUnitSpec<FacetedCompositeEncoding, AnyMark> & GenericCompositionLayoutWithColumns & ResolveMixins;
 export declare type TopLevelUnitSpec = TopLevel<FacetedUnitSpec> & DataMixins;
 export declare function isUnitSpec(spec: BaseSpec): spec is FacetedUnitSpec | NormalizedUnitSpec;
+//# sourceMappingURL=unit.d.ts.map

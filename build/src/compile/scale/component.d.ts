@@ -23,3 +23,4 @@ export declare type ScaleComponentIndex = {
 export declare type ScaleIndex = {
     [P in ScaleChannel]?: Scale;
 };
+//# sourceMappingURL=component.d.ts.map

@@ -3,11 +3,12 @@
  */
 import { AggregateOp } from 'vega';
 import { LoggerInterface } from 'vega-util';
+import { Aggregate } from './aggregate';
 import { Channel, FacetChannel, GeoPositionChannel } from './channel';
+import { TypedFieldDef } from './channeldef';
 import { CompositeMark } from './compositemark';
 import { ErrorBarCenter, ErrorBarExtent } from './compositemark/errorbar';
 import { DateTime, DateTimeExpr } from './datetime';
-import { Aggregate, TypedFieldDef } from './fielddef';
 import { Mark } from './mark';
 import { Projection } from './projection';
 import { ScaleType } from './scale';
@@ -71,7 +72,7 @@ export declare namespace message {
         scaleType?: ScaleType;
         zeroFalse?: boolean;
     }): string;
-    function invalidFieldTypeForCountAggregate(type: Type, aggregate: string): string;
+    function invalidFieldTypeForCountAggregate(type: Type, aggregate: Aggregate | string): string;
     function invalidAggregate(aggregate: AggregateOp | string): string;
     function missingFieldType(channel: Channel, newType: Type): string;
     function droppingColor(type: 'encoding' | 'property', opt: {
@@ -92,7 +93,7 @@ export declare namespace message {
     const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = "custom domain scale cannot be unioned with default field-based domain";
     function cannotUseScalePropertyWithNonColor(prop: string): string;
     function unaggregateDomainHasNoEffectForRawField(fieldDef: TypedFieldDef<string>): string;
-    function unaggregateDomainWithNonSharedDomainOp(aggregate: string): string;
+    function unaggregateDomainWithNonSharedDomainOp(aggregate: Aggregate | string): string;
     function unaggregatedDomainWithLogScale(fieldDef: TypedFieldDef<string>): string;
     function cannotApplySizeToNonOrientedMark(mark: Mark): string;
     function rangeStepDropped(channel: Channel): string;
@@ -108,15 +109,16 @@ export declare namespace message {
     const INVALID_CHANNEL_FOR_AXIS = "Invalid channel for axis.";
     function cannotStackRangedMark(channel: Channel): string;
     function cannotStackNonLinearScale(scaleType: ScaleType): string;
-    function stackNonSummativeAggregate(aggregate: string): string;
+    function stackNonSummativeAggregate(aggregate: Aggregate | string): string;
     function invalidTimeUnit(unitName: string, value: string | number): string;
     function dayReplacedWithDate(fullTimeUnit: string): string;
     function droppedDay(d: DateTime | DateTimeExpr): string;
     function errorBarCenterAndExtentAreNotNeeded(center: ErrorBarCenter, extent: ErrorBarExtent): string;
     function errorBarCenterIsUsedWithWrongExtent(center: ErrorBarCenter, extent: ErrorBarExtent, mark: 'errorbar' | 'errorband'): string;
-    function errorBarContinuousAxisHasCustomizedAggregate(aggregate: Aggregate, compositeMark: CompositeMark): string;
+    function errorBarContinuousAxisHasCustomizedAggregate(aggregate: Aggregate | string, compositeMark: CompositeMark): string;
     function errorBarCenterIsNotNeeded(extent: ErrorBarExtent, mark: 'errorbar' | 'errorband'): string;
     function errorBand1DNotSupport(property: 'interpolate' | 'tension'): string;
     function channelRequiredForBinned(channel: Channel): string;
     function domainRequiredForThresholdScale(channel: Channel): string;
 }
+//# sourceMappingURL=log.d.ts.map

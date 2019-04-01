@@ -6,8 +6,8 @@ export declare const HEADER_TITLE_PROPERTIES_MAP: {
 export declare const HEADER_LABEL_PROPERTIES_MAP: {
     [k in keyof CoreHeader]: keyof TitleConfig;
 };
-export declare const HEADER_TITLE_PROPERTIES: ("format" | "formatType" | "titleAlign" | "titleAnchor" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titleOrient" | "titlePadding" | "labelAlign" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding" | "titleAngle" | "labelAnchor" | "labelAngle" | "labelOrient")[];
-export declare const HEADER_LABEL_PROPERTIES: ("format" | "formatType" | "titleAlign" | "titleAnchor" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titleOrient" | "titlePadding" | "labelAlign" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding" | "titleAngle" | "labelAnchor" | "labelAngle" | "labelOrient")[];
+export declare const HEADER_TITLE_PROPERTIES: ("titleAngle" | "titleAnchor" | "titleAlign" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titleOrient" | "titlePadding" | "labelAlign" | "labelAnchor" | "labelAngle" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelOrient" | "labelPadding" | "format" | "formatType")[];
+export declare const HEADER_LABEL_PROPERTIES: ("titleAngle" | "titleAnchor" | "titleAlign" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titleOrient" | "titlePadding" | "labelAlign" | "labelAnchor" | "labelAngle" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelOrient" | "labelPadding" | "format" | "formatType")[];
 export interface CoreHeader extends FormatMixins {
     /**
      * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
@@ -148,3 +148,4 @@ export interface HeaderConfigMixins {
      */
     headerFacet?: HeaderConfig;
 }
+//# sourceMappingURL=header.d.ts.map

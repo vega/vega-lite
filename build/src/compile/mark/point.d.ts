@@ -6,3 +6,4 @@ export declare function shapeMixins(model: UnitModel, config: Config, fixedShape
 export declare const point: MarkCompiler;
 export declare const circle: MarkCompiler;
 export declare const square: MarkCompiler;
+//# sourceMappingURL=point.d.ts.map

@@ -1,5 +1,5 @@
 import { Encoding } from '../encoding';
-import { Field } from '../fielddef';
+import { Field } from '../channeldef';
 import { NormalizerParams } from '../normalize/index';
 import { GenericUnitSpec, NormalizedLayerSpec } from '../spec';
 import { EncodingFacetMapping } from '../spec/facet';
@@ -20,3 +20,4 @@ export declare type CompositeMarkDef = BoxPlotDef | ErrorBarDef | ErrorBandDef;
 export declare type CompositeAggregate = BoxPlot | ErrorBar | ErrorBand;
 export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins, ErrorBarConfigMixins, ErrorBandConfigMixins {
 }
+//# sourceMappingURL=index.d.ts.map

@@ -10,8 +10,7 @@ export const rule = {
             return {};
         }
         return Object.assign({}, mixins.baseEncodeEntry(model, { size: 'ignore', orient: 'ignore' }), mixins.pointPosition('x', model, orient === 'horizontal' ? 'zeroOrMin' : ref.mid(width)), mixins.pointPosition('y', model, orient === 'vertical' ? 'zeroOrMin' : ref.mid(height)), (orient !== 'vertical' ? mixins.pointPosition2(model, 'zeroOrMax', 'x2') : {}), (orient !== 'horizontal' ? mixins.pointPosition2(model, 'zeroOrMax', 'y2') : {}), mixins.nonPosition('size', model, {
-            vgChannel: 'strokeWidth',
-            defaultValue: markDef.size
+            vgChannel: 'strokeWidth' // VL's rule size is strokeWidth
         }));
     }
 };

@@ -1,5 +1,5 @@
+import { FieldDefBase, FieldRefOption, OrderFieldDef, TypedFieldDef } from '../channeldef';
 import { Config, StyleConfigIndex } from '../config';
-import { FieldDefBase, FieldRefOption, OrderFieldDef, TypedFieldDef } from '../fielddef';
 import { MarkConfig, MarkDef } from '../mark';
 import { TimeUnit } from '../timeunit';
 import { VgCompare, VgEncodeEntry } from '../vega.schema';
@@ -12,8 +12,8 @@ export declare function getStyles(mark: MarkDef): string[];
  * Return property value from style or mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
-export declare function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, config: Config, { skipGeneralMarkConfig }?: {
-    skipGeneralMarkConfig?: boolean;
+export declare function getMarkConfig<P extends keyof MarkConfig>(channel: P, mark: MarkDef, config: Config, { vgChannel }?: {
+    vgChannel?: any;
 }): MarkConfig[P];
 export declare function getStyleConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, styleConfigIndex: StyleConfigIndex): any;
 export declare function formatSignalRef(fieldDef: TypedFieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent' | 'datum.datum', config: Config): {
@@ -44,3 +44,4 @@ export declare function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2
     explicit: boolean;
     value: string;
 };
+//# sourceMappingURL=common.d.ts.map

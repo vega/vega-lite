@@ -10,3 +10,4 @@ export declare type LegendComponentIndex = {
 export declare type LegendIndex = {
     [P in NonPositionScaleChannel]?: Legend;
 };
+//# sourceMappingURL=component.d.ts.map

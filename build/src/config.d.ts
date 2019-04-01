@@ -65,6 +65,8 @@ export interface RangeConfigProps {
     symbol?: string[];
 }
 export declare function isVgScheme(rangeConfig: string[] | SchemeConfig): rangeConfig is SchemeConfig;
+/** @hide */
+export declare type Hide = 'hide';
 export interface VLOnlyConfig {
     /**
      * Default axis and legend title for count fields.
@@ -79,7 +81,7 @@ export interface VLOnlyConfig {
      * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
      * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
      */
-    invalidValues?: 'filter' | null;
+    invalidValues?: 'filter' | Hide | null;
     /**
      * Defines how Vega-Lite generates title for fields.  There are three possible styles:
      * - `"verbal"` (Default) - displays function in a verbal style (e.g., "Sum of field", "Year-month of date", "field (binned)").
@@ -142,3 +144,4 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
 export declare const defaultConfig: Config;
 export declare function initConfig(config: Config): Config;
 export declare function stripAndRedirectConfig(config: Config): Config;
+//# sourceMappingURL=config.d.ts.map

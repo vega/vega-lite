@@ -33,3 +33,4 @@ export declare class BinNode extends DataFlowNode {
     hash(): string;
     assemble(): VgTransform[];
 }
+//# sourceMappingURL=bin.d.ts.map

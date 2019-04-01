@@ -14,3 +14,4 @@ export interface MarkCompiler {
      */
     postEncodingTransform?: (model: UnitModel) => VgPostEncodingTransform[];
 }
+//# sourceMappingURL=base.d.ts.map

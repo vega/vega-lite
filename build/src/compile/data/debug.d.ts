@@ -13,3 +13,4 @@ export declare function draw(roots: DataFlowNode[]): string;
  * Iterates over a dataflow graph and checks whether all links are consistent.
  */
 export declare function checkLinks(nodes: DataFlowNode[]): boolean;
+//# sourceMappingURL=debug.d.ts.map

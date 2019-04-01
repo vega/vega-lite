@@ -1,6 +1,6 @@
 import { Axis as VgAxis } from 'vega';
 import { Axis, AxisPart } from '../../axis';
-import { FieldDefBase } from '../../fielddef';
+import { FieldDefBase } from '../../channeldef';
 import { Omit } from '../../util';
 import { Split } from '../split';
 export interface AxisComponentProps extends Omit<VgAxis, 'title'> {
@@ -22,3 +22,4 @@ export interface AxisIndex {
     x?: Axis;
     y?: Axis;
 }
+//# sourceMappingURL=component.d.ts.map

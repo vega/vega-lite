@@ -1,7 +1,7 @@
 import { isArray, isNumber } from 'vega-util';
 import { isBinning } from '../../bin';
 import { COLOR, FILL, FILLOPACITY, OPACITY, POSITION_SCALE_CHANNELS, SCALE_CHANNELS, SHAPE, SIZE, STROKE, STROKEOPACITY, STROKEWIDTH, X, Y } from '../../channel';
-import { vgField } from '../../fielddef';
+import { vgField } from '../../channeldef';
 import * as log from '../../log';
 import { channelScalePropertyIncompatability, hasContinuousDomain, hasDiscreteDomain, isContinuousToDiscrete, isExtendedScheme, scaleTypeSupportProperty } from '../../scale';
 import * as util from '../../util';

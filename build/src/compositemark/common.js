@@ -1,7 +1,7 @@
 import * as tslib_1 from "tslib";
 import { isBoolean, isString } from 'vega-util';
 import { fieldDefs } from '../encoding';
-import { isContinuous, isFieldDef } from '../fielddef';
+import { isContinuous, isFieldDef } from '../channeldef';
 import * as log from '../log';
 import { isMarkDef } from '../mark';
 export function getCompositeMarkTooltip(tooltipSummary, continuousAxisChannelDef, encodingWithoutContinuousAxis, withFieldName = true) {

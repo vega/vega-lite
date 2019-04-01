@@ -1,8 +1,8 @@
 import { isNumber, isString } from 'vega-util';
 import { isMinMaxOp } from '../../aggregate';
 import { getMainRangeChannel } from '../../channel';
+import { isNumberFieldDef, isScaleFieldDef, isTimeFormatFieldDef, isTypedFieldDef } from '../../channeldef';
 import { isDateTime } from '../../datetime';
-import { isNumberFieldDef, isScaleFieldDef, isTimeFieldDef, isTypedFieldDef } from '../../fielddef';
 import * as log from '../../log';
 import { forEachLeaf } from '../../logical';
 import { isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate } from '../../predicate';
@@ -123,7 +123,7 @@ export class ParseNode extends DataFlowNode {
     static makeImplicitFromEncoding(parent, model, ancestorParse) {
         const implicit = {};
         function add(fieldDef) {
-            if (isTimeFieldDef(fieldDef)) {
+            if (isTimeFormatFieldDef(fieldDef)) {
                 implicit[fieldDef.field] = 'date';
             }
             else if (isNumberFieldDef(fieldDef) && isMinMaxOp(fieldDef.aggregate)) {

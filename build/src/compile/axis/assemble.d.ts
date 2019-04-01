@@ -11,3 +11,4 @@ export declare function assembleAxis(axisCmpt: AxisComponent, kind: 'main' | 'gr
  */
 export declare function assembleAxisSignals(model: Model): NewSignal[];
 export declare function assembleAxes(axisComponents: AxisComponentIndex, config: Config): VgAxis[];
+//# sourceMappingURL=assemble.d.ts.map

@@ -33,3 +33,4 @@ export declare type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedUnitSpe
  * (The json schema is generated from this type.)
  */
 export declare type TopLevelSpec = TopLevelUnitSpec | TopLevelFacetSpec | TopLevel<LayerSpec> | TopLevel<GenericRepeatSpec<FacetedUnitSpec, LayerSpec>> | TopLevel<GenericConcatSpec<FacetedUnitSpec, LayerSpec>> | TopLevel<GenericVConcatSpec<FacetedUnitSpec, LayerSpec>> | TopLevel<GenericHConcatSpec<FacetedUnitSpec, LayerSpec>>;
+//# sourceMappingURL=index.d.ts.map

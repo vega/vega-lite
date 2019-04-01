@@ -1,4 +1,4 @@
-import { vgField } from '../../fielddef';
+import { vgField } from '../../channeldef';
 import { fieldExpr } from '../../timeunit';
 import { duplicate, hash, keys, vals } from '../../util';
 import { DataFlowNode } from './dataflow';

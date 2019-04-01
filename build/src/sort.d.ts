@@ -60,3 +60,4 @@ export declare type Sort<F> = SortArray | SortOrder | EncodingSortField<F> | Sor
 export declare function isSortByEncoding<F>(sort: Sort<F>): sort is SortByEncoding;
 export declare function isSortField<F>(sort: Sort<F>): sort is EncodingSortField<F>;
 export declare function isSortArray<F>(sort: Sort<F>): sort is SortArray;
+//# sourceMappingURL=sort.d.ts.map

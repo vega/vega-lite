@@ -32,3 +32,4 @@ export declare class ParseNode extends DataFlowNode {
     dependentFields(): Set<string>;
     assembleTransforms(onlyNested?: boolean): VgFormulaTransform[];
 }
+//# sourceMappingURL=formatparse.d.ts.map

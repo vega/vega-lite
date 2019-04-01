@@ -1,4 +1,4 @@
-import { TypedFieldDef } from '../../fielddef';
+import { TypedFieldDef } from '../../channeldef';
 import { StackOffset } from '../../stack';
 import { StackTransform } from '../../transform';
 import { VgCompare, VgTransform } from '../../vega.schema';
@@ -54,3 +54,4 @@ export declare class StackNode extends DataFlowNode {
     private getGroupbyFields;
     assemble(): VgTransform[];
 }
+//# sourceMappingURL=stack.d.ts.map

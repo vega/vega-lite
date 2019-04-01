@@ -1,8 +1,8 @@
 import * as tslib_1 from "tslib";
 import { isString } from 'vega-util';
 import { FACET_CHANNELS, isChannel, isScaleChannel } from '../channel';
+import { getFieldDef, vgField } from '../channeldef';
 import { forEach, reduce } from '../encoding';
-import { getFieldDef, vgField } from '../fielddef';
 import * as log from '../log';
 import { hasDiscreteDomain } from '../scale';
 import { isFacetSpec, isLayerSpec, isUnitSpec } from '../spec';

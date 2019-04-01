@@ -1,4 +1,4 @@
-import { ConditionValueDefMixins, ValueDef } from './fielddef';
+import { ConditionValueDefMixins, ValueDef } from './channeldef';
 import { LegendConfig } from './legend';
 import { VgEncodeChannel } from './vega.schema';
 export interface TitleMixins {
@@ -17,15 +17,22 @@ export interface TitleMixins {
 }
 export interface FormatMixins {
     /**
-     * The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field. To override the default type, set `formatType`.
+     * The text formatting pattern for labels of guides (axes, legends, headers) and text marks.
      *
-     * See the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more information.
+     * - If the format type is `"number"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).
+     * - If the format type is `"time"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).
      *
-     * __Default value:__  derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for quantitative fields and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for temporal fields.
+     * See the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.
+     *
+     * __Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format.
      */
     format?: string;
     /**
-     * The format type for labels (number or time).
+     * The format type for labels (`"number"` or `"time"`).
+     *
+     * __Default value:__
+     * - `"time"` for temporal fields and ordinal and nomimal fields with `timeUnit`.
+     * - `"number"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.
      */
     formatType?: 'number' | 'time';
 }
@@ -48,3 +55,4 @@ export declare type GuideEncodingEntry = {
 };
 export declare const VL_ONLY_GUIDE_CONFIG: (keyof VlOnlyGuideConfig)[];
 export declare const VL_ONLY_LEGEND_CONFIG: (keyof LegendConfig)[];
+//# sourceMappingURL=guide.d.ts.map

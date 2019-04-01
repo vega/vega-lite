@@ -13,3 +13,4 @@ export declare function isLogicalAnd(op: LogicalOperand<any>): op is LogicalAnd<
 export declare function isLogicalNot(op: LogicalOperand<any>): op is LogicalNot<any>;
 export declare function forEachLeaf<T>(op: LogicalOperand<T>, fn: (op: T) => void): void;
 export declare function normalizeLogicalOperand<T>(op: LogicalOperand<T>, normalizer: (o: T) => T): LogicalOperand<T>;
+//# sourceMappingURL=logical.d.ts.map

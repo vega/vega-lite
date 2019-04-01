@@ -1,5 +1,5 @@
 import { isAggregateOp } from '../../aggregate';
-import { vgField } from '../../fielddef';
+import { vgField } from '../../channeldef';
 import { duplicate, hash } from '../../util';
 import { unique } from './../../util';
 import { DataFlowNode } from './dataflow';

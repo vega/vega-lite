@@ -12,3 +12,4 @@ export declare class FoldTransformNode extends DataFlowNode {
     hash(): string;
     assemble(): VgFoldTransform;
 }
+//# sourceMappingURL=fold.d.ts.map

@@ -443,8 +443,8 @@ export interface Scale {
      */
     interpolate?: ScaleInterpolate | ScaleInterpolateParams;
 }
-export declare const SCALE_PROPERTIES: ("reverse" | "round" | "base" | "domain" | "padding" | "type" | "range" | "zero" | "rangeStep" | "scheme" | "bins" | "paddingInner" | "paddingOuter" | "clamp" | "nice" | "exponent" | "constant" | "interpolate")[];
-export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: ("reverse" | "round" | "base" | "padding" | "zero" | "bins" | "paddingInner" | "paddingOuter" | "clamp" | "nice" | "exponent" | "constant" | "interpolate")[];
+export declare const SCALE_PROPERTIES: ("round" | "interpolate" | "zero" | "domain" | "type" | "bins" | "range" | "clamp" | "base" | "exponent" | "constant" | "nice" | "padding" | "paddingInner" | "paddingOuter" | "reverse" | "scheme" | "rangeStep")[];
+export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: ("round" | "interpolate" | "zero" | "bins" | "clamp" | "base" | "exponent" | "constant" | "nice" | "padding" | "paddingInner" | "paddingOuter" | "reverse")[];
 export declare const SCALE_TYPE_INDEX: ScaleTypeIndex;
 export declare function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale): boolean;
 /**
@@ -457,3 +457,4 @@ export declare function getSupportedScaleType(channel: Channel, fieldDefType: Ty
 export interface ScaleTypeIndex {
     [channel: string]: ScaleType[];
 }
+//# sourceMappingURL=scale.d.ts.map

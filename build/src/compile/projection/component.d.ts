@@ -9,3 +9,4 @@ export declare class ProjectionComponent extends Split<VgProjection> {
     merged: boolean;
     constructor(name: string, specifiedProjection: Projection, size: SignalRef[], data: (string | SignalRef)[]);
 }
+//# sourceMappingURL=component.d.ts.map

@@ -43,3 +43,4 @@ export interface BoxPlotConfigMixins {
 export declare const boxPlotNormalizer: CompositeMarkNormalizer<"boxplot">;
 export declare function getBoxPlotType(extent: number | 'min-max'): "min-max" | "tukey";
 export declare function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, { config }: NormalizerParams): NormalizedLayerSpec;
+//# sourceMappingURL=boxplot.d.ts.map

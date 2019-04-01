@@ -5,6 +5,7 @@ import { CalculateNode } from './calculate';
 import { OutputNode } from './dataflow';
 import { FacetNode } from './facet';
 import { FilterNode } from './filter';
+import { FilterInvalidNode } from './filterinvalid';
 import { FlattenTransformNode } from './flatten';
 import { FoldTransformNode } from './fold';
 import { ParseNode } from './formatparse';
@@ -66,7 +67,8 @@ function makeWalkTree(data) {
             // break here because the rest of the tree has to be taken care of by the facet.
             return;
         }
-        if (node instanceof FilterNode ||
+        if (node instanceof FilterInvalidNode ||
+            node instanceof FilterNode ||
             node instanceof CalculateNode ||
             node instanceof GeoPointNode ||
             node instanceof GeoJSONNode ||

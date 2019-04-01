@@ -190,3 +190,4 @@ export interface CompositionConfigMixins {
 }
 export declare type SpecType = 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
 export declare function extractCompositionLayout(spec: NormalizedSpec, specType: SpecType, config: Config): GenericCompositionLayoutWithColumns;
+//# sourceMappingURL=base.d.ts.map

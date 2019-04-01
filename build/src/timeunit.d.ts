@@ -81,3 +81,4 @@ export declare function getDateTimeComponents(timeUnit: TimeUnit, shortTimeLabel
  */
 export declare function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean, isUTCScale: boolean): string;
 export declare function normalizeTimeUnit(timeUnit: TimeUnit): TimeUnit;
+//# sourceMappingURL=timeunit.d.ts.map

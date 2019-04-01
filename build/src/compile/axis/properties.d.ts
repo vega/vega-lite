@@ -1,7 +1,7 @@
 import { Align, AxisOrient, SignalRef } from 'vega';
 import { Axis } from '../../axis';
 import { PositionScaleChannel } from '../../channel';
-import { TypedFieldDef } from '../../fielddef';
+import { TypedFieldDef } from '../../channeldef';
 import { ScaleType } from '../../scale';
 import { UnitModel } from '../unit';
 /**
@@ -28,3 +28,4 @@ export declare function defaultTickCount({ fieldDef, scaleType, size, scaleName,
 export declare function values(specifiedAxis: Axis, model: UnitModel, fieldDef: TypedFieldDef<string>, channel: PositionScaleChannel): (string | number | boolean | import("../../datetime").DateTime | {
     signal: string;
 })[];
+//# sourceMappingURL=properties.d.ts.map

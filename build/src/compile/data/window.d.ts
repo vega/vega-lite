@@ -15,3 +15,4 @@ export declare class WindowTransformNode extends DataFlowNode {
     hash(): string;
     assemble(): VgWindowTransform | VgJoinAggregateTransform;
 }
+//# sourceMappingURL=window.d.ts.map

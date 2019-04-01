@@ -33,3 +33,4 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extend
  */
 export declare type NormalizedRepeatSpec = GenericRepeatSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 export declare function isRepeatSpec(spec: BaseSpec): spec is GenericRepeatSpec<any, any>;
+//# sourceMappingURL=repeat.d.ts.map

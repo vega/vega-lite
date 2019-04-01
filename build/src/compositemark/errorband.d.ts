@@ -1,6 +1,6 @@
 import { Orientation } from 'vega';
 import { Encoding } from '../encoding';
-import { Field } from '../fielddef';
+import { Field } from '../channeldef';
 import { NormalizerParams } from '../normalize/index';
 import { GenericUnitSpec, NormalizedLayerSpec } from '../spec';
 import { Interpolate } from '../vega.schema';
@@ -71,3 +71,4 @@ export interface ErrorBandConfigMixins {
 }
 export declare const errorBandNormalizer: CompositeMarkNormalizer<"errorband">;
 export declare function normalizeErrorBand(spec: GenericUnitSpec<Encoding<string>, ErrorBand | ErrorBandDef>, { config }: NormalizerParams): NormalizedLayerSpec;
+//# sourceMappingURL=errorband.d.ts.map

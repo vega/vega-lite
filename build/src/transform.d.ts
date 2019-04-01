@@ -311,3 +311,4 @@ export declare type Transform = FilterTransform | CalculateTransform | LookupTra
 export declare function normalizeTransform(transform: Transform[]): (CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | ImputeTransform | AggregateTransform | WindowTransform | JoinAggregateTransform | StackTransform | FlattenTransform | FoldTransform | SampleTransform | {
     filter: LogicalOperand<Predicate>;
 })[];
+//# sourceMappingURL=transform.d.ts.map

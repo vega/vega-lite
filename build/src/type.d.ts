@@ -16,3 +16,4 @@ export declare type Type = StandardType | typeof GEOJSON;
  * @return Full type name.
  */
 export declare function getFullName(type: Type | string): Type;
+//# sourceMappingURL=type.d.ts.map

@@ -1,5 +1,5 @@
 import { isColorChannel } from '../../channel';
-import { valueArray } from '../../fielddef';
+import { valueArray } from '../../channeldef';
 import { isContinuousToContinuous } from '../../scale';
 import { contains, getFirstDefined } from '../../util';
 export function values(legend, fieldDef) {

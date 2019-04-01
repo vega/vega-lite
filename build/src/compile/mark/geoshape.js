@@ -1,6 +1,6 @@
-import * as mixins from './mixins';
-import { isFieldDef, vgField } from '../../fielddef';
+import { isFieldDef, vgField } from '../../channeldef';
 import { GEOJSON } from '../../type';
+import * as mixins from './mixins';
 export const geoshape = {
     vgMark: 'shape',
     encodeEntry: (model) => {

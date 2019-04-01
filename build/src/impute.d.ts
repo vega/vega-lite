@@ -28,3 +28,4 @@ export interface ImputeParams {
      */
     frame?: (null | number)[];
 }
+//# sourceMappingURL=impute.d.ts.map

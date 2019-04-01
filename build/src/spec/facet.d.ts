@@ -1,4 +1,4 @@
-import { ChannelDef, Field, FieldDef, TypedFieldDef } from '../fielddef';
+import { ChannelDef, Field, FieldDef, TypedFieldDef } from '../channeldef';
 import { Header } from '../header';
 import { EncodingSortField, SortArray, SortOrder } from '../sort';
 import { BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins } from './base';
@@ -70,3 +70,4 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends
  */
 export declare type NormalizedFacetSpec = GenericFacetSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 export declare function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<any, any>;
+//# sourceMappingURL=facet.d.ts.map

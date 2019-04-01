@@ -19,3 +19,4 @@ export declare abstract class BaseConcatModel extends Model {
     assembleSelectionData(data: VgData[]): VgData[];
     assembleMarks(): any[];
 }
+//# sourceMappingURL=baseconcat.d.ts.map

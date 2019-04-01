@@ -1,6 +1,6 @@
 import { isString } from 'vega-util';
 import { binToString, isBinning } from '../../bin';
-import { binRequiresRange, isTypedFieldDef, normalizeBin, vgField } from '../../fielddef';
+import { binRequiresRange, isTypedFieldDef, normalizeBin, vgField } from '../../channeldef';
 import { duplicate, flatten, hash, keys, vals } from '../../util';
 import { binFormatExpression } from '../common';
 import { isUnitModel } from '../model';

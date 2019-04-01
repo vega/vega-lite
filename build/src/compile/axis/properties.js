@@ -1,6 +1,6 @@
 import { isBinning } from '../../bin';
 import { X, Y } from '../../channel';
-import { valueArray } from '../../fielddef';
+import { valueArray } from '../../channeldef';
 import * as log from '../../log';
 import { hasDiscreteDomain } from '../../scale';
 import { NOMINAL, ORDINAL } from '../../type';

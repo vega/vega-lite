@@ -103,3 +103,4 @@ export declare const SHORT_DAYS: string[];
  * @param normalize whether to normalize quarter, month, day.
  */
 export declare function dateTimeExpr(d: DateTime | DateTimeExpr, normalize?: boolean): string;
+//# sourceMappingURL=datetime.d.ts.map

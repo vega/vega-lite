@@ -1,6 +1,6 @@
 import { isBoolean, isObject } from 'vega-util';
 import { COLOR, COLUMN, FILL, FILLOPACITY, OPACITY, ROW, SHAPE, SIZE, STROKE, STROKEOPACITY, STROKEWIDTH } from './channel';
-import { normalizeBin } from './fielddef';
+import { normalizeBin } from './channeldef';
 import { keys, varName } from './util';
 /**
  * Create a key for the bin configuration. Not for prebinned bin.

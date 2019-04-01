@@ -12,3 +12,4 @@ export declare function post(window: Window, url: string, data: {
     renderer?: Renderers;
     spec: string;
 }): void;
+//# sourceMappingURL=post.d.ts.map

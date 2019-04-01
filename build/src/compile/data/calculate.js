@@ -1,4 +1,4 @@
-import { isScaleFieldDef, vgField } from '../../fielddef';
+import { isScaleFieldDef, vgField } from '../../channeldef';
 import { fieldFilterExpression } from '../../predicate';
 import { isSortArray } from '../../sort';
 import { duplicate, hash } from '../../util';

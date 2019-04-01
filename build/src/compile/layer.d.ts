@@ -21,3 +21,4 @@ export declare class LayerModel extends Model {
     assembleMarks(): any[];
     assembleLegends(): VgLegend[];
 }
+//# sourceMappingURL=layer.d.ts.map

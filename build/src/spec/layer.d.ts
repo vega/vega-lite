@@ -31,3 +31,4 @@ export interface LayerSpec extends GenericLayerSpec<UnitSpec> {
  */
 export declare type NormalizedLayerSpec = GenericLayerSpec<NormalizedUnitSpec>;
 export declare function isLayerSpec(spec: BaseSpec): spec is GenericLayerSpec<any>;
+//# sourceMappingURL=layer.d.ts.map

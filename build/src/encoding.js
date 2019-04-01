@@ -1,11 +1,12 @@
 import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
-import { isAggregateOp } from './aggregate';
+import { isArgmaxDef, isArgminDef } from './aggregate';
 import { isBinning } from './bin';
 import { CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark } from './channel';
-import { binRequiresRange, getFieldDef, getGuide, getTypedFieldDef, hasConditionalFieldDef, isConditionalDef, isFieldDef, isTypedFieldDef, isValueDef, normalize, normalizeFieldDef, title, vgField } from './fielddef';
+import { binRequiresRange, getFieldDef, getGuide, getTypedFieldDef, hasConditionalFieldDef, isConditionalDef, isFieldDef, isTypedFieldDef, isValueDef, normalize, normalizeFieldDef, title, vgField } from './channeldef';
 import * as log from './log';
 import { getDateTimeComponents } from './timeunit';
+import { TEMPORAL } from './type';
 import { keys, some } from './util';
 export function channelHasField(encoding, channel) {
     const channelDef = encoding && encoding[channel];
@@ -47,20 +48,36 @@ export function extractTransformsFromEncoding(oldEncoding, config) {
             if (aggOp || timeUnit || bin) {
                 const guide = getGuide(channelDef);
                 const isTitleDefined = guide && guide.title;
-                const newField = vgField(channelDef, { forAs: true });
-                const newChannelDef = Object.assign({}, (isTitleDefined ? [] : { title: title(channelDef, config, { allowDisabling: true }) }), remaining, { 
+                let newField = vgField(channelDef, { forAs: true });
+                const newFieldDef = Object.assign({}, (isTitleDefined ? [] : { title: title(channelDef, config, { allowDisabling: true }) }), remaining, { 
                     // Always overwrite field
                     field: newField });
                 const isPositionChannel = channel === 'x' || channel === 'y';
-                if (aggOp && isAggregateOp(aggOp)) {
-                    const aggregateEntry = {
-                        op: aggOp,
-                        as: newField
-                    };
-                    if (field) {
-                        aggregateEntry.field = field;
+                if (aggOp) {
+                    let op;
+                    if (isArgmaxDef(aggOp)) {
+                        op = 'argmax';
+                        newField = vgField({ aggregate: 'argmax', field: aggOp.argmax }, { forAs: true });
+                        newFieldDef.field = `${newField}.${field}`;
                     }
-                    aggregate.push(aggregateEntry);
+                    else if (isArgminDef(aggOp)) {
+                        op = 'argmin';
+                        newField = vgField({ aggregate: 'argmin', field: aggOp.argmin }, { forAs: true });
+                        newFieldDef.field = `${newField}.${field}`;
+                    }
+                    else if (aggOp !== 'boxplot' && aggOp !== 'errorbar' && aggOp !== 'errorband') {
+                        op = aggOp;
+                    }
+                    if (op) {
+                        const aggregateEntry = {
+                            op,
+                            as: newField
+                        };
+                        if (field) {
+                            aggregateEntry.field = field;
+                        }
+                        aggregate.push(aggregateEntry);
+                    }
                 }
                 else if (isTypedFieldDef(channelDef) && isBinning(bin)) {
                     bins.push({ bin, field, as: newField });
@@ -76,30 +93,34 @@ export function extractTransformsFromEncoding(oldEncoding, config) {
                         };
                         encoding[channel + '2'] = secondaryChannel;
                     }
-                    newChannelDef['bin'] = 'binned';
+                    newFieldDef.bin = 'binned';
                     if (!isSecondaryRangeChannel(channel)) {
-                        newChannelDef['type'] = 'quantitative';
+                        newFieldDef['type'] = 'quantitative';
                     }
                 }
                 else if (timeUnit) {
                     timeUnits.push({ timeUnit, field, as: newField });
                     // Add formatting to appropriate property based on the type of channel we're processing
                     const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
-                    if (isNonPositionScaleChannel(channel)) {
-                        newChannelDef['legend'] = Object.assign({ format }, newChannelDef['legend']);
+                    const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';
+                    if (channel === 'text' || channel === 'tooltip') {
+                        newFieldDef['format'] = newFieldDef['format'] || format;
+                        if (formatType) {
+                            newFieldDef['formatType'] = formatType;
+                        }
+                    }
+                    else if (isNonPositionScaleChannel(channel)) {
+                        newFieldDef['legend'] = Object.assign({ format }, (formatType ? { formatType } : {}), newFieldDef['legend']);
                     }
                     else if (isPositionChannel) {
-                        newChannelDef['axis'] = Object.assign({ format }, newChannelDef['axis']);
-                    }
-                    else if (channel === 'text' || channel === 'tooltip') {
-                        newChannelDef['format'] = newChannelDef['format'] || format;
+                        newFieldDef['axis'] = Object.assign({ format }, (formatType ? { formatType } : {}), newFieldDef['axis']);
                     }
                 }
                 if (!aggOp) {
                     groupby.push(newField);
                 }
                 // now the field should refer to post-transformed field instead
-                encoding[channel] = newChannelDef;
+                encoding[channel] = newFieldDef;
             }
             else {
                 groupby.push(field);

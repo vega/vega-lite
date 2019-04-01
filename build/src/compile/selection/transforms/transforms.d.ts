@@ -12,3 +12,4 @@ export interface TransformCompiler {
     marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
 }
 export declare function forEachTransform(selCmpt: SelectionComponent, cb: (tx: TransformCompiler) => void): void;
+//# sourceMappingURL=transforms.d.ts.map

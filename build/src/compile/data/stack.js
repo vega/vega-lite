@@ -1,5 +1,5 @@
 import { isArray, isString } from 'vega-util';
-import { getTypedFieldDef, isFieldDef, vgField } from '../../fielddef';
+import { getTypedFieldDef, isFieldDef, vgField } from '../../channeldef';
 import { duplicate, getFirstDefined, hash } from '../../util';
 import { sortParams } from '../common';
 import { DataFlowNode } from './dataflow';

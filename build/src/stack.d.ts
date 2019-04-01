@@ -1,6 +1,6 @@
 import { NonPositionChannel } from './channel';
+import { Field, TypedFieldDef } from './channeldef';
 import { Encoding } from './encoding';
-import { Field, TypedFieldDef } from './fielddef';
 import { Mark, MarkDef } from './mark';
 export declare type StackOffset = 'zero' | 'center' | 'normalize';
 export declare function isStackOffset(s: string): s is StackOffset;
@@ -23,6 +23,7 @@ export interface StackProperties {
      */
     impute: boolean;
 }
-export declare const STACKABLE_MARKS: ("square" | "area" | "circle" | "line" | "text" | "rule" | "point" | "bar" | "tick")[];
+export declare const STACKABLE_MARKS: ("text" | "area" | "bar" | "line" | "point" | "tick" | "rule" | "circle" | "square")[];
 export declare const STACK_BY_DEFAULT_MARKS: ("area" | "bar")[];
 export declare function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig: StackOffset): StackProperties;
+//# sourceMappingURL=stack.d.ts.map

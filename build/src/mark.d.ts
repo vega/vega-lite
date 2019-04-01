@@ -230,3 +230,4 @@ export interface TickConfig extends MarkConfig, TickThicknessMixins {
 }
 export declare const defaultTickConfig: TickConfig;
 export declare function getMarkType(m: string | GenericMarkDef<any>): any;
+//# sourceMappingURL=mark.d.ts.map

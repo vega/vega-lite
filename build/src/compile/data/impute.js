@@ -1,4 +1,4 @@
-import { isFieldDef } from '../../fielddef';
+import { isFieldDef } from '../../channeldef';
 import { isImputeSequence } from '../../transform';
 import { duplicate, hash } from '../../util';
 import { pathGroupingFields } from '../mark/mark';

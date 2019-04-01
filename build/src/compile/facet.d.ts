@@ -1,7 +1,7 @@
 import { NewSignal } from 'vega';
 import { Channel } from '../channel';
+import { FieldRefOption, TypedFieldDef } from '../channeldef';
 import { Config } from '../config';
-import { FieldRefOption, TypedFieldDef } from '../fielddef';
 import { EncodingSortField } from '../sort';
 import { NormalizedFacetSpec } from '../spec';
 import { EncodingFacetMapping, FacetFieldDef } from '../spec/facet';
@@ -41,3 +41,4 @@ export declare class FacetModel extends ModelWithField {
     assembleMarks(): VgMarkGroup[];
     protected getMapping(): EncodingFacetMapping<string>;
 }
+//# sourceMappingURL=facet.d.ts.map

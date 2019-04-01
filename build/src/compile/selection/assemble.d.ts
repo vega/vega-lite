@@ -16,3 +16,4 @@ export declare function assembleUnitSelectionMarks(model: UnitModel, marks: any[
 export declare function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[];
 export declare function assembleSelectionPredicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string;
 export declare function assembleSelectionScaleDomain(model: Model, domainRaw: SignalRef): SignalRef;
+//# sourceMappingURL=assemble.d.ts.map

@@ -1,5 +1,5 @@
 import { COLOR, FILL, FILLOPACITY, OPACITY, SHAPE, SIZE, STROKE, STROKEOPACITY, STROKEWIDTH } from '../../channel';
-import { getTypedFieldDef, isFieldDef, title as fieldDefTitle } from '../../fielddef';
+import { getTypedFieldDef, isFieldDef, isTimeFormatFieldDef, title as fieldDefTitle } from '../../channeldef';
 import { LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES } from '../../legend';
 import { GEOJSON } from '../../type';
 import { deleteNestedProperty, getFirstDefined, keys } from '../../util';
@@ -91,7 +91,16 @@ function getProperty(property, legend, channel, model) {
     switch (property) {
         case 'format':
             // We don't include temporal field here as we apply format in encode block
+            if (isTimeFormatFieldDef(fieldDef)) {
+                return undefined;
+            }
             return numberFormat(fieldDef, legend.format, model.config);
+        case 'formatType':
+            // Same as format, We don't include temporal field here as we apply format in encode block
+            if (isTimeFormatFieldDef(fieldDef)) {
+                return undefined;
+            }
+            return legend.formatType;
         case 'title':
             return fieldDefTitle(fieldDef, model.config, { allowDisabling: true }) || undefined;
         case 'type':

@@ -113,3 +113,4 @@ export declare function isNamedData(data: Partial<Data> | Partial<VgData>): data
 export declare type DataSourceType = 'raw' | 'main' | 'row' | 'column' | 'lookup';
 export declare const MAIN: 'main';
 export declare const RAW: 'raw';
+//# sourceMappingURL=data.d.ts.map

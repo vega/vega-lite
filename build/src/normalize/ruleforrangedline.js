@@ -1,3 +1,5 @@
+import { getMainRangeChannel, SECONDARY_RANGE_CHANNEL } from '../channel';
+import { isFieldDef } from '../channeldef';
 import * as log from '../log';
 import { isUnitSpec } from '../spec/unit';
 export class RuleForRangedLineNormalizer {
@@ -7,7 +9,15 @@ export class RuleForRangedLineNormalizer {
     hasMatchingType(spec) {
         if (isUnitSpec(spec)) {
             const { encoding, mark } = spec;
-            return mark === 'line' && (!!encoding['x2'] || !!encoding['y2']);
+            if (mark === 'line') {
+                for (const channel of SECONDARY_RANGE_CHANNEL) {
+                    const mainChannel = getMainRangeChannel(channel);
+                    const mainChannelDef = encoding[mainChannel];
+                    if (!!encoding[channel] && isFieldDef(mainChannelDef) && mainChannelDef.bin !== 'binned') {
+                        return true;
+                    }
+                }
+            }
         }
         return false;
     }

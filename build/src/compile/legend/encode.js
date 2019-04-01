@@ -1,6 +1,6 @@
 import { isArray } from 'vega-util';
 import { COLOR, OPACITY, SHAPE } from '../../channel';
-import { hasConditionalValueDef, isTimeFieldDef, isValueDef } from '../../fielddef';
+import { hasConditionalValueDef, isTimeFormatFieldDef, isValueDef } from '../../channeldef';
 import { AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, GEOSHAPE, LINE, POINT, SQUARE, TEXT, TICK } from '../../mark';
 import { ScaleType } from '../../scale';
 import { getFirstDefined, keys } from '../../util';
@@ -111,7 +111,7 @@ export function labels(fieldDef, labelsSpec, model, channel, legendCmp) {
     const legend = model.legend(channel);
     const config = model.config;
     let out = {};
-    if (isTimeFieldDef(fieldDef)) {
+    if (isTimeFormatFieldDef(fieldDef)) {
         const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
         const expr = timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale);
         labelsSpec = Object.assign({}, (expr ? { text: { signal: expr } } : {}), labelsSpec);

@@ -41,3 +41,4 @@ export interface HeaderComponent {
     };
     axes: VgAxis[];
 }
+//# sourceMappingURL=component.d.ts.map

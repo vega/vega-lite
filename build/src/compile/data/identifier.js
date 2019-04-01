@@ -10,6 +10,9 @@ export class IdentifierNode extends DataFlowNode {
     producedFields() {
         return new Set([SELECTION_ID]);
     }
+    hash() {
+        return 'Identifier';
+    }
     assemble() {
         return { type: 'identifier', as: SELECTION_ID };
     }

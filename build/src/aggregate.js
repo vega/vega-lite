@@ -1,4 +1,4 @@
-import { toSet } from 'vega-util';
+import { isString, toSet } from 'vega-util';
 import { contains, flagKeys } from './util';
 const AGGREGATE_OP_INDEX = {
     argmax: 1,
@@ -24,16 +24,22 @@ const AGGREGATE_OP_INDEX = {
     variance: 1,
     variancep: 1
 };
+export function isArgminDef(a) {
+    return !!a && !!a['argmin'];
+}
+export function isArgmaxDef(a) {
+    return !!a && !!a['argmax'];
+}
 export const AGGREGATE_OPS = flagKeys(AGGREGATE_OP_INDEX);
 export function isAggregateOp(a) {
-    return !!AGGREGATE_OP_INDEX[a];
+    return isString(a) && !!AGGREGATE_OP_INDEX[a];
 }
 export const COUNTING_OPS = ['count', 'valid', 'missing', 'distinct'];
 export function isCountingAggregateOp(aggregate) {
-    return aggregate && contains(COUNTING_OPS, aggregate);
+    return aggregate && isString(aggregate) && contains(COUNTING_OPS, aggregate);
 }
 export function isMinMaxOp(aggregate) {
-    return aggregate && contains(['min', 'max'], aggregate);
+    return aggregate && isString(aggregate) && contains(['min', 'max'], aggregate);
 }
 /** Additive-based aggregation operations.  These can be applied to stack. */
 export const SUM_OPS = ['count', 'sum', 'distinct', 'valid', 'missing'];

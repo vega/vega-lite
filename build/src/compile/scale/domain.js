@@ -3,8 +3,8 @@ import { isObject, isString } from 'vega-util';
 import { SHARED_DOMAIN_OP_INDEX } from '../../aggregate';
 import { isBinning } from '../../bin';
 import { isScaleChannel } from '../../channel';
+import { binRequiresRange, valueExpr, vgField } from '../../channeldef';
 import { MAIN, RAW } from '../../data';
-import { binRequiresRange, valueExpr, vgField } from '../../fielddef';
 import * as log from '../../log';
 import { hasDiscreteDomain, isSelectionDomain } from '../../scale';
 import { DEFAULT_SORT_OP, isSortArray, isSortByEncoding, isSortField } from '../../sort';
@@ -310,19 +310,20 @@ export function domainSort(model, channel, scaleType) {
  * 3. The scale is quantitative or time scale.
  */
 export function canUseUnaggregatedDomain(fieldDef, scaleType) {
-    if (!fieldDef.aggregate) {
+    const { aggregate, type } = fieldDef;
+    if (!aggregate) {
         return {
             valid: false,
             reason: log.message.unaggregateDomainHasNoEffectForRawField(fieldDef)
         };
     }
-    if (!SHARED_DOMAIN_OP_INDEX[fieldDef.aggregate]) {
+    if (isString(aggregate) && !SHARED_DOMAIN_OP_INDEX[aggregate]) {
         return {
             valid: false,
-            reason: log.message.unaggregateDomainWithNonSharedDomainOp(fieldDef.aggregate)
+            reason: log.message.unaggregateDomainWithNonSharedDomainOp(aggregate)
         };
     }
-    if (fieldDef.type === 'quantitative') {
+    if (type === 'quantitative') {
         if (scaleType === 'log') {
             return {
                 valid: false,

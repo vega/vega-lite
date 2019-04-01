@@ -79,3 +79,4 @@ export interface AutoSizeParams {
 }
 export declare function normalizeAutoSize(topLevelAutosize: AutosizeType | AutoSizeParams, configAutosize: AutosizeType | AutoSizeParams, isUnitOrLayer?: boolean): AutoSizeParams;
 export declare function extractTopLevelProperties<T extends TopLevelProperties>(t: T): {};
+//# sourceMappingURL=toplevel.d.ts.map

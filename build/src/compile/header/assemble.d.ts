@@ -218,7 +218,7 @@ export declare function assembleTitleGroup(model: Model, channel: FacetChannel):
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef;
         name?: string;
@@ -256,7 +256,7 @@ export declare function assembleTitleGroup(model: Model, channel: FacetChannel):
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef;
         name?: string;
@@ -294,7 +294,7 @@ export declare function assembleTitleGroup(model: Model, channel: FacetChannel):
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef;
         name?: string;
@@ -316,7 +316,7 @@ export declare function assembleTitleGroup(model: Model, channel: FacetChannel):
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     };
 };
 export declare function defaultHeaderGuideAlign(headerChannel: HeaderChannel, angle: number, anchor?: TitleAnchor): {
@@ -545,7 +545,7 @@ export declare function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>,
     fontStyle?: import("vega").StringValue;
     fontWeight?: import("vega").FontWeightValue;
     limit?: import("vega").NumberValue;
-    orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
 } | {
     text: string | import("vega").SignalRef | {
         signal: string;
@@ -585,7 +585,7 @@ export declare function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>,
     fontStyle?: import("vega").StringValue;
     fontWeight?: import("vega").FontWeightValue;
     limit?: import("vega").NumberValue;
-    orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
 } | {
     text: string | import("vega").SignalRef | {
         signal: string;
@@ -625,7 +625,7 @@ export declare function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>,
     fontStyle?: import("vega").StringValue;
     fontWeight?: import("vega").FontWeightValue;
     limit?: import("vega").NumberValue;
-    orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
 } | {
     text: string | import("vega").SignalRef | {
         signal: string;
@@ -649,7 +649,7 @@ export declare function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>,
     fontStyle?: import("vega").StringValue;
     fontWeight?: import("vega").FontWeightValue;
     limit?: import("vega").NumberValue;
-    orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+    orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
 };
 export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, headerCmpt: HeaderComponent): {
     axes: import("vega").Axis[];
@@ -875,7 +875,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -915,7 +915,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -955,7 +955,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -979,7 +979,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     };
     from: {
         data: string;
@@ -1211,7 +1211,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -1251,7 +1251,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -1291,7 +1291,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -1315,7 +1315,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     };
     from: {
         data: string;
@@ -1541,7 +1541,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -1581,7 +1581,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -1621,7 +1621,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -1645,7 +1645,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     };
     from: {
         data: string;
@@ -1870,7 +1870,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -1910,7 +1910,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -1950,7 +1950,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -1974,7 +1974,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     };
     from: {
         data: string;
@@ -2255,7 +2255,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -2295,7 +2295,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -2335,7 +2335,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -2359,7 +2359,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     };
     from: {
         data: string;
@@ -2590,7 +2590,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -2630,7 +2630,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -2670,7 +2670,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -2694,7 +2694,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     };
     from: {
         data: string;
@@ -2919,7 +2919,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -2959,7 +2959,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -2999,7 +2999,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -3023,7 +3023,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     };
     from: {
         data: string;
@@ -3247,7 +3247,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -3287,7 +3287,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -3327,7 +3327,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -3351,7 +3351,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     };
     from: {
         data: string;
@@ -3405,338 +3405,6 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
     role: string;
 } | {
     axes: import("vega").Axis[];
-    encode: {
-        update: {
-            [x: string]: {
-                signal: string;
-            };
-        };
-    };
-    title: {
-        text: string | import("vega").SignalRef | {
-            signal: string;
-        };
-        name?: string;
-        interactive?: boolean;
-        style: string | string[];
-        zindex?: number;
-        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
-        anchor?: import("vega").AnchorValue;
-        frame: import("vega").StringValue;
-        offset?: import("vega").NumberValue;
-        align: string | import("vega").SignalRef | {
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            value: string | number | boolean;
-        } | {
-            scale: import("vega").Field;
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            band: number | boolean;
-        } | {
-            scale: import("vega").Field;
-            range: number | boolean;
-        } | {
-            value: import("vega").Align;
-        };
-        angle?: import("vega").NumberValue;
-        baseline: string | import("vega").SignalRef | {
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            value: string | number | boolean;
-        } | {
-            scale: import("vega").Field;
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            band: number | boolean;
-        } | {
-            scale: import("vega").Field;
-            range: number | boolean;
-        } | {
-            value: import("vega").TextBaseline;
-        };
-        color?: import("vega").ColorValue;
-        dx?: import("vega").NumberValue;
-        dy?: import("vega").NumberValue;
-        font?: import("vega").StringValue;
-        fontSize?: import("vega").NumberValue;
-        fontStyle?: import("vega").StringValue;
-        fontWeight?: import("vega").FontWeightValue;
-        limit?: import("vega").NumberValue;
-        orient: string | import("vega").SignalRef;
-    } | {
-        text: string | import("vega").SignalRef | {
-            signal: string;
-        };
-        name?: string;
-        interactive?: boolean;
-        style: string | string[];
-        zindex?: number;
-        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
-        anchor?: import("vega").AnchorValue;
-        frame: import("vega").StringValue;
-        offset?: import("vega").NumberValue;
-        align?: import("vega").AlignValue;
-        angle?: import("vega").NumberValue;
-        baseline: string | import("vega").SignalRef | {
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            value: string | number | boolean;
-        } | {
-            scale: import("vega").Field;
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            band: number | boolean;
-        } | {
-            scale: import("vega").Field;
-            range: number | boolean;
-        } | {
-            value: import("vega").TextBaseline;
-        };
-        color?: import("vega").ColorValue;
-        dx?: import("vega").NumberValue;
-        dy?: import("vega").NumberValue;
-        font?: import("vega").StringValue;
-        fontSize?: import("vega").NumberValue;
-        fontStyle?: import("vega").StringValue;
-        fontWeight?: import("vega").FontWeightValue;
-        limit?: import("vega").NumberValue;
-        orient: string | import("vega").SignalRef;
-    } | {
-        text: string | import("vega").SignalRef | {
-            signal: string;
-        };
-        name?: string;
-        interactive?: boolean;
-        style: string | string[];
-        zindex?: number;
-        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
-        anchor?: import("vega").AnchorValue;
-        frame: import("vega").StringValue;
-        offset?: import("vega").NumberValue;
-        align: string | import("vega").SignalRef | {
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            value: string | number | boolean;
-        } | {
-            scale: import("vega").Field;
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            band: number | boolean;
-        } | {
-            scale: import("vega").Field;
-            range: number | boolean;
-        } | {
-            value: import("vega").Align;
-        };
-        angle?: import("vega").NumberValue;
-        baseline?: import("vega").TextBaselineValue;
-        color?: import("vega").ColorValue;
-        dx?: import("vega").NumberValue;
-        dy?: import("vega").NumberValue;
-        font?: import("vega").StringValue;
-        fontSize?: import("vega").NumberValue;
-        fontStyle?: import("vega").StringValue;
-        fontWeight?: import("vega").FontWeightValue;
-        limit?: import("vega").NumberValue;
-        orient: string | import("vega").SignalRef;
-    } | {
-        text: string | import("vega").SignalRef | {
-            signal: string;
-        };
-        name?: string;
-        interactive?: boolean;
-        style: string | string[];
-        zindex?: number;
-        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
-        anchor?: import("vega").AnchorValue;
-        frame: import("vega").StringValue;
-        offset?: import("vega").NumberValue;
-        align?: import("vega").AlignValue;
-        angle?: import("vega").NumberValue;
-        baseline?: import("vega").TextBaselineValue;
-        color?: import("vega").ColorValue;
-        dx?: import("vega").NumberValue;
-        dy?: import("vega").NumberValue;
-        font?: import("vega").StringValue;
-        fontSize?: import("vega").NumberValue;
-        fontStyle?: import("vega").StringValue;
-        fontWeight?: import("vega").FontWeightValue;
-        limit?: import("vega").NumberValue;
-        orient: string | import("vega").SignalRef;
-    } | {
-        text: string | import("vega").SignalRef | {
-            signal: string;
-        };
-        name?: string;
-        interactive?: boolean;
-        style: string | string[];
-        zindex?: number;
-        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
-        anchor?: import("vega").AnchorValue;
-        frame: import("vega").StringValue;
-        offset?: import("vega").NumberValue;
-        align: string | import("vega").SignalRef | {
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            value: string | number | boolean;
-        } | {
-            scale: import("vega").Field;
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            band: number | boolean;
-        } | {
-            scale: import("vega").Field;
-            range: number | boolean;
-        } | {
-            value: import("vega").Align;
-        };
-        angle?: import("vega").NumberValue;
-        baseline: string | import("vega").SignalRef | {
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            value: string | number | boolean;
-        } | {
-            scale: import("vega").Field;
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            band: number | boolean;
-        } | {
-            scale: import("vega").Field;
-            range: number | boolean;
-        } | {
-            value: import("vega").TextBaseline;
-        };
-        color?: import("vega").ColorValue;
-        dx?: import("vega").NumberValue;
-        dy?: import("vega").NumberValue;
-        font?: import("vega").StringValue;
-        fontSize?: import("vega").NumberValue;
-        fontStyle?: import("vega").StringValue;
-        fontWeight?: import("vega").FontWeightValue;
-        limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
-    } | {
-        text: string | import("vega").SignalRef | {
-            signal: string;
-        };
-        name?: string;
-        interactive?: boolean;
-        style: string | string[];
-        zindex?: number;
-        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
-        anchor?: import("vega").AnchorValue;
-        frame: import("vega").StringValue;
-        offset?: import("vega").NumberValue;
-        align?: import("vega").AlignValue;
-        angle?: import("vega").NumberValue;
-        baseline: string | import("vega").SignalRef | {
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            value: string | number | boolean;
-        } | {
-            scale: import("vega").Field;
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            band: number | boolean;
-        } | {
-            scale: import("vega").Field;
-            range: number | boolean;
-        } | {
-            value: import("vega").TextBaseline;
-        };
-        color?: import("vega").ColorValue;
-        dx?: import("vega").NumberValue;
-        dy?: import("vega").NumberValue;
-        font?: import("vega").StringValue;
-        fontSize?: import("vega").NumberValue;
-        fontStyle?: import("vega").StringValue;
-        fontWeight?: import("vega").FontWeightValue;
-        limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
-    } | {
-        text: string | import("vega").SignalRef | {
-            signal: string;
-        };
-        name?: string;
-        interactive?: boolean;
-        style: string | string[];
-        zindex?: number;
-        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
-        anchor?: import("vega").AnchorValue;
-        frame: import("vega").StringValue;
-        offset?: import("vega").NumberValue;
-        align: string | import("vega").SignalRef | {
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            value: string | number | boolean;
-        } | {
-            scale: import("vega").Field;
-            field: import("vega").Field;
-        } | {
-            scale: import("vega").Field;
-            band: number | boolean;
-        } | {
-            scale: import("vega").Field;
-            range: number | boolean;
-        } | {
-            value: import("vega").Align;
-        };
-        angle?: import("vega").NumberValue;
-        baseline?: import("vega").TextBaselineValue;
-        color?: import("vega").ColorValue;
-        dx?: import("vega").NumberValue;
-        dy?: import("vega").NumberValue;
-        font?: import("vega").StringValue;
-        fontSize?: import("vega").NumberValue;
-        fontStyle?: import("vega").StringValue;
-        fontWeight?: import("vega").FontWeightValue;
-        limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
-    } | {
-        text: string | import("vega").SignalRef | {
-            signal: string;
-        };
-        name?: string;
-        interactive?: boolean;
-        style: string | string[];
-        zindex?: number;
-        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
-        anchor?: import("vega").AnchorValue;
-        frame: import("vega").StringValue;
-        offset?: import("vega").NumberValue;
-        align?: import("vega").AlignValue;
-        angle?: import("vega").NumberValue;
-        baseline?: import("vega").TextBaselineValue;
-        color?: import("vega").ColorValue;
-        dx?: import("vega").NumberValue;
-        dy?: import("vega").NumberValue;
-        font?: import("vega").StringValue;
-        fontSize?: import("vega").NumberValue;
-        fontStyle?: import("vega").StringValue;
-        fontWeight?: import("vega").FontWeightValue;
-        limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
-    };
-    name: string;
-    type: string;
-    role: string;
-} | {
     encode: {
         update: {
             [x: string]: {
@@ -3959,7 +3627,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -3999,7 +3667,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -4039,7 +3707,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -4063,7 +3731,339 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
+    };
+    name: string;
+    type: string;
+    role: string;
+} | {
+    encode: {
+        update: {
+            [x: string]: {
+                signal: string;
+            };
+        };
+    };
+    title: {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient: string | import("vega").SignalRef;
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").TextBaseline;
+        };
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align: string | import("vega").SignalRef | {
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            value: string | number | boolean;
+        } | {
+            scale: import("vega").Field;
+            field: import("vega").Field;
+        } | {
+            scale: import("vega").Field;
+            band: number | boolean;
+        } | {
+            scale: import("vega").Field;
+            range: number | boolean;
+        } | {
+            value: import("vega").Align;
+        };
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
+    } | {
+        text: string | import("vega").SignalRef | {
+            signal: string;
+        };
+        name?: string;
+        interactive?: boolean;
+        style: string | string[];
+        zindex?: number;
+        encode?: Partial<Record<import("vega").EncodeEntryName, import("vega").TextEncodeEntry>>;
+        anchor?: import("vega").AnchorValue;
+        frame: import("vega").StringValue;
+        offset?: import("vega").NumberValue;
+        align?: import("vega").AlignValue;
+        angle?: import("vega").NumberValue;
+        baseline?: import("vega").TextBaselineValue;
+        color?: import("vega").ColorValue;
+        dx?: import("vega").NumberValue;
+        dy?: import("vega").NumberValue;
+        font?: import("vega").StringValue;
+        fontSize?: import("vega").NumberValue;
+        fontStyle?: import("vega").StringValue;
+        fontWeight?: import("vega").FontWeightValue;
+        limit?: import("vega").NumberValue;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     };
     name: string;
     type: string;
@@ -4285,7 +4285,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -4325,7 +4325,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -4365,7 +4365,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -4389,7 +4389,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     };
     name: string;
     type: string;
@@ -4610,7 +4610,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -4650,7 +4650,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -4690,7 +4690,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     } | {
         text: string | import("vega").SignalRef | {
             signal: string;
@@ -4714,7 +4714,7 @@ export declare function assembleHeaderGroup(model: Model, channel: HeaderChannel
         fontStyle?: import("vega").StringValue;
         fontWeight?: import("vega").FontWeightValue;
         limit?: import("vega").NumberValue;
-        orient?: "left" | "right" | "none" | "top" | "bottom" | import("vega").SignalRef;
+        orient?: import("vega").SignalRef | "left" | "right" | "top" | "bottom" | "none";
     };
     name: string;
     type: string;
@@ -4757,3 +4757,4 @@ export declare function assembleLayoutTitleBand(headerComponentIndex: LayoutHead
 export declare function assembleHeaderProperties(config: Config, facetFieldDef: FacetFieldDef<string>, channel: FacetChannel, properties: (keyof CoreHeader)[], propertiesMap: {
     [k in keyof CoreHeader]: keyof TitleConfig;
 }): Partial<VgTitle>;
+//# sourceMappingURL=assemble.d.ts.map

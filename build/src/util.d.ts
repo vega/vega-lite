@@ -137,3 +137,4 @@ export declare function isInternalField(name: string): boolean;
  * Normalize angle to be within [0,360).
  */
 export declare function normalizeAngle(angle: number): number;
+//# sourceMappingURL=util.d.ts.map
