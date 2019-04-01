@@ -1,6 +1,6 @@
 import {Spec as VgSpec} from 'vega';
+import * as vlFieldDef from '../channeldef';
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
-import * as vlFieldDef from '../fielddef';
 import * as log from '../log';
 import {normalize} from '../normalize/index';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec';

@@ -1,8 +1,8 @@
 import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning} from '../../bin';
 import {Channel} from '../../channel';
+import {binRequiresRange, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
 import {Config} from '../../config';
-import {binRequiresRange, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../fielddef';
 import {BinTransform} from '../../transform';
 import {Dict, duplicate, flatten, hash, keys, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';

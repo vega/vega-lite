@@ -11,7 +11,7 @@ import {
   PositionFieldDef,
   SecondaryFieldDef,
   TextFieldDef
-} from '../fielddef';
+} from '../channeldef';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';

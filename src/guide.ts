@@ -1,4 +1,4 @@
-import {ConditionValueDefMixins, ValueDef} from './fielddef';
+import {ConditionValueDefMixins, ValueDef} from './channeldef';
 import {LegendConfig} from './legend';
 import {VgEncodeChannel} from './vega.schema';
 

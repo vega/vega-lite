@@ -1,6 +1,6 @@
 import {Orientation} from 'vega';
 import {Encoding} from '../encoding';
-import {Field} from '../fielddef';
+import {Field} from '../channeldef';
 import * as log from '../log';
 import {MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize/index';

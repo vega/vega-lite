@@ -1,8 +1,8 @@
 /* tslint:disable quotemark */
 
+import {PositionFieldDef, SecondaryFieldDef} from '../../../src/channeldef';
 import {bar} from '../../../src/compile/mark/bar';
 import {fieldInvalidPredicate, fieldInvalidTestValueRef} from '../../../src/compile/mark/valueref';
-import {PositionFieldDef, SecondaryFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {defaultBarConfig} from '../../../src/mark';
 import {defaultScaleConfig} from '../../../src/scale';

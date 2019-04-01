@@ -1,7 +1,7 @@
 import {isObject} from 'vega-util';
+import {Field} from '../channeldef';
 import {Config} from '../config';
 import {Encoding} from '../encoding';
-import {Field} from '../fielddef';
 import {AreaConfig, isMarkDef, LineConfig, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {isUnitSpec} from '../spec/unit';

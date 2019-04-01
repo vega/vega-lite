@@ -2,7 +2,6 @@ import {isArray} from 'vega-util';
 import {isAggregateOp} from './aggregate';
 import {isBinning} from './bin';
 import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark} from './channel';
-import {Config} from './config';
 import {
   binRequiresRange,
   ChannelDef,
@@ -38,7 +37,8 @@ import {
   TypedFieldDef,
   ValueDef,
   vgField
-} from './fielddef';
+} from './channeldef';
+import {Config} from './config';
 import * as log from './log';
 import {Mark} from './mark';
 import {EncodingFacetMapping} from './spec/facet';
