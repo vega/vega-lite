@@ -36,13 +36,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"argmax_US_Gross\"].Production_Budget === null || isNaN(datum[\"argmax_US_Gross\"].Production_Budget)",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"Production_Budget for max US_Gross\": format(datum[\"argmax_US_Gross\"].Production_Budget, \"\"), \"Major_Genre\": ''+datum[\"Major_Genre\"]}"
           },

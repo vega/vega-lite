@@ -22,6 +22,10 @@
           "type": "formula",
           "expr": "datum[\"argmax_US_Gross\"] && datum[\"argmax_US_Gross\"][\"Production_Budget\"]",
           "as": "argmax_US_Gross.Production_Budget"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"argmax_US_Gross.Production_Budget\"] !== null && !isNaN(datum[\"argmax_US_Gross.Production_Budget\"])"
         }
       ]
     }
@@ -41,13 +45,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"argmax_US_Gross.Production_Budget\"] === null || isNaN(datum[\"argmax_US_Gross.Production_Budget\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"argmax_US_Gross.Production_Budget\": format(datum[\"argmax_US_Gross.Production_Budget\"], \"\"), \"Major_Genre\": ''+datum[\"Major_Genre\"]}"
           },
