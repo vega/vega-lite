@@ -56,8 +56,8 @@ describe('compile/legend', () => {
 
       const def = legendParse.parseLegendForChannel(model, COLOR).combine();
       expect(typeof def).toBe('object');
-      expect(def.title).toEqual('a');
-      expect(def.stroke).toEqual('color');
+      expect(def.title).toBe('a');
+      expect(def.stroke).toBe('color');
     });
 
     it('should produce no legend title when title is null, "", or false', () => {
@@ -93,7 +93,7 @@ describe('compile/legend', () => {
       });
 
       const def = legendParse.parseLegendForChannel(model, COLOR).combine();
-      expect(def.title).toEqual('foo');
+      expect(def.title).toBe('foo');
     });
 
     [SIZE, SHAPE, OPACITY].forEach(channel => {
@@ -121,7 +121,7 @@ describe('compile/legend', () => {
           expect(def.encode.symbols.update.opacity).not.toBeDefined();
         }
         expect(typeof def).toBe('object');
-        expect(def.title).toEqual('a');
+        expect(def.title).toBe('a');
       });
     });
 
@@ -169,7 +169,7 @@ describe('compile/legend', () => {
       });
       model.parseScale();
       model.parseLegends();
-      expect(model.component.legends.color.explicit.orient).toEqual('left');
+      expect(model.component.legends.color.explicit.orient).toBe('left');
     });
 
     it('should correctly merge legend that exists only on one plot', () => {

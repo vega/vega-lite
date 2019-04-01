@@ -76,8 +76,8 @@ describe('compile/header/index', () => {
 
       const rowHeaderGroups = assembleHeaderGroups(model, 'row');
       const columnHeaderGroups = assembleHeaderGroups(model, 'column');
-      expect(rowHeaderGroups[0].sort.order).toEqual('ascending');
-      expect(columnHeaderGroups[0].sort.order).toEqual('descending');
+      expect(rowHeaderGroups[0].sort.order).toBe('ascending');
+      expect(columnHeaderGroups[0].sort.order).toBe('descending');
     });
 
     it('should correctly process sort field', () => {
@@ -98,7 +98,7 @@ describe('compile/header/index', () => {
       model.parseAxesAndHeaders();
 
       const rowHeaderGroups = assembleHeaderGroups(model, 'row');
-      expect(rowHeaderGroups[0].sort.field).toEqual('datum["min_d"]');
+      expect(rowHeaderGroups[0].sort.field).toBe('datum["min_d"]');
     });
   });
 

@@ -42,7 +42,7 @@ describe('stack', () => {
         }
       };
       const stackProps = stack(spec.mark, spec.encoding, undefined);
-      expect(stackProps.fieldChannel).toEqual('x');
+      expect(stackProps.fieldChannel).toBe('x');
     });
   });
 
@@ -58,7 +58,7 @@ describe('stack', () => {
         }
       };
       const stackProps = stack(spec.mark, spec.encoding, undefined);
-      expect(stackProps.fieldChannel).toEqual('x');
+      expect(stackProps.fieldChannel).toBe('x');
     });
   });
 
@@ -185,7 +185,7 @@ describe('stack', () => {
     expect(_stack).toBeTruthy();
 
     for (const stackBy of _stack.stackBy) {
-      expect(stackBy.channel).not.toEqual('tooltip');
+      expect(stackBy.channel).not.toBe('tooltip');
     }
   });
 

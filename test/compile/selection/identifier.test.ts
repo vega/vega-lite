@@ -42,7 +42,7 @@ describe('Identifier transform', () => {
   it('is added for default point selections', () => {
     for (const type of ['single', 'multi']) {
       const url = getVgData({pt: {type}});
-      expect(url[0].transform[0].type).toEqual('identifier');
+      expect(url[0].transform[0].type).toBe('identifier');
     }
   });
 
@@ -51,7 +51,7 @@ describe('Identifier transform', () => {
       let aggr = -1;
       transform.some((t, i) => ((aggr = i), t.type === 'aggregate'));
       expect(aggr).toBeGreaterThanOrEqual(0);
-      expect(transform[aggr + 1].type).toEqual('identifier');
+      expect(transform[aggr + 1].type).toBe('identifier');
     }
 
     for (const type of ['single', 'multi']) {
@@ -69,7 +69,7 @@ describe('Identifier transform', () => {
       const data = getVgData({pt: {type}}, null, null, null, null, [{calculate: 'datum.Horsepower * 2', as: 'foo'}]);
       let calc = -1;
       data[0].transform.some((t, i) => ((calc = i), t.type === 'formula' && t.as === 'foo'));
-      expect(data[0].transform[calc - 1].type).toEqual('identifier');
+      expect(data[0].transform[calc - 1].type).toBe('identifier');
     }
   });
 });

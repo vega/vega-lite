@@ -41,9 +41,9 @@ describe('Selection Predicate', () => {
   });
 
   it('generates the predicate expression', () => {
-    expect(predicate(model, 'one')).toEqual('!(length(data("one_store"))) || (vlSelectionTest("one_store", datum))');
+    expect(predicate(model, 'one')).toBe('!(length(data("one_store"))) || (vlSelectionTest("one_store", datum))');
 
-    expect(predicate(model, 'four')).toEqual('(vlSelectionTest("four_store", datum))');
+    expect(predicate(model, 'four')).toBe('(vlSelectionTest("four_store", datum))');
 
     expect(predicate(model, {not: 'one'})).toEqual(
       '!(length(data("one_store"))) || (!(vlSelectionTest("one_store", datum)))'

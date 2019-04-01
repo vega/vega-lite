@@ -21,7 +21,7 @@ describe('compile/compile', () => {
     }).spec;
 
     expect(spec.padding).toEqual(5);
-    expect(spec.autosize).toEqual('pad');
+    expect(spec.autosize).toBe('pad');
     expect(spec.width).toEqual(20);
     expect(spec.height).toEqual(20);
     expect(spec.title).toEqual({text: 'test', frame: 'group'});
@@ -41,7 +41,7 @@ describe('compile/compile', () => {
     }).spec;
 
     expect(spec.padding).toEqual(123);
-    expect(spec.autosize).toEqual('pad');
+    expect(spec.autosize).toBe('pad');
     expect(spec.width).toEqual(20);
     expect(spec.height).toEqual(20);
 
@@ -107,7 +107,7 @@ describe('compile/compile', () => {
       encoding: {}
     }).spec;
 
-    expect(spec.autosize).toEqual('fit');
+    expect(spec.autosize).toBe('fit');
   });
 
   it(
@@ -142,7 +142,7 @@ describe('compile/compile', () => {
         ]
       }).spec;
       expect(localLogger.warns[0]).toEqual(log.message.FIT_NON_SINGLE);
-      expect(spec.autosize).toEqual('pad');
+      expect(spec.autosize).toBe('pad');
     })
   );
 
@@ -264,7 +264,7 @@ describe('compile/compile', () => {
         }
       }
     ).spec;
-    expect(spec.config.background).toEqual('blue');
+    expect(spec.config.background).toBe('blue');
   });
 
   it('should merge spec and provided config.', () => {
@@ -283,7 +283,7 @@ describe('compile/compile', () => {
         }
       }
     ).spec;
-    expect(spec.config.background).toEqual('red');
+    expect(spec.config.background).toBe('red');
   });
 
   it('should return a spec with projections (implicit)', () => {
