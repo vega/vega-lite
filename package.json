@@ -98,7 +98,7 @@
     "tslint": "5.14.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.4.1",
-    "vega-cli": "^5.3.3",
+    "vega-cli": "^5.3.4",
     "vega-datasets": "^1.24.1",
     "vega-embed": "^4.0.0",
     "vega-tooltip": "^0.17.0",
