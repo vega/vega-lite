@@ -303,6 +303,10 @@
         "name": "parallel_coordinate",
         "title": "Parallel Coordinate Plot",
         "style": "background-size: auto 105%; background-position: center center !important;"
+      },
+      {
+        "name": "bar_argmax",
+        "title": "Bar Chart showing Argmax Value"
       }
     ]
   },

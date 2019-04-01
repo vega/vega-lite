@@ -1,6 +1,14 @@
 import {COUNTING_OPS} from '../src/aggregate';
 import {Channel, CHANNELS} from '../src/channel';
-import {channelCompatibility, defaultTitle, defaultType, normalize, TypedFieldDef, vgField} from '../src/channeldef';
+import {
+  channelCompatibility,
+  defaultTitle,
+  defaultType,
+  functionalTitleFormatter,
+  normalize,
+  TypedFieldDef,
+  vgField
+} from '../src/channeldef';
 import * as log from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
@@ -13,6 +21,14 @@ describe('fieldDef', () => {
 
     it('should access flattened fields in expression', () => {
       expect(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'})).toEqual('datum["foo.bar.baz"]');
+    });
+
+    it('should access argmin field in expression', () => {
+      expect(vgField({aggregate: {argmin: 'b'}, field: 'a'})).toEqual('argmin_b.a');
+    });
+
+    it('should access argmax field in expression', () => {
+      expect(vgField({aggregate: {argmax: 'b'}, field: 'a'})).toEqual('argmax_b.a');
     });
   });
 
@@ -179,9 +195,25 @@ describe('fieldDef', () => {
     });
   });
 
+  describe('functionalTitleFormatter', () => {
+    it('should return correct title for argmin', () => {
+      expect(functionalTitleFormatter({field: 'f', aggregate: {argmin: 'a'}}, {})).toEqual('f for argmin(a)');
+    });
+    it('should return correct title for aggregate', () => {
+      expect(functionalTitleFormatter({field: 'f', aggregate: {argmax: 'a'}}, {})).toEqual('f for argmax(a)');
+    });
+  });
+
   describe('defaultTitle()', () => {
     it('should return correct title for aggregate', () => {
       expect(defaultTitle({field: 'f', aggregate: 'mean'}, {})).toEqual('Mean of f');
+    });
+
+    it('should return correct title for argmin', () => {
+      expect(defaultTitle({field: 'f', aggregate: {argmin: 'a'}}, {})).toEqual('f for min a');
+    });
+    it('should return correct title for aggregate', () => {
+      expect(defaultTitle({field: 'f', aggregate: {argmax: 'a'}}, {})).toEqual('f for max a');
     });
 
     it('should return correct title for count', () => {
