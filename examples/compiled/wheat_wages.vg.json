@@ -31,6 +31,26 @@
     },
     {
       "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"wheat\"] !== null && !isNaN(datum[\"wheat\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"year\"] !== null && !isNaN(datum[\"year\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
       "source": "source_2",
       "transform": [
         {
@@ -38,11 +58,15 @@
           "expr": "((!datum.commonwealth && datum.index % 2) ? -1: 1) * 2 + 95",
           "as": "offset"
         },
-        {"type": "formula", "expr": "95", "as": "y"}
+        {"type": "formula", "expr": "95", "as": "y"},
+        {
+          "type": "filter",
+          "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
+        }
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_3",
       "source": "source_2",
       "transform": [
         {
@@ -54,6 +78,10 @@
           "type": "formula",
           "expr": "+datum.start + (+datum.end - +datum.start)/2",
           "as": "x"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"off2\"] !== null && !isNaN(datum[\"off2\"])"
         }
       ]
     }
@@ -63,23 +91,11 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"year\"] === null || isNaN(datum[\"year\"]) || datum[\"wheat\"] === null || isNaN(datum[\"wheat\"])",
-              "value": null
-            },
-            {"value": "#aaa"}
-          ],
-          "stroke": [
-            {
-              "test": "datum[\"year\"] === null || isNaN(datum[\"year\"]) || datum[\"wheat\"] === null || isNaN(datum[\"wheat\"])",
-              "value": null
-            },
-            {"value": "#999"}
-          ],
+          "fill": {"value": "#aaa"},
+          "stroke": {"value": "#999"},
           "x": [
             {
               "test": "datum[\"year\"] === null || isNaN(datum[\"year\"])",
@@ -103,17 +119,11 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "source_1"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.5},
-          "stroke": [
-            {
-              "test": "datum[\"year\"] === null || isNaN(datum[\"year\"])",
-              "value": null
-            },
-            {"value": "#000"}
-          ],
+          "stroke": {"value": "#000"},
           "strokeWidth": {"value": 0.6},
           "x": [
             {
@@ -186,23 +196,11 @@
       "name": "layer_5_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
-          "stroke": [
-            {
-              "test": "datum[\"start\"] === null || isNaN(datum[\"start\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
-              "value": null
-            },
-            {"value": "#000"}
-          ],
-          "fill": [
-            {
-              "test": "datum[\"start\"] === null || isNaN(datum[\"start\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
-              "value": null
-            },
-            {"scale": "fill", "field": "commonwealth"}
-          ],
+          "stroke": {"value": "#000"},
+          "fill": {"scale": "fill", "field": "commonwealth"},
           "x": [
             {
               "test": "datum[\"start\"] === null || isNaN(datum[\"start\"])",
@@ -226,18 +224,12 @@
       "name": "layer_6_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "fontSize": {"value": 9},
           "fontStyle": {"value": "italic"},
-          "fill": [
-            {
-              "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"off2\"] === null || isNaN(datum[\"off2\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
+          "fill": {"value": "black"},
           "x": [
             {
               "test": "datum[\"x\"] === null || isNaN(datum[\"x\"])",
@@ -258,12 +250,13 @@
       "type": "linear",
       "domain": {
         "fields": [
+          {"data": "data_0", "field": "year"},
+          {"data": "data_0", "field": "year_end"},
+          {"data": "data_1", "field": "year"},
           {"data": "source_0", "field": "year"},
-          {"data": "source_0", "field": "year_end"},
-          {"data": "source_1", "field": "year"},
-          {"data": "data_0", "field": "start"},
-          {"data": "data_0", "field": "end"},
-          {"data": "data_1", "field": "x"}
+          {"data": "data_2", "field": "start"},
+          {"data": "data_2", "field": "end"},
+          {"data": "data_3", "field": "x"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -276,11 +269,11 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "wheat"},
+          {"data": "data_0", "field": "wheat"},
           {"data": "source_0", "field": "wages"},
-          {"data": "data_0", "field": "y"},
-          {"data": "data_0", "field": "offset"},
-          {"data": "data_1", "field": "off2"}
+          {"data": "data_2", "field": "y"},
+          {"data": "data_2", "field": "offset"},
+          {"data": "data_3", "field": "off2"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -290,7 +283,7 @@
     {
       "name": "fill",
       "type": "ordinal",
-      "domain": {"data": "data_0", "field": "commonwealth", "sort": true},
+      "domain": {"data": "data_2", "field": "commonwealth", "sort": true},
       "range": ["black", "white"]
     }
   ],

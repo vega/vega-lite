@@ -70,6 +70,10 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_10_temp_min\"] !== null && !isNaN(datum[\"bin_maxbins_10_temp_min\"]) && datum[\"bin_maxbins_10_temp_max\"] !== null && !isNaN(datum[\"bin_maxbins_10_temp_max\"])"
         }
       ]
     }
@@ -104,13 +108,7 @@
           "from": {"data": "data_0"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"mean_precipitation\"] === null || isNaN(datum[\"mean_precipitation\"])",
-                  "value": null
-                },
-                {"value": "#4c78a8"}
-              ],
+              "fill": {"value": "#4c78a8"},
               "tooltip": {
                 "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\")}"
               },
@@ -181,20 +179,8 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) || datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
-              "stroke": [
-                {
-                  "test": "datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) || datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                  "value": null
-                },
-                {"value": "#4c78a8"}
-              ],
+              "fill": {"value": "transparent"},
+              "stroke": {"value": "#4c78a8"},
               "tooltip": {
                 "signal": "{\"temp_min (binned)\": datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_min\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_min_end\"], \"\"), \"temp_max (binned)\": datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_max\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_max_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },

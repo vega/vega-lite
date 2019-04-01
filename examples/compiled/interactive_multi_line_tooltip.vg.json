@@ -19,6 +19,16 @@
           "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
         }
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"yearmonthdate_date\"] !== null && !isNaN(datum[\"yearmonthdate_date\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -94,14 +104,10 @@
       "name": "layer_2_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": [
-            {
-              "test": "datum[\"yearmonthdate_date\"] === null || isNaN(datum[\"yearmonthdate_date\"])",
-              "value": null
-            },
             {
               "test": "(!(vlSelectionTest(\"hover_store\", datum)))",
               "value": "transparent"
@@ -122,7 +128,12 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "yearmonthdate_date"},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "yearmonthdate_date"},
+          {"data": "data_0", "field": "yearmonthdate_date"}
+        ]
+      },
       "range": [0, {"signal": "width"}]
     },
     {

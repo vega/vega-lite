@@ -6,7 +6,27 @@
   "data": [
     {"name": "brush_store"},
     {"name": "grid_store"},
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Displacement\"] !== null && !isNaN(datum[\"Displacement\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+        }
+      ]
+    }
   ],
   "signals": [
     {"name": "concat_0_height", "value": 200},
@@ -301,24 +321,12 @@
           "name": "concat_0_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
-              "stroke": [
-                {
-                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
-                  "value": null
-                },
-                {"value": "#4c78a8"}
-              ],
+              "fill": {"value": "transparent"},
+              "stroke": {"value": "#4c78a8"},
               "tooltip": {
                 "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Horsepower\": format(datum[\"Horsepower\"], \"\")}"
               },
@@ -536,22 +544,12 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Displacement\"] === null || isNaN(datum[\"Displacement\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
+              "fill": {"value": "transparent"},
               "stroke": [
-                {
-                  "test": "datum[\"Displacement\"] === null || isNaN(datum[\"Displacement\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "value": "steelblue"
@@ -620,7 +618,7 @@
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_0", "field": "Miles_per_Gallon"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -628,7 +626,7 @@
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {"data": "data_0", "field": "Horsepower"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
       "zero": true
@@ -636,7 +634,7 @@
     {
       "name": "concat_1_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Displacement"},
+      "domain": {"data": "data_1", "field": "Displacement"},
       "domainRaw": {"signal": "grid[\"Displacement\"]"},
       "range": [0, {"signal": "width"}],
       "nice": true,
@@ -645,7 +643,7 @@
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Acceleration"},
+      "domain": {"data": "data_1", "field": "Acceleration"},
       "domainRaw": {"signal": "grid[\"Acceleration\"]"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,

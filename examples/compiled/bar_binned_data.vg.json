@@ -18,6 +18,16 @@
         {"bin_start": 20, "bin_end": 22, "count": 17},
         {"bin_start": 22, "bin_end": 24, "count": 5}
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_start\"] !== null && !isNaN(datum[\"bin_start\"]) && datum[\"count\"] !== null && !isNaN(datum[\"count\"])"
+        }
+      ]
     }
   ],
   "marks": [
@@ -25,16 +35,10 @@
       "name": "marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"bin_start\"] === null || isNaN(datum[\"bin_start\"]) || datum[\"count\"] === null || isNaN(datum[\"count\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"bin_start\": format(datum[\"bin_start\"], \"\"), \"bin_end\": format(datum[\"bin_end\"], \"\"), \"count\": format(datum[\"count\"], \"\")}"
           },
@@ -50,7 +54,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "fields": ["bin_start", "bin_end"]},
+      "domain": {"data": "data_0", "fields": ["bin_start", "bin_end"]},
       "range": [0, {"signal": "width"}],
       "bins": {"step": 2},
       "zero": false
@@ -58,7 +62,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "count"},
+      "domain": {"data": "data_0", "field": "count"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

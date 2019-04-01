@@ -16,6 +16,10 @@
           "type": "formula",
           "expr": "'https://www.google.com/search?q=' + datum.Name",
           "as": "url"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
         }
       ]
     }
@@ -30,20 +34,8 @@
         "update": {
           "opacity": {"value": 0.7},
           "cursor": {"value": "pointer"},
-          "fill": [
-            {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-              "value": null
-            },
-            {"value": "transparent"}
-          ],
-          "stroke": [
-            {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "Origin"}
-          ],
+          "fill": {"value": "transparent"},
+          "stroke": {"scale": "color", "field": "Origin"},
           "tooltip": {"signal": "''+datum[\"Name\"]"},
           "href": {"signal": "''+datum[\"url\"]"},
           "x": {"scale": "x", "field": "Horsepower"},

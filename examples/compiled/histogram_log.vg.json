@@ -49,6 +49,10 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"x1\"] !== null && !isNaN(datum[\"x1\"])"
         }
       ]
     }
@@ -61,13 +65,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"x1\"] === null || isNaN(datum[\"x1\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"x1\": format(datum[\"x1\"], \"\"), \"x2\": format(datum[\"x2\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },

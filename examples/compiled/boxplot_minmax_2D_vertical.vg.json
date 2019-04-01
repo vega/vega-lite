@@ -25,6 +25,46 @@
           ]
         }
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"lower_whisker_people\"] !== null && !isNaN(datum[\"lower_whisker_people\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"upper_box_people\"] !== null && !isNaN(datum[\"upper_box_people\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"lower_box_people\"] !== null && !isNaN(datum[\"lower_box_people\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"mid_box_people\"] !== null && !isNaN(datum[\"mid_box_people\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -36,16 +76,10 @@
       "name": "layer_0_marks",
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "stroke": [
-            {
-              "test": "datum[\"lower_whisker_people\"] === null || isNaN(datum[\"lower_whisker_people\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
+          "stroke": {"value": "black"},
           "tooltip": {
             "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
@@ -59,16 +93,10 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "stroke": [
-            {
-              "test": "datum[\"upper_box_people\"] === null || isNaN(datum[\"upper_box_people\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
+          "stroke": {"value": "black"},
           "tooltip": {
             "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
@@ -82,16 +110,10 @@
       "name": "layer_2_marks",
       "type": "rect",
       "style": ["bar", "boxplot-box"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"lower_box_people\"] === null || isNaN(datum[\"lower_box_people\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
@@ -106,17 +128,11 @@
       "name": "layer_3_marks",
       "type": "rect",
       "style": ["tick", "boxplot-median"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"mid_box_people\"] === null || isNaN(datum[\"mid_box_people\"])",
-              "value": null
-            },
-            {"value": "white"}
-          ],
+          "fill": {"value": "white"},
           "tooltip": {
             "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
@@ -132,7 +148,15 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {"data": "source_0", "field": "age", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "age"},
+          {"data": "data_1", "field": "age"},
+          {"data": "data_2", "field": "age"},
+          {"data": "data_3", "field": "age"}
+        ],
+        "sort": true
+      },
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0,
       "paddingOuter": 0
@@ -141,13 +165,14 @@
       "name": "y",
       "type": "linear",
       "domain": {
-        "data": "source_0",
         "fields": [
-          "lower_whisker_people",
-          "lower_box_people",
-          "upper_box_people",
-          "upper_whisker_people",
-          "mid_box_people"
+          {"data": "data_0", "field": "lower_whisker_people"},
+          {"data": "data_0", "field": "lower_box_people"},
+          {"data": "data_1", "field": "upper_box_people"},
+          {"data": "data_1", "field": "upper_whisker_people"},
+          {"data": "data_2", "field": "lower_box_people"},
+          {"data": "data_2", "field": "upper_box_people"},
+          {"data": "data_3", "field": "mid_box_people"}
         ]
       },
       "range": [{"signal": "height"}, 0],

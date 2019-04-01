@@ -25,7 +25,11 @@
       "source": "source_0",
       "transform": [
         {"type": "formula", "expr": "2*datum.b", "as": "b2"},
-        {"type": "filter", "expr": "datum.b2 > 60"}
+        {"type": "filter", "expr": "datum.b2 > 60"},
+        {
+          "type": "filter",
+          "expr": "datum[\"b2\"] !== null && !isNaN(datum[\"b2\"])"
+        }
       ]
     }
   ],
@@ -44,13 +48,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"b2\"] === null || isNaN(datum[\"b2\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"b2\": format(datum[\"b2\"], \"\"), \"a\": ''+datum[\"a\"]}"
           },

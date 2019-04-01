@@ -135,20 +135,8 @@
           "from": {"data": "facet"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"mean_price\"] === null || isNaN(datum[\"mean_price\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
-              "stroke": [
-                {
-                  "test": "datum[\"mean_price\"] === null || isNaN(datum[\"mean_price\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "symbol"}
-              ],
+              "fill": {"value": "transparent"},
+              "stroke": {"scale": "color", "field": "symbol"},
               "tooltip": {
                 "signal": "{\"date (quarter)\": 'Q' + quarter(datum[\"quarter_date\"]), \"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
               },

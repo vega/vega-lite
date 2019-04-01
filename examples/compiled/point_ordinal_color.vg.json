@@ -16,6 +16,16 @@
         {"a": "C", "x": 3, "y": 3},
         {"a": "C", "x": 6, "y": 6}
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
+        }
+      ]
     }
   ],
   "marks": [
@@ -23,24 +33,12 @@
       "name": "marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
-              "value": null
-            },
-            {"value": "transparent"}
-          ],
-          "stroke": [
-            {
-              "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "a"}
-          ],
+          "fill": {"value": "transparent"},
+          "stroke": {"scale": "color", "field": "a"},
           "tooltip": {
             "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\"), \"a\": ''+datum[\"a\"]}"
           },
@@ -54,7 +52,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "x"},
+      "domain": {"data": "data_0", "field": "x"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -62,7 +60,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "y"},
+      "domain": {"data": "data_0", "field": "y"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -70,7 +68,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "a", "sort": true},
+      "domain": {"data": "data_0", "field": "a", "sort": true},
       "range": "ordinal",
       "interpolate": "hcl"
     }

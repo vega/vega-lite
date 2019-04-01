@@ -220,6 +220,26 @@
           "as": "date"
         }
       ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"low\"] !== null && !isNaN(datum[\"low\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"open\"] !== null && !isNaN(datum[\"open\"])"
+        }
+      ]
     }
   ],
   "marks": [
@@ -227,14 +247,10 @@
       "name": "layer_0_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": [
-            {
-              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"low\"] === null || isNaN(datum[\"low\"])",
-              "value": null
-            },
             {"test": "datum.open < datum.close", "value": "#06982d"},
             {"value": "#ae1325"}
           ],
@@ -263,14 +279,10 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "fill": [
-            {
-              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"open\"] === null || isNaN(datum[\"open\"])",
-              "value": null
-            },
             {"test": "datum.open < datum.close", "value": "#06982d"},
             {"value": "#ae1325"}
           ],
@@ -301,14 +313,26 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "data_0", "field": "date"},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "date"},
+          {"data": "data_2", "field": "date"}
+        ]
+      },
       "range": [0, {"signal": "width"}],
       "padding": 5
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "fields": ["low", "high", "open", "close"]},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "low"},
+          {"data": "data_1", "field": "high"},
+          {"data": "data_2", "field": "open"},
+          {"data": "data_2", "field": "close"}
+        ]
+      },
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true

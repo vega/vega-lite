@@ -18,6 +18,16 @@
         {"a": "E", "b": 4},
         {"a": "E", "b": 7}
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -32,24 +42,12 @@
       "name": "plotname_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"b\"] === null || isNaN(datum[\"b\"])",
-              "value": null
-            },
-            {"value": "transparent"}
-          ],
-          "stroke": [
-            {
-              "test": "datum[\"b\"] === null || isNaN(datum[\"b\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
           },
@@ -63,14 +61,14 @@
     {
       "name": "plotname_x",
       "type": "point",
-      "domain": {"data": "source_0", "field": "a", "sort": true},
+      "domain": {"data": "data_0", "field": "a", "sort": true},
       "range": {"step": {"signal": "plotname_x_step"}},
       "padding": 0.5
     },
     {
       "name": "plotname_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "b"},
+      "domain": {"data": "data_0", "field": "b"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

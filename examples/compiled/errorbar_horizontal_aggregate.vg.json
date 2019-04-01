@@ -56,13 +56,7 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "stroke": [
-            {
-              "test": "datum[\"min_people\"] === null || isNaN(datum[\"min_people\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
+          "stroke": {"value": "black"},
           "tooltip": {
             "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"min_people\"], \"\"), \"Max of people\": format(datum[\"max_people\"], \"\")}"
           },
@@ -79,13 +73,7 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"min_people\"] === null || isNaN(datum[\"min_people\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"min_people\"], \"\")}"
           },
@@ -103,13 +91,7 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"max_people\"] === null || isNaN(datum[\"max_people\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"max_people\"], \"\")}"
           },
@@ -127,20 +109,8 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"mean_people\"] === null || isNaN(datum[\"mean_people\"])",
-              "value": null
-            },
-            {"value": "transparent"}
-          ],
-          "stroke": [
-            {
-              "test": "datum[\"mean_people\"] === null || isNaN(datum[\"mean_people\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"mean_people\"], \"\")}"
           },

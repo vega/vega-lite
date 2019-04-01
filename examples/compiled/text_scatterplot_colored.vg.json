@@ -11,7 +11,11 @@
       "url": "data/cars.json",
       "format": {"type": "json"},
       "transform": [
-        {"type": "formula", "expr": "datum.Origin[0]", "as": "OriginInitial"}
+        {"type": "formula", "expr": "datum.Origin[0]", "as": "OriginInitial"},
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
       ]
     }
   ],
@@ -23,13 +27,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "Origin"}
-          ],
+          "fill": {"scale": "color", "field": "Origin"},
           "tooltip": {
             "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"], \"OriginInitial\": ''+datum[\"OriginInitial\"]}"
           },

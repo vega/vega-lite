@@ -124,13 +124,7 @@
           "from": {"data": "facet"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"sum_yield\"] === null || isNaN(datum[\"sum_yield\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "site"}
-              ],
+              "fill": {"scale": "color", "field": "site"},
               "tooltip": {
                 "signal": "{\"Sum of yield\": format(datum[\"sum_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"site\": ''+datum[\"site\"]}"
               },

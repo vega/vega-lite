@@ -18,6 +18,16 @@
         {"x": 6, "y": 1000000},
         {"x": 7, "y": 10000000}
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
+        }
+      ]
     }
   ],
   "marks": [
@@ -25,24 +35,12 @@
       "name": "marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
-              "value": null
-            },
-            {"value": "transparent"}
-          ],
-          "stroke": [
-            {
-              "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\")}"
           },
@@ -56,7 +54,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "x"},
+      "domain": {"data": "data_0", "field": "x"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -64,7 +62,7 @@
     {
       "name": "y",
       "type": "log",
-      "domain": {"data": "source_0", "field": "y"},
+      "domain": {"data": "data_0", "field": "y"},
       "range": [{"signal": "height"}, 0],
       "nice": true
     }

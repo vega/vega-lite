@@ -80,13 +80,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"sum_properties.yield\"] === null || isNaN(datum[\"sum_properties.yield\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "properties\\.site"}
-          ],
+          "fill": {"scale": "color", "field": "properties\\.site"},
           "tooltip": {
             "signal": "{\"properties.variety\": ''+datum[\"properties.variety\"], \"Sum of properties.yield\": format(datum[\"sum_properties.yield\"], \"\"), \"site\": ''+datum[\"properties.site\"]}"
           },
