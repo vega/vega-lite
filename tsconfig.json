@@ -22,8 +22,7 @@
     "resolveJsonModule": true,
     "suppressImplicitAnyIndexErrors": true,
     "typeRoots": ["./node_modules/@types", "./typings"],
-    "composite": true,
-    "incremental": true
+    "composite": true
   },
   "files": [],
   "include": [],
