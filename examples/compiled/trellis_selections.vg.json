@@ -188,10 +188,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, child_width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -220,10 +216,6 @@
             {
               "events": [{"signal": "brush_X"}],
               "update": "brush_X ? {unit: \"child\" + '__facet_column_' + (facet[\"Series\"]), fields: brush_tuple_fields, values: [brush_X]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -319,6 +311,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"x\"), grid_zoom_anchor.x, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -333,6 +329,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"y\"), grid_zoom_anchor.y, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -343,10 +343,6 @@
             {
               "events": [{"signal": "grid_X || grid_Y"}],
               "update": "grid_X && grid_Y ? {unit: \"child\" + '__facet_column_' + (facet[\"Series\"]), fields: grid_tuple_fields, values: [grid_X,grid_Y]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -421,13 +417,7 @@
         },
         {
           "name": "xenc_tuple",
-          "update": "xenc_X !== null ? {fields: xenc_tuple_fields, values: [xenc_X]} : null",
-          "on": [
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
-            }
-          ]
+          "update": "xenc_X !== null ? {fields: xenc_tuple_fields, values: [xenc_X]} : null"
         },
         {"name": "xenc_tuple_fields", "value": [{"type": "E", "field": "X"}]},
         {

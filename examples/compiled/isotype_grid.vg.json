@@ -170,10 +170,6 @@
         {
           "events": {"signal": "highlight_zoom_delta"},
           "update": "clampRange(zoomLinear(highlight_x, highlight_zoom_anchor.x, highlight_zoom_delta), 0, width)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },
@@ -226,10 +222,6 @@
         {
           "events": {"signal": "highlight_zoom_delta"},
           "update": "clampRange(zoomLinear(highlight_y, highlight_zoom_anchor.y, highlight_zoom_delta), 0, height)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },
@@ -258,8 +250,7 @@
         {
           "events": [{"signal": "highlight_col || highlight_row"}],
           "update": "highlight_col && highlight_row ? {unit: \"\", fields: highlight_tuple_fields, values: [highlight_col,highlight_row]} : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {

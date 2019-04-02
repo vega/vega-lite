@@ -75,10 +75,6 @@
         {
           "events": {"signal": "paintbrush_zoom_delta"},
           "update": "clampRange(zoomLinear(paintbrush_x, paintbrush_zoom_anchor.x, paintbrush_zoom_delta), 0, width)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },
@@ -134,10 +130,6 @@
         {
           "events": {"signal": "paintbrush_zoom_delta"},
           "update": "clampRange(zoomLinear(paintbrush_y, paintbrush_zoom_anchor.y, paintbrush_zoom_delta), 0, height)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },
@@ -168,8 +160,7 @@
             {"signal": "paintbrush_Horsepower || paintbrush_Miles_per_Gallon"}
           ],
           "update": "paintbrush_Horsepower && paintbrush_Miles_per_Gallon ? {unit: \"\", fields: paintbrush_tuple_fields, values: [paintbrush_Horsepower,paintbrush_Miles_per_Gallon]} : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {

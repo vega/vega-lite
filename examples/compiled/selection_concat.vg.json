@@ -102,10 +102,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -161,10 +157,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, concat_0_height)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -195,10 +187,6 @@
                 {"signal": "brush_Miles_per_Gallon || brush_Horsepower"}
               ],
               "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Horsepower]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -462,6 +450,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"concat_1_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -476,6 +468,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"concat_1_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -486,10 +482,6 @@
             {
               "events": [{"signal": "grid_Displacement || grid_Acceleration"}],
               "update": "grid_Displacement && grid_Acceleration ? {unit: \"concat_1\", fields: grid_tuple_fields, values: [grid_Displacement,grid_Acceleration]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },

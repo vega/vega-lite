@@ -174,10 +174,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -235,10 +231,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -276,10 +268,6 @@
                 {"signal": "brush_Miles_per_Gallon || brush_Horsepower"}
               ],
               "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Horsepower]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -381,6 +369,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -395,6 +387,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -407,10 +403,6 @@
                 {"signal": "grid_Miles_per_Gallon || grid_Horsepower"}
               ],
               "update": "grid_Miles_per_Gallon && grid_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon,grid_Horsepower]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -673,10 +665,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -734,10 +722,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -773,10 +757,6 @@
             {
               "events": [{"signal": "brush_Acceleration || brush_Horsepower"}],
               "update": "brush_Acceleration && brush_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration,brush_Horsepower]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -878,6 +858,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Horsepower__repeat_column_Acceleration_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -892,6 +876,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Horsepower__repeat_column_Acceleration_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -902,10 +890,6 @@
             {
               "events": [{"signal": "grid_Acceleration || grid_Horsepower"}],
               "update": "grid_Acceleration && grid_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration,grid_Horsepower]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -1168,10 +1152,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -1204,10 +1184,6 @@
             {
               "events": [{"signal": "brush_Horsepower"}],
               "update": "brush_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -1306,6 +1282,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Horsepower__repeat_column_Horsepower_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -1316,10 +1296,6 @@
             {
               "events": [{"signal": "grid_Horsepower"}],
               "update": "grid_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -1576,10 +1552,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -1637,10 +1609,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -1678,10 +1646,6 @@
                 {"signal": "brush_Miles_per_Gallon || brush_Acceleration"}
               ],
               "update": "brush_Miles_per_Gallon && brush_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Acceleration]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -1783,6 +1747,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -1797,6 +1765,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -1809,10 +1781,6 @@
                 {"signal": "grid_Miles_per_Gallon || grid_Acceleration"}
               ],
               "update": "grid_Miles_per_Gallon && grid_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon,grid_Acceleration]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -2075,10 +2043,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -2111,10 +2075,6 @@
             {
               "events": [{"signal": "brush_Acceleration"}],
               "update": "brush_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -2213,6 +2173,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Acceleration__repeat_column_Acceleration_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -2223,10 +2187,6 @@
             {
               "events": [{"signal": "grid_Acceleration"}],
               "update": "grid_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -2483,10 +2443,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -2544,10 +2500,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -2583,10 +2535,6 @@
             {
               "events": [{"signal": "brush_Horsepower || brush_Acceleration"}],
               "update": "brush_Horsepower && brush_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Acceleration]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -2688,6 +2636,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Acceleration__repeat_column_Horsepower_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -2702,6 +2654,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Acceleration__repeat_column_Horsepower_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -2712,10 +2668,6 @@
             {
               "events": [{"signal": "grid_Horsepower || grid_Acceleration"}],
               "update": "grid_Horsepower && grid_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Acceleration]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -2978,10 +2930,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -3014,10 +2962,6 @@
             {
               "events": [{"signal": "brush_Miles_per_Gallon"}],
               "update": "brush_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -3116,6 +3060,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -3126,10 +3074,6 @@
             {
               "events": [{"signal": "grid_Miles_per_Gallon"}],
               "update": "grid_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -3386,10 +3330,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -3447,10 +3387,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -3488,10 +3424,6 @@
                 {"signal": "brush_Acceleration || brush_Miles_per_Gallon"}
               ],
               "update": "brush_Acceleration && brush_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration,brush_Miles_per_Gallon]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -3593,6 +3525,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -3607,6 +3543,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -3619,10 +3559,6 @@
                 {"signal": "grid_Acceleration || grid_Miles_per_Gallon"}
               ],
               "update": "grid_Acceleration && grid_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration,grid_Miles_per_Gallon]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -3885,10 +3821,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -3946,10 +3878,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -3987,10 +3915,6 @@
                 {"signal": "brush_Horsepower || brush_Miles_per_Gallon"}
               ],
               "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -4092,6 +4016,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -4106,6 +4034,10 @@
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -4118,10 +4050,6 @@
                 {"signal": "grid_Horsepower || grid_Miles_per_Gallon"}
               ],
               "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Miles_per_Gallon]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },

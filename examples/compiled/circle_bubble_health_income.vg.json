@@ -39,7 +39,8 @@
         {
           "events": {"signal": "view_zoom_delta"},
           "update": "zoomLog(domain(\"x\"), view_zoom_anchor.x, view_zoom_delta)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -52,7 +53,8 @@
         {
           "events": {"signal": "view_zoom_delta"},
           "update": "zoomLinear(domain(\"y\"), view_zoom_anchor.y, view_zoom_delta)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -61,8 +63,7 @@
         {
           "events": [{"signal": "view_income || view_health"}],
           "update": "view_income && view_health ? {unit: \"\", fields: view_tuple_fields, values: [view_income,view_health]} : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {

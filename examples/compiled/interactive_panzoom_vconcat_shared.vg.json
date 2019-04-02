@@ -67,6 +67,10 @@
             {
               "events": {"signal": "region_zoom_delta"},
               "update": "zoomLinear(domain(\"x\"), region_zoom_anchor.x, region_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -81,6 +85,10 @@
             {
               "events": {"signal": "region_zoom_delta"},
               "update": "zoomLinear(domain(\"concat_0_y\"), region_zoom_anchor.y, region_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -93,10 +101,6 @@
                 {"signal": "region_Horsepower || region_Miles_per_Gallon"}
               ],
               "update": "region_Horsepower && region_Miles_per_Gallon ? {unit: \"concat_0\", fields: region_tuple_fields, values: [region_Horsepower,region_Miles_per_Gallon]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
