@@ -569,7 +569,7 @@
           "type": "number"
         },
         "tickExtra": {
-          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
+          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPostion\": 1` and an axis `\"padding\"` value of `0`.",
           "type": "boolean"
         },
         "tickMinStep": {
@@ -877,7 +877,7 @@
           "type": "number"
         },
         "tickExtra": {
-          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
+          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPostion\": 1` and an axis `\"padding\"` value of `0`.",
           "type": "boolean"
         },
         "tickOffset": {
@@ -1487,14 +1487,6 @@
           "$ref": "#/definitions/Color",
           "description": "Text color for title text."
         },
-        "dx": {
-          "description": "Delta offset for title text x-coordinate.",
-          "type": "number"
-        },
-        "dy": {
-          "description": "Delta offset for title text y-coordinate.",
-          "type": "number"
-        },
         "font": {
           "description": "Font name for title text.",
           "type": "string"
@@ -1565,6 +1557,21 @@
           },
           "required": [
             "field"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "range": {
+              "type": [
+                "number",
+                "boolean"
+              ]
+            }
+          },
+          "required": [
+            "range"
           ],
           "type": "object"
         }
@@ -6484,11 +6491,15 @@
           "type": "string"
         },
         "clear": {
-          "description": "Controls clearing selections. Can be `true`, `false`, or a `string` that is\none of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information.",
-          "type": [
-            "string",
-            "boolean"
-          ]
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "description": "Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information."
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -6565,11 +6576,15 @@
           "type": "string"
         },
         "clear": {
-          "description": "Controls clearing selections. Can be `true`, `false`, or a `string` that is\none of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information.",
-          "type": [
-            "string",
-            "boolean"
-          ]
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "description": "Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information."
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -8509,11 +8524,15 @@
       "additionalProperties": false,
       "properties": {
         "clear": {
-          "description": "Controls clearing selections. Can be `true`, `false`, or a `string` that is\none of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information.",
-          "type": [
-            "string",
-            "boolean"
-          ]
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "description": "Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information."
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -8586,11 +8605,15 @@
       "additionalProperties": false,
       "properties": {
         "clear": {
-          "description": "Controls clearing selections. Can be `true`, `false`, or a `string` that is\none of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information.",
-          "type": [
-            "string",
-            "boolean"
-          ]
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "description": "Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information."
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -10055,35 +10078,10 @@
           "properties": {
             "scale": {
               "$ref": "#/definitions/Field"
-            },
-            "value": {
-              "type": [
-                "boolean",
-                "number",
-                "string",
-                "null"
-              ]
             }
           },
           "required": [
-            "scale",
-            "value"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "field": {
-              "$ref": "#/definitions/Field"
-            },
-            "scale": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "scale",
-            "field"
+            "scale"
           ],
           "type": "object"
         },
@@ -10103,25 +10101,6 @@
           "required": [
             "scale",
             "band"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "range": {
-              "type": [
-                "number",
-                "boolean"
-              ]
-            },
-            "scale": {
-              "$ref": "#/definitions/Field"
-            }
-          },
-          "required": [
-            "scale",
-            "range"
           ],
           "type": "object"
         }
@@ -10426,11 +10405,15 @@
           "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\nSee the [bind transform](https://vega.github.io/vega-lite/docs/bind.html) documentation for more information."
         },
         "clear": {
-          "description": "Controls clearing selections. Can be `true`, `false`, or a `string` that is\none of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information.",
-          "type": [
-            "string",
-            "boolean"
-          ]
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "description": "Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information."
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -10500,11 +10483,15 @@
           "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\nSee the [bind transform](https://vega.github.io/vega-lite/docs/bind.html) documentation for more information."
         },
         "clear": {
-          "description": "Controls clearing selections. Can be `true`, `false`, or a `string` that is\none of the [Supported Event Types](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information.",
-          "type": [
-            "string",
-            "boolean"
-          ]
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "description": "Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information."
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -11349,14 +11336,6 @@
         "color": {
           "$ref": "#/definitions/Color",
           "description": "Text color for title text."
-        },
-        "dx": {
-          "description": "Delta offset for title text x-coordinate.",
-          "type": "number"
-        },
-        "dy": {
-          "description": "Delta offset for title text y-coordinate.",
-          "type": "number"
         },
         "font": {
           "description": "Font name for title text.",

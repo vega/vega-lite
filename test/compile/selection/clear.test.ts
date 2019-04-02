@@ -51,7 +51,7 @@ describe('Clear selection transform, single and multi types', () => {
               'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: one_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
             force: true
           },
-          {events: parseSelector(selCmpts['one'].clear, 'scope'), update: 'null'}
+          {events: parseSelector('dblclick', 'scope'), update: 'null'}
         ]
       }
     ]);
@@ -68,7 +68,7 @@ describe('Clear selection transform, single and multi types', () => {
               'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: two_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
             force: true
           },
-          {events: parseSelector(selCmpts['two'].clear, 'scope'), update: 'null'}
+          {events: parseSelector('dblclick', 'scope'), update: 'null'}
         ]
       }
     ]);
@@ -124,7 +124,7 @@ describe('Clear selection transform, interval type', () => {
 
   model.parseScale();
   const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'interval', encodings: ['x', 'y'], translate: false, zoom: false},
+    one: {type: 'interval', encodings: ['x', 'y'], bind: 'scales', translate: false, zoom: false},
     two: {type: 'interval', encodings: ['x', 'y'], clear: false, translate: false, zoom: false}
   }));
 
@@ -139,46 +139,20 @@ describe('Clear selection transform, interval type', () => {
     expect(oneSg).toEqual(
       expect.arrayContaining([
         {
-          name: 'one_x',
-          value: [],
+          name: 'one_Horsepower',
           on: [
             {
-              events: parseSelector('mousedown', 'scope')[0],
-              update: '[x(unit), x(unit)]'
-            },
-            {
-              events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
-              update: '[one_x[0], clamp(x(unit), 0, width)]'
-            },
-            {
-              events: {signal: 'one_scale_trigger'},
-              update: '[scale("x", one_Horsepower[0]), scale("x", one_Horsepower[1])]'
-            },
-            {
-              events: parseSelector(selCmpts['one'].clear, 'scope'),
-              update: '[0, 0]'
+              events: parseSelector('dblclick', 'scope'),
+              update: 'null'
             }
           ]
         },
         {
-          name: 'one_y',
-          value: [],
+          name: 'one_Miles_per_Gallon',
           on: [
             {
-              events: parseSelector('mousedown', 'scope')[0],
-              update: '[y(unit), y(unit)]'
-            },
-            {
-              events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
-              update: '[one_y[0], clamp(y(unit), 0, height)]'
-            },
-            {
-              events: {signal: 'one_scale_trigger'},
-              update: '[scale("y", one_Miles_per_Gallon[0]), scale("y", one_Miles_per_Gallon[1])]'
-            },
-            {
-              events: parseSelector(selCmpts['one'].clear, 'scope'),
-              update: '[0, 0]'
+              events: parseSelector('dblclick', 'scope'),
+              update: 'null'
             }
           ]
         },
@@ -189,8 +163,7 @@ describe('Clear selection transform, interval type', () => {
               events: [{signal: 'one_Horsepower || one_Miles_per_Gallon'}],
               update:
                 'one_Horsepower && one_Miles_per_Gallon ? {unit: "", fields: one_tuple_fields, values: [one_Horsepower,one_Miles_per_Gallon]} : null'
-            },
-            {events: parseSelector(selCmpts['one'].clear, 'scope'), update: 'null'}
+            }
           ]
         }
       ])
