@@ -25,6 +25,16 @@
           "as": ["mean_price"]
         }
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"year_date\"] !== null && !isNaN(datum[\"year_date\"])"
+        }
+      ]
     }
   ],
   "marks": [
@@ -71,17 +81,11 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
-          "fill": [
-            {
-              "test": "datum[\"year_date\"] === null || isNaN(datum[\"year_date\"]) || datum[\"mean_price\"] === null || isNaN(datum[\"mean_price\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "symbol"}
-          ],
+          "fill": {"scale": "color", "field": "symbol"},
           "tooltip": {
             "signal": "{\"date (year)\": timeFormat(datum[\"year_date\"], '%Y'), \"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
           },
@@ -95,13 +99,23 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "year_date"},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "year_date"},
+          {"data": "data_0", "field": "year_date"}
+        ]
+      },
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "mean_price"},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "mean_price"},
+          {"data": "data_0", "field": "mean_price"}
+        ]
+      },
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -109,9 +123,14 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "symbol", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "symbol"},
+          {"data": "data_0", "field": "symbol"}
+        ],
+        "sort": true
+      },
+      "range": "category"
     }
   ],
   "axes": [

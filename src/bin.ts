@@ -14,7 +14,7 @@ import {
   STROKEOPACITY,
   STROKEWIDTH
 } from './channel';
-import {normalizeBin} from './fielddef';
+import {normalizeBin} from './channeldef';
 import {keys, varName} from './util';
 
 export interface BaseBin {

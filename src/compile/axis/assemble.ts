@@ -1,8 +1,9 @@
 import {Axis as VgAxis, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE} from '../../axis';
+import {POSITION_SCALE_CHANNELS} from '../../channel';
+import {defaultTitle, FieldDefBase} from '../../channeldef';
 import {Config} from '../../config';
-import {defaultTitle, FieldDefBase} from '../../fielddef';
 import {getFirstDefined, keys} from '../../util';
 import {Model} from '../model';
 import {AxisComponent, AxisComponentIndex} from './component';
@@ -102,22 +103,23 @@ export function assembleAxis(
  * (Fix https://github.com/vega/vega-lite/issues/4226)
  */
 export function assembleAxisSignals(model: Model): NewSignal[] {
-  const axisComponents = model.component.axes;
-  const {x, y} = axisComponents;
-  if (x && !y) {
-    return [
-      {
-        name: 'height',
-        update: model.getSizeSignalRef('height').signal
+  const {axes} = model.component;
+  for (const channel of POSITION_SCALE_CHANNELS) {
+    if (axes[channel]) {
+      for (const axis of axes[channel]) {
+        if (!axis.get('gridScale')) {
+          // If there is x-axis but no y-scale for gridScale, need to set height/weight so x-axis can draw the grid with the right height.  Same for y-axis and width.
+
+          const sizeType = channel === 'x' ? 'height' : 'width';
+          return [
+            {
+              name: sizeType,
+              update: model.getSizeSignalRef(sizeType).signal
+            }
+          ];
+        }
       }
-    ];
-  } else if (y && !x) {
-    return [
-      {
-        name: 'width',
-        update: model.getSizeSignalRef('width').signal
-      }
-    ];
+    }
   }
   return [];
 }

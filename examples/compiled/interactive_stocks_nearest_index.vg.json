@@ -18,7 +18,37 @@
       "transform": [
         {
           "type": "filter",
+          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
           "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSelectionTest(\"index_store\", datum)))"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "data_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
         }
       ]
     }
@@ -96,24 +126,12 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0},
-          "fill": [
-            {
-              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
-              "value": null
-            },
-            {"value": "transparent"}
-          ],
-          "stroke": [
-            {
-              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
           },
@@ -150,16 +168,10 @@
       "name": "layer_2_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
-          "stroke": [
-            {
-              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
+          "stroke": {"value": "black"},
           "tooltip": {
             "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y')}"
           },
@@ -173,16 +185,10 @@
       "name": "layer_3_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
+          "fill": {"value": "black"},
           "tooltip": {
             "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y')}"
           },
@@ -200,7 +206,9 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "date"},
-          {"data": "data_0", "field": "date"}
+          {"data": "data_0", "field": "date"},
+          {"data": "data_2", "field": "date"},
+          {"data": "data_3", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -208,7 +216,12 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "price"},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "price"},
+          {"data": "data_0", "field": "price"}
+        ]
+      },
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -217,8 +230,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "symbol", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     }
   ],
   "axes": [

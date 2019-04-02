@@ -1,15 +1,17 @@
 {
   "compilerOptions": {
-    "outDir": "./build/",
     "target": "es6",
     "module": "es2015",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+
     "declaration": true,
-    "forceConsistentCasingInFileNames": false,
+    "declarationMap": true,
     "sourceMap": true,
+
+    "allowSyntheticDefaultImports": true,
     "inlineSources": true,
+    "importHelpers": true,
     "isolatedModules": false,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -17,13 +19,25 @@
     "noUnusedLocals": true,
     "preserveConstEnums": true,
     "removeComments": false,
-    "strictFunctionTypes": false,
-    "strictNullChecks": false,
-    "suppressImplicitAnyIndexErrors": true,
-    "importHelpers": true,
     "resolveJsonModule": true,
-    "typeRoots": ["./node_modules/@types", "./typings"]
+    "suppressImplicitAnyIndexErrors": true,
+    "typeRoots": ["./node_modules/@types", "./typings"],
+    "composite": true
   },
-  "files": ["src/index.ts"],
-  "include": ["src/**/*.ts", "test/**/*.ts", "test-runtime/**/*.ts"]
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./src"
+    },
+    {
+      "path": "./site"
+    },
+    {
+      "path": "./test"
+    },
+    {
+      "path": "./test-runtime"
+    }
+  ]
 }

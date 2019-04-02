@@ -38,6 +38,14 @@ export interface Projection {
    * Sets the threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection’s current resampling precision which defaults to `√0.5 ≅ 0.70710…`.
    */
   precision?: string;
+  /*
+   * Sets whether or not the x-dimension is reflected (negated) in the output.
+   */
+  reflectX?: boolean;
+  /*
+   * Sets whether or not the y-dimension is reflected (negated) in the output.
+   */
+  reflectY?: boolean;
 
   /* The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection */
   coefficient?: number;
@@ -63,6 +71,8 @@ export const PROJECTION_PROPERTIES: (keyof Projection)[] = [
   'center',
   'rotate',
   'precision',
+  'reflectX',
+  'reflectY',
   'coefficient',
   'distance',
   'fraction',

@@ -45,14 +45,94 @@
       ]
     },
     {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"lo\"] !== null && !isNaN(datum[\"lo\"])"
+        }
+      ]
+    },
+    {
       "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"mean\"] !== null && !isNaN(datum[\"mean\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "source_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_5",
+      "source": "source_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"to\"] !== null && !isNaN(datum[\"to\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_6",
       "source": "source_1",
       "transform": [{"type": "filter", "expr": "datum.label === 'PoleStar'"}]
     },
     {
-      "name": "data_3",
+      "name": "data_7",
+      "source": "data_6",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_8",
+      "source": "data_6",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_9",
       "source": "source_1",
       "transform": [{"type": "filter", "expr": "datum.label !== 'PoleStar'"}]
+    },
+    {
+      "name": "data_10",
+      "source": "data_9",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_11",
+      "source": "data_9",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -81,16 +161,10 @@
           "name": "concat_0_layer_0_marks",
           "type": "rule",
           "style": ["rule"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "stroke": [
-                {
-                  "test": "datum[\"lo\"] === null || isNaN(datum[\"lo\"])",
-                  "value": null
-                },
-                {"value": "black"}
-              ],
+              "stroke": {"value": "black"},
               "tooltip": {
                 "signal": "{\"study\": ''+datum[\"study\"], \"lo\": format(datum[\"lo\"], \"\"), \"hi\": format(datum[\"hi\"], \"\")}"
               },
@@ -104,24 +178,12 @@
           "name": "concat_0_layer_1_marks",
           "type": "symbol",
           "style": ["circle"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "opacity": {"value": 1},
-              "stroke": [
-                {
-                  "test": "datum[\"mean\"] === null || isNaN(datum[\"mean\"])",
-                  "value": null
-                },
-                {"value": "black"}
-              ],
-              "fill": [
-                {
-                  "test": "datum[\"mean\"] === null || isNaN(datum[\"mean\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "measure"}
-              ],
+              "stroke": {"value": "black"},
+              "fill": {"scale": "color", "field": "measure"},
               "tooltip": {
                 "signal": "{\"study\": ''+datum[\"study\"], \"mean\": format(datum[\"mean\"], \"\"), \"measure\": ''+datum[\"measure\"]}"
               },
@@ -203,16 +265,10 @@
           "name": "concat_1_layer_0_marks",
           "type": "rule",
           "style": ["rule"],
-          "from": {"data": "source_1"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
-              "stroke": [
-                {
-                  "test": "datum[\"from\"] === null || isNaN(datum[\"from\"])",
-                  "value": null
-                },
-                {"value": "black"}
-              ],
+              "stroke": {"value": "black"},
               "tooltip": {
                 "signal": "{\"from\": format(datum[\"from\"], \"\"), \"to\": format(datum[\"to\"], \"\")}"
               },
@@ -238,17 +294,11 @@
           "name": "concat_1_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_1"},
+          "from": {"data": "data_5"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"to\"] === null || isNaN(datum[\"to\"])",
-                  "value": null
-                },
-                {"value": "black"}
-              ],
+              "fill": {"value": "black"},
               "size": {"value": 60},
               "tooltip": {"signal": "{\"to\": format(datum[\"to\"], \"\")}"},
               "x": [
@@ -270,17 +320,11 @@
           "name": "concat_1_layer_2_marks",
           "type": "text",
           "style": ["text", "arrow-label"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_7"},
           "encode": {
             "update": {
               "align": {"value": "right"},
-              "fill": [
-                {
-                  "test": "datum[\"from\"] === null || isNaN(datum[\"from\"])",
-                  "value": null
-                },
-                {"value": "black"}
-              ],
+              "fill": {"value": "black"},
               "tooltip": {
                 "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": ''+datum[\"label\"]}"
               },
@@ -292,8 +336,7 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"signal": "''+datum[\"label\"]"},
-              "fontSize": {"value": 9.5}
+              "text": {"signal": "''+datum[\"label\"]"}
             }
           }
         },
@@ -301,17 +344,11 @@
           "name": "concat_1_layer_3_marks",
           "type": "text",
           "style": ["text", "arrow-label"],
-          "from": {"data": "data_3"},
+          "from": {"data": "data_10"},
           "encode": {
             "update": {
               "align": {"value": "left"},
-              "fill": [
-                {
-                  "test": "datum[\"from\"] === null || isNaN(datum[\"from\"])",
-                  "value": null
-                },
-                {"value": "black"}
-              ],
+              "fill": {"value": "black"},
               "tooltip": {
                 "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": ''+datum[\"label\"]}"
               },
@@ -323,8 +360,7 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"signal": "''+datum[\"label\"]"},
-              "fontSize": {"value": 9.5}
+              "text": {"signal": "''+datum[\"label\"]"}
             }
           }
         },
@@ -332,17 +368,11 @@
           "name": "concat_1_layer_4_marks",
           "type": "text",
           "style": ["text", "arrow-label2"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_8"},
           "encode": {
             "update": {
               "align": {"value": "right"},
-              "fill": [
-                {
-                  "test": "datum[\"from\"] === null || isNaN(datum[\"from\"])",
-                  "value": null
-                },
-                {"value": "black"}
-              ],
+              "fill": {"value": "black"},
               "tooltip": {
                 "signal": "{\"from\": format(datum[\"from\"], \"\")}"
               },
@@ -354,8 +384,7 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"value": "more valuable"},
-              "fontSize": {"value": 9.5}
+              "text": {"value": "more valuable"}
             }
           }
         },
@@ -363,17 +392,11 @@
           "name": "concat_1_layer_5_marks",
           "type": "text",
           "style": ["text", "arrow-label2"],
-          "from": {"data": "data_3"},
+          "from": {"data": "data_11"},
           "encode": {
             "update": {
               "align": {"value": "left"},
-              "fill": [
-                {
-                  "test": "datum[\"from\"] === null || isNaN(datum[\"from\"])",
-                  "value": null
-                },
-                {"value": "black"}
-              ],
+              "fill": {"value": "black"},
               "tooltip": {
                 "signal": "{\"from\": format(datum[\"from\"], \"\")}"
               },
@@ -385,8 +408,7 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"value": "more valuable"},
-              "fontSize": {"value": 9.5}
+              "text": {"value": "more valuable"}
             }
           }
         }
@@ -397,14 +419,13 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "measure", "sort": true},
-      "range": ["black", "white"],
-      "interpolate": "hcl"
+      "domain": {"data": "data_2", "field": "measure", "sort": true},
+      "range": ["black", "white"]
     },
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"fields": [[-3, 3], {"data": "source_0", "field": "mean"}]},
+      "domain": {"fields": [[-3, 3], {"data": "data_2", "field": "mean"}]},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -412,7 +433,13 @@
     {
       "name": "concat_0_y",
       "type": "band",
-      "domain": {"data": "source_0", "field": "study", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "study"},
+          {"data": "data_2", "field": "study"}
+        ],
+        "sort": true
+      },
       "range": {"step": {"signal": "concat_0_y_step"}},
       "paddingInner": 0,
       "paddingOuter": 0
@@ -422,10 +449,13 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_1", "field": "from"},
-          {"data": "source_1", "field": "to"},
-          {"data": "data_2", "field": "from"},
-          {"data": "data_3", "field": "from"}
+          {"data": "data_4", "field": "from"},
+          {"data": "data_4", "field": "to"},
+          {"data": "data_5", "field": "to"},
+          {"data": "data_7", "field": "from"},
+          {"data": "data_10", "field": "from"},
+          {"data": "data_8", "field": "from"},
+          {"data": "data_11", "field": "from"}
         ]
       },
       "range": [0, {"signal": "width"}],

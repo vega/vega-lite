@@ -9,11 +9,14 @@ git pull
 git merge master --no-edit
 
 # build
+rm -rf build && git checkout build/vega-lite-schema.json
 yarn presite
+
 cp build/vega-lite-schema.json _data/  # the latest schema may not have been copied
+
 # Note: git commands need single quotes for all the files and directories with wildcards
 git add 'data/*' -f
-git add 'build/**' -f
+git add 'build/site/bundle*' -f
 git add '_data/*' -f
 git add 'examples/compiled/*.png' -f
 git add 'site/examples/*' -f

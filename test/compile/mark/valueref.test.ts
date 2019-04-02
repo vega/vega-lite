@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
+import {SecondaryFieldDef, TypedFieldDef} from '../../../src/channeldef';
 import {getOffset, midPoint} from '../../../src/compile/mark/valueref';
-import {SecondaryFieldDef, TypedFieldDef} from '../../../src/fielddef';
 import {MarkDef} from '../../../src/mark';
 
 describe('compile/mark/valueref', () => {

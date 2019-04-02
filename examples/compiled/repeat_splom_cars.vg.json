@@ -5,7 +5,47 @@
   "width": 200,
   "height": 200,
   "data": [
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Displacement\"] !== null && !isNaN(datum[\"Displacement\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Displacement\"] !== null && !isNaN(datum[\"Displacement\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
+      ]
+    }
   ],
   "layout": {"padding": 20, "columns": 2, "bounds": "full", "align": "all"},
   "marks": [
@@ -21,24 +61,12 @@
           "name": "child__repeat_row_Displacement__repeat_column_Horsepower_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Displacement\"] === null || isNaN(datum[\"Displacement\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
-              "stroke": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Displacement\"] === null || isNaN(datum[\"Displacement\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "Origin"}
-              ],
+              "fill": {"value": "transparent"},
+              "stroke": {"scale": "color", "field": "Origin"},
               "tooltip": {
                 "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Displacement\": format(datum[\"Displacement\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -114,24 +142,12 @@
           "name": "child__repeat_row_Displacement__repeat_column_Miles_per_Gallon_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Displacement\"] === null || isNaN(datum[\"Displacement\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
-              "stroke": [
-                {
-                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Displacement\"] === null || isNaN(datum[\"Displacement\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "Origin"}
-              ],
+              "fill": {"value": "transparent"},
+              "stroke": {"scale": "color", "field": "Origin"},
               "tooltip": {
                 "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Displacement\": format(datum[\"Displacement\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -207,24 +223,12 @@
           "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
-              "stroke": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "Origin"}
-              ],
+              "fill": {"value": "transparent"},
+              "stroke": {"scale": "color", "field": "Origin"},
               "tooltip": {
                 "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -300,24 +304,12 @@
           "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
-              "stroke": [
-                {
-                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "Origin"}
-              ],
+              "fill": {"value": "transparent"},
+              "stroke": {"scale": "color", "field": "Origin"},
               "tooltip": {
                 "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -386,14 +378,21 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "Origin", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "Origin"},
+          {"data": "data_1", "field": "Origin"},
+          {"data": "data_2", "field": "Origin"},
+          {"data": "data_3", "field": "Origin"}
+        ],
+        "sort": true
+      },
+      "range": "category"
     },
     {
       "name": "child__repeat_row_Displacement__repeat_column_Horsepower_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {"data": "data_0", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -401,7 +400,7 @@
     {
       "name": "child__repeat_row_Displacement__repeat_column_Horsepower_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Displacement"},
+      "domain": {"data": "data_0", "field": "Displacement"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -409,7 +408,7 @@
     {
       "name": "child__repeat_row_Displacement__repeat_column_Miles_per_Gallon_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_1", "field": "Miles_per_Gallon"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -417,7 +416,7 @@
     {
       "name": "child__repeat_row_Displacement__repeat_column_Miles_per_Gallon_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Displacement"},
+      "domain": {"data": "data_1", "field": "Displacement"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -425,7 +424,7 @@
     {
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {"data": "data_2", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -433,7 +432,7 @@
     {
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_2", "field": "Miles_per_Gallon"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -441,7 +440,7 @@
     {
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_3", "field": "Miles_per_Gallon"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -449,7 +448,7 @@
     {
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_3", "field": "Miles_per_Gallon"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

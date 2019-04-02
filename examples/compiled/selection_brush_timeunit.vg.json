@@ -33,12 +33,26 @@
       "transform": [
         {
           "type": "filter",
+          "expr": "datum[\"seconds_date\"] !== null && !isNaN(datum[\"seconds_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
           "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "formula",
           "as": "minutes_date",
           "expr": "datetime(0, 0, 1, 0, minutes(datum[\"date\"]), 0, 0)"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"minutes_date\"] !== null && !isNaN(datum[\"minutes_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
         }
       ]
     }
@@ -278,22 +292,12 @@
           "name": "concat_0_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"seconds_date\"] === null || isNaN(datum[\"seconds_date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
+              "fill": {"value": "transparent"},
               "stroke": [
-                {
-                  "test": "datum[\"seconds_date\"] === null || isNaN(datum[\"seconds_date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "value": "goldenrod"
@@ -419,24 +423,12 @@
           "name": "concat_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"minutes_date\"] === null || isNaN(datum[\"minutes_date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
-              "stroke": [
-                {
-                  "test": "datum[\"minutes_date\"] === null || isNaN(datum[\"minutes_date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
-                  "value": null
-                },
-                {"value": "goldenrod"}
-              ],
+              "fill": {"value": "transparent"},
+              "stroke": {"value": "goldenrod"},
               "tooltip": {
                 "signal": "{\"date (minutes)\": timeFormat(datum[\"minutes_date\"], '%M'), \"price\": format(datum[\"price\"], \"\")}"
               },
@@ -504,13 +496,13 @@
     {
       "name": "concat_0_x",
       "type": "time",
-      "domain": {"data": "data_0", "field": "seconds_date"},
+      "domain": {"data": "data_1", "field": "seconds_date"},
       "range": [0, {"signal": "concat_0_width"}]
     },
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "price"},
+      "domain": {"data": "data_1", "field": "price"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -518,13 +510,13 @@
     {
       "name": "concat_1_x",
       "type": "time",
-      "domain": {"data": "data_1", "field": "minutes_date"},
+      "domain": {"data": "data_2", "field": "minutes_date"},
       "range": [0, {"signal": "concat_1_width"}]
     },
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "price"},
+      "domain": {"data": "data_2", "field": "price"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

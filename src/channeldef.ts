@@ -1,14 +1,13 @@
 // Declaration and utility for variants of a field definition object
-import {AggregateOp} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
-import {isAggregateOp, isCountingAggregateOp} from './aggregate';
+import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString, isBinned, isBinning} from './bin';
 import {Channel, isScaleChannel, isSecondaryRangeChannel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
-import {Guide, TitleMixins} from './guide';
+import {FormatMixins, Guide, TitleMixins} from './guide';
 import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
@@ -90,6 +89,9 @@ export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<
 export type Conditional<CD extends FieldDef<any> | ValueDef<any>> = ConditionalPredicate<CD> | ConditionalSelection<CD>;
 
 export type ConditionalPredicate<CD extends FieldDef<any> | ValueDef<any>> = {
+  /**
+   * Predicate for triggering the condition
+   */
   test: LogicalOperand<Predicate>;
 } & CD;
 
@@ -106,9 +108,9 @@ export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSe
 
 export interface ConditionValueDefMixins<V extends Value = Value> {
   /**
-   * One or more value definition(s) with a selection predicate.
+   * One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).
    *
-   * __Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)
+   * __Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)
    * since Vega-Lite only allows at most one encoded field per encoding channel.
    */
   condition?: Conditional<ValueDef<V>> | Conditional<ValueDef<V>>[];
@@ -182,7 +184,7 @@ export interface ConditionOnlyDef<
  * Reference to a repeated value.
  */
 export interface RepeatRef {
-  repeat: 'row' | 'column';
+  repeat: 'row' | 'column' | 'repeat';
 }
 
 export type Field = string | RepeatRef;
@@ -194,15 +196,13 @@ export function isRepeatRef(field: Field): field is RepeatRef {
 /** @hide */
 export type HiddenCompositeAggregate = CompositeAggregate;
 
-export type Aggregate = AggregateOp | HiddenCompositeAggregate;
-
 export interface GenericBinMixins<B> {
   /**
    * A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`"binned"`).
    *
    * - If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
    *
-   * - To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `"binned"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
+   * - If `"binned"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
    *
    * __Default value:__ `false`
    */
@@ -241,7 +241,7 @@ export interface FieldDefBase<F> extends BaseBinMixins {
    *
    * __Default value:__ `undefined` (None)
    */
-  aggregate?: Aggregate;
+  aggregate?: Aggregate | HiddenCompositeAggregate;
 }
 
 export function toFieldDefBase(fieldDef: TypedFieldDef<string>): FieldDefBase<string> {
@@ -388,12 +388,7 @@ export interface OrderFieldDef<F extends Field> extends FieldDefWithoutScale<F> 
   sort?: SortOrder;
 }
 
-export interface TextFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType> {
-  /**
-   * The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
-   */
-  format?: string;
-}
+export interface TextFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
 
 export type FieldDef<F extends Field> = SecondaryFieldDef<F> | TypedFieldDef<F>;
 export type ChannelDef<FD extends FieldDef<any> = FieldDef<string>, V extends Value = Value> = ChannelDefWithCondition<
@@ -505,6 +500,8 @@ export function vgField(
   const prefix = opt.prefix;
   let suffix = opt.suffix;
 
+  let argAccessor = ''; // for accessing argmin/argmax field at the end without getting escaped
+
   if (isCount(fieldDef)) {
     field = internalField('count');
   } else {
@@ -513,13 +510,24 @@ export function vgField(
     if (!opt.nofn) {
       if (isOpFieldDef(fieldDef)) {
         fn = fieldDef.op;
-      } else if (isBinning(fieldDef.bin)) {
-        fn = binToString(fieldDef.bin);
-        suffix = (opt.binSuffix || '') + (opt.suffix || '');
-      } else if (fieldDef.aggregate) {
-        fn = String(fieldDef.aggregate);
-      } else if (fieldDef.timeUnit) {
-        fn = String(fieldDef.timeUnit);
+      } else {
+        const {bin, aggregate, timeUnit} = fieldDef;
+        if (isBinning(bin)) {
+          fn = binToString(bin);
+          suffix = (opt.binSuffix || '') + (opt.suffix || '');
+        } else if (aggregate) {
+          if (isArgmaxDef(aggregate)) {
+            argAccessor = `.${field}`;
+            field = `argmax_${aggregate.argmax}`;
+          } else if (isArgminDef(aggregate)) {
+            argAccessor = `.${field}`;
+            field = `argmin_${aggregate.argmin}`;
+          } else {
+            fn = String(aggregate);
+          }
+        } else if (timeUnit) {
+          fn = String(timeUnit);
+        }
       }
     }
 
@@ -540,10 +548,10 @@ export function vgField(
     return field;
   } else if (opt.expr) {
     // Expression to access flattened field. No need to escape dots.
-    return flatAccessWithDatum(field, opt.expr);
+    return flatAccessWithDatum(field, opt.expr) + argAccessor;
   } else {
     // We flattened all fields so paths should have become dot.
-    return replacePathInField(field);
+    return replacePathInField(field) + argAccessor;
   }
 }
 
@@ -572,7 +580,7 @@ export function isCount(fieldDef: FieldDefBase<Field>) {
 export type FieldTitleFormatter = (fieldDef: FieldDefBase<string>, config: Config) => string;
 
 export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config) {
-  const {field: field, bin, timeUnit, aggregate} = fieldDef;
+  const {field, bin, timeUnit, aggregate} = fieldDef;
   if (aggregate === 'count') {
     return config.countTitle;
   } else if (isBinning(bin)) {
@@ -581,17 +589,30 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
     const units = getTimeUnitParts(timeUnit).join('-');
     return `${field} (${units})`;
   } else if (aggregate) {
-    return `${titlecase(aggregate)} of ${field}`;
+    if (isArgmaxDef(aggregate)) {
+      return `${field} for max ${aggregate.argmax}`;
+    } else if (isArgminDef(aggregate)) {
+      return `${field} for min ${aggregate.argmin}`;
+    } else {
+      return `${titlecase(aggregate)} of ${field}`;
+    }
   }
   return field;
 }
 
 export function functionalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config) {
-  const fn = fieldDef.aggregate || fieldDef.timeUnit || (isBinning(fieldDef.bin) && 'bin');
+  const {aggregate, bin, timeUnit, field} = fieldDef;
+  if (isArgmaxDef(aggregate)) {
+    return `${field} for argmax(${aggregate.argmax})`;
+  } else if (isArgminDef(aggregate)) {
+    return `${field} for argmin(${aggregate.argmin})`;
+  }
+
+  const fn = aggregate || timeUnit || (isBinning(bin) && 'bin');
   if (fn) {
-    return fn.toUpperCase() + '(' + fieldDef.field + ')';
+    return fn.toUpperCase() + '(' + field + ')';
   } else {
-    return fieldDef.field;
+    return field;
   }
 }
 
@@ -721,46 +742,48 @@ export function normalize(channelDef: ChannelDef, channel: Channel): ChannelDef<
   return channelDef;
 }
 export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
+  const {aggregate, timeUnit, bin} = fieldDef;
   // Drop invalid aggregate
-  if (fieldDef.aggregate && !isAggregateOp(fieldDef.aggregate)) {
-    const {aggregate, ...fieldDefWithoutAggregate} = fieldDef;
-    log.warn(log.message.invalidAggregate(fieldDef.aggregate));
+  if (aggregate && !isAggregateOp(aggregate) && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
+    const {aggregate: _, ...fieldDefWithoutAggregate} = fieldDef;
+    log.warn(log.message.invalidAggregate(aggregate));
     fieldDef = fieldDefWithoutAggregate;
   }
 
   // Normalize Time Unit
-  if (fieldDef.timeUnit) {
+  if (timeUnit) {
     fieldDef = {
       ...fieldDef,
-      timeUnit: normalizeTimeUnit(fieldDef.timeUnit)
+      timeUnit: normalizeTimeUnit(timeUnit)
     };
   }
 
   // Normalize bin
-  if (isBinning(fieldDef.bin)) {
+  if (isBinning(bin)) {
     fieldDef = {
       ...fieldDef,
-      bin: normalizeBin(fieldDef.bin, channel)
+      bin: normalizeBin(bin, channel)
     };
   }
 
-  if (isBinned(fieldDef.bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {
+  if (isBinned(bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {
     log.warn(`Channel ${channel} should not be used with "binned" bin`);
   }
 
   // Normalize Type
   if (isTypedFieldDef(fieldDef)) {
-    const fullType = getFullName(fieldDef.type);
-    if (fieldDef.type !== fullType) {
+    const {type} = fieldDef;
+    const fullType = getFullName(type);
+    if (type !== fullType) {
       // convert short type to full type
       fieldDef = {
         ...fieldDef,
         type: fullType
       };
     }
-    if (fieldDef.type !== 'quantitative') {
-      if (isCountingAggregateOp(fieldDef.aggregate)) {
-        log.warn(log.message.invalidFieldTypeForCountAggregate(fieldDef.type, fieldDef.aggregate));
+    if (type !== 'quantitative') {
+      if (isCountingAggregateOp(aggregate)) {
+        log.warn(log.message.invalidFieldTypeForCountAggregate(type, aggregate));
         fieldDef = {
           ...fieldDef,
           type: 'quantitative'
@@ -891,6 +914,20 @@ export function isNumberFieldDef(fieldDef: TypedFieldDef<any>) {
   return fieldDef.type === 'quantitative' || isBinning(fieldDef.bin);
 }
 
+/**
+ * Check if the field def uses a time format or does not use any format but is temporal (this does not cover field defs that are temporal but use a number format).
+ */
+export function isTimeFormatFieldDef(fieldDef: TypedFieldDef<string>): boolean {
+  const formatType =
+    (isPositionFieldDef(fieldDef) && fieldDef.axis && fieldDef.axis.formatType) ||
+    (isMarkPropFieldDef(fieldDef) && fieldDef.legend && fieldDef.legend.formatType) ||
+    (isTextFieldDef(fieldDef) && fieldDef.formatType);
+  return formatType === 'time' || (!formatType && isTimeFieldDef(fieldDef));
+}
+
+/**
+ * Check if field def has tye `temporal`. If you want to also cover field defs that use a time format, use `isTimeFormatFieldDef`.
+ */
 export function isTimeFieldDef(fieldDef: TypedFieldDef<any>) {
   return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
 }

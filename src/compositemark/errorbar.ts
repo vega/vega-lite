@@ -1,8 +1,5 @@
 import {AggregateOp, Orientation} from 'vega';
 import {PositionChannel} from '../channel';
-import {Config} from '../config';
-import {Data} from '../data';
-import {Encoding, extractTransformsFromEncoding} from '../encoding';
 import {
   Field,
   FieldDefWithoutScale,
@@ -12,7 +9,10 @@ import {
   SecondaryFieldDef,
   title,
   ValueDef
-} from '../fielddef';
+} from '../channeldef';
+import {Config} from '../config';
+import {Data} from '../data';
+import {Encoding, extractTransformsFromEncoding} from '../encoding';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize/index';

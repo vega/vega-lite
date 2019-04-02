@@ -101,7 +101,7 @@ describe('compile/scale/assemble', () => {
 
       const scales = assembleScales(model);
       expect(scales).toHaveLength(1);
-      expect(scales[0].name).toEqual('y');
+      expect(scales[0].name).toBe('y');
     });
   });
 

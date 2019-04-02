@@ -8,6 +8,7 @@ permalink: /docs/lookup.html
 The lookup transform extends a primary data source by looking up values from another data source. It is similar to a one sided join.
 
 ```js
+// Any View Specification
 {
   ...
   "transform": [

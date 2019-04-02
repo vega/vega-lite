@@ -21,10 +21,10 @@ There are two ways to define binning in Vega-Lite: [the `bin` property in encodi
 ## Binning in Encoding Field Definition
 
 ```js
-// A Single View Specification
+// A Single View or a Layer Specification
 {
-  "data": ... ,
-  "mark": ... ,
+  ...,
+  "mark/layer": ...,
   "encoding": {
     "x": {
       "bin": ...,               // bin

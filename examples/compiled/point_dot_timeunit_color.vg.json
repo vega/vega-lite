@@ -22,6 +22,10 @@
           "ops": ["mean"],
           "fields": ["temp"],
           "as": ["mean_temp"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"])"
         }
       ]
     }
@@ -35,20 +39,8 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"mean_temp\"] === null || isNaN(datum[\"mean_temp\"]) || datum[\"yearmonth_date\"] === null || isNaN(datum[\"yearmonth_date\"])",
-              "value": null
-            },
-            {"value": "transparent"}
-          ],
-          "stroke": [
-            {
-              "test": "datum[\"mean_temp\"] === null || isNaN(datum[\"mean_temp\"]) || datum[\"yearmonth_date\"] === null || isNaN(datum[\"yearmonth_date\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "yearmonth_date"}
-          ],
+          "fill": {"value": "transparent"},
+          "stroke": {"scale": "color", "field": "yearmonth_date"},
           "tooltip": {
             "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], '%b %Y'), \"Mean of temp\": format(datum[\"mean_temp\"], \"\")}"
           },

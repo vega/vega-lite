@@ -13,12 +13,13 @@ describe('extractTransforms()', () => {
   // various bugs.
   const failsList = new Set([
     'area_temperature_range.vl.json',
+    'bar_argmax.vl.json',
+    'bar_argmax_transform.vl.json',
     'bar_aggregate_count.vl.json',
     'bar_aggregate_sort_by_encoding.vl.json',
     'bar_aggregate_sort_mean.vl.json',
     'bar_binned_data.vl.json',
     'bar_month_temporal.vl.json',
-    'bar_month.vl.json',
     'bar_sort_by_count.vl.json',
     'circle_binned_maxbins_10.vl.json',
     'circle_binned_maxbins_2.vl.json',
@@ -45,8 +46,9 @@ describe('extractTransforms()', () => {
     'interactive_layered_crossfilter.vl.json',
     'interactive_seattle_weather.vl.json',
     'joinaggregate_mean_difference.vl.json',
-    'layer_dual_axis.vl.json',
-    'layer_bar_month.vl.json',
+    'layer_bar_dual_axis_minmax.vl.json',
+    'layer_bar_month.vl.json', // data transform switches the order
+    'layer_dual_axis.vl.json', // tooltip does not use the correct field name
     'layer_circle_independent_color.vl.json',
     'layer_falkensee.vl.json',
     'layer_histogram_global_mean.vl.json',
@@ -86,7 +88,7 @@ describe('extractTransforms()', () => {
     'point_dot_timeunit_color.vl.json',
     'rect_binned_heatmap.vl.json',
     'rect_heatmap_weather.vl.json',
-    'rect_lasagna_future.vl.json',
+    'repeat_histogram.vl.json',
     'repeat_histogram_flights.vl.json',
     'repeat_histogram.vl.json',
     'repeat_layer.vl.json',
@@ -95,12 +97,8 @@ describe('extractTransforms()', () => {
     'selection_brush_timeunit.vl.json',
     'selection_layer_bar_month.vl.json',
     'selection_project_binned_interval.vl.json',
-    'stacked_bar_count.vl.json',
-    'stacked_bar_size.vl.json',
-    'stacked_bar_weather.vl.json',
     'test_aggregate_nested.vl.json',
-    'time_parse_local.vl.json',
-    'time_parse_utc_format.vl.json',
+    'trellis_bar_histogram.vl.json',
     'trellis_bar_histogram_label_rotated.vl.json',
     'trellis_bar_histogram.vl.json',
     'trellis_barley_layer_median.vl.json',
@@ -115,23 +113,22 @@ describe('extractTransforms()', () => {
   ]);
   for (const file of fs.readdirSync(specsDir)) {
     const filepath = specsDir + file;
-    if (filepath.slice(-5) === '.json') {
-      it(`should${failsList.has(file) ? ' NOT ' : ' '}compile ${filepath} to the same spec`, () => {
+    if (filepath.slice(-5) === '.json' && !failsList.has(file)) {
+      it(`should compile ${filepath} to the same spec`, () => {
         const specString = fs.readFileSync(filepath, 'utf8');
 
         const spec = JSON.parse(specString);
-        const config = initConfig(spec.config);
+
+        // Use invalidValues =  "hide" so we don't include filterInvalid in the comparison
+        const config = initConfig({...spec.config, invalidValues: 'hide'});
+
         const extractSpec = extractTransforms(normalize(spec, config), config) as TopLevelSpec;
 
         // convert to JSON to resolve `SignalRefWrapper`s that are lazily evaluated
-        const originalCompiled = compile(spec);
-        const transformCompiled = compile(extractSpec);
+        const originalCompiled = compile(spec, {config});
+        const transformCompiled = compile(extractSpec, {config});
 
-        if (failsList.has(file)) {
-          expect(transformCompiled).not.toEqual(originalCompiled);
-        } else {
-          expect(transformCompiled).toEqual(originalCompiled);
-        }
+        expect(transformCompiled).toEqual(originalCompiled);
       });
     }
   }
@@ -249,7 +246,10 @@ describe('extractTransforms()', () => {
                     field: 'month_date',
                     type: 'ordinal',
                     title: 'date (month)',
-                    axis: {format: '%b'}
+                    axis: {
+                      format: '%b',
+                      formatType: 'time'
+                    }
                   },
                   y: {
                     field: 'mean_precipitation',
@@ -275,7 +275,10 @@ describe('extractTransforms()', () => {
                     field: 'month_date',
                     type: 'ordinal',
                     title: 'date (month)',
-                    axis: {format: '%b'}
+                    axis: {
+                      format: '%b',
+                      formatType: 'time'
+                    }
                   },
                   y: {
                     field: 'mean_temp_max',

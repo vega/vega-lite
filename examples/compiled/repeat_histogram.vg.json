@@ -106,6 +106,10 @@
           "sort": {"field": ["Origin"], "order": ["descending"]},
           "as": ["__count_start", "__count_end"],
           "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_10_Displacement\"] !== null && !isNaN(datum[\"bin_maxbins_10_Displacement\"])"
         }
       ]
     },
@@ -134,6 +138,10 @@
           "sort": {"field": ["Origin"], "order": ["descending"]},
           "as": ["__count_start", "__count_end"],
           "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_10_Horsepower\"] !== null && !isNaN(datum[\"bin_maxbins_10_Horsepower\"])"
         }
       ]
     },
@@ -162,6 +170,10 @@
           "sort": {"field": ["Origin"], "order": ["descending"]},
           "as": ["__count_start", "__count_end"],
           "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_10_Miles_per_Gallon\"] !== null && !isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"])"
         }
       ]
     },
@@ -190,6 +202,10 @@
           "sort": {"field": ["Origin"], "order": ["descending"]},
           "as": ["__count_start", "__count_end"],
           "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && !isNaN(datum[\"bin_maxbins_10_Acceleration\"])"
         }
       ]
     }
@@ -211,13 +227,7 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "Origin"}
-              ],
+              "fill": {"scale": "color", "field": "Origin"},
               "tooltip": {
                 "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -304,13 +314,7 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "Origin"}
-              ],
+              "fill": {"scale": "color", "field": "Origin"},
               "tooltip": {
                 "signal": "{\"Miles_per_Gallon (binned)\": datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Miles_per_Gallon\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Miles_per_Gallon_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -397,13 +401,7 @@
           "from": {"data": "data_3"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "Origin"}
-              ],
+              "fill": {"scale": "color", "field": "Origin"},
               "tooltip": {
                 "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -490,13 +488,7 @@
           "from": {"data": "data_0"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"bin_maxbins_10_Displacement\"] === null || isNaN(datum[\"bin_maxbins_10_Displacement\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "Origin"}
-              ],
+              "fill": {"scale": "color", "field": "Origin"},
               "tooltip": {
                 "signal": "{\"Displacement (binned)\": datum[\"bin_maxbins_10_Displacement\"] === null || isNaN(datum[\"bin_maxbins_10_Displacement\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Displacement\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Displacement_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -582,8 +574,7 @@
         ],
         "sort": true
       },
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     },
     {
       "name": "child__repeat_repeat_Horsepower_x",

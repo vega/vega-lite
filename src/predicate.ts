@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
 import {DateTime} from './datetime';
-import {valueExpr, vgField} from './fielddef';
+import {valueExpr, vgField} from './channeldef';
 import {LogicalOperand} from './logical';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit} from './timeunit';
 

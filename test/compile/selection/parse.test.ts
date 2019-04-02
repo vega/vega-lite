@@ -36,7 +36,7 @@ describe('Selection', () => {
 
     expect(component.two.name).toBe('two');
     expect(component.two.type).toBe('multi');
-    expect(component.two.toggle).toEqual('event.shiftKey');
+    expect(component.two.toggle).toBe('event.shiftKey');
     expect<SelectionProjectionComponent>(component['two'].project).toEqual(
       expect.arrayContaining([{field: '_vgsid_', type: 'E', signals: {data: 'two__vgsid_'}}])
     );
@@ -44,8 +44,8 @@ describe('Selection', () => {
 
     expect(component.three.name).toBe('three');
     expect(component.three.type).toBe('interval');
-    expect(component.three.translate).toEqual('[mousedown, window:mouseup] > window:mousemove!');
-    expect(component.three.zoom).toEqual('wheel!');
+    expect(component.three.translate).toBe('[mousedown, window:mouseup] > window:mousemove!');
+    expect(component.three.zoom).toBe('wheel!');
     expect<SelectionProjectionComponent>(component['three'].project).toEqual(
       expect.arrayContaining([
         {field: 'Horsepower', channel: 'x', type: 'R', signals: {data: 'three_Horsepower', visual: 'three_x'}},
@@ -95,7 +95,7 @@ describe('Selection', () => {
 
     expect(component.two.name).toBe('two');
     expect(component.two.type).toBe('multi');
-    expect(component.two.toggle).toEqual('event.ctrlKey');
+    expect(component.two.toggle).toBe('event.ctrlKey');
     expect<SelectionProjectionComponent>(component['two'].project).toEqual(
       expect.arrayContaining([
         {field: 'Origin', channel: 'color', type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}}
@@ -106,7 +106,7 @@ describe('Selection', () => {
     expect(component.three.name).toBe('three');
     expect(component.three.type).toBe('interval');
     expect(component.three.translate).toEqual(false);
-    expect(component.three.zoom).toEqual('wheel[event.altKey]');
+    expect(component.three.zoom).toBe('wheel[event.altKey]');
     expect<SelectionProjectionComponent>(component['three'].project).toEqual(
       expect.arrayContaining([
         {
@@ -150,7 +150,7 @@ describe('Selection', () => {
 
     expect(component.two.name).toBe('two');
     expect(component.two.type).toBe('multi');
-    expect(component.two.toggle).toEqual('event.ctrlKey');
+    expect(component.two.toggle).toBe('event.ctrlKey');
     expect<SelectionProjectionComponent>(component['two'].project).toEqual(
       expect.arrayContaining([
         {field: 'Origin', channel: 'color', type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}}
@@ -161,7 +161,7 @@ describe('Selection', () => {
     expect(component.three.name).toBe('three');
     expect(component.three.type).toBe('interval');
     expect(!component.three.translate).toBeTruthy();
-    expect(component.three.zoom).toEqual('wheel[event.altKey]');
+    expect(component.three.zoom).toBe('wheel[event.altKey]');
     expect<SelectionProjectionComponent>(component['three'].project).toEqual(
       expect.arrayContaining([
         {

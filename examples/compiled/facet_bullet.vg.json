@@ -83,6 +83,66 @@
       "name": "row_domain",
       "source": "data_0",
       "transform": [{"type": "aggregate", "groupby": ["title"]}]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"ranges.2\"] !== null && !isNaN(datum[\"ranges.2\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"ranges.1\"] !== null && !isNaN(datum[\"ranges.1\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"ranges.0\"] !== null && !isNaN(datum[\"ranges.0\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_5",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"measures.1\"] !== null && !isNaN(datum[\"measures.1\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_6",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"measures.0\"] !== null && !isNaN(datum[\"measures.0\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_7",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"markers.0\"] !== null && !isNaN(datum[\"markers.0\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -117,6 +177,68 @@
         "facet": {"name": "facet", "data": "data_0", "groupby": ["title"]}
       },
       "sort": {"field": ["datum[\"title\"]"], "order": ["ascending"]},
+      "data": [
+        {
+          "source": "facet",
+          "name": "data_0",
+          "transform": [
+            {
+              "type": "filter",
+              "expr": "datum[\"ranges.2\"] !== null && !isNaN(datum[\"ranges.2\"])"
+            }
+          ]
+        },
+        {
+          "source": "facet",
+          "name": "data_1",
+          "transform": [
+            {
+              "type": "filter",
+              "expr": "datum[\"ranges.1\"] !== null && !isNaN(datum[\"ranges.1\"])"
+            }
+          ]
+        },
+        {
+          "source": "facet",
+          "name": "data_2",
+          "transform": [
+            {
+              "type": "filter",
+              "expr": "datum[\"ranges.0\"] !== null && !isNaN(datum[\"ranges.0\"])"
+            }
+          ]
+        },
+        {
+          "source": "facet",
+          "name": "data_3",
+          "transform": [
+            {
+              "type": "filter",
+              "expr": "datum[\"measures.1\"] !== null && !isNaN(datum[\"measures.1\"])"
+            }
+          ]
+        },
+        {
+          "source": "facet",
+          "name": "data_4",
+          "transform": [
+            {
+              "type": "filter",
+              "expr": "datum[\"measures.0\"] !== null && !isNaN(datum[\"measures.0\"])"
+            }
+          ]
+        },
+        {
+          "source": "facet",
+          "name": "data_5",
+          "transform": [
+            {
+              "type": "filter",
+              "expr": "datum[\"markers.0\"] !== null && !isNaN(datum[\"markers.0\"])"
+            }
+          ]
+        }
+      ],
       "encode": {
         "update": {
           "width": {"signal": "child_width"},
@@ -129,16 +251,10 @@
           "name": "child_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "facet"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"ranges.2\"] === null || isNaN(datum[\"ranges.2\"])",
-                  "value": null
-                },
-                {"value": "#eee"}
-              ],
+              "fill": {"value": "#eee"},
               "tooltip": {
                 "signal": "{\"ranges[2]\": format(datum[\"ranges.2\"], \"\")}"
               },
@@ -153,16 +269,10 @@
           "name": "child_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "facet"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"ranges.1\"] === null || isNaN(datum[\"ranges.1\"])",
-                  "value": null
-                },
-                {"value": "#ddd"}
-              ],
+              "fill": {"value": "#ddd"},
               "tooltip": {
                 "signal": "{\"ranges[1]\": format(datum[\"ranges.1\"], \"\")}"
               },
@@ -177,16 +287,10 @@
           "name": "child_layer_2_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "facet"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"ranges.0\"] === null || isNaN(datum[\"ranges.0\"])",
-                  "value": null
-                },
-                {"value": "#ccc"}
-              ],
+              "fill": {"value": "#ccc"},
               "tooltip": {
                 "signal": "{\"ranges[0]\": format(datum[\"ranges.0\"], \"\")}"
               },
@@ -201,16 +305,10 @@
           "name": "child_layer_3_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "facet"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"measures.1\"] === null || isNaN(datum[\"measures.1\"])",
-                  "value": null
-                },
-                {"value": "lightsteelblue"}
-              ],
+              "fill": {"value": "lightsteelblue"},
               "tooltip": {
                 "signal": "{\"measures[1]\": format(datum[\"measures.1\"], \"\")}"
               },
@@ -225,16 +323,10 @@
           "name": "child_layer_4_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "facet"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"measures.0\"] === null || isNaN(datum[\"measures.0\"])",
-                  "value": null
-                },
-                {"value": "steelblue"}
-              ],
+              "fill": {"value": "steelblue"},
               "tooltip": {
                 "signal": "{\"measures[0]\": format(datum[\"measures.0\"], \"\")}"
               },
@@ -249,17 +341,11 @@
           "name": "child_layer_5_marks",
           "type": "rect",
           "style": ["tick"],
-          "from": {"data": "facet"},
+          "from": {"data": "data_5"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"markers.0\"] === null || isNaN(datum[\"markers.0\"])",
-                  "value": null
-                },
-                {"value": "black"}
-              ],
+              "fill": {"value": "black"},
               "tooltip": {
                 "signal": "{\"markers[0]\": format(datum[\"markers.0\"], \"\")}"
               },
@@ -276,14 +362,13 @@
           "name": "child_x",
           "type": "linear",
           "domain": {
-            "data": "facet",
             "fields": [
-              "ranges\\.2",
-              "ranges\\.1",
-              "ranges\\.0",
-              "measures\\.1",
-              "measures\\.0",
-              "markers\\.0"
+              {"data": "data_0", "field": "ranges\\.2"},
+              {"data": "data_1", "field": "ranges\\.1"},
+              {"data": "data_2", "field": "ranges\\.0"},
+              {"data": "data_3", "field": "measures\\.1"},
+              {"data": "data_4", "field": "measures\\.0"},
+              {"data": "data_5", "field": "markers\\.0"}
             ]
           },
           "range": [0, {"signal": "child_width"}],

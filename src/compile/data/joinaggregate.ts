@@ -1,5 +1,5 @@
 import {AggregateOp} from 'vega';
-import {vgField} from '../../fielddef';
+import {vgField} from '../../channeldef';
 import {JoinAggregateTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {VgJoinAggregateTransform} from '../../vega.schema';

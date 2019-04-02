@@ -44,7 +44,7 @@ describe('src/compile', () => {
         ]
       });
       parseScaleCore(model);
-      expect(model.getScaleComponent('y').explicit.type).toEqual('log');
+      expect(model.getScaleComponent('y').explicit.type).toBe('log');
     });
 
     it('respects explicit scale type', () => {
@@ -75,7 +75,7 @@ describe('src/compile', () => {
         ]
       });
       parseScaleCore(model);
-      expect(model.getScaleComponent('y').explicit.type).toEqual('log');
+      expect(model.getScaleComponent('y').explicit.type).toBe('log');
     });
 
     // TODO: this actually shouldn't get merged
@@ -110,7 +110,7 @@ describe('src/compile', () => {
           ]
         });
         parseScaleCore(model);
-        expect(model.getScaleComponent('y').explicit.type).toEqual('log');
+        expect(model.getScaleComponent('y').explicit.type).toBe('log');
         expect(localLogger.warns[0]).toEqual(log.message.mergeConflictingProperty('type', 'scale', 'log', 'pow'));
       })
     );
@@ -144,7 +144,7 @@ describe('src/compile', () => {
         ]
       });
       parseScaleCore(model);
-      expect(model.getScaleComponent('x').implicit.type).toEqual('band');
+      expect(model.getScaleComponent('x').implicit.type).toBe('band');
     });
 
     it('correctly ignores x/y when lon/lat', () => {
@@ -242,7 +242,7 @@ describe('src/compile', () => {
           }
         });
         const scale = model.getScaleComponent('x');
-        expect(scale.implicit.type).toEqual('point');
+        expect(scale.implicit.type).toBe('point');
         expect(scale.implicit.range).toEqual({step: 20});
       });
     });
@@ -287,8 +287,8 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('color');
 
       it('should create correct color scale', () => {
-        expect(scale.implicit.name).toEqual('color');
-        expect(scale.implicit.type).toEqual('ordinal');
+        expect(scale.implicit.name).toBe('color');
+        expect(scale.implicit.type).toBe('ordinal');
         expect(scale.domains).toEqual([
           {
             data: 'main',
@@ -296,7 +296,7 @@ describe('src/compile', () => {
             sort: true
           }
         ]);
-        expect(scale.implicit.range).toEqual('category');
+        expect(scale.implicit.range).toBe('category');
       });
     });
 
@@ -311,8 +311,8 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('color');
 
       it('should create linear color scale', () => {
-        expect(scale.implicit.name).toEqual('color');
-        expect(scale.implicit.type).toEqual('ordinal');
+        expect(scale.implicit.name).toBe('color');
+        expect(scale.implicit.type).toBe('ordinal');
 
         expect(scale.domains).toEqual([
           {
@@ -335,9 +335,9 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('color');
 
       it('should create linear color scale', () => {
-        expect(scale.implicit.name).toEqual('color');
-        expect(scale.implicit.type).toEqual('linear');
-        expect(scale.implicit.range).toEqual('ramp');
+        expect(scale.implicit.name).toBe('color');
+        expect(scale.implicit.type).toBe('linear');
+        expect(scale.implicit.range).toBe('ramp');
 
         expect(scale.domains).toEqual([
           {
@@ -359,8 +359,8 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('color');
 
       it('should add correct scales', () => {
-        expect(scale.implicit.name).toEqual('color');
-        expect(scale.implicit.type).toEqual('bin-ordinal');
+        expect(scale.implicit.name).toBe('color');
+        expect(scale.implicit.type).toBe('bin-ordinal');
         expect(scale.implicit.bins).toEqual({signal: 'bin_maxbins_6_origin_bins'});
       });
     });
@@ -376,8 +376,8 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('color');
 
       it('should add correct scales', () => {
-        expect(scale.implicit.name).toEqual('color');
-        expect(scale.implicit.type).toEqual('ordinal');
+        expect(scale.implicit.name).toBe('color');
+        expect(scale.implicit.type).toBe('ordinal');
         expect(scale.implicit.bins).toBeUndefined();
       });
     });
@@ -393,8 +393,8 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('opacity');
 
       it('should add correct scales', () => {
-        expect(scale.implicit.name).toEqual('opacity');
-        expect(scale.implicit.type).toEqual('linear');
+        expect(scale.implicit.name).toBe('opacity');
+        expect(scale.implicit.type).toBe('linear');
         expect(scale.implicit.bins).toEqual({signal: 'bin_maxbins_6_origin_bins'});
       });
     });
@@ -410,8 +410,8 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('size');
 
       it('should add correct scales', () => {
-        expect(scale.implicit.name).toEqual('size');
-        expect(scale.implicit.type).toEqual('linear');
+        expect(scale.implicit.name).toBe('size');
+        expect(scale.implicit.type).toBe('linear');
         expect(scale.implicit.bins).toEqual({signal: 'bin_maxbins_6_origin_bins'});
       });
     });
@@ -427,8 +427,8 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('color');
 
       it('should add correct scales', () => {
-        expect(scale.implicit.name).toEqual('color');
-        expect(scale.implicit.type).toEqual('time');
+        expect(scale.implicit.name).toBe('color');
+        expect(scale.implicit.type).toBe('time');
       });
     });
 

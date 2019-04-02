@@ -22,7 +22,21 @@
       "transform": [
         {
           "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
           "expr": "!(length(data(\"CylYr_store\"))) || (vlSelectionTest(\"CylYr_store\", datum))"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
         }
       ]
     }
@@ -86,15 +100,11 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
           "fill": [
-            {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-              "value": null
-            },
             {
               "test": "!(length(data(\"CylYr_store\"))) || (vlSelectionTest(\"CylYr_store\", datum))",
               "scale": "color",
@@ -115,17 +125,11 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "Origin"}
-          ],
+          "fill": {"scale": "color", "field": "Origin"},
           "tooltip": {
             "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
           },
@@ -143,8 +147,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "Horsepower"},
-          {"data": "data_0", "field": "Horsepower"}
+          {"data": "data_0", "field": "Horsepower"},
+          {"data": "data_1", "field": "Horsepower"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -156,8 +160,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "Miles_per_Gallon"},
-          {"data": "data_0", "field": "Miles_per_Gallon"}
+          {"data": "data_0", "field": "Miles_per_Gallon"},
+          {"data": "data_1", "field": "Miles_per_Gallon"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -169,13 +173,12 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "Origin"},
-          {"data": "data_0", "field": "Origin"}
+          {"data": "data_0", "field": "Origin"},
+          {"data": "data_1", "field": "Origin"}
         ],
         "sort": true
       },
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     }
   ],
   "axes": [

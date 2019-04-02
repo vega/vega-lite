@@ -137,7 +137,7 @@ describe('compile/scale', () => {
 
     describe('temporal', () => {
       it('should return time scale for temporal color field by default.', () => {
-        expect(scaleType({}, 'color', {type: 'temporal'}, 'point', defaultScaleConfig)).toEqual('time');
+        expect(scaleType({}, 'color', {type: 'temporal'}, 'point', defaultScaleConfig)).toBe('time');
       });
 
       it(
@@ -160,7 +160,7 @@ describe('compile/scale', () => {
     });
     describe('quantitative', () => {
       it('should return linear scale for quantitative color field by default.', () => {
-        expect(scaleType({}, 'color', {type: 'quantitative'}, 'point', defaultScaleConfig)).toEqual('linear');
+        expect(scaleType({}, 'color', {type: 'quantitative'}, 'point', defaultScaleConfig)).toBe('linear');
       });
 
       it('should return linear scale for piecewise quantitative color field by default.', () => {
@@ -228,7 +228,7 @@ describe('compile/scale', () => {
             'point',
             defaultScaleConfig
           )
-        ).toEqual('time');
+        ).toBe('time');
       });
 
       it('should return time if data type is temporal but specified scale type is discrete', () => {

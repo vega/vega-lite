@@ -1,8 +1,8 @@
 /* tslint:disable:quotemark */
 
 import {X, Y} from '../../../src/channel';
+import {TypedFieldDef} from '../../../src/channeldef';
 import {binPosition, color, nonPosition, pointPosition, tooltip} from '../../../src/compile/mark/mixins';
-import {TypedFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 

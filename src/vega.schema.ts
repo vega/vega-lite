@@ -161,6 +161,14 @@ export interface VgProjection {
    * Used in conjunction with fit, provides the width and height in pixels of the area to which the projection should be automatically fit.
    */
   size?: SignalRef | (number | SignalRef)[];
+  /*
+   * Sets whether or not the x-dimension is reflected (negated) in the output.
+   */
+  reflectX?: boolean;
+  /*
+   * Sets whether or not the y-dimension is reflected (negated) in the output.
+   */
+  reflectY?: boolean;
 
   /* The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection */
   coefficient?: number;

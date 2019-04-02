@@ -178,7 +178,7 @@ describe('Mark: Point', () => {
       expect(Array.isArray(props.stroke)).toBe(true);
       expect(props.stroke['length']).toEqual(2);
       expect(props.stroke[0].scale).toEqual(COLOR);
-      expect(props.stroke[0].field).toEqual('yield');
+      expect(props.stroke[0].field).toBe('yield');
     });
   });
 
@@ -194,8 +194,8 @@ describe('Mark: Point', () => {
     it('should have one condition for color with scale for "yield"', () => {
       expect(Array.isArray(props.stroke)).toBe(true);
       expect(props.stroke['length']).toEqual(2);
-      expect(props.stroke[0].test).toEqual('true');
-      expect(props.stroke[1].value).toEqual('#4c78a8');
+      expect(props.stroke[0].test).toBe('true');
+      expect(props.stroke[1].value).toBe('#4c78a8');
     });
   });
 
@@ -231,16 +231,16 @@ describe('Mark: Point', () => {
   describe('with config.mark.size', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(pointXY({}, {mark: {size: 23}}));
     const props = point.encodeEntry(model);
-    it('should have correct size', () => {
-      expect(props.size).toEqual({value: 23});
+    it('should have no size as Vega config will already apply it correctly', () => {
+      expect(props.size).toBeUndefined();
     });
   });
 
   describe('with config.point.size', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(pointXY({}, {point: {size: 23}}));
     const props = point.encodeEntry(model);
-    it('should have correct size', () => {
-      expect(props.size).toEqual({value: 23});
+    it('should have no size as Vega config will already apply it correctly', () => {
+      expect(props.size).toBeUndefined();
     });
   });
 

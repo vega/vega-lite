@@ -563,10 +563,6 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-              "value": null
-            },
-            {
               "test": "!(length(data(\"alex_store\")) || length(data(\"morgan_store\"))) || ((vlSelectionTest(\"alex_store\", datum)) && (vlSelectionTest(\"morgan_store\", datum)))",
               "scale": "color",
               "field": "__count"

@@ -34,6 +34,36 @@
           "as": "lower_yield"
         }
       ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"upper_yield\"] !== null && !isNaN(datum[\"upper_yield\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -45,17 +75,11 @@
       "name": "layer_0_layer_0_marks",
       "type": "rect",
       "style": ["tick", "errorbar-ticks"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"lower_yield\"] === null || isNaN(datum[\"lower_yield\"])",
-              "value": null
-            },
-            {"value": "#4682b4"}
-          ],
+          "fill": {"value": "#4682b4"},
           "tooltip": {
             "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
@@ -76,17 +100,11 @@
       "name": "layer_0_layer_1_marks",
       "type": "rect",
       "style": ["tick", "errorbar-ticks"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"upper_yield\"] === null || isNaN(datum[\"upper_yield\"])",
-              "value": null
-            },
-            {"value": "#4682b4"}
-          ],
+          "fill": {"value": "#4682b4"},
           "tooltip": {
             "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
@@ -107,16 +125,10 @@
       "name": "layer_0_layer_2_marks",
       "type": "rule",
       "style": ["rule", "errorbar-rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
-          "stroke": [
-            {
-              "test": "datum[\"lower_yield\"] === null || isNaN(datum[\"lower_yield\"])",
-              "value": null
-            },
-            {"value": "#4682b4"}
-          ],
+          "stroke": {"value": "#4682b4"},
           "tooltip": {
             "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
@@ -145,13 +157,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"mean_yield\"] === null || isNaN(datum[\"mean_yield\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
+          "fill": {"value": "black"},
           "tooltip": {
             "signal": "{\"Mean of yield\": format(datum[\"mean_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
@@ -173,8 +179,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "lower_yield"},
-          {"data": "data_0", "field": "upper_yield"},
+          {"data": "data_1", "field": "lower_yield"},
+          {"data": "data_2", "field": "upper_yield"},
+          {"data": "data_3", "field": "lower_yield"},
+          {"data": "data_3", "field": "upper_yield"},
           {"data": "source_0", "field": "mean_yield"}
         ]
       },
@@ -187,7 +195,9 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "variety"},
+          {"data": "data_1", "field": "variety"},
+          {"data": "data_2", "field": "variety"},
+          {"data": "data_3", "field": "variety"},
           {"data": "source_0", "field": "variety"}
         ],
         "sort": true

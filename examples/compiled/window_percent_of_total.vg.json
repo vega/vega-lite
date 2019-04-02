@@ -30,6 +30,10 @@
           "type": "formula",
           "expr": "datum.Time/datum.TotalTime * 100",
           "as": "PercentOfTotal"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"PercentOfTotal\"] !== null && !isNaN(datum[\"PercentOfTotal\"])"
         }
       ]
     }
@@ -49,13 +53,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"PercentOfTotal\"] === null || isNaN(datum[\"PercentOfTotal\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"% of total Time\": format(datum[\"PercentOfTotal\"], \"\"), \"Activity\": ''+datum[\"Activity\"]}"
           },

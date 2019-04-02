@@ -13,7 +13,13 @@
       "name": "source_0",
       "url": "data/cars.json",
       "format": {"type": "json"},
-      "transform": [{"type": "identifier", "as": "_vgsid_"}]
+      "transform": [
+        {"type": "identifier", "as": "_vgsid_"},
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -325,18 +331,8 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-              "value": null
-            },
-            {"value": "transparent"}
-          ],
+          "fill": {"value": "transparent"},
           "stroke": [
-            {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-              "value": null
-            },
             {
               "test": "!(length(data(\"hoverbrush_store\"))) || (vlSelectionTest(\"hoverbrush_store\", datum))",
               "value": "teal"

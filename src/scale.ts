@@ -1,7 +1,9 @@
 import {toSet} from 'vega-util';
+import * as CHANNEL from './channel';
 import {Channel, CHANNELS, isColorChannel} from './channel';
 import {DateTime} from './datetime';
 import * as log from './log';
+import * as TYPE from './type';
 import {Type, TYPE_INDEX} from './type';
 import {contains, Flag, flagKeys, keys} from './util';
 import {ScaleInterpolate, ScaleInterpolateParams} from './vega.schema';
@@ -771,11 +773,11 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
 }
 
 export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type): boolean {
-  if (contains([Type.ORDINAL, Type.NOMINAL], fieldDefType)) {
+  if (contains([TYPE.ORDINAL, TYPE.NOMINAL], fieldDefType)) {
     return specifiedType === undefined || hasDiscreteDomain(specifiedType);
-  } else if (fieldDefType === Type.TEMPORAL) {
+  } else if (fieldDefType === TYPE.TEMPORAL) {
     return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
-  } else if (fieldDefType === Type.QUANTITATIVE) {
+  } else if (fieldDefType === TYPE.QUANTITATIVE) {
     return contains(
       [
         ScaleType.LOG,
@@ -797,14 +799,14 @@ export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType:
 
 export function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean {
   switch (channel) {
-    case Channel.X:
-    case Channel.Y:
+    case CHANNEL.X:
+    case CHANNEL.Y:
       return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
-    case Channel.SIZE: // TODO: size and opacity can support ordinal with more modification
-    case Channel.STROKEWIDTH:
-    case Channel.OPACITY:
-    case Channel.FILLOPACITY:
-    case Channel.STROKEOPACITY:
+    case CHANNEL.SIZE: // TODO: size and opacity can support ordinal with more modification
+    case CHANNEL.STROKEWIDTH:
+    case CHANNEL.OPACITY:
+    case CHANNEL.FILLOPACITY:
+    case CHANNEL.STROKEOPACITY:
       // Although it generally doesn't make sense to use band with size and opacity,
       // it can also work since we use band: 0.5 to get midpoint.
       return (
@@ -812,11 +814,11 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
         isContinuousToDiscrete(scaleType) ||
         contains(['band', 'point'], scaleType)
       );
-    case Channel.COLOR:
-    case Channel.FILL:
-    case Channel.STROKE:
+    case CHANNEL.COLOR:
+    case CHANNEL.FILL:
+    case CHANNEL.STROKE:
       return scaleType !== 'band'; // band does not make sense with color
-    case Channel.SHAPE:
+    case CHANNEL.SHAPE:
       return scaleType === 'ordinal'; // shape = lookup only
   }
   /* istanbul ignore next: it should never reach here */

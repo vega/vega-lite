@@ -47,6 +47,20 @@
           "type": "formula",
           "expr": "datum[\"upper_yield\"]",
           "as": "lower_upper_yield"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"lower_upper_yield\"] !== null && !isNaN(datum[\"lower_upper_yield\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"center\"] !== null && !isNaN(datum[\"center\"])"
         }
       ]
     }
@@ -63,13 +77,7 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "stroke": [
-            {
-              "test": "datum[\"lower_upper_yield\"] === null || isNaN(datum[\"lower_upper_yield\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
+          "stroke": {"value": "black"},
           "tooltip": {
             "signal": "{\"lower_yield\": format(datum[\"upper_upper_yield\"], \"\"), \"upper_yield\": format(datum[\"lower_upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
@@ -95,17 +103,11 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"center\"] === null || isNaN(datum[\"center\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
+          "fill": {"value": "black"},
           "tooltip": {
             "signal": "{\"center\": format(datum[\"center\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
@@ -129,7 +131,7 @@
         "fields": [
           {"data": "data_1", "field": "lower_upper_yield"},
           {"data": "data_1", "field": "upper_upper_yield"},
-          {"data": "source_0", "field": "center"}
+          {"data": "data_2", "field": "center"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -142,7 +144,7 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "variety"},
-          {"data": "source_0", "field": "variety"}
+          {"data": "data_2", "field": "variety"}
         ],
         "sort": true
       },

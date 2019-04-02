@@ -26,6 +26,16 @@
       "transform": [
         {
           "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
           "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
@@ -357,22 +367,12 @@
           "name": "concat_0_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
+              "fill": {"value": "transparent"},
               "stroke": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
@@ -519,7 +519,7 @@
               "name": "concat_1_concat_0_marks",
               "type": "text",
               "style": ["text"],
-              "from": {"data": "data_0"},
+              "from": {"data": "data_1"},
               "encode": {
                 "update": {
                   "fill": {"value": "black"},
@@ -551,7 +551,7 @@
               "name": "concat_1_concat_1_marks",
               "type": "text",
               "style": ["text"],
-              "from": {"data": "data_0"},
+              "from": {"data": "data_1"},
               "encode": {
                 "update": {
                   "fill": {"value": "black"},
@@ -583,7 +583,7 @@
               "name": "concat_1_concat_2_marks",
               "type": "text",
               "style": ["text"],
-              "from": {"data": "data_0"},
+              "from": {"data": "data_1"},
               "encode": {
                 "update": {
                   "fill": {"value": "black"},
@@ -606,14 +606,14 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
+      "domain": {"data": "data_0", "field": "Cylinders", "sort": true},
       "range": "ordinal",
       "interpolate": "hcl"
     },
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {"data": "data_0", "field": "Horsepower"},
       "range": [0, {"signal": "concat_0_width"}],
       "nice": true,
       "zero": true
@@ -621,7 +621,7 @@
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_0", "field": "Miles_per_Gallon"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
       "zero": true
@@ -629,21 +629,21 @@
     {
       "name": "concat_1_concat_0_y",
       "type": "point",
-      "domain": {"data": "data_0", "field": "row_number", "sort": true},
+      "domain": {"data": "data_1", "field": "row_number", "sort": true},
       "range": {"step": {"signal": "concat_1_concat_0_y_step"}},
       "padding": 0.5
     },
     {
       "name": "concat_1_concat_1_y",
       "type": "point",
-      "domain": {"data": "data_0", "field": "row_number", "sort": true},
+      "domain": {"data": "data_1", "field": "row_number", "sort": true},
       "range": {"step": {"signal": "concat_1_concat_1_y_step"}},
       "padding": 0.5
     },
     {
       "name": "concat_1_concat_2_y",
       "type": "point",
-      "domain": {"data": "data_0", "field": "row_number", "sort": true},
+      "domain": {"data": "data_1", "field": "row_number", "sort": true},
       "range": {"step": {"signal": "concat_1_concat_2_y_step"}},
       "padding": 0.5
     }

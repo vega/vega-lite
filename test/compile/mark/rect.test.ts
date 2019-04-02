@@ -1,7 +1,7 @@
 /* tslint:disable quotemark */
+import {PositionFieldDef} from '../../../src/channeldef';
 import {rect} from '../../../src/compile/mark/rect';
 import {fieldInvalidTestValueRef} from '../../../src/compile/mark/valueref';
-import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 

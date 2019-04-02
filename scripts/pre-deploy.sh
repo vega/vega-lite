@@ -13,7 +13,6 @@ if [ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]; then
 fi
 
 # 0.2 Build toc and versions file to make sure they are up to date
-
 yarn build:toc
 yarn build:versions
 

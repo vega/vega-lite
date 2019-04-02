@@ -33,9 +33,10 @@ By default, all time units represent date time using local time. To use UTC time
 ## Time Unit in Encoding Field Definition
 
 ```js
+// A Single View or a Layer Specification
 {
-  "data": ... ,
-  "mark": ... ,
+  ...,
+  "mark/layer": ...,
   "encoding": {
     "x": {
       "timeUnit": ...,               // time unit
@@ -69,10 +70,11 @@ If you want to use a discrete scale instead, you can cast the field to have an `
 ## Time Unit Transform
 
 ```js
+// Any View Specification
 {
-  ...
+  ...,
   "transform": [
-    {"timeUnit": ..., "field": ..., "as" ...} // TimeUnit Transform
+    {"timeUnit": ..., "field": ..., "as": ...} // TimeUnit Transform
      ...
   ],
   ...

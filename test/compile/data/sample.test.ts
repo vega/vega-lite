@@ -20,7 +20,7 @@ describe('compile/data/sample', () => {
         sample: 500
       };
       const sample = new SampleTransformNode(null, transform);
-      expect(sample.hash()).toEqual('SampleTransform {"sample":500}');
+      expect(sample.hash()).toBe('SampleTransform {"sample":500}');
     });
 
     it('should never clone parent', () => {

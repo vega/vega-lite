@@ -13,6 +13,18 @@ This transform generates a new data stream in which each data object consists of
 
 _Note:_ The `fold` transform only applies to a list of known fields (set using the `fields` parameter). If your data objects instead contain array-typed fields, you may wish to use the [flatten](flatten.html) transform instead.
 
+```js
+// Any View Specification
+{
+  ...
+  "transform": [
+    {"fold": ...} // Fold Transform
+     ...
+  ],
+  ...
+}
+```
+
 ## Fold Transform Definition
 
 {% include table.html props="fold,as" source="FoldTransform" %}

@@ -28,6 +28,16 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "filter",
+          "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
           "type": "aggregate",
           "groupby": [],
           "ops": ["average"],
@@ -49,16 +59,10 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"IMDB_Rating\"] === null || isNaN(datum[\"IMDB_Rating\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"IMDB Rating\": format(datum[\"IMDB_Rating\"], \"\"), \"Title\": ''+datum[\"Title\"]}"
           },
@@ -73,16 +77,10 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "stroke": [
-            {
-              "test": "datum[\"average_AverageRating\"] === null || isNaN(datum[\"average_AverageRating\"])",
-              "value": null
-            },
-            {"value": "red"}
-          ],
+          "stroke": {"value": "red"},
           "tooltip": {
             "signal": "{\"Average of AverageRating\": format(datum[\"average_AverageRating\"], \"\")}"
           },
@@ -99,8 +97,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "IMDB_Rating"},
-          {"data": "data_0", "field": "average_AverageRating"}
+          {"data": "data_0", "field": "IMDB_Rating"},
+          {"data": "data_1", "field": "average_AverageRating"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -110,7 +108,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "source_0", "field": "Title", "sort": true},
+      "domain": {"data": "data_0", "field": "Title", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

@@ -214,7 +214,7 @@ describe('Selection + Scales', () => {
       expect(hp.length).toBe(1);
       expect(mpg.length).toBe(1);
       expect(named.length).toBe(1);
-      expect(named[0].update).toEqual('{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower}');
+      expect(named[0].update).toBe('{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower}');
 
       const signals2 = assembleTopLevelSignals(model.children[1] as UnitModel, signals);
       const acc = signals2.filter(s => s.name === 'grid_Acceleration');

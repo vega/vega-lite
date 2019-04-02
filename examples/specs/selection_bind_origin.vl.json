@@ -5,7 +5,7 @@
     "org": {
       "type": "single",
       "fields": ["Origin"],
-      "bind": {"input": "select", "options": ["Europe", "Japan", "USA"]}
+      "bind": {"input": "select", "options": [null, "Europe", "Japan", "USA"]}
     }
   },
   "mark": "point",

@@ -18,6 +18,16 @@
         {"a": "H", "b": 87},
         {"a": "I", "b": 52}
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -33,17 +43,11 @@
       "name": "marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"b\"] === null || isNaN(datum[\"b\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "b"}
-          ],
+          "fill": {"scale": "color", "field": "b"},
           "tooltip": {
             "signal": "{\"b\": ''+datum[\"b\"], \"Threshold\": format(datum[\"b\"], \"\")}"
           },
@@ -59,7 +63,7 @@
     {
       "name": "y",
       "type": "point",
-      "domain": {"data": "source_0", "field": "b"},
+      "domain": {"data": "data_0", "field": "b"},
       "range": {"step": {"signal": "y_step"}},
       "padding": 0.5
     },
