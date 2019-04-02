@@ -27,8 +27,12 @@ function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, ch
   return {};
 }
 
-function binKey(bin: BinParams, field: string) {
-  return `${binToString(bin)}_${field}`;
+function binKey(bin: BinParams, field: string, as: [string, string]) {
+  if (as) {
+    return `${binToString(bin)}_${field}_${as[0]}_${as[1]}`;
+  } else {
+    return `${binToString(bin)}_${field}`;
+  }
 }
 
 function getSignalsFromModel(model: Model, key: string) {
@@ -44,15 +48,18 @@ function isBinTransform(t: TypedFieldDef<string> | BinTransform): t is BinTransf
 
 function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolean | BinParams, model: Model) {
   let as: [string, string];
+  let key: string;
+
+  const normalizedBin = normalizeBin(bin, undefined) || {};
 
   if (isBinTransform(t)) {
     as = isString(t.as) ? [t.as, `${t.as}_end`] : [t.as[0], t.as[1]];
+    key = binKey(normalizedBin, t.field, as);
   } else {
     as = [vgField(t, {forAs: true}), vgField(t, {binSuffix: 'end', forAs: true})];
+    key = binKey(normalizedBin, t.field, undefined);
   }
 
-  const normalizedBin = normalizeBin(bin, undefined) || {};
-  const key = binKey(normalizedBin, t.field);
   const {signal, extentSignal} = getSignalsFromModel(model, key);
 
   const binComponent: BinComponent = {
