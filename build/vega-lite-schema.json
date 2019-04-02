@@ -590,7 +590,7 @@
           "type": "number"
         },
         "tickExtra": {
-          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPostion\": 1` and an axis `\"padding\"` value of `0`.",
+          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
           "type": "boolean"
         },
         "tickMinStep": {
@@ -898,7 +898,7 @@
           "type": "number"
         },
         "tickExtra": {
-          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPostion\": 1` and an axis `\"padding\"` value of `0`.",
+          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
           "type": "boolean"
         },
         "tickOffset": {
@@ -1507,6 +1507,14 @@
         "color": {
           "$ref": "#/definitions/Color",
           "description": "Text color for title text."
+        },
+        "dx": {
+          "description": "Delta offset for title text x-coordinate.",
+          "type": "number"
+        },
+        "dy": {
+          "description": "Delta offset for title text y-coordinate.",
+          "type": "number"
         },
         "font": {
           "description": "Font name for title text.",
@@ -11263,6 +11271,14 @@
         "color": {
           "$ref": "#/definitions/Color",
           "description": "Text color for title text."
+        },
+        "dx": {
+          "description": "Delta offset for title text x-coordinate.",
+          "type": "number"
+        },
+        "dy": {
+          "description": "Delta offset for title text y-coordinate.",
+          "type": "number"
         },
         "font": {
           "description": "Font name for title text.",
