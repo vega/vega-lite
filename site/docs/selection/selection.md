@@ -10,7 +10,7 @@ permalink: /docs/selection.html
 {
   ...,
   "selection": {  // Key-value mappings between selection names and definitions.
-    ...: {"type": "single"},
+    ...: {"type": "single/multi/interval",  ...},
     ...
   },
   "mark": ...,
