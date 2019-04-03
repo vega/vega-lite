@@ -6,7 +6,6 @@ const CLEAR_DATA_SIGNALS = [TUPLE, '_toggle'];
 const CLEAR_VISUAL_SIGNALS = ['_x', '_y'];
 
 const CLEAR_SIGNALS = [CLEAR_DATA_SIGNALS, CLEAR_VISUAL_SIGNALS];
-const CLEAR_TRIGGERS = {mouseover: 'mouseout', click: 'dblclick'};
 const CLEAR_UPDATE = ['null', '[0, 0]'];
 
 const clear: TransformCompiler = {
@@ -18,7 +17,7 @@ const clear: TransformCompiler = {
   },
 
   signals: (model, selCmpt, signals) => {
-    const trigger = CLEAR_TRIGGERS[selCmpt['on']] ? CLEAR_TRIGGERS[selCmpt['on']] : 'dblclick';
+    const trigger = selCmpt['on'] === 'mouseover' ? 'mouseout' : 'dblclick';
     const events = selCmpt.clear ? parseSelector(selCmpt.clear, 'scope') : parseSelector(trigger, 'scope');
 
     if (selCmpt['bind']) {
