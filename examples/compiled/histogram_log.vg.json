@@ -31,15 +31,17 @@
         {
           "type": "extent",
           "field": "log_x",
-          "signal": "bin_maxbins_10_log_x_extent"
+          "signal": "bin_maxbins_10_log_x_bin_log_x_bin_log_x_end_extent"
         },
         {
           "type": "bin",
           "field": "log_x",
           "as": ["bin_log_x", "bin_log_x_end"],
-          "signal": "bin_maxbins_10_log_x_bins",
+          "signal": "bin_maxbins_10_log_x_bin_log_x_bin_log_x_end_bins",
           "maxbins": 10,
-          "extent": {"signal": "bin_maxbins_10_log_x_extent"}
+          "extent": {
+            "signal": "bin_maxbins_10_log_x_bin_log_x_bin_log_x_end_extent"
+          }
         },
         {"type": "formula", "expr": "pow(10, datum.bin_log_x)", "as": "x1"},
         {"type": "formula", "expr": "pow(10, datum.bin_log_x_end)", "as": "x2"},

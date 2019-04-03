@@ -14,15 +14,17 @@
         {
           "type": "extent",
           "field": "IMDB_Rating",
-          "signal": "bin_maxbins_10_IMDB_Rating_extent"
+          "signal": "bin_maxbins_10_IMDB_Rating_bin_IMDB_Rating_bin_IMDB_Rating_end_extent"
         },
         {
           "type": "bin",
           "field": "IMDB_Rating",
           "as": ["bin_IMDB_Rating", "bin_IMDB_Rating_end"],
-          "signal": "bin_maxbins_10_IMDB_Rating_bins",
+          "signal": "bin_maxbins_10_IMDB_Rating_bin_IMDB_Rating_bin_IMDB_Rating_end_bins",
           "maxbins": 10,
-          "extent": {"signal": "bin_maxbins_10_IMDB_Rating_extent"}
+          "extent": {
+            "signal": "bin_maxbins_10_IMDB_Rating_bin_IMDB_Rating_bin_IMDB_Rating_end_extent"
+          }
         },
         {
           "type": "aggregate",
