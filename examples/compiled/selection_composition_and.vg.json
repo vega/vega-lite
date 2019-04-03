@@ -79,6 +79,10 @@
         {
           "events": {"signal": "alex_zoom_delta"},
           "update": "clampRange(zoomLinear(alex_x, alex_zoom_anchor.x, alex_zoom_delta), 0, width)"
+        },
+        {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
         }
       ]
     },
@@ -132,6 +136,10 @@
         {
           "events": {"signal": "alex_zoom_delta"},
           "update": "clampRange(zoomLinear(alex_y, alex_zoom_anchor.y, alex_zoom_delta), 0, height)"
+        },
+        {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
         }
       ]
     },
@@ -160,7 +168,8 @@
         {
           "events": [{"signal": "alex_Cylinders || alex_Origin"}],
           "update": "alex_Cylinders && alex_Origin ? {unit: \"\", fields: alex_tuple_fields, values: [alex_Cylinders,alex_Origin]} : null"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -289,6 +298,10 @@
         {
           "events": {"signal": "morgan_zoom_delta"},
           "update": "clampRange(zoomLinear(morgan_x, morgan_zoom_anchor.x, morgan_zoom_delta), 0, width)"
+        },
+        {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
         }
       ]
     },
@@ -342,6 +355,10 @@
         {
           "events": {"signal": "morgan_zoom_delta"},
           "update": "clampRange(zoomLinear(morgan_y, morgan_zoom_anchor.y, morgan_zoom_delta), 0, height)"
+        },
+        {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
         }
       ]
     },
@@ -370,7 +387,8 @@
         {
           "events": [{"signal": "morgan_Cylinders || morgan_Origin"}],
           "update": "morgan_Cylinders && morgan_Origin ? {unit: \"\", fields: morgan_tuple_fields, values: [morgan_Cylinders,morgan_Origin]} : null"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {

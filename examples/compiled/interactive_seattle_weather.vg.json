@@ -128,6 +128,10 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
             }
           ]
         },
@@ -156,6 +160,10 @@
             {
               "events": [{"signal": "brush_monthdate_date"}],
               "update": "brush_monthdate_date ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_monthdate_date]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },

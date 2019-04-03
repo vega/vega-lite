@@ -102,6 +102,10 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
             }
           ]
         },
@@ -157,6 +161,10 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, concat_0_height)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
             }
           ]
         },
@@ -187,6 +195,10 @@
                 {"signal": "brush_Miles_per_Gallon || brush_Horsepower"}
               ],
               "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Horsepower]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
