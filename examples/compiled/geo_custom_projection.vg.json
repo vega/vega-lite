@@ -1,0 +1,37 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 900,
+  "height": 560,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/us-10m.json",
+      "format": {"type": "topojson", "feature": "states"}
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "type": "albersUsa",
+      "scale": 3000,
+      "translate": [1200, 700]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "shape",
+      "clip": true,
+      "style": ["geoshape"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {"fill": {"value": "#ccc"}, "stroke": {"value": "#fff"}}
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    }
+  ],
+  "config": {"style": {"cell": {"stroke": null}}}
+}

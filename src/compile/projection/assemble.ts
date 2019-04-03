@@ -26,31 +26,42 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
   const projection = component.combine();
   const {name, ...rest} = projection; // we need to extract name so that it is always present in the output and pass TS type validation
 
-  const size: SignalRef = {
-    signal: `[${component.size.map(ref => ref.signal).join(', ')}]`
-  };
+  if (!component.data) {
+    // generate custom projection, no automatic fitting
+    return [
+      {
+        name,
+        ...rest
+      }
+    ];
+  } else {
+    // generate projection that uses extent fitting
+    const size: SignalRef = {
+      signal: `[${component.size.map(ref => ref.signal).join(', ')}]`
+    };
 
-  const fit: string[] = component.data.reduce((sources, data) => {
-    const source: string = isSignalRef(data) ? data.signal : `data('${model.lookupDataSource(data)}')`;
-    if (!contains(sources, source)) {
-      // build a unique list of sources
-      sources.push(source);
+    const fit: string[] = component.data.reduce((sources, data) => {
+      const source: string = isSignalRef(data) ? data.signal : `data('${model.lookupDataSource(data)}')`;
+      if (!contains(sources, source)) {
+        // build a unique list of sources
+        sources.push(source);
+      }
+      return sources;
+    }, []);
+
+    if (fit.length <= 0) {
+      throw new Error("Projection's fit didn't find any data sources");
     }
-    return sources;
-  }, []);
 
-  if (fit.length <= 0) {
-    throw new Error("Projection's fit didn't find any data sources");
+    return [
+      {
+        name,
+        size,
+        fit: {
+          signal: fit.length > 1 ? `[${fit.join(', ')}]` : fit[0]
+        },
+        ...rest
+      }
+    ];
   }
-
-  return [
-    {
-      name,
-      size,
-      fit: {
-        signal: fit.length > 1 ? `[${fit.join(', ')}]` : fit[0]
-      },
-      ...rest
-    }
-  ];
 }

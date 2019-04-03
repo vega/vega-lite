@@ -21,42 +21,49 @@ export function parseProjection(model: Model) {
 }
 
 function parseUnitProjection(model: UnitModel): ProjectionComponent {
-  const {specifiedProjection, config, hasProjection} = model;
-
-  if (hasProjection) {
-    const data: (SignalRef | string)[] = [];
-
-    [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach(posssiblePair => {
-      if (model.channelHasField(posssiblePair[0]) || model.channelHasField(posssiblePair[1])) {
-        data.push({
-          signal: model.getName(`geojson_${data.length}`)
-        });
-      }
-    });
-
-    if (model.channelHasField(SHAPE) && model.fieldDef(SHAPE).type === GEOJSON) {
-      data.push({
-        signal: model.getName(`geojson_${data.length}`)
-      });
-    }
-
-    if (data.length === 0) {
-      // main source is geojson, so we can just use that
-      data.push(model.requestDataName(MAIN));
-    }
+  if (model.hasProjection) {
+    const proj = model.specifiedProjection;
+    const fit = !(proj && (proj.scale != null || proj.translate != null));
+    const size = fit ? [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')] : undefined;
+    const data = fit ? gatherFitData(model) : undefined;
 
     return new ProjectionComponent(
       model.projectionName(true),
       {
-        ...(config.projection || {}),
-        ...(specifiedProjection || {})
+        ...(model.config.projection || {}),
+        ...(proj || {})
       },
-      [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')],
+      size,
       data
     );
   }
 
   return undefined;
+}
+
+function gatherFitData(model: UnitModel) {
+  const data: (SignalRef | string)[] = [];
+
+  [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach(posssiblePair => {
+    if (model.channelHasField(posssiblePair[0]) || model.channelHasField(posssiblePair[1])) {
+      data.push({
+        signal: model.getName(`geojson_${data.length}`)
+      });
+    }
+  });
+
+  if (model.channelHasField(SHAPE) && model.fieldDef(SHAPE).type === GEOJSON) {
+    data.push({
+      signal: model.getName(`geojson_${data.length}`)
+    });
+  }
+
+  if (data.length === 0) {
+    // main source is geojson, so we can just use that
+    data.push(model.requestDataName(MAIN));
+  }
+
+  return data;
 }
 
 function mergeIfNoConflict(first: ProjectionComponent, second: ProjectionComponent): ProjectionComponent {
@@ -117,7 +124,7 @@ function parseNonUnitProjections(model: Model): ProjectionComponent {
     }
   });
 
-  // it cached one and all other children share the same projection,
+  // if cached one and all other children share the same projection,
   if (nonUnitProjection && mergable) {
     // so we can elevate it to the layer level
     const name = model.projectionName(true);
@@ -130,10 +137,13 @@ function parseNonUnitProjections(model: Model): ProjectionComponent {
 
     // rename and assign all others as merged
     model.children.forEach(child => {
-      if (child.component.projection) {
-        modelProjection.data.push(...child.component.projection.data);
-        child.renameProjection(child.component.projection.get('name'), name);
-        child.component.projection.merged = true;
+      const projection = child.component.projection;
+      if (projection) {
+        if (projection.isFit) {
+          modelProjection.data.push(...child.component.projection.data);
+        }
+        child.renameProjection(projection.get('name'), name);
+        projection.merged = true;
       }
     });
 

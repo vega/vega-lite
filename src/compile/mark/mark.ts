@@ -131,7 +131,7 @@ function getMarkGroups(
 ) {
   const mark = model.mark;
 
-  const clip = getFirstDefined(model.markDef.clip, scaleClip(model));
+  const clip = getFirstDefined(model.markDef.clip, scaleClip(model), projectionClip(model));
   const style = getStyles(model.markDef);
   const key = model.encoding.key;
   const sort = getSort(model);
@@ -240,5 +240,14 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
 function scaleClip(model: UnitModel) {
   const xScale = model.getScaleComponent('x');
   const yScale = model.getScaleComponent('y');
-  return (xScale && xScale.get('domainRaw')) || (yScale && yScale.get('domainRaw')) ? true : false;
+  return (xScale && xScale.get('domainRaw')) || (yScale && yScale.get('domainRaw')) ? true : undefined;
+}
+
+/**
+ * If we use a custom projection with auto-fitting to the geodata extent,
+ * we need to clip to ensure the chart size doesn't explode.
+ */
+function projectionClip(model: UnitModel) {
+  const projection = model.component.projection;
+  return projection && !projection.isFit ? true : undefined;
 }
