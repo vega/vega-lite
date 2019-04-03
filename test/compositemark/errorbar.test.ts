@@ -1,8 +1,8 @@
 /* tslint:disable:quotemark */
 import {AggregateOp} from 'vega';
+import {isFieldDef} from '../../src/channeldef';
 import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar';
 import {defaultConfig} from '../../src/config';
-import {isFieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
 import {isMarkDef} from '../../src/mark';
 import {normalize} from '../../src/normalize/index';

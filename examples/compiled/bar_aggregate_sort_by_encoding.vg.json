@@ -27,7 +27,7 @@
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 20},
+    {"name": "y_step", "value": 17},
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
@@ -41,13 +41,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"sum_people\"] === null || isNaN(datum[\"sum_people\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\")}"
           },

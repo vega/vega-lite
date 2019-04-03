@@ -1,8 +1,8 @@
 import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
 import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
+import {ScaleFieldDef, TypedFieldDef, vgField} from '../../channeldef';
 import {Config} from '../../config';
-import {ScaleFieldDef, TypedFieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {BarConfig, Mark, MarkDef} from '../../mark';
 import {
@@ -101,13 +101,14 @@ export function getDefaultValue(
   config: Config
 ) {
   const scaleConfig = config.scale;
+  const {type, sort} = fieldDef;
 
   // If we have default rule-base, determine default value first
   switch (property) {
     case 'bins':
       return bins(model, fieldDef, channel);
     case 'interpolate':
-      return interpolate(channel);
+      return interpolate(channel, type);
     case 'nice':
       return nice(scaleType, channel, fieldDef);
     case 'padding':
@@ -117,7 +118,7 @@ export function getDefaultValue(
     case 'paddingOuter':
       return paddingOuter(scalePadding, channel, scaleType, markDef.type, scalePaddingInner, scaleConfig);
     case 'reverse':
-      return reverse(scaleType, fieldDef.sort);
+      return reverse(scaleType, sort);
     case 'zero':
       return zero(channel, fieldDef, specifiedDomain, markDef, scaleType);
   }
@@ -192,8 +193,8 @@ export function bins(model: Model, fieldDef: TypedFieldDef<string>, channel: Cha
   return undefined;
 }
 
-export function interpolate(channel: Channel) {
-  if (contains([COLOR, FILL, STROKE], channel)) {
+export function interpolate(channel: Channel, type: Type) {
+  if (contains([COLOR, FILL, STROKE], channel) && type !== 'nominal') {
     return 'hcl';
   }
   return undefined;

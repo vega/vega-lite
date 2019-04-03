@@ -1,8 +1,8 @@
 /* tslint:disable:quotemark */
 
+import {vgField} from '../../src/channeldef';
 import {mergeTitle, numberFormat, timeFormatExpression} from '../../src/compile/common';
 import {defaultConfig} from '../../src/config';
-import {vgField} from '../../src/fielddef';
 import {TimeUnit} from '../../src/timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
 

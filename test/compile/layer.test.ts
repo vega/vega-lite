@@ -113,7 +113,7 @@ describe('Layer', () => {
       model.parseAxesAndHeaders();
 
       expect(model.component.axes['x']).toHaveLength(2);
-      expect(model.component.axes['x'][1].implicit.orient).toEqual('top');
+      expect(model.component.axes['x'][1].implicit.orient).toBe('top');
     });
   });
 });

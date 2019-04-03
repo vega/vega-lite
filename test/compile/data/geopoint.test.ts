@@ -37,7 +37,7 @@ describe('compile/data/geopoint', () => {
         expect(node).toBeInstanceOf(GeoPointNode);
 
         const transform: VgGeoPointTransform = (node as GeoPointNode).assemble();
-        expect(transform.type).toEqual('geopoint');
+        expect(transform.type).toBe('geopoint');
         expect(every(['longitude', 'latitude'], field => contains(transform.fields, field))).toBe(true);
         expect(every([model.getName('x'), model.getName('y')], a => contains(transform.as, a))).toBe(true);
         expect(transform.projection).toBeDefined();

@@ -15,7 +15,7 @@ describe('compile/legend', () => {
           scaleType: 'linear'
         });
 
-        expect(dir).toEqual('horizontal');
+        expect(dir).toBe('horizontal');
       }
     });
 
@@ -43,7 +43,7 @@ describe('compile/legend', () => {
           scaleType: 'linear'
         });
 
-        expect(dir).toEqual('horizontal');
+        expect(dir).toBe('horizontal');
       }
     });
 
@@ -99,24 +99,24 @@ describe('compile/legend', () => {
 
     it('should return greedy for log', () => {
       const overlap = properties.defaultLabelOverlap('log');
-      expect(overlap).toEqual('greedy');
+      expect(overlap).toBe('greedy');
     });
 
     it('should return greedy for threshold', () => {
       const overlap = properties.defaultLabelOverlap('threshold');
-      expect(overlap).toEqual('greedy');
+      expect(overlap).toBe('greedy');
     });
   });
 
   describe('defaultSymbolType()', () => {
     it('return stroke for line', () => {
       const overlap = properties.defaultSymbolType('line');
-      expect(overlap).toEqual('stroke');
+      expect(overlap).toBe('stroke');
     });
 
     it('return undefined otherwise', () => {
       const overlap = properties.defaultSymbolType('circle');
-      expect(overlap).toEqual('circle');
+      expect(overlap).toBe('circle');
     });
   });
 });

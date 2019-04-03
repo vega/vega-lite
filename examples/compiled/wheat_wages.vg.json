@@ -1,0 +1,345 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 900,
+  "height": 400,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_1",
+      "values": [
+        {"year": "1600"},
+        {"year": "1650"},
+        {"year": "1700"},
+        {"year": "1750"},
+        {"year": "1800"}
+      ]
+    },
+    {
+      "name": "source_2",
+      "url": "data/monarchs.json",
+      "format": {"type": "json"}
+    },
+    {
+      "name": "source_0",
+      "url": "data/wheat.json",
+      "format": {"type": "json"},
+      "transform": [
+        {"type": "formula", "expr": "+datum.year + 5", "as": "year_end"}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"wheat\"] !== null && !isNaN(datum[\"wheat\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"year\"] !== null && !isNaN(datum[\"year\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_2",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "((!datum.commonwealth && datum.index % 2) ? -1: 1) * 2 + 95",
+          "as": "offset"
+        },
+        {"type": "formula", "expr": "95", "as": "y"},
+        {
+          "type": "filter",
+          "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "source_2",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "((!datum.commonwealth && datum.index % 2) ? -1: 1) + 95",
+          "as": "off2"
+        },
+        {
+          "type": "formula",
+          "expr": "+datum.start + (+datum.end - +datum.start)/2",
+          "as": "x"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"off2\"] !== null && !isNaN(datum[\"off2\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#aaa"},
+          "stroke": {"value": "#999"},
+          "x": [
+            {
+              "test": "datum[\"year\"] === null || isNaN(datum[\"year\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "year"}
+          ],
+          "x2": [
+            {
+              "test": "datum[\"year_end\"] === null || isNaN(datum[\"year_end\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "year_end"}
+          ],
+          "y": {"scale": "y", "field": "wheat"},
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rule",
+      "style": ["rule"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.5},
+          "stroke": {"value": "#000"},
+          "strokeWidth": {"value": 0.6},
+          "x": [
+            {
+              "test": "datum[\"year\"] === null || isNaN(datum[\"year\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "year"}
+          ],
+          "y": {"field": {"group": "height"}},
+          "y2": {"value": 0}
+        }
+      }
+    },
+    {
+      "name": "layer_2_marks",
+      "type": "area",
+      "style": ["area"],
+      "sort": {"field": "datum[\"year\"]", "order": "descending"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "orient": {"value": "vertical"},
+          "fill": {"value": "#a4cedb"},
+          "x": {"scale": "x", "field": "year"},
+          "y": {"scale": "y", "field": "wages"},
+          "y2": {"scale": "y", "value": 0},
+          "defined": {
+            "signal": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"wages\"] !== null && !isNaN(datum[\"wages\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_3_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"year\"]", "order": "descending"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "stroke": {"value": "#000"},
+          "x": {"scale": "x", "field": "year"},
+          "y": {"scale": "y", "field": "wages"},
+          "defined": {
+            "signal": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"wages\"] !== null && !isNaN(datum[\"wages\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_4_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"year\"]", "order": "descending"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#EE8182"},
+          "x": {"scale": "x", "field": "year"},
+          "y": {"scale": "y", "field": "wages", "offset": -2},
+          "defined": {
+            "signal": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"wages\"] !== null && !isNaN(datum[\"wages\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_5_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#000"},
+          "fill": {"scale": "fill", "field": "commonwealth"},
+          "x": [
+            {
+              "test": "datum[\"start\"] === null || isNaN(datum[\"start\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "start"}
+          ],
+          "x2": [
+            {
+              "test": "datum[\"end\"] === null || isNaN(datum[\"end\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "end"}
+          ],
+          "y": {"scale": "y", "field": "y"},
+          "y2": {"scale": "y", "field": "offset"}
+        }
+      }
+    },
+    {
+      "name": "layer_6_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_3"},
+      "encode": {
+        "update": {
+          "fontSize": {"value": 9},
+          "fontStyle": {"value": "italic"},
+          "fill": {"value": "black"},
+          "x": [
+            {
+              "test": "datum[\"x\"] === null || isNaN(datum[\"x\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "x"}
+          ],
+          "y": {"scale": "y", "field": "off2", "offset": 14},
+          "text": {"signal": "''+datum[\"name\"]"},
+          "align": {"value": "center"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "year"},
+          {"data": "data_0", "field": "year_end"},
+          {"data": "data_1", "field": "year"},
+          {"data": "source_0", "field": "year"},
+          {"data": "data_2", "field": "start"},
+          {"data": "data_2", "field": "end"},
+          {"data": "data_3", "field": "x"}
+        ]
+      },
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": false,
+      "padding": 5
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "wheat"},
+          {"data": "source_0", "field": "wages"},
+          {"data": "data_2", "field": "y"},
+          {"data": "data_2", "field": "offset"},
+          {"data": "data_3", "field": "off2"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "fill",
+      "type": "ordinal",
+      "domain": {"data": "data_2", "field": "commonwealth", "sort": true},
+      "range": ["black", "white"]
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "format": "d",
+      "tickCount": 5,
+      "labelFlush": true,
+      "labelOverlap": true,
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "tickCount": 5,
+      "gridScale": "y",
+      "grid": true,
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 1
+    }
+  ],
+  "config": {
+    "axis": {
+      "title": null,
+      "gridColor": "white",
+      "gridOpacity": 0.25,
+      "domain": false
+    },
+    "style": {"cell": {"stroke": "transparent"}}
+  }
+}

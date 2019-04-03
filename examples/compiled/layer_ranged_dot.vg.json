@@ -23,6 +23,16 @@
           "expr": "indexof([1955,2000], datum[\"year\"]) !== -1"
         }
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"life_expect\"] !== null && !isNaN(datum[\"life_expect\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -76,17 +86,11 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
-          "fill": [
-            {
-              "test": "datum[\"life_expect\"] === null || isNaN(datum[\"life_expect\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "year"}
-          ],
+          "fill": {"scale": "color", "field": "year"},
           "tooltip": {
             "signal": "{\"Life Expectancy (years)\": format(datum[\"life_expect\"], \"\"), \"Country\": ''+datum[\"country\"], \"Year\": ''+datum[\"year\"]}"
           },
@@ -101,7 +105,12 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "life_expect"},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "life_expect"},
+          {"data": "data_0", "field": "life_expect"}
+        ]
+      },
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -109,7 +118,13 @@
     {
       "name": "y",
       "type": "point",
-      "domain": {"data": "source_0", "field": "country", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "country"},
+          {"data": "data_0", "field": "country"}
+        ],
+        "sort": true
+      },
       "range": {"step": {"signal": "y_step"}},
       "padding": 0.5
     },

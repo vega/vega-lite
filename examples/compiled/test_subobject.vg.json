@@ -25,6 +25,16 @@
         }
       },
       "format": {"property": "hits.hits"}
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"source.reco\"] !== null && !isNaN(datum[\"source.reco\"]) && datum[\"source.yes\"] !== null && !isNaN(datum[\"source.yes\"])"
+        }
+      ]
     }
   ],
   "marks": [
@@ -32,24 +42,12 @@
       "name": "marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"source.reco\"] === null || isNaN(datum[\"source.reco\"]) || datum[\"source.yes\"] === null || isNaN(datum[\"source.yes\"])",
-              "value": null
-            },
-            {"value": "transparent"}
-          ],
-          "stroke": [
-            {
-              "test": "datum[\"source.reco\"] === null || isNaN(datum[\"source.reco\"]) || datum[\"source.yes\"] === null || isNaN(datum[\"source.yes\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"source\\\\.reco\": format(datum[\"source.reco\"], \"\"), \"source\\\\.yes\": format(datum[\"source.yes\"], \"\")}"
           },
@@ -63,7 +61,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "source\\.reco"},
+      "domain": {"data": "data_0", "field": "source\\.reco"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -71,7 +69,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "source\\.yes"},
+      "domain": {"data": "data_0", "field": "source\\.yes"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

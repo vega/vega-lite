@@ -2,9 +2,15 @@ import {isNumber, isString} from 'vega-util';
 import {AncestorParse} from '.';
 import {isMinMaxOp} from '../../aggregate';
 import {getMainRangeChannel, SingleDefChannel} from '../../channel';
+import {
+  isNumberFieldDef,
+  isScaleFieldDef,
+  isTimeFormatFieldDef,
+  isTypedFieldDef,
+  TypedFieldDef
+} from '../../channeldef';
 import {Parse} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
-import {isNumberFieldDef, isScaleFieldDef, isTimeFieldDef, isTypedFieldDef, TypedFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {forEachLeaf} from '../../logical';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
@@ -15,6 +21,19 @@ import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
 import {DataFlowNode} from './dataflow';
+
+/**
+ * Remove quotes from a string.
+ */
+function unquote(pattern: string) {
+  if (
+    (pattern[0] === "'" && pattern[pattern.length - 1] === "'") ||
+    (pattern[0] === '"' && pattern[pattern.length - 1] === '"')
+  ) {
+    return pattern.slice(1, -1);
+  }
+  return pattern;
+}
 
 /**
  * @param field The field.
@@ -33,11 +52,11 @@ function parseExpression(field: string, parse: string): string {
   } else if (parse === 'flatten') {
     return f;
   } else if (parse.indexOf('date:') === 0) {
-    const specifier = parse.slice(5, parse.length);
-    return `timeParse(${f},${specifier})`;
+    const specifier = unquote(parse.slice(5, parse.length));
+    return `timeParse(${f},'${specifier}')`;
   } else if (parse.indexOf('utc:') === 0) {
-    const specifier = parse.slice(4, parse.length);
-    return `utcParse(${f},${specifier})`;
+    const specifier = unquote(parse.slice(4, parse.length));
+    return `utcParse(${f},'${specifier}')`;
   } else {
     log.warn(log.message.unrecognizedParse(parse));
     return null;
@@ -126,7 +145,7 @@ export class ParseNode extends DataFlowNode {
     const implicit = {};
 
     function add(fieldDef: TypedFieldDef<string>) {
-      if (isTimeFieldDef(fieldDef)) {
+      if (isTimeFormatFieldDef(fieldDef)) {
         implicit[fieldDef.field] = 'date';
       } else if (isNumberFieldDef(fieldDef) && isMinMaxOp(fieldDef.aggregate)) {
         implicit[fieldDef.field] = 'number';

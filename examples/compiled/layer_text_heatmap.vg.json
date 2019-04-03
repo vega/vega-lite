@@ -17,6 +17,16 @@
           "as": ["num_cars"]
         }
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"num_cars\"] !== null && !isNaN(datum[\"num_cars\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -30,16 +40,10 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["rect"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"num_cars\"] === null || isNaN(datum[\"num_cars\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "num_cars"}
-          ],
+          "fill": {"scale": "color", "field": "num_cars"},
           "tooltip": {
             "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"num_cars\"], \"\")}"
           },
@@ -76,7 +80,13 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "Cylinders"},
+          {"data": "source_0", "field": "Cylinders"}
+        ],
+        "sort": true
+      },
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0,
       "paddingOuter": 0
@@ -84,7 +94,13 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "Origin"},
+          {"data": "source_0", "field": "Origin"}
+        ],
+        "sort": true
+      },
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0,
       "paddingOuter": 0
@@ -92,7 +108,7 @@
     {
       "name": "color",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "num_cars"},
+      "domain": {"data": "data_0", "field": "num_cars"},
       "range": "heatmap",
       "interpolate": "hcl",
       "zero": false

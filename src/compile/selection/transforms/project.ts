@@ -1,4 +1,4 @@
-import {isArray} from 'vega-util';
+import {array, isArray} from 'vega-util';
 import {SelectionComponent} from '..';
 import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../../channel';
 import * as log from '../../../log';
@@ -62,15 +62,17 @@ const project: TransformCompiler = {
       const cfg = model.config.selection[selDef.type];
 
       if (selDef.init) {
-        for (const key of keys(selDef.init)) {
-          if (isSingleDefUnitChannel(key)) {
-            (selDef.encodings || (selDef.encodings = [])).push(key as SingleDefUnitChannel);
-          } else {
-            if (isIntervalSelection(selDef)) {
-              log.warn('Interval selections should be initialized using "x" and/or "y" keys.');
-              selDef.encodings = cfg.encodings;
+        for (const init of array(selDef.init)) {
+          for (const key of keys(init)) {
+            if (isSingleDefUnitChannel(key)) {
+              (selDef.encodings || (selDef.encodings = [])).push(key as SingleDefUnitChannel);
             } else {
-              (selDef.fields || (selDef.fields = [])).push(key);
+              if (isIntervalSelection(selDef)) {
+                log.warn('Interval selections should be initialized using "x" and/or "y" keys.');
+                selDef.encodings = cfg.encodings;
+              } else {
+                (selDef.fields || (selDef.fields = [])).push(key);
+              }
             }
           }
         }

@@ -1,5 +1,5 @@
 import {isArray, isString} from 'vega-util';
-import {getTypedFieldDef, isFieldDef, TypedFieldDef, vgField} from '../../fielddef';
+import {getTypedFieldDef, isFieldDef, TypedFieldDef, vgField} from '../../channeldef';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate, getFirstDefined, hash} from '../../util';

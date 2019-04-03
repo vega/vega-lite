@@ -2,11 +2,11 @@
 
 import {SignalRef} from 'vega';
 import {ScaleChannel} from '../../../src/channel';
+import {PositionFieldDef} from '../../../src/channeldef';
 import {domainSort, mergeDomains, parseDomainForChannel} from '../../../src/compile/scale/domain';
 import {parseScaleCore} from '../../../src/compile/scale/parse';
 import {UnitModel} from '../../../src/compile/unit';
 import {MAIN} from '../../../src/data';
-import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {ScaleType} from '../../../src/scale';
 import {EncodingSortField} from '../../../src/sort';
@@ -127,7 +127,7 @@ describe('compile/scale', () => {
             }
           });
           const domain = testParseDomainForChannel(model, 'y')[0] as SignalRef;
-          expect(domain.signal).toEqual('[bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop]');
+          expect(domain.signal).toBe('[bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop]');
 
           expect(localLogger.warns[0]).toEqual(log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
         })

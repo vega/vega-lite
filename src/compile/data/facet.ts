@@ -2,7 +2,7 @@ import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../../bin';
 import {COLUMN, FACET_CHANNELS, ROW, ScaleChannel} from '../../channel';
-import {vgField} from '../../fielddef';
+import {vgField} from '../../channeldef';
 import * as log from '../../log';
 import {hasDiscreteDomain} from '../../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField} from '../../sort';

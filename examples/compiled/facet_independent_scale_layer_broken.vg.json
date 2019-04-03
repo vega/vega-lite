@@ -165,20 +165,8 @@
           "from": {"data": "facet"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"sum_people\"] === null || isNaN(datum[\"sum_people\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
-              "stroke": [
-                {
-                  "test": "datum[\"sum_people\"] === null || isNaN(datum[\"sum_people\"])",
-                  "value": null
-                },
-                {"scale": "color", "field": "gender"}
-              ],
+              "fill": {"value": "transparent"},
+              "stroke": {"scale": "color", "field": "gender"},
               "tooltip": {
                 "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
               },
@@ -238,8 +226,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "gender", "sort": true},
-      "range": ["#EA98D2", "#659CCA"],
-      "interpolate": "hcl"
+      "range": ["#EA98D2", "#659CCA"]
     }
   ],
   "legends": [

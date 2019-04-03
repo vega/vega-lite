@@ -79,6 +79,10 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_20_time\"] !== null && !isNaN(datum[\"bin_maxbins_20_time\"])"
         }
       ]
     },
@@ -92,6 +96,10 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_20_time\"] !== null && !isNaN(datum[\"bin_maxbins_20_time\"])"
         }
       ]
     },
@@ -115,6 +123,10 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_20_delay\"] !== null && !isNaN(datum[\"bin_maxbins_20_delay\"])"
         }
       ]
     },
@@ -128,6 +140,10 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
         }
       ]
     },
@@ -141,6 +157,10 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
         }
       ]
     },
@@ -154,6 +174,10 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_20_delay\"] !== null && !isNaN(datum[\"bin_maxbins_20_delay\"])"
         }
       ]
     }
@@ -221,10 +245,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -253,10 +273,6 @@
             {
               "events": [{"signal": "brush_distance"}],
               "update": "brush_distance ? {unit: \"child__repeat_column_distance_layer_0\", fields: brush_tuple_fields, values: [brush_distance]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -391,13 +407,7 @@
           "from": {"data": "data_6"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                  "value": null
-                },
-                {"value": "#4c78a8"}
-              ],
+              "fill": {"value": "#4c78a8"},
               "tooltip": {
                 "signal": "{\"distance (binned)\": datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_20_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_distance_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
@@ -437,13 +447,7 @@
           "from": {"data": "data_5"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                  "value": null
-                },
-                {"value": "goldenrod"}
-              ],
+              "fill": {"value": "goldenrod"},
               "tooltip": {
                 "signal": "{\"distance (binned)\": datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_20_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_distance_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
@@ -605,10 +609,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -637,10 +637,6 @@
             {
               "events": [{"signal": "brush_delay"}],
               "update": "brush_delay ? {unit: \"child__repeat_column_delay_layer_0\", fields: brush_tuple_fields, values: [brush_delay]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -775,13 +771,7 @@
           "from": {"data": "data_7"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                  "value": null
-                },
-                {"value": "#4c78a8"}
-              ],
+              "fill": {"value": "#4c78a8"},
               "tooltip": {
                 "signal": "{\"delay (binned)\": datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_20_delay\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_delay_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
@@ -821,13 +811,7 @@
           "from": {"data": "data_4"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                  "value": null
-                },
-                {"value": "goldenrod"}
-              ],
+              "fill": {"value": "goldenrod"},
               "tooltip": {
                 "signal": "{\"delay (binned)\": datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_20_delay\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_delay_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
@@ -989,10 +973,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -1021,10 +1001,6 @@
             {
               "events": [{"signal": "brush_time"}],
               "update": "brush_time ? {unit: \"child__repeat_column_time_layer_0\", fields: brush_tuple_fields, values: [brush_time]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -1159,13 +1135,7 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                  "value": null
-                },
-                {"value": "#4c78a8"}
-              ],
+              "fill": {"value": "#4c78a8"},
               "tooltip": {
                 "signal": "{\"time (binned)\": datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) ? \"null\" : format(datum[\"bin_maxbins_20_time\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_time_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
@@ -1202,13 +1172,7 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": [
-                {
-                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-                  "value": null
-                },
-                {"value": "goldenrod"}
-              ],
+              "fill": {"value": "goldenrod"},
               "tooltip": {
                 "signal": "{\"time (binned)\": datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) ? \"null\" : format(datum[\"bin_maxbins_20_time\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_time_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },

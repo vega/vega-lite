@@ -1,6 +1,6 @@
 import {LabelOverlap, LegendOrient, LegendType} from 'vega';
 import {Channel, isColorChannel} from '../../channel';
-import {TypedFieldDef, valueArray} from '../../fielddef';
+import {TypedFieldDef, valueArray} from '../../channeldef';
 import {Legend, LegendConfig} from '../../legend';
 import {Mark} from '../../mark';
 import {isContinuousToContinuous, ScaleType} from '../../scale';

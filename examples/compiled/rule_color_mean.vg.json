@@ -31,13 +31,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "stroke": [
-            {
-              "test": "datum[\"mean_price\"] === null || isNaN(datum[\"mean_price\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "symbol"}
-          ],
+          "stroke": {"scale": "color", "field": "symbol"},
           "tooltip": {
             "signal": "{\"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
           },
@@ -62,8 +56,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "symbol", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     }
   ],
   "axes": [

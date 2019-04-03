@@ -74,10 +74,6 @@
         {
           "events": {"signal": "pts_zoom_delta"},
           "update": "clampRange(zoomLinear(pts_x, pts_zoom_anchor.x, pts_zoom_delta), 0, width)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },
@@ -128,10 +124,6 @@
         {
           "events": {"signal": "pts_zoom_delta"},
           "update": "clampRange(zoomLinear(pts_y, pts_zoom_anchor.y, pts_zoom_delta), 0, height)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },
@@ -160,8 +152,7 @@
         {
           "events": [{"signal": "pts_Cylinders || pts_Origin"}],
           "update": "pts_Cylinders && pts_Origin ? {unit: \"\", fields: pts_tuple_fields, values: [pts_Cylinders,pts_Origin]} : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
@@ -289,10 +280,6 @@
       "encode": {
         "update": {
           "fill": [
-            {
-              "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-              "value": null
-            },
             {
               "test": "!(length(data(\"pts_store\"))) || (!(vlSelectionTest(\"pts_store\", datum)))",
               "value": "grey"

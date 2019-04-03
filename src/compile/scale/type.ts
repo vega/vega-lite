@@ -1,6 +1,6 @@
 import {isBinning} from '../../bin';
 import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
-import {TypedFieldDef} from '../../fielddef';
+import {TypedFieldDef} from '../../channeldef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {channelSupportScaleType, Scale, ScaleConfig, ScaleType, scaleTypeSupportDataType} from '../../scale';

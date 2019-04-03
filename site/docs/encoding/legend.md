@@ -34,10 +34,10 @@ If multiple channels encode the same fields, Vega-lite automatically combines th
 ## Legend Properties
 
 ```js
-// Single View Specification
+// A Single View or a Layer Specification
 {
-  "data": ... ,
-  "mark": ... ,
+  ...,
+  "mark/layer": ...,
   "encoding": {
     "x": ...,
     "y": ...,
@@ -70,7 +70,7 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### Labels
 
-{% include table.html props="format,labelAlign,labelBaseline,labelColor,labelFont,labelFontSize,labelLimit,labelOffset,labelOverlap" source="Legend" %}
+{% include table.html props="format,formatType,labelAlign,labelBaseline,labelColor,labelFont,labelFontSize,labelLimit,labelOffset,labelOverlap" source="Legend" %}
 
 ### Symbols
 

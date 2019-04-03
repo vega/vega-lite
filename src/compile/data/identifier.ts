@@ -15,6 +15,10 @@ export class IdentifierNode extends DataFlowNode {
     return new Set([SELECTION_ID]);
   }
 
+  public hash() {
+    return 'Identifier';
+  }
+
   public assemble(): VgIdentifierTransform {
     return {type: 'identifier', as: SELECTION_ID};
   }

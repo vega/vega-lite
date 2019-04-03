@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
+import {getTypedFieldDef, isFieldDef, isValueDef, vgField} from '../../channeldef';
 import {MAIN} from '../../data';
 import {Encoding, isAggregate} from '../../encoding';
-import {getTypedFieldDef, isFieldDef, isValueDef, vgField} from '../../fielddef';
 import {AREA, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortField} from '../../sort';
 import {contains, getFirstDefined, isNullOrFalse, keys} from '../../util';

@@ -8,13 +8,26 @@
         "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
+        "name": "bar_aggregate",
+        "title": "Aggregate Bar Chart"
+      },
+      {
+        "name": "bar_aggregate_sort_by_encoding",
+        "title": "Aggregate Bar Chart (Sorted)"
+      },
+      {
         "name": "histogram",
         "title": "Histogram",
         "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
-        "name": "bar_aggregate",
-        "title": "Aggregate Bar Chart"
+        "name": "bar_binned_data",
+        "title": "Histogram (from Binned Data)",
+        "style": "background-size: auto 105%; background-position: center center !important;"
+      },
+      {
+        "name": "histogram_log",
+        "title": "Log-scaled Histogram"
       },
       {
         "name": "bar_grouped",
@@ -30,7 +43,7 @@
       },
       {
         "name": "stacked_bar_normalize",
-        "title": "Normalized Stacked Bar Chart"
+        "title": "Normalized (Percentage) Stacked Bar Chart"
       },
       {
         "name": "bar_gantt",
@@ -294,6 +307,10 @@
         "name": "parallel_coordinate",
         "title": "Parallel Coordinate Plot",
         "style": "background-size: auto 105%; background-position: center center !important;"
+      },
+      {
+        "name": "bar_argmax",
+        "title": "Bar Chart showing Argmax Value"
       }
     ]
   },
@@ -396,6 +413,11 @@
       {
         "name": "layer_line_mean_point_raw",
         "title": "Layering mean values over raw values"
+      },
+      {
+        "name": "wheat_wages",
+        "title": "Wheat and Wages Example",
+        "description": "A recreation of William Playfair’s classic chart visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Based on a chart by @manzt."
       }
     ]
   },

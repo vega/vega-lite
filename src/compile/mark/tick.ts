@@ -1,5 +1,6 @@
 import {getFirstDefined} from '../../util';
 import {isVgRangeStep} from '../../vega.schema';
+import {getMarkConfig} from '../common';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as mixins from './mixins';
@@ -33,13 +34,20 @@ export const tick: MarkCompiler = {
 
 function defaultSize(model: UnitModel): number {
   const {config, markDef} = model;
-  const orient = markDef.orient;
+  const {orient} = markDef;
+
+  const vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
   const scale = model.getScaleComponent(orient === 'horizontal' ? 'x' : 'y');
 
-  if (markDef.size !== undefined) {
-    return markDef.size;
-  } else if (config.tick.bandSize !== undefined) {
-    return config.tick.bandSize;
+  const markPropOrConfig = getFirstDefined(
+    markDef[vgSizeChannel],
+    markDef.size,
+    getMarkConfig('size', markDef, config, {vgChannel: vgSizeChannel}),
+    config.tick.bandSize
+  );
+
+  if (markPropOrConfig !== undefined) {
+    return markPropOrConfig;
   } else {
     const scaleRange = scale ? scale.get('range') : undefined;
     const rangeStep = scaleRange && isVgRangeStep(scaleRange) ? scaleRange.step : config.scale.rangeStep;

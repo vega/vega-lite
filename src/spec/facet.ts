@@ -1,4 +1,4 @@
-import {ChannelDef, Field, FieldDef, TypedFieldDef} from '../fielddef';
+import {ChannelDef, Field, FieldDef, TypedFieldDef} from '../channeldef';
 import {Header} from '../header';
 import {EncodingSortField, SortArray, SortOrder} from '../sort';
 import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';

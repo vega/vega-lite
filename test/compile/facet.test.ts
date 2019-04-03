@@ -549,5 +549,24 @@ describe('FacetModel', () => {
         as: ['distinct_c']
       });
     });
+
+    it('includes both bin start and end in the facet groupby', () => {
+      const model: FacetModel = parseFacetModelWithScale({
+        facet: {
+          column: {bin: true, field: 'a', type: 'quantitative'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'}
+          }
+        }
+      });
+      model.parse();
+
+      const marks = model.assembleMarks();
+
+      expect(marks[0].from.facet.groupby).toEqual(['bin_maxbins_6_a', 'bin_maxbins_6_a_end']);
+    });
   });
 });

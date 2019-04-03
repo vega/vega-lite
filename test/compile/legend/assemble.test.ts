@@ -21,9 +21,9 @@ describe('legend/assemble', () => {
     const legends = model.assembleLegends();
     expect(legends).toHaveLength(1);
 
-    expect(legends[0].title).toEqual('Origin');
-    expect(legends[0].stroke).toEqual('color');
-    expect(legends[0].shape).toEqual('shape');
+    expect(legends[0].title).toBe('Origin');
+    expect(legends[0].stroke).toBe('color');
+    expect(legends[0].shape).toBe('shape');
   });
 
   it('merges legend of the same field and favor symbol legend over gradient', () => {
@@ -42,8 +42,9 @@ describe('legend/assemble', () => {
 
     const legends = model.assembleLegends();
     expect(legends).toHaveLength(1);
-    expect(legends[0].title).toEqual('b');
-    expect(legends[0].fill).toEqual('color');
-    expect(legends[0].size).toEqual('size');
+    expect(legends[0].title).toBe('b');
+    expect(legends[0].fill).toBe('color');
+    expect(legends[0].size).toBe('size');
+    expect(legends[0].encode.symbols.update.fill).toBe(undefined);
   });
 });

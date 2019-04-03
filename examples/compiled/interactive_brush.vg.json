@@ -8,7 +8,17 @@
   "style": "cell",
   "data": [
     {"name": "brush_store"},
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
+      ]
+    }
   ],
   "signals": [
     {
@@ -62,10 +72,6 @@
         {
           "events": {"signal": "brush_zoom_delta"},
           "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },
@@ -122,10 +128,6 @@
         {
           "events": {"signal": "brush_zoom_delta"},
           "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },
@@ -156,8 +158,7 @@
         {
           "events": [{"signal": "brush_Horsepower || brush_Miles_per_Gallon"}],
           "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
@@ -288,18 +289,8 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-              "value": null
-            },
-            {"value": "transparent"}
-          ],
+          "fill": {"value": "transparent"},
           "stroke": [
-            {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-              "value": null
-            },
             {
               "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
               "scale": "color",

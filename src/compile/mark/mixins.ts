@@ -1,6 +1,6 @@
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
-import {Channel, NonPositionScaleChannel, SCALE_CHANNELS, ScaleChannel, X, X2, Y2} from '../../channel';
+import {Channel, NonPositionScaleChannel, ScaleChannel, SCALE_CHANNELS, X, X2, Y2} from '../../channel';
 import {
   ChannelDef,
   getTypedFieldDef,
@@ -10,12 +10,12 @@ import {
   SecondaryFieldDef,
   TypedFieldDef,
   ValueDef
-} from '../../fielddef';
+} from '../../channeldef';
 import * as log from '../../log';
 import {isPathMark, Mark, MarkDef} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
 import {contains, Dict, getFirstDefined, keys} from '../../util';
-import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
+import {VgEncodeChannel, VgEncodeEntry, VgValueRef, VG_MARK_CONFIGS} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {expression} from '../predicate';
 import {assembleSelectionPredicate} from '../selection/assemble';
@@ -130,7 +130,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
 function wrapAllFieldsInvalid(model: UnitModel, channel: Channel, valueRef: VgValueRef | VgValueRef[]): VgEncodeEntry {
   const {config, mark} = model;
 
-  if (config.invalidValues && valueRef && !isPathMark(mark)) {
+  if (config.invalidValues === 'hide' && valueRef && !isPathMark(mark)) {
     // For non-path marks, we have to exclude invalid values (null and NaN) for scales with continuous domains.
     // For path marks, we will use "defined" property and skip these values instead.
     const test = allFieldsInvalidPredicate(model, {invalid: true, channels: SCALE_CHANNELS});
@@ -190,7 +190,7 @@ function allFieldsInvalidPredicate(
   return undefined;
 }
 export function defined(model: UnitModel): VgEncodeEntry {
-  if (model.config.invalidValues === 'filter') {
+  if (model.config.invalidValues) {
     const signal = allFieldsInvalidPredicate(model, {channels: ['x', 'y']});
 
     if (signal) {
@@ -206,13 +206,27 @@ export function defined(model: UnitModel): VgEncodeEntry {
 export function nonPosition(
   channel: NonPositionScaleChannel,
   model: UnitModel,
-  opt: {defaultValue?: number | string | boolean; vgChannel?: string; defaultRef?: VgValueRef} = {}
+  opt: {
+    defaultValue?: number | string | boolean;
+    vgChannel?: VgEncodeChannel;
+    defaultRef?: VgValueRef;
+  } = {}
 ): VgEncodeEntry {
-  const {markDef, encoding} = model;
+  const {markDef, encoding, config} = model;
   const {vgChannel = channel} = opt;
+  let {defaultRef, defaultValue} = opt;
 
-  const {defaultValue = markDef[vgChannel]} = opt;
-  const defaultRef = opt.defaultRef || (defaultValue !== undefined ? {value: defaultValue} : undefined);
+  if (defaultRef === undefined) {
+    // prettier-ignore
+    defaultValue = defaultValue ||
+      (vgChannel === channel
+        ? // When vl channel is the same as Vega's, no need to read from config as Vega will apply them correctly
+          markDef[channel]
+        : // However, when they are different (e.g, vl's text size is vg fontSize), need to read "size" from configs
+          getFirstDefined(markDef[channel], markDef[vgChannel], getMarkConfig(channel, markDef, config, {vgChannel})));
+
+    defaultRef = defaultValue ? {value: defaultValue} : undefined;
+  }
 
   const channelDef = encoding[channel];
 
@@ -301,11 +315,20 @@ export function text(model: UnitModel, channel: 'text' | 'href' = 'text') {
   return wrapCondition(model, channelDef, channel, cDef => ref.text(cDef, model.config));
 }
 
-export function bandPosition(fieldDef: TypedFieldDef<string>, channel: 'x' | 'y', model: UnitModel) {
+export function bandPosition(
+  fieldDef: TypedFieldDef<string>,
+  channel: 'x' | 'y',
+  model: UnitModel,
+  defaultSizeRef?: VgValueRef
+) {
   const scaleName = model.scaleName(channel);
   const sizeChannel = channel === 'x' ? 'width' : 'height';
 
-  if (model.encoding.size || model.markDef.size !== undefined) {
+  if (
+    model.encoding.size ||
+    model.markDef.size !== undefined ||
+    (defaultSizeRef && defaultSizeRef.value !== undefined)
+  ) {
     const orient = model.markDef.orient;
     if (orient) {
       const centeredBandPositionMixins = {
@@ -329,15 +352,21 @@ export function bandPosition(fieldDef: TypedFieldDef<string>, channel: 'x' | 'y'
           ...centeredBandPositionMixins,
           [sizeChannel]: {value: model.markDef.size}
         };
+      } else if (defaultSizeRef && defaultSizeRef.value !== undefined) {
+        return {
+          ...centeredBandPositionMixins,
+          [sizeChannel]: defaultSizeRef
+        };
       }
     } else {
       log.warn(log.message.cannotApplySizeToNonOrientedMark(model.markDef.type));
     }
   }
+
   return {
     // FIXME: make offset works correctly here when we support group bar (https://github.com/vega/vega-lite/issues/396)
     [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, {}),
-    [sizeChannel]: ref.bandRef(scaleName)
+    [sizeChannel]: defaultSizeRef || ref.bandRef(scaleName)
   };
 }
 

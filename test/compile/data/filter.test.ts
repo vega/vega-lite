@@ -55,7 +55,7 @@ describe('compile/data/filter', () => {
   describe('hash', () => {
     it('should generate the correct hash', () => {
       const filterNode = new FilterNode(null, null, {field: 'a', equal: {year: 2000}});
-      expect(filterNode.hash()).toEqual('Filter datum["a"]===time(datetime(2000, 0, 1, 0, 0, 0, 0))');
+      expect(filterNode.hash()).toBe('Filter datum["a"]===time(datetime(2000, 0, 1, 0, 0, 0, 0))');
     });
   });
 

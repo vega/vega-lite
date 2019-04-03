@@ -1,0 +1,372 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Drag out a rectangular brush to highlight points.",
+  "autosize": "pad",
+  "padding": 5,
+  "height": 200,
+  "data": [
+    {"name": "hover_store"},
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json"},
+      "transform": [{"type": "identifier", "as": "_vgsid_"}]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {"type": "filter", "expr": "(vlSelectionTest(\"hover_store\", datum))"}
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "data_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "concat_0_width", "value": 200},
+    {"name": "concat_1_width", "value": 200},
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {"name": "hover", "update": "vlSelectionResolve(\"hover_store\")"}
+  ],
+  "layout": {"padding": 20, "bounds": "full", "align": "each"},
+  "marks": [
+    {
+      "type": "group",
+      "name": "concat_0_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "concat_0_width"},
+          "height": {"signal": "height"}
+        }
+      },
+      "signals": [
+        {
+          "name": "hover_tuple",
+          "on": [
+            {
+              "events": [{"source": "scope", "type": "mouseover"}],
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_0_layer_0\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+              "force": true
+            },
+            {
+              "events": [{"source": "scope", "type": "mouseout"}],
+              "update": "null"
+            }
+          ]
+        },
+        {
+          "name": "hover_tuple_fields",
+          "value": [{"type": "E", "field": "_vgsid_"}]
+        },
+        {
+          "name": "hover_modify",
+          "update": "modify(\"hover_store\", hover_tuple, true)"
+        }
+      ],
+      "marks": [
+        {
+          "name": "concat_0_layer_0_marks",
+          "type": "symbol",
+          "style": ["point"],
+          "from": {"data": "data_0"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 0.7},
+              "fill": {"value": "transparent"},
+              "stroke": {"value": "#4c78a8"},
+              "tooltip": {
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\")}"
+              },
+              "x": {"scale": "concat_0_x", "field": "Horsepower"},
+              "y": {"scale": "concat_0_y", "field": "Miles_per_Gallon"}
+            }
+          }
+        },
+        {
+          "name": "concat_0_layer_1_marks",
+          "type": "symbol",
+          "style": ["point"],
+          "from": {"data": "data_2"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 0.7},
+              "fill": {"value": "transparent"},
+              "stroke": {"value": "goldenrod"},
+              "tooltip": {
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\")}"
+              },
+              "x": {"scale": "concat_0_x", "field": "Horsepower"},
+              "y": {"scale": "concat_0_y", "field": "Miles_per_Gallon"}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Horsepower",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "gridScale": "concat_0_y",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Miles_per_Gallon",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "gridScale": "concat_0_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "concat_1_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "concat_1_width"},
+          "height": {"signal": "height"}
+        }
+      },
+      "signals": [
+        {
+          "name": "hover_tuple",
+          "on": [
+            {
+              "events": [{"source": "scope", "type": "mouseover"}],
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1_layer_0\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+              "force": true
+            },
+            {
+              "events": [{"source": "scope", "type": "mouseout"}],
+              "update": "null"
+            }
+          ]
+        },
+        {
+          "name": "hover_tuple_fields",
+          "value": [{"type": "E", "field": "_vgsid_"}]
+        },
+        {
+          "name": "hover_modify",
+          "update": "modify(\"hover_store\", hover_tuple, true)"
+        }
+      ],
+      "marks": [
+        {
+          "name": "concat_1_layer_0_marks",
+          "type": "symbol",
+          "style": ["point"],
+          "from": {"data": "data_4"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 0.7},
+              "fill": {"value": "transparent"},
+              "stroke": {"value": "#4c78a8"},
+              "tooltip": {
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\")}"
+              },
+              "x": {"scale": "concat_1_x", "field": "Horsepower"},
+              "y": {"scale": "concat_1_y", "field": "Acceleration"}
+            }
+          }
+        },
+        {
+          "name": "concat_1_layer_1_marks",
+          "type": "symbol",
+          "style": ["point"],
+          "from": {"data": "data_3"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 0.7},
+              "fill": {"value": "transparent"},
+              "stroke": {"value": "goldenrod"},
+              "tooltip": {
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\")}"
+              },
+              "x": {"scale": "concat_1_x", "field": "Horsepower"},
+              "y": {"scale": "concat_1_y", "field": "Acceleration"}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_1_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Horsepower",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_1_x",
+          "orient": "bottom",
+          "gridScale": "concat_1_y",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Acceleration",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "gridScale": "concat_1_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "concat_0_x",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "Horsepower"},
+          {"data": "data_2", "field": "Horsepower"}
+        ]
+      },
+      "range": [0, {"signal": "concat_0_width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "concat_0_y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "Miles_per_Gallon"},
+          {"data": "data_2", "field": "Miles_per_Gallon"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "concat_1_x",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_4", "field": "Horsepower"},
+          {"data": "data_3", "field": "Horsepower"}
+        ]
+      },
+      "range": [0, {"signal": "concat_1_width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "concat_1_y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_4", "field": "Acceleration"},
+          {"data": "data_3", "field": "Acceleration"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ]
+}

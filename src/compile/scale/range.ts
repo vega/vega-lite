@@ -8,8 +8,8 @@ import {
   FILLOPACITY,
   OPACITY,
   POSITION_SCALE_CHANNELS,
-  SCALE_CHANNELS,
   ScaleChannel,
+  SCALE_CHANNELS,
   SHAPE,
   SIZE,
   STROKE,
@@ -18,8 +18,8 @@ import {
   X,
   Y
 } from '../../channel';
+import {vgField} from '../../channeldef';
 import {Config} from '../../config';
-import {vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {

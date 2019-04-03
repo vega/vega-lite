@@ -41,7 +41,7 @@ export function omit<T extends object, K extends keyof T>(obj: T, props: K[]): O
  * Monkey patch Set so that `stringify` produces a string representation of sets.
  */
 Set.prototype['toJSON'] = function() {
-  return `Set(${[...this].map(stableStringify).join(',')})`;
+  return `Set(${[...this].map(x => stableStringify(x)).join(',')})`;
 };
 
 /**

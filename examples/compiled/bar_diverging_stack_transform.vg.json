@@ -281,7 +281,11 @@
           "groupby": ["question"]
         },
         {"type": "formula", "expr": "datum.v1 - datum.offset", "as": "nx"},
-        {"type": "formula", "expr": "datum.v2 - datum.offset", "as": "nx2"}
+        {"type": "formula", "expr": "datum.v2 - datum.offset", "as": "nx2"},
+        {
+          "type": "filter",
+          "expr": "datum[\"nx\"] !== null && !isNaN(datum[\"nx\"])"
+        }
       ]
     }
   ],
@@ -300,13 +304,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"nx\"] === null || isNaN(datum[\"nx\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "type"}
-          ],
+          "fill": {"scale": "color", "field": "type"},
           "tooltip": {
             "signal": "{\"Percentage\": format(datum[\"nx\"], \"\"), \"nx2\": format(datum[\"nx2\"], \"\"), \"Question\": ''+datum[\"question\"], \"Response\": ''+datum[\"type\"]}"
           },
@@ -345,8 +343,7 @@
         "Agree",
         "Strongly agree"
       ],
-      "range": ["#c30d24", "#f3a583", "#cccccc", "#94c6da", "#1770ab"],
-      "interpolate": "hcl"
+      "range": ["#c30d24", "#f3a583", "#cccccc", "#94c6da", "#1770ab"]
     }
   ],
   "axes": [

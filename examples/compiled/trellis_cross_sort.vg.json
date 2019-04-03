@@ -82,6 +82,16 @@
       "source": "data_0",
       "transform": [
         {
+          "type": "filter",
+          "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "data_0",
+      "transform": [
+        {
           "type": "aggregate",
           "groupby": ["b", "a"],
           "ops": ["median", "median"],
@@ -207,6 +217,16 @@
           "name": "data_0",
           "transform": [
             {
+              "type": "filter",
+              "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
+            }
+          ]
+        },
+        {
+          "source": "facet",
+          "name": "data_1",
+          "transform": [
+            {
               "type": "aggregate",
               "groupby": [],
               "ops": ["median", "median"],
@@ -227,24 +247,12 @@
           "name": "child_layer_0_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "facet"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
-              "stroke": [
-                {
-                  "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
-                  "value": null
-                },
-                {"value": "#4c78a8"}
-              ],
+              "fill": {"value": "transparent"},
+              "stroke": {"value": "#4c78a8"},
               "tooltip": {
                 "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\")}"
               },
@@ -257,16 +265,10 @@
           "name": "child_layer_1_marks",
           "type": "rule",
           "style": ["rule"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "stroke": [
-                {
-                  "test": "datum[\"median_median_x_by_a\"] === null || isNaN(datum[\"median_median_x_by_a\"])",
-                  "value": null
-                },
-                {"value": "black"}
-              ],
+              "stroke": {"value": "black"},
               "tooltip": {
                 "signal": "{\"Median of median_x_by_a\": format(datum[\"median_median_x_by_a\"], \"\")}"
               },
@@ -280,16 +282,10 @@
           "name": "child_layer_2_marks",
           "type": "rule",
           "style": ["rule"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "stroke": [
-                {
-                  "test": "datum[\"median_median_y_by_b\"] === null || isNaN(datum[\"median_median_y_by_b\"])",
-                  "value": null
-                },
-                {"value": "black"}
-              ],
+              "stroke": {"value": "black"},
               "tooltip": {
                 "signal": "{\"Median of median_y_by_b\": format(datum[\"median_median_y_by_b\"], \"\")}"
               },
@@ -336,8 +332,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "x"},
-          {"data": "data_2", "field": "median_median_x_by_a"}
+          {"data": "data_2", "field": "x"},
+          {"data": "data_3", "field": "median_median_x_by_a"}
         ]
       },
       "range": [0, {"signal": "child_width"}],
@@ -349,8 +345,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "y"},
-          {"data": "data_2", "field": "median_median_y_by_b"}
+          {"data": "data_2", "field": "y"},
+          {"data": "data_3", "field": "median_median_y_by_b"}
         ]
       },
       "range": [{"signal": "child_height"}, 0],

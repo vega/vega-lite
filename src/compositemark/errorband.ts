@@ -1,6 +1,6 @@
 import {Orientation} from 'vega';
 import {Encoding} from '../encoding';
-import {Field} from '../fielddef';
+import {Field} from '../channeldef';
 import * as log from '../log';
 import {MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize/index';
@@ -57,9 +57,9 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
    * The line interpolation method for the error band. One of the following:
    * - `"linear"`: piecewise linear segments, as in a polyline.
    * - `"linear-closed"`: close the linear segments to form a polygon.
-   * - `"step"`: alternate between horizontal and vertical segments, as in a step function.
-   * - `"step-before"`: alternate between vertical and horizontal segments, as in a step function.
-   * - `"step-after"`: alternate between horizontal and vertical segments, as in a step function.
+   * - `"step"`: a piecewise constant function (a step function) consisting of alternating horizontal and vertical lines. The y-value changes at the midpoint of each pair of adjacent x-values.
+   * - `"step-before"`: a piecewise constant function (a step function) consisting of alternating horizontal and vertical lines. The y-value changes before the x-value.
+   * - `"step-after"`: a piecewise constant function (a step function) consisting of alternating horizontal and vertical lines. The y-value changes after the x-value.
    * - `"basis"`: a B-spline, with control point duplication on the ends.
    * - `"basis-open"`: an open B-spline; may not intersect the start or end.
    * - `"basis-closed"`: a closed B-spline, as in a loop.
@@ -109,9 +109,10 @@ export function normalizeErrorBand(
     outerSpec,
     tooltipEncoding
   } = errorBarParams(spec, ERRORBAND, config);
+  const errorBandDef: ErrorBandDef = markDef;
 
   const makeErrorBandPart = makeCompositeAggregatePartFactory<ErrorBandPartsMixins>(
-    markDef,
+    errorBandDef,
     continuousAxis,
     continuousAxisChannelDef,
     encodingWithoutContinuousAxis,
@@ -123,8 +124,8 @@ export function normalizeErrorBand(
   let bandMark: MarkDef = {type: is2D ? 'area' : 'rect'};
   let bordersMark: MarkDef = {type: is2D ? 'line' : 'rule'};
   const interpolate = {
-    ...(markDef.interpolate ? {interpolate: markDef.interpolate} : {}),
-    ...(markDef.tension && markDef.interpolate ? {interpolate: markDef.tension} : {})
+    ...(errorBandDef.interpolate ? {interpolate: errorBandDef.interpolate} : {}),
+    ...(errorBandDef.tension && errorBandDef.interpolate ? {interpolate: errorBandDef.tension} : {})
   };
 
   if (is2D) {
@@ -136,9 +137,9 @@ export function normalizeErrorBand(
       ...bordersMark,
       ...interpolate
     };
-  } else if (markDef.interpolate) {
+  } else if (errorBandDef.interpolate) {
     log.warn(log.message.errorBand1DNotSupport('interpolate'));
-  } else if (markDef.tension) {
+  } else if (errorBandDef.tension) {
     log.warn(log.message.errorBand1DNotSupport('tension'));
   }
 

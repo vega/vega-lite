@@ -12,7 +12,11 @@
       "url": "data/cars.json",
       "format": {"type": "json"},
       "transform": [
-        {"type": "formula", "expr": "year(datum.Year)", "as": "Year"}
+        {"type": "formula", "expr": "year(datum.Year)", "as": "Year"},
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
       ]
     }
   ],
@@ -49,10 +53,7 @@
     {"name": "CylYr", "update": "vlSelectionResolve(\"CylYr_store\")"},
     {
       "name": "CylYr_tuple",
-      "update": "CylYr_Cylinders !== null && CylYr_Year !== null ? {fields: CylYr_tuple_fields, values: [CylYr_Cylinders, CylYr_Year]} : null",
-      "on": [
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
-      ]
+      "update": "CylYr_Cylinders !== null && CylYr_Year !== null ? {fields: CylYr_tuple_fields, values: [CylYr_Cylinders, CylYr_Year]} : null"
     },
     {
       "name": "CylYr_tuple_fields",
@@ -76,10 +77,6 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": [
-            {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-              "value": null
-            },
             {
               "test": "!(length(data(\"CylYr_store\"))) || (vlSelectionTest(\"CylYr_store\", datum))",
               "scale": "color",
@@ -125,8 +122,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     }
   ],
   "axes": [

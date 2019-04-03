@@ -1,8 +1,8 @@
+import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
-import {isAggregateOp} from './aggregate';
+import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinning} from './bin';
 import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark} from './channel';
-import {Config} from './config';
 import {
   binRequiresRange,
   ChannelDef,
@@ -38,13 +38,14 @@ import {
   TypedFieldDef,
   ValueDef,
   vgField
-} from './fielddef';
+} from './channeldef';
+import {Config} from './config';
 import * as log from './log';
 import {Mark} from './mark';
 import {EncodingFacetMapping} from './spec/facet';
 import {getDateTimeComponents} from './timeunit';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
-import {Type} from './type';
+import {TEMPORAL} from './type';
 import {keys, some} from './util';
 
 export interface Encoding<F extends Field> {
@@ -262,24 +263,41 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
       if (aggOp || timeUnit || bin) {
         const guide = getGuide(channelDef);
         const isTitleDefined = guide && guide.title;
-        const newField = vgField(channelDef, {forAs: true});
-        const newChannelDef = {
+        let newField = vgField(channelDef, {forAs: true});
+        const newFieldDef: FieldDef<string> = {
           // Only add title if it doesn't exist
           ...(isTitleDefined ? [] : {title: title(channelDef, config, {allowDisabling: true})}),
           ...remaining,
           // Always overwrite field
           field: newField
         };
-        const isPositionChannel: boolean = channel === Channel.X || channel === Channel.Y;
-        if (aggOp && isAggregateOp(aggOp)) {
-          const aggregateEntry: AggregatedFieldDef = {
-            op: aggOp,
-            as: newField
-          };
-          if (field) {
-            aggregateEntry.field = field;
+        const isPositionChannel: boolean = channel === 'x' || channel === 'y';
+
+        if (aggOp) {
+          let op: AggregateOp;
+
+          if (isArgmaxDef(aggOp)) {
+            op = 'argmax';
+            newField = vgField({aggregate: 'argmax', field: aggOp.argmax}, {forAs: true});
+            newFieldDef.field = `${newField}.${field}`;
+          } else if (isArgminDef(aggOp)) {
+            op = 'argmin';
+            newField = vgField({aggregate: 'argmin', field: aggOp.argmin}, {forAs: true});
+            newFieldDef.field = `${newField}.${field}`;
+          } else if (aggOp !== 'boxplot' && aggOp !== 'errorbar' && aggOp !== 'errorband') {
+            op = aggOp;
           }
-          aggregate.push(aggregateEntry);
+
+          if (op) {
+            const aggregateEntry: AggregatedFieldDef = {
+              op,
+              as: newField
+            };
+            if (field) {
+              aggregateEntry.field = field;
+            }
+            aggregate.push(aggregateEntry);
+          }
         } else if (isTypedFieldDef(channelDef) && isBinning(bin)) {
           bins.push({bin, field, as: newField});
           // Add additional groupbys for range and end of bins
@@ -294,28 +312,32 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
             };
             encoding[channel + '2'] = secondaryChannel;
           }
-          newChannelDef['bin'] = 'binned';
+          newFieldDef.bin = 'binned';
           if (!isSecondaryRangeChannel(channel)) {
-            newChannelDef['type'] = Type.QUANTITATIVE;
+            newFieldDef['type'] = 'quantitative';
           }
         } else if (timeUnit) {
           timeUnits.push({timeUnit, field, as: newField});
 
           // Add formatting to appropriate property based on the type of channel we're processing
           const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
-          if (isNonPositionScaleChannel(channel)) {
-            newChannelDef['legend'] = {format, ...newChannelDef['legend']};
+          const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';
+          if (channel === 'text' || channel === 'tooltip') {
+            newFieldDef['format'] = newFieldDef['format'] || format;
+            if (formatType) {
+              newFieldDef['formatType'] = formatType;
+            }
+          } else if (isNonPositionScaleChannel(channel)) {
+            newFieldDef['legend'] = {format, ...(formatType ? {formatType} : {}), ...newFieldDef['legend']};
           } else if (isPositionChannel) {
-            newChannelDef['axis'] = {format, ...newChannelDef['axis']};
-          } else if (channel === 'text' || channel === 'tooltip') {
-            newChannelDef['format'] = newChannelDef['format'] || format;
+            newFieldDef['axis'] = {format, ...(formatType ? {formatType} : {}), ...newFieldDef['axis']};
           }
         }
         if (!aggOp) {
           groupby.push(newField);
         }
         // now the field should refer to post-transformed field instead
-        encoding[channel] = newChannelDef;
+        encoding[channel] = newFieldDef;
       } else {
         groupby.push(field);
         encoding[channel] = oldEncoding[channel];

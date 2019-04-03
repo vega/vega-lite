@@ -16,7 +16,47 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
         {"type": "filter", "expr": "(vlSelectionTest(\"label_store\", datum))"}
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "data_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "data_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+        }
       ]
     }
   ],
@@ -37,7 +77,7 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0_layer_1\", fields: label_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "scope", "type": "mouseout"}], "update": "null"}
       ]
     },
     {
@@ -93,27 +133,15 @@
       "name": "layer_0_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": [
             {"test": "(vlSelectionTest(\"label_store\", datum))", "value": 1},
             {"value": 0}
           ],
-          "fill": [
-            {
-              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
-              "value": null
-            },
-            {"value": "transparent"}
-          ],
-          "stroke": [
-            {
-              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "symbol"}
-          ],
+          "fill": {"value": "transparent"},
+          "stroke": {"scale": "color", "field": "symbol"},
           "tooltip": {
             "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
           },
@@ -150,16 +178,10 @@
       "name": "layer_1_layer_0_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
-          "stroke": [
-            {
-              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"])",
-              "value": null
-            },
-            {"value": "gray"}
-          ],
+          "stroke": {"value": "gray"},
           "tooltip": {
             "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y')}"
           },
@@ -173,16 +195,10 @@
       "name": "layer_1_layer_1_layer_0_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
-          "stroke": [
-            {
-              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
-              "value": null
-            },
-            {"value": "white"}
-          ],
+          "stroke": {"value": "white"},
           "strokeWidth": {"value": 2},
           "align": {"value": "left"},
           "dx": {"value": 5},
@@ -200,19 +216,13 @@
       "name": "layer_1_layer_1_layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_4"},
       "encode": {
         "update": {
           "align": {"value": "left"},
           "dx": {"value": 5},
           "dy": {"value": -5},
-          "fill": [
-            {
-              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
-              "value": null
-            },
-            {"scale": "fill", "field": "symbol"}
-          ],
+          "fill": {"scale": "fill", "field": "symbol"},
           "tooltip": {
             "signal": "{\"price\": format(datum[\"price\"], \"\"), \"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"symbol\": ''+datum[\"symbol\"]}"
           },
@@ -230,7 +240,10 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "date"},
-          {"data": "data_0", "field": "date"}
+          {"data": "data_0", "field": "date"},
+          {"data": "data_2", "field": "date"},
+          {"data": "data_3", "field": "date"},
+          {"data": "data_4", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -241,7 +254,9 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "price"},
-          {"data": "data_0", "field": "price"}
+          {"data": "data_0", "field": "price"},
+          {"data": "data_3", "field": "price"},
+          {"data": "data_4", "field": "price"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -251,16 +266,20 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "symbol", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "symbol"},
+          {"data": "data_0", "field": "symbol"}
+        ],
+        "sort": true
+      },
+      "range": "category"
     },
     {
       "name": "fill",
       "type": "ordinal",
-      "domain": {"data": "data_0", "field": "symbol", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "domain": {"data": "data_4", "field": "symbol", "sort": true},
+      "range": "category"
     }
   ],
   "axes": [

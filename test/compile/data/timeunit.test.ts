@@ -55,7 +55,7 @@ describe('compile/data/timeunit', () => {
         }
       });
       const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
-      expect(timeUnitNode.hash()).toEqual('TimeUnit {"month_a":{"as":"month_a","field":"a","timeUnit":"month"}}');
+      expect(timeUnitNode.hash()).toBe('TimeUnit {"month_a":{"as":"month_a","field":"a","timeUnit":"month"}}');
     });
   });
 

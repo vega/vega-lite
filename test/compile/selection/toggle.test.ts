@@ -76,7 +76,7 @@ describe('Toggle Selection Transform', () => {
 
   it('builds modify expr', () => {
     const oneExpr = toggle.modifyExpr(model, selCmpts['one'], '');
-    expect(oneExpr).toEqual('one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null');
+    expect(oneExpr).toBe('one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null');
 
     const twoExpr = toggle.modifyExpr(model, selCmpts['two'], '');
     expect(twoExpr).toEqual(

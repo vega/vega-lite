@@ -66,13 +66,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"mean_aggregate_gross\"] === null || isNaN(datum[\"mean_aggregate_gross\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"Mean of aggregate_gross\": format(datum[\"mean_aggregate_gross\"], \"\"), \"ranked_director\": ''+datum[\"ranked_director\"]}"
           },

@@ -5,14 +5,14 @@ import {
   Conditional,
   FieldDefWithCondition,
   hasConditionalValueDef,
-  isTimeFieldDef,
+  isTimeFormatFieldDef,
   isValueDef,
   MarkPropFieldDef,
   TypedFieldDef,
   Value,
   ValueDef,
   ValueDefWithCondition
-} from '../../fielddef';
+} from '../../channeldef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, GEOSHAPE, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {getFirstDefined, keys} from '../../util';
@@ -62,7 +62,7 @@ export function symbols(
       break;
   }
 
-  const {markDef, encoding} = model;
+  const {markDef, encoding, config} = model;
   const filled = markDef.filled;
 
   const opacity = getMaxValue(encoding.opacity) || markDef.opacity;
@@ -77,7 +77,7 @@ export function symbols(
         if (legendCmp.get('symbolFillColor')) {
           delete out.fill;
         } else {
-          out.fill = {value: 'black'};
+          out.fill = {value: config.legend.symbolBaseFillColor || 'black'};
           out.fillOpacity = {value: opacity || 1};
         }
       } else if (isArray(out.fill)) {
@@ -166,7 +166,7 @@ export function labels(
 
   let out: SymbolEncodeEntry = {};
 
-  if (isTimeFieldDef(fieldDef)) {
+  if (isTimeFormatFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
     const expr = timeFormatExpression(
       'datum.value',

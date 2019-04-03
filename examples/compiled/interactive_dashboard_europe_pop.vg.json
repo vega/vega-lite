@@ -308,6 +308,36 @@
           "Population_ages_65_and_above_of_total": 12.3228189427425
         }
       ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Population_ages_15_64_of_total\"] !== null && !isNaN(datum[\"Population_ages_15_64_of_total\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Population_ages_65_and_above_of_total\"] !== null && !isNaN(datum[\"Population_ages_65_and_above_of_total\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Population_ages_15_64_of_total\"] !== null && !isNaN(datum[\"Population_ages_15_64_of_total\"]) && datum[\"Population_ages_65_and_above_of_total\"] !== null && !isNaN(datum[\"Population_ages_65_and_above_of_total\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -379,10 +409,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, concat_0_height)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -411,10 +437,6 @@
             {
               "events": [{"signal": "brush_Country"}],
               "update": "brush_Country ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Country]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -546,14 +568,10 @@
           "name": "concat_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": [
-                {
-                  "test": "datum[\"Population_ages_15_64_of_total\"] === null || isNaN(datum[\"Population_ages_15_64_of_total\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (!(vlSelectionTest(\"brush_store\", datum)))",
                   "value": "steelblue"
@@ -701,10 +719,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, concat_1_height)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -733,10 +747,6 @@
             {
               "events": [{"signal": "brush_Country"}],
               "update": "brush_Country ? {unit: \"concat_1\", fields: brush_tuple_fields, values: [brush_Country]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -868,14 +878,10 @@
           "name": "concat_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": [
-                {
-                  "test": "datum[\"Population_ages_65_and_above_of_total\"] === null || isNaN(datum[\"Population_ages_65_and_above_of_total\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (!(vlSelectionTest(\"brush_store\", datum)))",
                   "value": "steelblue"
@@ -1026,10 +1032,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, concat_2_width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -1085,10 +1087,6 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, concat_2_height)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -1121,10 +1119,6 @@
                 }
               ],
               "update": "brush_Population_ages_65_and_above_of_total && brush_Population_ages_15_64_of_total ? {unit: \"concat_2\", fields: brush_tuple_fields, values: [brush_Population_ages_65_and_above_of_total,brush_Population_ages_15_64_of_total]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -1267,22 +1261,12 @@
           "name": "concat_2_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Population_ages_65_and_above_of_total\"] === null || isNaN(datum[\"Population_ages_65_and_above_of_total\"]) || datum[\"Population_ages_15_64_of_total\"] === null || isNaN(datum[\"Population_ages_15_64_of_total\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
+              "fill": {"value": "transparent"},
               "stroke": [
-                {
-                  "test": "datum[\"Population_ages_65_and_above_of_total\"] === null || isNaN(datum[\"Population_ages_65_and_above_of_total\"]) || datum[\"Population_ages_15_64_of_total\"] === null || isNaN(datum[\"Population_ages_15_64_of_total\"])",
-                  "value": null
-                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (!(vlSelectionTest(\"brush_store\", datum)))",
                   "value": "steelblue"
@@ -1414,7 +1398,7 @@
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Population_ages_15_64_of_total"},
+      "domain": {"data": "data_1", "field": "Population_ages_15_64_of_total"},
       "range": [0, {"signal": "concat_0_width"}],
       "nice": true,
       "zero": true
@@ -1439,7 +1423,7 @@
       "name": "concat_1_x",
       "type": "linear",
       "domain": {
-        "data": "source_0",
+        "data": "data_2",
         "field": "Population_ages_65_and_above_of_total"
       },
       "range": [0, {"signal": "concat_1_width"}],
@@ -1466,7 +1450,7 @@
       "name": "concat_2_x",
       "type": "linear",
       "domain": {
-        "data": "source_0",
+        "data": "data_3",
         "field": "Population_ages_65_and_above_of_total"
       },
       "range": [0, {"signal": "concat_2_width"}],
@@ -1476,7 +1460,7 @@
     {
       "name": "concat_2_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Population_ages_15_64_of_total"},
+      "domain": {"data": "data_3", "field": "Population_ages_15_64_of_total"},
       "range": [{"signal": "concat_2_height"}, 0],
       "zero": false,
       "nice": true

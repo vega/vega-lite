@@ -35,13 +35,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"distinct_Name\"] === null || isNaN(datum[\"distinct_Name\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Distinct of Name\": format(datum[\"distinct_Name\"], \"\")}"
           },

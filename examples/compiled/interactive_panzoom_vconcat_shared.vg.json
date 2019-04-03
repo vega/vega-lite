@@ -5,7 +5,27 @@
   "width": 200,
   "data": [
     {"name": "region_store"},
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+        }
+      ]
+    }
   ],
   "signals": [
     {"name": "concat_0_height", "value": 200},
@@ -47,6 +67,10 @@
             {
               "events": {"signal": "region_zoom_delta"},
               "update": "zoomLinear(domain(\"x\"), region_zoom_anchor.x, region_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -61,6 +85,10 @@
             {
               "events": {"signal": "region_zoom_delta"},
               "update": "zoomLinear(domain(\"concat_0_y\"), region_zoom_anchor.y, region_zoom_delta)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ],
           "push": "outer"
@@ -73,10 +101,6 @@
                 {"signal": "region_Horsepower || region_Miles_per_Gallon"}
               ],
               "update": "region_Horsepower && region_Miles_per_Gallon ? {unit: \"concat_0\", fields: region_tuple_fields, values: [region_Horsepower,region_Miles_per_Gallon]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -147,24 +171,12 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
-              "stroke": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
-                  "value": null
-                },
-                {"value": "#4c78a8"}
-              ],
+              "fill": {"value": "transparent"},
+              "stroke": {"value": "#4c78a8"},
               "tooltip": {
                 "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\")}"
               },
@@ -238,24 +250,12 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
-                  "value": null
-                },
-                {"value": "transparent"}
-              ],
-              "stroke": [
-                {
-                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
-                  "value": null
-                },
-                {"value": "#4c78a8"}
-              ],
+              "fill": {"value": "transparent"},
+              "stroke": {"value": "#4c78a8"},
               "tooltip": {
                 "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\")}"
               },
@@ -318,7 +318,12 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "Horsepower"},
+          {"data": "data_1", "field": "Horsepower"}
+        ]
+      },
       "domainRaw": {"signal": "region[\"Horsepower\"]"},
       "range": [0, {"signal": "width"}],
       "nice": true,
@@ -327,7 +332,7 @@
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_0", "field": "Miles_per_Gallon"},
       "domainRaw": {"signal": "region[\"Miles_per_Gallon\"]"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
@@ -336,7 +341,7 @@
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Acceleration"},
+      "domain": {"data": "data_1", "field": "Acceleration"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

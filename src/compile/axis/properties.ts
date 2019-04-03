@@ -2,7 +2,7 @@ import {Align, AxisOrient, SignalRef} from 'vega';
 import {Axis} from '../../axis';
 import {isBinning} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
-import {TypedFieldDef, valueArray} from '../../fielddef';
+import {TypedFieldDef, valueArray} from '../../channeldef';
 import * as log from '../../log';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL} from '../../type';

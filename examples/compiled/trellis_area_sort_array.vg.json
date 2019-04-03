@@ -217,8 +217,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "symbol", "sort": true},
-      "range": "category",
-      "interpolate": "hcl"
+      "range": "category"
     }
   ],
   "legends": [

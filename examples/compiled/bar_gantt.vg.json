@@ -13,6 +13,16 @@
         {"task": "B", "start": 3, "end": 8},
         {"task": "C", "start": 8, "end": 10}
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -27,16 +37,10 @@
       "name": "marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"start\"] === null || isNaN(datum[\"start\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"task\": ''+datum[\"task\"], \"start\": format(datum[\"start\"], \"\"), \"end\": format(datum[\"end\"], \"\")}"
           },
@@ -52,7 +56,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "fields": ["start", "end"]},
+      "domain": {"data": "data_0", "fields": ["start", "end"]},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -60,7 +64,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "source_0", "field": "task", "sort": true},
+      "domain": {"data": "data_0", "field": "task", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

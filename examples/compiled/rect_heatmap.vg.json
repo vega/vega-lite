@@ -33,13 +33,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "datum[\"mean_Horsepower\"] === null || isNaN(datum[\"mean_Horsepower\"])",
-              "value": null
-            },
-            {"scale": "color", "field": "mean_Horsepower"}
-          ],
+          "fill": {"scale": "color", "field": "mean_Horsepower"},
           "tooltip": {
             "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\")}"
           },

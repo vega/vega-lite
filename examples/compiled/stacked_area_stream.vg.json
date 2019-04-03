@@ -42,7 +42,6 @@
       ]
     }
   ],
-  "signals": [{"name": "height", "update": "height"}],
   "marks": [
     {
       "name": "pathgroup",
@@ -108,8 +107,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "series", "sort": true},
-      "range": {"scheme": "category20b"},
-      "interpolate": "hcl"
+      "range": {"scheme": "category20b"}
     }
   ],
   "axes": [

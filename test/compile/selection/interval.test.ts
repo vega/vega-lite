@@ -456,20 +456,20 @@ describe('Interval Selections', () => {
       }));
 
       const sg = interval.signals(model, selCmpts2['one']);
-      expect(sg[0].name).toEqual('one_x_1');
-      expect(sg[1].name).toEqual('one_x');
+      expect(sg[0].name).toBe('one_x_1');
+      expect(sg[1].name).toBe('one_x');
     });
   });
 
   it('builds modify signals', () => {
     const oneExpr = interval.modifyExpr(model, selCmpts['one']);
-    expect(oneExpr).toEqual('one_tuple, true');
+    expect(oneExpr).toBe('one_tuple, true');
 
     const twoExpr = interval.modifyExpr(model, selCmpts['two']);
-    expect(twoExpr).toEqual('two_tuple, true');
+    expect(twoExpr).toBe('two_tuple, true');
 
     const threeExpr = interval.modifyExpr(model, selCmpts['thr_ee']);
-    expect(threeExpr).toEqual('thr_ee_tuple, {unit: ""}');
+    expect(threeExpr).toBe('thr_ee_tuple, {unit: ""}');
 
     const signals = assembleUnitSelectionSignals(model, []);
     expect(signals).toEqual(

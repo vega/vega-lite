@@ -74,10 +74,6 @@
         {
           "events": {"signal": "pts_zoom_delta"},
           "update": "clampRange(zoomLinear(pts_x, pts_zoom_anchor.x, pts_zoom_delta), 0, width)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },
@@ -106,8 +102,7 @@
         {
           "events": [{"signal": "pts_Cylinders"}],
           "update": "pts_Cylinders ? {unit: \"\", fields: pts_tuple_fields, values: [pts_Cylinders]} : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
@@ -232,10 +227,6 @@
       "encode": {
         "update": {
           "fill": [
-            {
-              "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
-              "value": null
-            },
             {
               "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
               "scale": "color",

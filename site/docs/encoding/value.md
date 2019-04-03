@@ -5,9 +5,10 @@ permalink: /docs/value.html
 ---
 
 ```js
-// Specification of a Single View
+// A Single View or a Layer Specification
 {
   ...,
+  "mark/layer": ...,
   "encoding": {     // Encoding
     ...: {
       "value": ..., // Value
@@ -18,9 +19,7 @@ permalink: /docs/value.html
 }
 ```
 
-A [value definition](encoding.html#value-def) must include a `value` property to map a constant value to an [encoding channel](encoding.html#channels).
-
-{% include table.html props="value" source="ValueDef" %}
+You can use a [value definition](encoding.html#value-def) to map a constant value to an [encoding channel](encoding.html#channels) by setting the `value` property.
 
 For example, you can set `color` and `shape` of a scatter plot to constant values.
 

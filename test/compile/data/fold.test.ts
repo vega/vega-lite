@@ -67,7 +67,7 @@ describe('compile/data/fold', () => {
       as: ['A', 'B']
     };
     const fold = new FoldTransformNode(null, transform);
-    expect(fold.hash()).toEqual('FoldTransform {"as":["A","B"],"fold":["a","b"]}');
+    expect(fold.hash()).toBe('FoldTransform {"as":["A","B"],"fold":["a","b"]}');
   });
 
   describe('clone', () => {

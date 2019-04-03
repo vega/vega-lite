@@ -1,10 +1,9 @@
-import {UnitModel} from '../unit';
-import * as mixins from './mixins';
-
-import {isFieldDef, vgField} from '../../fielddef';
+import {isFieldDef, vgField} from '../../channeldef';
 import {GEOJSON} from '../../type';
 import {VgGeoShapeTransform, VgPostEncodingTransform} from '../../vega.schema';
+import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
+import * as mixins from './mixins';
 
 export const geoshape: MarkCompiler = {
   vgMark: 'shape',

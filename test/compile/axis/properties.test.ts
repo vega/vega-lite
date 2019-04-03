@@ -220,56 +220,56 @@ describe('compile/axis', () => {
   describe('defaultLabelAlign', () => {
     describe('horizontal orients', () => {
       it('360 degree check for horizonatal orients return to see if they orient properly', () => {
-        expect(defaultLabelAlign(0, 'top')).toEqual('center');
-        expect(defaultLabelAlign(15, 'top')).toEqual('right');
-        expect(defaultLabelAlign(30, 'top')).toEqual('right');
-        expect(defaultLabelAlign(45, 'top')).toEqual('right');
-        expect(defaultLabelAlign(60, 'top')).toEqual('right');
-        expect(defaultLabelAlign(75, 'top')).toEqual('right');
-        expect(defaultLabelAlign(90, 'top')).toEqual('right');
-        expect(defaultLabelAlign(105, 'top')).toEqual('right');
-        expect(defaultLabelAlign(120, 'top')).toEqual('right');
-        expect(defaultLabelAlign(135, 'top')).toEqual('right');
-        expect(defaultLabelAlign(150, 'top')).toEqual('right');
-        expect(defaultLabelAlign(165, 'top')).toEqual('right');
-        expect(defaultLabelAlign(180, 'top')).toEqual('center');
-        expect(defaultLabelAlign(195, 'bottom')).toEqual('right');
-        expect(defaultLabelAlign(210, 'bottom')).toEqual('right');
-        expect(defaultLabelAlign(225, 'bottom')).toEqual('right');
-        expect(defaultLabelAlign(240, 'bottom')).toEqual('right');
-        expect(defaultLabelAlign(255, 'bottom')).toEqual('right');
-        expect(defaultLabelAlign(270, 'bottom')).toEqual('right');
-        expect(defaultLabelAlign(285, 'bottom')).toEqual('right');
-        expect(defaultLabelAlign(300, 'bottom')).toEqual('right');
-        expect(defaultLabelAlign(315, 'bottom')).toEqual('right');
-        expect(defaultLabelAlign(330, 'bottom')).toEqual('right');
-        expect(defaultLabelAlign(345, 'bottom')).toEqual('right');
+        expect(defaultLabelAlign(0, 'top')).toBe('center');
+        expect(defaultLabelAlign(15, 'top')).toBe('right');
+        expect(defaultLabelAlign(30, 'top')).toBe('right');
+        expect(defaultLabelAlign(45, 'top')).toBe('right');
+        expect(defaultLabelAlign(60, 'top')).toBe('right');
+        expect(defaultLabelAlign(75, 'top')).toBe('right');
+        expect(defaultLabelAlign(90, 'top')).toBe('right');
+        expect(defaultLabelAlign(105, 'top')).toBe('right');
+        expect(defaultLabelAlign(120, 'top')).toBe('right');
+        expect(defaultLabelAlign(135, 'top')).toBe('right');
+        expect(defaultLabelAlign(150, 'top')).toBe('right');
+        expect(defaultLabelAlign(165, 'top')).toBe('right');
+        expect(defaultLabelAlign(180, 'top')).toBe('center');
+        expect(defaultLabelAlign(195, 'bottom')).toBe('right');
+        expect(defaultLabelAlign(210, 'bottom')).toBe('right');
+        expect(defaultLabelAlign(225, 'bottom')).toBe('right');
+        expect(defaultLabelAlign(240, 'bottom')).toBe('right');
+        expect(defaultLabelAlign(255, 'bottom')).toBe('right');
+        expect(defaultLabelAlign(270, 'bottom')).toBe('right');
+        expect(defaultLabelAlign(285, 'bottom')).toBe('right');
+        expect(defaultLabelAlign(300, 'bottom')).toBe('right');
+        expect(defaultLabelAlign(315, 'bottom')).toBe('right');
+        expect(defaultLabelAlign(330, 'bottom')).toBe('right');
+        expect(defaultLabelAlign(345, 'bottom')).toBe('right');
       });
       it('360 degree check for vertical orients return to see if they orient properly', () => {
-        expect(defaultLabelAlign(0, 'left')).toEqual('right');
-        expect(defaultLabelAlign(15, 'left')).toEqual('right');
-        expect(defaultLabelAlign(30, 'left')).toEqual('right');
-        expect(defaultLabelAlign(45, 'left')).toEqual('right');
-        expect(defaultLabelAlign(60, 'left')).toEqual('right');
-        expect(defaultLabelAlign(75, 'left')).toEqual('right');
-        expect(defaultLabelAlign(90, 'left')).toEqual('center');
-        expect(defaultLabelAlign(105, 'left')).toEqual('left');
-        expect(defaultLabelAlign(120, 'left')).toEqual('left');
-        expect(defaultLabelAlign(135, 'left')).toEqual('left');
-        expect(defaultLabelAlign(150, 'left')).toEqual('left');
-        expect(defaultLabelAlign(165, 'left')).toEqual('left');
-        expect(defaultLabelAlign(180, 'left')).toEqual('left');
-        expect(defaultLabelAlign(195, 'right')).toEqual('right');
-        expect(defaultLabelAlign(210, 'right')).toEqual('right');
-        expect(defaultLabelAlign(225, 'right')).toEqual('right');
-        expect(defaultLabelAlign(240, 'right')).toEqual('right');
-        expect(defaultLabelAlign(255, 'right')).toEqual('right');
-        expect(defaultLabelAlign(270, 'right')).toEqual('center');
-        expect(defaultLabelAlign(285, 'right')).toEqual('left');
-        expect(defaultLabelAlign(300, 'right')).toEqual('left');
-        expect(defaultLabelAlign(315, 'right')).toEqual('left');
-        expect(defaultLabelAlign(330, 'right')).toEqual('left');
-        expect(defaultLabelAlign(345, 'right')).toEqual('left');
+        expect(defaultLabelAlign(0, 'left')).toBe('right');
+        expect(defaultLabelAlign(15, 'left')).toBe('right');
+        expect(defaultLabelAlign(30, 'left')).toBe('right');
+        expect(defaultLabelAlign(45, 'left')).toBe('right');
+        expect(defaultLabelAlign(60, 'left')).toBe('right');
+        expect(defaultLabelAlign(75, 'left')).toBe('right');
+        expect(defaultLabelAlign(90, 'left')).toBe('center');
+        expect(defaultLabelAlign(105, 'left')).toBe('left');
+        expect(defaultLabelAlign(120, 'left')).toBe('left');
+        expect(defaultLabelAlign(135, 'left')).toBe('left');
+        expect(defaultLabelAlign(150, 'left')).toBe('left');
+        expect(defaultLabelAlign(165, 'left')).toBe('left');
+        expect(defaultLabelAlign(180, 'left')).toBe('left');
+        expect(defaultLabelAlign(195, 'right')).toBe('right');
+        expect(defaultLabelAlign(210, 'right')).toBe('right');
+        expect(defaultLabelAlign(225, 'right')).toBe('right');
+        expect(defaultLabelAlign(240, 'right')).toBe('right');
+        expect(defaultLabelAlign(255, 'right')).toBe('right');
+        expect(defaultLabelAlign(270, 'right')).toBe('center');
+        expect(defaultLabelAlign(285, 'right')).toBe('left');
+        expect(defaultLabelAlign(300, 'right')).toBe('left');
+        expect(defaultLabelAlign(315, 'right')).toBe('left');
+        expect(defaultLabelAlign(330, 'right')).toBe('left');
+        expect(defaultLabelAlign(345, 'right')).toBe('left');
       });
       it('should return undefined if angle is undefined', () => {
         expect(defaultLabelAlign(undefined, 'left')).toEqual(undefined);
@@ -279,38 +279,38 @@ describe('compile/axis', () => {
 
   describe('defaultLabelBaseline', () => {
     it('is middle for perpendiculars horizontal orients', () => {
-      expect(defaultLabelBaseline(90, 'top')).toEqual('middle');
-      expect(defaultLabelBaseline(270, 'bottom')).toEqual('middle');
+      expect(defaultLabelBaseline(90, 'top')).toBe('middle');
+      expect(defaultLabelBaseline(270, 'bottom')).toBe('middle');
     });
 
     it('is top for bottom orients for 1st and 4th quadrants', () => {
-      expect(defaultLabelBaseline(45, 'bottom')).toEqual('top');
-      expect(defaultLabelBaseline(180, 'top')).toEqual('top');
+      expect(defaultLabelBaseline(45, 'bottom')).toBe('top');
+      expect(defaultLabelBaseline(180, 'top')).toBe('top');
     });
 
     it('is bottom for bottom orients for 2nd and 3rd quadrants', () => {
-      expect(defaultLabelBaseline(100, 'bottom')).toEqual('middle');
-      expect(defaultLabelBaseline(260, 'bottom')).toEqual('middle');
+      expect(defaultLabelBaseline(100, 'bottom')).toBe('middle');
+      expect(defaultLabelBaseline(260, 'bottom')).toBe('middle');
     });
 
     it('is middle for 0 and 180 horizontal orients', () => {
-      expect(defaultLabelBaseline(0, 'left')).toEqual('middle');
-      expect(defaultLabelBaseline(180, 'right')).toEqual('middle');
+      expect(defaultLabelBaseline(0, 'left')).toBe('middle');
+      expect(defaultLabelBaseline(180, 'right')).toBe('middle');
     });
 
     it('is top for bottom orients for 1st and 2nd quadrants', () => {
-      expect(defaultLabelBaseline(80, 'left')).toEqual('top');
-      expect(defaultLabelBaseline(100, 'left')).toEqual('top');
+      expect(defaultLabelBaseline(80, 'left')).toBe('top');
+      expect(defaultLabelBaseline(100, 'left')).toBe('top');
     });
 
     it('is bottom for bottom orients for 3rd and 4th quadrants', () => {
-      expect(defaultLabelBaseline(280, 'left')).toEqual('bottom');
-      expect(defaultLabelBaseline(260, 'left')).toEqual('bottom');
+      expect(defaultLabelBaseline(280, 'left')).toBe('bottom');
+      expect(defaultLabelBaseline(260, 'left')).toBe('bottom');
     });
 
     it('is bottom for bottom orients for 3rd and 4th quadrants', () => {
-      expect(defaultLabelBaseline(280, 'left')).toEqual('bottom');
-      expect(defaultLabelBaseline(260, 'left')).toEqual('bottom');
+      expect(defaultLabelBaseline(280, 'left')).toBe('bottom');
+      expect(defaultLabelBaseline(260, 'left')).toBe('bottom');
     });
 
     it('should return undefined if angle is undefined', () => {

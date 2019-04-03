@@ -47,7 +47,7 @@ describe('compile/axis/assemble', () => {
         title: [{aggregate: 'max', field: 'a'}, {aggregate: 'min', field: 'b'}]
       });
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
-      expect(axis.title).toEqual('Max of a, Min of b');
+      expect(axis.title).toBe('Max of a, Min of b');
     });
   });
 });

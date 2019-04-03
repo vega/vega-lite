@@ -6,8 +6,6 @@ import {isFunction, isString, stringValue} from 'vega-util';
 import {isCountingAggregateOp} from '../../aggregate';
 import {isBinned, isBinning} from '../../bin';
 import {Channel, getMainRangeChannel, PositionChannel, X, X2, Y, Y2} from '../../channel';
-import {Config} from '../../config';
-import {Encoding, forEach} from '../../encoding';
 import {
   binRequiresRange,
   ChannelDef,
@@ -24,7 +22,9 @@ import {
   title,
   TypedFieldDef,
   vgField
-} from '../../fielddef';
+} from '../../channeldef';
+import {Config} from '../../config';
+import {Encoding, forEach} from '../../encoding';
 import * as log from '../../log';
 import {isPathMark, Mark, MarkDef} from '../../mark';
 import {hasDiscreteDomain, isContinuousToContinuous, ScaleType} from '../../scale';
