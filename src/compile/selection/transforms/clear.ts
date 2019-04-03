@@ -10,10 +10,7 @@ const CLEAR_UPDATE = ['null', '[0, 0]'];
 
 const clear: TransformCompiler = {
   has: selCmpt => {
-    if (selCmpt.clear === false) {
-      return false;
-    }
-    return (selCmpt['on'] && selCmpt.type !== 'interval') || selCmpt['bind'];
+    return selCmpt.clear === false ? false : true;
   },
 
   signals: (model, selCmpt, signals) => {

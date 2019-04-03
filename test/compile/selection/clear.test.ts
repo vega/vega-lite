@@ -125,12 +125,19 @@ describe('Clear selection transform, interval type', () => {
   model.parseScale();
   const selCmpts = (model.component.selection = parseUnitSelection(model, {
     one: {type: 'interval', encodings: ['x', 'y'], bind: 'scales', translate: false, zoom: false},
-    two: {type: 'interval', encodings: ['x', 'y'], clear: false, translate: false, zoom: false}
+    two: {
+      type: 'interval',
+      on: '[mousedown[event.shiftKey], window:mouseup] > window:mousemove!',
+      translate: false,
+      zoom: false
+    },
+    three: {type: 'interval', encodings: ['x', 'y'], clear: false, translate: false, zoom: false}
   }));
 
   it('identifies transform invocation', () => {
     expect(clear.has(selCmpts['one'])).toBeTruthy();
-    expect(clear.has(selCmpts['two'])).toBeFalsy();
+    expect(clear.has(selCmpts['two'])).toBeTruthy();
+    expect(clear.has(selCmpts['three'])).toBeFalsy();
   });
 
   it('appends clear transform', () => {
@@ -163,6 +170,29 @@ describe('Clear selection transform, interval type', () => {
               events: [{signal: 'one_Horsepower || one_Miles_per_Gallon'}],
               update:
                 'one_Horsepower && one_Miles_per_Gallon ? {unit: "", fields: one_tuple_fields, values: [one_Horsepower,one_Miles_per_Gallon]} : null'
+            }
+          ]
+        }
+      ])
+    );
+  });
+
+  it('creates clear transform', () => {
+    const intervalTwoSg = interval.signals(model, selCmpts['two']);
+    const twoSg = clear.signals(model, selCmpts['two'], intervalTwoSg);
+    expect(twoSg).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'two_tuple',
+          on: [
+            {
+              events: [{signal: 'two_Horsepower || two_Miles_per_Gallon'}],
+              update:
+                'two_Horsepower && two_Miles_per_Gallon ? {unit: "", fields: two_tuple_fields, values: [two_Horsepower,two_Miles_per_Gallon]} : null'
+            },
+            {
+              events: parseSelector('dblclick', 'scope'),
+              update: 'null'
             }
           ]
         }
