@@ -1,0 +1,30 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "width": 900,
+  "height": 560,
+  "data": {
+    "url": "data/us-10m.json",
+    "format": {
+      "type": "topojson",
+      "feature": "states"
+    }
+  },
+  "projection": {
+    "type": "albersUsa",
+    "scale": 3000,
+    "translate": [
+      1200,
+      700
+    ]
+  },
+  "mark": {
+    "type": "geoshape",
+    "fill": "#ccc",
+    "stroke": "#fff"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

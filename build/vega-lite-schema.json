@@ -9379,11 +9379,22 @@
           },
           "type": "array"
         },
+        "scale": {
+          "description": "Sets the projection's scale (zoom) value, overriding automatic fitting.",
+          "type": "number"
+        },
         "spacing": {
           "type": "number"
         },
         "tilt": {
           "type": "number"
+        },
+        "translate": {
+          "description": "Sets the projection's translation (pan) value, overriding automatic fitting.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
         },
         "type": {
           "$ref": "#/definitions/ProjectionType",

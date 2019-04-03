@@ -17,4 +17,11 @@ export class ProjectionComponent extends Split<VgProjection> {
       {name} // name as initial implicit property
     );
   }
+
+  /**
+   * Whether the projection parameters should fit provided data.
+   */
+  public get isFit() {
+    return !!this.data;
+  }
 }
