@@ -17,7 +17,7 @@ See [the example gallery for more examples with geographic projection](../exampl
 
 ## Projection Properties
 
-{% include table.html props="type,clipAngle,clipExtent,center,rotate,precision" source="Projection" %}
+{% include table.html props="type,clipAngle,clipExtent,center,scale,translate,rotate,precision" source="Projection" %}
 
 If you want to explore the various available properties in more depth, Vega's projection documentation [hosts a useful demo](https://vega.github.io/vega/docs/projections/)
 
