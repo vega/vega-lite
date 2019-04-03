@@ -136,7 +136,7 @@ describe('compile/data/bin', () => {
       maxbins: 10,
       as: ['binned_acceleration', 'binned_acceleration_end'],
       extent: [0, 100],
-      signal: 'bin_extent_0_100_maxbins_10_Acceleration_bins'
+      signal: 'bin_extent_0_100_maxbins_10_Acceleration_binned_acceleration_binned_acceleration_end_bins'
     });
   });
 
@@ -154,7 +154,7 @@ describe('compile/data/bin', () => {
       maxbins: 20,
       as: ['binned_acceleration', 'binned_acceleration_end'],
       extent: [0, 100],
-      signal: 'bin_extent_0_100_maxbins_20_Acceleration_bins'
+      signal: 'bin_extent_0_100_maxbins_20_Acceleration_binned_acceleration_binned_acceleration_end_bins'
     });
   });
 
@@ -173,7 +173,7 @@ describe('compile/data/bin', () => {
       maxbins: 10,
       as: ['binned_acceleration', 'binned_acceleration_end'],
       extent: [0, 100],
-      signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
+      signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_binned_acceleration_binned_acceleration_end_bins'
     });
   });
 
@@ -192,7 +192,8 @@ describe('compile/data/bin', () => {
       maxbins: 10,
       as: ['binned_acceleration_start', 'binned_acceleration_stop'],
       extent: [0, 100],
-      signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
+      signal:
+        'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_binned_acceleration_start_binned_acceleration_stop_bins'
     });
   });
 
@@ -205,7 +206,7 @@ describe('compile/data/bin', () => {
     const model = makeMovieExample(t);
 
     const binNode = BinNode.makeFromTransform(null, t, model);
-    expect(binNode.hash()).toBe('Bin 1594083826');
+    expect(binNode.hash()).toBe('Bin 1572838704');
   });
 
   it('should generate the correct dependent fields', () => {
@@ -229,7 +230,7 @@ describe('compile/data/bin', () => {
     const model = makeMovieExample(t);
 
     const binNode = BinNode.makeFromTransform(null, t, model);
-    expect(binNode.hash()).toBe('Bin 1594083826');
+    expect(binNode.hash()).toBe('Bin 1572838704');
     expect(binNode.producedFields()).toEqual(new Set(['binned_acceleration_start', 'binned_acceleration_stop']));
   });
 
