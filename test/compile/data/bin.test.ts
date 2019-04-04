@@ -205,7 +205,7 @@ describe('compile/data/bin', () => {
     const model = makeMovieExample(t);
 
     const binNode = BinNode.makeFromTransform(null, t, model);
-    expect(binNode.hash()).toBe('Bin 1594083826');
+    expect(binNode.hash()).toBe('Bin 1499261512');
   });
 
   it('should generate the correct dependent fields', () => {
@@ -229,7 +229,7 @@ describe('compile/data/bin', () => {
     const model = makeMovieExample(t);
 
     const binNode = BinNode.makeFromTransform(null, t, model);
-    expect(binNode.hash()).toBe('Bin 1594083826');
+    expect(binNode.hash()).toBe('Bin 1499261512');
     expect(binNode.producedFields()).toEqual(new Set(['binned_acceleration_start', 'binned_acceleration_stop']));
   });
 
