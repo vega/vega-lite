@@ -42,4 +42,36 @@ describe('compile/data/geojson', () => {
       node = node.children[0];
     }
   });
+  it('should skip geojson if custom projection', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {
+        url: 'data/zipcodes.csv',
+        format: {
+          type: 'csv'
+        }
+      },
+      projection: {
+        type: 'mercator',
+        scale: 1000
+      },
+      mark: 'circle',
+      encoding: {
+        longitude: {
+          field: 'longitude',
+          type: 'quantitative'
+        },
+        latitude: {
+          field: 'latitude',
+          type: 'quantitative'
+        }
+      }
+    });
+    model.parse();
+
+    const root = new DataFlowNode(null);
+    const retval = GeoJSONNode.parseAll(root, model);
+
+    expect(retval).toBe(root);
+    expect(root.children.length).toBe(0);
+  });
 });
