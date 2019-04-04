@@ -11,6 +11,10 @@ export class GeoJSONNode extends DataFlowNode {
   }
 
   public static parseAll(parent: DataFlowNode, model: UnitModel): DataFlowNode {
+    if (model.component.projection && !model.component.projection.isFit) {
+      return parent;
+    }
+
     let geoJsonCounter = 0;
 
     [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((coordinates: GeoPositionChannel[]) => {
