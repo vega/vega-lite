@@ -127,7 +127,7 @@ export class BinNode extends DataFlowNode {
     for (const key of keys(other.bins)) {
       if (key in this.bins) {
         model.renameSignal(other.bins[key].signal, this.bins[key].signal);
-        this.bins[key].as.push(...other.bins[key].as);
+        this.bins[key].as.push(...other.bins[key].as.slice(1));
       } else {
         this.bins[key] = other.bins[key];
       }
