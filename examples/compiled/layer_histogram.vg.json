@@ -23,6 +23,16 @@
           "signal": "layer_1_bin_maxbins_10_distance_bins",
           "maxbins": 10,
           "extent": {"signal": "layer_1_bin_maxbins_10_distance_extent"}
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"bin_maxbins_10_distance\"]",
+          "as": "bin_maxbins_10_distance"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"bin_maxbins_10_distance_end\"]",
+          "as": "bin_maxbins_10_distance_end"
         }
       ]
     },

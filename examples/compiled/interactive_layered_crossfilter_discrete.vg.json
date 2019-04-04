@@ -27,6 +27,16 @@
           }
         },
         {
+          "type": "formula",
+          "expr": "datum[\"bin_maxbins_20_delay\"]",
+          "as": "bin_maxbins_20_delay"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"bin_maxbins_20_delay_end\"]",
+          "as": "bin_maxbins_20_delay_end"
+        },
+        {
           "type": "extent",
           "field": "distance",
           "signal": "child__repeat_column_distance_layer_0_bin_maxbins_20_distance_extent"
@@ -40,6 +50,16 @@
           "extent": {
             "signal": "child__repeat_column_distance_layer_0_bin_maxbins_20_distance_extent"
           }
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"bin_maxbins_20_distance\"]",
+          "as": "bin_maxbins_20_distance"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"bin_maxbins_20_distance_end\"]",
+          "as": "bin_maxbins_20_distance_end"
         },
         {"type": "formula", "expr": "hours(datum.date)", "as": "time"}
       ]
@@ -62,6 +82,16 @@
           "extent": {
             "signal": "child__repeat_column_time_layer_1_bin_maxbins_20_time_extent"
           }
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"bin_maxbins_20_time\"]",
+          "as": "bin_maxbins_20_time"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"bin_maxbins_20_time_end\"]",
+          "as": "bin_maxbins_20_time_end"
         }
       ]
     },

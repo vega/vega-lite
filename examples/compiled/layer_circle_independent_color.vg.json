@@ -29,6 +29,16 @@
           "extent": {"signal": "layer_1_bin_maxbins_10_Acceleration_extent"}
         },
         {
+          "type": "formula",
+          "expr": "datum[\"bin_maxbins_10_Acceleration\"]",
+          "as": "bin_maxbins_10_Acceleration"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"bin_maxbins_10_Acceleration_end\"]",
+          "as": "bin_maxbins_10_Acceleration_end"
+        },
+        {
           "type": "extent",
           "field": "Horsepower",
           "signal": "layer_1_bin_maxbins_10_Horsepower_extent"
@@ -40,6 +50,16 @@
           "signal": "layer_1_bin_maxbins_10_Horsepower_bins",
           "maxbins": 10,
           "extent": {"signal": "layer_1_bin_maxbins_10_Horsepower_extent"}
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"bin_maxbins_10_Horsepower\"]",
+          "as": "bin_maxbins_10_Horsepower"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"bin_maxbins_10_Horsepower_end\"]",
+          "as": "bin_maxbins_10_Horsepower_end"
         }
       ]
     },
