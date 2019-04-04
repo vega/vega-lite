@@ -2082,19 +2082,47 @@
           "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
         },
         "latitude": {
-          "$ref": "#/definitions/LatLongFieldDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LatLongFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
           "description": "Latitude position of geographically projected marks."
         },
         "latitude2": {
-          "$ref": "#/definitions/SecondaryFieldDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
           "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "longitude": {
-          "$ref": "#/definitions/LatLongFieldDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LatLongFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
           "description": "Longitude position of geographically projected marks."
         },
         "longitude2": {
-          "$ref": "#/definitions/SecondaryFieldDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
           "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "opacity": {
@@ -4224,19 +4252,47 @@
           "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
         },
         "latitude": {
-          "$ref": "#/definitions/LatLongFieldDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LatLongFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
           "description": "Latitude position of geographically projected marks."
         },
         "latitude2": {
-          "$ref": "#/definitions/SecondaryFieldDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
           "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "longitude": {
-          "$ref": "#/definitions/LatLongFieldDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LatLongFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
           "description": "Longitude position of geographically projected marks."
         },
         "longitude2": {
-          "$ref": "#/definitions/SecondaryFieldDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
           "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "opacity": {

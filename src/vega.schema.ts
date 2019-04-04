@@ -43,6 +43,10 @@ export interface VgData {
   transform?: VgTransform[];
 }
 
+export interface VgExpr {
+  expr: string;
+}
+
 export interface VgDataRef {
   data: string;
   field: VgField;
@@ -416,7 +420,7 @@ export interface VgSequenceTransform {
 export interface VgGeoPointTransform {
   type: 'geopoint';
   projection: string; // projection name
-  fields: VgField[];
+  fields: (VgField | VgExpr)[];
   as?: string[];
 }
 
@@ -429,7 +433,7 @@ export interface VgGeoShapeTransform {
 
 export interface VgGeoJSONTransform {
   type: 'geojson';
-  fields?: VgField[];
+  fields?: (VgField | VgExpr)[];
   geojson?: VgField;
   signal: string;
 }
