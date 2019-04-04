@@ -221,9 +221,9 @@ export function nonPosition(
     defaultValue = defaultValue ||
       (vgChannel === channel
         ? // When vl channel is the same as Vega's, no need to read from config as Vega will apply them correctly
-          markDef[channel]
+        markDef[channel]
         : // However, when they are different (e.g, vl's text size is vg fontSize), need to read "size" from configs
-          getFirstDefined(markDef[channel], markDef[vgChannel], getMarkConfig(channel, markDef, config, {vgChannel})));
+        getFirstDefined(markDef[channel], markDef[vgChannel], getMarkConfig(channel, markDef, config, {vgChannel})));
 
     defaultRef = defaultValue ? {value: defaultValue} : undefined;
   }
