@@ -125,12 +125,7 @@ describe('Clear selection transform, interval type', () => {
   model.parseScale();
   const selCmpts = (model.component.selection = parseUnitSelection(model, {
     one: {type: 'interval', encodings: ['x', 'y'], bind: 'scales', translate: false, zoom: false},
-    two: {
-      type: 'interval',
-      on: '[mousedown[event.shiftKey], window:mouseup] > window:mousemove!',
-      translate: false,
-      zoom: false
-    },
+    two: {type: 'interval', translate: false, zoom: false},
     three: {type: 'interval', encodings: ['x', 'y'], clear: false, translate: false, zoom: false}
   }));
 
@@ -162,20 +157,6 @@ describe('Clear selection transform, interval type', () => {
               update: 'null'
             }
           ]
-        },
-        {
-          name: 'one_tuple',
-          on: [
-            {
-              events: [{signal: 'one_Horsepower || one_Miles_per_Gallon'}],
-              update:
-                'one_Horsepower && one_Miles_per_Gallon ? {unit: "", fields: one_tuple_fields, values: [one_Horsepower,one_Miles_per_Gallon]} : null'
-            },
-            {
-              events: parseSelector('dblclick', 'scope'),
-              update: 'null'
-            }
-          ]
         }
       ])
     );
@@ -187,16 +168,46 @@ describe('Clear selection transform, interval type', () => {
     expect(twoSg).toEqual(
       expect.arrayContaining([
         {
-          name: 'two_tuple',
+          name: 'two_x',
+          value: [],
           on: [
             {
-              events: [{signal: 'two_Horsepower || two_Miles_per_Gallon'}],
-              update:
-                'two_Horsepower && two_Miles_per_Gallon ? {unit: "", fields: two_tuple_fields, values: [two_Horsepower,two_Miles_per_Gallon]} : null'
+              events: parseSelector('mousedown', 'scope')[0],
+              update: '[x(unit), x(unit)]'
+            },
+            {
+              events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+              update: '[two_x[0], clamp(x(unit), 0, width)]'
+            },
+            {
+              events: {signal: 'two_scale_trigger'},
+              update: '[scale("x", two_Horsepower[0]), scale("x", two_Horsepower[1])]'
             },
             {
               events: parseSelector('dblclick', 'scope'),
-              update: 'null'
+              update: '[0, 0]'
+            }
+          ]
+        },
+        {
+          name: 'two_y',
+          value: [],
+          on: [
+            {
+              events: parseSelector('mousedown', 'scope')[0],
+              update: '[y(unit), y(unit)]'
+            },
+            {
+              events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+              update: '[two_y[0], clamp(y(unit), 0, height)]'
+            },
+            {
+              events: {signal: 'two_scale_trigger'},
+              update: '[scale("y", two_Miles_per_Gallon[0]), scale("y", two_Miles_per_Gallon[1])]'
+            },
+            {
+              events: parseSelector('dblclick', 'scope'),
+              update: '[0, 0]'
             }
           ]
         }
