@@ -2,6 +2,7 @@ import {
   AggregateOp,
   Align,
   Compare as VgCompare,
+  ExprRef as VgExprRef,
   Field as VgField,
   FlattenTransform as VgFlattenTransform,
   FoldTransform as VgFoldTransform,
@@ -24,7 +25,7 @@ import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
-export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType};
+export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
 export type Color = string;
 
@@ -41,10 +42,6 @@ export interface VgData {
   };
   url?: string;
   transform?: VgTransform[];
-}
-
-export interface VgExpr {
-  expr: string;
 }
 
 export interface VgDataRef {
@@ -420,7 +417,7 @@ export interface VgSequenceTransform {
 export interface VgGeoPointTransform {
   type: 'geopoint';
   projection: string; // projection name
-  fields: (VgField | VgExpr)[];
+  fields: (VgField | VgExprRef)[];
   as?: string[];
 }
 
@@ -433,7 +430,7 @@ export interface VgGeoShapeTransform {
 
 export interface VgGeoJSONTransform {
   type: 'geojson';
-  fields?: (VgField | VgExpr)[];
+  fields?: (VgField | VgExprRef)[];
   geojson?: VgField;
   signal: string;
 }

@@ -1,7 +1,7 @@
 import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2} from '../../channel';
 import {isValueDef, ValueDef} from '../../channeldef';
 import {duplicate} from '../../util';
-import {VgExpr, VgGeoPointTransform} from '../../vega.schema';
+import {VgExprRef, VgGeoPointTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
@@ -13,7 +13,7 @@ export class GeoPointNode extends DataFlowNode {
   constructor(
     parent: DataFlowNode,
     private projection: string,
-    private fields: (string | VgExpr)[],
+    private fields: (string | VgExprRef)[],
     private as: string[]
   ) {
     super(parent);
