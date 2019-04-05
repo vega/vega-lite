@@ -92,7 +92,8 @@
         {
           "events": {"signal": "alex_x"},
           "update": "alex_x[0] === alex_x[1] ? null : invert(\"x\", alex_x)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -149,7 +150,8 @@
         {
           "events": {"signal": "alex_y"},
           "update": "alex_y[0] === alex_y[1] ? null : invert(\"y\", alex_y)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -311,7 +313,8 @@
         {
           "events": {"signal": "morgan_x"},
           "update": "morgan_x[0] === morgan_x[1] ? null : invert(\"x\", morgan_x)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -368,7 +371,8 @@
         {
           "events": {"signal": "morgan_y"},
           "update": "morgan_y[0] === morgan_y[1] ? null : invert(\"y\", morgan_y)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {

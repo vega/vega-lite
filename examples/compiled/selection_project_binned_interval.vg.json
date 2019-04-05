@@ -140,7 +140,8 @@
         {
           "events": {"signal": "brush_x"},
           "update": "brush_x[0] === brush_x[1] ? null : invert(\"x\", brush_x)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {

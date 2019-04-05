@@ -88,7 +88,8 @@
         {
           "events": {"signal": "paintbrush_x"},
           "update": "paintbrush_x[0] === paintbrush_x[1] ? null : invert(\"x\", paintbrush_x)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -147,7 +148,8 @@
         {
           "events": {"signal": "paintbrush_y"},
           "update": "paintbrush_y[0] === paintbrush_y[1] ? null : invert(\"y\", paintbrush_y)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {

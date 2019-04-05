@@ -91,7 +91,8 @@
         {
           "events": {"signal": "brush_x"},
           "update": "brush_x[0] === brush_x[1] ? null : invert(\"x\", brush_x)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -150,7 +151,8 @@
         {
           "events": {"signal": "brush_y"},
           "update": "brush_y[0] === brush_y[1] ? null : invert(\"y\", brush_y)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -275,8 +277,7 @@
         {
           "events": [{"source": "scope", "type": "mouseover"}],
           "update": "event.shiftKey"
-        },
-        {"events": [{"source": "scope", "type": "mouseout"}], "update": "null"}
+        }
       ]
     },
     {
