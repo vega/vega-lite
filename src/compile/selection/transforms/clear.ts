@@ -2,6 +2,7 @@ import {Update} from 'vega';
 import {TUPLE} from '..';
 import {varName} from '../../../util';
 import inputBindings from './inputs';
+import toggle, {TOGGLE} from './toggle';
 import {TransformCompiler} from './transforms';
 
 const clear: TransformCompiler = {
@@ -41,8 +42,13 @@ const clear: TransformCompiler = {
         }
       });
     } else {
-      const tIdx = signals.findIndex(n => n.name === selCmpt.name + TUPLE);
+      let tIdx = signals.findIndex(n => n.name === selCmpt.name + TUPLE);
       addClear(tIdx, 'null');
+
+      if (toggle.has(selCmpt)) {
+        tIdx = signals.findIndex(n => n.name === selCmpt.name + TOGGLE);
+        addClear(tIdx, 'false');
+      }
     }
 
     return signals;
