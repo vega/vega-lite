@@ -14,6 +14,7 @@ import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
+import {GraticuleNode} from './graticule';
 import {IdentifierNode} from './identifier';
 import {ImputeNode} from './impute';
 import {JoinAggregateTransformNode} from './joinaggregate';
@@ -35,7 +36,7 @@ function makeWalkTree(data: VgData[]) {
     if (node instanceof SourceNode) {
       // If the source is a named data source or a data source with values, we need
       // to put it in a different data source. Otherwise, Vega may override the data.
-      if (!isUrlData(node.data)) {
+      if (!node.generator && !isUrlData(node.data)) {
         data.push(dataSource);
         const newData: VgData = {
           name: null,
@@ -81,6 +82,7 @@ function makeWalkTree(data: VgData[]) {
     }
 
     if (
+      node instanceof GraticuleNode ||
       node instanceof FilterInvalidNode ||
       node instanceof FilterNode ||
       node instanceof CalculateNode ||

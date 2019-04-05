@@ -89,7 +89,9 @@ export type DataFormat = CsvDataFormat | DsvDataFormat | JsonDataFormat | TopoDa
 
 export type DataFormatType = 'json' | 'csv' | 'tsv' | 'dsv' | 'topojson';
 
-export type Data = UrlData | InlineData | NamedData;
+export type DataSource = UrlData | InlineData | NamedData;
+
+export type Data = DataSource | Generator;
 
 export type InlineDataset = number[] | string[] | boolean[] | object[] | string | object;
 
@@ -139,7 +141,41 @@ export function isNamedData(data: Partial<Data> | Partial<VgData>): data is Name
   return !!data['name'] && !isUrlData(data) && !isInlineData(data);
 }
 
+export function isGenerator(data: Partial<Data> | Partial<VgData>): data is Generator {
+  return data && isGraticuleGenerator(data);
+}
+
+export function isGraticuleGenerator(data: Partial<Data> | Partial<VgData>): data is GraticuleGenerator {
+  return !!data['graticule'];
+}
+
 export type DataSourceType = 'raw' | 'main' | 'row' | 'column' | 'lookup';
 
 export const MAIN: 'main' = 'main';
 export const RAW: 'raw' = 'raw';
+
+export type Generator = GraticuleGenerator;
+
+export interface GeneratorBase {
+  /**
+   * Provide a placeholder name and bind data at runtime.
+   */
+  name?: string;
+}
+
+export interface GraticuleGenerator extends GeneratorBase {
+  /**
+   * Generate graticule GeoJSON data for geographic reference lines.
+   */
+  graticule: true | GraticuleParams;
+}
+
+export interface GraticuleParams {
+  extent?: number[][];
+  extentMajor?: number[][];
+  extentMinor?: number[][];
+  step?: number[];
+  stepMajor?: number[];
+  stepMinor?: number[];
+  precision?: number;
+}

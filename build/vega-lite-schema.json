@@ -3700,13 +3700,10 @@
     "Data": {
       "anyOf": [
         {
-          "$ref": "#/definitions/UrlData"
+          "$ref": "#/definitions/DataSource"
         },
         {
-          "$ref": "#/definitions/InlineData"
-        },
-        {
-          "$ref": "#/definitions/NamedData"
+          "$ref": "#/definitions/Generator"
         }
       ]
     },
@@ -3723,6 +3720,19 @@
         },
         {
           "$ref": "#/definitions/TopoDataFormat"
+        }
+      ]
+    },
+    "DataSource": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/UrlData"
+        },
+        {
+          "$ref": "#/definitions/InlineData"
+        },
+        {
+          "$ref": "#/definitions/NamedData"
         }
       ]
     },
@@ -5500,6 +5510,9 @@
         "number"
       ]
     },
+    "Generator": {
+      "$ref": "#/definitions/GraticuleGenerator"
+    },
     "GenericBinMixins<(boolean|BinParams)>": {
       "additionalProperties": false,
       "properties": {
@@ -6088,6 +6101,87 @@
       "required": [
         "vconcat"
       ],
+      "type": "object"
+    },
+    "GraticuleGenerator": {
+      "additionalProperties": false,
+      "properties": {
+        "graticule": {
+          "anyOf": [
+            {
+              "enum": [
+                true
+              ],
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/GraticuleParams"
+            }
+          ],
+          "description": "Generate graticule GeoJSON data for geographic reference lines."
+        },
+        "name": {
+          "description": "Provide a placeholder name and bind data at runtime.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "graticule"
+      ],
+      "type": "object"
+    },
+    "GraticuleParams": {
+      "additionalProperties": false,
+      "properties": {
+        "extent": {
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "extentMajor": {
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "extentMinor": {
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "precision": {
+          "type": "number"
+        },
+        "step": {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "stepMajor": {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "stepMinor": {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        }
+      },
       "type": "object"
     },
     "Header": {

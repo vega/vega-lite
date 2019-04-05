@@ -1,4 +1,4 @@
-import {Data, DataFormatType, isInlineData, isNamedData, isUrlData} from '../../data';
+import {Data, DataFormatType, isGenerator, isInlineData, isNamedData, isUrlData} from '../../data';
 import {contains, keys, omit} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataFormat} from './../../data';
@@ -9,11 +9,17 @@ export class SourceNode extends DataFlowNode {
 
   private _name: string;
 
+  private _generator: boolean;
+
   constructor(data: Data) {
     super(null); // source cannot have parent
 
     data = data || {name: 'source'};
-    const format = data.format ? {...omit(data.format, ['parse'])} : ({} as DataFormat);
+    let format;
+
+    if (!isGenerator(data)) {
+      format = data.format ? {...omit(data.format, ['parse'])} : ({} as DataFormat);
+    }
 
     if (isInlineData(data)) {
       this._data = {values: data.values};
@@ -31,9 +37,12 @@ export class SourceNode extends DataFlowNode {
         // defaultExtension has type string but we ensure that it is DataFormatType above
         format.type = defaultExtension as DataFormatType;
       }
-    } else if (isNamedData(data)) {
+    } else if (isNamedData(data) || isGenerator(data)) {
       this._data = {};
     }
+
+    // set flag to check if generator
+    this._generator = isGenerator(data);
 
     // any dataset can be named
     if (data.name) {
@@ -53,6 +62,9 @@ export class SourceNode extends DataFlowNode {
     return !!this._name;
   }
 
+  get generator() {
+    return this._generator;
+  }
   get dataName() {
     return this._name;
   }

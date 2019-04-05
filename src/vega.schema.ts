@@ -401,11 +401,23 @@ export type VgTransform =
   | VgIdentifierTransform
   | VgGeoPointTransform
   | VgGeoJSONTransform
+  | VgGraticuleTransform
   | VgWindowTransform
   | VgJoinAggregateTransform
   | VgFoldTransform
   | VgSampleTransform
   | VgSequenceTransform;
+
+export interface VgGraticuleTransform {
+  type: 'graticule';
+  extentMajor?: number[][];
+  extentMinor?: number[][];
+  extent?: number[][];
+  stepMajor?: number[];
+  stepMinor?: number[];
+  step?: number[];
+  precision?: number;
+}
 
 export interface VgSequenceTransform {
   type: 'sequence';

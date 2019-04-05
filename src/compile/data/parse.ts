@@ -1,4 +1,14 @@
-import {Data, isInlineData, isNamedData, isUrlData, MAIN, ParseValue, RAW} from '../../data';
+import {
+  Data,
+  isGenerator,
+  isGraticuleGenerator,
+  isInlineData,
+  isNamedData,
+  isUrlData,
+  MAIN,
+  ParseValue,
+  RAW
+} from '../../data';
 import * as log from '../../log';
 import {
   isAggregate,
@@ -30,6 +40,7 @@ import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
+import {GraticuleNode} from './graticule';
 import {IdentifierNode} from './identifier';
 import {ImputeNode} from './impute';
 import {AncestorParse, DataComponent} from './index';
@@ -55,6 +66,10 @@ export function findSource(data: Data, sources: SourceNode[]) {
       if (data.url === otherData.url) {
         return other;
       }
+    } else if (isGraticuleGenerator(data) && isGraticuleGenerator(otherData)) {
+      if (deepEqual(data.graticule, otherData.graticule)) {
+        return other;
+      }
     } else if (isNamedData(data)) {
       if (data.name === other.dataName) {
         return other;
@@ -71,7 +86,9 @@ function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
     const existingSource = findSource(model.data, sources);
 
     if (existingSource) {
-      existingSource.data.format = mergeDeep({}, model.data.format, existingSource.data.format);
+      if (!isGenerator(model.data)) {
+        existingSource.data.format = mergeDeep({}, model.data.format, existingSource.data.format);
+      }
 
       return existingSource;
     } else {
@@ -88,7 +105,7 @@ function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
 }
 
 /**
- * Parses a transforms array into a chain of connected dataflow nodes.
+ * Parses a transform array into a chain of connected dataflow nodes.
  */
 export function parseTransformArray(head: DataFlowNode, model: Model, ancestorParse: AncestorParse): DataFlowNode {
   let lookupCounter = 0;
@@ -221,9 +238,17 @@ export function parseData(model: Model): DataComponent {
 
   const {outputNodes, outputNodeRefCounts} = model.component.data;
   const ancestorParse = model.parent ? model.parent.component.data.ancestorParse.clone() : new AncestorParse();
+  const data = model.data;
 
-  // format.parse: null means disable parsing
-  if (model.data && model.data.format && model.data.format.parse === null) {
+  if (isGenerator(data)) {
+    // insert generator transform
+    if (isGraticuleGenerator(data)) {
+      head = new GraticuleNode(head, data.graticule);
+    }
+    // no parsing necessary for generator
+    ancestorParse.parseNothing = true;
+  } else if (data && data.format && data.format.parse === null) {
+    // format.parse: null means disable parsing
     ancestorParse.parseNothing = true;
   }
 
