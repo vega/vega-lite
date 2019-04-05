@@ -188,6 +188,10 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, child_width)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
             }
           ]
         },
@@ -216,6 +220,10 @@
             {
               "events": [{"signal": "brush_X"}],
               "update": "brush_X ? {unit: \"child\" + '__facet_column_' + (facet[\"Series\"]), fields: brush_tuple_fields, values: [brush_X]} : null"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
