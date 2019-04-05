@@ -9,15 +9,7 @@ import {UnitModel} from '../unit';
 import {ProjectionComponent} from './component';
 
 export function parseProjection(model: Model) {
-  if (isUnitModel(model)) {
-    model.component.projection = parseUnitProjection(model);
-  } else {
-    // because parse happens from leaves up (unit specs before layer spec),
-    // we can be sure that the above if statement has already occurred
-    // and therefore we have access to child.component.projection
-    // for each of model's children
-    model.component.projection = parseNonUnitProjections(model);
-  }
+  model.component.projection = isUnitModel(model) ? parseUnitProjection(model) : parseNonUnitProjections(model);
 }
 
 function parseUnitProjection(model: UnitModel): ProjectionComponent {
@@ -105,8 +97,12 @@ function parseNonUnitProjections(model: Model): ProjectionComponent {
   }
 
   let nonUnitProjection: ProjectionComponent;
+
+  // parse all children first
+  model.children.forEach(child => parseProjection(child));
+
+  // analyze parsed projections, attempt to merge
   const mergable = every(model.children, child => {
-    parseProjection(child);
     const projection = child.component.projection;
     if (!projection) {
       // child layer does not use a projection
