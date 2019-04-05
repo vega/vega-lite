@@ -50,7 +50,7 @@ export interface BaseSelectionDef {
   fields?: string[];
 
   /**
-   * By default, all data values are considered to lie within an empty selection.
+   * By default, `all` data values are considered to lie within an empty selection.
    * When set to `none`, empty selections contain no data values.
    */
   empty?: 'all' | 'none';
@@ -58,8 +58,8 @@ export interface BaseSelectionDef {
 
 export interface SingleSelectionConfig extends BaseSelectionDef {
   /**
-   * Controls clearing selections. Clears all selected values. Can be an
-   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false`.
+   * Clears the selection, emptying it of all values. Can be an
+   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
    *
    * __Default value:__ `mouseout` if `on: mouseover` else `dblclick`.
    *
@@ -92,8 +92,8 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
 
 export interface MultiSelectionConfig extends BaseSelectionDef {
   /**
-   * Controls clearing selections. Clears all selected values. Can be an
-   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false`.
+   * Clears the selection, emptying it of all values. Can be an
+   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
    *
    * __Default value:__ `mouseout` if `on: mouseover` else `dblclick`.
    *
@@ -169,9 +169,8 @@ export interface BrushConfig {
 
 export interface IntervalSelectionConfig extends BaseSelectionDef {
   /**
-   * Controls clearing selections. Clears all selected values and returns the visualization
-   * to its original scale domains. Can be an
-   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false`.
+   * Clears the selection, emptying it of all values. Can be an
+   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
    *
    * __Default value:__ `mouseout` if `on: mouseover` else `dblclick`.
    *
