@@ -2,7 +2,7 @@ import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} f
 import {isValueDef, ValueDef} from '../../channeldef';
 import {GEOJSON} from '../../type';
 import {duplicate} from '../../util';
-import {VgExpr, VgGeoJSONTransform} from '../../vega.schema';
+import {VgExprRef, VgGeoJSONTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
@@ -44,7 +44,7 @@ export class GeoJSONNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private fields?: (string | VgExpr)[],
+    private fields?: (string | VgExprRef)[],
     private geojson?: string,
     private signal?: string
   ) {
