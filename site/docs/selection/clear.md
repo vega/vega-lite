@@ -8,14 +8,14 @@ permalink: /docs/clear.html
 The `clear` selection transformation clears all selections made on the visualization:
 
 - For `single` and `multi` selections, it will clear all selected values.
-- For `interval` selections, it will clear all selected values and clear selected scales to return to original scale domain.
+- For `interval` selections, it will clear all selected values and return the visualization to its original scale domain.
 
 It can take one of the following values:
 
 - `false` -- disables clear behavior; there will be no trigger that resets the visualization to its initial configuration.
 - A [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/) to indicate which events should trigger clearing of the visualization.
 
-Vega-Lite automatically adds a clear transform to all selections by default. The default is if you're `on: mouseover`, the `clear: mouseout`, else `clear: dblclick`.
+Vega-Lite automatically adds a clear transform to all selections by default. The default is `clear: mouseout` if you're `on: mouseover`, else `clear: dblclick`.
 
 ## Examples
 

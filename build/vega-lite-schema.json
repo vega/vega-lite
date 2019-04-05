@@ -6472,7 +6472,7 @@
               "type": "boolean"
             }
           ],
-          "description": "Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information."
+          "description": "Controls clearing selections. Clears all selected values and returns the visualization\nto its original scale domains. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false`.\n\n__Default value:__ `mouseout` if `on: mouseover` else `dblclick`.\n\nSee the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information."
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -6557,7 +6557,7 @@
               "type": "boolean"
             }
           ],
-          "description": "Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information."
+          "description": "Controls clearing selections. Clears all selected values and returns the visualization\nto its original scale domains. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false`.\n\n__Default value:__ `mouseout` if `on: mouseover` else `dblclick`.\n\nSee the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information."
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -8505,7 +8505,7 @@
               "type": "boolean"
             }
           ],
-          "description": "Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information."
+          "description": "Controls clearing selections. Clears all selected values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false`.\n\n__Default value:__ `mouseout` if `on: mouseover` else `dblclick`.\n\nSee the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information."
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -8586,7 +8586,7 @@
               "type": "boolean"
             }
           ],
-          "description": "Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information."
+          "description": "Controls clearing selections. Clears all selected values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false`.\n\n__Default value:__ `mouseout` if `on: mouseover` else `dblclick`.\n\nSee the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information."
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -10340,7 +10340,7 @@
               "type": "boolean"
             }
           ],
-          "description": "Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information."
+          "description": "Controls clearing selections. Clears all selected values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false`.\n\n__Default value:__ `mouseout` if `on: mouseover` else `dblclick`.\n\nSee the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information."
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -10418,7 +10418,7 @@
               "type": "boolean"
             }
           ],
-          "description": "Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).\n\n__Default value:__ `true`, which corresponds to `dblclick` (i.e.\nuser doubleclick clears current selection).\n\nSee the [TODO: clear] documentation for more information."
+          "description": "Controls clearing selections. Clears all selected values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false`.\n\n__Default value:__ `mouseout` if `on: mouseover` else `dblclick`.\n\nSee the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information."
         },
         "empty": {
           "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",

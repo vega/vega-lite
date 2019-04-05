@@ -58,12 +58,12 @@ export interface BaseSelectionDef {
 
 export interface SingleSelectionConfig extends BaseSelectionDef {
   /**
-   * Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).
+   * Controls clearing selections. Clears all selected values. Can be an
+   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false`.
    *
-   * __Default value:__ `true`, which corresponds to `dblclick` (i.e.
-   * user doubleclick clears current selection).
+   * __Default value:__ `mouseout` if `on: mouseover` else `dblclick`.
    *
-   * See the [TODO: clear] documentation for more information.
+   * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
    */
   clear?: EventStream | boolean;
   /**
@@ -92,12 +92,12 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
 
 export interface MultiSelectionConfig extends BaseSelectionDef {
   /**
-   * Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).
+   * Controls clearing selections. Clears all selected values. Can be an
+   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false`.
    *
-   * __Default value:__ `true`, which corresponds to `dblclick` (i.e.
-   * user doubleclick clears current selection).
+   * __Default value:__ `mouseout` if `on: mouseover` else `dblclick`.
    *
-   * See the [TODO: clear] documentation for more information.
+   * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
    */
   clear?: EventStream | boolean;
 
@@ -169,12 +169,13 @@ export interface BrushConfig {
 
 export interface IntervalSelectionConfig extends BaseSelectionDef {
   /**
-   * Controls clearing selections. Can be `true`, `false`, or an [EventStream](https://vega.github.io/vega/docs/event-streams/).
+   * Controls clearing selections. Clears all selected values and returns the visualization
+   * to its original scale domains. Can be an
+   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false`.
    *
-   * __Default value:__ `true`, which corresponds to `dblclick` (i.e.
-   * user doubleclick clears current selection).
+   * __Default value:__ `mouseout` if `on: mouseover` else `dblclick`.
    *
-   * See the [TODO: clear] documentation for more information.
+   * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
    */
   clear?: EventStream | boolean;
   /**
