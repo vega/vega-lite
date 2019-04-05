@@ -1,6 +1,7 @@
 import {Update} from 'vega';
-import {selector as parseSelector} from 'vega-event-selector';
 import {TUPLE} from '..';
+import {varName} from '../../../util';
+import inputBindings from './inputs';
 import {TransformCompiler} from './transforms';
 
 const clear: TransformCompiler = {
@@ -8,17 +9,23 @@ const clear: TransformCompiler = {
     return selCmpt.clear !== false;
   },
 
-  signals: (model, selCmpt, signals) => {
-    const on = selCmpt.events[0].type;
-    const trigger = on === 'mouseover' ? 'mouseout' : 'dblclick';
-    const events = selCmpt.clear ? parseSelector(selCmpt.clear, 'scope') : parseSelector(trigger, 'scope');
+  topLevelSignals: (model, selCmpt, signals) => {
+    if (inputBindings.has(selCmpt)) {
+      selCmpt.project.forEach(proj => {
+        const idx = signals.findIndex(n => n.name === varName(`${selCmpt.name}_${proj.field}`));
+        if (idx !== -1) {
+          signals[idx].on.push({events: selCmpt.clear, update: 'null'});
+        }
+      });
+    }
 
+    return signals;
+  },
+
+  signals: (model, selCmpt, signals) => {
     function addClear(idx: number, update: Update) {
       if (idx !== -1 && signals[idx].on) {
-        signals[idx].on.push({
-          events: events,
-          update: update
-        });
+        signals[idx].on.push({events: selCmpt.clear, update});
       }
     }
 

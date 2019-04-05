@@ -1,7 +1,7 @@
 /* tslint:disable quotemark */
 
 import {selector as parseSelector} from 'vega-event-selector';
-import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
+import {assembleTopLevelSignals} from '../../../src/compile/selection/assemble';
 import interval from '../../../src/compile/selection/interval';
 import multi from '../../../src/compile/selection/multi';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
@@ -26,7 +26,14 @@ describe('Clear selection transform, single and multi types', () => {
     three: {type: 'single', clear: 'mouseout'},
     four: {type: 'multi', clear: 'mouseout'},
     five: {type: 'single', clear: false},
-    six: {type: 'multi', clear: false}
+    six: {type: 'multi', clear: false},
+    seven: {
+      type: 'single',
+      fields: ['Year'],
+      bind: {
+        Year: {input: 'range', min: 1970, max: 1980, step: 1}
+      }
+    }
   }));
 
   it('identifies transform invocation', () => {
@@ -85,7 +92,7 @@ describe('Clear selection transform, single and multi types', () => {
               'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: three_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
             force: true
           },
-          {events: parseSelector(selCmpts['three'].clear, 'scope'), update: 'null'}
+          {events: parseSelector('mouseout', 'scope'), update: 'null'}
         ]
       }
     ]);
@@ -102,13 +109,30 @@ describe('Clear selection transform, single and multi types', () => {
               'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: four_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
             force: true
           },
-          {events: parseSelector(selCmpts['four'].clear, 'scope'), update: 'null'}
+          {events: parseSelector('mouseout', 'scope'), update: 'null'}
         ]
       }
     ]);
 
-    const signals = assembleUnitSelectionSignals(model, []);
-    expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg]));
+    expect(assembleTopLevelSignals(model, [])).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'seven_Year',
+          value: null,
+          on: [
+            {
+              events: [{source: 'scope', type: 'click'}],
+              update: 'datum && item().mark.marktype !== \'group\' ? datum["Year"] : null'
+            },
+            {
+              events: [{source: 'scope', type: 'dblclick'}],
+              update: 'null'
+            }
+          ],
+          bind: {input: 'range', min: 1970, max: 1980, step: 1}
+        }
+      ])
+    );
   });
 });
 
