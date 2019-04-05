@@ -170,6 +170,10 @@ describe('Clear selection transform, interval type', () => {
               events: [{signal: 'one_Horsepower || one_Miles_per_Gallon'}],
               update:
                 'one_Horsepower && one_Miles_per_Gallon ? {unit: "", fields: one_tuple_fields, values: [one_Horsepower,one_Miles_per_Gallon]} : null'
+            },
+            {
+              events: parseSelector('dblclick', 'scope'),
+              update: 'null'
             }
           ]
         }

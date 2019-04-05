@@ -1,12 +1,7 @@
+import {NewSignal, Update} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {TUPLE} from '..';
 import {TransformCompiler} from './transforms';
-
-const CLEAR_DATA_SIGNALS = [TUPLE, '_toggle'];
-const CLEAR_VISUAL_SIGNALS = ['_x', '_y'];
-
-const CLEAR_SIGNALS = [CLEAR_DATA_SIGNALS, CLEAR_VISUAL_SIGNALS];
-const CLEAR_UPDATE = ['null', '[0, 0]'];
 
 const clear: TransformCompiler = {
   has: selCmpt => {
@@ -16,37 +11,25 @@ const clear: TransformCompiler = {
   signals: (model, selCmpt, signals) => {
     const trigger = selCmpt['on'] === 'mouseover' ? 'mouseout' : 'dblclick';
     const events = selCmpt.clear ? parseSelector(selCmpt.clear, 'scope') : parseSelector(trigger, 'scope');
-
-    if (selCmpt['bind']) {
-      selCmpt.project.forEach(proj => {
-        const ext = '_' + proj.field;
-        const idx = signals.findIndex(n => n.name === selCmpt.name + ext);
-        if (idx !== -1) {
-          signals[idx].on = signals[idx].on
-            ? signals[idx].on.concat({
-                events: events,
-                update: CLEAR_UPDATE[0]
-              })
-            : [{events: events, update: CLEAR_UPDATE[0]}];
-        }
-      });
-    } else if (selCmpt['on']) {
-      CLEAR_SIGNALS.forEach((signal, k) => {
-        for (const ext of signal) {
-          const idx = signals.findIndex(n => n.name === selCmpt.name + ext);
-          if (idx !== -1) {
-            signals[idx].on = signals[idx].on
-              ? signals[idx].on.concat({
-                  events: events,
-                  update: CLEAR_UPDATE[k]
-                })
-              : [{events: events, update: CLEAR_UPDATE[k]}];
-          }
-        }
-      });
-    }
+    selCmpt.project.forEach(proj => {
+      const d_idx = signals.findIndex(n => n.name === proj.signals.data);
+      const v_idx = signals.findIndex(n => n.name === proj.signals.visual);
+      addClear(d_idx, signals, events, 'null');
+      addClear(v_idx, signals, events, '[0, 0]');
+    });
+    const t_idx = signals.findIndex(n => n.name === selCmpt.name + TUPLE);
+    addClear(t_idx, signals, events, 'null');
     return signals;
   }
 };
 
 export default clear;
+
+function addClear(idx: number, signals: NewSignal[], events: any[], update: Update) {
+  if (idx !== -1 && signals[idx].on) {
+    signals[idx].on.push({
+      events: events,
+      update: update
+    });
+  }
+}
