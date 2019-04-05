@@ -138,10 +138,6 @@
             {
               "events": {"signal": "brush_x"},
               "update": "brush_x[0] === brush_x[1] ? null : invert(\"concat_0_x\", brush_x)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -161,10 +157,6 @@
             {
               "events": [{"signal": "brush_seconds_date"}],
               "update": "brush_seconds_date ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_seconds_date]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },

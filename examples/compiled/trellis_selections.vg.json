@@ -41,7 +41,8 @@
         {
           "events": [{"source": "scope", "type": "mouseover"}],
           "update": "datum && item().mark.marktype !== 'group' ? (item().isVoronoi ? datum.datum : datum)[\"X\"] : null"
-        }
+        },
+        {"events": [{"source": "scope", "type": "mouseout"}], "update": "null"}
       ],
       "bind": {"input": "number"}
     },
@@ -201,10 +202,6 @@
             {
               "events": {"signal": "brush_x"},
               "update": "brush_x[0] === brush_x[1] ? null : invert(\"x\", brush_x)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -224,10 +221,6 @@
             {
               "events": [{"signal": "brush_X"}],
               "update": "brush_X ? {unit: \"child\" + '__facet_column_' + (facet[\"Series\"]), fields: brush_tuple_fields, values: [brush_X]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },
@@ -355,10 +348,6 @@
             {
               "events": [{"signal": "grid_X || grid_Y"}],
               "update": "grid_X && grid_Y ? {unit: \"child\" + '__facet_column_' + (facet[\"Series\"]), fields: grid_tuple_fields, values: [grid_X,grid_Y]} : null"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ]
         },

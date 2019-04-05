@@ -87,8 +87,7 @@
         {
           "events": {"signal": "pts_x"},
           "update": "pts_x[0] === pts_x[1] ? null : invert(\"x\", pts_x)"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
@@ -142,8 +141,7 @@
         {
           "events": {"signal": "pts_y"},
           "update": "pts_y[0] === pts_y[1] ? null : invert(\"y\", pts_y)"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
@@ -162,8 +160,7 @@
         {
           "events": [{"signal": "pts_Cylinders || pts_Origin"}],
           "update": "pts_Cylinders && pts_Origin ? {unit: \"\", fields: pts_tuple_fields, values: [pts_Cylinders,pts_Origin]} : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {

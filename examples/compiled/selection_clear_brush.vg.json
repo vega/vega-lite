@@ -1,6 +1,5 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Drag out a rectangular brush to highlight points.",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -73,10 +72,7 @@
           "events": {"signal": "brush_zoom_delta"},
           "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
         },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
-        }
+        {"events": [{"source": "scope", "type": "mouseup"}], "update": "[0, 0]"}
       ]
     },
     {
@@ -133,10 +129,7 @@
           "events": {"signal": "brush_zoom_delta"},
           "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
         },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
-        }
+        {"events": [{"source": "scope", "type": "mouseup"}], "update": "[0, 0]"}
       ]
     },
     {

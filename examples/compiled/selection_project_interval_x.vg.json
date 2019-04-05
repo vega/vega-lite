@@ -87,8 +87,7 @@
         {
           "events": {"signal": "pts_x"},
           "update": "pts_x[0] === pts_x[1] ? null : invert(\"x\", pts_x)"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
@@ -107,8 +106,7 @@
         {
           "events": [{"signal": "pts_Cylinders"}],
           "update": "pts_Cylinders ? {unit: \"\", fields: pts_tuple_fields, values: [pts_Cylinders]} : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {

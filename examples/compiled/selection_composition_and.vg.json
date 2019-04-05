@@ -92,8 +92,7 @@
         {
           "events": {"signal": "alex_x"},
           "update": "alex_x[0] === alex_x[1] ? null : invert(\"x\", alex_x)"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
@@ -150,8 +149,7 @@
         {
           "events": {"signal": "alex_y"},
           "update": "alex_y[0] === alex_y[1] ? null : invert(\"y\", alex_y)"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
@@ -170,8 +168,7 @@
         {
           "events": [{"signal": "alex_Cylinders || alex_Origin"}],
           "update": "alex_Cylinders && alex_Origin ? {unit: \"\", fields: alex_tuple_fields, values: [alex_Cylinders,alex_Origin]} : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
@@ -313,8 +310,7 @@
         {
           "events": {"signal": "morgan_x"},
           "update": "morgan_x[0] === morgan_x[1] ? null : invert(\"x\", morgan_x)"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
@@ -371,8 +367,7 @@
         {
           "events": {"signal": "morgan_y"},
           "update": "morgan_y[0] === morgan_y[1] ? null : invert(\"y\", morgan_y)"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
@@ -391,8 +386,7 @@
         {
           "events": [{"signal": "morgan_Cylinders || morgan_Origin"}],
           "update": "morgan_Cylinders && morgan_Origin ? {unit: \"\", fields: morgan_tuple_fields, values: [morgan_Cylinders,morgan_Origin]} : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {

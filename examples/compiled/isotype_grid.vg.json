@@ -183,8 +183,7 @@
         {
           "events": {"signal": "highlight_x"},
           "update": "highlight_x[0] === highlight_x[1] ? null : invert(\"x\", highlight_x)"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
@@ -240,8 +239,7 @@
         {
           "events": {"signal": "highlight_y"},
           "update": "highlight_y[0] === highlight_y[1] ? null : invert(\"y\", highlight_y)"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
@@ -260,8 +258,7 @@
         {
           "events": [{"signal": "highlight_col || highlight_row"}],
           "update": "highlight_col && highlight_row ? {unit: \"\", fields: highlight_tuple_fields, values: [highlight_col,highlight_row]} : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {

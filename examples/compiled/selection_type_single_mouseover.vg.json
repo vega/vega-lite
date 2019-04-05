@@ -42,29 +42,15 @@
       "name": "pts_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "click"}],
+          "events": [{"source": "scope", "type": "mouseover"}],
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "scope", "type": "mouseout"}], "update": "null"}
       ]
     },
     {"name": "pts_tuple_fields", "value": [{"type": "E", "field": "_vgsid_"}]},
-    {
-      "name": "pts_toggle",
-      "value": false,
-      "on": [
-        {
-          "events": [{"source": "scope", "type": "click"}],
-          "update": "event.shiftKey"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
-      ]
-    },
-    {
-      "name": "pts_modify",
-      "update": "modify(\"pts_store\", pts_toggle ? null : pts_tuple, pts_toggle ? null : true, pts_toggle ? pts_tuple : null)"
-    }
+    {"name": "pts_modify", "update": "modify(\"pts_store\", pts_tuple, true)"}
   ],
   "marks": [
     {

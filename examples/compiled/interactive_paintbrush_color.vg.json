@@ -55,7 +55,8 @@
         {
           "events": [{"source": "scope", "type": "mouseover"}],
           "update": "event.shiftKey"
-        }
+        },
+        {"events": [{"source": "scope", "type": "mouseout"}], "update": "false"}
       ]
     },
     {

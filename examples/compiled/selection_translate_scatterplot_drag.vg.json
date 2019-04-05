@@ -62,8 +62,7 @@
         {
           "events": [{"signal": "grid_Horsepower || grid_Miles_per_Gallon"}],
           "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Miles_per_Gallon]} : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
