@@ -12,7 +12,7 @@ It can take one of the following values:
 - `false` -- disables clear behavior; there will be no event trigger that empties a selection.
 - A [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/) to indicate which events should trigger clearing the selection.
 
-Vega-Lite automatically adds the clear property to all selections by default. If the selection is triggered by mouse hovers (i.e., `"on": "mouseover"), then`"clear": "mouseout"`is used. For all other selection triggers,`"clear": "dblclick"` is used.
+Vega-Lite automatically adds the clear property to all selections by default. If the selection is triggered by mouse hovers (i.e., `"on": "mouseover"`), then `"clear": "mouseout"`is used. For all other selection triggers,`"clear": "dblclick"` is used.
 
 ## Examples
 
