@@ -32,9 +32,9 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 20},
+    {"name": "x_step", "value": 40},
     {"name": "width", "update": "bandspace(domain('x').length, 0, 0) * x_step"},
-    {"name": "y_step", "value": 20},
+    {"name": "y_step", "value": 40},
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 0, 0) * y_step"
@@ -76,7 +76,7 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "count"},
-          "fillOpacity": [
+          "opacity": [
             {
               "test": "!(length(data(\"highlight_store\"))) || (vlSelectionTest(\"highlight_store\", datum))",
               "value": 1
@@ -115,7 +115,7 @@
       "name": "color",
       "type": "linear",
       "domain": {"data": "data_0", "field": "count"},
-      "range": {"scheme": "plasma"},
+      "range": "ramp",
       "interpolate": "hcl",
       "zero": false
     }
@@ -144,11 +144,9 @@
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
-      "title": "count"
+      "title": "count",
+      "encode": {"gradient": {"update": {"opacity": {"value": 1}}}}
     }
   ],
-  "config": {
-    "axis": {"zindex": 0},
-    "range": {"ramp": {"scheme": "yellowgreenblue"}}
-  }
+  "config": {"range": {"ramp": {"scheme": "yellowgreenblue"}}}
 }
