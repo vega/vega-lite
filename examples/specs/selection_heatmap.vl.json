@@ -27,21 +27,18 @@
     },
     "color": {
       "field": "count",
-      "type": "quantitative",
-      "scale": {"scheme": "plasma"}
+      "type": "quantitative"
     },
-    "fillOpacity": {
+    "opacity": {
       "condition": {"selection": "highlight", "value": 1},
       "value": 0.5
     }
   },
   "config": {
-    "axis": {
-      "zindex": 0
-    },
     "scale": {
       "bandPaddingInner": 0,
-      "bandPaddingOuter": 0
+      "bandPaddingOuter": 0,
+      "rangeStep": 40
     },
     "range": {
       "ramp": {
