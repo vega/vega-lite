@@ -18,7 +18,7 @@ Vega-Lite automatically adds the clear property to all selections by default. If
 
 The following visualization demonstrates the default clearing behavior: select a square on click and clear out the selection on double click.
 
-<div class="vl-example" data-name="selection_clear_heatmap"></div>
+<div class="vl-example" data-name="selection_heatmap"></div>
 
 The following example clears the brush when the mouse button is released.
 
