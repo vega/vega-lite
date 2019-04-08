@@ -208,7 +208,8 @@
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
-          "text": {"signal": "format(datum[\"price\"], \"\")"}
+          "text": {"signal": "format(datum[\"price\"], \"\")"},
+          "baseline": {"value": "middle"}
         }
       }
     },
@@ -228,7 +229,8 @@
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
-          "text": {"signal": "format(datum[\"price\"], \"\")"}
+          "text": {"signal": "format(datum[\"price\"], \"\")"},
+          "baseline": {"value": "middle"}
         }
       }
     }

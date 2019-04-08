@@ -165,7 +165,8 @@
               "tooltip": {"signal": "{\"age\": ''+datum[\"age\"]}"},
               "x": {"signal": "concat_1_width", "mult": 0.5},
               "y": {"scale": "concat_1_y", "field": "age"},
-              "text": {"signal": "format(datum[\"age\"], \"\")"}
+              "text": {"signal": "format(datum[\"age\"], \"\")"},
+              "baseline": {"value": "middle"}
             }
           }
         }

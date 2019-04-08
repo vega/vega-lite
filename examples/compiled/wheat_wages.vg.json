@@ -239,7 +239,8 @@
           ],
           "y": {"scale": "y", "field": "off2", "offset": 14},
           "text": {"signal": "''+datum[\"name\"]"},
-          "align": {"value": "center"}
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
         }
       }
     }

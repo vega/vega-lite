@@ -105,7 +105,8 @@
           "x": {"field": "layer_1_layer_1_x"},
           "y": {"field": "layer_1_layer_1_y"},
           "text": {"signal": "''+datum[\"city\"]"},
-          "align": {"value": "center"}
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
         }
       }
     }

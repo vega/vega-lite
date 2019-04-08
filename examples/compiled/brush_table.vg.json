@@ -525,7 +525,8 @@
                   "x": {"signal": "concat_1_concat_0_width", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_0_y", "field": "row_number"},
                   "text": {"signal": "''+datum[\"Horsepower\"]"},
-                  "align": {"value": "center"}
+                  "align": {"value": "center"},
+                  "baseline": {"value": "middle"}
                 }
               }
             }
@@ -557,7 +558,8 @@
                   "x": {"signal": "concat_1_concat_1_width", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_1_y", "field": "row_number"},
                   "text": {"signal": "''+datum[\"Miles_per_Gallon\"]"},
-                  "align": {"value": "center"}
+                  "align": {"value": "center"},
+                  "baseline": {"value": "middle"}
                 }
               }
             }
@@ -589,7 +591,8 @@
                   "x": {"signal": "concat_1_concat_2_width", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_2_y", "field": "row_number"},
                   "text": {"signal": "''+datum[\"Origin\"]"},
-                  "align": {"value": "center"}
+                  "align": {"value": "center"},
+                  "baseline": {"value": "middle"}
                 }
               }
             }

@@ -329,7 +329,8 @@
           },
           "x": {"scale": "x", "field": "id", "band": 0.5},
           "y": {"signal": "height", "mult": 0.5},
-          "text": {"signal": "''+datum[\"day\"]"}
+          "text": {"signal": "''+datum[\"day\"]"},
+          "baseline": {"value": "middle"}
         }
       }
     }

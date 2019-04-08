@@ -194,7 +194,8 @@
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 10},
-          "text": {"signal": "timeFormat(datum[\"date\"], '%b %d, %Y')"}
+          "text": {"signal": "timeFormat(datum[\"date\"], '%b %d, %Y')"},
+          "baseline": {"value": "middle"}
         }
       }
     }
