@@ -315,7 +315,7 @@ export interface ScaleFieldDef<F extends Field, T extends Type = StandardType> e
 /**
  * A field definition of a secondary channel that shares a scale with another primary channel.  For example, `x2`, `xError` and `xError2` share the same scale with `x`.
  */
-export type SecondaryFieldDef<F extends Field> = FieldDefBase<F> & TitleMixins;
+export type SecondaryFieldDef<F extends Field> = FieldDefBase<F> & TitleMixins & GenericBinMixins<null>; // x2/y2 shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
 /**
  * Field Def without scale (and without bin: "binned" support).
