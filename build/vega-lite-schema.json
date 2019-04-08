@@ -6134,6 +6134,7 @@
       "additionalProperties": false,
       "properties": {
         "extent": {
+          "description": "Sets both the major and minor extents to the same values.",
           "items": {
             "items": {
               "type": "number"
@@ -6143,6 +6144,7 @@
           "type": "array"
         },
         "extentMajor": {
+          "description": "The major extent of the graticule as a two-element array of coordinates.",
           "items": {
             "items": {
               "type": "number"
@@ -6152,6 +6154,7 @@
           "type": "array"
         },
         "extentMinor": {
+          "description": "The minor extent of the graticule as a two-element array of coordinates.",
           "items": {
             "items": {
               "type": "number"
@@ -6161,21 +6164,25 @@
           "type": "array"
         },
         "precision": {
+          "description": "The precision of the graticule in degrees (default 2.5).",
           "type": "number"
         },
         "step": {
+          "description": "Sets both the major and minor step angles to the same values.",
           "items": {
             "type": "number"
           },
           "type": "array"
         },
         "stepMajor": {
+          "description": "The major step angles of the graticule (default [90, 360]).",
           "items": {
             "type": "number"
           },
           "type": "array"
         },
         "stepMinor": {
+          "description": "The minor step angles of the graticule (default [10, 10]).",
           "items": {
             "type": "number"
           },

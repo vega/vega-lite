@@ -66,10 +66,6 @@ export function findSource(data: Data, sources: SourceNode[]) {
       if (data.url === otherData.url) {
         return other;
       }
-    } else if (isGraticuleGenerator(data) && isGraticuleGenerator(otherData)) {
-      if (deepEqual(data.graticule, otherData.graticule)) {
-        return other;
-      }
     } else if (isNamedData(data)) {
       if (data.name === other.dataName) {
         return other;

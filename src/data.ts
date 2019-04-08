@@ -171,11 +171,38 @@ export interface GraticuleGenerator extends GeneratorBase {
 }
 
 export interface GraticuleParams {
-  extent?: number[][];
+  /**
+   * The major extent of the graticule as a two-element array of coordinates.
+   */
   extentMajor?: number[][];
+
+  /**
+   * The minor extent of the graticule as a two-element array of coordinates.
+   */
   extentMinor?: number[][];
-  step?: number[];
+
+  /**
+   * Sets both the major and minor extents to the same values.
+   */
+  extent?: number[][];
+
+  /**
+   * The major step angles of the graticule (default [90, 360]).
+   */
   stepMajor?: number[];
+
+  /**
+   * The minor step angles of the graticule (default [10, 10]).
+   */
   stepMinor?: number[];
+
+  /**
+   * Sets both the major and minor step angles to the same values.
+   */
+  step?: number[];
+
+  /**
+   * The precision of the graticule in degrees (default 2.5).
+   */
   precision?: number;
 }
