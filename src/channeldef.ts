@@ -763,7 +763,7 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
     fieldDef = {
       ...fieldDef,
       bin: normalizeBin(bin, channel)
-    };
+    } as FieldDef<string>;
   }
 
   if (isBinned(bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {

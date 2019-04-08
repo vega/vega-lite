@@ -1,15 +1,6 @@
 import {AggregateOp, Orientation} from 'vega';
 import {PositionChannel} from '../channel';
-import {
-  Field,
-  FieldDefWithoutScale,
-  isContinuous,
-  isFieldDef,
-  PositionFieldDef,
-  SecondaryFieldDef,
-  title,
-  ValueDef
-} from '../channeldef';
+import {Field, isContinuous, isFieldDef, PositionFieldDef, SecondaryFieldDef, title, ValueDef} from '../channeldef';
 import {Config} from '../config';
 import {Data} from '../data';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
@@ -404,7 +395,7 @@ function errorBarAggregationAndCalculation<
   markDef: MD,
   continuousAxisChannelDef: PositionFieldDef<string>,
   continuousAxisChannelDef2: SecondaryFieldDef<string>,
-  continuousAxisChannelDefError: FieldDefWithoutScale<string>,
+  continuousAxisChannelDefError: SecondaryFieldDef<string>,
   continuousAxisChannelDefError2: SecondaryFieldDef<string>,
   inputType: ErrorInputType,
   compositeMark: M,
