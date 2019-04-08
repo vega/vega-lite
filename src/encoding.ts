@@ -29,8 +29,6 @@ import {
   SecondaryFieldDef,
   ShapeFieldDefWithCondition,
   ShapeValueDefWithCondition,
-  StringFieldDefWithCondition,
-  StringValueDefWithCondition,
   TextFieldDef,
   TextFieldDefWithCondition,
   TextValueDefWithCondition,
@@ -208,7 +206,7 @@ export interface Encoding<F extends Field> {
   /**
    * A URL to load upon mouse click.
    */
-  href?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  href?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
 
   /**
    * Order of the marks.
