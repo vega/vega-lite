@@ -3491,13 +3491,10 @@
     "Data": {
       "anyOf": [
         {
-          "$ref": "#/definitions/UrlData"
+          "$ref": "#/definitions/DataSource"
         },
         {
-          "$ref": "#/definitions/InlineData"
-        },
-        {
-          "$ref": "#/definitions/NamedData"
+          "$ref": "#/definitions/Generator"
         }
       ]
     },
@@ -3514,6 +3511,19 @@
         },
         {
           "$ref": "#/definitions/TopoDataFormat"
+        }
+      ]
+    },
+    "DataSource": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/UrlData"
+        },
+        {
+          "$ref": "#/definitions/InlineData"
+        },
+        {
+          "$ref": "#/definitions/NamedData"
         }
       ]
     },
@@ -5195,6 +5205,19 @@
         "number"
       ]
     },
+    "Generator": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SequenceGenerator"
+        },
+        {
+          "$ref": "#/definitions/SphereGenerator"
+        },
+        {
+          "$ref": "#/definitions/GraticuleGenerator"
+        }
+      ]
+    },
     "GenericBinMixins<(boolean|BinParams)>": {
       "additionalProperties": false,
       "properties": {
@@ -5783,6 +5806,94 @@
       "required": [
         "vconcat"
       ],
+      "type": "object"
+    },
+    "GraticuleGenerator": {
+      "additionalProperties": false,
+      "properties": {
+        "graticule": {
+          "anyOf": [
+            {
+              "enum": [
+                true
+              ],
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/GraticuleParams"
+            }
+          ],
+          "description": "Generate graticule GeoJSON data for geographic reference lines."
+        },
+        "name": {
+          "description": "Provide a placeholder name and bind data at runtime.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "graticule"
+      ],
+      "type": "object"
+    },
+    "GraticuleParams": {
+      "additionalProperties": false,
+      "properties": {
+        "extent": {
+          "description": "Sets both the major and minor extents to the same values.",
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "extentMajor": {
+          "description": "The major extent of the graticule as a two-element array of coordinates.",
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "extentMinor": {
+          "description": "The minor extent of the graticule as a two-element array of coordinates.",
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "precision": {
+          "description": "The precision of the graticule in degrees (default 2.5).",
+          "type": "number"
+        },
+        "step": {
+          "description": "Sets both the major and minor step angles to the same values.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "stepMajor": {
+          "description": "The major step angles of the graticule (default [90, 360]).",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "stepMinor": {
+          "description": "The minor step angles of the graticule (default [10, 10]).",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        }
+      },
       "type": "object"
     },
     "Header": {
@@ -9988,6 +10099,49 @@
       ],
       "type": "string"
     },
+    "SequenceGenerator": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "Provide a placeholder name and bind data at runtime.",
+          "type": "string"
+        },
+        "sequence": {
+          "$ref": "#/definitions/SequenceParams",
+          "description": "Generate sphere GeoJSON data for the full globe."
+        }
+      },
+      "required": [
+        "sequence"
+      ],
+      "type": "object"
+    },
+    "SequenceParams": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The name of the generated sequence field (default \"data\").",
+          "type": "string"
+        },
+        "start": {
+          "description": "The starting value of the sequence (inclusive).",
+          "type": "number"
+        },
+        "step": {
+          "description": "The step value between sequence entries (default 1).",
+          "type": "number"
+        },
+        "stop": {
+          "description": "The ending value of the sequence (exclusive).",
+          "type": "number"
+        }
+      },
+      "required": [
+        "start",
+        "stop"
+      ],
+      "type": "object"
+    },
     "ShapeFieldDefWithCondition": {
       "$ref": "#/definitions/StringFieldDefWithCondition<TypeForShape>"
     },
@@ -10269,6 +10423,34 @@
         "descending"
       ],
       "type": "string"
+    },
+    "SphereGenerator": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "Provide a placeholder name and bind data at runtime.",
+          "type": "string"
+        },
+        "sphere": {
+          "anyOf": [
+            {
+              "enum": [
+                true
+              ],
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "type": "object"
+            }
+          ],
+          "description": "Generate sphere GeoJSON data for the full globe."
+        }
+      },
+      "required": [
+        "sphere"
+      ],
+      "type": "object"
     },
     "StackOffset": {
       "enum": [

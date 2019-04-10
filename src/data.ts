@@ -89,7 +89,9 @@ export type DataFormat = CsvDataFormat | DsvDataFormat | JsonDataFormat | TopoDa
 
 export type DataFormatType = 'json' | 'csv' | 'tsv' | 'dsv' | 'topojson';
 
-export type Data = UrlData | InlineData | NamedData;
+export type DataSource = UrlData | InlineData | NamedData;
+
+export type Data = DataSource | Generator;
 
 export type InlineDataset = number[] | string[] | boolean[] | object[] | string | object;
 
@@ -139,7 +141,110 @@ export function isNamedData(data: Partial<Data> | Partial<VgData>): data is Name
   return !!data['name'] && !isUrlData(data) && !isInlineData(data);
 }
 
+export function isGenerator(data: Partial<Data> | Partial<VgData>): data is Generator {
+  return data && (isSequenceGenerator(data) || isSphereGenerator(data) || isGraticuleGenerator(data));
+}
+
+export function isSequenceGenerator(data: Partial<Data> | Partial<VgData>): data is SequenceGenerator {
+  return !!data['sequence'];
+}
+
+export function isSphereGenerator(data: Partial<Data> | Partial<VgData>): data is SphereGenerator {
+  return !!data['sphere'];
+}
+
+export function isGraticuleGenerator(data: Partial<Data> | Partial<VgData>): data is GraticuleGenerator {
+  return !!data['graticule'];
+}
+
 export type DataSourceType = 'raw' | 'main' | 'row' | 'column' | 'lookup';
 
 export const MAIN: 'main' = 'main';
 export const RAW: 'raw' = 'raw';
+
+export type Generator = SequenceGenerator | SphereGenerator | GraticuleGenerator;
+
+export interface GeneratorBase {
+  /**
+   * Provide a placeholder name and bind data at runtime.
+   */
+  name?: string;
+}
+
+export interface SequenceGenerator extends GeneratorBase {
+  /**
+   * Generate sphere GeoJSON data for the full globe.
+   */
+  sequence: SequenceParams;
+}
+
+export interface SequenceParams {
+  /**
+   * The starting value of the sequence (inclusive).
+   */
+  start: number;
+  /**
+   * The ending value of the sequence (exclusive).
+   */
+  stop: number;
+  /**
+   * The step value between sequence entries (default 1).
+   */
+  step?: number;
+
+  /**
+   * The name of the generated sequence field (default "data").
+   */
+  as?: string;
+}
+
+export interface SphereGenerator extends GeneratorBase {
+  /**
+   * Generate sphere GeoJSON data for the full globe.
+   */
+  sphere: true | {};
+}
+
+export interface GraticuleGenerator extends GeneratorBase {
+  /**
+   * Generate graticule GeoJSON data for geographic reference lines.
+   */
+  graticule: true | GraticuleParams;
+}
+
+export interface GraticuleParams {
+  /**
+   * The major extent of the graticule as a two-element array of coordinates.
+   */
+  extentMajor?: number[][];
+
+  /**
+   * The minor extent of the graticule as a two-element array of coordinates.
+   */
+  extentMinor?: number[][];
+
+  /**
+   * Sets both the major and minor extents to the same values.
+   */
+  extent?: number[][];
+
+  /**
+   * The major step angles of the graticule (default [90, 360]).
+   */
+  stepMajor?: number[];
+
+  /**
+   * The minor step angles of the graticule (default [10, 10]).
+   */
+  stepMinor?: number[];
+
+  /**
+   * Sets both the major and minor step angles to the same values.
+   */
+  step?: number[];
+
+  /**
+   * The precision of the graticule in degrees (default 2.5).
+   */
+  precision?: number;
+}
