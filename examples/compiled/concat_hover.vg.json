@@ -65,6 +65,10 @@
               "events": [{"source": "scope", "type": "mouseover"}],
               "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_0\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
               "force": true
+            },
+            {
+              "events": [{"source": "scope", "type": "mouseout"}],
+              "update": "null"
             }
           ]
         },
@@ -170,6 +174,10 @@
               "events": [{"source": "scope", "type": "mouseover"}],
               "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
               "force": true
+            },
+            {
+              "events": [{"source": "scope", "type": "mouseout"}],
+              "update": "null"
             }
           ]
         },

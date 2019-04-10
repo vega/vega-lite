@@ -1,0 +1,19 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "data": {"url": "data/cars.json"},
+  "selection": {
+    "pts": {"type": "single", "on": "mouseover"}
+  },
+  "mark": "rect",
+  "encoding": {
+    "y": {"field": "Origin", "type": "ordinal"},
+    "x": {"field": "Cylinders", "type": "ordinal"},
+    "color": {
+      "condition": {
+        "selection": "pts",
+        "aggregate": "count", "type": "quantitative"
+      },
+      "value": "grey"
+    }
+  }
+}

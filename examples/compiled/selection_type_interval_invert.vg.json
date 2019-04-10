@@ -74,6 +74,10 @@
         {
           "events": {"signal": "pts_zoom_delta"},
           "update": "clampRange(zoomLinear(pts_x, pts_zoom_anchor.x, pts_zoom_delta), 0, width)"
+        },
+        {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
         }
       ]
     },
@@ -124,6 +128,10 @@
         {
           "events": {"signal": "pts_zoom_delta"},
           "update": "clampRange(zoomLinear(pts_y, pts_zoom_anchor.y, pts_zoom_delta), 0, height)"
+        },
+        {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
         }
       ]
     },

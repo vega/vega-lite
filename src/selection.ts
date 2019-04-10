@@ -50,13 +50,22 @@ export interface BaseSelectionDef {
   fields?: string[];
 
   /**
-   * By default, all data values are considered to lie within an empty selection.
+   * By default, `all` data values are considered to lie within an empty selection.
    * When set to `none`, empty selections contain no data values.
    */
   empty?: 'all' | 'none';
 }
 
 export interface SingleSelectionConfig extends BaseSelectionDef {
+  /**
+   * Clears the selection, emptying it of all values. Can be an
+   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
+   *
+   * __Default value:__ `mouseout` if `on: mouseover` else `dblclick`.
+   *
+   * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
+   */
+  clear?: EventStream | boolean;
   /**
    * Establish a two-way binding between a single selection and input elements
    * (also known as dynamic query widgets). A binding takes the form of
@@ -82,6 +91,16 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
 }
 
 export interface MultiSelectionConfig extends BaseSelectionDef {
+  /**
+   * Clears the selection, emptying it of all values. Can be an
+   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
+   *
+   * __Default value:__ `mouseout` if `on: mouseover` else `dblclick`.
+   *
+   * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
+   */
+  clear?: EventStream | boolean;
+
   /**
    * Controls whether data values should be toggled or only ever inserted into
    * multi selections. Can be `true`, `false` (for insertion only), or a
@@ -149,6 +168,15 @@ export interface BrushConfig {
 }
 
 export interface IntervalSelectionConfig extends BaseSelectionDef {
+  /**
+   * Clears the selection, emptying it of all values. Can be an
+   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
+   *
+   * __Default value:__ `mouseout` if `on: mouseover` else `dblclick`.
+   *
+   * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
+   */
+  clear?: EventStream | boolean;
   /**
    * When truthy, allows a user to interactively move an interval selection
    * back-and-forth. Can be `true`, `false` (to disable panning), or a

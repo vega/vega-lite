@@ -6325,8 +6325,19 @@
           ],
           "type": "string"
         },
+        "clear": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `mouseout` if `on: mouseover` else `dblclick`.\n\nSee the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information."
+        },
         "empty": {
-          "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
+          "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
           "enum": [
             "all",
             "none"
@@ -6399,8 +6410,19 @@
           ],
           "type": "string"
         },
+        "clear": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `mouseout` if `on: mouseover` else `dblclick`.\n\nSee the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information."
+        },
         "empty": {
-          "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
+          "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
           "enum": [
             "all",
             "none"
@@ -8336,8 +8358,19 @@
     "MultiSelection": {
       "additionalProperties": false,
       "properties": {
+        "clear": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `mouseout` if `on: mouseover` else `dblclick`.\n\nSee the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information."
+        },
         "empty": {
-          "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
+          "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
           "enum": [
             "all",
             "none"
@@ -8406,8 +8439,19 @@
     "MultiSelectionConfig": {
       "additionalProperties": false,
       "properties": {
+        "clear": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `mouseout` if `on: mouseover` else `dblclick`.\n\nSee the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information."
+        },
         "empty": {
-          "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
+          "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
           "enum": [
             "all",
             "none"
@@ -10203,8 +10247,19 @@
           ],
           "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\nSee the [bind transform](https://vega.github.io/vega-lite/docs/bind.html) documentation for more information."
         },
+        "clear": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `mouseout` if `on: mouseover` else `dblclick`.\n\nSee the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information."
+        },
         "empty": {
-          "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
+          "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
           "enum": [
             "all",
             "none"
@@ -10270,8 +10325,19 @@
           ],
           "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\nSee the [bind transform](https://vega.github.io/vega-lite/docs/bind.html) documentation for more information."
         },
+        "clear": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EventStream"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `mouseout` if `on: mouseover` else `dblclick`.\n\nSee the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information."
+        },
         "empty": {
-          "description": "By default, all data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
+          "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
           "enum": [
             "all",
             "none"

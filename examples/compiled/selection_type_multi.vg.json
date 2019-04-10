@@ -45,7 +45,8 @@
           "events": [{"source": "scope", "type": "click"}],
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {"name": "pts_tuple_fields", "value": [{"type": "E", "field": "_vgsid_"}]},
@@ -56,7 +57,8 @@
         {
           "events": [{"source": "scope", "type": "click"}],
           "update": "event.shiftKey"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
       ]
     },
     {

@@ -57,9 +57,9 @@ While selection types provide useful defaults, it can often be useful to overrid
 
 {% include table.html props="on,init,empty,resolve,mark" source="IntervalSelection" %}
 
-For instance, with the `on` property, a single rectangle in the heatmap below can now be selected on double-click instead.
+For instance, with the `on` property, a single rectangle in the heatmap below can now be selected on mouse hover instead.
 
-<div class="vl-example" data-name="selection_type_single_dblclick"></div>
+<div class="vl-example" data-name="selection_type_single_mouseover"></div>
 
 {:#interval-mark}
 

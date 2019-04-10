@@ -286,6 +286,10 @@
               "events": [{"source": "scope", "type": "click"}],
               "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Major_Genre\"]]} : null",
               "force": true
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },

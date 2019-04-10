@@ -105,6 +105,10 @@
               "events": [{"source": "scope", "type": "click"}],
               "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_0\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"id\"]]} : null",
               "force": true
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -116,6 +120,10 @@
             {
               "events": [{"source": "scope", "type": "click"}],
               "update": "event.shiftKey"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "false"
             }
           ]
         },

@@ -79,6 +79,10 @@
         {
           "events": {"signal": "alex_zoom_delta"},
           "update": "clampRange(zoomLinear(alex_x, alex_zoom_anchor.x, alex_zoom_delta), 0, width)"
+        },
+        {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
         }
       ]
     },
@@ -132,6 +136,10 @@
         {
           "events": {"signal": "alex_zoom_delta"},
           "update": "clampRange(zoomLinear(alex_y, alex_zoom_anchor.y, alex_zoom_delta), 0, height)"
+        },
+        {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
         }
       ]
     },
@@ -289,6 +297,10 @@
         {
           "events": {"signal": "morgan_zoom_delta"},
           "update": "clampRange(zoomLinear(morgan_x, morgan_zoom_anchor.x, morgan_zoom_delta), 0, width)"
+        },
+        {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
         }
       ]
     },
@@ -342,6 +354,10 @@
         {
           "events": {"signal": "morgan_zoom_delta"},
           "update": "clampRange(zoomLinear(morgan_y, morgan_zoom_anchor.y, morgan_zoom_delta), 0, height)"
+        },
+        {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
         }
       ]
     },
