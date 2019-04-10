@@ -2,8 +2,8 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
-  "width": 500,
-  "height": 500,
+  "width": 200,
+  "height": 200,
   "style": "cell",
   "data": [
     {"name": "source_0", "transform": [{"type": "graticule", "step": [15, 15]}]}

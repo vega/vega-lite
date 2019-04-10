@@ -2,8 +2,8 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
-  "width": 500,
-  "height": 500,
+  "width": 200,
+  "height": 200,
   "style": "cell",
   "data": [
     {"name": "source_0", "values": [{"type": "Sphere"}]},
@@ -13,8 +13,8 @@
     {
       "name": "projection",
       "type": "orthographic",
-      "scale": 250,
-      "translate": [250, 250]
+      "scale": 100,
+      "translate": [100, 100]
     }
   ],
   "marks": [
@@ -36,6 +36,7 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
+          "strokeWidth": {"value": 0.5},
           "fill": {"value": "transparent"}
         }
       },

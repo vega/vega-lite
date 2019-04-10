@@ -3,8 +3,8 @@
   "description": "Plots a function using a generated sequence.",
   "autosize": "pad",
   "padding": 5,
-  "width": 400,
-  "height": 200,
+  "width": 300,
+  "height": 150,
   "style": "cell",
   "data": [
     {
