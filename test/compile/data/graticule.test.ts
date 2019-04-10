@@ -1,3 +1,4 @@
+import {assembleRootData} from '../../../src/compile/data/assemble';
 import {GraticuleNode} from '../../../src/compile/data/graticule';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
@@ -34,5 +35,12 @@ describe('compile/data/graticule', () => {
 
     const node = model.component.data.raw.parent;
     expect(node).toBeInstanceOf(GraticuleNode);
+
+    expect(assembleRootData(model.component.data, {})).toEqual([
+      {
+        name: 'source_0',
+        transform: [{type: 'graticule'}]
+      }
+    ]);
   });
 });

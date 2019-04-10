@@ -1,0 +1,45 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 500,
+  "height": 500,
+  "style": "cell",
+  "data": [
+    {"name": "source_0", "values": [{"type": "Sphere"}]},
+    {"name": "source_1", "transform": [{"type": "graticule"}]}
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "type": "orthographic",
+      "scale": 250,
+      "translate": [250, 250]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "shape",
+      "clip": true,
+      "style": ["geoshape"],
+      "from": {"data": "source_0"},
+      "encode": {"update": {"fill": {"value": "aliceblue"}}},
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "shape",
+      "clip": true,
+      "style": ["geoshape"],
+      "from": {"data": "source_1"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "black"},
+          "fill": {"value": "transparent"}
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    }
+  ]
+}

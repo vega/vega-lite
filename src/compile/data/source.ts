@@ -1,4 +1,4 @@
-import {Data, DataFormatType, isGenerator, isInlineData, isNamedData, isUrlData} from '../../data';
+import {Data, DataFormatType, isGenerator, isInlineData, isNamedData, isSphereGenerator, isUrlData} from '../../data';
 import {contains, keys, omit} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataFormat} from './../../data';
@@ -37,6 +37,9 @@ export class SourceNode extends DataFlowNode {
         // defaultExtension has type string but we ensure that it is DataFormatType above
         format.type = defaultExtension as DataFormatType;
       }
+    } else if (isSphereGenerator(data)) {
+      // hardwire GeoJSON sphere data into output specification
+      this._data = {values: [{type: 'Sphere'}]};
     } else if (isNamedData(data) || isGenerator(data)) {
       this._data = {};
     }

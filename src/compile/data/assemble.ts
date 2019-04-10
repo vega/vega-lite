@@ -20,6 +20,7 @@ import {ImputeNode} from './impute';
 import {JoinAggregateTransformNode} from './joinaggregate';
 import {LookupNode} from './lookup';
 import {SampleTransformNode} from './sample';
+import {SequenceNode} from './sequence';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -83,6 +84,7 @@ function makeWalkTree(data: VgData[]) {
 
     if (
       node instanceof GraticuleNode ||
+      node instanceof SequenceNode ||
       node instanceof FilterInvalidNode ||
       node instanceof FilterNode ||
       node instanceof CalculateNode ||

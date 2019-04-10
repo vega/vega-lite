@@ -424,6 +424,7 @@ export interface VgSequenceTransform {
   start: number | SignalRef;
   stop: number | SignalRef;
   step?: number | SignalRef;
+  as?: string | SignalRef;
 }
 
 export interface VgGeoPointTransform {

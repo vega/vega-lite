@@ -5511,7 +5511,17 @@
       ]
     },
     "Generator": {
-      "$ref": "#/definitions/GraticuleGenerator"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SequenceGenerator"
+        },
+        {
+          "$ref": "#/definitions/SphereGenerator"
+        },
+        {
+          "$ref": "#/definitions/GraticuleGenerator"
+        }
+      ]
     },
     "GenericBinMixins<(boolean|BinParams)>": {
       "additionalProperties": false,
@@ -10394,6 +10404,49 @@
       ],
       "type": "string"
     },
+    "SequenceGenerator": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "Provide a placeholder name and bind data at runtime.",
+          "type": "string"
+        },
+        "sequence": {
+          "$ref": "#/definitions/SequenceParams",
+          "description": "Generate sphere GeoJSON data for the full globe."
+        }
+      },
+      "required": [
+        "sequence"
+      ],
+      "type": "object"
+    },
+    "SequenceParams": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The name of the generated sequence field (default \"data\").",
+          "type": "string"
+        },
+        "start": {
+          "description": "The starting value of the sequence (inclusive).",
+          "type": "number"
+        },
+        "step": {
+          "description": "The step value between sequence entries (default 1).",
+          "type": "number"
+        },
+        "stop": {
+          "description": "The ending value of the sequence (exclusive).",
+          "type": "number"
+        }
+      },
+      "required": [
+        "start",
+        "stop"
+      ],
+      "type": "object"
+    },
     "ShapeFieldDefWithCondition": {
       "$ref": "#/definitions/StringFieldDefWithCondition<TypeForShape>"
     },
@@ -10675,6 +10728,34 @@
         "descending"
       ],
       "type": "string"
+    },
+    "SphereGenerator": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "Provide a placeholder name and bind data at runtime.",
+          "type": "string"
+        },
+        "sphere": {
+          "anyOf": [
+            {
+              "enum": [
+                true
+              ],
+              "type": "boolean"
+            },
+            {
+              "additionalProperties": false,
+              "type": "object"
+            }
+          ],
+          "description": "Generate sphere GeoJSON data for the full globe."
+        }
+      },
+      "required": [
+        "sphere"
+      ],
+      "type": "object"
     },
     "StackOffset": {
       "enum": [

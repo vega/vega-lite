@@ -142,7 +142,15 @@ export function isNamedData(data: Partial<Data> | Partial<VgData>): data is Name
 }
 
 export function isGenerator(data: Partial<Data> | Partial<VgData>): data is Generator {
-  return data && isGraticuleGenerator(data);
+  return data && (isSequenceGenerator(data) || isSphereGenerator(data) || isGraticuleGenerator(data));
+}
+
+export function isSequenceGenerator(data: Partial<Data> | Partial<VgData>): data is SequenceGenerator {
+  return !!data['sequence'];
+}
+
+export function isSphereGenerator(data: Partial<Data> | Partial<VgData>): data is SphereGenerator {
+  return !!data['sphere'];
 }
 
 export function isGraticuleGenerator(data: Partial<Data> | Partial<VgData>): data is GraticuleGenerator {
@@ -154,13 +162,47 @@ export type DataSourceType = 'raw' | 'main' | 'row' | 'column' | 'lookup';
 export const MAIN: 'main' = 'main';
 export const RAW: 'raw' = 'raw';
 
-export type Generator = GraticuleGenerator;
+export type Generator = SequenceGenerator | SphereGenerator | GraticuleGenerator;
 
 export interface GeneratorBase {
   /**
    * Provide a placeholder name and bind data at runtime.
    */
   name?: string;
+}
+
+export interface SequenceGenerator extends GeneratorBase {
+  /**
+   * Generate sphere GeoJSON data for the full globe.
+   */
+  sequence: SequenceParams;
+}
+
+export interface SequenceParams {
+  /**
+   * The starting value of the sequence (inclusive).
+   */
+  start: number;
+  /**
+   * The ending value of the sequence (exclusive).
+   */
+  stop: number;
+  /**
+   * The step value between sequence entries (default 1).
+   */
+  step?: number;
+
+  /**
+   * The name of the generated sequence field (default "data").
+   */
+  as?: string;
+}
+
+export interface SphereGenerator extends GeneratorBase {
+  /**
+   * Generate sphere GeoJSON data for the full globe.
+   */
+  sphere: true | {};
 }
 
 export interface GraticuleGenerator extends GeneratorBase {

@@ -4,6 +4,7 @@ import {
   isGraticuleGenerator,
   isInlineData,
   isNamedData,
+  isSequenceGenerator,
   isUrlData,
   MAIN,
   ParseValue,
@@ -48,6 +49,7 @@ import {JoinAggregateTransformNode} from './joinaggregate';
 import {makeJoinAggregateFromFacet} from './joinaggregatefacet';
 import {LookupNode} from './lookup';
 import {SampleTransformNode} from './sample';
+import {SequenceNode} from './sequence';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -238,7 +240,9 @@ export function parseData(model: Model): DataComponent {
 
   if (isGenerator(data)) {
     // insert generator transform
-    if (isGraticuleGenerator(data)) {
+    if (isSequenceGenerator(data)) {
+      head = new SequenceNode(head, data.sequence);
+    } else if (isGraticuleGenerator(data)) {
       head = new GraticuleNode(head, data.graticule);
     }
     // no parsing necessary for generator
