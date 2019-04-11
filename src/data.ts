@@ -19,23 +19,21 @@ export interface DataFormatBase {
    * For Specific date formats can be provided (e.g., `{foo: "date:'%m%d%Y'"}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: "utc:'%m%d%Y'"}`). See more about [UTC time](https://vega.github.io/vega-lite/docs/timeunit.html#utc)
    */
   parse?: Parse | null;
+
+  /**
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"dsv"`.
+   *
+   * __Default value:__  The default format type is determined by the extension of the file URL.
+   * If no extension is detected, `"json"` will be used by default.
+   */
+  type?: 'csv' | 'tsv' | 'dsv' | 'json' | 'topojson';
 }
 
 export interface CsvDataFormat extends DataFormatBase {
-  /**
-   * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"dsv"`.
-   * The default format type is determined by the extension of the file URL.
-   * If no extension is detected, `"json"` will be used by default.
-   */
   type?: 'csv' | 'tsv';
 }
 
 export interface DsvDataFormat extends DataFormatBase {
-  /**
-   * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"dsv"`.
-   * The default format type is determined by the extension of the file URL.
-   * If no extension is detected, `"json"` will be used by default.
-   */
   type?: 'dsv';
 
   /**
@@ -48,11 +46,6 @@ export interface DsvDataFormat extends DataFormatBase {
 }
 
 export interface JsonDataFormat extends DataFormatBase {
-  /**
-   * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"dsv"`.
-   * The default format type is determined by the extension of the file URL.
-   * If no extension is detected, `"json"` will be used by default.
-   */
   type?: 'json';
   /**
    * The JSON property containing the desired data.
@@ -64,11 +57,6 @@ export interface JsonDataFormat extends DataFormatBase {
 }
 
 export interface TopoDataFormat extends DataFormatBase {
-  /**
-   * Type of input data: `"json"`, `"csv"`, `"tsv"`, `"dsv"`.
-   * The default format type is determined by the extension of the file URL.
-   * If no extension is detected, `"json"` will be used by default.
-   */
   type?: 'topojson';
   /**
    * The name of the TopoJSON object set to convert to a GeoJSON feature collection.
@@ -188,12 +176,16 @@ export interface SequenceParams {
    */
   stop: number;
   /**
-   * The step value between sequence entries (default 1).
+   * The step value between sequence entries.
+   *
+   * __Default value:__ `1`
    */
   step?: number;
 
   /**
-   * The name of the generated sequence field (default "data").
+   * The name of the generated sequence field.
+   *
+   * __Default value:__ `"data"`
    */
   as?: string;
 }
@@ -229,12 +221,17 @@ export interface GraticuleParams {
   extent?: number[][];
 
   /**
-   * The major step angles of the graticule (default [90, 360]).
+   * The major step angles of the graticule.
+   *
+   *
+   * __Default value:__ `[90, 360]`
    */
   stepMajor?: number[];
 
   /**
-   * The minor step angles of the graticule (default [10, 10]).
+   * The minor step angles of the graticule.
+   *
+   * __Default value:__ `[10, 10]`
    */
   stepMinor?: number[];
 
@@ -244,7 +241,9 @@ export interface GraticuleParams {
   step?: number[];
 
   /**
-   * The precision of the graticule in degrees (default 2.5).
+   * The precision of the graticule in degrees.
+   *
+   * __Default value:__ `2.5`
    */
   precision?: number;
 }
