@@ -469,8 +469,8 @@
   ],
   "config": {
     "style": {
-      "arrow-label": {"dy": 16, "fontSize": 9.5},
-      "arrow-label2": {"dy": 28, "fontSize": 9.5},
+      "arrow-label": {"dy": 12, "fontSize": 9.5},
+      "arrow-label2": {"dy": 24, "fontSize": 9.5},
       "cell": {"stroke": "transparent"},
       "group-title": {"fontSize": 12}
     }
