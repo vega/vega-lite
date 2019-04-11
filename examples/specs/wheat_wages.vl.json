@@ -147,6 +147,7 @@
         "type": "text",
         "yOffset": 14,
         "fontSize": 9,
+        "baseline": "bottom",
         "fontStyle": "italic"
       },
       "encoding": {

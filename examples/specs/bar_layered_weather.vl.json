@@ -106,7 +106,7 @@
       }
     },
     {
-      "mark": {"type": "text", "align": "center", "dy": -105},
+      "mark": {"type": "text", "align": "center", "baseline": "bottom", "y": -5},
       "encoding": {
         "text": {
           "field": "day",

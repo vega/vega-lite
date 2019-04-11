@@ -55,8 +55,9 @@
         "mark": {
           "type": "text",
           "align": "right",
+          "baseline": "bottom",
           "dx": -2,
-          "dy": -4
+          "dy": -2
         },
         "encoding": {
           "x": {
