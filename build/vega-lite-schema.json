@@ -10164,7 +10164,7 @@
       "additionalProperties": false,
       "properties": {
         "as": {
-          "description": "The name of the generated sequence field.\n\n__Default value:__ `1`",
+          "description": "The name of the generated sequence field.\n\n__Default value:__ `\"data\"`",
           "type": "string"
         },
         "start": {
