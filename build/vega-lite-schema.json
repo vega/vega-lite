@@ -12253,34 +12253,16 @@
     "Transform": {
       "anyOf": [
         {
-          "$ref": "#/definitions/FilterTransform"
-        },
-        {
-          "$ref": "#/definitions/CalculateTransform"
-        },
-        {
-          "$ref": "#/definitions/LookupTransform"
+          "$ref": "#/definitions/AggregateTransform"
         },
         {
           "$ref": "#/definitions/BinTransform"
         },
         {
-          "$ref": "#/definitions/TimeUnitTransform"
+          "$ref": "#/definitions/CalculateTransform"
         },
         {
-          "$ref": "#/definitions/ImputeTransform"
-        },
-        {
-          "$ref": "#/definitions/AggregateTransform"
-        },
-        {
-          "$ref": "#/definitions/WindowTransform"
-        },
-        {
-          "$ref": "#/definitions/JoinAggregateTransform"
-        },
-        {
-          "$ref": "#/definitions/StackTransform"
+          "$ref": "#/definitions/FilterTransform"
         },
         {
           "$ref": "#/definitions/FlattenTransform"
@@ -12289,7 +12271,25 @@
           "$ref": "#/definitions/FoldTransform"
         },
         {
+          "$ref": "#/definitions/ImputeTransform"
+        },
+        {
+          "$ref": "#/definitions/JoinAggregateTransform"
+        },
+        {
+          "$ref": "#/definitions/LookupTransform"
+        },
+        {
+          "$ref": "#/definitions/TimeUnitTransform"
+        },
+        {
           "$ref": "#/definitions/SampleTransform"
+        },
+        {
+          "$ref": "#/definitions/StackTransform"
+        },
+        {
+          "$ref": "#/definitions/WindowTransform"
         }
       ]
     },
