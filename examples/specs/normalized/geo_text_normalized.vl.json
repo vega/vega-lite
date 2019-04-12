@@ -23,7 +23,7 @@
           }
         },
         {
-          "mark": {"type": "text", "dy": -6},
+          "mark": {"type": "text", "dy": -10},
           "encoding": {
             "longitude": {"field": "lon", "type": "quantitative"},
             "latitude": {"field": "lat", "type": "quantitative"},

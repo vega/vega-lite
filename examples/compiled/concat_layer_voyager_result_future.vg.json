@@ -336,7 +336,8 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"signal": "''+datum[\"label\"]"}
+              "text": {"signal": "''+datum[\"label\"]"},
+              "baseline": {"value": "middle"}
             }
           }
         },
@@ -360,7 +361,8 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"signal": "''+datum[\"label\"]"}
+              "text": {"signal": "''+datum[\"label\"]"},
+              "baseline": {"value": "middle"}
             }
           }
         },
@@ -384,7 +386,8 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"value": "more valuable"}
+              "text": {"value": "more valuable"},
+              "baseline": {"value": "middle"}
             }
           }
         },
@@ -408,7 +411,8 @@
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"value": "more valuable"}
+              "text": {"value": "more valuable"},
+              "baseline": {"value": "middle"}
             }
           }
         }
@@ -465,8 +469,8 @@
   ],
   "config": {
     "style": {
-      "arrow-label": {"dy": 16, "fontSize": 9.5},
-      "arrow-label2": {"dy": 28, "fontSize": 9.5},
+      "arrow-label": {"dy": 12, "fontSize": 9.5},
+      "arrow-label2": {"dy": 24, "fontSize": 9.5},
       "cell": {"stroke": "transparent"},
       "group-title": {"fontSize": 12}
     }

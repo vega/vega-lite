@@ -322,13 +322,13 @@
       "encode": {
         "update": {
           "align": {"value": "center"},
-          "dy": {"value": -105},
+          "baseline": {"value": "bottom"},
+          "y": {"value": -5},
           "fill": {"value": "black"},
           "tooltip": {
             "signal": "{\"Day\": ''+datum[\"id\"], \"day\": ''+datum[\"day\"]}"
           },
           "x": {"scale": "x", "field": "id", "band": 0.5},
-          "y": {"signal": "height", "mult": 0.5},
           "text": {"signal": "''+datum[\"day\"]"}
         }
       }
