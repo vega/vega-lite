@@ -43,12 +43,12 @@ function isBinTransform(t: TypedFieldDef<string> | BinTransform): t is BinTransf
 }
 
 function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolean | BinParams, model: Model) {
-  let as: [string, string][];
+  let as: [string, string];
 
   if (isBinTransform(t)) {
-    as = isString(t.as) ? [[t.as, `${t.as}_end`]] : [[t.as[0], t.as[1]]];
+    as = isString(t.as) ? [t.as, `${t.as}_end`] : [t.as[0], t.as[1]];
   } else {
-    as = [[vgField(t, {forAs: true}), vgField(t, {binSuffix: 'end', forAs: true})]];
+    as = [vgField(t, {forAs: true}), vgField(t, {binSuffix: 'end', forAs: true})];
   }
 
   const normalizedBin = normalizeBin(bin, undefined) || {};
@@ -58,7 +58,7 @@ function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolea
   const binComponent: BinComponent = {
     bin: normalizedBin,
     field: t.field,
-    as: as,
+    as: [as],
     ...(signal ? {signal} : {}),
     ...(extentSignal ? {extentSignal} : {})
   };
@@ -71,7 +71,7 @@ export interface BinComponent {
   field: string;
   extentSignal?: string;
   signal?: string;
-  as: string[][];
+  as: [string, string][];
 
   // Range Formula
 
@@ -127,7 +127,12 @@ export class BinNode extends DataFlowNode {
     for (const key of keys(other.bins)) {
       if (key in this.bins) {
         model.renameSignal(other.bins[key].signal, this.bins[key].signal);
-        this.bins[key].as.push(...other.bins[key].as.slice(1));
+        // Ensure that we don't have duplicate names for signal pairs
+        const uniqueAs: Dict<[string, string]> = {};
+        for (const as of [...this.bins[key].as, ...other.bins[key].as]) {
+          uniqueAs[hash(as)] = as;
+        }
+        this.bins[key].as = vals(uniqueAs);
       } else {
         this.bins[key] = other.bins[key];
       }
@@ -156,12 +161,12 @@ export class BinNode extends DataFlowNode {
     return flatten(
       vals(this.bins).map(bin => {
         const transform: VgTransform[] = [];
-
-        const asSignals = bin.as.pop();
+        const as = Array.from(bin.as);
+        const asSignals = as.pop();
         const binTrans: VgBinTransform = {
           type: 'bin',
           field: bin.field,
-          as: asSignals,
+          as: [asSignals[0], asSignals[1]],
           signal: bin.signal,
           ...bin.bin
         };
@@ -177,14 +182,17 @@ export class BinNode extends DataFlowNode {
 
         transform.push(binTrans);
 
-        for (const as of bin.as) {
-          for (let i = 0; i < 2; i++) {
-            transform.push({
-              type: 'formula',
-              expr: vgField({field: asSignals[i]}, {expr: 'datum'}),
-              as: as[i]
-            });
-          }
+        for (const asPair of as) {
+          transform.push({
+            type: 'formula',
+            expr: vgField({field: asSignals[0]}, {expr: 'datum'}),
+            as: asPair[0]
+          });
+          transform.push({
+            type: 'formula',
+            expr: vgField({field: asSignals[1]}, {expr: 'datum'}),
+            as: asPair[1]
+          });
         }
 
         if (bin.formula) {
