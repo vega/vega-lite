@@ -145,7 +145,7 @@
       ],
       "mark": {
         "type": "text",
-        "yOffset": 14,
+        "yOffset": 16,
         "fontSize": 9,
         "baseline": "bottom",
         "fontStyle": "italic"
