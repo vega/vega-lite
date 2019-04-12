@@ -238,7 +238,7 @@
             },
             {"scale": "x", "field": "x"}
           ],
-          "y": {"scale": "y", "field": "off2", "offset": 14},
+          "y": {"scale": "y", "field": "off2", "offset": 16},
           "text": {"signal": "''+datum[\"name\"]"},
           "align": {"value": "center"}
         }

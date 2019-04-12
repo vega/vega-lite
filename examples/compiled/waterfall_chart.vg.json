@@ -185,7 +185,8 @@
       "from": {"data": "data_3"},
       "encode": {
         "update": {
-          "dy": {"value": -8},
+          "baseline": {"value": "bottom"},
+          "dy": {"value": -4},
           "fill": {"value": "#404040"},
           "tooltip": {
             "signal": "{\"Months\": ''+datum[\"label\"], \"sum_inc\": format(datum[\"sum_inc\"], \"\")}"
@@ -193,8 +194,7 @@
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "sum_inc"},
           "text": {"signal": "''+datum[\"sum_inc\"]"},
-          "align": {"value": "center"},
-          "baseline": {"value": "middle"}
+          "align": {"value": "center"}
         }
       }
     },
@@ -206,7 +206,7 @@
       "encode": {
         "update": {
           "baseline": {"value": "top"},
-          "dy": {"value": 8},
+          "dy": {"value": 4},
           "fill": {"value": "#404040"},
           "tooltip": {
             "signal": "{\"Months\": ''+datum[\"label\"], \"sum_dec\": format(datum[\"sum_dec\"], \"\")}"
