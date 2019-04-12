@@ -126,7 +126,9 @@ export class BinNode extends DataFlowNode {
   public merge(other: BinNode, model: Model) {
     for (const key of keys(other.bins)) {
       if (key in this.bins) {
-        model.renameSignal(other.bins[key].signal, this.bins[key].signal);
+        if (model) {
+          model.renameSignal(other.bins[key].signal, this.bins[key].signal);
+        }
         // Ensure that we don't have duplicate names for signal pairs
         const uniqueAs: Dict<[string, string]> = {};
         for (const as of [...this.bins[key].as, ...other.bins[key].as]) {

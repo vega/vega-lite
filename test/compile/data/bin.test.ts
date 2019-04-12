@@ -5,6 +5,7 @@ import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';
 import {parseUnitModelWithScale} from '../../util';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {buildModel} from '../../../src/compile/buildmodel';
 
 function assembleFromEncoding(model: ModelWithField) {
   return BinNode.makeFromEncoding(null, model).assemble();
@@ -237,5 +238,36 @@ describe('compile/data/bin', () => {
     const parent = new DataFlowNode(null);
     const bin = new BinNode(parent, {});
     expect(bin.clone().parent).toBeNull();
+  });
+
+  it('should preserve "as" when merging with other node', () => {
+    const parent = new DataFlowNode(null);
+    const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
+    const binNodeB = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['bar', 'bar_end']]}});
+
+    binNodeA.merge(binNodeB, undefined);
+    expect(binNodeA).toEqual(
+      new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}})
+    );
+  });
+
+  it('should not have duplicate members of "as" after merging with other node', () => {
+    const parent = new DataFlowNode(null);
+    const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
+    const binNodeB = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}});
+
+    binNodeA.merge(binNodeB, undefined);
+    expect(binNodeA).toEqual(
+      new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}})
+    );
+  });
+
+  it('should create formulas for members of "as" when assembled', () => {
+    const parent = new DataFlowNode(null);
+    const binNode = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}});
+    const transforms = binNode.assemble();
+
+    expect(transforms[1]).toEqual({type: 'formula', expr: 'datum["bar"]', as: 'foo'});
+    expect(transforms[2]).toEqual({type: 'formula', expr: 'datum["bar_end"]', as: 'foo_end'});
   });
 });
