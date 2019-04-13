@@ -5,7 +5,6 @@ import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';
 import {parseUnitModelWithScale} from '../../util';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';
-import {buildModel} from '../../../src/compile/buildmodel';
 
 function assembleFromEncoding(model: ModelWithField) {
   return BinNode.makeFromEncoding(null, model).assemble();
