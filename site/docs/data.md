@@ -7,7 +7,9 @@ permalink: /docs/data.html
 
 Akin to [Vega](https://www.github.com/vega/vega)'s [data model](https://vega.github.io/vega/docs/data/), the basic data model used by Vega-Lite is _tabular_ data, similar to a spreadsheet or a database table. Individual data sets are assumed to contain a collection of records, which may contain any number of named data fields.
 
-Vega-Lite's `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [a URL from which to load the data](#url) (`url`). Alternatively, we can create an empty, [named data source](#named) (`name`), which can be [bound at runtime](https://vega.github.io/vega/docs/api/view/#data) or populated from top-level [`datasets`](#datasets).
+Vega-Lite's `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [a URL from which to load the data](#url) (`url`). Or, we can create an empty, [named data source](#named) (`name`), which can be [bound at runtime](https://vega.github.io/vega/docs/api/view/#data) or populated from top-level [`datasets`](#datasets).
+
+In addition, Vega-Lite includes _data generators_ which can generate data sets such as numerical sequences or geographic reference elements such as GeoJSON graticule or sphere objects.
 
 ## Documentation Overview
 
@@ -118,6 +120,42 @@ Load a delimited text file with a custom delimiter. This is a general version of
 Load a JavaScript Object Notation (JSON) file using the TopoJSON format. The input file must contain valid TopoJSON data. The TopoJSON input is then converted into a GeoJSON format. There are two mutually exclusive properties that can be used to specify the conversion process:
 
 {% include table.html props="feature,mesh" source="TopoDataFormat" %}
+
+## Data Generators
+
+{:#sequence}
+
+### Sequence Generator
+
+The sequence generator creates a set of numeric values based on given start, stop, and (optional) step parameters. By default, new objects with a single field named `data` are generated; use the `as` parameter to change the field name.
+
+{% include table.html props="start,stop,step,as" source="SequenceParams" %}
+
+For example, the following specification generates a domain of number values and then uses calculate transforms to draw sine and cosine curves:
+
+<span class="vl-example" data-name="sequence_line"></span>
+
+{:#graticule}
+
+### Graticule Generator
+
+A graticule is a grid formed by lines of latitude and longitude. The graticule generator creates a geographic grid (as [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) data) to serve as a guiding element to include in maps. The graticule generator can be specified with either a boolean `true` value (indicating the default graticule) or a graticule parameter object:
+
+{% include table.html props="extentMajor,extentMinor,extent,stepMajor,stepMinor,step?,precision" source="GraticuleParams" %}
+
+The following example generates a custom graticule and visualizes it using an orthographic projection:
+
+<span class="vl-example" data-name="geo_graticule_object"></span>
+
+{:#sphere}
+
+### Sphere Generator
+
+A [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) sphere represents the full globe. The sphere generator injects a dataset whose contents are simply `[{"type": "Sphere"}]`. The resulting sphere can be used as a background layer within a map to represent the extent of the Earth. The sphere generator requires either a boolean `true` value or an empty object `{}` as its sole parameter.
+
+The following example generates a layered base map containing a sphere (light blue fill) and a default graticule (black strokes):
+
+<span class="vl-example" data-name="geo_sphere"></span>
 
 ## Datasets
 

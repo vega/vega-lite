@@ -11,6 +11,16 @@ export interface Projection {
   type?: ProjectionType;
 
   /**
+   * Sets the projection's scale (zoom) value, overriding automatic fitting.
+   */
+  scale?: number;
+
+  /**
+   * Sets the projection's translation (pan) value, overriding automatic fitting.
+   */
+  translate?: number[];
+
+  /**
    * Sets the projection’s clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.
    */
   clipAngle?: number;
@@ -41,10 +51,12 @@ export interface Projection {
   /*
    * Sets whether or not the x-dimension is reflected (negated) in the output.
    */
+
   reflectX?: boolean;
   /*
    * Sets whether or not the y-dimension is reflected (negated) in the output.
    */
+
   reflectY?: boolean;
 
   /* The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection */

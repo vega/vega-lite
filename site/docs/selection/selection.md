@@ -10,7 +10,7 @@ permalink: /docs/selection.html
 {
   ...,
   "selection": {  // Key-value mappings between selection names and definitions.
-    ...: {"type": "single"},
+    ...: {"type": "single/multi/interval",  ...},
     ...
   },
   "mark": ...,
@@ -35,9 +35,9 @@ Selections are the basic building block in Vega-Lite's _grammar of interaction._
 
 Selections are defined within single views, and their simplest definition consists of a **name** and a **type**. The selection type determines the default events that trigger a selection and the resultant data query.
 
-| Property |  Type  | Description                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| :------- | :----: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| type     | String | _**Required.**_ Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types: <br/>`single` -- to select a single discrete data value on `click`. <br/>`multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`. <br/>`interval` -- to select a continuous range of data values on `drag`. |
+| Property | Type | Description |
+| :-- | :-: | :-- |
+| type | String | _**Required.**_ Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types: <br/>`single` -- to select a single discrete data value on `click`. <br/>`multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`. <br/>`interval` -- to select a continuous range of data values on `drag`. |
 
 For example, try the different types against the example selection (named `pts`) below:
 
@@ -57,9 +57,9 @@ While selection types provide useful defaults, it can often be useful to overrid
 
 {% include table.html props="on,init,empty,resolve,mark" source="IntervalSelection" %}
 
-For instance, with the `on` property, a single rectangle in the heatmap below can now be selected on double-click instead.
+For instance, with the `on` property, a single rectangle in the heatmap below can now be selected on mouse hover instead.
 
-<div class="vl-example" data-name="selection_type_single_dblclick"></div>
+<div class="vl-example" data-name="selection_type_single_mouseover"></div>
 
 {:#interval-mark}
 

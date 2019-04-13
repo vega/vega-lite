@@ -46,7 +46,8 @@
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "mean_Horsepower"},
           "text": {"signal": "timeFormat(datum[\"year_Year\"], '%Y')"},
-          "align": {"value": "center"}
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
         }
       }
     }

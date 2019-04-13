@@ -50,6 +50,7 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   translate?: any;
   zoom?: any;
   nearest?: any;
+  clear?: any;
 }
 
 export interface SelectionCompiler<T extends SelectionType = SelectionType> {

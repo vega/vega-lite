@@ -318,4 +318,62 @@ describe('Mark', () => {
       expect(pathGroupingFields('line', {tooltip: {field: 'a', type: 'nominal'}})).toEqual([]);
     });
   });
+
+  describe('projection clipping', () => {
+    it('should not clip if auto-fit', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'geoshape',
+        projection: {
+          type: 'albersUsa'
+        },
+        data: {
+          url: 'data/us-10m.json',
+          format: {
+            type: 'topojson',
+            feature: 'states'
+          }
+        },
+        encoding: {
+          color: {
+            value: 'black'
+          },
+          opacity: {
+            value: 0.8
+          }
+        },
+        config: {mark: {tooltip: null}}
+      });
+      model.parse();
+      const mark = parseMarkGroups(model);
+      expect(mark[0].clip).toBeUndefined();
+    });
+    it('should clip if auto-fit', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'geoshape',
+        projection: {
+          type: 'albersUsa',
+          scale: 1000
+        },
+        data: {
+          url: 'data/us-10m.json',
+          format: {
+            type: 'topojson',
+            feature: 'states'
+          }
+        },
+        encoding: {
+          color: {
+            value: 'black'
+          },
+          opacity: {
+            value: 0.8
+          }
+        },
+        config: {mark: {tooltip: null}}
+      });
+      model.parse();
+      const mark = parseMarkGroups(model);
+      expect(mark[0].clip).toBe(true);
+    });
+  });
 });

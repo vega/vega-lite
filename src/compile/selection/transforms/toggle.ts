@@ -1,7 +1,7 @@
 import {TUPLE, unitName} from '..';
 import {TransformCompiler} from './transforms';
 
-const TOGGLE = '_toggle';
+export const TOGGLE = '_toggle';
 
 const toggle: TransformCompiler = {
   has: selCmpt => {

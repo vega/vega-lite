@@ -1,0 +1,49 @@
+{
+  "data": {
+    "values": [
+      {"actual": "A", "predicted": "A", "count": 13},
+      {"actual": "A", "predicted": "B", "count": 0},
+      {"actual": "A", "predicted": "C", "count": 0},
+      {"actual": "B", "predicted": "A", "count": 0},
+      {"actual": "B", "predicted": "B", "count": 10},
+      {"actual": "B", "predicted": "C", "count": 6},
+      {"actual": "C", "predicted": "A", "count": 0},
+      {"actual": "C", "predicted": "B", "count": 0},
+      {"actual": "C", "predicted": "C", "count": 9}
+    ]
+  },
+  "selection": {
+    "highlight": {"type": "single"}
+  },
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "field": "actual",
+      "type": "nominal"
+    },
+    "x": {
+      "field": "predicted",
+      "type": "nominal"
+    },
+    "color": {
+      "field": "count",
+      "type": "quantitative"
+    },
+    "opacity": {
+      "condition": {"selection": "highlight", "value": 1},
+      "value": 0.5
+    }
+  },
+  "config": {
+    "scale": {
+      "bandPaddingInner": 0,
+      "bandPaddingOuter": 0,
+      "rangeStep": 40
+    },
+    "range": {
+      "ramp": {
+        "scheme": "yellowgreenblue"
+      }
+    }
+  }
+}

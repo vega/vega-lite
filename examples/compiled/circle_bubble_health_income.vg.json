@@ -39,7 +39,8 @@
         {
           "events": {"signal": "view_zoom_delta"},
           "update": "zoomLog(domain(\"x\"), view_zoom_anchor.x, view_zoom_delta)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -52,7 +53,8 @@
         {
           "events": {"signal": "view_zoom_delta"},
           "update": "zoomLinear(domain(\"y\"), view_zoom_anchor.y, view_zoom_delta)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {

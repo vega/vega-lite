@@ -38,7 +38,8 @@
         {
           "events": {"signal": "grid_zoom_delta"},
           "update": "zoomLinear(domain(\"x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -51,7 +52,8 @@
         {
           "events": {"signal": "grid_zoom_delta"},
           "update": "zoomLinear(domain(\"y\"), grid_zoom_anchor.y, grid_zoom_delta)"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {

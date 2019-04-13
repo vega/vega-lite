@@ -18,17 +18,19 @@ describe('Interval Selections', () => {
   model.parseScale();
 
   const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'interval', encodings: ['x'], translate: false, zoom: false},
+    one: {type: 'interval', encodings: ['x'], clear: false, translate: false, zoom: false},
     two: {
       type: 'interval',
       encodings: ['y'],
       bind: 'scales',
+      clear: false,
       translate: false,
       zoom: false
     },
     'thr-ee': {
       type: 'interval',
       on: '[mousedown, mouseup] > mousemove, [keydown, keyup] > keypress',
+      clear: false,
       translate: false,
       zoom: false,
       resolve: 'intersect',
@@ -44,6 +46,7 @@ describe('Interval Selections', () => {
     },
     four: {
       type: 'interval',
+      clear: false,
       translate: false,
       zoom: false,
       encodings: ['x'],
@@ -51,12 +54,14 @@ describe('Interval Selections', () => {
     },
     five: {
       type: 'interval',
+      clear: false,
       translate: false,
       zoom: false,
       init: {x: [50, 60], y: [23, 54]}
     },
     six: {
       type: 'interval',
+      clear: false,
       translate: false,
       zoom: false,
       encodings: ['x'],

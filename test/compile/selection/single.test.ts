@@ -22,9 +22,10 @@ describe('Single Selection', () => {
   model.parseScale();
 
   const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'single'},
+    one: {type: 'single', clear: false},
     two: {
       type: 'single',
+      clear: false,
       nearest: true,
       on: 'mouseover',
       encodings: ['y', 'color'],
@@ -32,11 +33,13 @@ describe('Single Selection', () => {
     },
     'thr-ee': {
       type: 'single',
+      clear: false,
       fields: ['Horsepower'],
       init: {Horsepower: 50}
     },
     four: {
       type: 'single',
+      clear: false,
       encodings: ['x', 'color'],
       init: {x: 50, Origin: 'Japan'}
     }

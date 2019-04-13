@@ -56,7 +56,8 @@
           "events": [{"source": "scope", "type": "mouseover"}],
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: highlight_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
-        }
+        },
+        {"events": [{"source": "scope", "type": "mouseout"}], "update": "null"}
       ]
     },
     {
@@ -74,7 +75,8 @@
           "events": [{"source": "scope", "type": "click"}],
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: select_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -88,7 +90,8 @@
         {
           "events": [{"source": "scope", "type": "click"}],
           "update": "event.shiftKey"
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
       ]
     },
     {

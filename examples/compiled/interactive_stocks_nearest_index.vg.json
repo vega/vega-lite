@@ -69,7 +69,8 @@
           "events": [{"source": "scope", "type": "mousemove"}],
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", fields: index_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
-        }
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -193,7 +194,8 @@
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 10},
-          "text": {"signal": "timeFormat(datum[\"date\"], '%b %d, %Y')"}
+          "text": {"signal": "timeFormat(datum[\"date\"], '%b %d, %Y')"},
+          "baseline": {"value": "middle"}
         }
       }
     }

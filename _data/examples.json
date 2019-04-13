@@ -593,6 +593,10 @@
       {
         "name": "brush_table",
         "title": "Brushing Scatter Plot to show data on a table"
+      },
+      {
+        "name": "selection_heatmap",
+        "title": "Selectable Heatmap"
       }
     ],
     "Interactive Multi-View Displays": [
