@@ -89,14 +89,14 @@
       }
     },
     {
-      "mark": {"type": "text", "dy": -8},
+      "mark": {"type": "text", "dy": -4, "baseline": "bottom"},
       "encoding": {
         "y": {"field": "sum_inc", "type": "quantitative"},
         "text": {"field": "sum_inc", "type": "nominal"}
       }
     },
     {
-      "mark": {"type": "text", "dy": 8, "baseline": "top"},
+      "mark": {"type": "text", "dy": 4, "baseline": "top"},
       "encoding": {
         "y": {"field": "sum_dec", "type": "quantitative"},
         "text": {"field": "sum_dec", "type": "nominal"}
