@@ -147,7 +147,6 @@ describe('src/compile/projection/parse', () => {
       model.parse();
       expect(model.component.projection.explicit).toEqual({type: 'albersUsa'});
     });
-
     it('should merge in empty projection to specified projection', () => {
       const emptyFirst = parseLayerModel({
         layer: [
@@ -188,17 +187,6 @@ describe('src/compile/projection/parse', () => {
       const emptyLast = parseLayerModel({
         layer: [
           {
-            mark: 'geoshape',
-            data: {
-              url: 'data/us-10m.json',
-              format: {
-                type: 'topojson',
-                feature: 'states'
-              }
-            },
-            encoding: {}
-          },
-          {
             data: {
               url: 'data/airports.csv'
             },
@@ -216,6 +204,17 @@ describe('src/compile/projection/parse', () => {
                 type: 'quantitative'
               }
             }
+          },
+          {
+            mark: 'geoshape',
+            data: {
+              url: 'data/us-10m.json',
+              format: {
+                type: 'topojson',
+                feature: 'states'
+              }
+            },
+            encoding: {}
           }
         ]
       });
