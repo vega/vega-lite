@@ -165,12 +165,12 @@ export class BinNode extends DataFlowNode {
     return flatten(
       vals(this.bins).map(bin => {
         const transform: VgTransform[] = [];
-        const as = Array.from(bin.as);
-        const asSignals = as.pop();
+
+        const binAs = bin.as[0];
         const binTrans: VgBinTransform = {
           type: 'bin',
           field: bin.field,
-          as: [asSignals[0], asSignals[1]],
+          as: binAs,
           signal: bin.signal,
           ...bin.bin
         };
@@ -186,17 +186,14 @@ export class BinNode extends DataFlowNode {
 
         transform.push(binTrans);
 
-        for (const asPair of as) {
-          transform.push({
-            type: 'formula',
-            expr: vgField({field: asSignals[0]}, {expr: 'datum'}),
-            as: asPair[0]
-          });
-          transform.push({
-            type: 'formula',
-            expr: vgField({field: asSignals[1]}, {expr: 'datum'}),
-            as: asPair[1]
-          });
+        for (const as of bin.as.slice(1)) {
+          for (let i = 0; i < 2; i++) {
+            transform.push({
+              type: 'formula',
+              expr: vgField({field: binAs[i]}, {expr: 'datum'}),
+              as: as[i]
+            });
+          }
         }
 
         if (bin.formula) {
@@ -206,7 +203,6 @@ export class BinNode extends DataFlowNode {
             as: bin.formulaAs
           });
         }
-
         return transform;
       })
     );

@@ -266,8 +266,8 @@ describe('compile/data/bin', () => {
     const binNode = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}});
     const transforms = binNode.assemble();
 
-    expect(transforms[1]).toEqual({type: 'formula', expr: 'datum["bar"]', as: 'foo'});
-    expect(transforms[2]).toEqual({type: 'formula', expr: 'datum["bar_end"]', as: 'foo_end'});
+    expect(transforms[1]).toEqual({type: 'formula', expr: 'datum["foo"]', as: 'bar'});
+    expect(transforms[2]).toEqual({type: 'formula', expr: 'datum["foo_end"]', as: 'bar_end'});
   });
 
   it('should resassign children of BinNode when merging', () => {
