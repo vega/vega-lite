@@ -71,6 +71,8 @@ export interface BinComponent {
   field: string;
   extentSignal?: string;
   signal?: string;
+
+  /** Pairs of strings of the names of start and end signals */
   as: [string, string][];
 
   // Range Formula

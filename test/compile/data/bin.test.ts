@@ -269,4 +269,19 @@ describe('compile/data/bin', () => {
     expect(transforms[1]).toEqual({type: 'formula', expr: 'datum["bar"]', as: 'foo'});
     expect(transforms[2]).toEqual({type: 'formula', expr: 'datum["bar_end"]', as: 'foo_end'});
   });
+
+  it('should resassign children of BinNode when merging', () => {
+    const parent = new DataFlowNode(null);
+    const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
+    const binNodeB = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['bar', 'bar_end']]}});
+    const childA = new DataFlowNode(binNodeA);
+    const childB = new DataFlowNode(binNodeB);
+
+    binNodeA.merge(binNodeB, undefined);
+
+    expect(binNodeB.children.length).toEqual(0);
+    expect(binNodeA.children.length).toEqual(2);
+    expect(binNodeA.children).toContain(childA);
+    expect(binNodeA.children).toContain(childB);
+  });
 });
