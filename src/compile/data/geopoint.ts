@@ -1,6 +1,7 @@
 import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2} from '../../channel';
+import {isValueDef, ValueDef} from '../../channeldef';
 import {duplicate} from '../../util';
-import {VgGeoPointTransform} from '../../vega.schema';
+import {VgExprRef, VgGeoPointTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
@@ -9,7 +10,12 @@ export class GeoPointNode extends DataFlowNode {
     return new GeoPointNode(null, this.projection, duplicate(this.fields), duplicate(this.as));
   }
 
-  constructor(parent: DataFlowNode, private projection: string, private fields: string[], private as: string[]) {
+  constructor(
+    parent: DataFlowNode,
+    private projection: string,
+    private fields: (string | VgExprRef)[],
+    private as: string[]
+  ) {
     super(parent);
   }
 
@@ -20,7 +26,11 @@ export class GeoPointNode extends DataFlowNode {
 
     [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((coordinates: GeoPositionChannel[]) => {
       const pair = coordinates.map(channel =>
-        model.channelHasField(channel) ? model.fieldDef(channel).field : undefined
+        model.channelHasField(channel)
+          ? model.fieldDef(channel).field
+          : isValueDef(model.encoding[channel])
+          ? {expr: (model.encoding[channel] as ValueDef<number>).value + ''}
+          : undefined
       );
 
       const suffix = coordinates[0] === LONGITUDE2 ? '2' : '';

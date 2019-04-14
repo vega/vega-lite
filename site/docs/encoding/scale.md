@@ -53,12 +53,12 @@ The `type` property can be specified to customize the scale type.
 
 By default, Vega-Lite use the following scale types for the following [data types](type.html) and [encoding channels](encoding.html#channel):
 
-|                   |              Nominal / Ordinal              |   Quantitative    | Bin-Quantitative<sup>1</sup> |     Temporal      |
-| ----------------: | :-----------------------------------------: | :---------------: | :--------------------------: | :---------------: |
-|          **X, Y** | [Band](#band) / [Point](#point)<sup>2</sup> | [Linear](#linear) |      [Linear](#linear)       |   [Time](#time)   |
-| **Size, Opacity** |               [Point](#point)               | [Linear](#linear) |      [Linear](#linear)       |   [Time](#time)   |
-|         **Color** |             [Ordinal](#ordinal)             | [Linear](#linear) | [Bin-Ordinal](#bin-ordinal)  | [Linear](#linear) |
-|         **Shape** |             [Ordinal](#ordinal)             |        N/A        |             N/A              |        N/A        |
+|  | Nominal / Ordinal | Quantitative | Bin-Quantitative<sup>1</sup> | Temporal |
+| --: | :-: | :-: | :-: | :-: |
+| **X, Y** | [Band](#band) / [Point](#point)<sup>2</sup> | [Linear](#linear) | [Linear](#linear) | [Time](#time) |
+| **Size, Opacity** | [Point](#point) | [Linear](#linear) | [Linear](#linear) | [Time](#time) |
+| **Color** | [Ordinal](#ordinal) | [Linear](#linear) | [Bin-Ordinal](#bin-ordinal) | [Linear](#linear) |
+| **Shape** | [Ordinal](#ordinal) | N/A | N/A | N/A |
 
 <span class="note-line">
 <sup>1</sup> Quantitative fields with the [`bin`](bin.html) transform.
@@ -101,14 +101,14 @@ TODO: Custom Domain for quantitative / discrete scales
 
 The range of the scale represents the set of output visual values. Vega-Lite automatically determines the default range for each [encoding channel](encoding.html#channel) using the following rules:
 
-| Channels  | Default Range                                                                                                                                                                                                                                                                                                                                                                     |
-| :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x`       | The range is _always_ `[0, width]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`width`](size.html) property or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales.                                                                                                                  |
-| `y`       | The range is _always_ `[0, height]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`height`](size.html) property or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales.                                                                                                                |
-| `opacity` | Derived from the [scale config](#config)'s `min/maxOpacity`.                                                                                                                                                                                                                                                                                                                      |
-| `color`   | Derived from the following [named ranges](scale.html#range-config) based on the field's [`type`](type.html): <br/> • `"category"` for _nominal_ fields. <br/> • `"ordinal"` for _ordinal_ fields. <br/> • `"heatmap"` for _quantitative_ and _temporal_ fields with `"rect"` marks and `"ramp'` for other marks. <br/><br/> See the [color scheme](#scheme) section for examples. |
-| `size`    | Derived from the following [named ranges](#config) based on the `mark` type: <br/> • `min/maxBandSize` for bar and tick. <br/> • `min/maxStrokeWidth` for line and rule. <br/> • `min/maxSize` for point, square, and circle <br/> • `min/maxFontSize` for text                                                                                                                   |
-| `shape`   | Derived from the [pre-defined named range](#range-config) `"symbol"`.                                                                                                                                                                                                                                                                                                             |
+| Channels | Default Range |
+| :-- | :-- |
+| `x` | The range is _always_ `[0, width]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`width`](size.html) property or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales. |
+| `y` | The range is _always_ `[0, height]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`height`](size.html) property or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales. |
+| `opacity` | Derived from the [scale config](#config)'s `min/maxOpacity`. |
+| `color` | Derived from the following [named ranges](scale.html#range-config) based on the field's [`type`](type.html): <br/> • `"category"` for _nominal_ fields. <br/> • `"ordinal"` for _ordinal_ fields. <br/> • `"heatmap"` for _quantitative_ and _temporal_ fields with `"rect"` marks and `"ramp'` for other marks. <br/><br/> See the [color scheme](#scheme) section for examples. |
+| `size` | Derived from the following [named ranges](#config) based on the `mark` type: <br/> • `min/maxBandSize` for bar and tick. <br/> • `min/maxStrokeWidth` for line and rule. <br/> • `min/maxSize` for point, square, and circle <br/> • `min/maxFontSize` for text |
+| `shape` | Derived from the [pre-defined named range](#range-config) `"symbol"`. |
 
 To customize range values, users can directly specify `range`, or the special range properties: [`rangeStep`](#range-step) and [`padding`](#padding) for [band](#band) and [point](#point) scales and [`scheme`](#scheme) for [ordinal](#ordinal) and [continuous](#continuous) color scales.
 

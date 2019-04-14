@@ -142,8 +142,9 @@
       "encode": {
         "update": {
           "align": {"value": "right"},
+          "baseline": {"value": "bottom"},
           "dx": {"value": -2},
-          "dy": {"value": -4},
+          "dy": {"value": -2},
           "fill": {"value": "black"},
           "tooltip": {
             "signal": "{\"PM2.5 Value\": format(datum[\"ThresholdValue\"], \"\"), \"Threshold\": ''+datum[\"Threshold\"]}"

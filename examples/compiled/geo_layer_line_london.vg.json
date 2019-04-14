@@ -80,7 +80,8 @@
           "y": {"field": "layer_1_y"},
           "text": {"signal": "''+datum[\"bLabel\"]"},
           "fontSize": {"value": 8},
-          "align": {"value": "center"}
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
         }
       }
     },

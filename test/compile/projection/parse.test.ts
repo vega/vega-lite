@@ -19,6 +19,9 @@ describe('src/compile/projection/parse', () => {
         encoding: {}
       });
       model.parse();
+      expect(model.component.projection.isFit).toBe(true);
+      expect(typeof model.component.projection.data[0]).toBe('string');
+      expect(model.component.projection.size).toEqual([{signal: 'width'}, {signal: 'height'}]);
       expect(model.component.projection.explicit).toEqual({type: 'albersUsa'});
     });
 
@@ -105,6 +108,52 @@ describe('src/compile/projection/parse', () => {
     });
   });
 
+  it('should create projection from specified projection with scale', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'geoshape',
+      projection: {
+        type: 'albersUsa',
+        scale: 1000
+      },
+      data: {
+        url: 'data/us-10m.json',
+        format: {
+          type: 'topojson',
+          feature: 'states'
+        }
+      },
+      encoding: {}
+    });
+    model.parse();
+    expect(model.component.projection.isFit).toBe(false);
+    expect(model.component.projection.data).toBeUndefined();
+    expect(model.component.projection.size).toBeUndefined();
+    expect(model.component.projection.explicit).toEqual({type: 'albersUsa', scale: 1000});
+  });
+
+  it('should create projection from specified projection with translate', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'geoshape',
+      projection: {
+        type: 'albersUsa',
+        translate: [100, 100]
+      },
+      data: {
+        url: 'data/us-10m.json',
+        format: {
+          type: 'topojson',
+          feature: 'states'
+        }
+      },
+      encoding: {}
+    });
+    model.parse();
+    expect(model.component.projection.isFit).toBe(false);
+    expect(model.component.projection.data).toBeUndefined();
+    expect(model.component.projection.size).toBeUndefined();
+    expect(model.component.projection.explicit).toEqual({type: 'albersUsa', translate: [100, 100]});
+  });
+
   describe('parseNonUnitProjection', () => {
     it('should merge the same projection', () => {
       const model = parseLayerModel({
@@ -145,8 +194,100 @@ describe('src/compile/projection/parse', () => {
         ]
       });
       model.parse();
+      expect(model.component.projection.isFit).toBe(true);
       expect(model.component.projection.explicit).toEqual({type: 'albersUsa'});
     });
+    
+    it('should merge the same projection with custom scale', () => {
+      const model = parseLayerModel({
+        layer: [
+          {
+            mark: 'geoshape',
+            projection: {
+              type: 'albersUsa',
+              scale: 1000
+            },
+            data: {
+              url: 'data/us-10m.json',
+              format: {
+                type: 'topojson',
+                feature: 'states'
+              }
+            },
+            encoding: {}
+          },
+          {
+            data: {
+              url: 'data/airports.csv'
+            },
+            mark: 'circle',
+            projection: {
+              type: 'albersUsa',
+              scale: 1000
+            },
+            encoding: {
+              longitude: {
+                field: 'longitude',
+                type: 'quantitative'
+              },
+              latitude: {
+                field: 'latitude',
+                type: 'quantitative'
+              }
+            }
+          }
+        ]
+      });
+      model.parse();
+      expect(model.component.projection.isFit).toBe(false);
+      expect(model.component.projection.explicit).toEqual({type: 'albersUsa', scale: 1000});
+    });
+
+    it('should merge the same projection with custom translate', () => {
+      const model = parseLayerModel({
+        layer: [
+          {
+            mark: 'geoshape',
+            projection: {
+              type: 'albersUsa',
+              translate: [100, 100]
+            },
+            data: {
+              url: 'data/us-10m.json',
+              format: {
+                type: 'topojson',
+                feature: 'states'
+              }
+            },
+            encoding: {}
+          },
+          {
+            data: {
+              url: 'data/airports.csv'
+            },
+            mark: 'circle',
+            projection: {
+              type: 'albersUsa',
+              translate: [100, 100]
+            },
+            encoding: {
+              longitude: {
+                field: 'longitude',
+                type: 'quantitative'
+              },
+              latitude: {
+                field: 'latitude',
+                type: 'quantitative'
+              }
+            }
+          }
+        ]
+      });
+      model.parse();
+      expect(model.component.projection.isFit).toBe(false);
+      expect(model.component.projection.explicit).toEqual({type: 'albersUsa', translate: [100, 100]});
+    });
+
     it('should merge in empty projection to specified projection', () => {
       const emptyFirst = parseLayerModel({
         layer: [
@@ -271,6 +412,49 @@ describe('src/compile/projection/parse', () => {
             mark: 'geoshape',
             projection: {
               type: 'mercator'
+            },
+            data: {
+              url: 'data/us-10m.json',
+              format: {
+                type: 'topojson',
+                feature: 'states'
+              }
+            },
+            encoding: {}
+          },
+          {
+            data: {
+              url: 'data/airports.csv'
+            },
+            mark: 'circle',
+            projection: {
+              type: 'albersUsa'
+            },
+            encoding: {
+              longitude: {
+                field: 'longitude',
+                type: 'quantitative'
+              },
+              latitude: {
+                field: 'latitude',
+                type: 'quantitative'
+              }
+            }
+          }
+        ]
+      });
+      model.parse();
+      expect(model.component.projection).toBeUndefined();
+    });
+
+    it('should not merge fit and custom projections', () => {
+      const model = parseLayerModel({
+        layer: [
+          {
+            mark: 'geoshape',
+            projection: {
+              type: 'albersUsa',
+              scale: 1000
             },
             data: {
               url: 'data/us-10m.json',

@@ -19,10 +19,11 @@ describe('Multi Selection', () => {
   });
 
   const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'multi'},
+    one: {type: 'multi', clear: false},
     two: {
       type: 'multi',
       nearest: true,
+      clear: false,
       on: 'mouseover',
       toggle: 'event.ctrlKey',
       encodings: ['y', 'color']
@@ -30,16 +31,19 @@ describe('Multi Selection', () => {
     'thr-ee': {
       type: 'multi',
       fields: ['Horsepower'],
+      clear: false,
       init: {Horsepower: 50}
     },
     four: {
       type: 'multi',
       encodings: ['x', 'color'],
+      clear: false,
       init: {Horsepower: 50, color: 'Japan'}
     },
     five: {
       type: 'multi',
       fields: ['Year', 'Origin'],
+      clear: false,
       init: [
         {
           Origin: 'Japan',

@@ -9,6 +9,14 @@ permalink: /docs/
 
 This documentation describes the [JSON specification language](#spec) and how to [use Vega-Lite visualizations]({{site.baseurl}}/usage/embed.html) in a web application.
 
+<form action="https://google.com/search" method="get" class="search">
+  <input type="hidden" name="q" value="site:https://vega.github.io/vega-lite/docs/">
+  <input class="search" type="text" name="q" results="0" placeholder="Search Docs">
+  <button type="submit">
+    Search
+  </button>
+</form>
+
 {:#toc}
 
 ## Table of Contents

@@ -42,7 +42,7 @@
       }, {
         "mark": {
           "type": "text",
-          "dy": -6
+          "dy": -10
         },
         "encoding": {
           "text": {"field": "city", "type": "nominal"}

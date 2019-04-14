@@ -227,6 +227,7 @@
       "from": {"data": "data_3"},
       "encode": {
         "update": {
+          "baseline": {"value": "bottom"},
           "fontSize": {"value": 9},
           "fontStyle": {"value": "italic"},
           "fill": {"value": "black"},
@@ -237,7 +238,7 @@
             },
             {"scale": "x", "field": "x"}
           ],
-          "y": {"scale": "y", "field": "off2", "offset": 14},
+          "y": {"scale": "y", "field": "off2", "offset": 16},
           "text": {"signal": "''+datum[\"name\"]"},
           "align": {"value": "center"}
         }

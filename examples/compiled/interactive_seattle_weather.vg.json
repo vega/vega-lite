@@ -128,6 +128,10 @@
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
             }
           ]
         },
@@ -423,6 +427,10 @@
               "events": [{"source": "scope", "type": "click"}],
               "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", fields: click_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"weather\"]]} : null",
               "force": true
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
             }
           ]
         },
@@ -437,6 +445,10 @@
             {
               "events": [{"source": "scope", "type": "click"}],
               "update": "event.shiftKey"
+            },
+            {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "false"
             }
           ]
         },

@@ -1,7 +1,8 @@
 import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
+import {isValueDef, ValueDef} from '../../channeldef';
 import {GEOJSON} from '../../type';
 import {duplicate} from '../../util';
-import {VgGeoJSONTransform} from '../../vega.schema';
+import {VgExprRef, VgGeoJSONTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
@@ -11,11 +12,19 @@ export class GeoJSONNode extends DataFlowNode {
   }
 
   public static parseAll(parent: DataFlowNode, model: UnitModel): DataFlowNode {
+    if (model.component.projection && !model.component.projection.isFit) {
+      return parent;
+    }
+
     let geoJsonCounter = 0;
 
     [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((coordinates: GeoPositionChannel[]) => {
       const pair = coordinates.map(channel =>
-        model.channelHasField(channel) ? model.fieldDef(channel).field : undefined
+        model.channelHasField(channel)
+          ? model.fieldDef(channel).field
+          : isValueDef(model.encoding[channel])
+          ? {expr: (model.encoding[channel] as ValueDef<number>).value + ''}
+          : undefined
       );
 
       if (pair[0] || pair[1]) {
@@ -33,7 +42,12 @@ export class GeoJSONNode extends DataFlowNode {
     return parent;
   }
 
-  constructor(parent: DataFlowNode, private fields?: string[], private geojson?: string, private signal?: string) {
+  constructor(
+    parent: DataFlowNode,
+    private fields?: (string | VgExprRef)[],
+    private geojson?: string,
+    private signal?: string
+  ) {
     super(parent);
   }
 

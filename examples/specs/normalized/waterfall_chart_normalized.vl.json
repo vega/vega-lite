@@ -98,7 +98,7 @@
       }
     },
     {
-      "mark": {"type": "text", "dy": -8},
+      "mark": {"type": "text", "dy": -4, "baseline": "bottom"},
       "encoding": {
         "x": {
           "field": "label",
@@ -111,7 +111,7 @@
       }
     },
     {
-      "mark": {"type": "text", "dy": 8, "baseline": "top"},
+      "mark": {"type": "text", "dy": 4, "baseline": "top"},
       "encoding": {
         "x": {
           "field": "label",

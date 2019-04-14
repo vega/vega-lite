@@ -76,7 +76,8 @@
           "events": [{"source": "scope", "type": "mouseover"}],
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0_layer_1\", fields: label_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
-        }
+        },
+        {"events": [{"source": "scope", "type": "mouseout"}], "update": "null"}
       ]
     },
     {
@@ -207,7 +208,8 @@
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
-          "text": {"signal": "format(datum[\"price\"], \"\")"}
+          "text": {"signal": "format(datum[\"price\"], \"\")"},
+          "baseline": {"value": "middle"}
         }
       }
     },
@@ -227,7 +229,8 @@
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
-          "text": {"signal": "format(datum[\"price\"], \"\")"}
+          "text": {"signal": "format(datum[\"price\"], \"\")"},
+          "baseline": {"value": "middle"}
         }
       }
     }

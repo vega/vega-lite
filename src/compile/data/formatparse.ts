@@ -9,7 +9,7 @@ import {
   isTypedFieldDef,
   TypedFieldDef
 } from '../../channeldef';
-import {Parse} from '../../data';
+import {isGenerator, Parse} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import * as log from '../../log';
 import {forEachLeaf} from '../../logical';
@@ -87,7 +87,7 @@ export class ParseNode extends DataFlowNode {
     // Custom parse
     let explicit = {};
     const data = model.data;
-    if (data && data.format && data.format.parse) {
+    if (!isGenerator(data) && data && data.format && data.format.parse) {
       explicit = data.format.parse;
     }
 

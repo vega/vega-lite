@@ -18,7 +18,8 @@
           "bin": {"maxbins": 20},
           "type": "quantitative"
         },
-        "y": {"aggregate": "count", "type": "quantitative"}
+        "y": {"aggregate": "count", "type": "quantitative"},
+        "color": {"value": "#ddd"}
       }
     }, {
       "transform": [{"filter": {"selection": "brush"}}],
@@ -29,8 +30,7 @@
           "bin": {"maxbins": 20},
           "type": "quantitative"
         },
-        "y": {"aggregate": "count", "type": "quantitative"},
-        "color": {"value": "goldenrod"}
+        "y": {"aggregate": "count", "type": "quantitative"}
       }
     }]
   }

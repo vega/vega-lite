@@ -29,8 +29,6 @@ import {
   SecondaryFieldDef,
   ShapeFieldDefWithCondition,
   ShapeValueDefWithCondition,
-  StringFieldDefWithCondition,
-  StringValueDefWithCondition,
   TextFieldDef,
   TextFieldDefWithCondition,
   TextValueDefWithCondition,
@@ -84,24 +82,24 @@ export interface Encoding<F extends Field> {
   /**
    * Longitude position of geographically projected marks.
    */
-  longitude?: LatLongFieldDef<F>;
+  longitude?: LatLongFieldDef<F> | ValueDef<number>;
 
   /**
    * Latitude position of geographically projected marks.
    */
-  latitude?: LatLongFieldDef<F>;
+  latitude?: LatLongFieldDef<F> | ValueDef<number>;
 
   /**
    * Longitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // `longitude2` cannot have type as it should have the same type as `longitude`
-  longitude2?: SecondaryFieldDef<F>;
+  longitude2?: SecondaryFieldDef<F> | ValueDef<number>;
 
   /**
    * Latitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // `latitude2` cannot have type as it should have the same type as `latitude`
-  latitude2?: SecondaryFieldDef<F>;
+  latitude2?: SecondaryFieldDef<F> | ValueDef<number>;
 
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
@@ -208,7 +206,7 @@ export interface Encoding<F extends Field> {
   /**
    * A URL to load upon mouse click.
    */
-  href?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  href?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
 
   /**
    * Order of the marks.

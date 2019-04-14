@@ -406,19 +406,19 @@ export function isFold(t: Transform): t is FoldTransform {
 }
 
 export type Transform =
-  | FilterTransform
-  | CalculateTransform
-  | LookupTransform
-  | BinTransform
-  | TimeUnitTransform
-  | ImputeTransform
   | AggregateTransform
-  | WindowTransform
-  | JoinAggregateTransform
-  | StackTransform
+  | BinTransform
+  | CalculateTransform
+  | FilterTransform
   | FlattenTransform
   | FoldTransform
-  | SampleTransform;
+  | ImputeTransform
+  | JoinAggregateTransform
+  | LookupTransform
+  | TimeUnitTransform
+  | SampleTransform
+  | StackTransform
+  | WindowTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {
