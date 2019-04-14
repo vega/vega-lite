@@ -197,7 +197,7 @@ describe('src/compile/projection/parse', () => {
       expect(model.component.projection.isFit).toBe(true);
       expect(model.component.projection.explicit).toEqual({type: 'albersUsa'});
     });
-    
+
     it('should merge the same projection with custom scale', () => {
       const model = parseLayerModel({
         layer: [
