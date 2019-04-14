@@ -284,4 +284,18 @@ describe('compile/data/bin', () => {
     expect(binNodeA.children).toContain(childA);
     expect(binNodeA.children).toContain(childB);
   });
+
+  it('should rename bin signals when merging nodes', () => {
+    const parent = new DataFlowNode(null);
+    const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
+    const binNodeB = new BinNode(parent, {bar: {bin: {}, field: 'bar', as: [['bar', 'bar_end']]}});
+
+    binNodeA.merge(binNodeB, undefined);
+    expect(binNodeA).toEqual(
+      new BinNode(parent, {
+        foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]},
+        bar: {bin: {}, field: 'bar', as: [['bar', 'bar_end']]}
+      })
+    );
+  });
 });

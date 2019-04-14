@@ -1,8 +1,10 @@
 /* tslint:disable:quotemark */
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {ImputeNode} from '../../../src/compile/data/impute';
+import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {MergeIdenticalNodes} from '../../../src/compile/data/optimizers';
 import {Transform} from '../../../src/transform';
+import {parseLayerModel} from '../../util';
 import {FilterNode} from './../../../src/compile/data/filter';
 
 describe('compile/data/optimizer', () => {
@@ -73,6 +75,35 @@ describe('compile/data/optimizer', () => {
       expect(a2.parent).toBe(a);
       expect(b1.parent).toBe(a);
       expect(b2.parent).toBe(a);
+    });
+  });
+
+  describe('MergeBins', () => {
+    it('should rename signals when merging BinNodes', () => {
+      const transform = {
+        bin: {extent: [0, 100], anchor: 6},
+        field: 'Acceleration',
+        as: ['binned_acceleration_start', 'binned_acceleration_stop']
+      };
+      const model = parseLayerModel({
+        layer: [
+          {
+            transform: [transform],
+            mark: 'rect',
+            encoding: {}
+          },
+          {
+            transform: [transform],
+            mark: 'rect',
+            encoding: {}
+          }
+        ]
+      });
+      model.parse();
+      optimizeDataflow(model.component.data, model);
+      expect(model.getSignalName('layer_0_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins')).toEqual(
+        'layer_1_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
+      );
     });
   });
 });
