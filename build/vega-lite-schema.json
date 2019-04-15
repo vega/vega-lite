@@ -10152,7 +10152,7 @@
         },
         "sequence": {
           "$ref": "#/definitions/SequenceParams",
-          "description": "Generate sphere GeoJSON data for the full globe."
+          "description": "Generate a sequence of numbers."
         }
       },
       "required": [
