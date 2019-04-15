@@ -137,7 +137,7 @@ export interface VgProjection {
   /*
    * The translation of the projection.
    */
-  translate?: number[];
+  translate?: SignalRef | number[];
   /*
    * The center of the projection.
    */
