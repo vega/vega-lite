@@ -12,9 +12,9 @@
   "projections": [
     {
       "name": "projection",
+      "translate": [100, 100],
       "type": "orthographic",
-      "scale": 100,
-      "translate": [100, 100]
+      "scale": 100
     }
   ],
   "marks": [
