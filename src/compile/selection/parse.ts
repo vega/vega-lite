@@ -42,12 +42,6 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
       }
     }
 
-    // Define "clear" defaults here as it depends on "on".
-    if (selDef.clear !== false) {
-      const trigger = selDef.on === 'mouseover' ? 'mouseout' : 'dblclick';
-      selDef.clear = parseSelector(selDef.clear || trigger, 'scope');
-    }
-
     name = varName(name);
     const selCmpt = (selCmpts[name] = {
       ...selDef,

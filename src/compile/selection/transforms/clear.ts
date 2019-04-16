@@ -1,4 +1,5 @@
 import {Update} from 'vega';
+import {selector as parseSelector} from 'vega-event-selector';
 import {TUPLE} from '..';
 import {varName} from '../../../util';
 import inputBindings from './inputs';
@@ -8,6 +9,12 @@ import {TransformCompiler} from './transforms';
 const clear: TransformCompiler = {
   has: selCmpt => {
     return selCmpt.clear !== false;
+  },
+
+  parse: (model, selDef, selCmpt) => {
+    if (selDef.clear) {
+      selCmpt.clear = parseSelector(selDef.clear, 'scope');
+    }
   },
 
   topLevelSignals: (model, selCmpt, signals) => {
