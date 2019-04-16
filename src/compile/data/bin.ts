@@ -166,7 +166,7 @@ export class BinNode extends DataFlowNode {
       vals(this.bins).map(bin => {
         const transform: VgTransform[] = [];
 
-        const binAs = bin.as[0];
+        const [binAs, ...remainingAs] = bin.as;
         const binTrans: VgBinTransform = {
           type: 'bin',
           field: bin.field,
@@ -186,7 +186,7 @@ export class BinNode extends DataFlowNode {
 
         transform.push(binTrans);
 
-        for (const as of bin.as.slice(1)) {
+        for (const as of remainingAs) {
           for (let i = 0; i < 2; i++) {
             transform.push({
               type: 'formula',
