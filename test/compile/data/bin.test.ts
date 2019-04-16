@@ -285,7 +285,7 @@ describe('compile/data/bin', () => {
     expect(binNodeA.children).toContain(childB);
   });
 
-  it('should rename bin signals when merging nodes', () => {
+  it('should keep non-conflicting bins of BinNodes when merging', () => {
     const parent = new DataFlowNode(null);
     const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
     const binNodeB = new BinNode(parent, {bar: {bin: {}, field: 'bar', as: [['bar', 'bar_end']]}});
