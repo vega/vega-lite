@@ -107,7 +107,7 @@
       "domain": false,
       "labelAngle": 0,
       "tickColor": "#ccc",
-      "title": false
+      "title": null
     },
     "view": {"stroke": null},
     "style": {
