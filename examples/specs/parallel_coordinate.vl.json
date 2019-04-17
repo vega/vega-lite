@@ -91,7 +91,7 @@
     }]
   }],
   "config": {
-    "axisX": {"domain": false, "labelAngle": 0, "tickColor": "#ccc", "title": false},
+    "axisX": {"domain": false, "labelAngle": 0, "tickColor": "#ccc", "title": null},
     "view": {"stroke": null},
     "style": {
       "label": {"baseline": "middle", "align": "right", "dx": -5, "tooltip": null},
