@@ -31,6 +31,9 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
     return [
       {
         name,
+        // translate to center by default
+        ...{translate: {signal: '[width / 2, height / 2]'}},
+        // parameters, overwrite default translate if specified
         ...rest
       }
     ];

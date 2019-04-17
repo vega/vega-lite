@@ -42,7 +42,7 @@
           "events": [{"source": "scope", "type": "mouseover"}],
           "update": "datum && item().mark.marktype !== 'group' ? (item().isVoronoi ? datum.datum : datum)[\"X\"] : null"
         },
-        {"events": [{"source": "scope", "type": "mouseout"}], "update": "null"}
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
       ],
       "bind": {"input": "number"}
     },

@@ -61,7 +61,7 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
    * Clears the selection, emptying it of all values. Can be an
    * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
    *
-   * __Default value:__ `mouseout` if `on: mouseover` else `dblclick`.
+   * __Default value:__ `dblclick`.
    *
    * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
    */
@@ -95,7 +95,7 @@ export interface MultiSelectionConfig extends BaseSelectionDef {
    * Clears the selection, emptying it of all values. Can be an
    * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
    *
-   * __Default value:__ `mouseout` if `on: mouseover` else `dblclick`.
+   * __Default value:__ `dblclick`.
    *
    * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
    */
@@ -172,7 +172,7 @@ export interface IntervalSelectionConfig extends BaseSelectionDef {
    * Clears the selection, emptying it of all values. Can be an
    * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
    *
-   * __Default value:__ `mouseout` if `on: mouseover` else `dblclick`.
+   * __Default value:__ `dblclick`.
    *
    * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
    */
@@ -270,14 +270,16 @@ export const defaultConfig: SelectionConfig = {
     on: 'click',
     fields: [SELECTION_ID],
     resolve: 'global',
-    empty: 'all'
+    empty: 'all',
+    clear: 'dblclick'
   },
   multi: {
     on: 'click',
     fields: [SELECTION_ID],
     toggle: 'event.shiftKey',
     resolve: 'global',
-    empty: 'all'
+    empty: 'all',
+    clear: 'dblclick'
   },
   interval: {
     on: '[mousedown, window:mouseup] > window:mousemove!',
@@ -285,6 +287,7 @@ export const defaultConfig: SelectionConfig = {
     translate: '[mousedown, window:mouseup] > window:mousemove!',
     zoom: 'wheel!',
     mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white'},
-    resolve: 'global'
+    resolve: 'global',
+    clear: 'dblclick'
   }
 };

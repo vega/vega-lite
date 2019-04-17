@@ -94,7 +94,7 @@
               "force": true
             },
             {
-              "events": [{"source": "scope", "type": "mouseout"}],
+              "events": [{"source": "scope", "type": "dblclick"}],
               "update": "null"
             }
           ]
@@ -214,7 +214,7 @@
               "force": true
             },
             {
-              "events": [{"source": "scope", "type": "mouseout"}],
+              "events": [{"source": "scope", "type": "dblclick"}],
               "update": "null"
             }
           ]

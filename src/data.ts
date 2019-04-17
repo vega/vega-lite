@@ -161,7 +161,7 @@ export interface GeneratorBase {
 
 export interface SequenceGenerator extends GeneratorBase {
   /**
-   * Generate sphere GeoJSON data for the full globe.
+   * Generate a sequence of numbers.
    */
   sequence: SequenceParams;
 }
