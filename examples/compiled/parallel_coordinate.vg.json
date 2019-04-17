@@ -255,7 +255,7 @@
       "domain": false,
       "labelAngle": 0,
       "tickColor": "#ccc",
-      "title": false
+      "title": null
     },
     "style": {
       "label": {
