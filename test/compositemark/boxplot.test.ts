@@ -915,4 +915,38 @@ describe('normalizeBoxIQR', () => {
       }
     });
   });
+
+  it('should only include custom tooltip in outliers layer', () => {
+    const normalizedSpecWithTooltip = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: 'boxplot',
+        encoding: {
+          x: {field: 'age', type: 'ordinal'},
+          y: {field: 'people', type: 'quantitative'},
+          tooltip: {field: 'year', type: 'quantitative'}
+        }
+      },
+      defaultConfig
+    );
+    const normalizedSpecWithoutTooltip = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: 'boxplot',
+        encoding: {
+          x: {field: 'age', type: 'ordinal'},
+          y: {field: 'people', type: 'quantitative'}
+        }
+      },
+      defaultConfig
+    );
+
+    expect(normalizedSpecWithTooltip).not.toEqual(normalizedSpecWithoutTooltip);
+
+    const innerLayer = normalizedSpecWithTooltip['layer'][0]['layer'][0];
+    const {tooltip, ...encodingWithoutTooltip} = innerLayer['encoding'];
+    innerLayer['encoding'] = encodingWithoutTooltip;
+
+    expect(normalizedSpecWithTooltip).toEqual(normalizedSpecWithoutTooltip);
+  });
 });

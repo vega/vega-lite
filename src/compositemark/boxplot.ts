@@ -1,8 +1,8 @@
 import {Orientation} from 'vega';
 import {isNumber, isObject} from 'vega-util';
+import {FieldDefWithCondition, PositionFieldDef} from '../channeldef';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
-import {PositionFieldDef} from '../channeldef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';
@@ -106,7 +106,8 @@ export function normalizeBoxPlot(
     continuousAxis,
     groupby,
     encodingWithoutContinuousAxis,
-    ticksOrient
+    ticksOrient,
+    tooltip
   } = boxParams(spec, extent, config);
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
@@ -270,7 +271,8 @@ export function normalizeBoxPlot(
           field: continuousAxisChannelDef.field,
           type: continuousAxisChannelDef.type
         },
-        ...encodingWithoutSizeColorAndContinuousAxis
+        ...encodingWithoutSizeColorAndContinuousAxis,
+        ...(tooltip ? {tooltip} : {})
       }
     })[0];
 
@@ -335,6 +337,7 @@ function boxParams(
   continuousAxis: 'x' | 'y';
   encodingWithoutContinuousAxis: Encoding<string>;
   ticksOrient: Orientation;
+  tooltip: FieldDefWithCondition<any>;
 } {
   const orient = compositeMarkOrient(spec, BOXPLOT);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, BOXPLOT);
@@ -381,9 +384,10 @@ function boxParams(
         ];
 
   const {[continuousAxis]: oldContinuousAxisChannelDef, ...oldEncodingWithoutContinuousAxis} = spec.encoding;
+  const {tooltip, ...oldEncodingWithoutContinuousAxisAndTooltip} = oldEncodingWithoutContinuousAxis;
 
   const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(
-    oldEncodingWithoutContinuousAxis,
+    oldEncodingWithoutContinuousAxisAndTooltip,
     config
   );
 
@@ -403,6 +407,7 @@ function boxParams(
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis,
-    ticksOrient
+    ticksOrient,
+    tooltip
   };
 }
