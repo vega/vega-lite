@@ -125,12 +125,10 @@ export class BinNode extends DataFlowNode {
    * Merge bin nodes. This method either integrates the bin config from the other node
    * or if this node already has a bin config, renames the corresponding signal in the model.
    */
-  public merge(other: BinNode, model: Model) {
+  public merge(other: BinNode, renameSignal: (s1: string, s2: string) => void) {
     for (const key of keys(other.bins)) {
       if (key in this.bins) {
-        if (model) {
-          model.renameSignal(other.bins[key].signal, this.bins[key].signal);
-        }
+        renameSignal(other.bins[key].signal, this.bins[key].signal);
         // Ensure that we don't have duplicate names for signal pairs
         const uniqueAs: Dict<[string, string]> = {};
         for (const as of [...this.bins[key].as, ...other.bins[key].as]) {
