@@ -622,6 +622,11 @@
         "title": "Seattle Weather Exploration",
         "description": "This graph shows an interactive view of Seattle's weather, including maximum temperature, amount of precipitation, and type of weather. By clicking and dragging on the scatter plot, you can see the proportion of days in that range that have sun, rain, fog, snow, etc. Created by @jakevdp.",
         "png": true
+      },
+      {
+        "name": "airport_connections",
+        "png": true,
+        "title": "Connections among major U.S. airports."
       }
     ]
   }
