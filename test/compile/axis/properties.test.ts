@@ -79,12 +79,7 @@ describe('compile/axis', () => {
 
   describe('values', () => {
     it('should return correct timestamp values for DateTimes', () => {
-      const values = properties.values(
-        {values: [{year: 1970}, {year: 1980}]},
-        null,
-        {field: 'a', type: 'temporal'},
-        'x'
-      );
+      const values = properties.values({values: [{year: 1970}, {year: 1980}]}, null, {field: 'a', type: 'temporal'});
 
       expect(values).toEqual([
         {signal: 'datetime(1970, 0, 1, 0, 0, 0, 0)'},

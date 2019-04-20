@@ -45,7 +45,7 @@ describe('compile/axis/encode', () => {
           x: {field: 'a', type: 'temporal', timeUnit: 'yearquartermonth'}
         }
       });
-      const labels = encode.labels(model, 'x', {}, 'bottom');
+      const labels = encode.labels(model, 'x', {});
       const expected = "'Q' + quarter(datum.value) + ' ' + timeFormat(datum.value, '%b %Y')";
       expect(labels.text.signal).toEqual(expected);
     });
