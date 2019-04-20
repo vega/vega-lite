@@ -40,12 +40,16 @@
       "x": {"type": "nominal", "field": "key"},
       "y": {"type": "quantitative", "field": "norm_val", "axis": null},
       "tooltip": [{
+        "type": "quantitative",
         "field": "petalLength"
       }, {
+        "type": "quantitative",
         "field": "petalWidth"
       }, {
+        "type": "quantitative",
         "field": "sepalLength"
       }, {
+        "type": "quantitative",
         "field": "sepalWidth"
       }]
     }
