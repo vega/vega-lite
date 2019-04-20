@@ -10,7 +10,7 @@
     {
       "name": "source_0",
       "url": "data/movies.json",
-      "format": {"type": "json", "parse": {"Release_Date": "date:'%d-%b-%y'"}},
+      "format": {"type": "json", "parse": {"Release_Date": "date"}},
       "transform": [
         {"type": "filter", "expr": "datum.IMDB_Rating != null"},
         {
