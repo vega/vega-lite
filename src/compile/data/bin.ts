@@ -4,7 +4,7 @@ import {Channel} from '../../channel';
 import {binRequiresRange, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
-import {Dict, duplicate, flatten, hash, keys, vals} from '../../util';
+import {Dict, duplicate, flatten, hash, keys, unique, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {binFormatExpression} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
@@ -130,11 +130,7 @@ export class BinNode extends DataFlowNode {
       if (key in this.bins) {
         renameSignal(other.bins[key].signal, this.bins[key].signal);
         // Ensure that we don't have duplicate names for signal pairs
-        const uniqueAs: Dict<[string, string]> = {};
-        for (const as of [...this.bins[key].as, ...other.bins[key].as]) {
-          uniqueAs[hash(as)] = as;
-        }
-        this.bins[key].as = vals(uniqueAs);
+        this.bins[key].as = unique([...this.bins[key].as, ...other.bins[key].as], hash);
       } else {
         this.bins[key] = other.bins[key];
       }
