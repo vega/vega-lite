@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import {AncestorParse} from '../../../src/compile/data';
 import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {BinNode} from '../../../src/compile/data/bin';

@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {parseUnitModelWithScale} from '../../util';
 
 describe('legend/assemble', () => {

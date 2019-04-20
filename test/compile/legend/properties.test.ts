@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {LegendOrient} from 'vega';
 import * as properties from '../../../src/compile/legend/properties';
 

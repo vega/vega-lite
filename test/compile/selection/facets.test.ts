@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {FacetModel} from '../../../src/compile/facet';
 import {unitName} from '../../../src/compile/selection';
 import {assembleFacetSignals} from '../../../src/compile/selection/assemble';

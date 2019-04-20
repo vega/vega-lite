@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {SignalRef} from 'vega';
 import {ScaleChannel} from '../../../src/channel';
 import {PositionFieldDef} from '../../../src/channeldef';

@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import {RepeatRef} from '../../src/channeldef';
 import {Encoding} from '../../src/encoding';
 import {isMarkDef, MarkDef} from '../../src/mark';

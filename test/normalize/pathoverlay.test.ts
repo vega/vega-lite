@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import {normalize} from '../../src/normalize/index';
 import {PathOverlayNormalizer} from '../../src/normalize/pathoverlay';
 import {TopLevelSpec} from '../../src/spec';

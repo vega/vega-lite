@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import toggle from '../../../src/compile/selection/transforms/toggle';

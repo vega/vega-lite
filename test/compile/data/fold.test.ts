@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {FoldTransformNode} from '../../../src/compile/data/fold';
 import {Transform} from '../../../src/transform';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';

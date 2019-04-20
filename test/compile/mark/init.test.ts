@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import * as log from '../../../src/log';
 import {CIRCLE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
 import {without} from '../../../src/util';

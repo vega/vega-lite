@@ -1,4 +1,3 @@
-/* tslint:disable quotemark */
 import {
   assembleTopLevelSignals,
   assembleUnitSelectionData,

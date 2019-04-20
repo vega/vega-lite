@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import {AggregateOp} from 'vega';
 import {DETAIL, X, Y} from '../src/channel';
 import * as log from '../src/log';

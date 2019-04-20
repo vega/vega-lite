@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {BinNode} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';

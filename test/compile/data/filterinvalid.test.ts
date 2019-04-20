@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {assert} from 'chai';
 import {FilterInvalidNode} from '../../../src/compile/data/filterinvalid';
 import {UnitModel} from '../../../src/compile/unit';

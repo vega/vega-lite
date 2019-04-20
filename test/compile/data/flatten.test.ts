@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {FlattenTransformNode} from '../../../src/compile/data/flatten';
 import {Transform} from '../../../src/transform';
 

@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {SignalRef} from 'vega';
 import {COLOR, SIZE} from '../../../src/channel';
 import {LegendComponent} from '../../../src/compile/legend/component';

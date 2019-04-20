@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';

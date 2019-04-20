@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {toSet} from 'vega-util';
 import {parseScaleCore, parseScales} from '../../../src/compile/scale/parse';
 import {SELECTION_DOMAIN} from '../../../src/compile/selection';

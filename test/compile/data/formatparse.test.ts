@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import {AncestorParse} from '../../../src/compile/data';
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {ParseNode} from '../../../src/compile/data/formatparse';

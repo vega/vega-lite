@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 
 import * as encode from '../../../src/compile/axis/encode';
 import {parseUnitModelWithScale} from '../../util';

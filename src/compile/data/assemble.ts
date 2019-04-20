@@ -151,7 +151,7 @@ function makeWalkTree(data: VgData[]) {
       case 1:
         walkTree(node.children[0], dataSource);
         break;
-      default:
+      default: {
         if (!dataSource.name) {
           dataSource.name = `data_${datasetIndex++}`;
         }
@@ -172,6 +172,7 @@ function makeWalkTree(data: VgData[]) {
           walkTree(child, newData);
         });
         break;
+      }
     }
   }
 

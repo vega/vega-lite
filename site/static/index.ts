@@ -59,7 +59,7 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
   const vis = $target.append('div').attr('class', 'example-vis');
 
   // Decrease visual noise by removing $schema and description from code examples.
-  const textClean = specText.replace(/(\s)+\"(\$schema|description)\": \".*?\",/g, '');
+  const textClean = specText.replace(/(\s)+"(\$schema|description)": ".*?",/g, '');
   const code = $target
     .append('pre')
     .attr('class', 'example-code')
@@ -222,7 +222,7 @@ if (carousel) {
   const indicators = carousel.querySelectorAll('.indicator');
   const links = carousel.querySelectorAll('.slide-nav');
 
-  // tslint:disable-next-line:prefer-for-of
+  // eslint-disable-next-line prefer-for-of
   for (let i = 0; i < indicators.length; i++) {
     indicators[i].addEventListener(
       'click',
@@ -230,7 +230,7 @@ if (carousel) {
     );
   }
 
-  // tslint:disable-next-line:prefer-for-of
+  // eslint-disable-next-line prefer-for-of
   for (let i = 0; i < links.length; i++) {
     links[i].addEventListener('click', setSlide(slides, indicators, links, +links[i].getAttribute('data-slide')));
   }

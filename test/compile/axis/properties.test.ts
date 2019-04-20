@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import * as properties from '../../../src/compile/axis/properties';
 import {defaultLabelAlign, defaultLabelBaseline, labelAngle} from '../../../src/compile/axis/properties';
 import {TimeUnit} from '../../../src/timeunit';

@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {compile} from '../../src/compile/compile';
 import * as log from '../../src/log';
 

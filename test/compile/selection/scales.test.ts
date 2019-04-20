@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {X} from '../../../src/channel';
 import {assembleScalesForModel} from '../../../src/compile/scale/assemble';
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
