@@ -378,11 +378,11 @@ export class MergeBins extends BottomUpOptimizer {
     if (promotableBins.length > 0) {
       const promotedBin = promotableBins.pop();
       for (const bin of promotableBins) {
-        promotedBin.merge(bin, this.model);
+        promotedBin.merge(bin, this.model.renameSignal.bind(this.model));
       }
       this.setMutated();
       if (parent instanceof BinNode) {
-        parent.merge(promotedBin, this.model);
+        parent.merge(promotedBin, this.model.renameSignal.bind(this.model));
       } else {
         promotedBin.swapWithParent();
       }
@@ -390,7 +390,7 @@ export class MergeBins extends BottomUpOptimizer {
     if (remainingBins.length > 1) {
       const remainingBin = remainingBins.pop();
       for (const bin of remainingBins) {
-        remainingBin.merge(bin, this.model);
+        remainingBin.merge(bin, this.model.renameSignal.bind(this.model));
       }
       this.setMutated();
     }
