@@ -3,10 +3,7 @@
   "description": "A dual axis chart, created by setting y's scale resolution to `\"independent\"`",
   "width": 400,
   "height": 300,
-  "data": {
-    "url": "https://vega.github.io/vega-datasets/data/weather.csv",
-    "format": {"type": "csv"}
-  },
+  "data": {"url": "data/weather.csv", "format": {"type": "csv"}},
   "transform": [{"filter": "datum.location == \"Seattle\""}],
   "layer": [
     {
