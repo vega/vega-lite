@@ -94,7 +94,9 @@ An impute transform can also be specified as a part of the `transform` array.
       "impute": ...,
       "key": ...,
       "keyvals": ...,
-      "groupby": [...]
+      "groupby": [...],
+      "frame": [...],
+      "method": ...
     }
     ...
   ],
@@ -102,7 +104,7 @@ An impute transform can also be specified as a part of the `transform` array.
 }
 ```
 
-{% include table.html props="impute,key,keyvals,groupby" source="ImputeTransform" %}
+{% include table.html props="impute,key,keyvals,groupby,frame,method,value" source="ImputeTransform" %}
 
 For example, the same chart with `impute` in encoding [above]("#encoding-impute-value") can be created using the `impute` transform. Here, we have to manually specify the `key` and `groupby` fields, which were inferred automatically for `impute` in `encoding`.
 
