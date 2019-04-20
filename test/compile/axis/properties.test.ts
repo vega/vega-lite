@@ -93,7 +93,7 @@ describe('compile/axis', () => {
     });
 
     it('should simply return values for non-DateTime', () => {
-      const values = properties.values({values: [1, 2, 3, 4]}, null, {field: 'a', type: 'quantitative'}, 'x');
+      const values = properties.values({values: [1, 2, 3, 4]}, null, {field: 'a', type: 'quantitative'});
       expect(values).toEqual([1, 2, 3, 4]);
     });
 
@@ -110,7 +110,7 @@ describe('compile/axis', () => {
         },
         data: {url: 'data/movies.json'}
       });
-      const values = properties.values({}, model1, model1.fieldDef('y'), 'y');
+      const values = properties.values({}, model1, model1.fieldDef('y'));
 
       expect(values).toBeUndefined();
     });
