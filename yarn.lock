@@ -1196,11 +1196,6 @@ commander@2, commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.0.tgz#d58bb2b5c1ee8f87b0d340027e9e94e222c5a422"
   integrity sha512-7j2y+40w61zy6YC2iRNpUe/NwhNyoXrYpHMrSunaMG64nRnaf96zO/KMQR4OyN/UnE5KLyEBnKHd4aG3rskjpQ==
 
-commander@~2.19.0:
-  version "2.19.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.19.0.tgz#f6198aa84e5b83c46054b94ddedbfed5ee9ff12a"
-  integrity sha512-6tvAOO+D6OENvRAh524Dh9jcfKTYDQAqvqezbCW82xj5X0pSrcpxtvRKHLG0yBY6SD7PSDrJaj+0AiOcKVd1Xg==
-
 compare-versions@^3.2.1:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/compare-versions/-/compare-versions-3.4.0.tgz#e0747df5c9cb7f054d6d3dc3e1dbc444f9e92b26"
@@ -5117,15 +5112,15 @@ ts-jest@^24.0.2:
     semver "^5.5"
     yargs-parser "10.x"
 
-ts-json-schema-generator@^0.40.0:
-  version "0.40.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.40.0.tgz#a2147675c94f022df14004a659c0b75a2e595425"
-  integrity sha512-VkxzG2fBVzu5Ohv6UXa6g43GGq3d/ejeZHetvMbLDFJZ2xPOEKglMLAQbZ8aX6WAE7cdhhSum8S5BnDMqB045Q==
+ts-json-schema-generator@^0.41.0:
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.41.0.tgz#e60405577d3111997a405ac80d07d30f085a85eb"
+  integrity sha512-oopc+ETaoc1C+6sAn40hvYTkso8WJYbImv6Wqvnwf8eaEdLzm9bnKCrLLESujCHXelzMiLMAZQgB1P9IS9u/yg==
   dependencies:
-    commander "~2.19.0"
+    commander "~2.20.0"
     glob "~7.1.3"
     json-stable-stringify "^1.0.1"
-    typescript "^3.3.1"
+    typescript "~3.4.4"
 
 tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0, tslib@~1.9.3:
   version "1.9.3"
@@ -5192,7 +5187,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.3.1, typescript@^3.4.4:
+typescript@^3.4.4, typescript@~3.4.4:
   version "3.4.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.4.tgz#aac4a08abecab8091a75f10842ffa0631818f785"
   integrity sha512-xt5RsIRCEaf6+j9AyOBgvVuAec0i92rgCaS3S+UVf5Z/vF2Hvtsw08wtUTJqp4djwznoAgjSxeCcU4r+CcDBJA==
