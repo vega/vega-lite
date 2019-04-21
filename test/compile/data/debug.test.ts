@@ -33,14 +33,13 @@ const dot2 = `digraph DataFlow {
   "43" -> "45"
 }`;
 
-const dot3 =
-  `digraph DataFlow {
+const dot3 = `digraph DataFlow {
   rankdir = TB;
   node [shape=record]
     "43" [
     label = <Source<br/><i>foo.bar</i>>;
     tooltip = "[43]&#010;foo.bar"
-  ]` + '\n\n  \n}';
+  ]\n\n  \n}`;
 
 const dot4 = `digraph DataFlow {
   rankdir = TB;
@@ -63,16 +62,14 @@ describe('compile/data/debug', () => {
       resetIdCounter();
 
       const root = new DataFlowNode(null);
-      // @ts-ignore
-      const node = new DataFlowNode(root);
+      new DataFlowNode(root);
       expect(draw([root])).toBe(dot);
     });
     it('should print node debugName when defined', () => {
       resetIdCounter();
 
       const root = new DataFlowNode(null, 'foo');
-      // @ts-ignore
-      const node = new DataFlowNode(root, 'bar');
+      new DataFlowNode(root, 'bar');
       expect(draw([root])).toBe(dot2);
     });
     it('should print node.data.url when defined', () => {
@@ -85,8 +82,7 @@ describe('compile/data/debug', () => {
       resetIdCounter();
 
       const root = new DataFlowNode(null);
-      // @ts-ignore
-      const node = new BinNode(root, {foo: {field: 'foo', as: ['bar'], bin: {}}});
+      new BinNode(root, {foo: {field: 'foo', as: [['bar', 'bar_end']], bin: {}}});
       expect(draw([root])).toBe(dot4);
     });
   });

@@ -1,4 +1,3 @@
-import * as log from '../../../src/log';
 import {CIRCLE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
 import {without} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
@@ -60,44 +59,35 @@ describe('compile/mark/init', () => {
   });
 
   describe('orient', () => {
-    it(
-      'should return correct default for QxQ',
-      log.wrap(localLogger => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          mark: 'bar',
-          encoding: {
-            y: {type: 'quantitative', field: 'foo'},
-            x: {type: 'quantitative', field: 'bar'}
-          }
-        });
-        expect(model.markDef.orient).toBe('vertical');
-      })
-    );
+    it('should return correct default for QxQ', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        encoding: {
+          y: {type: 'quantitative', field: 'foo'},
+          x: {type: 'quantitative', field: 'bar'}
+        }
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
 
-    it(
-      'should return correct default for empty plot',
-      log.wrap(localLogger => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          mark: 'bar',
-          encoding: {}
-        });
-        expect(model.markDef.orient).toEqual(undefined);
-      })
-    );
+    it('should return correct default for empty plot', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        encoding: {}
+      });
+      expect(model.markDef.orient).toEqual(undefined);
+    });
 
-    it(
-      'should return correct orient for bar with both axes discrete',
-      log.wrap(localLogger => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          mark: 'bar',
-          encoding: {
-            x: {type: 'ordinal', field: 'foo'},
-            y: {type: 'ordinal', field: 'bar'}
-          }
-        });
-        expect(model.markDef.orient).toEqual(undefined);
-      })
-    );
+    it('should return correct orient for bar with both axes discrete', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        encoding: {
+          x: {type: 'ordinal', field: 'foo'},
+          y: {type: 'ordinal', field: 'bar'}
+        }
+      });
+      expect(model.markDef.orient).toEqual(undefined);
+    });
 
     it('should return correct orient for vertical bar', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({

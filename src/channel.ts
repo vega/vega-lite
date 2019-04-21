@@ -323,6 +323,7 @@ function getSupportedMark(channel: Channel): SupportedMark {
     case COLOR:
     case FILL:
     case STROKE:
+    // falls through
 
     case DETAIL:
     case KEY:
@@ -333,9 +334,10 @@ function getSupportedMark(channel: Channel): SupportedMark {
     case FILLOPACITY:
     case STROKEOPACITY:
     case STROKEWIDTH:
+    // falls through
 
     case FACET:
-    case ROW:
+    case ROW: // falls through
     case COLUMN:
       return {
         // all marks
@@ -412,7 +414,8 @@ export function rangeType(channel: Channel): RangeType {
     case OPACITY:
     case FILLOPACITY:
     case STROKEOPACITY:
-    // X2 and Y2 use X and Y scales, so they similarly have continuous range.
+
+    // X2 and Y2 use X and Y scales, so they similarly have continuous range. [falls through]
     case X2:
     case Y2:
       return undefined;
@@ -421,7 +424,7 @@ export function rangeType(channel: Channel): RangeType {
     case ROW:
     case COLUMN:
     case SHAPE:
-    // TEXT, TOOLTIP, and HREF have no scale but have discrete output
+    // TEXT, TOOLTIP, and HREF have no scale but have discrete output [falls through]
     case TEXT:
     case TOOLTIP:
     case HREF:

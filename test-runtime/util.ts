@@ -54,6 +54,7 @@ const UNIT_NAMES = {
   facet: ['child__facet_row_0', 'child__facet_row_1', 'child__facet_row_2']
 };
 
+/* eslint-disable @typescript-eslint/camelcase */
 export const hits = {
   discrete: {
     qq: [8, 19],
@@ -84,6 +85,7 @@ export const hits = {
     facet: [[1, 9], [2, 8], [4, 10]],
     facet_clear: [[3], [5], [7]]
   }
+  /* eslint-enable @typescript-eslint/camelcase */
 };
 
 function base(iter: number, sel: any, opts: any = {}): NormalizedUnitSpec | NormalizedLayerSpec {

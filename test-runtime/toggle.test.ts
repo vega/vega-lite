@@ -6,8 +6,10 @@ declare const page: Page;
 
 const hits = {
   qq: [8, 19, 13, 21],
+  // eslint-disable-next-line @typescript-eslint/camelcase
   qq_clear: [5, 16],
   bins: [4, 29, 16, 9],
+  // eslint-disable-next-line @typescript-eslint/camelcase
   bins_clear: [18, 7],
   composite: [1, 3, 5, 7, 8, 9]
 };

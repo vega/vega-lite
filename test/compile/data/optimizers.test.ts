@@ -17,8 +17,7 @@ describe('compile/data/optimizer', () => {
       };
       const root = new DataFlowNode(null, 'root');
       const transform1 = new ImputeNode(root, transform);
-      // @ts-ignore
-      const transform2 = new ImputeNode(root, transform);
+      new ImputeNode(root, transform);
       const optimizer = new MergeIdenticalNodes();
       optimizer.run(root);
       expect(root.children).toHaveLength(1);
@@ -35,11 +34,11 @@ describe('compile/data/optimizer', () => {
       };
       const root = new DataFlowNode(null, 'root');
       const transform1 = new ImputeNode(root, transform);
-      // @ts-ignore
-      const transform2 = new ImputeNode(root, transform);
+
+      new ImputeNode(root, transform);
       const transform3 = new FilterNode(root, null, 'datum.x > 2');
-      // @ts-ignore
-      const transform4 = new FilterNode(root, null, 'datum.x > 2');
+
+      new FilterNode(root, null, 'datum.x > 2');
       const optimizer = new MergeIdenticalNodes();
       optimizer.run(root);
       expect(root.children).toHaveLength(2);

@@ -48,7 +48,7 @@ selectAll('h2, h3, h4, h5, h6').each(function(this: d3.BaseType) {
   const sel = select(this);
   const name = sel.attr('id');
   const title = sel.text();
-  sel.html('<a href="#' + name + '" class="anchor"><span class="octicon octicon-link"></span></a>' + trim(title));
+  sel.html(`<a href="#${name}" class="anchor"><span class="octicon octicon-link"></span></a>${trim(title)}`);
 });
 
 /* Documentation */
@@ -92,7 +92,6 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
       .append('a')
       .text('Open in Vega Editor')
       .attr('href', '#')
-      // tslint:disable-next-line
       .on('click', function() {
         post(window, editorURL, {
           mode: 'vega-lite',
@@ -222,7 +221,6 @@ if (carousel) {
   const indicators = carousel.querySelectorAll('.indicator');
   const links = carousel.querySelectorAll('.slide-nav');
 
-  // eslint-disable-next-line prefer-for-of
   for (let i = 0; i < indicators.length; i++) {
     indicators[i].addEventListener(
       'click',
@@ -230,7 +228,6 @@ if (carousel) {
     );
   }
 
-  // eslint-disable-next-line prefer-for-of
   for (let i = 0; i < links.length; i++) {
     links[i].addEventListener('click', setSlide(slides, indicators, links, +links[i].getAttribute('data-slide')));
   }

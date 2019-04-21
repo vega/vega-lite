@@ -3,7 +3,7 @@ import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel'
 import {TypedFieldDef} from '../../channeldef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
-import {channelSupportScaleType, Scale, ScaleConfig, ScaleType, scaleTypeSupportDataType} from '../../scale';
+import {channelSupportScaleType, Scale, ScaleType, scaleTypeSupportDataType} from '../../scale';
 import * as util from '../../util';
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
@@ -17,10 +17,9 @@ export function scaleType(
   specifiedScale: Scale,
   channel: Channel,
   fieldDef: TypedFieldDef<string>,
-  mark: Mark,
-  scaleConfig: ScaleConfig
+  mark: Mark
 ): ScaleType {
-  const defaultScaleType = defaultType(channel, fieldDef, mark, specifiedScale, scaleConfig);
+  const defaultScaleType = defaultType(channel, fieldDef, mark);
   const {type} = specifiedScale;
 
   if (!isScaleChannel(channel)) {
@@ -50,13 +49,7 @@ export function scaleType(
  * Determine appropriate default scale type.
  */
 // NOTE: Voyager uses this method.
-function defaultType(
-  channel: Channel,
-  fieldDef: TypedFieldDef<string>,
-  mark: Mark,
-  specifiedScale: Scale,
-  scaleConfig: ScaleConfig
-): ScaleType {
+function defaultType(channel: Channel, fieldDef: TypedFieldDef<string>, mark: Mark): ScaleType {
   switch (fieldDef.type) {
     case 'nominal':
     case 'ordinal':

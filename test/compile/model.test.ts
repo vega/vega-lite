@@ -143,7 +143,7 @@ describe('Model', () => {
       });
 
       expect(model.child.getSizeSignalRef('width')).toEqual({
-        signal: `bandspace(datum[\"distinct_b\"], 1, 0.345) * child_x_step`
+        signal: `bandspace(datum["distinct_b"], 1, 0.345) * child_x_step`
       });
     });
   });

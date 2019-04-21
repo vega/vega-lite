@@ -44,7 +44,7 @@
     "renameschema": "scripts/rename-schema.sh",
     "presite": "npm run data && npm run build:site && npm run build:toc && npm run build:versions && scripts/create-example-pages",
     "site": "bundle exec jekyll serve --incremental",
-    "prettierbase": "prettier '{src,test,test-runtime,site,typings}/**/*.{ts,md,css,js}'",
+    "prettierbase": "prettier '{src,test,test-runtime,site,typings}/**/*.{md,css}'",
     "eslintbase": "eslint '{src,test,test-runtime,site,typings}/**/*.{ts,js}'",
     "format": "npm run eslintbase -- --fix && npm run prettierbase -- --write",
     "lint": "npm run eslintbase && npm run prettierbase -- --check",

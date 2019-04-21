@@ -2,11 +2,12 @@ import {rangeType, SCALE_CHANNELS, X, Y} from '../../../src/channel';
 import {scaleType} from '../../../src/compile/scale/type';
 import {defaultConfig} from '../../../src/config';
 import * as log from '../../../src/log';
-import {PRIMITIVE_MARKS} from '../../../src/mark';
+import {BAR, PRIMITIVE_MARKS, RULE} from '../../../src/mark';
 import {ScaleType} from '../../../src/scale';
 import {TIMEUNITS} from '../../../src/timeunit';
 import {NOMINAL, ORDINAL} from '../../../src/type';
 import * as util from '../../../src/util';
+import {RECT} from './../../../src/mark';
 
 const defaultScaleConfig = defaultConfig.scale;
 
@@ -88,8 +89,8 @@ describe('compile/scale', () => {
         it('should return band scale for ordinal X,Y when mark is rect, rule, bar', () => {
           [ORDINAL, NOMINAL].forEach(t => {
             [X, Y].forEach(channel => {
-              ['bar', 'rule', 'rect'].forEach(mark => {
-                expect(scaleType({}, channel, {type: t}, 'rect', defaultScaleConfig)).toEqual(ScaleType.BAND);
+              [BAR, RULE, RECT].forEach(mark => {
+                expect(scaleType({}, channel, {type: t}, mark, defaultScaleConfig)).toEqual(ScaleType.BAND);
               });
             });
           });

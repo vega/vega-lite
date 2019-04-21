@@ -129,11 +129,11 @@ describe('Single Selection', () => {
       expect.arrayContaining([
         {
           name: 'one_modify',
-          update: `modify(\"one_store\", ${oneExpr})`
+          update: `modify("one_store", ${oneExpr})`
         },
         {
           name: 'two_modify',
-          update: `modify(\"two_store\", ${twoExpr})`
+          update: `modify("two_store", ${twoExpr})`
         }
       ])
     );

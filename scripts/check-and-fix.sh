@@ -71,7 +71,7 @@ echo ""
 if [[ $TRAVIS_BRANCH != 'master' ]]; then
   yarn format
 
-  ## For non-master branch, commit tslint fix and prettier changes if outdated
+  ## For non-master branch, commit eslint fix and prettier changes if outdated
   if ! git diff --word-diff=color --exit-code HEAD -- src test test-runtime
   then
     git add src test test-runtime

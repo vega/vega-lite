@@ -136,7 +136,7 @@ describe('compile/legend', () => {
       });
 
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
-      const label = encode.labels(fieldDef, {}, model, COLOR, gradientLegend);
+      const label = encode.labels(fieldDef, {}, model, COLOR);
       const expected = `timeFormat(datum.value, '%b')`;
       expect((label.text as SignalRef).signal).toEqual(expected);
     });
@@ -151,7 +151,7 @@ describe('compile/legend', () => {
       });
 
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
-      const label = encode.labels(fieldDef, {}, model, COLOR, gradientLegend);
+      const label = encode.labels(fieldDef, {}, model, COLOR);
       const expected = `'Q' + quarter(datum.value)`;
       expect((label.text as SignalRef).signal).toEqual(expected);
     });

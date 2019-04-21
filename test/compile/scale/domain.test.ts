@@ -191,25 +191,22 @@ describe('compile/scale', () => {
         expect(_domain).toEqual([[0, 200]]);
       });
 
-      it(
-        'should follow the custom domain despite bin',
-        log.wrap(localLogger => {
-          const model = parseUnitModel({
-            mark: 'point',
-            encoding: {
-              y: {
-                field: 'origin',
-                type: 'quantitative',
-                scale: {domain: [0, 200]},
-                bin: {maxbins: 15}
-              }
+      it('should follow the custom domain despite bin', () => {
+        const model = parseUnitModel({
+          mark: 'point',
+          encoding: {
+            y: {
+              field: 'origin',
+              type: 'quantitative',
+              scale: {domain: [0, 200]},
+              bin: {maxbins: 15}
             }
-          });
-          const _domain = testParseDomainForChannel(model, 'y');
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'y');
 
-          expect(_domain).toEqual([[0, 200]]);
-        })
-      );
+        expect(_domain).toEqual([[0, 200]]);
+      });
 
       it('should return the aggregated domain if we do not override it', () => {
         const model = parseUnitModel({

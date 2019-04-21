@@ -12,7 +12,7 @@ export type Config = VlConfig | VgConfig;
  * Open editor url in a new window, and pass a message.
  */
 export function post(window: Window, url: string, data: {config?: any; mode: any; renderer?: Renderers; spec: string}) {
-  const editor = window.open(url)!;
+  const editor = window.open(url);
   const wait = 10000;
   const step = 250;
   let count = ~~(wait / step);

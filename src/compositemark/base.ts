@@ -1,4 +1,3 @@
-import {Config} from '../config';
 import {GenericMarkDef, getMarkType} from '../mark';
 import {NonFacetUnitNormalizer, Normalize, NormalizerParams} from '../normalize/base';
 import {GenericSpec} from '../spec/index';
@@ -22,7 +21,7 @@ export class CompositeMarkNormalizer<M extends string> implements NonFacetUnitNo
     ) => NormalizedLayerSpec
   ) {}
 
-  public hasMatchingType(spec: GenericSpec<any, any>, config: Config): spec is CompositeMarkUnitSpec<M> {
+  public hasMatchingType(spec: GenericSpec<any, any>): spec is CompositeMarkUnitSpec<M> {
     if (isUnitSpec(spec)) {
       return getMarkType(spec.mark) === this.name;
     }
