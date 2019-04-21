@@ -49,8 +49,8 @@ const dot4 = `digraph DataFlow {
     tooltip = "[43]&#010;44"
   ]
   "45" [
-    label = <Bin<br/><font color="grey" point-size="10">IN:</font> foo<br/><font color="grey" point-size="10">OUT:</font> bar>;
-    tooltip = "[45]&#010;Bin {foo:{as:[bar],bin:{},field:foo}}"
+    label = <Bin<br/><font color="grey" point-size="10">IN:</font> foo<br/><font color="grey" point-size="10">OUT:</font> bar, bar_end>;
+    tooltip = "[45]&#010;Bin {foo:{as:[[bar,bar_end]],bin:{},field:foo}}"
   ]
 
   "43" -> "45"
