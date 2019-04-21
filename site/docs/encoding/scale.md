@@ -390,7 +390,7 @@ To provide themes for all scales, the scale config (`config: {scale: {...}}`) ca
 
 #### Padding
 
-{% include table.html props="continuousPadding,bandPaddingInner,bandPaddingOuter,barBandPaddingInner,barBandPaddingOuter,pointPadding,rectBandPaddingInner,rectBandPaddingOuter," source="ScaleConfig" %}
+{% include table.html props="bandPaddingInner,bandPaddingOuter,barBandPaddingInner,barBandPaddingOuter,continuousPadding,pointPadding,rectBandPaddingInner,rectBandPaddingOuter," source="ScaleConfig" %}
 
 #### Range
 
