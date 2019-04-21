@@ -17,7 +17,7 @@ const inputBindings: TransformCompiler = {
     const init = selCmpt.init && selCmpt.init[0]; // Can only exist on single selections (one initial value).
     const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
 
-    proj.forEach((p, i) => {
+    proj.items.forEach((p, i) => {
       const sgname = varName(`${name}_${p.field}`);
       const hasSignal = signals.filter(s => s.name === sgname);
       if (!hasSignal.length) {
@@ -43,7 +43,7 @@ const inputBindings: TransformCompiler = {
     const proj = selCmpt.project;
     const signal = signals.filter(s => s.name === name + TUPLE)[0];
     const fields = name + TUPLE_FIELDS;
-    const values = proj.map(p => varName(`${name}_${p.field}`));
+    const values = proj.items.map(p => varName(`${name}_${p.field}`));
     const valid = values.map(v => `${v} !== null`).join(' && ');
 
     if (values.length) {

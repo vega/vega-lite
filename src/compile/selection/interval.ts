@@ -33,7 +33,7 @@ const interval: SelectionCompiler<'interval'> = {
       });
     }
 
-    selCmpt.project.forEach((proj, i) => {
+    selCmpt.project.items.forEach((proj, i) => {
       const channel = proj.channel;
       if (channel !== X && channel !== Y) {
         warn('Interval selections only support x and y encoding channels.');
