@@ -136,10 +136,10 @@
       "node"
     ],
     "testPathIgnorePatterns": [
-      "node_modules",
+      "<rootDir>/node_modules",
       "<rootDir>/build",
-      "_site",
-      "src"
+      "<rootDir>/_site",
+      "<rootDir>/src"
     ],
     "coverageDirectory": "./coverage/",
     "collectCoverage": false
