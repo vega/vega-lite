@@ -23,7 +23,7 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    // "@typescript-eslint/prefer-for-of": 1, // wait for release
+    "@typescript-eslint/prefer-for-of": 1,
     // "@typescript-eslint/no-for-in-array": 1, // requires type information
     "@typescript-eslint/no-require-imports": 1,
     "@typescript-eslint/no-parameter-properties": 0,

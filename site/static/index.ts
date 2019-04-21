@@ -195,8 +195,8 @@ function setSlide(
 ) {
   return () => {
     // Reset all slides
-    for (let i = 0; i < indicators.length; i++) {
-      indicators[i].setAttribute('data-state', '');
+    for (const [i, indicator] of indicators.entries()) {
+      indicator.setAttribute('data-state', '');
       slides[i].setAttribute('data-state', '');
       carouselHide(slides, indicators, links, i);
     }
@@ -221,15 +221,12 @@ if (carousel) {
   const indicators = carousel.querySelectorAll('.indicator');
   const links = carousel.querySelectorAll('.slide-nav');
 
-  for (let i = 0; i < indicators.length; i++) {
-    indicators[i].addEventListener(
-      'click',
-      setSlide(slides, indicators, links, +indicators[i].getAttribute('data-slide'))
-    );
+  for (const indicator of indicators) {
+    indicator.addEventListener('click', setSlide(slides, indicators, links, +indicator.getAttribute('data-slide')));
   }
 
-  for (let i = 0; i < links.length; i++) {
-    links[i].addEventListener('click', setSlide(slides, indicators, links, +links[i].getAttribute('data-slide')));
+  for (const link of links) {
+    link.addEventListener('click', setSlide(slides, indicators, links, +link.getAttribute('data-slide')));
   }
 
   carousel.querySelector('.next-slide').addEventListener('click', () => {

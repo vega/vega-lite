@@ -234,8 +234,7 @@ export function assembleRootData(dataComponent: DataComponent, datasets: Dict<In
 
   // move sources without transforms (the ones that are potentially used in lookups) to the beginning
   let whereTo = 0;
-  for (let i = 0; i < data.length; i++) {
-    const d = data[i];
+  for (const [i, d] of data.entries()) {
     if ((d.transform || []).length === 0 && !d.source) {
       data.splice(whereTo++, 0, data.splice(i, 1)[0]);
     }
