@@ -158,7 +158,7 @@ export function position2({
 }
 
 export function getOffset(channel: PositionChannel, markDef: MarkDef) {
-  const offsetChannel = (channel + 'Offset') as 'xOffset' | 'yOffset' | 'x2Offset' | 'y2Offset'; // Need to cast as the type can't be inferred automatically
+  const offsetChannel = `${channel}Offset` as 'xOffset' | 'yOffset' | 'x2Offset' | 'y2Offset'; // Need to cast as the type can't be inferred automatically
 
   // TODO: in the future read from encoding channel too
   const markDefOffsetValue = markDef[offsetChannel];

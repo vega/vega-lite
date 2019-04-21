@@ -197,7 +197,7 @@ function errorBarOrientAndInputType(
     // type is aggregated-upper-lower
 
     if (isTypeAggregatedError) {
-      throw new Error(compositeMark + ' cannot be both type aggregated-upper-lower and aggregated-error');
+      throw new Error(`${compositeMark} cannot be both type aggregated-upper-lower and aggregated-error`);
     }
 
     const x2 = encoding.x2;
@@ -205,14 +205,14 @@ function errorBarOrientAndInputType(
 
     if (isFieldDef(x2) && isFieldDef(y2)) {
       // having both x, x2 and y, y2
-      throw new Error(compositeMark + ' cannot have both x2 and y2');
+      throw new Error(`${compositeMark} cannot have both x2 and y2`);
     } else if (isFieldDef(x2)) {
       if (isFieldDef(x) && isContinuous(x)) {
         // having x, x2 quantitative and field y, y2 are not specified
         return {orient: 'horizontal', inputType: 'aggregated-upper-lower'};
       } else {
         // having x, x2 that are not both quantitative
-        throw new Error('Both x and x2 have to be quantitative in ' + compositeMark);
+        throw new Error(`Both x and x2 have to be quantitative in ${compositeMark}`);
       }
     } else if (isFieldDef(y2)) {
       // y2 is a FieldDef
@@ -221,7 +221,7 @@ function errorBarOrientAndInputType(
         return {orient: 'vertical', inputType: 'aggregated-upper-lower'};
       } else {
         // having y, y2 that are not both quantitative
-        throw new Error('Both y and y2 have to be quantitative in ' + compositeMark);
+        throw new Error(`Both y and y2 have to be quantitative in ${compositeMark}`);
       }
     }
     throw new Error('No ranged axis');
@@ -235,17 +235,17 @@ function errorBarOrientAndInputType(
 
     if (isFieldDef(xError2) && !isFieldDef(xError)) {
       // having xError2 without xError
-      throw new Error(compositeMark + ' cannot have xError2 without xError');
+      throw new Error(`${compositeMark} cannot have xError2 without xError`);
     }
 
     if (isFieldDef(yError2) && !isFieldDef(yError)) {
       // having yError2 without yError
-      throw new Error(compositeMark + ' cannot have yError2 without yError');
+      throw new Error(`${compositeMark} cannot have yError2 without yError`);
     }
 
     if (isFieldDef(xError) && isFieldDef(yError)) {
       // having both xError and yError
-      throw new Error(compositeMark + ' cannot have both xError and yError with both are quantiative');
+      throw new Error(`${compositeMark} cannot have both xError and yError with both are quantiative`);
     } else if (isFieldDef(xError)) {
       if (isFieldDef(x) && isContinuous(x)) {
         // having x and xError that are all quantitative
@@ -438,18 +438,18 @@ function errorBarAggregationAndCalculation<
 
     if (extent === 'stderr' || extent === 'stdev') {
       errorBarSpecificAggregate = [
-        {op: extent, field: continuousFieldName, as: 'extent_' + continuousFieldName},
-        {op: center, field: continuousFieldName, as: 'center_' + continuousFieldName}
+        {op: extent, field: continuousFieldName, as: `extent_${continuousFieldName}`},
+        {op: center, field: continuousFieldName, as: `center_${continuousFieldName}`}
       ];
 
       postAggregateCalculates = [
         {
           calculate: `datum["center_${continuousFieldName}"] + datum["extent_${continuousFieldName}"]`,
-          as: 'upper_' + continuousFieldName
+          as: `upper_${continuousFieldName}`
         },
         {
           calculate: `datum["center_${continuousFieldName}"] - datum["extent_${continuousFieldName}"]`,
-          as: 'lower_' + continuousFieldName
+          as: `lower_${continuousFieldName}`
         }
       ];
 
@@ -478,9 +478,9 @@ function errorBarAggregationAndCalculation<
       }
 
       errorBarSpecificAggregate = [
-        {op: lowerExtentOp, field: continuousFieldName, as: 'lower_' + continuousFieldName},
-        {op: upperExtentOp, field: continuousFieldName, as: 'upper_' + continuousFieldName},
-        {op: centerOp, field: continuousFieldName, as: 'center_' + continuousFieldName}
+        {op: lowerExtentOp, field: continuousFieldName, as: `lower_${continuousFieldName}`},
+        {op: upperExtentOp, field: continuousFieldName, as: `upper_${continuousFieldName}`},
+        {op: centerOp, field: continuousFieldName, as: `center_${continuousFieldName}`}
       ];
 
       tooltipSummary = [
@@ -512,27 +512,27 @@ function errorBarAggregationAndCalculation<
     if (inputType === 'aggregated-upper-lower') {
       tooltipSummary = [];
       postAggregateCalculates = [
-        {calculate: `datum["${continuousAxisChannelDef2.field}"]`, as: 'upper_' + continuousFieldName},
-        {calculate: `datum["${continuousFieldName}"]`, as: 'lower_' + continuousFieldName}
+        {calculate: `datum["${continuousAxisChannelDef2.field}"]`, as: `upper_${continuousFieldName}`},
+        {calculate: `datum["${continuousFieldName}"]`, as: `lower_${continuousFieldName}`}
       ];
     } else if (inputType === 'aggregated-error') {
       tooltipSummary = [{fieldPrefix: '', titlePrefix: continuousFieldName}];
       postAggregateCalculates = [
         {
           calculate: `datum["${continuousFieldName}"] + datum["${continuousAxisChannelDefError.field}"]`,
-          as: 'upper_' + continuousFieldName
+          as: `upper_${continuousFieldName}`
         }
       ];
 
       if (continuousAxisChannelDefError2) {
         postAggregateCalculates.push({
           calculate: `datum["${continuousFieldName}"] + datum["${continuousAxisChannelDefError2.field}"]`,
-          as: 'lower_' + continuousFieldName
+          as: `lower_${continuousFieldName}`
         });
       } else {
         postAggregateCalculates.push({
           calculate: `datum["${continuousFieldName}"] - datum["${continuousAxisChannelDefError.field}"]`,
-          as: 'lower_' + continuousFieldName
+          as: `lower_${continuousFieldName}`
         });
       }
     }
@@ -550,5 +550,5 @@ function errorBarAggregationAndCalculation<
 }
 
 function getTitlePrefix(center: ErrorBarCenter, extent: ErrorBarExtent, operation: '+' | '-'): string {
-  return titlecase(center) + ' ' + operation + ' ' + extent;
+  return `${titlecase(center)} ${operation} ${extent}`;
 }

@@ -6,7 +6,7 @@ const single: SelectionCompiler<'single'> = {
 
   modifyExpr: (model, selCmpt) => {
     const tpl = selCmpt.name + TUPLE;
-    return tpl + ', ' + (selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`);
+    return `${tpl}, ${selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`}`;
   }
 };
 

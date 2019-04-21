@@ -54,7 +54,7 @@ export function getCompositeMarkTooltip(
     ({fieldPrefix, titlePrefix}): TextFieldDef<string> => ({
       field: fieldPrefix + continuousAxisChannelDef.field,
       type: continuousAxisChannelDef.type,
-      title: titlePrefix + (withFieldName ? ' of ' + continuousAxisChannelDef.field : '')
+      title: titlePrefix + (withFieldName ? ` of ${continuousAxisChannelDef.field}` : '')
     })
   );
 
@@ -100,7 +100,7 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
       mark, // TODO better remove this method and just have mark as a parameter of the method
       encoding: {
         [continuousAxis]: {
-          field: positionPrefix + '_' + continuousAxisChannelDef.field,
+          field: `${positionPrefix}_${continuousAxisChannelDef.field}`,
           type: continuousAxisChannelDef.type,
           ...(title ? {title} : {}),
           ...(scale ? {scale} : {}),
@@ -108,8 +108,8 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
         },
         ...(isString(endPositionPrefix)
           ? {
-              [continuousAxis + '2']: {
-                field: endPositionPrefix + '_' + continuousAxisChannelDef.field,
+              [`${continuousAxis}2`]: {
+                field: `${endPositionPrefix}_${continuousAxisChannelDef.field}`,
                 type: continuousAxisChannelDef.type
               }
             }
@@ -165,9 +165,9 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   const continuousAxis: 'x' | 'y' = orient === 'vertical' ? 'y' : 'x';
 
   const continuousAxisChannelDef = encoding[continuousAxis] as PositionFieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
-  const continuousAxisChannelDef2 = encoding[continuousAxis + '2'] as SecondaryFieldDef<string>;
-  const continuousAxisChannelDefError = encoding[continuousAxis + 'Error'] as FieldDefWithoutScale<string>;
-  const continuousAxisChannelDefError2 = encoding[continuousAxis + 'Error2'] as FieldDefWithoutScale<string>;
+  const continuousAxisChannelDef2 = encoding[`${continuousAxis}2`] as SecondaryFieldDef<string>;
+  const continuousAxisChannelDefError = encoding[`${continuousAxis}Error`] as FieldDefWithoutScale<string>;
+  const continuousAxisChannelDefError2 = encoding[`${continuousAxis}Error2`] as FieldDefWithoutScale<string>;
 
   return {
     continuousAxisChannelDef: filterAggregateFromChannelDef(continuousAxisChannelDef, compositeMark),
@@ -226,6 +226,6 @@ export function compositeMarkOrient<M extends CompositeMark>(
     return 'vertical';
   } else {
     // Neither x nor y is continuous.
-    throw new Error('Need a valid continuous axis for ' + compositeMark + 's');
+    throw new Error(`Need a valid continuous axis for ${compositeMark}s`);
   }
 }

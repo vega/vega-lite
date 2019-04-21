@@ -15,7 +15,7 @@ export function getAxisConfig(
     channel === 'x' ? 'axisX' : 'axisY',
 
     // axisTop, axisBottom, ...
-    ...(orient ? ['axis' + orient.substr(0, 1).toUpperCase() + orient.substr(1)] : []),
+    ...(orient ? [`axis${orient.substr(0, 1).toUpperCase()}${orient.substr(1)}`] : []),
     'axis'
   ];
   for (const configType of configTypes) {

@@ -111,7 +111,7 @@ function getSpec(el: d3.BaseType) {
   const name = sel.attr('data-name');
   if (name) {
     const dir = sel.attr('data-dir');
-    const fullUrl = BASEURL + '/examples/specs/' + (dir ? dir + '/' : '') + name + '.vl.json';
+    const fullUrl = `${BASEURL}/examples/specs/${dir ? `${dir}/` : ''}${name}.vl.json`;
 
     fetch(fullUrl)
       .then(response => {
@@ -135,16 +135,16 @@ window['changeSpec'] = (elId: string, newSpec: string) => {
 };
 
 window['buildSpecOpts'] = (id: string, baseName: string) => {
-  const oldName = select('#' + id).attr('data-name');
-  const prefixSel = select('select[name=' + id + ']');
-  const inputsSel = selectAll('input[name=' + id + ']:checked');
+  const oldName = select(`#${id}`).attr('data-name');
+  const prefixSel = select(`select[name=${id}]`);
+  const inputsSel = selectAll(`input[name=${id}]:checked`);
   const prefix = prefixSel.empty() ? id : prefixSel.property('value');
   const values = inputsSel
     .nodes()
     .map((n: any) => n.value)
     .sort()
     .join('_');
-  const newName = baseName + prefix + (values ? '_' + values : '');
+  const newName = baseName + prefix + (values ? `_${values}` : '');
   if (oldName !== newName) {
     window['changeSpec'](id, newName);
   }

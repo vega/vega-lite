@@ -851,5 +851,5 @@ function generateScaleTypeIndex() {
 }
 
 function generateScaleTypeIndexKey(channel: Channel, fieldDefType: Type) {
-  return channel + '_' + fieldDefType;
+  return `${channel}_${fieldDefType}`;
 }

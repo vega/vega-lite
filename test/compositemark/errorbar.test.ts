@@ -627,15 +627,9 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
       const warningOutput = warningOutputMap[center ? center : ''][extent ? extent : ''];
 
       for (let k = 0; k < warningOutput.length; k++) {
-        const testMsg =
-          'should ' +
-          (warningOutput[k] ? '' : 'not ') +
-          'produce a warning if center is ' +
-          (center ? center : 'not specified') +
-          ' and extent is ' +
-          (extent ? extent : 'not specified') +
-          ' that ' +
-          warningMessage[k](center, extent, type);
+        const testMsg = `should ${warningOutput[k] ? '' : 'not '}produce a warning if center is ${
+          center ? center : 'not specified'
+        } and extent is ${extent ? extent : 'not specified'} that ${warningMessage[k](center, extent, type)}`;
 
         it(
           testMsg,
@@ -653,12 +647,9 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
 
       const outputSpec = normalize(spec);
       const aggregateTransform = outputSpec.transform[0];
-      const testMsg =
-        'should produce a correct layer spec if center is ' +
-        (center ? center : 'not specified') +
-        ' and extent is ' +
-        (extent ? extent : 'not specified') +
-        '.';
+      const testMsg = `should produce a correct layer spec if center is ${
+        center ? center : 'not specified'
+      } and extent is ${extent ? extent : 'not specified'}.`;
 
       it(testMsg, () => {
         if (isAggregate(aggregateTransform)) {

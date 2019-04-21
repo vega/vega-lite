@@ -23,7 +23,7 @@ export class GeoJSONNode extends DataFlowNode {
         model.channelHasField(channel)
           ? model.fieldDef(channel).field
           : isValueDef(model.encoding[channel])
-          ? {expr: (model.encoding[channel] as ValueDef<number>).value + ''}
+          ? {expr: `${(model.encoding[channel] as ValueDef<number>).value}`}
           : undefined
       );
 

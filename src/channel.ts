@@ -448,5 +448,5 @@ export function rangeType(channel: Channel): RangeType {
       return undefined;
   }
   /* istanbul ignore next: should never reach here. */
-  throw new Error('rangeType not implemented for ' + channel);
+  throw new Error(`rangeType not implemented for ${channel}`);
 }

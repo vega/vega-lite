@@ -29,7 +29,7 @@ export class GeoPointNode extends DataFlowNode {
         model.channelHasField(channel)
           ? model.fieldDef(channel).field
           : isValueDef(model.encoding[channel])
-          ? {expr: (model.encoding[channel] as ValueDef<number>).value + ''}
+          ? {expr: `${(model.encoding[channel] as ValueDef<number>).value}`}
           : undefined
       );
 
@@ -37,8 +37,8 @@ export class GeoPointNode extends DataFlowNode {
 
       if (pair[0] || pair[1]) {
         parent = new GeoPointNode(parent, model.projectionName(), pair, [
-          model.getName('x' + suffix),
-          model.getName('y' + suffix)
+          model.getName(`x${suffix}`),
+          model.getName(`y${suffix}`)
         ]);
       }
     });

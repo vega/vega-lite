@@ -190,11 +190,11 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
     ? // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
       // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
       // TODO: support utc
-      'time(' + timeUnitFieldExpr(timeUnit, field) + ')'
+      `time(${timeUnitFieldExpr(timeUnit, field)})`
     : vgField(predicate, {expr: 'datum'});
 
   if (isFieldEqualPredicate(predicate)) {
-    return fieldExpr + '===' + predicateValueExpr(predicate.equal, timeUnit);
+    return `${fieldExpr}===${predicateValueExpr(predicate.equal, timeUnit)}`;
   } else if (isFieldLTPredicate(predicate)) {
     const upper = predicate.lt;
     return `${fieldExpr}<${predicateValueExpr(upper, timeUnit)}`;
@@ -216,15 +216,7 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
     const upper = predicate.range[1];
 
     if (lower !== null && upper !== null && useInRange) {
-      return (
-        'inrange(' +
-        fieldExpr +
-        ', [' +
-        predicateValueExpr(lower, timeUnit) +
-        ', ' +
-        predicateValueExpr(upper, timeUnit) +
-        '])'
-      );
+      return `inrange(${fieldExpr}, [${predicateValueExpr(lower, timeUnit)}, ${predicateValueExpr(upper, timeUnit)}])`;
     }
 
     const exprs = [];

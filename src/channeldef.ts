@@ -610,7 +610,7 @@ export function functionalTitleFormatter(fieldDef: FieldDefBase<string>) {
 
   const fn = aggregate || timeUnit || (isBinning(bin) && 'bin');
   if (fn) {
-    return fn.toUpperCase() + '(' + field + ')';
+    return `${fn.toUpperCase()}(${field})`;
   } else {
     return field;
   }
@@ -907,7 +907,7 @@ export function channelCompatibility(
       }
       return COMPATIBLE;
   }
-  throw new Error('channelCompatability not implemented for channel ' + channel);
+  throw new Error(`channelCompatability not implemented for channel ${channel}`);
 }
 
 export function isNumberFieldDef(fieldDef: TypedFieldDef<any>) {

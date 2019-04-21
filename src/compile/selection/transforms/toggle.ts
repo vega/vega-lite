@@ -20,11 +20,9 @@ const toggle: TransformCompiler = {
     const tpl = selCmpt.name + TUPLE;
     const signal = selCmpt.name + TOGGLE;
 
-    return (
-      `${signal} ? null : ${tpl}, ` +
-      (selCmpt.resolve === 'global' ? `${signal} ? null : true, ` : `${signal} ? null : {unit: ${unitName(model)}}, `) +
-      `${signal} ? ${tpl} : null`
-    );
+    return `${signal} ? null : ${tpl}, ${
+      selCmpt.resolve === 'global' ? `${signal} ? null : true, ` : `${signal} ? null : {unit: ${unitName(model)}}, `
+    }${signal} ? ${tpl} : null`;
   }
 };
 

@@ -66,7 +66,7 @@ const scaleBindings: TransformCompiler = {
       for (const proj of bound) {
         const mapping = `, ${stringValue(proj.field)}: ${proj.signals.data}`;
         if (update.indexOf(mapping) < 0) {
-          namedSg.update = update.substring(0, update.length - 1) + mapping + '}';
+          namedSg.update = `${update.substring(0, update.length - 1) + mapping}}`;
         }
       }
     }

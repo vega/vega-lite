@@ -38,11 +38,9 @@ const zoom: TransformCompiler = {
             events: events,
             update: !hasScales
               ? `{x: x(unit), y: y(unit)}`
-              : '{' +
-                [sx ? `x: invert(${sx}, x(unit))` : '', sy ? `y: invert(${sy}, y(unit))` : '']
+              : `{${[sx ? `x: invert(${sx}, x(unit))` : '', sy ? `y: invert(${sy}, y(unit))` : '']
                   .filter(expr => !!expr)
-                  .join(', ') +
-                '}'
+                  .join(', ')}}`
           }
         ]
       },
@@ -96,10 +94,9 @@ function onDelta(
     : scaleType === 'pow'
     ? 'zoomPow'
     : 'zoomLinear';
-  const update =
-    `${zoomFn}(${base}, ${anchor}, ${delta}` +
-    (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') || 1}` : '') +
-    ')';
+  const update = `${zoomFn}(${base}, ${anchor}, ${delta}${
+    hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') || 1}` : ''
+  })`;
 
   signal.on.push({
     events: {signal: delta},

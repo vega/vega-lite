@@ -213,7 +213,7 @@ export function mergeTitle(title1: string, title2: string) {
     return title2;
   } else {
     // join title with comma if they are different
-    return title1 + ', ' + title2;
+    return `${title1}, ${title2}`;
   }
 }
 

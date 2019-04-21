@@ -171,12 +171,12 @@ function normalizeMonth(m: string | number) {
     const lowerM = m.toLowerCase();
     const monthIndex = MONTHS.indexOf(lowerM);
     if (monthIndex !== -1) {
-      return monthIndex + ''; // 0 for january, ...
+      return `${monthIndex}`; // 0 for january, ...
     }
     const shortM = lowerM.substr(0, 3);
     const shortMonthIndex = SHORT_MONTHS.indexOf(shortM);
     if (shortMonthIndex !== -1) {
-      return shortMonthIndex + '';
+      return `${shortMonthIndex}`;
     }
     // Invalid month
     throw new Error(log.message.invalidTimeUnit('month', m));
@@ -187,17 +187,17 @@ function normalizeDay(d: string | number) {
   if (isNumber(d)) {
     // mod so that this can be both 0-based where 0 = sunday
     // and 1-based where 7=sunday
-    return (d % 7) + '';
+    return `${d % 7}`;
   } else {
     const lowerD = d.toLowerCase();
     const dayIndex = DAYS.indexOf(lowerD);
     if (dayIndex !== -1) {
-      return dayIndex + ''; // 0 for january, ...
+      return `${dayIndex}`; // 0 for january, ...
     }
     const shortD = lowerD.substr(0, 3);
     const shortDayIndex = SHORT_DAYS.indexOf(shortD);
     if (shortDayIndex !== -1) {
-      return shortDayIndex + '';
+      return `${shortDayIndex}`;
     }
     // Invalid day
     throw new Error(log.message.invalidTimeUnit('day', d));
@@ -234,7 +234,7 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
     units.push(month);
   } else if (d.quarter !== undefined) {
     const quarter = normalize ? normalizeQuarter(d.quarter) : d.quarter;
-    units.push(quarter + '*3');
+    units.push(`${quarter}*3`);
   } else {
     units.push(0); // months start at zero in JS
   }
@@ -245,7 +245,7 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
     // HACK: Day only works as a standalone unit
     // This is only correct because we always set year to 2006 for day
     const day = normalize ? normalizeDay(d.day) : d.day;
-    units.push(day + '+1');
+    units.push(`${day}+1`);
   } else {
     units.push(1); // Date starts at 1 in JS
   }

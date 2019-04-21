@@ -30,7 +30,7 @@ export class ConcatModel extends BaseConcatModel {
     this.concatType = isVConcatSpec(spec) ? 'vconcat' : isHConcatSpec(spec) ? 'hconcat' : 'concat';
 
     this.children = this.getChildren(spec).map((child, i) => {
-      return buildModel(child, this, this.getName('concat_' + i), undefined, repeater, config, false);
+      return buildModel(child, this, this.getName(`concat_${i}`), undefined, repeater, config, false);
     });
   }
 

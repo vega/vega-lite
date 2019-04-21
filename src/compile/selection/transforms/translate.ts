@@ -34,11 +34,9 @@ const translate: TransformCompiler = {
         on: [
           {
             events: events.map(e => e.between[0]),
-            update:
-              '{x: x(unit), y: y(unit)' +
-              (x !== undefined ? ', extent_x: ' + (hasScales ? domain(model, X) : `slice(${x.signals.visual})`) : '') +
-              (y !== undefined ? ', extent_y: ' + (hasScales ? domain(model, Y) : `slice(${y.signals.visual})`) : '') +
-              '}'
+            update: `{x: x(unit), y: y(unit)${
+              x !== undefined ? `, extent_x: ${hasScales ? domain(model, X) : `slice(${x.signals.visual})`}` : ''
+            }${y !== undefined ? `, extent_y: ${hasScales ? domain(model, Y) : `slice(${y.signals.visual})`}` : ''}}`
           }
         ]
       },
@@ -86,7 +84,7 @@ function onDelta(
   const scaleType = scaleCmpt.get('type');
   const sign = hasScales && channel === X ? '-' : ''; // Invert delta when panning x-scales.
   const extent = `${anchor}.extent_${channel}`;
-  const offset = `${sign}${delta}.${channel} / ` + (hasScales ? `${sizeSg}` : `span(${extent})`);
+  const offset = `${sign}${delta}.${channel} / ${hasScales ? `${sizeSg}` : `span(${extent})`}`;
   const panFn = !hasScales
     ? 'panLinear'
     : scaleType === 'log'
@@ -94,10 +92,9 @@ function onDelta(
     : scaleType === 'pow'
     ? 'panPow'
     : 'panLinear';
-  const update =
-    `${panFn}(${extent}, ${offset}` +
-    (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') || 1}` : '') +
-    ')';
+  const update = `${panFn}(${extent}, ${offset}${
+    hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') || 1}` : ''
+  })`;
 
   signal.on.push({
     events: {signal: delta},

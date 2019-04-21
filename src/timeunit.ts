@@ -277,8 +277,8 @@ export function convert(unit: TimeUnit, date: Date): Date {
 
 function dateMethods(singleUnit: SingleTimeUnit, isUtc: boolean) {
   const rawSetDateMethod = SET_DATE_METHOD[singleUnit];
-  const setDateMethod = isUtc ? 'setUTC' + rawSetDateMethod.substr(3) : rawSetDateMethod;
-  const getDateMethod = 'get' + (isUtc ? 'UTC' : '') + rawSetDateMethod.substr(3);
+  const setDateMethod = isUtc ? `setUTC${rawSetDateMethod.substr(3)}` : rawSetDateMethod;
+  const getDateMethod = `get${isUtc ? 'UTC' : ''}${rawSetDateMethod.substr(3)}`;
   return {setDateMethod, getDateMethod};
 }
 
@@ -344,7 +344,7 @@ export function getDateTimeComponents(timeUnit: TimeUnit, shortTimeLabels: boole
   if (containsTimeUnit(timeUnit, TimeUnit.DAY)) {
     dateComponents.push(shortTimeLabels ? '%a' : '%A');
   } else if (containsTimeUnit(timeUnit, TimeUnit.DATE)) {
-    dateComponents.push('%d' + (hasYear ? ',' : '')); // add comma if there is year
+    dateComponents.push(`%d${hasYear ? ',' : ''}`); // add comma if there is year
   }
 
   if (hasYear) {

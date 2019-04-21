@@ -103,9 +103,9 @@ export class StackNode extends DataFlowNode {
     if (isValidAsArray(as)) {
       normalizedAs = as;
     } else if (isString(as)) {
-      normalizedAs = [as, as + '_end'];
+      normalizedAs = [as, `${as}_end`];
     } else {
-      normalizedAs = [stackTransform.stack + '_start', stackTransform.stack + '_end'];
+      normalizedAs = [`${stackTransform.stack}_start`, `${stackTransform.stack}_end`];
     }
 
     return new StackNode(parent, {
@@ -226,12 +226,10 @@ export class StackNode extends DataFlowNode {
         // mid point for a binned field
         transform.push({
           type: 'formula',
-          expr:
-            '(' +
-            vgField(dimensionFieldDef, {expr: 'datum'}) +
-            '+' +
-            vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
-            ')/2',
+          expr: `(${vgField(dimensionFieldDef, {expr: 'datum'})}+${vgField(dimensionFieldDef, {
+            expr: 'datum',
+            binSuffix: 'end'
+          })})/2`,
           as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true})
         });
       }

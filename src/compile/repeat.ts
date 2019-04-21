@@ -60,7 +60,7 @@ export class RepeatModel extends BaseConcatModel {
           };
 
           children.push(
-            buildModel(spec.spec, this, this.getName('child' + name), undefined, childRepeat, config, false)
+            buildModel(spec.spec, this, this.getName(`child${name}`), undefined, childRepeat, config, false)
           );
         }
       }

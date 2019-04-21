@@ -313,11 +313,11 @@ export function varName(s: string): string {
 
 export function logicalExpr<T>(op: LogicalOperand<T>, cb: (...args: any[]) => string): string {
   if (isLogicalNot(op)) {
-    return '!(' + logicalExpr(op.not, cb) + ')';
+    return `!(${logicalExpr(op.not, cb)})`;
   } else if (isLogicalAnd(op)) {
-    return '(' + op.and.map((and: LogicalOperand<T>) => logicalExpr(and, cb)).join(') && (') + ')';
+    return `(${op.and.map((and: LogicalOperand<T>) => logicalExpr(and, cb)).join(') && (')})`;
   } else if (isLogicalOr(op)) {
-    return '(' + op.or.map((or: LogicalOperand<T>) => logicalExpr(or, cb)).join(') || (') + ')';
+    return `(${op.or.map((or: LogicalOperand<T>) => logicalExpr(or, cb)).join(') || (')})`;
   } else {
     return cb(op);
   }

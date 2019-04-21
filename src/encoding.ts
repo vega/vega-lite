@@ -306,9 +306,9 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
           // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
           if (isPositionChannel) {
             const secondaryChannel: SecondaryFieldDef<string> = {
-              field: newField + '_end'
+              field: `${newField}_end`
             };
-            encoding[channel + '2'] = secondaryChannel;
+            encoding[`${channel}2`] = secondaryChannel;
           }
           newFieldDef.bin = 'binned';
           if (!isSecondaryRangeChannel(channel)) {

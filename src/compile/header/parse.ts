@@ -35,7 +35,7 @@ function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
 
     if (model.child.component.layoutHeaders[channel].title) {
       // merge title with child to produce "Title / Subtitle / Sub-subtitle"
-      title += ' / ' + model.child.component.layoutHeaders[channel].title;
+      title += ` / ${model.child.component.layoutHeaders[channel].title}`;
       model.child.component.layoutHeaders[channel].title = null;
     }
 

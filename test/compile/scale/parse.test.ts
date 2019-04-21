@@ -452,11 +452,11 @@ describe('src/compile', () => {
 
       it('should add a raw selection domain', () => {
         expect('domainRaw' in xScale.explicit).toBeTruthy();
-        expect(xScale.explicit.domainRaw['signal']).toBe(SELECTION_DOMAIN + '{"encoding":"x","selection":"brush"}');
+        expect(xScale.explicit.domainRaw['signal']).toBe(`${SELECTION_DOMAIN}{"encoding":"x","selection":"brush"}`);
 
         expect('domainRaw' in yscale.explicit).toBeTruthy();
         expect(yscale.explicit.domainRaw['signal']).toBe(
-          SELECTION_DOMAIN + '{"field":"Miles_per_Gallon","selection":"foobar"}'
+          `${SELECTION_DOMAIN}{"field":"Miles_per_Gallon","selection":"foobar"}`
         );
       });
     });

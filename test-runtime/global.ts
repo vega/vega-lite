@@ -38,7 +38,7 @@ export function mouseEvt(type: string, target: Element | Window, opts?: Opts) {
 }
 
 export function mark(id: string, parent: string) {
-  return document.querySelector((parent ? `g.${parent} ` : '') + `g.mark-symbol.role-mark path:nth-child(${id})`);
+  return document.querySelector(`${parent ? `g.${parent} ` : ''}g.mark-symbol.role-mark path:nth-child(${id})`);
 }
 
 export function coords(el: Element) {
@@ -47,7 +47,7 @@ export function coords(el: Element) {
 }
 
 export function brushOrEl(el: Element, parent: string, _: boolean) {
-  return !_ ? el : document.querySelector((parent ? `g.${parent} ` : '') + 'g.sel_brush > path');
+  return !_ ? el : document.querySelector(`${parent ? `g.${parent} ` : ''}g.sel_brush > path`);
 }
 
 export function click(el: Element, evt: Opts) {
@@ -74,7 +74,7 @@ export function pt(id: string, parent: string, shiftKey: boolean) {
 }
 
 export function clear(id: string, parent: string, shiftKey: boolean) {
-  const bg = document.querySelector((parent ? `g.${parent} ` : '') + 'path.background');
+  const bg = document.querySelector(`${parent ? `g.${parent} ` : ''}path.background`);
   const el = mark(id, parent);
   let [clientX, clientY] = coords(el);
   clientX += 10;

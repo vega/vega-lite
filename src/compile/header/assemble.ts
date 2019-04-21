@@ -170,7 +170,7 @@ export function assembleHeaderGroup(
 
         ...(layoutHeader.facetFieldDef
           ? {
-              from: {data: model.getName(channel + '_domain')},
+              from: {data: model.getName(`${channel}_domain`)},
               sort: getSort(facetFieldDef, channel)
             }
           : {}),

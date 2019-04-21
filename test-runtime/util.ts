@@ -171,7 +171,7 @@ export function unitNameRegex(specType: ComposeType, idx: number) {
 }
 
 export function parentSelector(compositeType: ComposeType, index: number) {
-  return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` : UNIT_NAMES.repeat[index] + '_group';
+  return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` : `${UNIT_NAMES.repeat[index]}_group`;
 }
 
 export function brush(key: string, idx: number, parent?: string, targetBrush?: boolean) {

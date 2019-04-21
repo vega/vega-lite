@@ -92,12 +92,9 @@ export function binToString(bin: BinParams | true) {
   if (isBoolean(bin)) {
     bin = normalizeBin(bin, undefined);
   }
-  return (
-    'bin' +
-    keys(bin)
-      .map(p => varName(`_${p}_${bin[p]}`))
-      .join('')
-  );
+  return `bin${keys(bin)
+    .map(p => varName(`_${p}_${bin[p]}`))
+    .join('')}`;
 }
 
 /**

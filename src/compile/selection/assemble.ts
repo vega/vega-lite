@@ -79,9 +79,9 @@ export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
     if (!hasSg.length) {
       signals.push({
         name: selCmpt.name,
-        update:
-          `${VL_SELECTION_RESOLVE}(${store}` +
-          (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
+        update: `${VL_SELECTION_RESOLVE}(${store}${
+          selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`
+        }`
       });
     }
     hasSelections = true;
@@ -170,15 +170,13 @@ export function assembleSelectionPredicate(
       stores.push(store);
     }
 
-    return (
-      `vlSelectionTest(${store}, datum` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
-    );
+    return `vlSelectionTest(${store}, datum${
+      selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`
+    }`;
   }
 
   const predicateStr = logicalExpr(selections, expr);
-  return (
-    (stores.length ? '!(' + stores.map(s => `length(data(${s}))`).join(' || ') + ') || ' : '') + `(${predicateStr})`
-  );
+  return `${stores.length ? `!(${stores.map(s => `length(data(${s}))`).join(' || ')}) || ` : ''}(${predicateStr})`;
 }
 
 // Selections are parsed _after_ scales. If a scale domain is set to
@@ -211,8 +209,9 @@ export function assembleSelectionScaleDomain(model: Model, domainRaw: SignalRef)
       if (!encodings.length || encodings.length > 1) {
         field = selCmpt.project[0].field;
         warn(
-          (!encodings.length ? 'No ' : 'Multiple ') +
-            `matching ${stringValue(encoding)} encoding found for selection ${stringValue(selDomain.selection)}. ` +
+          `${!encodings.length ? 'No ' : 'Multiple '}matching ${stringValue(
+            encoding
+          )} encoding found for selection ${stringValue(selDomain.selection)}. ` +
             `Using "field": ${stringValue(field)}.`
         );
       } else {

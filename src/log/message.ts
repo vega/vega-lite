@@ -132,9 +132,7 @@ export function missingFieldType(channel: Channel, newType: Type) {
 }
 export function droppingColor(type: 'encoding' | 'property', opt: {fill?: boolean; stroke?: boolean}) {
   const {fill, stroke} = opt;
-  return (
-    `Dropping color ${type} as the plot also has ` + (fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke')
-  );
+  return `Dropping color ${type} as the plot also has ${fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke'}`;
 }
 
 export function emptyFieldDef(fieldDef: TypedFieldDef<string>, channel: Channel) {

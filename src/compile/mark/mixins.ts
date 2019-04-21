@@ -334,7 +334,7 @@ export function bandPosition(
       const centeredBandPositionMixins = {
         // Use xc/yc and place the mark at the middle of the band
         // This way we never have to deal with size's condition for x/y position.
-        [channel + 'c']: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5})
+        [`${channel}c`]: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5})
       };
 
       if (getTypedFieldDef(model.encoding.size)) {
