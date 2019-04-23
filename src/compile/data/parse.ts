@@ -26,7 +26,7 @@ import {
   isTimeUnit,
   isWindow
 } from '../../transform';
-import {deepEqual, mergeDeep} from '../../util';
+import {deepEqual, keys, mergeDeep} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection';
 import {AggregateNode} from './aggregate';
@@ -77,13 +77,36 @@ export function findSource(data: Data, sources: SourceNode[]) {
   return null;
 }
 
+/**
+ * Check to see if the data format of the two objects conflict with each other. A conflict can occur
+ * if and only if the objects contain exclusive properties or if they contain the same properties but
+ * with different values.
+ *
+ * @param data Data source whose format is to be checked against that of source
+ * @param source Source node whose data format is to be checked against that of data
+ */
+function formatsConflict(data: Data, source: SourceNode): boolean {
+  let conflict = false;
+  if (source && data && !isGenerator(data) && data.format) {
+    // 'mesh' and 'feature' property should be exclusive of each other, ensure we don't combine them into one node
+    const haveConflictingKeys = ['mesh', 'feature'].every((k: 'mesh' | 'feature') =>
+      [...keys(data.format), ...keys(source.data.format)].includes(k)
+    );
+    conflict =
+      haveConflictingKeys ||
+      // ensure that common format properties agree
+      keys(data.format).some(k => k in source.data.format && data.format[k] !== source.data.format[k]);
+  }
+  return conflict;
+}
+
 function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
   if (model.data || !model.parent) {
     // if the model defines a data source or is the root, create a source node
 
     const existingSource = findSource(model.data, sources);
 
-    if (existingSource) {
+    if (existingSource && !formatsConflict(model.data, existingSource)) {
       if (!isGenerator(model.data)) {
         existingSource.data.format = mergeDeep({}, model.data.format, existingSource.data.format);
       }
