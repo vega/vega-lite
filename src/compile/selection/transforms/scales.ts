@@ -17,7 +17,7 @@ const scaleBindings: TransformCompiler = {
     const name = varName(selCmpt.name);
     const bound: SelectionProjection[] = (selCmpt.scales = []);
 
-    for (const proj of selCmpt.project) {
+    for (const proj of selCmpt.project.items) {
       const channel = proj.channel;
 
       if (!isScaleChannel(channel)) {

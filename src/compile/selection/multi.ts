@@ -11,7 +11,7 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
   const fieldsSg = name + TUPLE_FIELDS;
   const proj = selCmpt.project;
   const datum = '(item().isVoronoi ? datum.datum : datum)';
-  const values = proj
+  const values = proj.items
     .map(p => {
       const fieldDef = model.fieldDef(p.channel);
       // Binned fields should capture extents, for a range test against the raw field.

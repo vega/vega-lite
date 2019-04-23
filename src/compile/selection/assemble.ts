@@ -199,17 +199,17 @@ export function assembleSelectionScaleDomain(model: Model, domainRaw: SignalRef)
   } else {
     selCmpt = model.getSelectionComponent(name, selDomain.selection);
     if (!encoding && !field) {
-      field = selCmpt.project[0].field;
-      if (selCmpt.project.length > 1) {
+      field = selCmpt.project.items[0].field;
+      if (selCmpt.project.items.length > 1) {
         warn(
           'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
             `Using "field": ${stringValue(field)}.`
         );
       }
     } else if (encoding && !field) {
-      const encodings = selCmpt.project.filter(p => p.channel === encoding);
+      const encodings = selCmpt.project.items.filter(p => p.channel === encoding);
       if (!encodings.length || encodings.length > 1) {
-        field = selCmpt.project[0].field;
+        field = selCmpt.project.items[0].field;
         warn(
           (!encodings.length ? 'No ' : 'Multiple ') +
             `matching ${stringValue(encoding)} encoding found for selection ${stringValue(selDomain.selection)}. ` +
