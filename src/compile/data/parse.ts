@@ -86,18 +86,18 @@ export function findSource(data: Data, sources: SourceNode[]) {
  * @param source Source node whose data format is to be checked against that of data
  */
 function formatsConflict(data: Data, source: SourceNode): boolean {
-  let conflict = false;
   if (source && data && !isGenerator(data) && data.format) {
     // 'mesh' and 'feature' property should be exclusive of each other, ensure we don't combine them into one node
     const haveConflictingKeys = ['mesh', 'feature'].every((k: 'mesh' | 'feature') =>
       [...keys(data.format), ...keys(source.data.format)].includes(k)
     );
-    conflict =
+    return (
       haveConflictingKeys ||
       // ensure that common format properties agree
-      keys(data.format).some(k => k in source.data.format && data.format[k] !== source.data.format[k]);
+      keys(data.format).some(k => k in source.data.format && data.format[k] !== source.data.format[k])
+    );
   }
-  return conflict;
+  return false;
 }
 
 function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
