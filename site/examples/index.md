@@ -56,3 +56,4 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 - [Top-K Plot with Others](https://beta.observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example) by @manzt
 - [Trafford Data Lab's Vega-Lite graphics companion](https://www.trafforddatalab.io/interactive_graphics_companion/) by @trafforddatalab
 - [International Flight Map](https://observablehq.com/@alhenry/international-flight-map) by [@alhenry](https://twitter.com/maha_albert)
+- [Timelines Chart](https://bl.ocks.org/RomZeroX/de458deb697c20d68acaddcb235bcd58/1226d8308271f1decbe2847c840cdbbe76257c7c) by @RomZeroX
