@@ -1,7 +1,6 @@
 import {Orientation} from 'vega';
-import {isBoolean, isString} from 'vega-util';
+import {isArray, isBoolean, isString} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from '.';
-import {Encoding, fieldDefs} from '../encoding';
 import {
   Field,
   FieldDefBase,
@@ -10,8 +9,11 @@ import {
   isFieldDef,
   PositionFieldDef,
   SecondaryFieldDef,
-  TextFieldDef
+  TextFieldDef,
+  TextFieldDefWithCondition,
+  TextValueDefWithCondition
 } from '../channeldef';
+import {Encoding, fieldDefs} from '../encoding';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
@@ -42,6 +44,55 @@ export interface CompositeMarkTooltipSummary {
    * The title prefix to show, corresponding to the field with field prefix `fieldPrefix`
    */
   titlePrefix: string;
+}
+
+export function filterTooltipWithAggregatedField<F extends Field>(
+  oldEncoding: Encoding<F>
+): {
+  customTooltipWithoutAggregatedField?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F> | TextFieldDef<F>[];
+  filteredEncoding: Encoding<F>;
+} {
+  const {tooltip, ...filteredEncoding} = oldEncoding;
+  if (!tooltip) {
+    return {filteredEncoding: oldEncoding};
+  }
+
+  let customTooltipWithAggregatedField: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F> | TextFieldDef<F>[];
+  let customTooltipWithoutAggregatedField:
+    | TextFieldDefWithCondition<F>
+    | TextValueDefWithCondition<F>
+    | TextFieldDef<F>[];
+
+  if (isArray(tooltip)) {
+    tooltip.forEach((t: TextFieldDef<F>) => {
+      if (t.aggregate) {
+        if (!customTooltipWithAggregatedField) {
+          customTooltipWithAggregatedField = [];
+        }
+        (customTooltipWithAggregatedField as TextFieldDef<F>[]).push(t);
+      } else {
+        if (!customTooltipWithoutAggregatedField) {
+          customTooltipWithoutAggregatedField = [];
+        }
+        (customTooltipWithoutAggregatedField as TextFieldDef<F>[]).push(t);
+      }
+    });
+
+    if (customTooltipWithAggregatedField) {
+      (filteredEncoding as Encoding<F>).tooltip = customTooltipWithAggregatedField;
+    }
+  } else {
+    if (tooltip['aggregate']) {
+      (filteredEncoding as Encoding<F>).tooltip = tooltip;
+    } else {
+      customTooltipWithoutAggregatedField = tooltip;
+    }
+  }
+
+  if (isArray(customTooltipWithoutAggregatedField) && customTooltipWithoutAggregatedField.length === 1) {
+    customTooltipWithoutAggregatedField = customTooltipWithoutAggregatedField[0];
+  }
+  return {customTooltipWithoutAggregatedField, filteredEncoding};
 }
 
 export function getCompositeMarkTooltip(
