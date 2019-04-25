@@ -8,7 +8,8 @@ import {
   isUrlData,
   MAIN,
   ParseValue,
-  RAW
+  RAW,
+  isSphereGenerator
 } from '../../data';
 import * as log from '../../log';
 import {
@@ -58,14 +59,27 @@ import {WindowTransformNode} from './window';
 export function findSource(data: Data, sources: SourceNode[]) {
   for (const other of sources) {
     const otherData = other.data;
+
+    // if both datasets have a name defined, we cannot merge
+    if (data.name && other.hasName() && data.name !== other.dataName) {
+      continue;
+    }
+
+    // feature and mesh are mutually exclusive
+    if (data['format'] && data['format'].mesh && otherData.format && otherData.format.feature) {
+      continue;
+    }
+
     if (isInlineData(data) && isInlineData(otherData)) {
-      const srcVals = data.values;
-      const otherVals = otherData.values;
-      if (deepEqual(srcVals, otherVals)) {
+      if (deepEqual(data.values, otherData.values)) {
         return other;
       }
     } else if (isUrlData(data) && isUrlData(otherData)) {
       if (data.url === otherData.url) {
+        return other;
+      }
+    } else if (isSphereGenerator(data) && isSphereGenerator(otherData)) {
+      if (deepEqual(data.sphere, otherData.sphere)) {
         return other;
       }
     } else if (isNamedData(data)) {
@@ -86,6 +100,11 @@ function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
     if (existingSource) {
       if (!isGenerator(model.data)) {
         existingSource.data.format = mergeDeep({}, model.data.format, existingSource.data.format);
+      }
+
+      // if the new source has a name but the existing one does not, we can set it
+      if (!existingSource.hasName() && model.data.name) {
+        existingSource.dataName = model.data.name;
       }
 
       return existingSource;

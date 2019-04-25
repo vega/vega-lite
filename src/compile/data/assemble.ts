@@ -37,7 +37,7 @@ function makeWalkTree(data: VgData[]) {
     if (node instanceof SourceNode) {
       // If the source is a named data source or a data source with values, we need
       // to put it in a different data source. Otherwise, Vega may override the data.
-      if (!node.generator && !isUrlData(node.data)) {
+      if (!node.isGenerator && !isUrlData(node.data)) {
         data.push(dataSource);
         const newData: VgData = {
           name: null,
