@@ -96,6 +96,8 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    * - If `tooltip` is `{"content": "data"}`, then all fields that appear in the highlighted data point will be used.
    * - If set to `null` or `false`, then no tooltip will be used.
    *
+   * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.
+   *
    * __Default value:__ `null`
    */
   tooltip?: string | TooltipContent | null | boolean;
