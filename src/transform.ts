@@ -52,7 +52,7 @@ export interface BinTransform {
   /**
    * An object indicating bin properties, or simply `true` for using default bin parameters.
    */
-  bin: boolean | BinParams;
+  bin: true | BinParams;
 
   /**
    * The data field to bin.
