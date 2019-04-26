@@ -9,11 +9,9 @@ perl -pi -e s,'Generic(.*)<FacetedUnitSpec\,LayerSpec>','\1',g build/vega-lite-s
 
 perl -pi -e s,'ValueDef(.*)\<\(number\|\\\"width\\\"\)\>','XValueDef\1',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDef(.*)\<\(number\|\\\"height\\\"\)\>','YValueDef\1',g build/vega-lite-schema.json
-perl -pi -e s,'ValueDef(.*)<\(string\|null\)>','ColorValueDef\1',g build/vega-lite-schema.json
-perl -pi -e s,'ValueDef(.*)<\(string\|number\|boolean\)>','TextValueDef\1',g build/vega-lite-schema.json
-perl -pi -e s,'ValueDef(.*)<string>','StringValueDef\1',g build/vega-lite-schema.json
+perl -pi -e s,'ValueDef(.*)<\(string\|null\)>','StringValueDef\1',g build/vega-lite-schema.json
+perl -pi -e s,'ValueDef(.*)<Value>','ValueDef\1',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDef(.*)<number>','NumberValueDef\1',g build/vega-lite-schema.json
-perl -pi -e s,'ValueDef(.*)<\(number\|string\|boolean\|null\)>','ValueDef\1',g build/vega-lite-schema.json
 
 perl -pi -e s,'Conditional<(.*)>','Conditional\1',g build/vega-lite-schema.json
 

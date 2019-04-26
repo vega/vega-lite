@@ -62,8 +62,8 @@ export type ValueDefWithCondition<F extends FieldDef<any>, V extends Value = Val
   | ValueDefWithOptionalCondition<F, V>
   | ConditionOnlyDef<F>;
 
-export type ColorValueDefWithCondition<F extends Field> = ValueDefWithCondition<
-  MarkPropFieldDef<F, StandardType>,
+export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
+  MarkPropFieldDef<F, T>,
   string | null
 >;
 
@@ -72,19 +72,11 @@ export type NumericValueDefWithCondition<F extends Field> = ValueDefWithConditio
   number
 >;
 
-export type StringValueDefWithCondition<F extends Field, T extends Type = 'nominal'> = ValueDefWithCondition<
-  MarkPropFieldDef<F, T>,
-  string
->;
-
 export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
 export type ShapeValueDefWithCondition<F extends Field> = StringValueDefWithCondition<F, TypeForShape>;
 
-export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<
-  TextFieldDef<F>,
-  string | number | boolean
->;
+export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<TextFieldDef<F>, Value>;
 
 export type Conditional<CD extends FieldDef<any> | ValueDef<any>> = ConditionalPredicate<CD> | ConditionalSelection<CD>;
 
@@ -127,8 +119,8 @@ export interface ConditionValueDefMixins<V extends Value = Value> {
 
 export type FieldDefWithCondition<F extends FieldDef<any>, V extends Value = Value> = F & ConditionValueDefMixins<V>;
 
-export type ColorFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
-  MarkPropFieldDef<F, StandardType>,
+export type StringFieldDefWithCondition<F extends Field, T extends Type = StandardType> = FieldDefWithCondition<
+  MarkPropFieldDef<F, T>,
   string | null
 >;
 
@@ -136,17 +128,10 @@ export type NumericFieldDefWithCondition<F extends Field> = FieldDefWithConditio
   MarkPropFieldDef<F, StandardType>,
   number
 >;
-export type StringFieldDefWithCondition<F extends Field, T extends Type = 'nominal'> = FieldDefWithCondition<
-  MarkPropFieldDef<F, T>,
-  string
->;
 
 export type ShapeFieldDefWithCondition<F extends Field> = StringFieldDefWithCondition<F, TypeForShape>;
 
-export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
-  TextFieldDef<F>,
-  string | number | boolean
->;
+export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<TextFieldDef<F>, Value>;
 
 /**
  * A ValueDef with optional Condition<ValueDef | FieldDef>
@@ -156,8 +141,7 @@ export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
  * }
  */
 
-export interface ValueDefWithOptionalCondition<FD extends FieldDef<any>, V extends number | string | boolean | null>
-  extends ValueDef<V> {
+export interface ValueDefWithOptionalCondition<FD extends FieldDef<any>, V extends Value> extends ValueDef<V> {
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
@@ -170,10 +154,7 @@ export interface ValueDefWithOptionalCondition<FD extends FieldDef<any>, V exten
  *   condition: {field: ...} | {value: ...}
  * }
  */
-export interface ConditionOnlyDef<
-  F extends FieldDef<any>,
-  V extends number | string | boolean | null = number | string | boolean | null
-> {
+export interface ConditionOnlyDef<F extends FieldDef<any>, V extends Value = Value> {
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
