@@ -240,7 +240,7 @@ describe('compile/mark/mixins', () => {
 
     it('generates tooltip object signal for all encoding fields', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: 'point',
+        mark: {type: 'point', tooltip: true},
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
           y: {field: 'Acceleration', type: 'quantitative'}
@@ -307,7 +307,7 @@ describe('compile/mark/mixins', () => {
 
     it('generates correct keys and values for channels with axis', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: {type: 'point'},
+        mark: {type: 'point', tooltip: true},
         encoding: {
           x: {field: 'Date', type: 'quantitative', axis: {title: 'foo', format: '%y'}},
           y: {field: 'Displacement', type: 'quantitative', axis: {title: 'bar'}}
@@ -321,7 +321,7 @@ describe('compile/mark/mixins', () => {
 
     it('generates correct keys and values for channels with legends', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: {type: 'point'},
+        mark: {type: 'point', tooltip: true},
         encoding: {
           color: {field: 'Foobar', type: 'nominal', legend: {title: 'baz', format: 's'}}
         }

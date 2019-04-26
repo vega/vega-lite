@@ -92,11 +92,13 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
   /**
    * The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.
    *
-   * - If `tooltip` is `{"content": "encoding"}`, then all fields from `encoding` will be used.
+   * - If `tooltip` is `true` or `{"content": "encoding"}`, then all fields from `encoding` will be used.
    * - If `tooltip` is `{"content": "data"}`, then all fields that appear in the highlighted data point will be used.
-   * - If set to `null`, then no tooltip will be used.
+   * - If set to `null` or `false`, then no tooltip will be used.
+   *
+   * __Default value:__ `null`
    */
-  tooltip?: string | TooltipContent | null;
+  tooltip?: string | TooltipContent | null | boolean;
 
   /**
    * Default size for marks.
@@ -167,8 +169,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
 };
 
 export const defaultMarkConfig: MarkConfig = {
-  color: '#4c78a8',
-  tooltip: {content: 'encoding'}
+  color: '#4c78a8'
 };
 
 export interface MarkConfigMixins {
