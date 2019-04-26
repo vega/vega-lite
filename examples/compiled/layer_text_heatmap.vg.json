@@ -44,9 +44,6 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "num_cars"},
-          "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"num_cars\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "Origin"},
@@ -65,9 +62,6 @@
             {"test": "datum['num_cars'] < 40", "value": "black"},
             {"value": "white"}
           ],
-          "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"num_cars\": format(datum[\"num_cars\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Cylinders", "band": 0.5},
           "y": {"scale": "y", "field": "Origin", "band": 0.5},
           "text": {"signal": "format(datum[\"num_cars\"], \"\")"},

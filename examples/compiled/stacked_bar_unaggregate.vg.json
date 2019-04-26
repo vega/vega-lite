@@ -49,9 +49,6 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "c"},
-          "tooltip": {
-            "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\"), \"c\": ''+datum[\"c\"]}"
-          },
           "x": {"scale": "x", "field": "a"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "b_end"},

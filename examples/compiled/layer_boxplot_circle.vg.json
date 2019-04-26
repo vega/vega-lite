@@ -200,9 +200,6 @@
         "update": {
           "opacity": {"value": 0.2},
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"people\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "people"},
           "y": {"scale": "y", "field": "age", "band": 0.5},
           "shape": {"value": "circle"}

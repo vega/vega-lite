@@ -39,9 +39,6 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "Origin"},
-          "tooltip": {
-            "signal": "{\"Sum of Acceleration\": format(datum[\"sum_Acceleration\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
-          },
           "x": {"scale": "x", "field": "sum_Acceleration_end"},
           "x2": {"scale": "x", "field": "sum_Acceleration_start"},
           "yc": {"signal": "height", "mult": 0.5},

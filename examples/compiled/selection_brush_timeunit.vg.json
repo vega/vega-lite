@@ -300,9 +300,6 @@
                 },
                 {"value": "steelblue"}
               ],
-              "tooltip": {
-                "signal": "{\"date (seconds)\": timeFormat(datum[\"seconds_date\"], '%S'), \"price\": format(datum[\"price\"], \"\")}"
-              },
               "x": {"scale": "concat_0_x", "field": "seconds_date"},
               "y": {"scale": "concat_0_y", "field": "price"}
             }
@@ -425,9 +422,6 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"value": "goldenrod"},
-              "tooltip": {
-                "signal": "{\"date (minutes)\": timeFormat(datum[\"minutes_date\"], '%M'), \"price\": format(datum[\"price\"], \"\")}"
-              },
               "x": {"scale": "concat_1_x", "field": "minutes_date"},
               "y": {"scale": "concat_1_y", "field": "price"}
             }

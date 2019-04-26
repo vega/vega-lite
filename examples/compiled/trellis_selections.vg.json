@@ -464,9 +464,6 @@
                 },
                 {"value": "steelblue"}
               ],
-              "tooltip": {
-                "signal": "{\"X\": format(datum[\"X\"], \"\"), \"Y\": format(datum[\"Y\"], \"\")}"
-              },
               "x": [
                 {
                   "test": "datum[\"X\"] === null || isNaN(datum[\"X\"])",
@@ -501,10 +498,7 @@
               "fill": {"value": "transparent"},
               "strokeWidth": {"value": 0.35},
               "stroke": {"value": "transparent"},
-              "isVoronoi": {"value": true},
-              "tooltip": {
-                "signal": "{\"X\": format(datum.datum[\"X\"], \"\"), \"Y\": format(datum.datum[\"Y\"], \"\")}"
-              }
+              "isVoronoi": {"value": true}
             }
           },
           "transform": [

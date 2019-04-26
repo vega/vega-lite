@@ -72,9 +72,6 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
-          },
           "x": [
             {
               "test": "datum[\"median_yield\"] === null || isNaN(datum[\"median_yield\"])",

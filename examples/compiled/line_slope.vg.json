@@ -55,9 +55,6 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "site"},
-              "tooltip": {
-                "signal": "{\"year\": ''+datum[\"year\"], \"Median of yield\": format(datum[\"median_yield\"], \"\"), \"site\": ''+datum[\"site\"]}"
-              },
               "x": {"scale": "x", "field": "year"},
               "y": {"scale": "y", "field": "median_yield"},
               "defined": {
