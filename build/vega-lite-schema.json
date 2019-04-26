@@ -320,9 +320,12 @@
             },
             {
               "type": "null"
+            },
+            {
+              "type": "boolean"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null` or `false`, then no tooltip will be used.\n\n__Default value:__ `null`"
         },
         "x": {
           "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
@@ -1209,9 +1212,12 @@
             },
             {
               "type": "null"
+            },
+            {
+              "type": "boolean"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null` or `false`, then no tooltip will be used.\n\n__Default value:__ `null`"
         },
         "x": {
           "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
@@ -7612,9 +7618,12 @@
             },
             {
               "type": "null"
+            },
+            {
+              "type": "boolean"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null` or `false`, then no tooltip will be used.\n\n__Default value:__ `null`"
         },
         "x": {
           "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
@@ -8044,9 +8053,12 @@
             },
             {
               "type": "null"
+            },
+            {
+              "type": "boolean"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null` or `false`, then no tooltip will be used.\n\n__Default value:__ `null`"
         },
         "x": {
           "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
@@ -8304,9 +8316,12 @@
             },
             {
               "type": "null"
+            },
+            {
+              "type": "boolean"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null` or `false`, then no tooltip will be used.\n\n__Default value:__ `null`"
         },
         "type": {
           "$ref": "#/definitions/Mark",
@@ -8824,9 +8839,12 @@
             },
             {
               "type": "null"
+            },
+            {
+              "type": "boolean"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null` or `false`, then no tooltip will be used.\n\n__Default value:__ `null`"
         },
         "x": {
           "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
@@ -10816,9 +10834,12 @@
             },
             {
               "type": "null"
+            },
+            {
+              "type": "boolean"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null` or `false`, then no tooltip will be used.\n\n__Default value:__ `null`"
         },
         "x": {
           "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
@@ -11100,9 +11121,12 @@
             },
             {
               "type": "null"
+            },
+            {
+              "type": "boolean"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null` or `false`, then no tooltip will be used.\n\n__Default value:__ `null`"
         },
         "x": {
           "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
