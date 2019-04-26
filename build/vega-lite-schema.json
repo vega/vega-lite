@@ -2036,11 +2036,11 @@
         "detail": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDef"
+              "$ref": "#/definitions/FieldDefWithoutScale"
             },
             {
               "items": {
-                "$ref": "#/definitions/FieldDef"
+                "$ref": "#/definitions/FieldDefWithoutScale"
               },
               "type": "array"
             }
@@ -2081,7 +2081,7 @@
           "description": "A URL to load upon mouse click."
         },
         "key": {
-          "$ref": "#/definitions/FieldDef",
+          "$ref": "#/definitions/FieldDefWithoutScale",
           "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
         },
         "latitude": {
@@ -3973,11 +3973,11 @@
         "detail": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDef"
+              "$ref": "#/definitions/FieldDefWithoutScale"
             },
             {
               "items": {
-                "$ref": "#/definitions/FieldDef"
+                "$ref": "#/definitions/FieldDefWithoutScale"
               },
               "type": "array"
             }
@@ -4022,7 +4022,7 @@
           "description": "A URL to load upon mouse click."
         },
         "key": {
-          "$ref": "#/definitions/FieldDef",
+          "$ref": "#/definitions/FieldDefWithoutScale",
           "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
         },
         "latitude": {
@@ -4748,7 +4748,7 @@
       ],
       "type": "object"
     },
-    "FieldDef": {
+    "FieldDefWithoutScale": {
       "$ref": "#/definitions/TypedFieldDef",
       "description": "Field Def without scale (and without bin: \"binned\" support)."
     },
