@@ -105,13 +105,14 @@ An example of a `boxplot` where the `size` encoding channel is specified.
 
 ## Tooltip Encoding Channels
 
-You can add custom tooltip to the `boxplot`. If the field in the tooltip is aggregated, it would be added to the box and whiskers. But if the field is not aggregated, it would be added to the outliers.
-
-An example of `boxplot` where the custom `tooltip` encoding channel is specified when the field is aggregated and field is not aggregated.
-
-<div class="vl-example" data-name="boxplot_tooltip_aggregate"></div>
+You can add custom tooltip to the `boxplot`.
+If the field in the tooltip encoding is unaggregated, it would be added to the outlier marks.
 
 <div class="vl-example" data-name="boxplot_tooltip_not_aggregate"></div>
+
+On the other hand, if the field in the tooltip encoding is aggregated, it would be added to the box and whisker marks. 
+
+<div class="vl-example" data-name="boxplot_tooltip_aggregate"></div>
 
 {:#config}
 
