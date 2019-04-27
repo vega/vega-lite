@@ -4,7 +4,7 @@ perl -pi -e s,'<Field\,','<',g build/vega-lite-schema.json
 perl -pi -e s,'<StandardType>','',g build/vega-lite-schema.json
 
 perl -pi -e s,'CompositeEncoding','Encoding',g build/vega-lite-schema.json
-perl -pi -e s,'GenericLayerSpec<UnitSpec>','LayerSpec',g build/vega-lite-schema.json
+perl -pi -e s,'GenericLayerSpec<UnitSpec>','LayerSpec',g build/vega-lite-schema.json # This is required as LayerSpec's own definition would depend on generic and have GenericLayerSpec<UnitSpec>, not LayerSpec
 perl -pi -e s,'Generic(.*)<FacetedUnitSpec\,LayerSpec>','\1',g build/vega-lite-schema.json
 
 perl -pi -e s,'ValueDef(.*)\<\(number\|\\\"width\\\"\)\>','XValueDef\1',g build/vega-lite-schema.json
