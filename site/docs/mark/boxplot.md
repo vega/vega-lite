@@ -91,7 +91,7 @@ To customize different parts of the box, we can customize different parts of the
 
 For example, we can customize the box plot's `"median"` tick by setting `"color"` to `"red"` and set `"ticks"` to true to make the box plot includes end ticks:
 
-<div class="vl-example" data-name="boxplot_1d_horizontal_custom_mark"></div>
+<div class="vl-example" data-name="boxplot_1D_horizontal_custom_mark"></div>
 
 ## Color, Size, and Opacity Encoding Channels
 
