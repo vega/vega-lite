@@ -105,7 +105,7 @@ An example of a `boxplot` where the `size` encoding channel is specified.
 
 ## Tooltip Encoding Channels
 
-You can add custom tooltip to the `boxplot`.
+You can add custom tooltips to box plots.
 If the field in the tooltip encoding is unaggregated, it would be added to the outlier marks.
 
 <div class="vl-example" data-name="boxplot_tooltip_not_aggregate"></div>
