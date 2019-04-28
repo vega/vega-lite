@@ -486,6 +486,10 @@
         "name": "concat_bar_scales_discretize",
         "title": "Discretizing scales",
         "description": "Horizontally concatenated charts that show different types of discretizing scales"
+      },
+      {
+        "name": "nested_concat_align",
+        "title": "Nested View Concatenation Aligned with Axis `minExtent`"
       }
     ]
   },

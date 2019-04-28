@@ -53,7 +53,11 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 {% include table.html props="bandPosition,maxExtent,minExtent,orient,offset,position,zindex" source="Axis" %}
 
-**See also:** [General Axis Config](#general-config).
+#### Example: Using Axis `minExtent` to Align Multi-View Plots
+
+By default, Vega-Lite automatically sets the axis extent (the pixels that axis ticks and labels should use). However, to align axis between multiple plots in multi-view displays, you can set `minExtent` (and optionally `maxExtent`) to make the extent consistent across plots.
+
+<div class="vl-example" data-name="nested_concat_align"></div>
 
 {:#domain}
 
