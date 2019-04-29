@@ -8,8 +8,7 @@ import {
   isUrlData,
   MAIN,
   ParseValue,
-  RAW,
-  isSphereGenerator
+  RAW
 } from '../../data';
 import * as log from '../../log';
 import {
@@ -76,10 +75,6 @@ export function findSource(data: Data, sources: SourceNode[]) {
       }
     } else if (isUrlData(data) && isUrlData(otherData)) {
       if (data.url === otherData.url) {
-        return other;
-      }
-    } else if (isSphereGenerator(data) && isSphereGenerator(otherData)) {
-      if (deepEqual(data.sphere, otherData.sphere)) {
         return other;
       }
     } else if (isNamedData(data)) {
