@@ -119,6 +119,23 @@
         {"type": "formula", "expr": "ceil (datum.id/10)", "as": "col"},
         {"type": "formula", "expr": "datum.id - datum.col*10", "as": "row"}
       ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!(length(data(\"highlight_store\"))) || (vlSelectionTest(\"highlight_store\", datum))"
+        },
+        {
+          "type": "aggregate",
+          "groupby": [],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
     }
   ],
   "signals": [
@@ -257,7 +274,7 @@
       "on": [
         {
           "events": [{"signal": "highlight_col || highlight_row"}],
-          "update": "highlight_col && highlight_row ? {unit: \"\", fields: highlight_tuple_fields, values: [highlight_col,highlight_row]} : null"
+          "update": "highlight_col && highlight_row ? {unit: \"layer_1\", fields: highlight_tuple_fields, values: [highlight_col,highlight_row]} : null"
         }
       ]
     },
@@ -356,28 +373,28 @@
         "update": {
           "x": [
             {
-              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"\"",
+              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"layer_1\"",
               "signal": "highlight_x[0]"
             },
             {"value": 0}
           ],
           "y": [
             {
-              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"\"",
+              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"layer_1\"",
               "signal": "highlight_y[0]"
             },
             {"value": 0}
           ],
           "x2": [
             {
-              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"\"",
+              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"layer_1\"",
               "signal": "highlight_x[1]"
             },
             {"value": 0}
           ],
           "y2": [
             {
-              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"\"",
+              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"layer_1\"",
               "signal": "highlight_y[1]"
             },
             {"value": 0}
@@ -386,7 +403,28 @@
       }
     },
     {
-      "name": "marks",
+      "name": "layer_0_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.1},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "fontSize": {"value": 220},
+          "fill": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"Count of Records\": format(datum[\"__count\"], \"\")}"
+          },
+          "x": {"value": 200},
+          "y": {"value": 200},
+          "text": {"signal": "format(datum[\"__count\"], \"\")"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
       "from": {"data": "data_0"},
@@ -421,28 +459,28 @@
         "update": {
           "x": [
             {
-              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"\"",
+              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"layer_1\"",
               "signal": "highlight_x[0]"
             },
             {"value": 0}
           ],
           "y": [
             {
-              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"\"",
+              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"layer_1\"",
               "signal": "highlight_y[0]"
             },
             {"value": 0}
           ],
           "x2": [
             {
-              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"\"",
+              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"layer_1\"",
               "signal": "highlight_x[1]"
             },
             {"value": 0}
           ],
           "y2": [
             {
-              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"\"",
+              "test": "data(\"highlight_store\").length && data(\"highlight_store\")[0].unit === \"layer_1\"",
               "signal": "highlight_y[1]"
             },
             {"value": 0}
