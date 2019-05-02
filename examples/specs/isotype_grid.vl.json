@@ -1,8 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "config": {"view": {"stroke": ""}},
-  "width": 400,
-  "height": 400,
   "data": {
     "values": [
       {"id": 1},
@@ -111,18 +109,39 @@
     {"calculate": "ceil (datum.id/10)", "as": "col"},
     {"calculate": "datum.id - datum.col*10", "as": "row"}
   ],
-  "mark": {"type": "point", "filled": true},
-  "encoding": {
-    "x": {"field": "col", "type": "ordinal", "axis": null},
-    "y": {"field": "row", "type": "ordinal", "axis": null},
-    "shape": {
-      "value": "M1.7 -1.7h-0.8c0.3 -0.2 0.6 -0.5 0.6 -0.9c0 -0.6 -0.4 -1 -1 -1c-0.6 0 -1 0.4 -1 1c0 0.4 0.2 0.7 0.6 0.9h-0.8c-0.4 0 -0.7 0.3 -0.7 0.6v1.9c0 0.3 0.3 0.6 0.6 0.6h0.2c0 0 0 0.1 0 0.1v1.9c0 0.3 0.2 0.6 0.3 0.6h1.3c0.2 0 0.3 -0.3 0.3 -0.6v-1.8c0 0 0 -0.1 0 -0.1h0.2c0.3 0 0.6 -0.3 0.6 -0.6v-2c0.2 -0.3 -0.1 -0.6 -0.4 -0.6z"
+  "layer": [
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 220,
+        "baseline": "middle",
+        "align": "center",
+        "opacity": 0.1
+      },
+      "transform": [{"filter": {"selection": "highlight"}}],
+      "encoding": {
+        "text": {"aggregate": "count", "type": "quantitative"},
+        "y": {"value": 200},
+        "x": {"value": 200}
+      }
     },
-    "color": {
-      "condition": {"selection": "highlight", "value": "rgb(194,81,64)"},
-      "value": "rgb(167,165,156)"
-    },
-    "size": {"value": 90}
-  },
-  "selection": {"highlight": {"type": "interval"}}
+    {
+      "width": 400,
+      "height": 400,
+      "mark": {"type": "point", "filled": true},
+      "encoding": {
+        "x": {"field": "col", "type": "ordinal", "axis": null},
+        "y": {"field": "row", "type": "ordinal", "axis": null},
+        "shape": {
+          "value": "M1.7 -1.7h-0.8c0.3 -0.2 0.6 -0.5 0.6 -0.9c0 -0.6 -0.4 -1 -1 -1c-0.6 0 -1 0.4 -1 1c0 0.4 0.2 0.7 0.6 0.9h-0.8c-0.4 0 -0.7 0.3 -0.7 0.6v1.9c0 0.3 0.3 0.6 0.6 0.6h0.2c0 0 0 0.1 0 0.1v1.9c0 0.3 0.2 0.6 0.3 0.6h1.3c0.2 0 0.3 -0.3 0.3 -0.6v-1.8c0 0 0 -0.1 0 -0.1h0.2c0.3 0 0.6 -0.3 0.6 -0.6v-2c0.2 -0.3 -0.1 -0.6 -0.4 -0.6z"
+        },
+        "color": {
+          "condition": {"selection": "highlight", "value": "rgb(194,81,64)"},
+          "value": "rgb(167,165,156)"
+        },
+        "size": {"value": 90}
+      },
+      "selection": {"highlight": {"type": "interval"}}
+    }
+  ]
 }
