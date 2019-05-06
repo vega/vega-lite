@@ -3,6 +3,7 @@
  */
 import {SignalRef} from 'vega';
 import {isFunction, isString, stringValue} from 'vega-util';
+import {FieldName} from '../../channeldef';
 import {isCountingAggregateOp} from '../../aggregate';
 import {isBinned, isBinning} from '../../bin';
 import {Channel, getMainRangeChannel, PositionChannel, X, X2, Y, Y2} from '../../channel';
@@ -91,7 +92,7 @@ export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: Po
   return {test, ...zeroValueRef};
 }
 
-export function fieldInvalidPredicate(field: string | FieldDef<string>, invalid = true) {
+export function fieldInvalidPredicate(field: FieldName | FieldDef<string>, invalid = true) {
   field = isString(field) ? field : vgField(field, {expr: 'datum'});
   const op = invalid ? '||' : '&&';
   const eq = invalid ? '===' : '!==';

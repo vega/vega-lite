@@ -1,6 +1,7 @@
 import {toSet} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, CHANNELS, isColorChannel} from './channel';
+import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
 import * as log from './log';
 import * as TYPE from './type';
@@ -444,7 +445,7 @@ export type SelectionDomain =
        * The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
        * over multiple fields or encodings.
        */
-      field?: string;
+      field?: FieldName;
     }
   | {
       /**
