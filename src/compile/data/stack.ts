@@ -1,5 +1,5 @@
 import {isArray, isString} from 'vega-util';
-import {getTypedFieldDef, isFieldDef, TypedFieldDef, vgField} from '../../channeldef';
+import {FieldName, getTypedFieldDef, isFieldDef, TypedFieldDef, vgField} from '../../channeldef';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate, getFirstDefined, hash} from '../../util';
@@ -60,11 +60,11 @@ export interface StackComponent {
   /**
    * The data fields to group by.
    */
-  groupby?: string[];
+  groupby?: FieldName[];
   /**
    * Output field names of each stack field.
    */
-  as: string[];
+  as: FieldName[];
 }
 
 function isValidAsArray(as: string[] | string): as is string[] {

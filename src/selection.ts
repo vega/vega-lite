@@ -1,5 +1,6 @@
 import {Binding} from 'vega';
 import {SingleDefUnitChannel} from './channel';
+import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
 import {EventStream} from './vega.schema';
 
@@ -47,7 +48,7 @@ export interface BaseSelectionDef {
    * An array of field names whose values must match for a data tuple to
    * fall within the selection.
    */
-  fields?: string[];
+  fields?: FieldName[];
 
   /**
    * By default, `all` data values are considered to lie within an empty selection.

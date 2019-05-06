@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
-import {valueExpr, vgField} from './channeldef';
 import {DateTime} from './datetime';
+import {FieldName, valueExpr, vgField} from './channeldef';
 import {LogicalOperand} from './logical';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit} from './timeunit';
 
@@ -52,7 +52,7 @@ export interface FieldPredicateBase {
   /**
    * Field to be filtered.
    */
-  field: string;
+  field: FieldName;
 }
 
 export interface FieldEqualPredicate extends FieldPredicateBase {
