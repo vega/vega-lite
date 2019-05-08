@@ -470,7 +470,8 @@ export type Transform =
   | TimeUnitTransform
   | SampleTransform
   | StackTransform
-  | WindowTransform;
+  | WindowTransform
+  | WordcloudTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {
