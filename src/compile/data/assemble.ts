@@ -25,6 +25,7 @@ import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
+import {WordcloudNode} from './wordcloud';
 
 function makeWalkTree(data: VgData[]) {
   // to name datasources
@@ -81,7 +82,6 @@ function makeWalkTree(data: VgData[]) {
       // break here because the rest of the tree has to be taken care of by the facet.
       return;
     }
-
     if (
       node instanceof GraticuleNode ||
       node instanceof SequenceNode ||
@@ -97,7 +97,8 @@ function makeWalkTree(data: VgData[]) {
       node instanceof FoldTransformNode ||
       node instanceof FlattenTransformNode ||
       node instanceof IdentifierNode ||
-      node instanceof SampleTransformNode
+      node instanceof SampleTransformNode ||
+      node instanceof WordcloudNode
     ) {
       dataSource.transform.push(node.assemble());
     }

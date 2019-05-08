@@ -406,7 +406,8 @@ export type VgTransform =
   | VgJoinAggregateTransform
   | VgFoldTransform
   | VgSampleTransform
-  | VgSequenceTransform;
+  | VgSequenceTransform
+  | VgWordcloudTransform;
 
 export interface VgGraticuleTransform {
   type: 'graticule';
@@ -417,6 +418,22 @@ export interface VgGraticuleTransform {
   stepMinor?: number[];
   step?: number[];
   precision?: number;
+}
+
+export interface VgWordcloudTransform {
+  type: 'wordcloud';
+  signal?: string;
+  size?: Vector2<number | SignalRef> | SignalRef;
+  font?: string | TransformField;
+  fontStyle?: FontStyle | TransformField;
+  fontWeight?: FontWeight | TransformField;
+  fontSize?: number | TransformField;
+  fontSizeRange?: Vector2<number | SignalRef> | SignalRef;
+  rotate?: number | TransformField;
+  text?: string | TransformField;
+  spiral?: 'archimedian' | 'rectangular';
+  padding?: number | TransformField;
+  as?: Vector7<string | SignalRef> | SignalRef;
 }
 
 export interface VgSequenceTransform {

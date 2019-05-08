@@ -24,7 +24,8 @@ import {
   isSample,
   isStack,
   isTimeUnit,
-  isWindow
+  isWindow,
+  isWordcloud
 } from '../../transform';
 import {deepEqual, mergeDeep} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
@@ -54,6 +55,7 @@ import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
+import {WordcloudNode} from './wordcloud';
 
 export function findSource(data: Data, sources: SourceNode[]) {
   for (const other of sources) {
@@ -111,7 +113,6 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
   for (const t of model.transforms) {
     let derivedType: ParseValue = undefined;
     let transformNode: DataFlowNode;
-
     if (isCalculate(t)) {
       transformNode = head = new CalculateNode(head, t);
       derivedType = 'derived';
@@ -160,6 +161,9 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       head = new SampleTransformNode(head, t);
     } else if (isImpute(t)) {
       transformNode = head = ImputeNode.makeFromTransform(head, t);
+      derivedType = 'derived';
+    } else if (isWordcloud(t)) {
+      transformNode = head = new WordcloudNode(head, t);
       derivedType = 'derived';
     } else {
       log.warn(log.message.invalidTransformIgnored(t));

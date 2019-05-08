@@ -358,6 +358,58 @@ export interface FoldTransform {
   as?: [string, string];
 }
 
+export interface WordcloudTransform {
+  wordcloud: string[];
+  /*
+   *
+   */
+  size: number[];
+  /*
+   *
+   */
+  font: string;
+  /*
+   *
+   */
+  fontStyle: string;
+  /*
+   *
+   */
+  fontWeight: string;
+  /*
+   *
+   */
+  fontSize: number;
+  /*
+   *
+   */
+  fontSizeRange: number[];
+  /*
+   *
+   */
+  rotate?: number;
+  /*
+   *
+   */
+  text?: string;
+  /*
+   *
+   */
+  spiral?: string;
+  /*
+   *
+   */
+  padding?: number;
+  /*
+   *
+   */
+  as?: string[];
+}
+
+export function isWordcloud(t: Transform): t is WordcloudTransform {
+  return t['wordcloud'] !== undefined;
+}
+
 export function isLookup(t: Transform): t is LookupTransform {
   return t['lookup'] !== undefined;
 }
