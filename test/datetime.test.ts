@@ -152,6 +152,18 @@ describe('datetime', () => {
       ).toBe('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
     });
 
+    it('should return date in JSON if specified', () => {
+      const d = {
+        year: 1970,
+        month: 1,
+        day: '1'
+      };
+      const expr = dateTimeExpr(d, false, true);
+      // Time Zone Offsets can cause expr to be different
+      // depending upon the host machine
+      expect(expr).toMatch(/1970-02-/);
+    });
+
     it('should throw error for invalid day', () => {
       expect(() => {
         dateTimeExpr({day: 'S'}, true);
@@ -166,6 +178,8 @@ describe('datetime', () => {
       };
       const expr = dateTimeExpr(d, true);
       expect(expr).toBe('utc(2007, 0, 1, 0, 0, 0, 0)');
+      const exprJSON = dateTimeExpr(d, true, true);
+      expect(exprJSON).toBe('2007-01-01T00:00:00.000Z');
     });
 
     // Note: Other part of coverage handled by timeUnit.fieldExpr's test

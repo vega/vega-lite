@@ -1,7 +1,7 @@
 import {Signal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
-import {forEachSelection, MODIFY, SELECTION_DOMAIN, STORE, VL_SELECTION_RESOLVE} from '.';
+import {forEachSelection, MODIFY, SELECTION_DOMAIN, STORE, unitName, VL_SELECTION_RESOLVE} from '.';
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
@@ -27,6 +27,16 @@ export function assembleInit(
   }
   return wrap(JSON.stringify(init));
 }
+
+export function assembleInitData(init: (SelectionInit | SelectionInit[] | SelectionInitArray)[] | SelectionInit): any {
+  if (isArray(init)) {
+    return init.map(v => assembleInitData(v));
+  } else if (isDateTime(init)) {
+    return dateTimeExpr(init, false, true);
+  }
+  return init;
+}
+
 export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]) {
   forEachSelection(model, (selCmpt, selCompiler) => {
     const name = selCmpt.name;
@@ -113,9 +123,24 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
 
 export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[] {
   forEachSelection(model, selCmpt => {
+    const dataObj = {name: selCmpt.name + STORE};
+    if (selCmpt.init) {
+      const fields = selCmpt.project.items.map(proj => {
+        const {signals, ...rest} = proj;
+        return rest;
+      });
+      const insert = selCmpt.init.map((i: SelectionInit | SelectionInit[]) => assembleInitData(i));
+      if (selCmpt.type === 'interval') {
+        dataObj['values'] = {unit: unitName(model), fields, values: insert};
+      } else {
+        dataObj['values'] = insert.map(i => {
+          return {unit: unitName(model), fields, values: i};
+        });
+      }
+    }
     const contains = data.filter(d => d.name === selCmpt.name + STORE);
     if (!contains.length) {
-      data.push({name: selCmpt.name + STORE});
+      data.push(dataObj);
     }
   });
 

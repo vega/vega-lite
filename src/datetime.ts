@@ -209,7 +209,7 @@ function normalizeDay(d: string | number) {
  * @param d
  * @param normalize whether to normalize quarter, month, day.
  */
-export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
+export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false, inJSON = false) {
   const units: (string | number)[] = [];
 
   if (normalize && d.day !== undefined) {
@@ -257,6 +257,16 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
       units.push(d[timeUnit]);
     } else {
       units.push(0);
+    }
+  }
+
+  const unitsString = units.join(', ');
+
+  if (inJSON) {
+    if (d.utc) {
+      return new Function(`return new Date(Date.UTC(${unitsString}))`)().toJSON();
+    } else {
+      return new Function(`return new Date(${unitsString})`)().toJSON();
     }
   }
 

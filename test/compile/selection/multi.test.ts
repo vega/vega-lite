@@ -99,10 +99,6 @@ describe('Multi Selection', () => {
             force: true
           }
         ]
-      },
-      {
-        name: 'thr_ee_init',
-        init: 'modify("thr_ee_store", [{unit: "", fields: thr_ee_tuple_fields, values: [50]}])'
       }
     ]);
 
@@ -118,10 +114,6 @@ describe('Multi Selection', () => {
             force: true
           }
         ]
-      },
-      {
-        name: 'four_init',
-        init: 'modify("four_store", [{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}])'
       }
     ]);
 
@@ -137,11 +129,6 @@ describe('Multi Selection', () => {
             force: true
           }
         ]
-      },
-      {
-        name: 'five_init',
-        init:
-          'modify("five_store", [{unit: "", fields: five_tuple_fields, values: [datetime(1970, 1, 1+1, 0, 0, 0, 0), "Japan"]},{unit: "", fields: five_tuple_fields, values: [datetime(1980, 1, 1+1, 0, 0, 0, 0), "USA"]}])'
       }
     ]);
 
@@ -154,9 +141,41 @@ describe('Multi Selection', () => {
     expect(assembleUnitSelectionData(model, data)).toEqual([
       {name: 'one_store'},
       {name: 'two_store'},
-      {name: 'thr_ee_store'},
-      {name: 'four_store'},
-      {name: 'five_store'}
+      {
+        name: 'thr_ee_store',
+        values: [
+          {
+            unit: '""',
+            fields: [{type: 'E', field: 'Horsepower'}],
+            values: [50]
+          }
+        ]
+      },
+      {
+        name: 'four_store',
+        values: [
+          {
+            unit: '""',
+            fields: [{field: 'Horsepower', channel: 'x', type: 'E'}, {field: 'Origin', channel: 'color', type: 'E'}],
+            values: [50, 'Japan']
+          }
+        ]
+      },
+      {
+        name: 'five_store',
+        values: [
+          {
+            unit: '""',
+            fields: [{type: 'E', field: 'Year'}, {type: 'E', field: 'Origin'}],
+            values: ['1970-02-02T05:00:00.000Z', 'Japan']
+          },
+          {
+            unit: '""',
+            fields: [{type: 'E', field: 'Year'}, {type: 'E', field: 'Origin'}],
+            values: ['1980-02-02T05:00:00.000Z', 'USA']
+          }
+        ]
+      }
     ]);
   });
 
