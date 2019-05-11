@@ -16,6 +16,7 @@
         {
           "type": "kde",
           "field": "value",
+          "bandwidth": 0.3,
           "groupby": ["organ"],
           "as": ["value", "density"]
         }
