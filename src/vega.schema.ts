@@ -4,8 +4,11 @@ import {
   Compare as VgCompare,
   ExprRef as VgExprRef,
   Field as VgField,
+  KDETransform as VgKDETransform,
   FlattenTransform as VgFlattenTransform,
   FoldTransform as VgFoldTransform,
+  LoessTransform as VgLoessTransform,
+  RegressionTransform as VgRegressionTransform,
   FontStyle as VgFontStyle,
   FontWeight as VgFontWeight,
   LayoutAlign,
@@ -406,7 +409,10 @@ export type VgTransform =
   | VgJoinAggregateTransform
   | VgFoldTransform
   | VgSampleTransform
-  | VgSequenceTransform;
+  | VgSequenceTransform
+  | VgKDETransform
+  | VgLoessTransform
+  | VgRegressionTransform;
 
 export interface VgGraticuleTransform {
   type: 'graticule';
