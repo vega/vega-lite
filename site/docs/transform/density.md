@@ -29,7 +29,7 @@ The density transform performs one-dimensional [kernel density estimation](https
 {"density": "measure", "groupby": ["key"]}
 ```
 
-This example performs density estimation for the `"measure"` property, with separate estimations performed for each group of records with a distinct `"key"` property value. The output data is of the form:
+Performs density estimation for the `"measure"` property, with separate estimations performed for each group of records with a distinct `"key"` property value. The output data is of the form:
 
 ```js
 [
@@ -38,6 +38,14 @@ This example performs density estimation for the `"measure"` property, with sepa
 ]
 ```
 
-## Example
+### Example: Faceted Density Estimates
+
+Density estimates of measurements for each iris flower feature:
 
 <div class="vl-example" data-name="area_density"></div>
+
+### Example: Stacked Density Estimates
+
+To plot a stacked graph of estimates, use a shared `extent` and a fixed number of subdivision `steps` to ensure that the points for each area align well. In addition, setting `counts` to true multiplies the densities by the number of data points in each group, preserving proportional differences:
+
+<div class="vl-example" data-name="area_density_stacked"></div>
