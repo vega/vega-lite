@@ -167,12 +167,12 @@ describe('Multi Selection', () => {
           {
             unit: '""',
             fields: [{type: 'E', field: 'Year'}, {type: 'E', field: 'Origin'}],
-            values: ['1970-02-02T05:00:00.000Z', 'Japan']
+            values: ['1970-02-02T08:00:00.000Z', 'Japan']
           },
           {
             unit: '""',
             fields: [{type: 'E', field: 'Year'}, {type: 'E', field: 'Origin'}],
-            values: ['1980-02-02T05:00:00.000Z', 'USA']
+            values: ['1980-02-02T08:00:00.000Z', 'USA']
           }
         ]
       }

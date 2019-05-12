@@ -159,9 +159,7 @@ describe('datetime', () => {
         day: '1'
       };
       const expr = dateTimeExpr(d, false, true);
-      // Time Zone Offsets can cause expr to be different
-      // depending upon the host machine
-      expect(expr).toMatch(/1970-02-/);
+      expect(expr).toBe('1970-02-02T08:00:00.000Z');
     });
 
     it('should throw error for invalid day', () => {
