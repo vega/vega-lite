@@ -6,7 +6,7 @@
       "fold": ["petalWidth", "petalLength", "sepalWidth", "sepalLength"],
       "as": ["organ", "value"]
     },
-    {"density": "value", "groupby": ["organ"]}
+    {"density": "value", "bandwidth": 0.3, "groupby": ["organ"]}
   ],
   "facet": {"row": {"field": "organ", "type": "nominal"}},
   "spec": {
