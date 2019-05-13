@@ -87,6 +87,7 @@ function onDelta(
   const sign = hasScales && channel === X ? '-' : ''; // Invert delta when panning x-scales.
   const extent = `${anchor}.extent_${channel}`;
   const offset = `${sign}${delta}.${channel} / ` + (hasScales ? `${sizeSg}` : `span(${extent})`);
+  const zoomClamp = selCmpt.bind && selCmpt.bind['clamp'] && selCmpt.bind['clamp'][channel];
   const panFn = !hasScales
     ? 'panLinear'
     : scaleType === 'log'
@@ -101,6 +102,10 @@ function onDelta(
 
   signal.on.push({
     events: {signal: delta},
-    update: hasScales ? update : `clampRange(${update}, 0, ${sizeSg})`
+    update: hasScales
+      ? zoomClamp
+        ? `clampRange(${update}, ${Math.min(...zoomClamp)}, ${Math.max(...zoomClamp)})`
+        : update
+      : `clampRange(${update}, 0, ${sizeSg})`
   });
 }

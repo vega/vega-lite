@@ -17,6 +17,11 @@ export interface SelectionInitArrayMapping {
   [key: string]: SelectionInitArray;
 }
 
+export interface BindClamp {
+  scales: boolean;
+  clamp: {[key: string]: [number, number]};
+}
+
 export interface BaseSelectionDef {
   /**
    * A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.
@@ -205,7 +210,7 @@ export interface IntervalSelectionConfig extends BaseSelectionDef {
    * used within the same view. This allows a user to interactively pan and
    * zoom the view.
    */
-  bind?: 'scales';
+  bind?: 'scales' | BindClamp;
 
   /**
    * An interval selection also adds a rectangle mark to depict the

@@ -89,6 +89,7 @@ function onDelta(
   const base = hasScales ? domain(model, channel) : signal.name;
   const delta = name + DELTA;
   const anchor = `${name}${ANCHOR}.${channel}`;
+  const zoomClamp = selCmpt.bind && selCmpt.bind['clamp'];
   const zoomFn = !hasScales
     ? 'zoomLinear'
     : scaleType === 'log'
@@ -101,8 +102,41 @@ function onDelta(
     (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') || 1}` : '') +
     ')';
 
+  let clampRangeExp;
+  if (zoomClamp) {
+    const clampX = zoomClamp[X];
+    const clampY = zoomClamp[Y];
+
+    if (clampX && clampY) {
+      const clampRatio = Math.abs((clampX[1] - clampX[0]) / (clampY[1] - clampY[0]));
+
+      const xLow = Math.min(...clampX);
+      const xHigh = Math.max(...clampX);
+      const yLow = Math.min(...clampY);
+      const yHigh = Math.max(...clampY);
+
+      let clampRange;
+      if (proj.channel === X) {
+        clampRange = `${xLow}, ${clampRatio} > span(domain("x"))/span(domain("y")) ? ${yHigh -
+          yLow}*span(domain("x"))/span(domain("y"))+${xLow} : ${xHigh}`;
+      } else if (proj.channel === Y) {
+        clampRange = `${yLow}, ${clampRatio} < span(domain("x"))/span(domain("y")) ? ${xHigh -
+          xLow}/(span(domain("x"))/span(domain("y")))+${yLow} : ${yHigh}`;
+      }
+      clampRangeExp = `clampRange(${update}, ${clampRange})`;
+    } else if (zoomClamp[channel]) {
+      const clampLow = Math.min(...zoomClamp[channel]);
+      const clampHigh = Math.max(...zoomClamp[channel]);
+      clampRangeExp = `clampRange(${update}, ${clampLow}, ${clampHigh})`;
+    } else {
+      const compChannel = channel === X ? Y : X;
+      const compChannelExtent = Math.abs(zoomClamp[compChannel][1] - zoomClamp[compChannel][0]);
+      clampRangeExp = `span(domain("${compChannel}")) >= ${compChannelExtent} ? domain("${channel}") : ${update}`;
+    }
+  }
+
   signal.on.push({
     events: {signal: delta},
-    update: hasScales ? update : `clampRange(${update}, 0, ${sizeSg})`
+    update: hasScales ? (zoomClamp ? clampRangeExp : update) : `clampRange(${update}, 0, ${sizeSg})`
   });
 }

@@ -43,6 +43,14 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
     seven: {
       type: 'interval',
       zoom: null
+    },
+    eight: {
+      type: 'interval',
+      bind: {scales: true, clamp: {x: [0, 250], y: [0, 50]}}
+    },
+    nine: {
+      type: 'interval',
+      bind: {scales: true, clamp: {y: [0, 50]}}
     }
   });
 
@@ -59,6 +67,8 @@ describe('Zoom Selection Transform', () => {
     expect(zoom.has(selCmpts['five'])).not.toBe(false);
     expect(zoom.has(selCmpts['six'])).not.toBe(false);
     expect(zoom.has(selCmpts['seven'])).not.toBe(true);
+    expect(zoom.has(selCmpts['eight'])).not.toBe(false);
+    expect(zoom.has(selCmpts['nine'])).not.toBe(false);
   });
 
   describe('Anchor/Delta signals', () => {
@@ -193,6 +203,40 @@ describe('Zoom Selection Transform', () => {
       expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
         events: {signal: 'six_zoom_delta'},
         update: 'zoomLinear(domain("y"), six_zoom_anchor.y, six_zoom_delta)'
+      });
+    });
+
+    it('builds clamped zoom exprs for scale and clamp bound zoom', () => {
+      const {model, selCmpts} = getModel();
+      model.component.selection = {six: selCmpts['eight']};
+      const signals = assembleUnitSelectionSignals(model, []);
+
+      expect(signals.filter(s => s.name === 'eight_Horsepower')[0].on).toContainEqual({
+        events: {signal: 'eight_zoom_delta'},
+        update:
+          'clampRange(zoomLinear(domain("x"), eight_zoom_anchor.x, eight_zoom_delta), 0, 5 > span(domain("x"))/span(domain("y")) ? 50*span(domain("x"))/span(domain("y"))+0 : 250)'
+      });
+
+      expect(signals.filter(s => s.name === 'eight_Miles_per_Gallon')[0].on).toContainEqual({
+        events: {signal: 'eight_zoom_delta'},
+        update:
+          'clampRange(zoomLinear(domain("y"), eight_zoom_anchor.y, eight_zoom_delta), 0, 5 < span(domain("x"))/span(domain("y")) ? 250/(span(domain("x"))/span(domain("y")))+0 : 50)'
+      });
+    });
+
+    it('builds clamped zoom exprs for scale bound and singly clamped zoom', () => {
+      const {model, selCmpts} = getModel();
+      model.component.selection = {six: selCmpts['nine']};
+      const signals = assembleUnitSelectionSignals(model, []);
+
+      expect(signals.filter(s => s.name === 'nine_Horsepower')[0].on).toContainEqual({
+        events: {signal: 'nine_zoom_delta'},
+        update: 'span(domain("y")) >= 50 ? domain("x") : zoomLinear(domain("x"), nine_zoom_anchor.x, nine_zoom_delta)'
+      });
+
+      expect(signals.filter(s => s.name === 'nine_Miles_per_Gallon')[0].on).toContainEqual({
+        events: {signal: 'nine_zoom_delta'},
+        update: 'clampRange(zoomLinear(domain("y"), nine_zoom_anchor.y, nine_zoom_delta), 0, 50)'
       });
     });
 

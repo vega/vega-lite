@@ -43,6 +43,14 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
     seven: {
       type: 'interval',
       translate: null
+    },
+    eight: {
+      type: 'interval',
+      bind: {scales: true, clamp: {x: [0, 250], y: [0, 50]}}
+    },
+    nine: {
+      type: 'interval',
+      bind: {scales: true, clamp: {y: [0, 50]}}
     }
   });
 
@@ -59,6 +67,8 @@ describe('Translate Selection Transform', () => {
     expect(translate.has(selCmpts['five'])).not.toBe(false);
     expect(translate.has(selCmpts['six'])).not.toBe(false);
     expect(translate.has(selCmpts['seven'])).not.toBe(true);
+    expect(translate.has(selCmpts['eight'])).not.toBe(false);
+    expect(translate.has(selCmpts['nine'])).not.toBe(false);
   });
 
   describe('Anchor/Delta signals', () => {
@@ -201,6 +211,38 @@ describe('Translate Selection Transform', () => {
       expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
         events: {signal: 'six_translate_delta'},
         update: 'panLinear(six_translate_anchor.extent_y, six_translate_delta.y / height)'
+      });
+    });
+
+    it('builds clamped pan exprs for scale and clamp bound zoom', () => {
+      const {model, selCmpts} = getModel();
+      model.component.selection = {six: selCmpts['eight']};
+      const signals = assembleUnitSelectionSignals(model, []);
+
+      expect(signals.filter(s => s.name === 'eight_Horsepower')[0].on).toContainEqual({
+        events: {signal: 'eight_translate_delta'},
+        update: 'clampRange(panLinear(eight_translate_anchor.extent_x, -eight_translate_delta.x / width), 0, 250)'
+      });
+
+      expect(signals.filter(s => s.name === 'eight_Miles_per_Gallon')[0].on).toContainEqual({
+        events: {signal: 'eight_translate_delta'},
+        update: 'clampRange(panLinear(eight_translate_anchor.extent_y, eight_translate_delta.y / height), 0, 50)'
+      });
+    });
+
+    it('builds clamped pan exprs for scale bound and singly clamped zoom', () => {
+      const {model, selCmpts} = getModel();
+      model.component.selection = {six: selCmpts['nine']};
+      const signals = assembleUnitSelectionSignals(model, []);
+
+      expect(signals.filter(s => s.name === 'nine_Horsepower')[0].on).toContainEqual({
+        events: {signal: 'nine_translate_delta'},
+        update: 'panLinear(nine_translate_anchor.extent_x, -nine_translate_delta.x / width)'
+      });
+
+      expect(signals.filter(s => s.name === 'nine_Miles_per_Gallon')[0].on).toContainEqual({
+        events: {signal: 'nine_translate_delta'},
+        update: 'clampRange(panLinear(nine_translate_anchor.extent_y, nine_translate_delta.y / height), 0, 50)'
       });
     });
 

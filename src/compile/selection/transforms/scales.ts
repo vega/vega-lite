@@ -10,7 +10,12 @@ import {TransformCompiler} from './transforms';
 
 const scaleBindings: TransformCompiler = {
   has: selCmpt => {
-    return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
+    return (
+      selCmpt.type === 'interval' &&
+      selCmpt.resolve === 'global' &&
+      selCmpt.bind &&
+      (selCmpt.bind === 'scales' || selCmpt.bind['scales'])
+    );
   },
 
   parse: (model, selDef, selCmpt) => {

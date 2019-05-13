@@ -2,6 +2,7 @@ import {Binding, NewSignal, SignalRef} from 'vega';
 import {stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel';
 import {
+  BindClamp,
   BrushConfig,
   SELECTION_ID,
   SelectionInit,
@@ -38,7 +39,7 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
     : SelectionInit | SelectionInit[])[]; // multi
   events: EventStream;
   // predicate?: string;
-  bind?: 'scales' | Binding | Dict<Binding>;
+  bind?: 'scales' | BindClamp | Binding | Dict<Binding>;
   resolve: SelectionResolution;
   empty: 'all' | 'none';
   mark?: BrushConfig;

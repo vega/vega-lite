@@ -1689,6 +1689,35 @@
       ],
       "type": "object"
     },
+    "BindClamp": {
+      "additionalProperties": false,
+      "properties": {
+        "clamp": {
+          "additionalProperties": {
+            "items": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "maxItems": 2,
+            "minItems": 2,
+            "type": "array"
+          },
+          "type": "object"
+        },
+        "scales": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "scales",
+        "clamp"
+      ],
+      "type": "object"
+    },
     "BindRadioSelect": {
       "additionalProperties": false,
       "properties": {
@@ -6319,11 +6348,18 @@
       "additionalProperties": false,
       "properties": {
         "bind": {
-          "description": "Establishes a two-way binding between the interval selection and the scales\nused within the same view. This allows a user to interactively pan and\nzoom the view.",
-          "enum": [
-            "scales"
+          "anyOf": [
+            {
+              "enum": [
+                "scales"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/BindClamp"
+            }
           ],
-          "type": "string"
+          "description": "Establishes a two-way binding between the interval selection and the scales\nused within the same view. This allows a user to interactively pan and\nzoom the view."
         },
         "clear": {
           "anyOf": [
@@ -6404,11 +6440,18 @@
       "additionalProperties": false,
       "properties": {
         "bind": {
-          "description": "Establishes a two-way binding between the interval selection and the scales\nused within the same view. This allows a user to interactively pan and\nzoom the view.",
-          "enum": [
-            "scales"
+          "anyOf": [
+            {
+              "enum": [
+                "scales"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/BindClamp"
+            }
           ],
-          "type": "string"
+          "description": "Establishes a two-way binding between the interval selection and the scales\nused within the same view. This allows a user to interactively pan and\nzoom the view."
         },
         "clear": {
           "anyOf": [
