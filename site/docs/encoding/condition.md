@@ -95,7 +95,18 @@ For example, in the following plot, the color of `rect` marks is driven by a con
 
 ## Conditional Value Definition
 
-// A Single View or a Layer Specification { ..., "mark/layer": ..., "encoding": { ...: { // A conditional value definition (if-clause) "condition": { // Selection name or a test predicate "selection/test": ..., // Value if the data is included in the `selection` or if the `test` precidate is satisfied "value": ... },
+```js
+// A Single View or a Layer Specification
+{
+  ...,
+  "mark/layer": ...,
+  "encoding": {
+    ...: {
+      // A conditional value definition (if-clause)
+      "condition": { // Selection name or a test predicate
+        "selection/test": ..., // Value if the data is included in the `selection` or if the `test` precidate is satisfied
+        "value": ...
+      },
 
       // (Optional else-clause) field if the data is NOT included in the `selection` / if the `test` precidate is NOT satisfied
       "field": ... ,
@@ -103,9 +114,9 @@ For example, in the following plot, the color of `rect` marks is driven by a con
       ...
     },
     ...
-
-}, ... }
-
+  },
+  ...
+}
 ```
 
 A condition value definition uses a constant value encoding when data fall within a selection or satisfy a logical predicate. A field or value definition can be specified as the "else" case when the condition is not satisfied.
