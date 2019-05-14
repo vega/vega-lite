@@ -208,6 +208,7 @@ function normalizeDay(d: string | number) {
  * Return Vega Expression for a particular date time.
  * @param d
  * @param normalize whether to normalize quarter, month, day.
+ * @param inJSON whether to return the date in JSON format
  */
 export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false, inJSON = false) {
   const units: (string | number)[] = [];

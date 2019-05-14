@@ -47,7 +47,7 @@
     "prettierbase": "prettier '{src,test,test-runtime,site,typings}/**/*.{ts,md,css}'",
     "format": "tslint -p . --fix && npm run prettierbase -- --write",
     "lint": "tslint -p . && npm run prettierbase -- --check",
-    "test": "TZ=America/Los_Angeles jest test/ && npm run lint && npm run schema && jest examples/ && npm run test:runtime",
+    "test": "jest test/ && npm run lint && npm run schema && jest examples/ && npm run test:runtime",
     "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test",
     "test:runtime": "TZ=America/Los_Angeles jest test-runtime/",
     "test:runtime:generate": "rm -Rf test-runtime/resources && VL_GENERATE_TESTS=true npm run test:runtime",
