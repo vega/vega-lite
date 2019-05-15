@@ -1,4 +1,4 @@
-import {ScaleChannel, SCALE_CHANNELS, SHAPE} from '../../channel';
+import {SCALE_CHANNELS, ScaleChannel, SHAPE} from '../../channel';
 import {hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../../channeldef';
 import {GEOSHAPE} from '../../mark';
 import {

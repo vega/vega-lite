@@ -244,7 +244,9 @@ describe('compile/data/bin', () => {
     const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
     const binNodeB = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['bar', 'bar_end']]}});
 
-    binNodeA.merge(binNodeB, (s1, s2) => {});
+    binNodeA.merge(binNodeB, (s1, s2) => {
+      return;
+    });
     expect(binNodeA).toEqual(
       new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}})
     );
@@ -255,7 +257,9 @@ describe('compile/data/bin', () => {
     const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
     const binNodeB = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}});
 
-    binNodeA.merge(binNodeB, (s1, s2) => {});
+    binNodeA.merge(binNodeB, (s1, s2) => {
+      return;
+    });
     expect(binNodeA).toEqual(
       new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}})
     );
@@ -277,7 +281,9 @@ describe('compile/data/bin', () => {
     const childA = new DataFlowNode(binNodeA);
     const childB = new DataFlowNode(binNodeB);
 
-    binNodeA.merge(binNodeB, (s1, s2) => {});
+    binNodeA.merge(binNodeB, (s1, s2) => {
+      return;
+    });
 
     expect(binNodeB.children.length).toEqual(0);
     expect(binNodeA.children.length).toEqual(2);
@@ -290,7 +296,9 @@ describe('compile/data/bin', () => {
     const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
     const binNodeB = new BinNode(parent, {bar: {bin: {}, field: 'bar', as: [['bar', 'bar_end']]}});
 
-    binNodeA.merge(binNodeB, (s1, s2) => {});
+    binNodeA.merge(binNodeB, (s1, s2) => {
+      return;
+    });
     expect(binNodeA).toEqual(
       new BinNode(parent, {
         foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]},

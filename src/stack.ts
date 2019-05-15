@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
 import {SUM_OPS} from './aggregate';
-import {NonPositionChannel, NONPOSITION_CHANNELS, X, X2, Y2} from './channel';
+import {NONPOSITION_CHANNELS, NonPositionChannel, X, X2, Y2} from './channel';
 import {
   Field,
   getTypedFieldDef,

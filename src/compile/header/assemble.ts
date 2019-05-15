@@ -3,7 +3,7 @@
  */
 import {TitleAnchor, TitleConfig} from 'vega';
 import {isArray} from 'vega-util';
-import {FacetChannel, FACET_CHANNELS} from '../../channel';
+import {FACET_CHANNELS, FacetChannel} from '../../channel';
 import {vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {
@@ -23,10 +23,10 @@ import {sortArrayIndexField} from '../data/calculate';
 import {isFacetModel, Model} from '../model';
 import {getHeaderChannel, getHeaderProperties, getHeaderProperty} from './common';
 import {
+  HEADER_TYPES,
   HeaderChannel,
   HeaderComponent,
   HeaderType,
-  HEADER_TYPES,
   LayoutHeaderComponent,
   LayoutHeaderComponentIndex
 } from './component';
