@@ -35,7 +35,7 @@ In addition, all view composition specifications ([`layer`](layer.html), [`facet
 
 In addition to the [common properties](#common), any kind of top-level specifications (including a standalone single view specification as well as layered and multi-view specifications) can contain the following properties:
 
-{% include table.html props="$schema,background,padding,autosize,config" source="TopLevelUnitSpec" %}
+{% include table.html props="$schema,background,padding,autosize,config,usermeta" source="TopLevelUnitSpec" %}
 
 {:#single}
 
@@ -49,6 +49,7 @@ In addition to the [common properties](#common), any kind of top-level specifica
   "padding": ...,
   "autosize": ...,
   "config": ...,
+  "usermeta": ...,
 
   // Properties for any specifications
   "title": ...,
