@@ -1,3 +1,4 @@
+import {Signal} from 'vega';
 import {stringValue} from 'vega-util';
 import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
 import {SelectionInit} from '../../selection';
@@ -30,7 +31,7 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
   // whitespace followed by a click in whitespace; the store should only
   // be cleared on the second click).
   const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
-  const signals: any[] = [
+  const signals: Signal[] = [
     {
       name: name + TUPLE,
       on: [
