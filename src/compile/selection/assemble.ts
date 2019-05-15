@@ -133,9 +133,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
       if (selCmpt.type === 'interval') {
         dataObj['values'] = {unit: unitName(model), fields, values: insert};
       } else {
-        dataObj['values'] = insert.map(i => {
-          return {unit: unitName(model), fields, values: i};
-        });
+        dataObj['values'] = insert.map(i => ({unit: unitName(model), fields, values: i}));
       }
     }
     const contains = data.filter(d => d.name === selCmpt.name + STORE);
