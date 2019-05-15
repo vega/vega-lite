@@ -140,4 +140,3 @@ This plot uses a conditional value definition value to use a black label for a l
 The next plot uses a conditional value definition to color data points with null values in grey. Note that if the "else" case value is not specified, default mark color will be applied.
 
 <div class="vl-example" data-name="point_invalid_color"></div>
-```
