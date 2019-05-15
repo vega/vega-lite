@@ -53,7 +53,6 @@
     "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test",
     "test:runtime": "TZ=America/Los_Angeles jest test-runtime/",
     "test:runtime:generate": "rm -Rf test-runtime/resources && VL_GENERATE_TESTS=true npm run test:runtime",
-    "watch:src": "npm run tsc:src -- -w",
     "watch:build": "npm run build:only && concurrently --kill-others -n Typescript,Rollup 'npm run tsc:src -- -w' 'rollup -c -w'",
     "watch:site": "concurrently --kill-others -n Typescript,Rollup 'npm run tsc:site -- -w' 'rollup -c site/rollup.config.js -w'",
     "watch:test": "jest --watch"
