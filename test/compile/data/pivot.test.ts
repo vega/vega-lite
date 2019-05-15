@@ -38,6 +38,16 @@ describe('compile/data/pivot', () => {
     });
   });
 
+  it('should add dimensions to the groupby attribute', () => {
+    const transform: Transform = {
+      pivot: 'a',
+      value: 'b'
+    };
+    const pivot = new PivotTransformNode(null, transform);
+    pivot.addDimensions(['c', 'd']);
+    expect(pivot.assemble().groupby).toEqual(['c', 'd']);
+  });
+
   it('should return empty produced fields', () => {
     const transform: Transform = {
       pivot: 'a',
@@ -45,6 +55,15 @@ describe('compile/data/pivot', () => {
     };
     const pivot = new PivotTransformNode(null, transform);
     expect(pivot.producedFields()).toEqual(new Set());
+  });
+
+  it('should return relevant dependent fields', () => {
+    const transform: Transform = {
+      pivot: 'a',
+      value: 'b'
+    };
+    const pivot = new PivotTransformNode(null, transform);
+    expect(pivot.dependentFields()).toEqual(new Set(['a', 'b']));
   });
 
   it('should generate the correct hash', () => {
