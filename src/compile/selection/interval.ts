@@ -1,3 +1,4 @@
+import {NewSignal, OnEvent} from 'vega';
 import {stringValue} from 'vega-util';
 import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
 import {ScaleChannel, X, Y} from '../../channel';
@@ -19,13 +20,16 @@ const interval: SelectionCompiler<'interval'> = {
     const name = selCmpt.name;
     const fieldsSg = name + TUPLE_FIELDS;
     const hasScales = scales.has(selCmpt);
-    const signals: any[] = [];
+    const signals: NewSignal[] = [];
     const dataSignals: string[] = [];
-    const scaleTriggers: any[] = [];
+    const scaleTriggers: {
+      scaleName: string;
+      expr: string;
+    }[] = [];
 
     if (selCmpt.translate && !hasScales) {
       const filterExpr = `!event.item || event.item.mark.name !== ${stringValue(name + BRUSH)}`;
-      events(selCmpt, (_: any[], evt: EventStream) => {
+      events(selCmpt, (_: OnEvent[], evt: EventStream) => {
         const filters = evt.between[0].filter || (evt.between[0].filter = []);
         if (filters.indexOf(filterExpr) < 0) {
           filters.push(filterExpr);
@@ -159,7 +163,7 @@ const interval: SelectionCompiler<'interval'> = {
           },
           update: update
         }
-      } as any,
+      },
       ...marks,
       {
         name: name + BRUSH,
@@ -185,7 +189,7 @@ function channelSignals(
   selCmpt: SelectionComponent<'interval'>,
   proj: SelectionProjection,
   init?: SelectionInitArray
-): any {
+): NewSignal[] {
   const channel = proj.channel;
   const vname = proj.signals.visual;
   const dname = proj.signals.data;
@@ -197,7 +201,7 @@ function channelSignals(
   const size = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;
   const coord = `${channel}(unit)`;
 
-  const on = events(selCmpt, (def: any[], evt: EventStream) => {
+  const on = events(selCmpt, (def: OnEvent[], evt: EventStream) => {
     return [
       ...def,
       {events: evt.between[0], update: `[${coord}, ${coord}]`}, // Brush Start
@@ -235,7 +239,7 @@ function channelSignals(
 }
 
 function events(selCmpt: SelectionComponent<'interval'>, cb: (...args: any[]) => void) {
-  return selCmpt.events.reduce((on: any[], evt: EventStream) => {
+  return selCmpt.events.reduce((on: OnEvent[], evt: EventStream) => {
     if (!evt.between) {
       warn(`${evt} is not an ordered event stream for interval selections`);
       return on;
