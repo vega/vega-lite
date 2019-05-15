@@ -25,7 +25,7 @@
   },
   "scripts": {
     "build": "npm run build:only",
-    "build:only": "tsc -b src && rollup -c",
+    "build:only": "tsc -b src/tsconfig.src.json && rollup -c",
     "postbuild": "terser build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && npm run schema",
     "build:examples": "npm run build:only",
     "postbuild:examples": "npm run data && TZ=America/Los_Angeles scripts/build-examples.sh",
@@ -33,7 +33,7 @@
     "postbuild:examples-full": "TZ=America/Los_Angeles scripts/build-examples.sh 1",
     "build:example": "TZ=America/Los_Angeles scripts/build-example.sh",
     "build:toc": "npm run data && bundle exec jekyll build -q && scripts/generate-toc",
-    "build:site": "tsc -b site && rollup -c site/rollup.config.js",
+    "build:site": "tsc -b site/tsconfig.site.json && rollup -c site/rollup.config.js",
     "build:versions": "scripts/update-version.sh",
     "clean": "rm -rf build && rm -f examples/compiled/*.png && find site/examples ! -name 'index.md' -type f -delete",
     "data": "rsync -r node_modules/vega-datasets/data/* data",
@@ -51,8 +51,9 @@
     "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test",
     "test:runtime": "TZ=America/Los_Angeles jest test-runtime/",
     "test:runtime:generate": "rm -Rf test-runtime/resources && VL_GENERATE_TESTS=true npm run test:runtime",
-    "watch:build": "npm run build:only && concurrently --kill-others -n Typescript,Rollup 'tsc -b src -w' 'rollup -c -w'",
-    "watch:site": "concurrently --kill-others -n Typescript,Rollup 'tsc -b site --watch' 'rollup -c site/rollup.config.js --watch'",
+    "watch:src": "tsc -b src/tsconfig.src.json -w",
+    "watch:build": "npm run build:only && concurrently --kill-others -n Typescript,Rollup 'tsc -b src/tsconfig.src.json -w' 'rollup -c -w'",
+    "watch:site": "concurrently --kill-others -n Typescript,Rollup 'tsc -b site/tsconfig.site.json --watch' 'rollup -c site/rollup.config.js --watch'",
     "watch:test": "jest --watch"
   },
   "repository": {
