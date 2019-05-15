@@ -19,6 +19,7 @@ import {IdentifierNode} from './identifier';
 import {ImputeNode} from './impute';
 import {JoinAggregateTransformNode} from './joinaggregate';
 import {LookupNode} from './lookup';
+import {PivotTransformNode} from './pivot';
 import {SampleTransformNode} from './sample';
 import {SequenceNode} from './sequence';
 import {SourceNode} from './source';
@@ -97,7 +98,8 @@ function makeWalkTree(data: VgData[]) {
       node instanceof FoldTransformNode ||
       node instanceof FlattenTransformNode ||
       node instanceof IdentifierNode ||
-      node instanceof SampleTransformNode
+      node instanceof SampleTransformNode ||
+      node instanceof PivotTransformNode
     ) {
       dataSource.transform.push(node.assemble());
     }

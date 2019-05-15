@@ -21,6 +21,7 @@ import {
   isImpute,
   isJoinAggregate,
   isLookup,
+  isPivot,
   isSample,
   isStack,
   isTimeUnit,
@@ -48,6 +49,7 @@ import {AncestorParse, DataComponent} from './index';
 import {JoinAggregateTransformNode} from './joinaggregate';
 import {makeJoinAggregateFromFacet} from './joinaggregatefacet';
 import {LookupNode} from './lookup';
+import {PivotTransformNode} from './pivot';
 import {SampleTransformNode} from './sample';
 import {SequenceNode} from './sequence';
 import {SourceNode} from './source';
@@ -169,6 +171,9 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       derivedType = 'derived';
     } else if (isFlatten(t)) {
       transformNode = head = new FlattenTransformNode(head, t);
+      derivedType = 'derived';
+    } else if (isPivot(t)) {
+      transformNode = head = new PivotTransformNode(head, t);
       derivedType = 'derived';
     } else if (isSample(t)) {
       head = new SampleTransformNode(head, t);

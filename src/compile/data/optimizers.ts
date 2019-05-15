@@ -11,6 +11,7 @@ import {JoinAggregateTransformNode} from './joinaggregate';
 import {FACET_SCALE_PREFIX} from './optimize';
 import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
 import * as optimizers from './optimizers';
+import {PivotTransformNode} from './pivot';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -73,7 +74,10 @@ export class MoveParseUp extends BottomUpOptimizer {
         parent.merge(node);
       } else {
         // don't swap with nodes that produce something that the parse node depends on (e.g. lookup)
-        if (fieldIntersection(parent.producedFields(), node.dependentFields())) {
+        if (
+          parent instanceof PivotTransformNode ||
+          fieldIntersection(parent.producedFields(), node.dependentFields())
+        ) {
           this.setContinue();
           return this.flags;
         }

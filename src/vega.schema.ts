@@ -387,6 +387,15 @@ export interface VgIdentifierTransform {
   as: string;
 }
 
+export interface VgPivotTransform {
+  type: 'pivot';
+  field: string;
+  value: string;
+  groupby?: string[];
+  limit?: number;
+  op?: string;
+}
+
 export type VgTransform =
   | VgBinTransform
   | VgExtentTransform
@@ -406,7 +415,8 @@ export type VgTransform =
   | VgJoinAggregateTransform
   | VgFoldTransform
   | VgSampleTransform
-  | VgSequenceTransform;
+  | VgSequenceTransform
+  | VgPivotTransform;
 
 export interface VgGraticuleTransform {
   type: 'graticule';
