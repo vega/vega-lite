@@ -104,6 +104,8 @@ const interval: SelectionCompiler<'interval'> = {
   marks: (model, selCmpt, marks) => {
     const name = selCmpt.name;
     const {x, y} = selCmpt.project.has;
+    const xvname = x && x.signals.visual;
+    const yvname = y && y.signals.visual;
     const store = `data(${stringValue(selCmpt.name + STORE)})`;
 
     // Do not add a brush if we're binding to scales.
@@ -112,10 +114,10 @@ const interval: SelectionCompiler<'interval'> = {
     }
 
     const update: any = {
-      x: x !== undefined ? {signal: `${name}_x[0]`} : {value: 0},
-      y: y !== undefined ? {signal: `${name}_y[0]`} : {value: 0},
-      x2: x !== undefined ? {signal: `${name}_x[1]`} : {field: {group: 'width'}},
-      y2: y !== undefined ? {signal: `${name}_y[1]`} : {field: {group: 'height'}}
+      x: x !== undefined ? {signal: `${xvname}[0]`} : {value: 0},
+      y: y !== undefined ? {signal: `${yvname}[0]`} : {value: 0},
+      x2: x !== undefined ? {signal: `${xvname}[1]`} : {field: {group: 'width'}},
+      y2: y !== undefined ? {signal: `${yvname}[1]`} : {field: {group: 'height'}}
     };
 
     // If the selection is resolved to global, only a single interval is in
@@ -141,7 +143,7 @@ const interval: SelectionCompiler<'interval'> = {
     const vgStroke = keys(stroke).reduce((def, k) => {
       def[k] = [
         {
-          test: [x !== undefined && `${name}_x[0] !== ${name}_x[1]`, y !== undefined && `${name}_y[0] !== ${name}_y[1]`]
+          test: [x !== undefined && `${xvname}[0] !== ${xvname}[1]`, y !== undefined && `${yvname}[0] !== ${yvname}[1]`]
             .filter(t => t)
             .join(' && '),
           value: stroke[k]
