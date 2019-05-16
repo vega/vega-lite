@@ -104,7 +104,7 @@ export function unitName(model: Model) {
 export function requiresSelectionId(model: Model) {
   let identifier = false;
   forEachSelection(model, selCmpt => {
-    identifier = identifier || selCmpt.project.some(proj => proj.field === SELECTION_ID);
+    identifier = identifier || selCmpt.project.items.some(proj => proj.field === SELECTION_ID);
   });
   return identifier;
 }

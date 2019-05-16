@@ -138,32 +138,27 @@ function getProperty<K extends keyof VgLegend>(
   const scaleType = model.getScaleComponent(channel).get('type');
 
   switch (property) {
+    // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
+    // case 'clipHeight':
+    //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(properties.type(...)));
+
+    case 'direction':
+      return direction({legend, legendConfig, timeUnit, channel, scaleType});
+
     case 'format':
       // We don't include temporal field here as we apply format in encode block
       if (isTimeFormatFieldDef(fieldDef)) {
         return undefined;
       }
       return numberFormat(fieldDef, legend.format, model.config);
+
     case 'formatType':
       // Same as format, We don't include temporal field here as we apply format in encode block
       if (isTimeFormatFieldDef(fieldDef)) {
         return undefined;
       }
       return legend.formatType;
-    case 'title':
-      return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;
 
-    case 'type':
-      return type({legend, channel, timeUnit, scaleType, alwaysReturn: false});
-
-    case 'direction':
-      return direction({legend, legendConfig, timeUnit, channel, scaleType});
-
-    // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
-    // case 'clipHeight':
-    //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(properties.type(...)));
-    case 'labelOverlap':
-      return getFirstDefined(legend.labelOverlap, properties.defaultLabelOverlap(scaleType));
     case 'gradientLength':
       return getFirstDefined<number | SignalRef>(
         // do specified gradientLength first
@@ -179,8 +174,17 @@ function getProperty<K extends keyof VgLegend>(
         })
       );
 
+    case 'labelOverlap':
+      return getFirstDefined(legend.labelOverlap, properties.defaultLabelOverlap(scaleType));
+
     case 'symbolType':
       return getFirstDefined(legend.symbolType, properties.defaultSymbolType(mark));
+
+    case 'title':
+      return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;
+
+    case 'type':
+      return type({legend, channel, timeUnit, scaleType, alwaysReturn: false});
 
     case 'values':
       return properties.values(legend, fieldDef);

@@ -57,7 +57,7 @@
           "field": "label",
           "type": "ordinal",
           "sort": null,
-          "title": "Months"
+          "axis": {"labelAngle": 0, "title": "Months"}
         },
         "y": {
           "field": "previous_sum",
@@ -91,7 +91,7 @@
           "field": "label",
           "type": "ordinal",
           "sort": null,
-          "title": "Months"
+          "axis": {"labelAngle": 0, "title": "Months"}
         },
         "x2": {"field": "lead"},
         "y": {"field": "sum", "type": "quantitative"}
@@ -104,7 +104,7 @@
           "field": "label",
           "type": "ordinal",
           "sort": null,
-          "title": "Months"
+          "axis": {"labelAngle": 0, "title": "Months"}
         },
         "y": {"field": "sum_inc", "type": "quantitative"},
         "text": {"field": "sum_inc", "type": "nominal"}
@@ -117,7 +117,7 @@
           "field": "label",
           "type": "ordinal",
           "sort": null,
-          "title": "Months"
+          "axis": {"labelAngle": 0, "title": "Months"}
         },
         "y": {"field": "sum_dec", "type": "quantitative"},
         "text": {"field": "sum_dec", "type": "nominal"}
@@ -130,7 +130,7 @@
           "field": "label",
           "type": "ordinal",
           "sort": null,
-          "title": "Months"
+          "axis": {"labelAngle": 0, "title": "Months"}
         },
         "y": {"field": "center", "type": "quantitative"},
         "text": {"field": "text_amount", "type": "nominal"},

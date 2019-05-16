@@ -325,15 +325,21 @@ describe('compile/data/parse', () => {
   describe('findSource', () => {
     const values = new SourceNode({values: [1, 2, 3]});
     const named = new SourceNode({name: 'foo'});
+    const namedUrl = new SourceNode({url: 'foo.csv', name: 'foo_csv'});
     const url = new SourceNode({url: 'foo.csv'});
 
     it('should find named source', () => {
-      const actual = findSource({name: 'foo'}, [values, named, url]);
+      const actual = findSource({name: 'foo'}, [values, url, named]);
       expect(actual).toBe(named);
     });
 
+    it('should not find source with different name', () => {
+      const actual = findSource({name: 'bar'}, [values, named, url]);
+      expect(actual).toBeNull();
+    });
+
     it('should find value source', () => {
-      const actual = findSource({values: [1, 2, 3]}, [values, named, url]);
+      const actual = findSource({values: [1, 2, 3]}, [named, url, values]);
       expect(actual).toBe(values);
     });
 
@@ -342,8 +348,31 @@ describe('compile/data/parse', () => {
       expect(actual).toBe(url);
     });
 
-    it('should not find new data source', () => {
+    it('should find url source without a name', () => {
+      // we assign the name to the source in parseRoot
+      const actual = findSource({url: 'foo.csv', name: 'fo_csv'}, [values, named, url]);
+      expect(actual).toBe(url);
+    });
+
+    it('should not find source with different URL', () => {
       const actual = findSource({url: 'bar.csv'}, [values, named, url]);
+      expect(actual).toBeNull();
+    });
+
+    it('should not find source with same URL but different name', () => {
+      const actual = findSource({url: 'foo.csv', name: 'incompatible_name'}, [values, named, namedUrl]);
+      expect(actual).toBeNull();
+    });
+
+    it('should find source with same URL that has a name', () => {
+      const actual = findSource({url: 'foo.csv'}, [values, named, namedUrl]);
+      expect(actual).toBe(namedUrl);
+    });
+
+    it('should not find a source with conflicting format parameters', () => {
+      const actual = findSource({url: 'foo.csv', format: {type: 'topojson', mesh: 'states'}}, [
+        new SourceNode({url: 'foo.csv', format: {type: 'topojson', feature: 'counties'}})
+      ]);
       expect(actual).toBeNull();
     });
   });

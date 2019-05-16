@@ -3,7 +3,6 @@
 /_layouts
 /_site
 /.*
-/build/examples
 /build/site
 /coverage
 /data
@@ -27,3 +26,4 @@ tsconfig.json
 prettier*
 yarn-debug.log*
 yarn-error.log*
+*.tsbuildinfo

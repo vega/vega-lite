@@ -85,6 +85,8 @@ export interface BinParams extends BaseBin {
   binned?: boolean;
 }
 
+export type Bin = boolean | BinParams | 'binned' | null;
+
 /**
  * Create a key for the bin configuration. Not for prebinned bin.
  */

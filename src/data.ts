@@ -126,7 +126,7 @@ export function isInlineData(data: Partial<Data> | Partial<VgData>): data is Inl
 }
 
 export function isNamedData(data: Partial<Data> | Partial<VgData>): data is NamedData {
-  return !!data['name'] && !isUrlData(data) && !isInlineData(data);
+  return !!data['name'] && !isUrlData(data) && !isInlineData(data) && !isGenerator(data);
 }
 
 export function isGenerator(data: Partial<Data> | Partial<VgData>): data is Generator {

@@ -2,7 +2,7 @@
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
-import {autoMaxBins, BinParams, binToString, isBinned, isBinning} from './bin';
+import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin';
 import {Channel, isScaleChannel, isSecondaryRangeChannel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
@@ -62,8 +62,8 @@ export type ValueDefWithCondition<F extends FieldDef<any>, V extends Value = Val
   | ValueDefWithOptionalCondition<F, V>
   | ConditionOnlyDef<F>;
 
-export type ColorValueDefWithCondition<F extends Field> = ValueDefWithCondition<
-  MarkPropFieldDef<F, StandardType>,
+export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
+  MarkPropFieldDef<F, T>,
   string | null
 >;
 
@@ -72,19 +72,11 @@ export type NumericValueDefWithCondition<F extends Field> = ValueDefWithConditio
   number
 >;
 
-export type StringValueDefWithCondition<F extends Field, T extends Type = 'nominal'> = ValueDefWithCondition<
-  MarkPropFieldDef<F, T>,
-  string
->;
-
 export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
 export type ShapeValueDefWithCondition<F extends Field> = StringValueDefWithCondition<F, TypeForShape>;
 
-export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<
-  TextFieldDef<F>,
-  string | number | boolean
->;
+export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<TextFieldDef<F>, Value>;
 
 export type Conditional<CD extends FieldDef<any> | ValueDef<any>> = ConditionalPredicate<CD> | ConditionalSelection<CD>;
 
@@ -127,8 +119,8 @@ export interface ConditionValueDefMixins<V extends Value = Value> {
 
 export type FieldDefWithCondition<F extends FieldDef<any>, V extends Value = Value> = F & ConditionValueDefMixins<V>;
 
-export type ColorFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
-  MarkPropFieldDef<F, StandardType>,
+export type StringFieldDefWithCondition<F extends Field, T extends Type = StandardType> = FieldDefWithCondition<
+  MarkPropFieldDef<F, T>,
   string | null
 >;
 
@@ -136,17 +128,10 @@ export type NumericFieldDefWithCondition<F extends Field> = FieldDefWithConditio
   MarkPropFieldDef<F, StandardType>,
   number
 >;
-export type StringFieldDefWithCondition<F extends Field, T extends Type = 'nominal'> = FieldDefWithCondition<
-  MarkPropFieldDef<F, T>,
-  string
->;
 
 export type ShapeFieldDefWithCondition<F extends Field> = StringFieldDefWithCondition<F, TypeForShape>;
 
-export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
-  TextFieldDef<F>,
-  string | number | boolean
->;
+export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<TextFieldDef<F>, Value>;
 
 /**
  * A ValueDef with optional Condition<ValueDef | FieldDef>
@@ -156,8 +141,7 @@ export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
  * }
  */
 
-export interface ValueDefWithOptionalCondition<FD extends FieldDef<any>, V extends number | string | boolean | null>
-  extends ValueDef<V> {
+export interface ValueDefWithOptionalCondition<FD extends FieldDef<any>, V extends Value> extends ValueDef<V> {
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
@@ -170,10 +154,7 @@ export interface ValueDefWithOptionalCondition<FD extends FieldDef<any>, V exten
  *   condition: {field: ...} | {value: ...}
  * }
  */
-export interface ConditionOnlyDef<
-  F extends FieldDef<any>,
-  V extends number | string | boolean | null = number | string | boolean | null
-> {
+export interface ConditionOnlyDef<F extends FieldDef<any>, V extends Value = Value> {
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
@@ -196,23 +177,7 @@ export function isRepeatRef(field: Field): field is RepeatRef {
 /** @hide */
 export type HiddenCompositeAggregate = CompositeAggregate;
 
-export interface GenericBinMixins<B> {
-  /**
-   * A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`"binned"`).
-   *
-   * - If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
-   *
-   * - If `"binned"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
-   *
-   * __Default value:__ `false`
-   */
-  bin?: B;
-}
-
-export type BaseBinMixins = GenericBinMixins<boolean | BinParams | 'binned' | null>;
-export type BinWithoutBinnedMixins = GenericBinMixins<boolean | BinParams>;
-
-export interface FieldDefBase<F> extends BaseBinMixins {
+export interface FieldDefBase<F, B extends Bin = Bin> {
   /**
    * __Required.__ A string defining the name of the field from which to pull a data value
    * or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.
@@ -242,6 +207,17 @@ export interface FieldDefBase<F> extends BaseBinMixins {
    * __Default value:__ `undefined` (None)
    */
   aggregate?: Aggregate | HiddenCompositeAggregate;
+
+  /**
+   * A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`"binned"`).
+   *
+   * - If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
+   *
+   * - If `"binned"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
+   *
+   * __Default value:__ `false`
+   */
+  bin?: B;
 }
 
 export function toFieldDefBase(fieldDef: TypedFieldDef<string>): FieldDefBase<string> {
@@ -275,9 +251,17 @@ export interface TypeMixins<T extends Type> {
 /**
  *  Definition object for a data field, its type and transformation of an encoding channel.
  */
-export type TypedFieldDef<F extends Field, T extends Type = Type> = FieldDefBase<F> & TitleMixins & TypeMixins<T>;
+export type TypedFieldDef<
+  F extends Field,
+  T extends Type = Type,
+  B extends Bin = boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
+> = FieldDefBase<F, B> & TitleMixins & TypeMixins<T>;
 
-export interface SortableFieldDef<F extends Field, T extends Type = StandardType> extends TypedFieldDef<F, T> {
+export interface SortableFieldDef<
+  F extends Field,
+  T extends Type = StandardType,
+  B extends Bin = boolean | BinParams | null
+> extends TypedFieldDef<F, T, B> {
   /**
    * Sort order for the encoded field.
    *
@@ -301,7 +285,11 @@ export function isSortableFieldDef<F extends Field>(fieldDef: FieldDef<F>): fiel
   return isTypedFieldDef(fieldDef) && !!fieldDef['sort'];
 }
 
-export interface ScaleFieldDef<F extends Field, T extends Type = StandardType> extends SortableFieldDef<F, T> {
+export interface ScaleFieldDef<
+  F extends Field,
+  T extends Type = StandardType,
+  B extends Bin = boolean | BinParams | null
+> extends SortableFieldDef<F, T, B> {
   /**
    * An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.
    *
@@ -315,20 +303,23 @@ export interface ScaleFieldDef<F extends Field, T extends Type = StandardType> e
 /**
  * A field definition of a secondary channel that shares a scale with another primary channel.  For example, `x2`, `xError` and `xError2` share the same scale with `x`.
  */
-export type SecondaryFieldDef<F extends Field> = FieldDefBase<F> & TitleMixins;
+export type SecondaryFieldDef<F extends Field> = FieldDefBase<F, null> & TitleMixins; // x2/y2 shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
 /**
  * Field Def without scale (and without bin: "binned" support).
  */
-export type FieldDefWithoutScale<F extends Field, T extends Type = StandardType> = TypedFieldDef<F, T> &
-  BinWithoutBinnedMixins;
+export type FieldDefWithoutScale<F extends Field, T extends Type = StandardType> = TypedFieldDef<F, T>;
 
-export type LatLongFieldDef<F extends Field> = FieldDefBase<F> &
+export type LatLongFieldDef<F extends Field> = FieldDefBase<F, null> &
   TitleMixins &
-  Partial<TypeMixins<'quantitative'>> &
-  GenericBinMixins<null>; // Lat long shouldn't have bin, but we keep bin property for simplicity of the codebase.
+  Partial<TypeMixins<'quantitative'>>; // Lat long shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
-export interface PositionFieldDef<F extends Field> extends ScaleFieldDef<F> {
+export interface PositionFieldDef<F extends Field>
+  extends ScaleFieldDef<
+    F,
+    StandardType,
+    boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
+  > {
   /**
    * An object defining properties of axis's gridlines, ticks and labels.
    * If `null`, the axis for the encoding channel will be removed.
@@ -366,16 +357,19 @@ export interface PositionFieldDef<F extends Field> extends ScaleFieldDef<F> {
 /**
  * Field definition of a mark property, which can contain a legend.
  */
-export type MarkPropFieldDef<F extends Field, T extends Type = Type> = ScaleFieldDef<F, T> &
-  BinWithoutBinnedMixins & {
-    /**
-     * An object defining properties of the legend.
-     * If `null`, the legend for the encoding channel will be removed.
-     *
-     * __Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.
-     */
-    legend?: Legend | null;
-  };
+export type MarkPropFieldDef<F extends Field, T extends Type = Type> = ScaleFieldDef<
+  F,
+  T,
+  boolean | BinParams | null
+> & {
+  /**
+   * An object defining properties of the legend.
+   * If `null`, the legend for the encoding channel will be removed.
+   *
+   * __Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.
+   */
+  legend?: Legend | null;
+};
 
 // Detail
 
@@ -763,7 +757,7 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
     fieldDef = {
       ...fieldDef,
       bin: normalizeBin(bin, channel)
-    };
+    } as FieldDef<string>;
   }
 
   if (isBinned(bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {

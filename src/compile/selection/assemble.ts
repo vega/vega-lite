@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import {Signal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
 import {forEachSelection, MODIFY, SELECTION_DOMAIN, STORE, VL_SELECTION_RESOLVE} from '.';
@@ -27,7 +27,7 @@ export function assembleInit(
   }
   return wrap(JSON.stringify(init));
 }
-export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
+export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]) {
   forEachSelection(model, (selCmpt, selCompiler) => {
     const name = selCmpt.name;
     let modifyExpr = selCompiler.modifyExpr(model, selCmpt);
@@ -52,7 +52,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
   return signals;
 }
 
-export function assembleFacetSignals(model: FacetModel, signals: any[]) {
+export function assembleFacetSignals(model: FacetModel, signals: Signal[]) {
   if (model.component.selection && keys(model.component.selection).length) {
     const name = stringValue(model.getName('cell'));
     signals.unshift({
@@ -70,7 +70,7 @@ export function assembleFacetSignals(model: FacetModel, signals: any[]) {
   return signals;
 }
 
-export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
+export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
   let hasSelections = false;
   forEachSelection(model, (selCmpt, selCompiler) => {
     const name = selCmpt.name;
@@ -199,17 +199,17 @@ export function assembleSelectionScaleDomain(model: Model, domainRaw: SignalRef)
   } else {
     selCmpt = model.getSelectionComponent(name, selDomain.selection);
     if (!encoding && !field) {
-      field = selCmpt.project[0].field;
-      if (selCmpt.project.length > 1) {
+      field = selCmpt.project.items[0].field;
+      if (selCmpt.project.items.length > 1) {
         warn(
           'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
             `Using "field": ${stringValue(field)}.`
         );
       }
     } else if (encoding && !field) {
-      const encodings = selCmpt.project.filter(p => p.channel === encoding);
+      const encodings = selCmpt.project.items.filter(p => p.channel === encoding);
       if (!encodings.length || encodings.length > 1) {
-        field = selCmpt.project[0].field;
+        field = selCmpt.project.items[0].field;
         warn(
           (!encodings.length ? 'No ' : 'Multiple ') +
             `matching ${stringValue(encoding)} encoding found for selection ${stringValue(selDomain.selection)}. ` +

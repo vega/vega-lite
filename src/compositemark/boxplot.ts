@@ -1,8 +1,8 @@
 import {Orientation} from 'vega';
 import {isNumber, isObject} from 'vega-util';
+import {PositionFieldDef, TextFieldDef, TextFieldDefWithCondition, TextValueDefWithCondition} from '../channeldef';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
-import {PositionFieldDef} from '../channeldef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';
@@ -13,6 +13,7 @@ import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
+  filterTooltipWithAggregatedField,
   GenericCompositeMarkDef,
   getCompositeMarkTooltip,
   makeCompositeAggregatePartFactory,
@@ -105,8 +106,10 @@ export function normalizeBoxPlot(
     continuousAxisChannelDef,
     continuousAxis,
     groupby,
+    aggregate,
     encodingWithoutContinuousAxis,
-    ticksOrient
+    ticksOrient,
+    customTooltipWithoutAggregatedField
   } = boxParams(spec, extent, config);
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
@@ -253,7 +256,8 @@ export function normalizeBoxPlot(
                 op: 'max',
                 field: 'upper_box_' + continuousAxisChannelDef.field,
                 as: 'upper_box_' + continuousAxisChannelDef.field
-              }
+              },
+              ...aggregate
             ],
             groupby
           }
@@ -262,6 +266,7 @@ export function normalizeBoxPlot(
       };
     }
 
+    const {tooltip, ...encodingWithoutSizeColorContinuousAxisAndTooltip} = encodingWithoutSizeColorAndContinuousAxis;
     const outlierLayersMixins = partLayerMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot, {
       transform: [{filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`}],
       mark: 'point',
@@ -270,7 +275,8 @@ export function normalizeBoxPlot(
           field: continuousAxisChannelDef.field,
           type: continuousAxisChannelDef.type
         },
-        ...encodingWithoutSizeColorAndContinuousAxis
+        ...encodingWithoutSizeColorContinuousAxisAndTooltip,
+        ...(customTooltipWithoutAggregatedField ? {tooltip: customTooltipWithoutAggregatedField} : {})
       }
     })[0];
 
@@ -331,10 +337,15 @@ function boxParams(
 ): {
   transform: Transform[];
   groupby: string[];
+  aggregate: AggregatedFieldDef[];
   continuousAxisChannelDef: PositionFieldDef<string>;
   continuousAxis: 'x' | 'y';
   encodingWithoutContinuousAxis: Encoding<string>;
   ticksOrient: Orientation;
+  customTooltipWithoutAggregatedField:
+    | TextFieldDefWithCondition<string>
+    | TextValueDefWithCondition<string>
+    | TextFieldDef<string>[];
 } {
   const orient = compositeMarkOrient(spec, BOXPLOT);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, BOXPLOT);
@@ -381,9 +392,12 @@ function boxParams(
         ];
 
   const {[continuousAxis]: oldContinuousAxisChannelDef, ...oldEncodingWithoutContinuousAxis} = spec.encoding;
+  const {customTooltipWithoutAggregatedField, filteredEncoding} = filterTooltipWithAggregatedField(
+    oldEncodingWithoutContinuousAxis
+  );
 
   const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(
-    oldEncodingWithoutContinuousAxis,
+    filteredEncoding,
     config
   );
 
@@ -400,9 +414,11 @@ function boxParams(
       ...postAggregateCalculates
     ],
     groupby,
+    aggregate,
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis,
-    ticksOrient
+    ticksOrient,
+    customTooltipWithoutAggregatedField
   };
 }

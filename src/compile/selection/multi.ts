@@ -1,3 +1,4 @@
+import {Signal} from 'vega';
 import {stringValue} from 'vega-util';
 import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
 import {SelectionInit} from '../../selection';
@@ -11,7 +12,7 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
   const fieldsSg = name + TUPLE_FIELDS;
   const proj = selCmpt.project;
   const datum = '(item().isVoronoi ? datum.datum : datum)';
-  const values = proj
+  const values = proj.items
     .map(p => {
       const fieldDef = model.fieldDef(p.channel);
       // Binned fields should capture extents, for a range test against the raw field.
@@ -30,7 +31,7 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
   // whitespace followed by a click in whitespace; the store should only
   // be cleared on the second click).
   const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
-  const signals: any[] = [
+  const signals: Signal[] = [
     {
       name: name + TUPLE,
       on: [

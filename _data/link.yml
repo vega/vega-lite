@@ -130,15 +130,6 @@ SingleDefUnitChannel:
   link: "encoding.html#channels"
 
 # Channel Definitions
-ColorFieldDefWithCondition:
-  name: MarkPropFieldDef
-  link: "encoding.html#mark-prop-field-def"
-ColorValueDefWithCondition:
-  name: MarkPropValueDef
-  link: "encoding.html#mark-prop-value-def"
-
-
-
 NumericFieldDefWithCondition:
   name: MarkPropFieldDef
   link: "encoding.html#mark-prop-field-def"
