@@ -254,7 +254,7 @@ export interface TypeMixins<T extends Type> {
 export type TypedFieldDef<
   F extends Field,
   T extends Type = Type,
-  B extends Bin = boolean | BinParams | 'binned' | null
+  B extends Bin = boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
 > = FieldDefBase<F, B> & TitleMixins & TypeMixins<T>;
 
 export interface SortableFieldDef<
@@ -315,7 +315,11 @@ export type LatLongFieldDef<F extends Field> = FieldDefBase<F, null> &
   Partial<TypeMixins<'quantitative'>>; // Lat long shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
 export interface PositionFieldDef<F extends Field>
-  extends ScaleFieldDef<F, StandardType, boolean | BinParams | 'binned' | null> {
+  extends ScaleFieldDef<
+    F,
+    StandardType,
+    boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
+  > {
   /**
    * An object defining properties of axis's gridlines, ticks and labels.
    * If `null`, the axis for the encoding channel will be removed.
