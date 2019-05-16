@@ -1,12 +1,14 @@
+import {BinParams} from '../bin';
 import {ChannelDef, Field, FieldDef, TypedFieldDef} from '../channeldef';
 import {Header} from '../header';
 import {EncodingSortField, SortArray, SortOrder} from '../sort';
+import {StandardType} from '../type';
 import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
 import {FacetMapping} from './facet';
 import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
-export interface FacetFieldDef<F extends Field> extends TypedFieldDef<F> {
+export interface FacetFieldDef<F extends Field> extends TypedFieldDef<F, StandardType, boolean | BinParams | null> {
   /**
    * An object defining properties of a facet's header.
    */

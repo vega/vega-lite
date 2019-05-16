@@ -4,7 +4,6 @@ import {CompositeMark, CompositeMarkDef} from '.';
 import {
   Field,
   FieldDefBase,
-  FieldDefWithoutScale,
   isContinuous,
   isFieldDef,
   PositionFieldDef,
@@ -17,7 +16,6 @@ import {Encoding, fieldDefs} from '../encoding';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
-import {StandardType} from '../type';
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 
@@ -208,8 +206,8 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
 ): {
   continuousAxisChannelDef: PositionFieldDef<string>;
   continuousAxisChannelDef2: SecondaryFieldDef<string>;
-  continuousAxisChannelDefError: FieldDefWithoutScale<string, StandardType>;
-  continuousAxisChannelDefError2: FieldDefWithoutScale<string, StandardType>;
+  continuousAxisChannelDefError: SecondaryFieldDef<string>;
+  continuousAxisChannelDefError2: SecondaryFieldDef<string>;
   continuousAxis: 'x' | 'y';
 } {
   const {encoding} = spec;
@@ -217,8 +215,8 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
 
   const continuousAxisChannelDef = encoding[continuousAxis] as PositionFieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
   const continuousAxisChannelDef2 = encoding[continuousAxis + '2'] as SecondaryFieldDef<string>;
-  const continuousAxisChannelDefError = encoding[continuousAxis + 'Error'] as FieldDefWithoutScale<string>;
-  const continuousAxisChannelDefError2 = encoding[continuousAxis + 'Error2'] as FieldDefWithoutScale<string>;
+  const continuousAxisChannelDefError = encoding[continuousAxis + 'Error'] as SecondaryFieldDef<string>;
+  const continuousAxisChannelDefError2 = encoding[continuousAxis + 'Error2'] as SecondaryFieldDef<string>;
 
   return {
     continuousAxisChannelDef: filterAggregateFromChannelDef(continuousAxisChannelDef, compositeMark),
@@ -233,7 +231,7 @@ function filterAggregateFromChannelDef<M extends CompositeMark, F extends FieldD
   continuousAxisChannelDef: F,
   compositeMark: M
 ): F {
-  if (isFieldDef(continuousAxisChannelDef) && continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
+  if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
     const {aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
     if (aggregate !== compositeMark) {
       log.warn(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark));
