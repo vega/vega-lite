@@ -257,8 +257,11 @@ export type TypedFieldDef<
   B extends Bin = boolean | BinParams | 'binned' | null
 > = FieldDefBase<F, B> & TitleMixins & TypeMixins<T>;
 
-export interface SortableFieldDef<F extends Field, T extends Type = StandardType, B extends Bin = boolean | BinParams>
-  extends TypedFieldDef<F, T, B> {
+export interface SortableFieldDef<
+  F extends Field,
+  T extends Type = StandardType,
+  B extends Bin = boolean | BinParams | null
+> extends TypedFieldDef<F, T, B> {
   /**
    * Sort order for the encoded field.
    *
