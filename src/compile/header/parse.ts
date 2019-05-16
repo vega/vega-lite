@@ -2,7 +2,7 @@ import {AxisOrient} from 'vega';
 import {FACET_CHANNELS, FacetChannel} from '../../channel';
 import {title as fieldDefTitle} from '../../channeldef';
 import {contains} from '../../util';
-import {assembleAxis} from '../axis/assemble';
+import {assembleAxis, assembleTitle} from '../axis/assemble';
 import {FacetModel} from '../facet';
 import {parseGuideResolve} from '../resolve';
 import {getHeaderProperty} from './common';
@@ -32,6 +32,8 @@ function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
       allowDisabling: true,
       includeDefault: titleConfig === undefined || !!titleConfig
     });
+
+    title = assembleTitle(title, model.config);
 
     if (model.child.component.layoutHeaders[channel].title) {
       // merge title with child to produce "Title / Subtitle / Sub-subtitle"

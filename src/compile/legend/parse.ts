@@ -21,6 +21,7 @@ import {
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
+import {assembleTitle} from '../axis/assemble';
 import {mergeTitleComponent, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {isUnitModel, Model} from '../model';
@@ -181,7 +182,7 @@ function getProperty<K extends keyof VgLegend>(
       return getFirstDefined(legend.symbolType, properties.defaultSymbolType(mark));
 
     case 'title':
-      return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;
+      return assembleTitle(fieldDefTitle(fieldDef, model.config, {allowDisabling: true}), model.config) || undefined;
 
     case 'type':
       return type({legend, channel, timeUnit, scaleType, alwaysReturn: false});

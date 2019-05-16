@@ -84,7 +84,7 @@ describe('encoding', () => {
           x: {
             field: 'yearmonthdatehoursminutes_a',
             type: 'temporal',
-            title: 'a (year-month-date-hours-minutes)',
+            title: [{timeUnit: 'yearmonthdatehoursminutes', field: 'a'}],
             axis: {
               format: '%b %d, %Y %H:%M'
             }
@@ -111,7 +111,7 @@ describe('encoding', () => {
           formatType: 'time'
         },
         field: 'year_b',
-        title: 'b (year)',
+        title: [{timeUnit: 'year', field: 'b'}],
         type: 'ordinal'
       });
     });
@@ -132,7 +132,7 @@ describe('encoding', () => {
           format: '%Y'
         },
         field: 'year_b',
-        title: 'b (year)',
+        title: [{timeUnit: 'year', field: 'b'}],
         type: 'temporal'
       });
     });
@@ -155,7 +155,7 @@ describe('encoding', () => {
           formatType: 'time'
         },
         field: 'month_c',
-        title: 'c (month)',
+        title: [{timeUnit: 'month', field: 'c'}],
         type: 'nominal'
       });
     });
@@ -177,7 +177,7 @@ describe('encoding', () => {
           format: '%b'
         },
         field: 'month_c',
-        title: 'c (month)',
+        title: [{timeUnit: 'month', field: 'c'}],
         type: 'temporal'
       });
     });
@@ -198,14 +198,14 @@ describe('encoding', () => {
         format: '%b',
         formatType: 'time',
         field: 'month_c',
-        title: 'c (month)',
+        title: [{timeUnit: 'month', field: 'c'}],
         type: 'nominal'
       });
       expect(output.encoding.text).toEqual({
         format: '%b',
         formatType: 'time',
         field: 'month_c',
-        title: 'c (month)',
+        title: [{timeUnit: 'month', field: 'c'}],
         type: 'nominal'
       });
     });
@@ -234,7 +234,7 @@ describe('encoding', () => {
           y: {
             field: 'max_b',
             type: 'quantitative',
-            title: 'Max of b'
+            title: [{aggregate: 'max', field: 'b'}]
           }
         }
       });
@@ -256,9 +256,14 @@ describe('encoding', () => {
         aggregate: [{op: 'count', as: internalField('count')}],
         groupby: ['bin_maxbins_10_a_end', 'bin_maxbins_10_a_range', 'bin_maxbins_10_a'],
         encoding: {
-          x: {field: 'bin_maxbins_10_a', type: 'quantitative', title: 'a (binned)', bin: 'binned'},
+          x: {
+            field: 'bin_maxbins_10_a',
+            type: 'quantitative',
+            title: [{field: 'a', bin: {maxbins: 10}}],
+            bin: 'binned'
+          },
           x2: {field: 'bin_maxbins_10_a_end'},
-          y: {field: internalField('count'), type: 'quantitative', title: 'Count of Records'}
+          y: {field: internalField('count'), type: 'quantitative', title: [{aggregate: 'count'}]}
         }
       });
     });

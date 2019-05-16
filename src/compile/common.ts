@@ -204,7 +204,7 @@ export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase
   return merged;
 }
 
-export function mergeTitle(title1: string, title2: string) {
+export function mergeStringTitles(title1: string, title2: string) {
   if (title1 === title2 || !title2) {
     // if titles are the same or title2 is falsy
     return title1;
@@ -217,18 +217,23 @@ export function mergeTitle(title1: string, title2: string) {
   }
 }
 
-export function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>) {
-  if (isArray(v1.value) && isArray(v2.value)) {
-    return {
-      explicit: v1.explicit,
-      value: mergeTitleFieldDefs(v1.value, v2.value)
-    };
-  } else if (!isArray(v1.value) && !isArray(v2.value)) {
-    return {
-      explicit: v1.explicit, // keep the old explicit
-      value: mergeTitle(v1.value, v2.value)
-    };
+export function mergeTitle(title1: AxisTitleComponent, title2: AxisTitleComponent) {
+  if (isArray(title1) && isArray(title2)) {
+    return mergeTitleFieldDefs(title1, title2);
+  } else if (!isArray(title1) && !isArray(title2)) {
+    return mergeStringTitles(title1, title2);
+  } else if (!isArray(title1)) {
+    return title1;
+  } else if (!isArray(title2)) {
+    return title2;
   }
   /* istanbul ignore next: Condition should not happen -- only for warning in development. */
   throw new Error('It should never reach here');
+}
+
+export function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>) {
+  return {
+    explicit: v1.explicit,
+    value: mergeTitle(v1.value, v2.value)
+  };
 }

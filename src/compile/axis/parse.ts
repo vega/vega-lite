@@ -10,6 +10,7 @@ import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
+import {assembleTitle} from './assemble';
 import {AxisComponent, AxisComponentIndex, AxisComponentProps} from './component';
 import {getAxisConfig} from './config';
 import * as encode from './encode';
@@ -351,7 +352,7 @@ function getProperty<K extends keyof AxisComponentProps>(
       // For other falsy value, keep them so we will hide the title.
       return getFirstDefined<string | FieldDefBase<string>[]>(
         specifiedAxis.title,
-        getFieldDefTitle(model, channel), // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
+        assembleTitle(getFieldDefTitle(model, channel), model.config), // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
         mergeTitleFieldDefs([toFieldDefBase(fieldDef)], fieldDef2 ? [toFieldDefBase(fieldDef2)] : [])
       );
 

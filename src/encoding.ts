@@ -32,7 +32,7 @@ import {
   TextFieldDef,
   TextFieldDefWithCondition,
   TextValueDefWithCondition,
-  title,
+  toFieldDefBase,
   TypedFieldDef,
   ValueDef,
   vgField
@@ -264,7 +264,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
         let newField = vgField(channelDef, {forAs: true});
         const newFieldDef: FieldDef<string> = {
           // Only add title if it doesn't exist
-          ...(isTitleDefined ? [] : {title: title(channelDef, config, {allowDisabling: true})}),
+          ...(isTitleDefined ? [] : {title: [toFieldDefBase(channelDef)]}),
           ...remaining,
           // Always overwrite field
           field: newField

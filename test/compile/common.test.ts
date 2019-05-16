@@ -130,5 +130,10 @@ describe('Common', () => {
     it('should join 2 titles with comma when both titles are not falsy and difference', () => {
       expect(mergeTitle('title1', 'title2')).toBe('title1, title2');
     });
+
+    it('should drop FieldDefBase[] title when also presented with a string title', () => {
+      expect(mergeTitle([{field: 'foo', aggregate: 'max'}], 'title')).toBe('title');
+      expect(mergeTitle('title', [{field: 'foo', aggregate: 'max'}])).toBe('title');
+    });
   });
 });

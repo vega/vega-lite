@@ -32,6 +32,7 @@ import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
 import {contains, getFirstDefined} from '../../util';
 import {VgValueRef} from '../../vega.schema';
+import {assembleTitle} from '../axis/assemble';
 import {formatSignalRef, getMarkConfig} from '../common';
 import {ScaleComponent} from '../scale/component';
 
@@ -344,7 +345,7 @@ export function tooltipForEncoding(
   {reactiveGeom}: {reactiveGeom?: boolean}
 ) {
   const keyValues: string[] = [];
-  const usedKey = {};
+  const usedKeys: Set<string> = new Set();
 
   function add(fieldDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: Channel) {
     const mainChannel = getMainRangeChannel(channel);
@@ -355,13 +356,13 @@ export function tooltipForEncoding(
       };
     }
 
-    const key = title(fieldDef, config, {allowDisabling: false});
+    const key = assembleTitle(title(fieldDef, config, {allowDisabling: false}), config);
     const value = text(fieldDef, config, reactiveGeom ? 'datum.datum' : 'datum').signal;
 
-    if (!usedKey[key]) {
+    if (!usedKeys.has(key)) {
       keyValues.push(`${stringValue(key)}: ${value}`);
     }
-    usedKey[key] = true;
+    usedKeys.add(key);
   }
 
   forEach(encoding, (channelDef, channel) => {

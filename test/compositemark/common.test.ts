@@ -45,7 +45,7 @@ describe('common feature of composite marks', () => {
       const encoding: Encoding<string | RepeatRef> = isUnitSpec(unitSpec) && unitSpec.encoding;
       expect(encoding).toBeTruthy();
       expect(encoding.x).toEqual({
-        title: 'Year (year)',
+        title: [{timeUnit: 'year', field: 'Year'}],
         type: 'ordinal',
         field: 'year_Year',
         axis: {

@@ -10,6 +10,7 @@ import {
   title,
   ValueDef
 } from '../channeldef';
+import {assembleTitle} from '../compile/axis/assemble';
 import {Config} from '../config';
 import {Data} from '../data';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
@@ -482,25 +483,33 @@ function errorBarAggregationAndCalculation<
         {op: upperExtentOp, field: continuousFieldName, as: 'upper_' + continuousFieldName},
         {op: centerOp, field: continuousFieldName, as: 'center_' + continuousFieldName}
       ];
-
       tooltipSummary = [
         {
           fieldPrefix: 'upper_',
-          titlePrefix: title({field: continuousFieldName, aggregate: upperExtentOp, type: 'quantitative'}, config, {
-            allowDisabling: false
-          })
+          titlePrefix: assembleTitle(
+            title({field: continuousFieldName, aggregate: upperExtentOp, type: 'quantitative'}, config, {
+              allowDisabling: false
+            }),
+            config
+          )
         },
         {
           fieldPrefix: 'lower_',
-          titlePrefix: title({field: continuousFieldName, aggregate: lowerExtentOp, type: 'quantitative'}, config, {
-            allowDisabling: false
-          })
+          titlePrefix: assembleTitle(
+            title({field: continuousFieldName, aggregate: lowerExtentOp, type: 'quantitative'}, config, {
+              allowDisabling: false
+            }),
+            config
+          )
         },
         {
           fieldPrefix: 'center_',
-          titlePrefix: title({field: continuousFieldName, aggregate: centerOp, type: 'quantitative'}, config, {
-            allowDisabling: false
-          })
+          titlePrefix: assembleTitle(
+            title({field: continuousFieldName, aggregate: centerOp, type: 'quantitative'}, config, {
+              allowDisabling: false
+            }),
+            config
+          )
         }
       ];
     }

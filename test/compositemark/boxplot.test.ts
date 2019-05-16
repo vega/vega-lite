@@ -873,7 +873,7 @@ describe('normalizeBoxIQR', () => {
         },
         color: {
           field: 'mean_people',
-          title: 'Mean of people',
+          title: [{aggregate: 'mean', field: 'people'}],
           type: 'quantitative'
         },
         tooltip: [
@@ -908,7 +908,7 @@ describe('normalizeBoxIQR', () => {
           },
           {
             field: 'mean_people',
-            title: 'Mean of people',
+            title: [{aggregate: 'mean', field: 'people'}],
             type: 'quantitative'
           }
         ]
@@ -969,7 +969,7 @@ describe('normalizeBoxIQR', () => {
     for (const whisker of whiskerLayer['layer']) {
       const {tooltip} = whisker['encoding'];
       expect(tooltip[tooltip.length - 1]).toEqual({
-        title: 'Mean of people',
+        title: [{aggregate: 'mean', field: 'people'}],
         type: 'quantitative',
         field: 'mean_people'
       });
@@ -989,7 +989,7 @@ describe('normalizeBoxIQR', () => {
     for (const box of boxLayer['layer']) {
       const {tooltip} = box['encoding'];
       expect(tooltip[tooltip.length - 1]).toEqual({
-        title: 'Mean of people',
+        title: [{aggregate: 'mean', field: 'people'}],
         type: 'quantitative',
         field: 'mean_people'
       });
@@ -1024,7 +1024,7 @@ describe('normalizeBoxIQR', () => {
     for (const whisker of whiskerLayer['layer']) {
       const {tooltip} = whisker['encoding'];
       expect(tooltip[tooltip.length - 1]).toEqual({
-        title: 'Mean of people',
+        title: [{aggregate: 'mean', field: 'people'}],
         type: 'quantitative',
         field: 'mean_people'
       });
@@ -1044,7 +1044,7 @@ describe('normalizeBoxIQR', () => {
     for (const box of boxLayer['layer']) {
       const {tooltip} = box['encoding'];
       expect(tooltip[tooltip.length - 1]).toEqual({
-        title: 'Mean of people',
+        title: [{aggregate: 'mean', field: 'people'}],
         type: 'quantitative',
         field: 'mean_people'
       });

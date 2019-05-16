@@ -244,7 +244,7 @@ export interface FieldDefBase<F> extends BaseBinMixins {
   aggregate?: Aggregate | HiddenCompositeAggregate;
 }
 
-export function toFieldDefBase(fieldDef: TypedFieldDef<string>): FieldDefBase<string> {
+export function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase<string> {
   const {field, timeUnit, bin, aggregate} = fieldDef;
   return {
     ...(timeUnit ? {timeUnit} : {}),

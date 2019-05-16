@@ -14,7 +14,6 @@ describe('extractTransforms()', () => {
   const failsList = new Set([
     'area_temperature_range.vl.json',
     'bar_argmax.vl.json',
-    'bar_argmax_transform.vl.json',
     'bar_aggregate_count.vl.json',
     'bar_aggregate_sort_by_encoding.vl.json',
     'bar_aggregate_sort_mean.vl.json',
@@ -45,7 +44,6 @@ describe('extractTransforms()', () => {
     'interactive_layered_crossfilter_discrete.vl.json',
     'interactive_layered_crossfilter.vl.json',
     'interactive_seattle_weather.vl.json',
-    'joinaggregate_mean_difference.vl.json',
     'layer_bar_dual_axis_minmax.vl.json',
     'layer_bar_month.vl.json', // data transform switches the order
     'layer_dual_axis.vl.json', // tooltip does not use the correct field name
@@ -72,7 +70,6 @@ describe('extractTransforms()', () => {
     'layer_point_errorbar_stdev.vl.json',
     'layer_precipitation_mean.vl.json',
     'layer_rect_extent.vl.json',
-    'layer_scatter_errorband_1D_stdev_global_mean.vl.json',
     'line_calculate.vl.json',
     'line_color_binned.vl.json',
     'line_max_year.vl.json',
@@ -106,16 +103,16 @@ describe('extractTransforms()', () => {
     'trellis_barley.vl.json',
     'trellis_barley_independent.vl.json',
     'trellis_column_year.vl.json',
-    'trellis_cross_sort_array.vl.json',
-    'trellis_cross_sort.vl.json',
     'trellis_line_quarter.vl.json',
     'vconcat_weather.vl.json',
     'window_top_k_others.vl.json'
   ]);
   for (const file of fs.readdirSync(specsDir)) {
+    // If true make sure that specs in the failsList do indeed fail
+    const TEST_EXPECTED_FAILS = false;
     const filepath = specsDir + file;
-    if (filepath.slice(-5) === '.json' && !failsList.has(file)) {
-      it(`should compile ${filepath} to the same spec`, () => {
+    if (filepath.slice(-5) === '.json' && (!failsList.has(file) || TEST_EXPECTED_FAILS)) {
+      it(`should${failsList.has(file) ? ' NOT ' : ' '}compile ${filepath} to the same spec`, () => {
         const specString = fs.readFileSync(filepath, 'utf8');
 
         const spec = JSON.parse(specString);
@@ -129,7 +126,11 @@ describe('extractTransforms()', () => {
         const originalCompiled = compile(spec, {config});
         const transformCompiled = compile(extractSpec, {config});
 
-        expect(transformCompiled).toEqual(originalCompiled);
+        if (failsList.has(file)) {
+          expect(transformCompiled).not.toEqual(originalCompiled);
+        } else {
+          expect(transformCompiled).toEqual(originalCompiled);
+        }
       });
     }
   }
@@ -174,7 +175,7 @@ describe('extractTransforms()', () => {
           height: 234,
           encoding: {
             x: {field: 'Worldwide_Gross', type: 'quantitative'},
-            y: {field: internalField('count'), type: 'quantitative', title: 'Count of Records'}
+            y: {field: internalField('count'), type: 'quantitative', title: [{aggregate: 'count'}]}
           }
         }
       });
@@ -246,7 +247,12 @@ describe('extractTransforms()', () => {
                   x: {
                     field: 'month_date',
                     type: 'ordinal',
-                    title: 'date (month)',
+                    title: [
+                      {
+                        field: 'date',
+                        timeUnit: 'month'
+                      }
+                    ],
                     axis: {
                       format: '%b',
                       formatType: 'time'
@@ -255,7 +261,7 @@ describe('extractTransforms()', () => {
                   y: {
                     field: 'mean_precipitation',
                     type: 'quantitative',
-                    title: 'Mean of precipitation',
+                    title: [{field: 'precipitation', aggregate: 'mean'}],
                     axis: {
                       grid: false
                     }
@@ -275,7 +281,12 @@ describe('extractTransforms()', () => {
                   x: {
                     field: 'month_date',
                     type: 'ordinal',
-                    title: 'date (month)',
+                    title: [
+                      {
+                        field: 'date',
+                        timeUnit: 'month'
+                      }
+                    ],
                     axis: {
                       format: '%b',
                       formatType: 'time'
@@ -284,7 +295,7 @@ describe('extractTransforms()', () => {
                   y: {
                     field: 'mean_temp_max',
                     type: 'quantitative',
-                    title: 'Mean of temp_max',
+                    title: [{field: 'temp_max', aggregate: 'mean'}],
                     axis: {
                       grid: false
                     },
