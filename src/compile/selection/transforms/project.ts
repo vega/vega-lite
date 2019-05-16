@@ -138,9 +138,9 @@ const project: TransformCompiler = {
       if (scales.has(selCmpt)) {
         log.warn(log.message.NO_INIT_SCALE_BINDINGS);
       } else {
-        function parseInit<T extends SelectionInitMapping | SelectionInitArrayMapping>(i: T): T['a'][] {
+        const parseInit = <T extends SelectionInitMapping | SelectionInitArrayMapping>(i: T): T['a'][] => {
           return proj.items.map(p => (i[p.channel] !== undefined ? i[p.channel] : i[p.field]));
-        }
+        };
 
         if (isIntervalSelection(selDef)) {
           selCmpt.init = parseInit(selDef.init);
