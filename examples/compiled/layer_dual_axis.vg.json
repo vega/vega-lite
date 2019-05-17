@@ -22,11 +22,11 @@
           "type": "aggregate",
           "groupby": ["month_date"],
           "ops": ["average", "average", "average"],
-          "fields": ["precipitation", "temp_max", "temp_min"],
+          "fields": ["temp_max", "temp_min", "precipitation"],
           "as": [
-            "average_precipitation",
             "average_temp_max",
-            "average_temp_min"
+            "average_temp_min",
+            "average_precipitation"
           ]
         }
       ]
