@@ -1232,24 +1232,6 @@
       },
       "type": "object"
     },
-    "BaseBinding": {
-      "additionalProperties": false,
-      "properties": {
-        "debounce": {
-          "type": "number"
-        },
-        "element": {
-          "$ref": "#/definitions/Element"
-        },
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
     "BaseLegendLayout": {
       "additionalProperties": false,
       "properties": {
@@ -1765,9 +1747,6 @@
     "Binding": {
       "anyOf": [
         {
-          "$ref": "#/definitions/BaseBinding"
-        },
-        {
           "$ref": "#/definitions/BindCheckbox"
         },
         {
@@ -1775,6 +1754,9 @@
         },
         {
           "$ref": "#/definitions/BindRange"
+        },
+        {
+          "$ref": "#/definitions/InputBinding"
         }
       ]
     },
@@ -6044,6 +6026,33 @@
         }
       ]
     },
+    "InputBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "autocomplete": {
+          "type": "string"
+        },
+        "debounce": {
+          "type": "number"
+        },
+        "element": {
+          "$ref": "#/definitions/Element"
+        },
+        "input": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
     "Interpolate": {
       "enum": [
         "linear",
@@ -6576,6 +6585,14 @@
           "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
           "type": "number"
         },
+        "legendX": {
+          "description": "Custom x-position for legend with orient \"none\".",
+          "type": "number"
+        },
+        "legendY": {
+          "description": "Custom y-position for legend with orient \"none\".",
+          "type": "number"
+        },
         "offset": {
           "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
           "type": "number"
@@ -6871,6 +6888,14 @@
         "layout": {
           "$ref": "#/definitions/LegendLayout",
           "description": "Legend orient group layout parameters."
+        },
+        "legendX": {
+          "description": "Custom x-position for legend with orient \"none\".",
+          "type": "number"
+        },
+        "legendY": {
+          "description": "Custom y-position for legend with orient \"none\".",
+          "type": "number"
         },
         "offset": {
           "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
