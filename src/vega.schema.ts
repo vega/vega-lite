@@ -8,9 +8,12 @@ import {
   FoldTransform as VgFoldTransform,
   FontStyle as VgFontStyle,
   FontWeight as VgFontWeight,
+  KDETransform as VgKDETransform,
   LayoutAlign,
+  LoessTransform as VgLoessTransform,
   Orientation,
   ProjectionType,
+  RegressionTransform as VgRegressionTransform,
   SampleTransform as VgSampleTransform,
   SignalRef,
   SortField as VgSortField,
@@ -407,7 +410,10 @@ export type VgTransform =
   | VgJoinAggregateTransform
   | VgFoldTransform
   | VgSampleTransform
-  | VgSequenceTransform;
+  | VgSequenceTransform
+  | VgKDETransform
+  | VgLoessTransform
+  | VgRegressionTransform;
 
 export interface VgGraticuleTransform {
   type: 'graticule';

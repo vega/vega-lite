@@ -6,6 +6,7 @@ import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
+import {DensityTransformNode} from './density';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {FilterInvalidNode} from './filterinvalid';
@@ -18,7 +19,9 @@ import {GraticuleNode} from './graticule';
 import {IdentifierNode} from './identifier';
 import {ImputeNode} from './impute';
 import {JoinAggregateTransformNode} from './joinaggregate';
+import {LoessTransformNode} from './loess';
 import {LookupNode} from './lookup';
+import {RegressionTransformNode} from './regression';
 import {SampleTransformNode} from './sample';
 import {SequenceNode} from './sequence';
 import {SourceNode} from './source';
@@ -96,6 +99,9 @@ function makeWalkTree(data: VgData[]) {
       node instanceof JoinAggregateTransformNode ||
       node instanceof FoldTransformNode ||
       node instanceof FlattenTransformNode ||
+      node instanceof DensityTransformNode ||
+      node instanceof LoessTransformNode ||
+      node instanceof RegressionTransformNode ||
       node instanceof IdentifierNode ||
       node instanceof SampleTransformNode
     ) {
