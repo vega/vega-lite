@@ -3,7 +3,7 @@ import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
 import {isIntervalSelection, SelectionInitArrayMapping, SelectionInitMapping} from '../../../selection';
-import {Dict, keys, varName} from '../../../util';
+import {Dict, keys, varName, hash} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
 import scales from './scales';
 import {TransformCompiler} from './transforms';
@@ -101,11 +101,12 @@ const project: TransformCompiler = {
           // TimeUnitNode. This node may need to be inserted into the
           // dataflow if the selection is used across views that do not
           // have these time units defined.
-          timeUnits[field] = {
+          const component = {
             as: field,
             field: fieldDef.field,
             timeUnit: fieldDef.timeUnit
           };
+          timeUnits[hash(component)] = component;
         }
 
         // Prevent duplicate projections on the same field.
