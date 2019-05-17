@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "width": 400,
+  "height": 100,
+  "data": {"url": "data/iris.json"},
+  "mark": "area",
+  "transform": [
+    {
+      "fold": [
+        "petalWidth",
+        "petalLength",
+        "sepalWidth",
+        "sepalLength"
+      ],
+      "as": ["organ", "value"]
+    },
+    {
+      "density": "value",
+      "bandwidth": 0.3,
+      "groupby": ["organ"],
+      "extent": [0, 8],
+      "counts": true,
+      "steps": 200
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "value",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "density",
+      "type": "quantitative",
+      "stack": "zero"
+    },
+    "color": {
+      "field": "organ",
+      "type": "nominal"
+    }
+  }
+}
