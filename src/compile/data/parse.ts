@@ -15,12 +15,15 @@ import {
   isAggregate,
   isBin,
   isCalculate,
+  isDensity,
   isFilter,
   isFlatten,
   isFold,
   isImpute,
   isJoinAggregate,
+  isLoess,
   isLookup,
+  isRegression,
   isSample,
   isStack,
   isTimeUnit,
@@ -33,6 +36,7 @@ import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
+import {DensityTransformNode} from './density';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {FilterInvalidNode} from './filterinvalid';
@@ -47,7 +51,9 @@ import {ImputeNode} from './impute';
 import {AncestorParse, DataComponent} from './index';
 import {JoinAggregateTransformNode} from './joinaggregate';
 import {makeJoinAggregateFromFacet} from './joinaggregatefacet';
+import {LoessTransformNode} from './loess';
 import {LookupNode} from './lookup';
+import {RegressionTransformNode} from './regression';
 import {SampleTransformNode} from './sample';
 import {SequenceNode} from './sequence';
 import {SourceNode} from './source';
@@ -173,6 +179,15 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       head = new SampleTransformNode(head, t);
     } else if (isImpute(t)) {
       transformNode = head = ImputeNode.makeFromTransform(head, t);
+      derivedType = 'derived';
+    } else if (isDensity(t)) {
+      transformNode = head = new DensityTransformNode(head, t);
+      derivedType = 'derived';
+    } else if (isRegression(t)) {
+      transformNode = head = new RegressionTransformNode(head, t);
+      derivedType = 'derived';
+    } else if (isLoess(t)) {
+      transformNode = head = new LoessTransformNode(head, t);
       derivedType = 'derived';
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
