@@ -137,15 +137,14 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       transformNode = head = BinNode.makeFromTransform(head, t, model);
       derivedType = 'number';
     } else if (isTimeUnit(t)) {
-      transformNode = head = TimeUnitNode.makeFromTransform(head, t);
       derivedType = 'date';
-
-      // Create parse node because the input to time unit is always date.
       const parsedAs = ancestorParse.getWithExplicit(t.field);
       if (parsedAs.value === undefined) {
         head = new ParseNode(head, {[t.field]: derivedType});
         ancestorParse.set(t.field, derivedType, false);
       }
+      transformNode = head = TimeUnitNode.makeFromTransform(head, t);
+      // Create parse node because the input to time unit is always date.
     } else if (isAggregate(t)) {
       transformNode = head = AggregateNode.makeFromTransform(head, t);
       derivedType = 'number';

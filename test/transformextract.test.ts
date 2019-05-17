@@ -13,7 +13,6 @@ describe('extractTransforms()', () => {
   const failsList = new Set([
     'area_temperature_range.vl.json',
     'bar_argmax.vl.json',
-    'bar_argmax_transform.vl.json',
     'bar_aggregate_count.vl.json',
     'bar_aggregate_sort_by_encoding.vl.json',
     'bar_aggregate_sort_mean.vl.json',
@@ -46,7 +45,6 @@ describe('extractTransforms()', () => {
     'interactive_seattle_weather.vl.json',
     'joinaggregate_mean_difference.vl.json',
     'layer_bar_dual_axis_minmax.vl.json',
-    'layer_bar_month.vl.json', // data transform switches the order
     'layer_dual_axis.vl.json', // tooltip does not use the correct field name
     'layer_circle_independent_color.vl.json',
     'layer_falkensee.vl.json',
@@ -55,7 +53,6 @@ describe('extractTransforms()', () => {
     'layer_line_color_rule.vl.json',
     'layer_line_errorband_2d_horizontal_borders_strokedash.vl.json',
     'layer_line_errorband_ci.vl.json',
-    'layer_line_errorband_pre_aggregated.vl.json',
     'layer_line_mean_point_raw.vl.json',
     'layer_overlay.vl.json',
     'layer_point_errorbar_1d_horizontal.vl.json',
@@ -69,7 +66,6 @@ describe('extractTransforms()', () => {
     'layer_point_errorbar_2d_vertical.vl.json',
     'layer_point_errorbar_ci.vl.json',
     'layer_point_errorbar_stdev.vl.json',
-    'layer_precipitation_mean.vl.json',
     'layer_rect_extent.vl.json',
     'layer_scatter_errorband_1D_stdev_global_mean.vl.json',
     'line_calculate.vl.json',
