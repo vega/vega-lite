@@ -1,3 +1,4 @@
+import {NewSignal, OnEvent} from 'vega';
 import {stringValue} from 'vega-util';
 import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
 import {ScaleChannel, X, Y} from '../../channel';
@@ -19,13 +20,16 @@ const interval: SelectionCompiler<'interval'> = {
     const name = selCmpt.name;
     const fieldsSg = name + TUPLE_FIELDS;
     const hasScales = scales.has(selCmpt);
-    const signals: any[] = [];
+    const signals: NewSignal[] = [];
     const dataSignals: string[] = [];
-    const scaleTriggers: any[] = [];
+    const scaleTriggers: {
+      scaleName: string;
+      expr: string;
+    }[] = [];
 
     if (selCmpt.translate && !hasScales) {
       const filterExpr = `!event.item || event.item.mark.name !== ${stringValue(name + BRUSH)}`;
-      events(selCmpt, (_: any[], evt: EventStream) => {
+      events(selCmpt, (_: OnEvent[], evt: EventStream) => {
         const filters = evt.between[0].filter || (evt.between[0].filter = []);
         if (filters.indexOf(filterExpr) < 0) {
           filters.push(filterExpr);
@@ -100,6 +104,8 @@ const interval: SelectionCompiler<'interval'> = {
   marks: (model, selCmpt, marks) => {
     const name = selCmpt.name;
     const {x, y} = selCmpt.project.has;
+    const xvname = x && x.signals.visual;
+    const yvname = y && y.signals.visual;
     const store = `data(${stringValue(selCmpt.name + STORE)})`;
 
     // Do not add a brush if we're binding to scales.
@@ -108,10 +114,10 @@ const interval: SelectionCompiler<'interval'> = {
     }
 
     const update: any = {
-      x: x !== undefined ? {signal: `${name}_x[0]`} : {value: 0},
-      y: y !== undefined ? {signal: `${name}_y[0]`} : {value: 0},
-      x2: x !== undefined ? {signal: `${name}_x[1]`} : {field: {group: 'width'}},
-      y2: y !== undefined ? {signal: `${name}_y[1]`} : {field: {group: 'height'}}
+      x: x !== undefined ? {signal: `${xvname}[0]`} : {value: 0},
+      y: y !== undefined ? {signal: `${yvname}[0]`} : {value: 0},
+      x2: x !== undefined ? {signal: `${xvname}[1]`} : {field: {group: 'width'}},
+      y2: y !== undefined ? {signal: `${yvname}[1]`} : {field: {group: 'height'}}
     };
 
     // If the selection is resolved to global, only a single interval is in
@@ -137,7 +143,7 @@ const interval: SelectionCompiler<'interval'> = {
     const vgStroke = keys(stroke).reduce((def, k) => {
       def[k] = [
         {
-          test: [x !== undefined && `${name}_x[0] !== ${name}_x[1]`, y !== undefined && `${name}_y[0] !== ${name}_y[1]`]
+          test: [x !== undefined && `${xvname}[0] !== ${xvname}[1]`, y !== undefined && `${yvname}[0] !== ${yvname}[1]`]
             .filter(t => t)
             .join(' && '),
           value: stroke[k]
@@ -159,7 +165,7 @@ const interval: SelectionCompiler<'interval'> = {
           },
           update: update
         }
-      } as any,
+      },
       ...marks,
       {
         name: name + BRUSH,
@@ -185,7 +191,7 @@ function channelSignals(
   selCmpt: SelectionComponent<'interval'>,
   proj: SelectionProjection,
   init?: SelectionInitArray
-): any {
+): NewSignal[] {
   const channel = proj.channel;
   const vname = proj.signals.visual;
   const dname = proj.signals.data;
@@ -197,7 +203,7 @@ function channelSignals(
   const size = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;
   const coord = `${channel}(unit)`;
 
-  const on = events(selCmpt, (def: any[], evt: EventStream) => {
+  const on = events(selCmpt, (def: OnEvent[], evt: EventStream) => {
     return [
       ...def,
       {events: evt.between[0], update: `[${coord}, ${coord}]`}, // Brush Start
@@ -235,7 +241,7 @@ function channelSignals(
 }
 
 function events(selCmpt: SelectionComponent<'interval'>, cb: (...args: any[]) => void) {
-  return selCmpt.events.reduce((on: any[], evt: EventStream) => {
+  return selCmpt.events.reduce((on: OnEvent[], evt: EventStream) => {
     if (!evt.between) {
       warn(`${evt} is not an ordered event stream for interval selections`);
       return on;

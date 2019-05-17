@@ -80,6 +80,7 @@ describe('extractTransforms()', () => {
     'line_month.vl.json',
     'line_quarter_legend.vl.json',
     'line_timeunit_transform.vl.json',
+    'nested_concat_align.vl.json',
     'point_2d_aggregate.vl.json',
     'point_aggregate_detail.vl.json',
     'point_binned_color.vl.json',

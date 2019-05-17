@@ -1624,6 +1624,9 @@
         "bin": {
           "anyOf": [
             {
+              "enum": [
+                true
+              ],
               "type": "boolean"
             },
             {
@@ -1992,22 +1995,16 @@
     "Color": {
       "type": "string"
     },
-    "ColorFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,(string|null)>"
-    },
-    "ColorValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(string|null)>"
-    },
     "Encoding": {
       "additionalProperties": false,
       "properties": {
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
+              "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -2015,11 +2012,11 @@
         "detail": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDef"
+              "$ref": "#/definitions/FieldDefWithoutScale"
             },
             {
               "items": {
-                "$ref": "#/definitions/FieldDef"
+                "$ref": "#/definitions/FieldDefWithoutScale"
               },
               "type": "array"
             }
@@ -2029,10 +2026,10 @@
         "fill": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
+              "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
@@ -2060,7 +2057,7 @@
           "description": "A URL to load upon mouse click."
         },
         "key": {
-          "$ref": "#/definitions/FieldDef",
+          "$ref": "#/definitions/FieldDefWithoutScale",
           "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
         },
         "latitude": {
@@ -2160,10 +2157,10 @@
         "stroke": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
+              "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
@@ -2463,6 +2460,16 @@
         }
       ]
     },
+    "ConditionalStringValueDef": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalSelection<StringValueDef>"
+        }
+      ]
+    },
     "ConditionalValueDef": {
       "anyOf": [
         {
@@ -2473,26 +2480,6 @@
         }
       ]
     },
-    "ConditionalColorValueDef": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalPredicate<ColorValueDef>"
-        },
-        {
-          "$ref": "#/definitions/ConditionalSelection<ColorValueDef>"
-        }
-      ]
-    },
-    "ConditionalTextValueDef": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalPredicate<TextValueDef>"
-        },
-        {
-          "$ref": "#/definitions/ConditionalSelection<TextValueDef>"
-        }
-      ]
-    },
     "ConditionalNumberValueDef": {
       "anyOf": [
         {
@@ -2500,16 +2487,6 @@
         },
         {
           "$ref": "#/definitions/ConditionalSelection<NumberValueDef>"
-        }
-      ]
-    },
-    "ConditionalStringValueDef": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
-        },
-        {
-          "$ref": "#/definitions/ConditionalSelection<StringValueDef>"
         }
       ]
     },
@@ -2527,12 +2504,6 @@
             },
             {
               "$ref": "#/definitions/BinParams"
-            },
-            {
-              "enum": [
-                "binned"
-              ],
-              "type": "string"
             },
             {
               "type": "null"
@@ -2610,12 +2581,6 @@
             },
             {
               "$ref": "#/definitions/BinParams"
-            },
-            {
-              "enum": [
-                "binned"
-              ],
-              "type": "string"
             },
             {
               "type": "null"
@@ -2748,6 +2713,27 @@
       ],
       "type": "object"
     },
+    "ConditionalPredicate<StringValueDef>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
     "ConditionalPredicate<ValueDef>": {
       "additionalProperties": false,
       "properties": {
@@ -2756,56 +2742,8 @@
           "description": "Predicate for triggering the condition"
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": [
-            "number",
-            "string",
-            "boolean",
-            "null"
-          ]
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ColorValueDef>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "null"
-          ]
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<TextValueDef>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "number",
-            "boolean"
-          ]
+          "$ref": "#/definitions/Value",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -2832,24 +2770,6 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<StringValueDef>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": "string"
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
     "ConditionalSelection<MarkPropFieldDef>": {
       "additionalProperties": false,
       "properties": {
@@ -2864,12 +2784,6 @@
             },
             {
               "$ref": "#/definitions/BinParams"
-            },
-            {
-              "enum": [
-                "binned"
-              ],
-              "type": "string"
             },
             {
               "type": "null"
@@ -2947,12 +2861,6 @@
             },
             {
               "$ref": "#/definitions/BinParams"
-            },
-            {
-              "enum": [
-                "binned"
-              ],
-              "type": "string"
             },
             {
               "type": "null"
@@ -3085,6 +2993,27 @@
       ],
       "type": "object"
     },
+    "ConditionalSelection<StringValueDef>": {
+      "additionalProperties": false,
+      "properties": {
+        "selection": {
+          "$ref": "#/definitions/SelectionOperand",
+          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
+        },
+        "value": {
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "selection",
+        "value"
+      ],
+      "type": "object"
+    },
     "ConditionalSelection<ValueDef>": {
       "additionalProperties": false,
       "properties": {
@@ -3093,56 +3022,8 @@
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": [
-            "number",
-            "string",
-            "boolean",
-            "null"
-          ]
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalSelection<ColorValueDef>": {
-      "additionalProperties": false,
-      "properties": {
-        "selection": {
-          "$ref": "#/definitions/SelectionOperand",
-          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "null"
-          ]
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalSelection<TextValueDef>": {
-      "additionalProperties": false,
-      "properties": {
-        "selection": {
-          "$ref": "#/definitions/SelectionOperand",
-          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "number",
-            "boolean"
-          ]
+          "$ref": "#/definitions/Value",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -3161,24 +3042,6 @@
         "value": {
           "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
           "type": "number"
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalSelection<StringValueDef>": {
-      "additionalProperties": false,
-      "properties": {
-        "selection": {
-          "$ref": "#/definitions/SelectionOperand",
-          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": "string"
         }
       },
       "required": [
@@ -3962,12 +3825,6 @@
               "$ref": "#/definitions/BinParams"
             },
             {
-              "enum": [
-                "binned"
-              ],
-              "type": "string"
-            },
-            {
               "type": "null"
             }
           ],
@@ -4010,7 +3867,7 @@
           ]
         },
         "type": {
-          "$ref": "#/definitions/Type",
+          "$ref": "#/definitions/StandardType",
           "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`)."
         }
       },
@@ -4039,10 +3896,10 @@
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
+              "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -4054,11 +3911,11 @@
         "detail": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDef"
+              "$ref": "#/definitions/FieldDefWithoutScale"
             },
             {
               "items": {
-                "$ref": "#/definitions/FieldDef"
+                "$ref": "#/definitions/FieldDefWithoutScale"
               },
               "type": "array"
             }
@@ -4072,10 +3929,10 @@
         "fill": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
+              "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
@@ -4103,7 +3960,7 @@
           "description": "A URL to load upon mouse click."
         },
         "key": {
-          "$ref": "#/definitions/FieldDef",
+          "$ref": "#/definitions/FieldDefWithoutScale",
           "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
         },
         "latitude": {
@@ -4207,10 +4064,10 @@
         "stroke": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
+              "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
@@ -4506,12 +4363,6 @@
               "$ref": "#/definitions/BinParams"
             },
             {
-              "enum": [
-                "binned"
-              ],
-              "type": "string"
-            },
-            {
               "type": "null"
             }
           ],
@@ -4520,11 +4371,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalColorValueDef"
+              "$ref": "#/definitions/ConditionalStringValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalColorValueDef"
+                "$ref": "#/definitions/ConditionalStringValueDef"
               },
               "type": "array"
             }
@@ -4599,12 +4450,6 @@
               "$ref": "#/definitions/BinParams"
             },
             {
-              "enum": [
-                "binned"
-              ],
-              "type": "string"
-            },
-            {
               "type": "null"
             }
           ],
@@ -4675,7 +4520,7 @@
       ],
       "type": "object"
     },
-    "FieldDefWithCondition<MarkPropFieldDef<TypeForShape>,string>": {
+    "FieldDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -4690,12 +4535,6 @@
             },
             {
               "$ref": "#/definitions/BinParams"
-            },
-            {
-              "enum": [
-                "binned"
-              ],
-              "type": "string"
             },
             {
               "type": "null"
@@ -4768,7 +4607,7 @@
       ],
       "type": "object"
     },
-    "FieldDefWithCondition<TextFieldDef,(string|number|boolean)>": {
+    "FieldDefWithCondition<TextFieldDef,Value>": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -4799,11 +4638,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalTextValueDef"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalTextValueDef"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
@@ -4847,58 +4686,9 @@
       ],
       "type": "object"
     },
-    "FieldDef": {
-      "additionalProperties": false,
-      "description": "Field Def without scale (and without bin: \"binned\" support).",
-      "properties": {
-        "aggregate": {
-          "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
-        },
-        "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/BinParams"
-            },
-            {
-              "enum": [
-                "binned"
-              ],
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
-        },
-        "field": {
-          "$ref": "#/definitions/Field",
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
-        },
-        "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
-        },
-        "title": {
-          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.",
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "type": {
-          "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`)."
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "type": "object"
+    "FieldDefWithoutScale": {
+      "$ref": "#/definitions/TypedFieldDef",
+      "description": "Field Def without scale (and without bin: \"binned\" support)."
     },
     "FieldEqualPredicate": {
       "additionalProperties": false,
@@ -5271,49 +5061,6 @@
           "$ref": "#/definitions/GraticuleGenerator"
         }
       ]
-    },
-    "GenericBinMixins<(boolean|BinParams)>": {
-      "additionalProperties": false,
-      "properties": {
-        "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/BinParams"
-            }
-          ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
-        }
-      },
-      "type": "object"
-    },
-    "GenericBinMixins<(boolean|BinParams|\"binned\"|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/BinParams"
-            },
-            {
-              "enum": [
-                "binned"
-              ],
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
-        }
-      },
-      "type": "object"
     },
     "ConcatSpec": {
       "additionalProperties": false,
@@ -6657,24 +6404,8 @@
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/BinParams"
-            },
-            {
-              "enum": [
-                "binned"
-              ],
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`",
+          "type": "null"
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -10173,24 +9904,8 @@
           "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
         },
         "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/BinParams"
-            },
-            {
-              "enum": [
-                "binned"
-              ],
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`",
+          "type": "null"
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -10801,10 +10516,16 @@
       "type": "string"
     },
     "StringFieldDefWithCondition<TypeForShape>": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef<TypeForShape>,string>"
+      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
+    },
+    "StringFieldDefWithCondition": {
+      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,(string|null)>"
     },
     "StringValueDefWithCondition<TypeForShape>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,string>"
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
+    },
+    "StringValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(string|null)>"
     },
     "StrokeCap": {
       "enum": [
@@ -11117,10 +10838,10 @@
       "type": "object"
     },
     "TextFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<TextFieldDef,(string|number|boolean)>"
+      "$ref": "#/definitions/FieldDefWithCondition<TextFieldDef,Value>"
     },
     "TextValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<TextFieldDef,(string|number|boolean)>"
+      "$ref": "#/definitions/ValueDefWithCondition<TextFieldDef,Value>"
     },
     "TickConfig": {
       "additionalProperties": false,
@@ -12515,19 +12236,6 @@
         }
       ]
     },
-    "Type": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/StandardType"
-        },
-        {
-          "enum": [
-            "geojson"
-          ],
-          "type": "string"
-        }
-      ]
-    },
     "TypeForShape": {
       "enum": [
         "nominal",
@@ -12535,6 +12243,59 @@
         "geojson"
       ],
       "type": "string"
+    },
+    "TypedFieldDef": {
+      "additionalProperties": false,
+      "description": "Definition object for a data field, its type and transformation of an encoding channel.",
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+        },
+        "field": {
+          "$ref": "#/definitions/Field",
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)"
+        },
+        "title": {
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "$ref": "#/definitions/StandardType",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`)."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
     },
     "UnitSpec": {
       "$ref": "#/definitions/GenericUnitSpec<Encoding,AnyMark>",
@@ -12593,6 +12354,14 @@
         "utcmilliseconds"
       ],
       "type": "string"
+    },
+    "Value": {
+      "type": [
+        "number",
+        "string",
+        "boolean",
+        "null"
+      ]
     },
     "YValueDef": {
       "additionalProperties": false,
@@ -12678,10 +12447,10 @@
       ],
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
     },
-    "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,string>": {
+    "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ValueDefWithOptionalCondition<MarkPropFieldDef<TypeForShape>,string>"
+          "$ref": "#/definitions/ValueDefWithOptionalCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
         },
         {
           "$ref": "#/definitions/ConditionOnlyDef<MarkPropFieldDef<TypeForShape>>"
@@ -12689,10 +12458,10 @@
       ],
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
     },
-    "ValueDefWithCondition<TextFieldDef,(string|number|boolean)>": {
+    "ValueDefWithCondition<TextFieldDef,Value>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ValueDefWithOptionalCondition<TextFieldDef,(string|number|boolean)>"
+          "$ref": "#/definitions/ValueDefWithOptionalCondition<TextFieldDef,Value>"
         },
         {
           "$ref": "#/definitions/ConditionOnlyDef<TextFieldDef>"
@@ -12710,11 +12479,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionalColorValueDef"
+              "$ref": "#/definitions/ConditionalStringValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalColorValueDef"
+                "$ref": "#/definitions/ConditionalStringValueDef"
               },
               "type": "array"
             }
@@ -12765,7 +12534,7 @@
       ],
       "type": "object"
     },
-    "ValueDefWithOptionalCondition<MarkPropFieldDef<TypeForShape>,string>": {
+    "ValueDefWithOptionalCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
       "additionalProperties": false,
       "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
@@ -12788,7 +12557,10 @@
         },
         "value": {
           "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "required": [
@@ -12796,7 +12568,7 @@
       ],
       "type": "object"
     },
-    "ValueDefWithOptionalCondition<TextFieldDef,(string|number|boolean)>": {
+    "ValueDefWithOptionalCondition<TextFieldDef,Value>": {
       "additionalProperties": false,
       "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
@@ -12806,11 +12578,11 @@
               "$ref": "#/definitions/ConditionalTextFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionalTextValueDef"
+              "$ref": "#/definitions/ConditionalValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalTextValueDef"
+                "$ref": "#/definitions/ConditionalValueDef"
               },
               "type": "array"
             }
@@ -12818,12 +12590,8 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "number",
-            "boolean"
-          ]
+          "$ref": "#/definitions/Value",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [

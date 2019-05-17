@@ -1,43 +1,10 @@
 {
+  // we do not use a composite project with project references since VSCode does not compile in the background yet
+  // see https://github.com/microsoft/TypeScript/issues/26913
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "es6",
-    "module": "es2015",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-
-    "allowSyntheticDefaultImports": true,
-    "inlineSources": true,
-    "importHelpers": true,
-    "isolatedModules": false,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "preserveConstEnums": true,
-    "removeComments": false,
-    "resolveJsonModule": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "typeRoots": ["./node_modules/@types", "./typings"],
-    "composite": true
+    "noEmit": true
   },
-  "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./src"
-    },
-    {
-      "path": "./site"
-    },
-    {
-      "path": "./test"
-    },
-    {
-      "path": "./test-runtime"
-    }
-  ]
+  "files": ["src/index.ts"],
+  "include": ["src/**/*.ts", "test/**/*.ts", "test-runtime/**/*.ts", "site/static/**/*.ts"]
 }

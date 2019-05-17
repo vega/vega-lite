@@ -3,7 +3,6 @@
 /_layouts
 /_site
 /.*
-/build/examples
 /build/site
 /coverage
 /data
@@ -26,3 +25,4 @@ tsconfig.json
 tslint.json
 yarn-debug.log*
 yarn-error.log*
+*.tsbuildinfo
