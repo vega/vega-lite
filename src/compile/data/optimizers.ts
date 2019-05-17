@@ -337,7 +337,7 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
 
     // Build groupedAggregates
     for (const agg of aggChildren) {
-      const groupBys = hash(keys(agg.groupBy).sort());
+      const groupBys = hash(agg.groupBy);
       if (!(groupBys in groupedAggregates)) {
         groupedAggregates[groupBys] = [];
       }
