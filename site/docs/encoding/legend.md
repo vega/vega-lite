@@ -62,7 +62,7 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### General
 
-{% include table.html props="cornerRadius,direction,fillColor,offset,orient,padding,strokeColor,strokeWidth,type,tickCount,values,zindex" source="Legend" %}
+{% include table.html props="cornerRadius,direction,fillColor,legendX,legendY,offset,orient,padding,strokeColor,strokeWidth,type,tickCount,values,zindex" source="Legend" %}
 
 ### Gradient
 
