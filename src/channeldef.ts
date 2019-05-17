@@ -594,7 +594,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
   return field;
 }
 
-export function functionalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config) {
+export function functionalTitleFormatter(fieldDef: FieldDefBase<string>) {
   const {aggregate, bin, timeUnit, field} = fieldDef;
   if (isArgmaxDef(aggregate)) {
     return `${field} for argmax(${aggregate.argmax})`;
@@ -615,7 +615,7 @@ export const defaultTitleFormatter: FieldTitleFormatter = (fieldDef: FieldDefBas
     case 'plain':
       return fieldDef.field;
     case 'functional':
-      return functionalTitleFormatter(fieldDef, config);
+      return functionalTitleFormatter(fieldDef);
     default:
       return verbalTitleFormatter(fieldDef, config);
   }

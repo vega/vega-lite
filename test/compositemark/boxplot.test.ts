@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import * as log from '../../src/log';
 import {normalize} from '../../src/normalize/index';
 import {Transform} from '../../src/transform';

@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {JoinAggregateTransformNode} from '../../../src/compile/data/joinaggregate';
 import {makeJoinAggregateFromFacet} from '../../../src/compile/data/joinaggregatefacet';

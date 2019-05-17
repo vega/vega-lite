@@ -1,9 +1,8 @@
 import {array, isArray} from 'vega-util';
-import {SelectionComponent} from '..';
 import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
-import {isIntervalSelection, SelectionDef, SelectionInitArrayMapping, SelectionInitMapping} from '../../../selection';
+import {isIntervalSelection, SelectionInitArrayMapping, SelectionInitMapping} from '../../../selection';
 import {Dict, keys, varName} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
 import scales from './scales';
@@ -36,7 +35,7 @@ export class SelectionProjectionComponent {
 }
 
 const project: TransformCompiler = {
-  has: (selDef: SelectionComponent | SelectionDef) => {
+  has: () => {
     return true; // This transform handles its own defaults, so always run parse.
   },
 
@@ -46,14 +45,15 @@ const project: TransformCompiler = {
     const parsed: Dict<SelectionProjection> = {};
     const timeUnits: Dict<TimeUnitComponent> = {};
 
-    const signals = {};
+    const signals = new Set<string>();
     const signalName = (p: SelectionProjection, range: 'data' | 'visual') => {
       const suffix = range === 'visual' ? p.channel : p.field;
       let sg = varName(`${name}_${suffix}`);
-      for (let counter = 1; signals[sg]; counter++) {
+      for (let counter = 1; signals.has(sg); counter++) {
         sg = varName(`${name}_${suffix}_${counter}`);
       }
-      return {[range]: signals[sg] = sg};
+      signals.add(sg);
+      return {[range]: sg};
     };
 
     // If no explicit projection (either fields or encodings) is specified, set some defaults.
@@ -138,9 +138,9 @@ const project: TransformCompiler = {
       if (scales.has(selCmpt)) {
         log.warn(log.message.NO_INIT_SCALE_BINDINGS);
       } else {
-        function parseInit<T extends SelectionInitMapping | SelectionInitArrayMapping>(i: T): T['a'][] {
+        const parseInit = <T extends SelectionInitMapping | SelectionInitArrayMapping>(i: T): T['a'][] => {
           return proj.items.map(p => (i[p.channel] !== undefined ? i[p.channel] : i[p.field]));
-        }
+        };
 
         if (isIntervalSelection(selDef)) {
           selCmpt.init = parseInit(selDef.init);

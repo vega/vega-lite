@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {StackNode} from '../../../src/compile/data/stack';
 import {UnitModel} from '../../../src/compile/unit';
 import {Transform} from '../../../src/transform';

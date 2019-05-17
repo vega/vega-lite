@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import * as log from '../../src/log';
 import {isMarkDef} from '../../src/mark';
 import {normalize} from '../../src/normalize/index';

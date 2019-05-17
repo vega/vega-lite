@@ -138,15 +138,11 @@ export function orient(channel: PositionScaleChannel) {
 export function defaultTickCount({
   fieldDef,
   scaleType,
-  size,
-  scaleName,
-  specifiedAxis = {}
+  size
 }: {
   fieldDef: TypedFieldDef<string>;
   scaleType: ScaleType;
   size?: SignalRef;
-  scaleName?: string;
-  specifiedAxis?: Axis;
 }) {
   if (
     !hasDiscreteDomain(scaleType) &&
@@ -163,12 +159,7 @@ export function defaultTickCount({
   return undefined;
 }
 
-export function values(
-  specifiedAxis: Axis,
-  model: UnitModel,
-  fieldDef: TypedFieldDef<string>,
-  channel: PositionScaleChannel
-) {
+export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: TypedFieldDef<string>) {
   const vals = specifiedAxis.values;
 
   if (vals) {

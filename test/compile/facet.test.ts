@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {ROW} from '../../src/channel';
 import {FacetModel} from '../../src/compile/facet';
 import {assembleLabelTitle} from '../../src/compile/header/assemble';

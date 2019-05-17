@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import {AncestorParse} from '../../../src/compile/data';
 import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {BinNode} from '../../../src/compile/data/bin';
@@ -94,7 +93,13 @@ describe('compile/data/parse', () => {
       const result = parseTransformArray(root, model, parse);
       expect(root.children[0] instanceof BinNode);
       expect(result instanceof TimeUnitNode);
-      expect(parse.combine()).toEqual({a: 'number', a_end: 'number', b: 'date', field: 'date'});
+      expect(parse.combine()).toEqual({
+        a: 'number',
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        a_end: 'number',
+        b: 'date',
+        field: 'date'
+      });
     });
 
     it('should return a BinNode and a AggregateNode', () => {

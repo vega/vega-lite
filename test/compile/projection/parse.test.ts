@@ -1,5 +1,4 @@
 import {parseLayerModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
-/* tslint:disable:quotemark */
 
 describe('src/compile/projection/parse', () => {
   describe('parseUnitProjection', () => {

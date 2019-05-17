@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {X, Y} from '../../../src/channel';
 import {TypedFieldDef} from '../../../src/channeldef';
 import {binPosition, color, nonPosition, pointPosition, tooltip} from '../../../src/compile/mark/mixins';

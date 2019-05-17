@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {COLOR, X, Y} from '../../../src/channel';
 import {line} from '../../../src/compile/mark/line';
 import * as log from '../../../src/log';

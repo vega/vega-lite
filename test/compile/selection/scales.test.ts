@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {NewSignal, PushSignal} from 'vega';
 import {X} from '../../../src/channel';
 import {assembleScalesForModel} from '../../../src/compile/scale/assemble';

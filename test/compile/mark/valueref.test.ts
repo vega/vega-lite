@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import {SecondaryFieldDef, TypedFieldDef} from '../../../src/channeldef';
 import {getOffset, midPoint} from '../../../src/compile/mark/valueref';
 import {MarkDef} from '../../../src/mark';

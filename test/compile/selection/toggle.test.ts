@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import toggle from '../../../src/compile/selection/transforms/toggle';
@@ -88,11 +86,11 @@ describe('Toggle Selection Transform', () => {
       expect.arrayContaining([
         {
           name: 'one_modify',
-          update: `modify(\"one_store\", ${oneExpr})`
+          update: `modify("one_store", ${oneExpr})`
         },
         {
           name: 'two_modify',
-          update: `modify(\"two_store\", ${twoExpr})`
+          update: `modify("two_store", ${twoExpr})`
         }
       ])
     );

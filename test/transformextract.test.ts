@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import * as fs from 'fs';
 import {compile} from '../src/compile/compile';
 import {normalize} from '../src/normalize/index';

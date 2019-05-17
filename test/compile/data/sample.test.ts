@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import {SampleTransformNode} from '../../../src/compile/data/sample';
 import {Transform} from '../../../src/transform';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';

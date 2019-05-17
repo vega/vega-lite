@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {selector as parseSelector} from 'vega-event-selector';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {keys} from '../../../src/util';

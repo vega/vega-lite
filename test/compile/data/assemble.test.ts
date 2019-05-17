@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {OutputNode} from '../../../src/compile/data/dataflow';

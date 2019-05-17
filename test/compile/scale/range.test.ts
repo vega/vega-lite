@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {
   defaultContinuousToDiscreteCount,
   interpolateRange,

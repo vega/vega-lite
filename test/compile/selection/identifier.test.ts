@@ -4,8 +4,6 @@ import {Mark} from '../../../src/mark';
 import {VgTransform} from '../../../src/vega.schema';
 import {parseModel} from '../../util';
 
-/* tslint:disable:quotemark */
-
 function getVgData(selection: any, x?: any, y?: any, mark?: Mark, enc?: any, transform?: any) {
   const model = parseModel({
     data: {url: 'data/cars.json'},

@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {COLOR, SHAPE, SIZE, X, Y} from '../../../src/channel';
 import {circle, point, square} from '../../../src/compile/mark/point';
 import {Config} from '../../../src/config';
