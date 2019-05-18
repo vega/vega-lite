@@ -4,7 +4,7 @@ import * as log from '../src/log';
 import {AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
 import {ScaleType} from '../src/scale';
 import {NormalizedUnitSpec, TopLevel} from '../src/spec';
-import {stack, STACK_BY_DEFAULT_MARKS, STACKABLE_MARKS, StackOffset} from '../src/stack';
+import {stack, STACKABLE_MARKS, StackOffset, STACK_BY_DEFAULT_MARKS} from '../src/stack';
 
 describe('stack', () => {
   const NON_STACKABLE_MARKS = [RECT];
@@ -298,6 +298,29 @@ describe('stack', () => {
       }
     })
   );
+
+  it('returns null if the aggregated axis has non-linear scale and disallowNonLinearStack = true', () => {
+    for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
+      [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT].forEach(scaleType => {
+        const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
+        marks.forEach(mark => {
+          const spec: TopLevel<NormalizedUnitSpec> = {
+            data: {url: 'data/barley.json'},
+            mark: mark,
+            encoding: {
+              x: {field: 'a', type: 'quantitative', aggregate: 'sum', scale: {type: scaleType}},
+              y: {field: 'variety', type: 'nominal'},
+              color: {field: 'site', type: 'nominal'}
+            },
+            config: {
+              stack: stacked
+            }
+          };
+          expect(stack(spec.mark, spec.encoding, spec.config.stack, {disallowNonLinearStack: true})).toBeNull();
+        });
+      });
+    }
+  });
 
   it(
     'should throws warning if the aggregated axis has a non-summative aggregate',
