@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
 import {SUM_OPS} from './aggregate';
-import {NONPOSITION_CHANNELS, NonPositionChannel, X, X2, Y2} from './channel';
+import {NonPositionChannel, NONPOSITION_CHANNELS, X, X2, Y2} from './channel';
 import {
   Field,
   getTypedFieldDef,
@@ -85,7 +85,14 @@ function potentialStackedChannel(encoding: Encoding<Field>): 'x' | 'y' | undefin
 
 // Note: CompassQL uses this method and only pass in required properties of each argument object.
 // If required properties change, make sure to update CompassQL.
-export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig: StackOffset): StackProperties {
+export function stack(
+  m: Mark | MarkDef,
+  encoding: Encoding<Field>,
+  stackConfig: StackOffset,
+  opt: {
+    disallowNonLinearStack?: boolean; // This option is for CompassQL
+  } = {}
+): StackProperties {
   const mark = isMarkDef(m) ? m.type : m;
   // Should have stackable mark
   if (!contains(STACKABLE_MARKS, mark)) {
@@ -151,7 +158,11 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
 
   // warn when stacking non-linear
   if (stackedFieldDef.scale && stackedFieldDef.scale.type && stackedFieldDef.scale.type !== ScaleType.LINEAR) {
-    log.warn(log.message.cannotStackNonLinearScale(stackedFieldDef.scale.type));
+    if (opt.disallowNonLinearStack) {
+      return null;
+    } else {
+      log.warn(log.message.cannotStackNonLinearScale(stackedFieldDef.scale.type));
+    }
   }
 
   // Check if it is a ranged mark
