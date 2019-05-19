@@ -168,7 +168,8 @@ export interface RepeatRef {
   repeat: 'row' | 'column' | 'repeat';
 }
 
-export type Field = string | RepeatRef;
+export type FieldName = string;
+export type Field = FieldName | RepeatRef;
 
 export function isRepeatRef(field: Field): field is RepeatRef {
   return field && !isString(field) && 'repeat' in field;

@@ -1,7 +1,7 @@
 import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning} from '../../bin';
 import {Channel} from '../../channel';
-import {binRequiresRange, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
+import {FieldName, binRequiresRange, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
 import {Dict, duplicate, flatten, hash, keys, unique, vals} from '../../util';
@@ -68,7 +68,7 @@ function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolea
 
 export interface BinComponent {
   bin: BinParams;
-  field: string;
+  field: FieldName;
   extentSignal?: string;
   signal?: string;
 

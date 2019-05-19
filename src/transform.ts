@@ -1,6 +1,7 @@
 import {AggregateOp} from 'vega';
 import {BinParams} from './bin';
 import {Data} from './data';
+import {FieldName} from './channeldef';
 import {ImputeParams} from './impute';
 import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {normalizePredicate, Predicate} from './predicate';
@@ -45,7 +46,7 @@ export interface CalculateTransform {
   /**
    * The field for storing the computed formula value.
    */
-  as: string;
+  as: FieldName;
 }
 
 export interface BinTransform {
@@ -57,12 +58,12 @@ export interface BinTransform {
   /**
    * The data field to bin.
    */
-  field: string;
+  field: FieldName;
 
   /**
    * The output fields at which to write the start and end bin values.
    */
-  as: string | string[];
+  as: FieldName | FieldName[];
 }
 
 export interface TimeUnitTransform {
@@ -74,12 +75,12 @@ export interface TimeUnitTransform {
   /**
    * The data field to apply time unit.
    */
-  field: string;
+  field: FieldName;
 
   /**
    * The output field to write the timeUnit value.
    */
-  as: string;
+  as: FieldName;
 }
 
 export interface AggregateTransform {
@@ -91,7 +92,7 @@ export interface AggregateTransform {
   /**
    * The data fields to group by. If not specified, a single group containing all data objects will be used.
    */
-  groupby?: string[];
+  groupby?: FieldName[];
 }
 
 export interface AggregatedFieldDef {
@@ -105,23 +106,23 @@ export interface AggregatedFieldDef {
   /**
    * The data field for which to compute aggregate function. This is required for all aggregation operations except `"count"`.
    */
-  field?: string;
+  field?: FieldName;
 
   /**
    * The output field names to use for each aggregated field.
    */
-  as: string;
+  as: FieldName;
 }
 
 export interface StackTransform {
   /**
    * The field which is stacked.
    */
-  stack: string;
+  stack: FieldName;
   /**
    * The data fields to group by.
    */
-  groupby: string[];
+  groupby: FieldName[];
   /**
    * Mode for stacking marks.
    * __Default value:__ `"zero"`
@@ -137,7 +138,7 @@ export interface StackTransform {
    * respectively.
    * If a single string(eg."val") is provided, the end field will be "val_end".
    */
-  as: string | string[];
+  as: FieldName | FieldName[];
 }
 
 export type WindowOnlyOp =
@@ -169,12 +170,12 @@ export interface WindowFieldDef {
   /**
    * The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `count`, `rank`, `dense_rank`.
    */
-  field?: string;
+  field?: FieldName;
 
   /**
    * The output name for the window operation.
    */
-  as: string;
+  as: FieldName;
 }
 
 export interface WindowTransform {
@@ -200,7 +201,7 @@ export interface WindowTransform {
   /**
    * The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be in a single window.
    */
-  groupby?: string[];
+  groupby?: FieldName[];
 
   /**
    * A sort field definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).
@@ -217,12 +218,12 @@ export interface JoinAggregateFieldDef {
   /**
    * The data field for which to compute the aggregate function. This can be omitted for functions that do not operate over a field such as `count`.
    */
-  field?: string;
+  field?: FieldName;
 
   /**
    * The output name for the join aggregate operation.
    */
-  as: string;
+  as: FieldName;
 }
 
 export interface JoinAggregateTransform {
@@ -234,7 +235,7 @@ export interface JoinAggregateTransform {
   /**
    * The data fields for partitioning the data objects into separate groups. If unspecified, all data points will be in a single group.
    */
-  groupby?: string[];
+  groupby?: FieldName[];
 }
 
 export interface ImputeSequence {
@@ -262,19 +263,19 @@ export interface ImputeTransform extends ImputeParams {
   /**
    * The data field for which the missing values should be imputed.
    */
-  impute: string;
+  impute: FieldName;
 
   /**
    * A key field that uniquely identifies data objects within a group.
    * Missing key values (those occurring in the data but not in the current group) will be imputed.
    */
-  key: string;
+  key: FieldName;
 
   /**
    * An optional array of fields by which to group the values.
    * Imputation will then be performed on a per-group basis.
    */
-  groupby?: string[];
+  groupby?: FieldName[];
 }
 
 export interface FlattenTransform {
@@ -284,14 +285,14 @@ export interface FlattenTransform {
    * If the lengths of parallel arrays do not match,
    * the longest array will be used with `null` values added for missing entries.
    */
-  flatten: string[];
+  flatten: FieldName[];
 
   /**
    * The output field names for extracted array values.
    *
    * __Default value:__ The field name of the corresponding array field
    */
-  as?: string[];
+  as?: FieldName[];
 }
 
 export interface SampleTransform {
@@ -311,19 +312,19 @@ export interface LookupData {
   /**
    * Key in data to lookup.
    */
-  key: string;
+  key: FieldName;
   /**
    * Fields in foreign data to lookup.
    * If not specified, the entire object is queried.
    */
-  fields?: string[];
+  fields?: FieldName[];
 }
 
 export interface LookupTransform {
   /**
    * Key in primary data source.
    */
-  lookup: string;
+  lookup: FieldName;
 
   /**
    * Secondary data reference.
@@ -335,7 +336,7 @@ export interface LookupTransform {
    * If `from.fields` is specified, the transform will use the same names for `as`.
    * If `from.fields` is not specified, `as` has to be a string and we put the whole object into the data under the specified name.
    */
-  as?: string | string[];
+  as?: FieldName | FieldName[];
 
   /**
    * The default value to use if lookup fails.
@@ -349,13 +350,13 @@ export interface FoldTransform {
   /**
    * An array of data fields indicating the properties to fold.
    */
-  fold: string[];
+  fold: FieldName[];
 
   /**
    * The output field names for the key and value properties produced by the fold transform.
    * __Default value:__ `["key", "value"]`
    */
-  as?: [string, string];
+  as?: [FieldName, FieldName];
 }
 
 export function isLookup(t: Transform): t is LookupTransform {

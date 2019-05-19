@@ -1,6 +1,7 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
 import {SingleDefUnitChannel} from './channel';
+import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
 
 export type SortOrder = 'ascending' | 'descending';
@@ -12,7 +13,7 @@ export interface SortField {
   /**
    * The name of the field to sort.
    */
-  field: string;
+  field: FieldName;
 
   /**
    * Whether to sort the field in ascending or descending order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
@@ -21,7 +22,7 @@ export interface SortField {
 }
 
 export interface SortFields {
-  field: string[];
+  field: FieldName[];
   order?: (SortOrder)[];
 }
 

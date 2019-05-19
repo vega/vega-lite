@@ -55,7 +55,7 @@
         "groupby": {
           "description": "The data fields to group by. If not specified, a single group containing all data objects will be used.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         }
@@ -69,12 +69,12 @@
       "additionalProperties": false,
       "properties": {
         "as": {
-          "description": "The output field names to use for each aggregated field.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The output field names to use for each aggregated field."
         },
         "field": {
-          "description": "The data field for which to compute aggregate function. This is required for all aggregation operations except `\"count\"`.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The data field for which to compute aggregate function. This is required for all aggregation operations except `\"count\"`."
         },
         "op": {
           "$ref": "#/definitions/AggregateOp",
@@ -1610,11 +1610,11 @@
         "as": {
           "anyOf": [
             {
-              "type": "string"
+              "$ref": "#/definitions/FieldName"
             },
             {
               "items": {
-                "type": "string"
+                "$ref": "#/definitions/FieldName"
               },
               "type": "array"
             }
@@ -1636,8 +1636,8 @@
           "description": "An object indicating bin properties, or simply `true` for using default bin parameters."
         },
         "field": {
-          "description": "The data field to bin.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The data field to bin."
         }
       },
       "required": [
@@ -1978,8 +1978,8 @@
       "additionalProperties": false,
       "properties": {
         "as": {
-          "description": "The field for storing the computed formula value.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The field for storing the computed formula value."
         },
         "calculate": {
           "description": "A [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string. Use the variable `datum` to refer to the current data object.",
@@ -4267,7 +4267,7 @@
     "Field": {
       "anyOf": [
         {
-          "type": "string"
+          "$ref": "#/definitions/FieldName"
         },
         {
           "$ref": "#/definitions/RepeatRef"
@@ -4639,8 +4639,8 @@
           "description": "The value that the field should be equal to."
         },
         "field": {
-          "description": "Field to be filtered.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "Field to be filtered."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4657,8 +4657,8 @@
       "additionalProperties": false,
       "properties": {
         "field": {
-          "description": "Field to be filtered.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "Field to be filtered."
         },
         "gte": {
           "anyOf": [
@@ -4689,8 +4689,8 @@
       "additionalProperties": false,
       "properties": {
         "field": {
-          "description": "Field to be filtered.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "Field to be filtered."
         },
         "gt": {
           "anyOf": [
@@ -4721,8 +4721,8 @@
       "additionalProperties": false,
       "properties": {
         "field": {
-          "description": "Field to be filtered.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "Field to be filtered."
         },
         "lte": {
           "anyOf": [
@@ -4753,8 +4753,8 @@
       "additionalProperties": false,
       "properties": {
         "field": {
-          "description": "Field to be filtered.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "Field to be filtered."
         },
         "lt": {
           "anyOf": [
@@ -4781,12 +4781,15 @@
       ],
       "type": "object"
     },
+    "FieldName": {
+      "type": "string"
+    },
     "FieldOneOfPredicate": {
       "additionalProperties": false,
       "properties": {
         "field": {
-          "description": "Field to be filtered.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "Field to be filtered."
         },
         "oneOf": {
           "anyOf": [
@@ -4832,8 +4835,8 @@
       "additionalProperties": false,
       "properties": {
         "field": {
-          "description": "Field to be filtered.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "Field to be filtered."
         },
         "range": {
           "description": "An array of inclusive minimum and maximum values\nfor a field value of a data item to be included in the filtered data.",
@@ -4869,8 +4872,8 @@
       "additionalProperties": false,
       "properties": {
         "field": {
-          "description": "Field to be filtered.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "Field to be filtered."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4906,14 +4909,14 @@
         "as": {
           "description": "The output field names for extracted array values.\n\n__Default value:__ The field name of the corresponding array field",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         },
         "flatten": {
           "description": "An array of one or more data fields containing arrays to flatten.\nIf multiple fields are specified, their array values should have a parallel structure, ideally with the same length.\nIf the lengths of parallel arrays do not match,\nthe longest array will be used with `null` values added for missing entries.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         }
@@ -4930,10 +4933,10 @@
           "description": "The output field names for the key and value properties produced by the fold transform.\n__Default value:__ `[\"key\", \"value\"]`",
           "items": [
             {
-              "type": "string"
+              "$ref": "#/definitions/FieldName"
             },
             {
-              "type": "string"
+              "$ref": "#/definitions/FieldName"
             }
           ],
           "maxItems": 2,
@@ -4943,7 +4946,7 @@
         "fold": {
           "description": "An array of data fields indicating the properties to fold.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         }
@@ -5932,17 +5935,17 @@
         "groupby": {
           "description": "An optional array of fields by which to group the values.\nImputation will then be performed on a per-group basis.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         },
         "impute": {
-          "description": "The data field for which the missing values should be imputed.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The data field for which the missing values should be imputed."
         },
         "key": {
-          "description": "A key field that uniquely identifies data objects within a group.\nMissing key values (those occurring in the data but not in the current group) will be imputed.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "A key field that uniquely identifies data objects within a group.\nMissing key values (those occurring in the data but not in the current group) will be imputed."
         },
         "keyvals": {
           "anyOf": [
@@ -6110,7 +6113,7 @@
         "fields": {
           "description": "An array of field names whose values must match for a data tuple to\nfall within the selection.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         },
@@ -6195,7 +6198,7 @@
         "fields": {
           "description": "An array of field names whose values must match for a data tuple to\nfall within the selection.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         },
@@ -6236,12 +6239,12 @@
       "additionalProperties": false,
       "properties": {
         "as": {
-          "description": "The output name for the join aggregate operation.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The output name for the join aggregate operation."
         },
         "field": {
-          "description": "The data field for which to compute the aggregate function. This can be omitted for functions that do not operate over a field such as `count`.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The data field for which to compute the aggregate function. This can be omitted for functions that do not operate over a field such as `count`."
         },
         "op": {
           "$ref": "#/definitions/AggregateOp",
@@ -6260,7 +6263,7 @@
         "groupby": {
           "description": "The data fields for partitioning the data objects into separate groups. If unspecified, all data points will be in a single group.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         },
@@ -7550,13 +7553,13 @@
         "fields": {
           "description": "Fields in foreign data to lookup.\nIf not specified, the entire object is queried.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         },
         "key": {
-          "description": "Key in data to lookup.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "Key in data to lookup."
         }
       },
       "required": [
@@ -7571,11 +7574,11 @@
         "as": {
           "anyOf": [
             {
-              "type": "string"
+              "$ref": "#/definitions/FieldName"
             },
             {
               "items": {
-                "type": "string"
+                "$ref": "#/definitions/FieldName"
               },
               "type": "array"
             }
@@ -7591,8 +7594,8 @@
           "description": "Secondary data reference."
         },
         "lookup": {
-          "description": "Key in primary data source.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "Key in primary data source."
         }
       },
       "required": [
@@ -8143,7 +8146,7 @@
         "fields": {
           "description": "An array of field names whose values must match for a data tuple to\nfall within the selection.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         },
@@ -8224,7 +8227,7 @@
         "fields": {
           "description": "An array of field names whose values must match for a data tuple to\nfall within the selection.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         },
@@ -9774,8 +9777,8 @@
           "additionalProperties": false,
           "properties": {
             "field": {
-              "description": "The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)\nover multiple fields or encodings.",
-              "type": "string"
+              "$ref": "#/definitions/FieldName",
+              "description": "The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)\nover multiple fields or encodings."
             },
             "selection": {
               "description": "The name of a selection.",
@@ -9904,8 +9907,8 @@
       "additionalProperties": false,
       "properties": {
         "as": {
-          "description": "The name of the generated sequence field.\n\n__Default value:__ `\"data\"`",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The name of the generated sequence field.\n\n__Default value:__ `\"data\"`"
         },
         "start": {
           "description": "The starting value of the sequence (inclusive).",
@@ -10016,7 +10019,7 @@
         "fields": {
           "description": "An array of field names whose values must match for a data tuple to\nfall within the selection.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         },
@@ -10094,7 +10097,7 @@
         "fields": {
           "description": "An array of field names whose values must match for a data tuple to\nfall within the selection.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         },
@@ -10203,8 +10206,8 @@
       "description": "A sort definition for transform",
       "properties": {
         "field": {
-          "description": "The name of the field to sort.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The name of the field to sort."
         },
         "order": {
           "anyOf": [
@@ -10272,11 +10275,11 @@
         "as": {
           "anyOf": [
             {
-              "type": "string"
+              "$ref": "#/definitions/FieldName"
             },
             {
               "items": {
-                "type": "string"
+                "$ref": "#/definitions/FieldName"
               },
               "type": "array"
             }
@@ -10286,7 +10289,7 @@
         "groupby": {
           "description": "The data fields to group by.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         },
@@ -10307,8 +10310,8 @@
           "type": "array"
         },
         "stack": {
-          "description": "The field which is stacked.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The field which is stacked."
         }
       },
       "required": [
@@ -10883,12 +10886,12 @@
       "additionalProperties": false,
       "properties": {
         "as": {
-          "description": "The output field to write the timeUnit value.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The output field to write the timeUnit value."
         },
         "field": {
-          "description": "The data field to apply time unit.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The data field to apply time unit."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -12562,12 +12565,12 @@
       "additionalProperties": false,
       "properties": {
         "as": {
-          "description": "The output name for the window operation.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The output name for the window operation."
         },
         "field": {
-          "description": "The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `count`, `rank`, `dense_rank`.",
-          "type": "string"
+          "$ref": "#/definitions/FieldName",
+          "description": "The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `count`, `rank`, `dense_rank`."
         },
         "op": {
           "anyOf": [
@@ -12623,7 +12626,7 @@
         "groupby": {
           "description": "The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be in a single window.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/FieldName"
           },
           "type": "array"
         },

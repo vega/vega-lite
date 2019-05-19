@@ -2,6 +2,7 @@
  * Constants and utilities for data.
  */
 import {VgData} from './vega.schema';
+import {FieldName} from './channeldef';
 
 export type ParseValue = null | string | 'string' | 'boolean' | 'date' | 'number';
 
@@ -187,7 +188,7 @@ export interface SequenceParams {
    *
    * __Default value:__ `"data"`
    */
-  as?: string;
+  as?: FieldName;
 }
 
 export interface SphereGenerator extends GeneratorBase {
