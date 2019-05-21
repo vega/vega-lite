@@ -139,8 +139,6 @@ function assembleTopLevelModel(
   datasets: Datasets = {},
   usermeta: object
 ) {
-  // TODO: change type to become VgSpec
-
   // Config with Vega-Lite only config removed.
   const vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
 
