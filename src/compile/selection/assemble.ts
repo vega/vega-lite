@@ -123,22 +123,20 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
 
 export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[] {
   forEachSelection(model, selCmpt => {
-    const dataObj = {name: selCmpt.name + STORE};
+    const init: VgData = {name: selCmpt.name + STORE};
     if (selCmpt.init) {
       const fields = selCmpt.project.items.map(proj => {
         const {signals, ...rest} = proj;
         return rest;
       });
       const insert = selCmpt.init.map((i: SelectionInit | SelectionInit[]) => assembleInitData(i));
-      if (selCmpt.type === 'interval') {
-        dataObj['values'] = {unit: unitName(model), fields, values: insert};
-      } else {
-        dataObj['values'] = insert.map(i => ({unit: unitName(model), fields, values: i}));
-      }
+      selCmpt.type === 'interval'
+        ? (init.values = [{unit: unitName(model), fields, values: insert}])
+        : (init.values = insert.map(i => ({unit: unitName(model), fields, values: i})));
     }
     const contains = data.filter(d => d.name === selCmpt.name + STORE);
     if (!contains.length) {
-      data.push(dataObj);
+      data.push(init);
     }
   });
 
