@@ -130,9 +130,10 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
         return rest;
       });
       const insert = selCmpt.init.map((i: SelectionInit | SelectionInit[]) => assembleInitData(i));
-      selCmpt.type === 'interval'
-        ? (init.values = [{unit: unitName(model), fields, values: insert}])
-        : (init.values = insert.map(i => ({unit: unitName(model), fields, values: i})));
+      init.values =
+        selCmpt.type === 'interval'
+          ? [{unit: unitName(model), fields, values: insert}]
+          : insert.map(i => ({unit: unitName(model), fields, values: i}));
     }
     const contains = data.filter(d => d.name === selCmpt.name + STORE);
     if (!contains.length) {
