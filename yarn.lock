@@ -2435,7 +2435,7 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@~7.1.3:
+glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@~7.1.4:
   version "7.1.4"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.4.tgz#aa608a2f6c577ad357e1ae5a5c26d9a8d1969255"
   integrity sha512-hkLPepehmnKk41pUGm3sYxoFs/umurYfYJCerbXEyFIWcAzvpipAgVkBqqT9RBKMGjnq6kMuyYwha6csxbiM1A==
@@ -5474,15 +5474,15 @@ ts-jest@^24.0.2:
     semver "^5.5"
     yargs-parser "10.x"
 
-ts-json-schema-generator@^0.41.0:
-  version "0.41.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.41.0.tgz#e60405577d3111997a405ac80d07d30f085a85eb"
-  integrity sha512-oopc+ETaoc1C+6sAn40hvYTkso8WJYbImv6Wqvnwf8eaEdLzm9bnKCrLLESujCHXelzMiLMAZQgB1P9IS9u/yg==
+ts-json-schema-generator@^0.42.0:
+  version "0.42.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.42.0.tgz#6990b71d2ad5ec3cd95842a18c360b7e272172c9"
+  integrity sha512-UAfnxm4u10t3HC81DUPFgyIiXpa5XHotNlUEPqbhdoiW+MU+MYNtPCgeU/VK/F+mBmw6uPow+5VCEUNZYwMupQ==
   dependencies:
     commander "~2.20.0"
-    glob "~7.1.3"
+    glob "~7.1.4"
     json-stable-stringify "^1.0.1"
-    typescript "~3.4.4"
+    typescript "~3.4.5"
 
 tslib@^1.8.1, tslib@^1.9.0, tslib@~1.9.3:
   version "1.9.3"
@@ -5525,7 +5525,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.4.5, typescript@~3.4.4:
+typescript@^3.4.5, typescript@~3.4.5:
   version "3.4.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.5.tgz#2d2618d10bb566572b8d7aad5180d84257d70a99"
   integrity sha512-YycBxUb49UUhdNMU5aJ7z5Ej2XGmaIBL0x34vZ82fn3hGvD+bgrMrVDpatgz2f7YxUMJxMkbWxJZeAvDxVe7Vw==
