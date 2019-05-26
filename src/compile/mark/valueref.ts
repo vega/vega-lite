@@ -22,7 +22,8 @@ import {
   SecondaryFieldDef,
   title,
   TypedFieldDef,
-  vgField
+  vgField,
+  Gradient
 } from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding, forEach} from '../../encoding';
@@ -376,7 +377,7 @@ export function tooltipForEncoding(
 }
 
 export function text(
-  channelDef: ChannelDefWithCondition<FieldDef<string>, string | number | boolean>,
+  channelDef: ChannelDefWithCondition<FieldDef<string>, string | number | boolean | Gradient>,
   config: Config,
   expr: 'datum' | 'datum.datum' = 'datum'
 ): VgValueRef {

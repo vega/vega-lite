@@ -1,5 +1,6 @@
 // Declaration and utility for variants of a field definition object
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
+import {GradientLinear, GradientRadial} from 'vega-typings';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin';
@@ -29,8 +30,9 @@ import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
 import {contains, flatAccessWithDatum, getFirstDefined, internalField, replacePathInField, titlecase} from './util';
 
-export type Value = number | string | boolean | null;
-
+// export type Value = number | string | boolean | null ;
+export type Value = number | string | boolean | null | Gradient;
+export type Gradient = GradientLinear | GradientRadial;
 /**
  * Definition object for a constant value of an encoding channel.
  */
@@ -64,7 +66,8 @@ export type ValueDefWithCondition<F extends FieldDef<any>, V extends Value = Val
 
 export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
   MarkPropFieldDef<F, T>,
-  string | null
+  // string | null
+  string | null | Gradient
 >;
 
 export type NumericValueDefWithCondition<F extends Field> = ValueDefWithCondition<

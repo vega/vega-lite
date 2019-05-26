@@ -21,6 +21,7 @@ import {
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
+import {Gradient} from './channeldef';
 import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
@@ -58,7 +59,7 @@ export type EventStream = any;
 
 // TODO: add type of value (Make it VgValueRef<T> {value?:T ...})
 export interface VgValueRef {
-  value?: number | string | boolean;
+  value?: number | string | boolean | Gradient;
   field?:
     | string
     | {
