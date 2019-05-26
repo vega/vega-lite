@@ -66,7 +66,6 @@ export type ValueDefWithCondition<F extends FieldDef<any>, V extends Value = Val
 
 export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
   MarkPropFieldDef<F, T>,
-  // string | null
   string | null | Gradient
 >;
 
