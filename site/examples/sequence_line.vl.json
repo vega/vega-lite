@@ -1,0 +1,58 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "description": "Plots a function using a generated sequence.",
+  "width": 300,
+  "height": 150,
+  "data": {
+    "sequence": {
+      "start": 0,
+      "stop": 12.7,
+      "step": 0.1,
+      "as": "u"
+    }
+  },
+  "transform": [
+    {
+      "calculate": "sin(datum.u)",
+      "as": "v"
+    },
+    {
+      "calculate": "cos(datum.u)",
+      "as": "w"
+    }
+  ],
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {
+          "field": "u",
+          "type": "quantitative",
+          "title": "x"
+        },
+        "y": {
+          "field": "v",
+          "type": "quantitative",
+          "title": "sin(x)"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "stroke": "firebrick"
+      },
+      "encoding": {
+        "x": {
+          "field": "u",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "w",
+          "type": "quantitative",
+          "title": "cos(x)"
+        }
+      }
+    }
+  ]
+}

@@ -50,7 +50,12 @@
     }
   ],
   "encoding": {
-    "x": {"field": "label", "type": "ordinal", "sort": null, "title": "Months"}
+    "x": {
+      "field": "label",
+      "type": "ordinal",
+      "sort": null,
+      "axis": {"labelAngle": 0, "title": "Months"}
+    }
   },
   "layer": [
     {
