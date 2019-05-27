@@ -22,7 +22,7 @@
   ],
   "layer": [
     {
-      "mark": {"type": "rule", "color": "#ccc", "tooltip": null},
+      "mark": {"type": "rule", "color": "#ccc"},
       "encoding": {
         "detail": {"aggregate": "count", "type": "quantitative"},
         "x": {"type": "nominal", "field": "key"}
@@ -111,13 +111,8 @@
     },
     "view": {"stroke": null},
     "style": {
-      "label": {
-        "baseline": "middle",
-        "align": "right",
-        "dx": -5,
-        "tooltip": null
-      },
-      "tick": {"orient": "horizontal", "tooltip": null}
+      "label": {"baseline": "middle", "align": "right", "dx": -5},
+      "tick": {"orient": "horizontal"}
     }
   }
 }

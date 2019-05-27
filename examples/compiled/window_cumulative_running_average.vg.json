@@ -56,9 +56,6 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "shape": {"value": "circle"}
@@ -74,9 +71,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "red"},
-          "tooltip": {
-            "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Miles Per Gallon\": format(datum[\"Average_MPG\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "Average_MPG"},
           "defined": {

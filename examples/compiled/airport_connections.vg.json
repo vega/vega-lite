@@ -169,9 +169,6 @@
         "update": {
           "opacity": {"value": 0.35},
           "stroke": {"value": "#000"},
-          "tooltip": {
-            "signal": "{\"latitude\": format(datum[\"latitude\"], \"\"), \"longitude\": format(datum[\"longitude\"], \"\"), \"lat2\": format(datum[\"lat2\"], \"\"), \"lon2\": format(datum[\"lon2\"], \"\")}"
-          },
           "x": {"field": "layer_1_x"},
           "y": {"field": "layer_1_y"},
           "x2": {"field": "layer_1_x2"},
@@ -189,9 +186,6 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"latitude\": format(datum[\"latitude\"], \"\"), \"longitude\": format(datum[\"longitude\"], \"\"), \"routes\": format(datum[\"routes\"], \"\")}"
-          },
           "x": {"field": "layer_2_x"},
           "y": {"field": "layer_2_y"},
           "size": {"scale": "size", "field": "routes"},
@@ -208,10 +202,7 @@
           "fill": {"value": "transparent"},
           "strokeWidth": {"value": 0.35},
           "stroke": {"value": "transparent"},
-          "isVoronoi": {"value": true},
-          "tooltip": {
-            "signal": "{\"latitude\": format(datum.datum[\"latitude\"], \"\"), \"longitude\": format(datum.datum[\"longitude\"], \"\"), \"routes\": format(datum.datum[\"routes\"], \"\")}"
-          }
+          "isVoronoi": {"value": true}
         }
       },
       "transform": [

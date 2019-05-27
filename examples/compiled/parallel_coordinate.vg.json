@@ -62,7 +62,6 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "tooltip": {"value": null},
           "stroke": {"value": "#ccc"},
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"field": {"group": "height"}},
@@ -258,13 +257,8 @@
       "title": null
     },
     "style": {
-      "label": {
-        "baseline": "middle",
-        "align": "right",
-        "dx": -5,
-        "tooltip": null
-      },
-      "tick": {"orient": "horizontal", "tooltip": null},
+      "label": {"baseline": "middle", "align": "right", "dx": -5},
+      "tick": {"orient": "horizontal"},
       "cell": {"stroke": null}
     }
   }

@@ -40,9 +40,6 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "symbol"},
-              "tooltip": {
-                "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
-              },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
               "size": {"scale": "size", "field": "price"},

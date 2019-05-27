@@ -85,9 +85,6 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "decade"},
-              "tooltip": {
-                "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"decade\": ''+datum[\"decade\"]}"
-              },
               "x": {"scale": "x", "field": "scaled_date"},
               "y": {"scale": "y", "field": "CO2"},
               "defined": {
@@ -107,9 +104,6 @@
         "update": {
           "baseline": {"value": "top"},
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": ''+datum[\"year\"]}"
-          },
           "x": [
             {
               "test": "datum[\"scaled_date\"] === null || isNaN(datum[\"scaled_date\"])",
@@ -137,9 +131,6 @@
         "update": {
           "baseline": {"value": "bottom"},
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": ''+datum[\"year\"]}"
-          },
           "x": [
             {
               "test": "datum[\"scaled_date\"] === null || isNaN(datum[\"scaled_date\"])",
