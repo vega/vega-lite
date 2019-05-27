@@ -67,9 +67,6 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "c"},
-              "tooltip": {
-                "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\"), \"c\": ''+datum[\"c\"]}"
-              },
               "x": {"scale": "x", "field": "a"},
               "y": {"scale": "y", "field": "b"},
               "defined": {

@@ -149,9 +149,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"people\": format(datum[\"people\"], \"\"), \"age\": ''+datum[\"age\"]}"
-          },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "people"}
         }

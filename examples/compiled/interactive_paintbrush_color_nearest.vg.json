@@ -81,9 +81,6 @@
             },
             {"value": "grey"}
           ],
-          "tooltip": {
-            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
-          },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": {"value": 75},
@@ -100,10 +97,7 @@
           "fill": {"value": "transparent"},
           "strokeWidth": {"value": 0.35},
           "stroke": {"value": "transparent"},
-          "isVoronoi": {"value": true},
-          "tooltip": {
-            "signal": "{\"Horsepower\": format(datum.datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum.datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": ''+datum.datum[\"Cylinders\"]}"
-          }
+          "isVoronoi": {"value": true}
         }
       },
       "transform": [

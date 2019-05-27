@@ -41,9 +41,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"task\": ''+datum[\"task\"], \"start\": format(datum[\"start\"], \"\"), \"end\": format(datum[\"end\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "start"},
           "x2": {"scale": "x", "field": "end"},
           "y": {"scale": "y", "field": "task"},

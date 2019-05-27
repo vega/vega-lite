@@ -199,7 +199,9 @@ export interface Encoding<F extends Field> {
   text?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
 
   /**
-   * The tooltip text to show upon mouse hover.
+   * The tooltip text to show upon mouse hover. Specifying `tooltip` encoding overrides [the `tooltip` property in the mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
+   *
+   * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite.
    */
   tooltip?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F> | TextFieldDef<F>[] | null;
 

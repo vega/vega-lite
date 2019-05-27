@@ -56,9 +56,6 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "opacity": {"scale": "opacity", "field": "people"},
-          "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\"), \"people\": format(datum[\"people\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "age"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "sum_people_end"},

@@ -47,9 +47,6 @@
             "update": {
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
-              },
               "x": {"scale": "concat_0_x", "field": "date"},
               "y": {"scale": "concat_0_y", "field": "price"},
               "y2": {"scale": "concat_0_y", "value": 0},
@@ -330,9 +327,6 @@
             "update": {
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
-              },
               "x": {"scale": "concat_1_x", "field": "date"},
               "y": {"scale": "concat_1_y", "field": "price"},
               "y2": {"scale": "concat_1_y", "value": 0},

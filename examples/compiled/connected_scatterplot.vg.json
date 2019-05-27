@@ -32,9 +32,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"miles\": format(datum[\"miles\"], \"\"), \"gas\": format(datum[\"gas\"], \"\"), \"year\": timeFormat(datum[\"year\"], '%b %d, %Y')}"
-          },
           "x": {"scale": "x", "field": "miles"},
           "y": {"scale": "y", "field": "gas"},
           "defined": {
@@ -53,9 +50,6 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"miles\": format(datum[\"miles\"], \"\"), \"gas\": format(datum[\"gas\"], \"\"), \"year\": timeFormat(datum[\"year\"], '%b %d, %Y')}"
-          },
           "x": [
             {
               "test": "datum[\"miles\"] === null || isNaN(datum[\"miles\"])",

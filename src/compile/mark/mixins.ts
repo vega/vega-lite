@@ -293,7 +293,12 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
       }
 
       // If tooltipDef does not exist, then use value from markDef or config
-      const markTooltip = getFirstDefined(markDef.tooltip, getMarkConfig('tooltip', markDef, config));
+      let markTooltip = getFirstDefined(markDef.tooltip, getMarkConfig('tooltip', markDef, config));
+
+      if (markTooltip === true) {
+        markTooltip = {content: 'encoding'};
+      }
+
       if (isString(markTooltip)) {
         return {value: markTooltip};
       } else if (isObject(markTooltip)) {

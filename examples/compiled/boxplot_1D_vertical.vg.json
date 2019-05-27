@@ -138,9 +138,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"people\": format(datum[\"people\"], \"\")}"
-          },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "people"}
         }

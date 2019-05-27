@@ -71,9 +71,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_20_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_20_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_20_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-          },
           "x": [
             {
               "test": "datum[\"bin_maxbins_20_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_20_IMDB_Rating\"])",

@@ -118,9 +118,6 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"Worldwide_Gross\": format(datum[\"Worldwide_Gross\"], \"\"), \"US_DVD_Sales\": format(datum[\"US_DVD_Sales\"], \"\")}"
-              },
               "x": {"scale": "x", "field": "Worldwide_Gross"},
               "y": {"scale": "y", "field": "US_DVD_Sales"}
             }

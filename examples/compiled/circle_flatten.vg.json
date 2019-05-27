@@ -41,9 +41,6 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"scale": "color", "field": "key"},
-          "tooltip": {
-            "signal": "{\"foo\": format(datum[\"foo\"], \"\"), \"bar\": ''+datum[\"bar\"], \"key\": ''+datum[\"key\"]}"
-          },
           "x": {"scale": "x", "field": "foo"},
           "y": {"scale": "y", "field": "bar"},
           "shape": {"value": "circle"}

@@ -96,9 +96,6 @@
             "update": {
               "opacity": {"value": 1},
               "fill": {"scale": "color", "field": "animal"},
-              "tooltip": {
-                "signal": "{\"col\": ''+datum[\"col\"], \"animal\": ''+datum[\"animal\"]}"
-              },
               "x": {"scale": "x", "field": "col"},
               "y": {"scale": "y", "field": "animal"},
               "size": {"value": 200},
