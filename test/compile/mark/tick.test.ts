@@ -15,11 +15,10 @@ describe('Mark: Tick', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'tick',
       encoding: {
-        x: {aggregate: 'sum', field: 'a', type: 'quantitative'},
+        x: {aggregate: 'sum', field: 'a', type: 'quantitative', stack: 'zero'},
         color: {field: 'b', type: 'ordinal'}
       },
-      data: {url: 'data/barley.json'},
-      config: {stack: 'zero'}
+      data: {url: 'data/barley.json'}
     });
 
     const props = tick.encodeEntry(model);
@@ -35,11 +34,10 @@ describe('Mark: Tick', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'tick',
       encoding: {
-        y: {aggregate: 'sum', field: 'a', type: 'quantitative'},
+        y: {aggregate: 'sum', field: 'a', type: 'quantitative', stack: 'zero'},
         color: {field: 'b', type: 'ordinal'}
       },
-      data: {url: 'data/barley.json'},
-      config: {stack: 'zero'}
+      data: {url: 'data/barley.json'}
     });
 
     const props = tick.encodeEntry(model);
