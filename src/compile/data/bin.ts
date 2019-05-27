@@ -27,7 +27,7 @@ function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, ch
   return {};
 }
 
-export function binKey(bin: BinParams, field: string) {
+function binKey(bin: BinParams, field: string) {
   return `${binToString(bin)}_${field}`;
 }
 
@@ -36,6 +36,12 @@ function getSignalsFromModel(model: Model, key: string) {
     signal: model.getName(`${key}_bins`),
     extentSignal: model.getName(`${key}_extent`)
   };
+}
+
+export function getBinSignalName(model: Model, field: string, bin: boolean | BinParams) {
+  const normalizedBin = normalizeBin(bin, undefined) || {};
+  const key = binKey(normalizedBin, field);
+  return model.getName(`${key}_bins`);
 }
 
 function isBinTransform(t: TypedFieldDef<string> | BinTransform): t is BinTransform {
