@@ -45,8 +45,17 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"lo\"])", "as": "lo"},
+        {"type": "formula", "expr": "toNumber(datum[\"hi\"])", "as": "hi"},
+        {"type": "formula", "expr": "toNumber(datum[\"mean\"])", "as": "mean"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -56,7 +65,7 @@
     },
     {
       "name": "data_2",
-      "source": "source_0",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -65,8 +74,16 @@
       ]
     },
     {
-      "name": "data_4",
+      "name": "data_3",
       "source": "source_1",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"from\"])", "as": "from"},
+        {"type": "formula", "expr": "toNumber(datum[\"to\"])", "as": "to"}
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "data_3",
       "transform": [
         {
           "type": "filter",
@@ -76,7 +93,7 @@
     },
     {
       "name": "data_5",
-      "source": "source_1",
+      "source": "data_3",
       "transform": [
         {
           "type": "filter",
@@ -86,7 +103,7 @@
     },
     {
       "name": "data_6",
-      "source": "source_1",
+      "source": "data_3",
       "transform": [{"type": "filter", "expr": "datum.label === 'PoleStar'"}]
     },
     {
@@ -111,7 +128,7 @@
     },
     {
       "name": "data_9",
-      "source": "source_1",
+      "source": "data_3",
       "transform": [{"type": "filter", "expr": "datum.label !== 'PoleStar'"}]
     },
     {

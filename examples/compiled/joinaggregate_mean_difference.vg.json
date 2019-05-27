@@ -28,6 +28,11 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "formula",
+          "expr": "toNumber(datum[\"IMDB_Rating\"])",
+          "as": "IMDB_Rating"
+        },
+        {
           "type": "filter",
           "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
         }

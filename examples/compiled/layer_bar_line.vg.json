@@ -20,8 +20,15 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -61,7 +68,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"a\"]", "order": "descending"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "red"},
@@ -82,7 +89,7 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "a"},
-          {"data": "source_0", "field": "a"}
+          {"data": "data_0", "field": "a"}
         ],
         "sort": true
       },
@@ -96,7 +103,7 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "b"},
-          {"data": "source_0", "field": "b"}
+          {"data": "data_0", "field": "b"}
         ]
       },
       "range": [{"signal": "height"}, 0],

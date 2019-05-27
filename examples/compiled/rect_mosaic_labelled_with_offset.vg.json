@@ -98,6 +98,11 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "formula",
+          "expr": "toNumber(datum[\"Cylinders\"])",
+          "as": "Cylinders"
+        },
+        {
           "type": "filter",
           "expr": "datum[\"nx\"] !== null && !isNaN(datum[\"nx\"]) && datum[\"ny\"] !== null && !isNaN(datum[\"ny\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
         }

@@ -6,24 +6,18 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {
-      "name": "source_0",
-      "url": "data/barley.json",
-      "format": {"type": "json"},
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": [],
-          "ops": ["mean", "mean", "stderr"],
-          "fields": ["yield", "yield", "yield"],
-          "as": ["mean_yield", "center_yield", "extent_yield"]
-        }
-      ]
-    },
+    {"name": "source_0", "url": "data/barley.json", "format": {"type": "json"}},
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [],
+          "ops": ["stderr", "mean"],
+          "fields": ["yield", "yield"],
+          "as": ["extent_yield", "center_yield"]
+        },
         {
           "type": "formula",
           "expr": "datum[\"center_yield\"] + datum[\"extent_yield\"]",
@@ -37,6 +31,24 @@
         {
           "type": "filter",
           "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"yield\"])",
+          "as": "yield"
+        },
+        {
+          "type": "aggregate",
+          "groupby": [],
+          "ops": ["mean"],
+          "fields": ["yield"],
+          "as": ["mean_yield"]
         }
       ]
     }
@@ -76,7 +88,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
@@ -103,7 +115,7 @@
         "fields": [
           {"data": "data_0", "field": "lower_yield"},
           {"data": "data_0", "field": "upper_yield"},
-          {"data": "source_0", "field": "mean_yield"}
+          {"data": "data_1", "field": "mean_yield"}
         ]
       },
       "range": [{"signal": "height"}, 0],

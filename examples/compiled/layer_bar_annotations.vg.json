@@ -31,8 +31,15 @@
       "values": [{"ThresholdValue": 300, "Threshold": "hazardous"}]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"Value\"])", "as": "Value"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -42,7 +49,7 @@
     },
     {
       "name": "data_2",
-      "source": "source_0",
+      "source": "data_0",
       "transform": [
         {"type": "filter", "expr": "datum.Value >= 300"},
         {"type": "formula", "expr": "300", "as": "baseline"},
@@ -53,8 +60,19 @@
       ]
     },
     {
-      "name": "data_4",
+      "name": "data_3",
       "source": "source_1",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"ThresholdValue\"])",
+          "as": "ThresholdValue"
+        }
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "data_3",
       "transform": [
         {
           "type": "filter",
@@ -64,7 +82,7 @@
     },
     {
       "name": "data_5",
-      "source": "source_1",
+      "source": "data_3",
       "transform": [
         {
           "type": "filter",

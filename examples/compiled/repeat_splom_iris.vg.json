@@ -5,7 +5,19 @@
   "width": 150,
   "height": 150,
   "data": [
-    {"name": "source_0", "url": "data/iris.json", "format": {"type": "json"}},
+    {
+      "name": "source_0",
+      "url": "data/iris.json",
+      "format": {
+        "type": "json",
+        "parse": {
+          "sepalLength": "number",
+          "petalWidth": "number",
+          "sepalWidth": "number",
+          "petalLength": "number"
+        }
+      }
+    },
     {
       "name": "data_0",
       "source": "source_0",

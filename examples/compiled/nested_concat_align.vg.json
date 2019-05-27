@@ -8,7 +8,15 @@
     {
       "name": "source_0",
       "url": "data/movies.json",
-      "format": {"type": "json"},
+      "format": {
+        "type": "json",
+        "parse": {
+          "Rotten_Tomatoes_Rating": "number",
+          "IMDB_Rating": "number",
+          "US_Gross": "number",
+          "Worldwide_Gross": "number"
+        }
+      },
       "transform": [
         {
           "type": "extent",

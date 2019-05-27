@@ -25,6 +25,11 @@
           "expr": "toNumber(datum[\"wavelength\"])",
           "as": "wavelength"
         },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"power\"])",
+          "as": "power"
+        },
         {"type": "filter", "expr": "inrange(datum[\"wavelength\"], [300, 450])"}
       ]
     }

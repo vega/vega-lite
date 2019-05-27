@@ -22,6 +22,11 @@
         {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
           "type": "formula",
+          "expr": "toNumber(datum[\"price\"])",
+          "as": "price"
+        },
+        {
+          "type": "formula",
           "as": "seconds_date",
           "expr": "datetime(0, 0, 1, 0, 0, seconds(datum[\"date\"]), 0)"
         }

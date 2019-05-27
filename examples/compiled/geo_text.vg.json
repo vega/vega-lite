@@ -14,7 +14,7 @@
     {
       "name": "source_1",
       "url": "data/us-state-capitals.json",
-      "format": {"type": "json"}
+      "format": {"type": "json", "parse": {"lon": "number", "lat": "number"}}
     },
     {
       "name": "data_0",

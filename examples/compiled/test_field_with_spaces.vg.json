@@ -25,6 +25,8 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"a b\"])", "as": "a b"},
+        {"type": "formula", "expr": "toNumber(datum[\"c d\"])", "as": "c d"},
         {
           "type": "filter",
           "expr": "datum[\"a b\"] !== null && !isNaN(datum[\"a b\"]) && datum[\"c d\"] !== null && !isNaN(datum[\"c d\"])"

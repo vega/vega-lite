@@ -14,7 +14,10 @@
     {
       "name": "source_1",
       "url": "data/airports.csv",
-      "format": {"type": "csv"},
+      "format": {
+        "type": "csv",
+        "parse": {"longitude": "number", "latitude": "number"}
+      },
       "transform": [
         {
           "type": "geopoint",

@@ -59,6 +59,11 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "formula",
+          "expr": "toNumber(datum[\"center\"])",
+          "as": "center"
+        },
+        {
           "type": "filter",
           "expr": "datum[\"center\"] !== null && !isNaN(datum[\"center\"])"
         }

@@ -8,7 +8,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json"},
+      "format": {"type": "json", "parse": {"Acceleration": "number"}},
       "transform": [
         {
           "type": "aggregate",

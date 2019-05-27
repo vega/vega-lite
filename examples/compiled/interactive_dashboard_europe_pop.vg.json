@@ -310,8 +310,24 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"Population_ages_15_64_of_total\"])",
+          "as": "Population_ages_15_64_of_total"
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"Population_ages_65_and_above_of_total\"])",
+          "as": "Population_ages_65_and_above_of_total"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -321,7 +337,7 @@
     },
     {
       "name": "data_2",
-      "source": "source_0",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -331,7 +347,7 @@
     },
     {
       "name": "data_3",
-      "source": "source_0",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -1423,7 +1439,7 @@
       "name": "concat_0_y",
       "type": "band",
       "domain": {
-        "data": "source_0",
+        "data": "data_0",
         "field": "Country",
         "sort": {
           "op": "mean",
@@ -1450,7 +1466,7 @@
       "name": "concat_1_y",
       "type": "band",
       "domain": {
-        "data": "source_0",
+        "data": "data_0",
         "field": "Country",
         "sort": {
           "op": "mean",

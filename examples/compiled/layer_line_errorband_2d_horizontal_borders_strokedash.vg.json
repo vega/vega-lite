@@ -9,7 +9,10 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json", "parse": {"Year": "date"}}
+      "format": {
+        "type": "json",
+        "parse": {"Miles_per_Gallon": "number", "Year": "date"}
+      }
     },
     {
       "name": "data_0",

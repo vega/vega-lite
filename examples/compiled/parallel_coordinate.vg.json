@@ -45,6 +45,32 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "formula",
+          "expr": "toNumber(datum[\"petalLength\"])",
+          "as": "petalLength"
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"petalWidth\"])",
+          "as": "petalWidth"
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"sepalLength\"])",
+          "as": "sepalLength"
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"sepalWidth\"])",
+          "as": "sepalWidth"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
           "type": "aggregate",
           "groupby": ["key"],
           "ops": ["min", "count", "max", "min"],
@@ -59,7 +85,7 @@
       "name": "layer_0_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "tooltip": {"value": null},
@@ -76,7 +102,7 @@
       "from": {
         "facet": {
           "name": "faceted_path_layer_1_main",
-          "data": "source_0",
+          "data": "data_0",
           "groupby": ["species", "index"]
         }
       },
@@ -114,7 +140,7 @@
       "name": "layer_2_layer_0_marks",
       "type": "text",
       "style": ["text", "label"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
@@ -144,7 +170,7 @@
       "name": "layer_3_layer_0_marks",
       "type": "text",
       "style": ["text", "label"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
@@ -174,7 +200,7 @@
       "name": "layer_4_layer_0_marks",
       "type": "text",
       "style": ["text", "label"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
@@ -207,6 +233,7 @@
       "type": "band",
       "domain": {
         "fields": [
+          {"data": "data_1", "field": "key"},
           {"data": "data_0", "field": "key"},
           {"data": "source_0", "field": "key"}
         ],
@@ -219,7 +246,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "norm_val"},
+      "domain": {"data": "data_0", "field": "norm_val"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -227,7 +254,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "species", "sort": true},
+      "domain": {"data": "data_0", "field": "species", "sort": true},
       "range": "category"
     }
   ],

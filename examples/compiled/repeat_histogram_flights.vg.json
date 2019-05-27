@@ -10,36 +10,6 @@
       "url": "data/flights-2k.json",
       "format": {"type": "json", "parse": {"date": "date"}},
       "transform": [
-        {
-          "type": "extent",
-          "field": "delay",
-          "signal": "child__repeat_column_delay_bin_maxbins_20_delay_extent"
-        },
-        {
-          "type": "bin",
-          "field": "delay",
-          "as": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
-          "signal": "child__repeat_column_delay_bin_maxbins_20_delay_bins",
-          "maxbins": 20,
-          "extent": {
-            "signal": "child__repeat_column_delay_bin_maxbins_20_delay_extent"
-          }
-        },
-        {
-          "type": "extent",
-          "field": "distance",
-          "signal": "child__repeat_column_distance_bin_maxbins_20_distance_extent"
-        },
-        {
-          "type": "bin",
-          "field": "distance",
-          "as": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
-          "signal": "child__repeat_column_distance_bin_maxbins_20_distance_bins",
-          "maxbins": 20,
-          "extent": {
-            "signal": "child__repeat_column_distance_bin_maxbins_20_distance_extent"
-          }
-        },
         {"type": "formula", "expr": "hours(datum.date)", "as": "time"}
       ]
     },
@@ -80,6 +50,52 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "formula",
+          "expr": "toNumber(datum[\"distance\"])",
+          "as": "distance"
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"delay\"])",
+          "as": "delay"
+        },
+        {
+          "type": "extent",
+          "field": "delay",
+          "signal": "child__repeat_column_delay_bin_maxbins_20_delay_extent"
+        },
+        {
+          "type": "bin",
+          "field": "delay",
+          "as": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
+          "signal": "child__repeat_column_delay_bin_maxbins_20_delay_bins",
+          "maxbins": 20,
+          "extent": {
+            "signal": "child__repeat_column_delay_bin_maxbins_20_delay_extent"
+          }
+        },
+        {
+          "type": "extent",
+          "field": "distance",
+          "signal": "child__repeat_column_distance_bin_maxbins_20_distance_extent"
+        },
+        {
+          "type": "bin",
+          "field": "distance",
+          "as": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
+          "signal": "child__repeat_column_distance_bin_maxbins_20_distance_bins",
+          "maxbins": 20,
+          "extent": {
+            "signal": "child__repeat_column_distance_bin_maxbins_20_distance_extent"
+          }
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_1",
+      "transform": [
+        {
           "type": "aggregate",
           "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
           "ops": ["count"],
@@ -93,8 +109,8 @@
       ]
     },
     {
-      "name": "data_2",
-      "source": "source_0",
+      "name": "data_3",
+      "source": "data_1",
       "transform": [
         {
           "type": "aggregate",
@@ -124,7 +140,7 @@
           "name": "child__repeat_column_distance_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -208,7 +224,7 @@
           "name": "child__repeat_column_delay_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -378,7 +394,7 @@
     {
       "name": "child__repeat_column_distance_y",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "__count"},
+      "domain": {"data": "data_3", "field": "__count"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -398,7 +414,7 @@
     {
       "name": "child__repeat_column_delay_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "__count"},
+      "domain": {"data": "data_2", "field": "__count"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

@@ -5,24 +5,36 @@
   "width": 200,
   "style": "cell",
   "data": [
-    {
-      "name": "source_0",
-      "url": "data/barley.json",
-      "format": {"type": "json"},
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["variety"],
-          "ops": ["ci0", "ci1", "mean", "mean"],
-          "fields": ["yield", "yield", "yield", "yield"],
-          "as": ["lower_yield", "upper_yield", "center_yield", "mean_yield"]
-        }
-      ]
-    },
+    {"name": "source_0", "url": "data/barley.json", "format": {"type": "json"}},
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"yield\"])",
+          "as": "yield"
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["variety"],
+          "ops": ["mean"],
+          "fields": ["yield"],
+          "as": ["mean_yield"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["variety"],
+          "ops": ["ci0", "ci1", "mean"],
+          "fields": ["yield", "yield", "yield"],
+          "as": ["lower_yield", "upper_yield", "center_yield"]
+        },
         {
           "type": "filter",
           "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
@@ -39,7 +51,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
@@ -61,7 +73,7 @@
       "name": "layer_1_layer_0_marks",
       "type": "rule",
       "style": ["rule", "errorbar-rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -93,9 +105,9 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "mean_yield"},
-          {"data": "data_0", "field": "lower_yield"},
-          {"data": "data_0", "field": "upper_yield"}
+          {"data": "data_0", "field": "mean_yield"},
+          {"data": "data_1", "field": "lower_yield"},
+          {"data": "data_1", "field": "upper_yield"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -107,8 +119,8 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "variety"},
-          {"data": "data_0", "field": "variety"}
+          {"data": "data_0", "field": "variety"},
+          {"data": "data_1", "field": "variety"}
         ],
         "sort": true
       },

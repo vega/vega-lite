@@ -7,7 +7,14 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json"},
+      "format": {
+        "type": "json",
+        "parse": {
+          "Acceleration": "number",
+          "Horsepower": "number",
+          "Miles_per_Gallon": "number"
+        }
+      },
       "transform": [
         {
           "type": "extent",

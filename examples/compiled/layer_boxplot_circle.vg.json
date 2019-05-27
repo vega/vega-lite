@@ -109,6 +109,11 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "formula",
+          "expr": "toNumber(datum[\"people\"])",
+          "as": "people"
+        },
+        {
           "type": "filter",
           "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
         }

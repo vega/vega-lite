@@ -7,7 +7,10 @@
     {
       "name": "source_0",
       "url": "data/population.json",
-      "format": {"type": "json"},
+      "format": {
+        "type": "json",
+        "parse": {"age": "number", "people": "number"}
+      },
       "transform": [
         {"type": "filter", "expr": "datum.year == 2000"},
         {

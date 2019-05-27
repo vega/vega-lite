@@ -31,20 +31,6 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"people\"] < datum[\"lower_box_people\"] - 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"])) || (datum[\"people\"] > datum[\"upper_box_people\"] + 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]))"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "filter",
           "expr": "(datum[\"lower_box_people\"] - 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]) <= datum[\"people\"]) && (datum[\"people\"] <= datum[\"upper_box_people\"] + 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]))"
         },
         {
@@ -67,8 +53,8 @@
       ]
     },
     {
-      "name": "data_3",
-      "source": "data_2",
+      "name": "data_2",
+      "source": "data_1",
       "transform": [
         {
           "type": "filter",
@@ -77,12 +63,31 @@
       ]
     },
     {
-      "name": "data_4",
-      "source": "data_2",
+      "name": "data_3",
+      "source": "data_1",
       "transform": [
         {
           "type": "filter",
           "expr": "datum[\"upper_box_people\"] !== null && !isNaN(datum[\"upper_box_people\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"people\"])",
+          "as": "people"
+        },
+        {
+          "type": "filter",
+          "expr": "(datum[\"people\"] < datum[\"lower_box_people\"] - 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"])) || (datum[\"people\"] > datum[\"upper_box_people\"] + 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]))"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
         }
       ]
     },
@@ -132,7 +137,7 @@
       "name": "layer_0_layer_0_marks",
       "type": "symbol",
       "style": ["point", "boxplot-outliers"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_4"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -150,7 +155,7 @@
       "name": "layer_0_layer_1_layer_0_marks",
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -167,7 +172,7 @@
       "name": "layer_0_layer_1_layer_1_marks",
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
-      "from": {"data": "data_4"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -224,11 +229,11 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "people"},
-          {"data": "data_3", "field": "lower_whisker_people"},
-          {"data": "data_3", "field": "lower_box_people"},
-          {"data": "data_4", "field": "upper_box_people"},
-          {"data": "data_4", "field": "upper_whisker_people"},
+          {"data": "data_4", "field": "people"},
+          {"data": "data_2", "field": "lower_whisker_people"},
+          {"data": "data_2", "field": "lower_box_people"},
+          {"data": "data_3", "field": "upper_box_people"},
+          {"data": "data_3", "field": "upper_whisker_people"},
           {"data": "data_6", "field": "lower_box_people"},
           {"data": "data_6", "field": "upper_box_people"},
           {"data": "data_7", "field": "mid_box_people"}

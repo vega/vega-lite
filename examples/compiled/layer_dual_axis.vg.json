@@ -10,7 +10,15 @@
     {
       "name": "source_0",
       "url": "data/weather.csv",
-      "format": {"type": "csv", "parse": {"date": "date"}},
+      "format": {
+        "type": "csv",
+        "parse": {
+          "date": "date",
+          "temp_max": "number",
+          "temp_min": "number",
+          "precipitation": "number"
+        }
+      },
       "transform": [
         {"type": "filter", "expr": "datum.location == \"Seattle\""},
         {

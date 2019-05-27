@@ -11,6 +11,29 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "aggregate",
+          "groupby": ["Major_Genre"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"IMDB_Rating\"])",
+          "as": "IMDB_Rating"
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"Rotten_Tomatoes_Rating\"])",
+          "as": "Rotten_Tomatoes_Rating"
+        },
+        {
           "type": "extent",
           "field": "IMDB_Rating",
           "signal": "concat_0_layer_1_bin_maxbins_10_IMDB_Rating_extent"
@@ -49,8 +72,8 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "data_0",
+      "name": "data_2",
+      "source": "data_1",
       "transform": [
         {
           "type": "filter",
@@ -75,8 +98,8 @@
       ]
     },
     {
-      "name": "data_2",
-      "source": "data_0",
+      "name": "data_3",
+      "source": "data_1",
       "transform": [
         {
           "type": "aggregate",
@@ -93,19 +116,6 @@
         {
           "type": "filter",
           "expr": "datum[\"bin_maxbins_10_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) && datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["Major_Genre"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
         }
       ]
     }
@@ -141,7 +151,7 @@
           "name": "concat_0_layer_0_marks",
           "type": "rect",
           "style": ["rect"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "__count"},
@@ -192,7 +202,7 @@
           "name": "concat_0_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": {"value": "transparent"},
@@ -307,7 +317,7 @@
           "name": "concat_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_3"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": [
@@ -368,7 +378,7 @@
     {
       "name": "color",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "__count"},
+      "domain": {"data": "data_3", "field": "__count"},
       "range": "heatmap",
       "interpolate": "hcl",
       "zero": false
@@ -376,7 +386,7 @@
     {
       "name": "size",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "__count"},
+      "domain": {"data": "data_2", "field": "__count"},
       "range": [
         0,
         {
@@ -410,7 +420,7 @@
     {
       "name": "concat_1_x",
       "type": "band",
-      "domain": {"data": "data_3", "field": "Major_Genre", "sort": true},
+      "domain": {"data": "data_0", "field": "Major_Genre", "sort": true},
       "range": [0, {"signal": "concat_1_width"}],
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -418,7 +428,7 @@
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_3", "field": "__count"},
+      "domain": {"data": "data_0", "field": "__count"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

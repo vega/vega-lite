@@ -6,9 +6,26 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}},
+    {
+      "name": "source_0",
+      "url": "data/movies.json",
+      "format": {"type": "json", "parse": {"IMDB_Rating": "number"}}
+    },
     {
       "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [],
+          "ops": ["mean"],
+          "fields": ["IMDB_Rating"],
+          "as": ["mean_IMDB_Rating"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
       "source": "source_0",
       "transform": [
         {
@@ -42,19 +59,6 @@
           "expr": "datum[\"bin_maxbins_10_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"])"
         }
       ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": [],
-          "ops": ["mean"],
-          "fields": ["IMDB_Rating"],
-          "as": ["mean_IMDB_Rating"]
-        }
-      ]
     }
   ],
   "marks": [
@@ -62,7 +66,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -92,7 +96,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "red"},
@@ -122,7 +126,7 @@
           {
             "signal": "[layer_0_bin_maxbins_10_IMDB_Rating_bins.start, layer_0_bin_maxbins_10_IMDB_Rating_bins.stop]"
           },
-          {"data": "data_1", "field": "mean_IMDB_Rating"}
+          {"data": "data_0", "field": "mean_IMDB_Rating"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -133,7 +137,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "__count"},
+      "domain": {"data": "data_1", "field": "__count"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
