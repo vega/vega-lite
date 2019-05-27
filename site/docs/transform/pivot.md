@@ -7,7 +7,7 @@ permalink: /docs/pivot.html
 
 The **pivot** transform maps unique values from a field to new aggregated fields (columns) in the output stream. The transform requires both a field to pivot on (providing new field names) and a field of values to aggregate to populate the new cells. In addition, any number of groupby fields can be provided to further subdivide the data into output data objects (rows).
 
-Pivot transforms are useful for creating matrix or cross-tabulation data, acting as an inverse to the [fold](./fold) transform.
+Pivot transforms are useful for creating matrix or cross-tabulation data, acting as an inverse to the [fold](fold.html) transform.
 
 ## Pivot Transform Definition
 

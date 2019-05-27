@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 
 import {PivotTransformNode} from '../../../src/compile/data/pivot';
 import {Transform} from '../../../src/transform';
