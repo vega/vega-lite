@@ -89,9 +89,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"center\": format(datum[\"center\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
-          },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "center"},
           "defined": {

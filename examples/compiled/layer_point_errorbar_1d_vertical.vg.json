@@ -80,9 +80,6 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"Mean of yield\": format(datum[\"mean_yield\"], \"\")}"
-          },
           "x": {"signal": "width", "mult": 0.5},
           "y": [
             {
