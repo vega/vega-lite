@@ -21,6 +21,7 @@ import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
 import {DataFlowNode} from './dataflow';
+import {getSort} from '../mark/mark';
 
 /**
  * Remove quotes from a string.
@@ -147,7 +148,11 @@ export class ParseNode extends DataFlowNode {
     function add(fieldDef: TypedFieldDef<string>) {
       if (isTimeFormatFieldDef(fieldDef)) {
         implicit[fieldDef.field] = 'date';
-      } else if (isNumberFieldDef(fieldDef) && isMinMaxOp(fieldDef.aggregate)) {
+      } else if (
+        isNumberFieldDef(fieldDef) &&
+        (isMinMaxOp(fieldDef.aggregate) || // we need to parse numbers to support correct min and max
+          (isUnitModel(model) && getSort(model))) // we also need to parse so we can sort numbers in line and area charts correctly
+      ) {
         implicit[fieldDef.field] = 'number';
       } else if (accessPathDepth(fieldDef.field) > 1) {
         // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
