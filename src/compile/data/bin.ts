@@ -1,10 +1,10 @@
 import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning} from '../../bin';
 import {Channel} from '../../channel';
-import {FieldName, binRequiresRange, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
+import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
-import {Dict, duplicate, flatten, hash, keys, unique, vals} from '../../util';
+import {Dict, duplicate, flatten, hash, keys, replacePathInField, unique, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {binFormatExpression} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
@@ -27,7 +27,7 @@ function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, ch
   return {};
 }
 
-function binKey(bin: BinParams, field: string) {
+export function binKey(bin: BinParams, field: string) {
   return `${binToString(bin)}_${field}`;
 }
 
@@ -163,7 +163,7 @@ export class BinNode extends DataFlowNode {
         const [binAs, ...remainingAs] = bin.as;
         const binTrans: VgBinTransform = {
           type: 'bin',
-          field: bin.field,
+          field: replacePathInField(bin.field),
           as: binAs,
           signal: bin.signal,
           ...bin.bin
@@ -172,7 +172,7 @@ export class BinNode extends DataFlowNode {
         if (!bin.bin.extent && bin.extentSignal) {
           transform.push({
             type: 'extent',
-            field: bin.field,
+            field: replacePathInField(bin.field),
             signal: bin.extentSignal
           });
           binTrans.extent = {signal: bin.extentSignal};
