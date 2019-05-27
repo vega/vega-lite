@@ -9,7 +9,7 @@ import {stack, STACKABLE_MARKS, StackOffset, STACK_BY_DEFAULT_MARKS} from '../sr
 describe('stack', () => {
   const NON_STACKABLE_MARKS = [RECT];
 
-  it('should be disabled for non-stackable marks with at least of of the stack channel', () => {
+  it('should be disabled for non-stackable marks with at least one of the stack channel', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       NON_STACKABLE_MARKS.forEach(nonStackableMark => {
         const spec: TopLevel<NormalizedUnitSpec> = {
@@ -42,6 +42,22 @@ describe('stack', () => {
       };
       const stackProps = stack(spec.mark, spec.encoding, undefined);
       expect(stackProps.fieldChannel).toBe('x');
+    });
+  });
+
+  it('should be disabled when stack is false', () => {
+    STACKABLE_MARKS.forEach(mark => {
+      const spec: TopLevel<NormalizedUnitSpec> = {
+        data: {url: 'data/barley.json'},
+        mark: mark,
+        encoding: {
+          x: {aggregate: 'mean', field: 'yield', type: 'quantitative', stack: false},
+          y: {field: 'variety', type: 'nominal'},
+          color: {field: 'site', type: 'nominal'}
+        }
+      };
+      const stackProps = stack(spec.mark, spec.encoding, undefined);
+      expect(stackProps).toBeNull();
     });
   });
 
@@ -120,7 +136,7 @@ describe('stack', () => {
     }
   });
 
-  it('can enabled if one of the stackby channels is not aggregated', () => {
+  it('can be enabled if one of the stackby channels is not aggregated', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
       marks.forEach(mark => {
@@ -145,7 +161,7 @@ describe('stack', () => {
     }
   });
 
-  it('can enabled if one of the stackby channels is not aggregated', () => {
+  it('can be enabled if one of the stackby channels is not aggregated', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
       marks.forEach(mark => {
@@ -423,19 +439,21 @@ describe('stack', () => {
   });
 
   describe('stack().offset', () => {
-    it('should be zero for stackable marks with at least of of the stack channel if stacked is unspecified', () => {
-      [BAR, AREA].forEach(stackableMark => {
-        const spec: TopLevel<NormalizedUnitSpec> = {
-          data: {url: 'data/barley.json'},
-          mark: stackableMark,
-          encoding: {
-            x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
-            y: {field: 'variety', type: 'nominal'},
-            color: {field: 'site', type: 'nominal'}
-          }
-        };
-        expect(stack(spec.mark, spec.encoding, undefined).offset).toBe('zero');
-      });
+    it('should be zero for stackable marks with at least of of the stack channel if stacked is unspecified or true', () => {
+      for (const s of [undefined, true]) {
+        [BAR, AREA].forEach(stackableMark => {
+          const spec: TopLevel<NormalizedUnitSpec> = {
+            data: {url: 'data/barley.json'},
+            mark: stackableMark,
+            encoding: {
+              x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: s},
+              y: {field: 'variety', type: 'nominal'},
+              color: {field: 'site', type: 'nominal'}
+            }
+          };
+          expect(stack(spec.mark, spec.encoding, undefined).offset).toBe('zero');
+        });
+      }
     });
 
     it('should be the specified stacked for stackable marks with at least one of the stack channel', () => {
