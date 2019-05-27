@@ -90,7 +90,7 @@ export class UnitModel extends ModelWithField {
     this.markDef = normalizeMarkDef(spec.mark, encoding, config);
 
     // calculate stack properties
-    this.stack = stack(mark, encoding, this.config.stack);
+    this.stack = stack(mark, encoding);
     this.specifiedScales = this.initScales(mark, encoding);
 
     this.specifiedAxes = this.initAxes(encoding);

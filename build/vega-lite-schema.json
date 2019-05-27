@@ -3194,10 +3194,6 @@
           "$ref": "#/definitions/MarkConfig",
           "description": "Square-Specific Config"
         },
-        "stack": {
-          "$ref": "#/definitions/StackOffset",
-          "description": "Default stack offset for stackable mark."
-        },
         "style": {
           "$ref": "#/definitions/StyleConfigIndex",
           "description": "An object hash that defines key-value mappings to determine default properties for marks with a given [style](https://vega.github.io/vega-lite/docs/mark.html#mark-def).  The keys represent styles names; the values have to be valid [mark configuration objects](https://vega.github.io/vega-lite/docs/mark.html#config)."

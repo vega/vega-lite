@@ -95,13 +95,11 @@ describe('compile/scale', () => {
           y: {
             aggregate: 'sum',
             field: 'origin',
-            type: 'quantitative'
+            type: 'quantitative',
+            stack: 'normalize'
           },
           x: {field: 'x', type: 'ordinal'},
           color: {field: 'color', type: 'ordinal'}
-        },
-        config: {
-          stack: 'normalize'
         }
       });
 
