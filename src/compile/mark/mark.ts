@@ -175,6 +175,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'href':
       case 'x2':
       case 'y2':
+      // falls through
 
       case 'latitude':
       case 'longitude':
@@ -182,15 +183,16 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'longitude2':
       // TODO: case 'cursor':
 
-      // text, shape, shouldn't be a part of line/trail/area
+      // text, shape, shouldn't be a part of line/trail/area [falls through]
       case 'text':
       case 'shape':
+      // falls through
 
-      // tooltip fields should not be added to group by
+      // tooltip fields should not be added to group by [falls through]
       case 'tooltip':
         return details;
       case 'detail':
-      case 'key':
+      case 'key': {
         const channelDef = encoding[channel];
         if (isArray(channelDef) || isFieldDef(channelDef)) {
           (isArray(channelDef) ? channelDef : [channelDef]).forEach(fieldDef => {
@@ -200,6 +202,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
           });
         }
         return details;
+      }
 
       case 'size':
         if (mark === 'trail') {
@@ -208,24 +211,24 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
         }
       // For line, it should group lines.
 
-      /* tslint:disable */
-      // intentional fall through
-
+      // falls through
       case 'color':
       case 'fill':
       case 'stroke':
       case 'opacity':
       case 'fillOpacity':
       case 'strokeOpacity':
-      case 'strokeWidth':
+      case 'strokeWidth': {
         // TODO strokeDashOffset:
+        // falls through
 
-        /* tslint:enable */
         const fieldDef = getTypedFieldDef<string>(encoding[channel]);
         if (fieldDef && !fieldDef.aggregate) {
           details.push(vgField(fieldDef, {}));
         }
         return details;
+      }
+
       default:
         throw new Error(`Bug: Channel ${channel} unimplemented for line mark`);
     }

@@ -2,6 +2,7 @@
  * Constants and utilities for data.
  */
 import {VgData} from './vega.schema';
+import {FieldName} from './channeldef';
 
 export type ParseValue = null | string | 'string' | 'boolean' | 'date' | 'number';
 
@@ -126,7 +127,7 @@ export function isInlineData(data: Partial<Data> | Partial<VgData>): data is Inl
 }
 
 export function isNamedData(data: Partial<Data> | Partial<VgData>): data is NamedData {
-  return !!data['name'] && !isUrlData(data) && !isInlineData(data);
+  return !!data['name'] && !isUrlData(data) && !isInlineData(data) && !isGenerator(data);
 }
 
 export function isGenerator(data: Partial<Data> | Partial<VgData>): data is Generator {
@@ -187,7 +188,7 @@ export interface SequenceParams {
    *
    * __Default value:__ `"data"`
    */
-  as?: string;
+  as?: FieldName;
 }
 
 export interface SphereGenerator extends GeneratorBase {

@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {COLOR, FILLOPACITY, OPACITY, SHAPE, SIZE, STROKEOPACITY, STROKEWIDTH} from '../../../src/channel';
 import {isFieldDef} from '../../../src/channeldef';
 import * as legendParse from '../../../src/compile/legend/parse';

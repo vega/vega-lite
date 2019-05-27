@@ -1,6 +1,7 @@
 import {toSet} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, CHANNELS, isColorChannel} from './channel';
+import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
 import * as log from './log';
 import * as TYPE from './type';
@@ -444,7 +445,7 @@ export type SelectionDomain =
        * The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
        * over multiple fields or encodings.
        */
-      field?: string;
+      field?: FieldName;
     }
   | {
       /**
@@ -559,7 +560,7 @@ export interface Scale {
   round?: boolean;
 
   /**
-   * For _[continuous](https://vega.github.io/vega-lite/docs/scale.html#continuous)_ scales, expands the scale domain to accommodate the specified number of pixels on each of the scale range. The scale range must represent pixels for this parameter to function as intended. Padding adjustment is performed prior to all other adjustments, including the effects of the zero, nice, domainMin, and domainMax properties.
+   * For _[continuous](https://vega.github.io/vega-lite/docs/scale.html#continuous)_ scales, expands the scale domain to accommodate the specified number of pixels on each of the scale range. The scale range must represent pixels for this parameter to function as intended. Padding adjustment is performed prior to all other adjustments, including the effects of the `zero`, `nice`, `domainMin`, and `domainMax` properties.
    *
    * For _[band](https://vega.github.io/vega-lite/docs/scale.html#band)_ scales, shortcut for setting `paddingInner` and `paddingOuter` to the same value.
    *

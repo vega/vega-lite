@@ -16,7 +16,7 @@ const toggle: TransformCompiler = {
     });
   },
 
-  modifyExpr: (model, selCmpt, expr) => {
+  modifyExpr: (model, selCmpt) => {
     const tpl = selCmpt.name + TUPLE;
     const signal = selCmpt.name + TOGGLE;
 

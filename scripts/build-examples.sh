@@ -34,7 +34,7 @@ rm -f $dir/*.vg.json
 
 # Re-compile all examples
 echo "Using parallel to generate vega specs from examples in parallel."
-ls examples/specs/*.vl.json | parallel --env skipnormalize --env forcesvg --env nopatch --eta --no-notice --plus --halt 1 "./scripts/build-example.sh {/..}"
+ls examples/specs/*.vl.json | parallel --env skipnormalize --env forcesvg --env nopatch --eta --no-notice --plus --halt 1 "scripts/build-example.sh {/..}"
 
 scripts/build-normalized-examples
 

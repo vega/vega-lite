@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {selector as parseSelector} from 'vega-event-selector';
 import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import interval from '../../../src/compile/selection/interval';
@@ -476,15 +474,15 @@ describe('Interval Selections', () => {
       expect.arrayContaining([
         {
           name: 'one_modify',
-          update: `modify(\"one_store\", ${oneExpr})`
+          update: `modify("one_store", ${oneExpr})`
         },
         {
           name: 'two_modify',
-          update: `modify(\"two_store\", ${twoExpr})`
+          update: `modify("two_store", ${twoExpr})`
         },
         {
           name: 'thr_ee_modify',
-          update: `modify(\"thr_ee_store\", ${threeExpr})`
+          update: `modify("thr_ee_store", ${threeExpr})`
         }
       ])
     );
@@ -692,6 +690,113 @@ describe('Interval Selections', () => {
             y2: {
               signal: 'thr_ee_y[1]'
             }
+          }
+        }
+      }
+    ]);
+  });
+
+  it('should be robust to same channel/field names', () => {
+    const nameModel = parseUnitModel({
+      mark: 'circle',
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {field: 'y', type: 'quantitative'}
+      }
+    });
+    nameModel.parseScale();
+
+    const nameSelCmpts = (nameModel.component.selection = parseUnitSelection(nameModel, {
+      brush: {type: 'interval'}
+    }));
+
+    const signals = interval.signals(nameModel, nameSelCmpts['brush']);
+    const names = signals.map(s => s.name);
+    expect(names).toEqual(expect.arrayContaining(['brush_x_1', 'brush_x', 'brush_y_1', 'brush_y']));
+
+    const marks: any[] = [{hello: 'world'}];
+    expect(interval.marks(nameModel, nameSelCmpts['brush'], marks)).toEqual([
+      {
+        name: 'brush_brush_bg',
+        type: 'rect',
+        clip: true,
+        encode: {
+          enter: {fill: {value: '#333'}, fillOpacity: {value: 0.125}},
+          update: {
+            x: [
+              {
+                test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
+                signal: 'brush_x_1[0]'
+              },
+              {value: 0}
+            ],
+            y: [
+              {
+                test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
+                signal: 'brush_y_1[0]'
+              },
+              {value: 0}
+            ],
+            x2: [
+              {
+                test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
+                signal: 'brush_x_1[1]'
+              },
+              {value: 0}
+            ],
+            y2: [
+              {
+                test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
+                signal: 'brush_y_1[1]'
+              },
+              {value: 0}
+            ]
+          }
+        }
+      },
+      {hello: 'world'},
+      {
+        name: 'brush_brush',
+        type: 'rect',
+        clip: true,
+        encode: {
+          enter: {fill: {value: 'transparent'}},
+          update: {
+            x: [
+              {
+                test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
+                signal: 'brush_x_1[0]'
+              },
+              {value: 0}
+            ],
+            y: [
+              {
+                test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
+                signal: 'brush_y_1[0]'
+              },
+              {value: 0}
+            ],
+            x2: [
+              {
+                test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
+                signal: 'brush_x_1[1]'
+              },
+              {value: 0}
+            ],
+            y2: [
+              {
+                test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
+                signal: 'brush_y_1[1]'
+              },
+              {value: 0}
+            ],
+            stroke: [
+              {
+                test: 'brush_x_1[0] !== brush_x_1[1] && brush_y_1[0] !== brush_y_1[1]',
+                value: 'white'
+              },
+              {value: null}
+            ]
           }
         }
       }

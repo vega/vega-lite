@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import inputs from '../../../src/compile/selection/transforms/inputs';

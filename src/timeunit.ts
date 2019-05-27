@@ -265,9 +265,10 @@ export function convert(unit: TimeUnit, date: Date): Date {
           result[setDateMethod](Math.floor(date[getDateMethod]() / 3) * 3);
           break;
         }
-        default:
+        default: {
           const {getDateMethod, setDateMethod} = dateMethods(timeUnitPart, isUTC);
           result[setDateMethod](date[getDateMethod]());
+        }
       }
     }
   }

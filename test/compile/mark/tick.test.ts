@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 // TODO:
 // test mark-tick with the following test cases,
 // looking at mark-point.test.ts as inspiration

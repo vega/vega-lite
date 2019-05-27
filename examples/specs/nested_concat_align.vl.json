@@ -1,0 +1,47 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "description": "Nested concatenation aligned by setting axis minExtent",
+  "data": {
+    "url": "data/movies.json"
+  },
+  "vconcat": [{
+    "title": "Ratings",
+    "repeat": {"column": ["Rotten_Tomatoes_Rating", "IMDB_Rating"]},
+    "spec": {
+      "width": 150,
+      "height": 50,
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": {"repeat": "column"},
+          "bin": {"maxbins": 20},
+          "type": "quantitative"
+        },
+        "y": {"aggregate": "count", "type": "quantitative"}
+      }
+    }
+  },{
+    "title": "Gross",
+    "repeat": {"column": ["US_Gross", "Worldwide_Gross"]},
+    "spec": {
+      "width": 150,
+      "height": 50,
+      "encoding": {
+        "x": {
+          "field": {"repeat": "column"},
+          "bin": {"maxbins": 20},
+          "type": "quantitative"
+        },
+        "y": {"aggregate": "count", "type": "quantitative"}
+      },
+      "mark": "bar"
+    }
+  }],
+  "config": {
+    "countTitle": "Count",
+    "axisX": {"titleLimit": 150},
+    "axisY": {
+      "minExtent": 40
+    }
+  }
+}

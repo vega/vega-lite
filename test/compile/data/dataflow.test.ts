@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 
 describe('compile/data/dataflow', () => {

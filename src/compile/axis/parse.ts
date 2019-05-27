@@ -1,7 +1,7 @@
 import {Axis as VgAxis, AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
-import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
+import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
 import {FieldDefBase, isTimeFormatFieldDef, toFieldDefBase} from '../../channeldef';
 import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
@@ -260,10 +260,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
       const axisEncodingPart = guideEncodeEntry(axisEncoding[part] || {}, model);
 
-      const value =
-        part === 'labels'
-          ? encode.labels(model, channel, axisEncodingPart, axisComponent.get('orient'))
-          : axisEncodingPart;
+      const value = part === 'labels' ? encode.labels(model, channel, axisEncodingPart) : axisEncodingPart;
 
       if (value !== undefined && keys(value).length > 0) {
         e[part] = {update: value};
@@ -336,15 +333,14 @@ function getProperty<K extends keyof AxisComponentProps>(
       return orient;
     case 'tickCount': {
       const scaleType = model.getScaleComponent(channel).get('type');
-      const scaleName = model.scaleName(channel);
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
       const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
       return getFirstDefined<number | SignalRef>(
         specifiedAxis.tickCount,
-        properties.defaultTickCount({fieldDef, scaleType, size, scaleName, specifiedAxis})
+        properties.defaultTickCount({fieldDef, scaleType, size})
       );
     }
-    case 'title':
+    case 'title': {
       const channel2 = channel === 'x' ? 'x2' : 'y2';
       const fieldDef2 = model.fieldDef(channel2);
       // Keep undefined so we use default if title is unspecified.
@@ -354,9 +350,9 @@ function getProperty<K extends keyof AxisComponentProps>(
         getFieldDefTitle(model, channel), // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
         mergeTitleFieldDefs([toFieldDefBase(fieldDef)], fieldDef2 ? [toFieldDefBase(fieldDef2)] : [])
       );
-
+    }
     case 'values':
-      return properties.values(specifiedAxis, model, fieldDef, channel);
+      return properties.values(specifiedAxis, model, fieldDef);
   }
   // Otherwise, return specified property.
   return isAxisProperty(property) ? specifiedAxis[property] : undefined;

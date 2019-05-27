@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import {CalculateNode} from '../../../src/compile/data/calculate';
 import {ModelWithField} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';

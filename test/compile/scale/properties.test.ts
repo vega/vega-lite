@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {Channel, NONPOSITION_SCALE_CHANNELS} from '../../../src/channel';
 import * as rules from '../../../src/compile/scale/properties';
 import {AREA, BAR, LINE} from '../../../src/mark';

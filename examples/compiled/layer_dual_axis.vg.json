@@ -9,7 +9,7 @@
   "data": [
     {
       "name": "source_0",
-      "url": "https://vega.github.io/vega-datasets/data/weather.csv",
+      "url": "data/weather.csv",
       "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [
         {"type": "filter", "expr": "datum.location == \"Seattle\""},

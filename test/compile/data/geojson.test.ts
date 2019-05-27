@@ -2,7 +2,6 @@ import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {GeoJSONNode} from '../../../src/compile/data/geojson';
 import {contains, every} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
-/* tslint:disable:quotemark */
 
 describe('compile/data/geojson', () => {
   it('should make transform and assemble correctly', () => {

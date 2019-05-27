@@ -4,8 +4,8 @@ import {
   Channel,
   GEOPOSITION_CHANNELS,
   NONPOSITION_SCALE_CHANNELS,
-  ScaleChannel,
   SCALE_CHANNELS,
+  ScaleChannel,
   SingleDefChannel,
   supportLegend,
   X,
@@ -22,7 +22,7 @@ import {Domain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
-import {Dict, duplicate} from '../util';
+import {Dict} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
 import {AxisIndex} from './axis/component';
@@ -247,27 +247,6 @@ export class UnitModel extends ModelWithField {
 
   protected getMapping() {
     return this.encoding;
-  }
-
-  public toSpec(excludeConfig?: any, excludeData?: any) {
-    const encoding = duplicate(this.encoding);
-    let spec: any;
-
-    spec = {
-      mark: this.markDef,
-      encoding: encoding
-    };
-
-    if (!excludeConfig) {
-      spec.config = duplicate(this.config);
-    }
-
-    if (!excludeData) {
-      spec.data = duplicate(this.data);
-    }
-
-    // remove defaults
-    return spec;
   }
 
   public get mark(): Mark {

@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {nonPosition} from '../../../src/compile/mark/mixins';
 import {expression} from '../../../src/compile/predicate';
 import {assembleSelectionPredicate as predicate} from '../../../src/compile/selection/assemble';

@@ -12,6 +12,11 @@ exclude:
   - bin
   - .github
   - .vscode
+  - .eslintrc.js
+  - .prettierrc
+  - .prettierignore
+  - .travis.yml
+  - .npmignore
   - coverage
   - Gemfile
   - Gemfile.lock
@@ -23,7 +28,6 @@ exclude:
   - package.json
   - yarn.lock
   - tsconfig.json
-  - tslint.json
   - nodemon.json
   - LICENSE
   - README.md

@@ -106,7 +106,7 @@ export function getDefaultValue(
   // If we have default rule-base, determine default value first
   switch (property) {
     case 'bins':
-      return bins(model, fieldDef, channel);
+      return bins(model, fieldDef);
     case 'interpolate':
       return interpolate(channel, type);
     case 'nice':
@@ -177,7 +177,7 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
   });
 }
 
-export function bins(model: Model, fieldDef: TypedFieldDef<string>, channel: Channel) {
+export function bins(model: Model, fieldDef: TypedFieldDef<string>) {
   const bin = fieldDef.bin;
   if (isBinning(bin)) {
     const signal = model.getName(vgField(fieldDef, {suffix: 'bins'}));

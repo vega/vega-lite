@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {selector as parseSelector} from 'vega-event-selector';
 import {assembleTopLevelSignals} from '../../../src/compile/selection/assemble';
 import interval from '../../../src/compile/selection/interval';

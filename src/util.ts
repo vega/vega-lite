@@ -96,8 +96,8 @@ export function union<T>(array: T[], other: T[]) {
  */
 export function some<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
   let i = 0;
-  for (let k = 0; k < arr.length; k++) {
-    if (f(arr[k], k, i++)) {
+  for (const [k, a] of arr.entries()) {
+    if (f(a, k, i++)) {
       return true;
     }
   }
@@ -109,8 +109,8 @@ export function some<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
  */
 export function every<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
   let i = 0;
-  for (let k = 0; k < arr.length; k++) {
-    if (!f(arr[k], k, i++)) {
+  for (const [k, a] of arr.entries()) {
+    if (!f(a, k, i++)) {
       return false;
     }
   }

@@ -1,8 +1,9 @@
-/* tslint:disable:quotemark */
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {ImputeNode} from '../../../src/compile/data/impute';
+import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {MergeIdenticalNodes} from '../../../src/compile/data/optimizers';
 import {Transform} from '../../../src/transform';
+import {parseLayerModel} from '../../util';
 import {FilterNode} from './../../../src/compile/data/filter';
 
 describe('compile/data/optimizer', () => {
@@ -16,8 +17,7 @@ describe('compile/data/optimizer', () => {
       };
       const root = new DataFlowNode(null, 'root');
       const transform1 = new ImputeNode(root, transform);
-      // @ts-ignore
-      const transform2 = new ImputeNode(root, transform);
+      new ImputeNode(root, transform);
       const optimizer = new MergeIdenticalNodes();
       optimizer.run(root);
       expect(root.children).toHaveLength(1);
@@ -34,11 +34,11 @@ describe('compile/data/optimizer', () => {
       };
       const root = new DataFlowNode(null, 'root');
       const transform1 = new ImputeNode(root, transform);
-      // @ts-ignore
-      const transform2 = new ImputeNode(root, transform);
+
+      new ImputeNode(root, transform);
       const transform3 = new FilterNode(root, null, 'datum.x > 2');
-      // @ts-ignore
-      const transform4 = new FilterNode(root, null, 'datum.x > 2');
+
+      new FilterNode(root, null, 'datum.x > 2');
       const optimizer = new MergeIdenticalNodes();
       optimizer.run(root);
       expect(root.children).toHaveLength(2);
@@ -73,6 +73,35 @@ describe('compile/data/optimizer', () => {
       expect(a2.parent).toBe(a);
       expect(b1.parent).toBe(a);
       expect(b2.parent).toBe(a);
+    });
+  });
+
+  describe('MergeBins', () => {
+    it('should rename signals when merging BinNodes', () => {
+      const transform = {
+        bin: {extent: [0, 100], anchor: 6},
+        field: 'Acceleration',
+        as: ['binned_acceleration_start', 'binned_acceleration_stop']
+      };
+      const model = parseLayerModel({
+        layer: [
+          {
+            transform: [transform],
+            mark: 'rect',
+            encoding: {}
+          },
+          {
+            transform: [transform],
+            mark: 'rect',
+            encoding: {}
+          }
+        ]
+      });
+      model.parse();
+      optimizeDataflow(model.component.data, model);
+      expect(model.getSignalName('layer_0_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins')).toEqual(
+        'layer_1_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
+      );
     });
   });
 });

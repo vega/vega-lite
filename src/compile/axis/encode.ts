@@ -1,4 +1,3 @@
-import {AxisOrient} from 'vega';
 import {PositionScaleChannel} from '../../channel';
 import {isTimeFormatFieldDef} from '../../channeldef';
 import {ScaleType} from '../../scale';
@@ -6,7 +5,7 @@ import {keys} from '../../util';
 import {timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
 
-export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any, orient: AxisOrient) {
+export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
   const fieldDef =
     model.fieldDef(channel) ||
     (channel === 'x' ? model.fieldDef('x2') : channel === 'y' ? model.fieldDef('y2') : undefined);

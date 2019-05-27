@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import {AggregateOp} from 'vega';
 import {isFieldDef} from '../../src/channeldef';
 import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar';
@@ -935,14 +934,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
 });
 
 describe('normalizeErrorBar with aggregated error input', () => {
-  const data = {
-    values: [
-      {age: 1, people: 1, people_err: 2, people_err2: -3},
-      {age: 2, people: 4, people_err: 8, people_err2: -3},
-      {age: 3, people: 13, people_err: 18, people_err2: -3},
-      {age: 4, people: 2, people_err: 28, people_err2: -3}
-    ]
-  };
+  const data = {url: 'data.csv'};
 
   const mark = 'errorbar';
 

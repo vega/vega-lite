@@ -1,5 +1,4 @@
 import {parseLayerModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
-/* tslint:disable:quotemark */
 
 describe('src/compile/projection/parse', () => {
   describe('parseUnitProjection', () => {
@@ -328,17 +327,6 @@ describe('src/compile/projection/parse', () => {
       const emptyLast = parseLayerModel({
         layer: [
           {
-            mark: 'geoshape',
-            data: {
-              url: 'data/us-10m.json',
-              format: {
-                type: 'topojson',
-                feature: 'states'
-              }
-            },
-            encoding: {}
-          },
-          {
             data: {
               url: 'data/airports.csv'
             },
@@ -356,6 +344,17 @@ describe('src/compile/projection/parse', () => {
                 type: 'quantitative'
               }
             }
+          },
+          {
+            mark: 'geoshape',
+            data: {
+              url: 'data/us-10m.json',
+              format: {
+                type: 'topojson',
+                feature: 'states'
+              }
+            },
+            encoding: {}
           }
         ]
       });

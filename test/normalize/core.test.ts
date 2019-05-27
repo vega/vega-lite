@@ -1,4 +1,3 @@
-/* tslint:disable:quotemark */
 import {COLUMN, FACET_CHANNELS, ROW} from '../../src/channel';
 import {defaultConfig, initConfig} from '../../src/config';
 import * as log from '../../src/log';

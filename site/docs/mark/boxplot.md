@@ -91,7 +91,7 @@ To customize different parts of the box, we can customize different parts of the
 
 For example, we can customize the box plot's `"median"` tick by setting `"color"` to `"red"` and set `"ticks"` to true to make the box plot includes end ticks:
 
-<div class="vl-example" data-name="boxplot_1d_horizontal_custom_mark"></div>
+<div class="vl-example" data-name="boxplot_1D_horizontal_custom_mark"></div>
 
 ## Color, Size, and Opacity Encoding Channels
 
@@ -102,6 +102,16 @@ An example of a `boxplot` where the `size` encoding channel is specified.
 <div class="vl-example" data-name="boxplot_2D_vertical"></div>
 
 <div class="vl-example" data-name="boxplot_2D_horizontal_color_size"></div>
+
+## Tooltip Encoding Channels
+
+You can add custom tooltips to box plots. If the field in the tooltip encoding is unaggregated, it would be added to the outlier marks.
+
+<div class="vl-example" data-name="boxplot_tooltip_not_aggregate"></div>
+
+On the other hand, if the field in the tooltip encoding is aggregated, it would be added to the box and whisker marks.
+
+<div class="vl-example" data-name="boxplot_tooltip_aggregate"></div>
 
 {:#config}
 

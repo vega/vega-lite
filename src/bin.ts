@@ -85,6 +85,8 @@ export interface BinParams extends BaseBin {
   binned?: boolean;
 }
 
+export type Bin = boolean | BinParams | 'binned' | null;
+
 /**
  * Create a key for the bin configuration. Not for prebinned bin.
  */
@@ -131,7 +133,7 @@ export function autoMaxBins(channel: Channel): number {
     case FILLOPACITY:
     case STROKEOPACITY:
     // Facets and Size shouldn't have too many bins
-    // We choose 6 like shape to simplify the rule
+    // We choose 6 like shape to simplify the rule [falls through]
     case SHAPE:
       return 6; // Vega's "shape" has 6 distinct values
     default:

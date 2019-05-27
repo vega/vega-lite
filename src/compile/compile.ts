@@ -1,4 +1,4 @@
-import {Spec as VgSpec} from 'vega';
+import {Spec as VgSpec, LoggerInterface} from 'vega';
 import * as vlFieldDef from '../channeldef';
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
 import * as log from '../log';
@@ -20,7 +20,7 @@ import {Model} from './model';
 
 export interface CompileOptions {
   config?: Config;
-  logger?: log.LoggerInterface;
+  logger?: LoggerInterface;
 
   fieldTitle?: vlFieldDef.FieldTitleFormatter;
 }
@@ -139,8 +139,6 @@ function assembleTopLevelModel(
   datasets: Datasets = {},
   usermeta: object
 ) {
-  // TODO: change type to become VgSpec
-
   // Config with Vega-Lite only config removed.
   const vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
 

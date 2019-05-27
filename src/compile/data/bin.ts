@@ -1,10 +1,10 @@
 import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning} from '../../bin';
 import {Channel} from '../../channel';
-import {binRequiresRange, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
+import {FieldName, binRequiresRange, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
-import {Dict, duplicate, flatten, hash, keys, vals} from '../../util';
+import {Dict, duplicate, flatten, hash, keys, unique, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {binFormatExpression} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
@@ -58,7 +58,7 @@ function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolea
   const binComponent: BinComponent = {
     bin: normalizedBin,
     field: t.field,
-    as: as,
+    as: [as],
     ...(signal ? {signal} : {}),
     ...(extentSignal ? {extentSignal} : {})
   };
@@ -68,10 +68,12 @@ function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolea
 
 export interface BinComponent {
   bin: BinParams;
-  field: string;
+  field: FieldName;
   extentSignal?: string;
   signal?: string;
-  as: string[];
+
+  /** Pairs of strings of the names of start and end signals */
+  as: [string, string][];
 
   // Range Formula
 
@@ -123,10 +125,12 @@ export class BinNode extends DataFlowNode {
    * Merge bin nodes. This method either integrates the bin config from the other node
    * or if this node already has a bin config, renames the corresponding signal in the model.
    */
-  public merge(other: BinNode, model: Model) {
+  public merge(other: BinNode, renameSignal: (s1: string, s2: string) => void) {
     for (const key of keys(other.bins)) {
       if (key in this.bins) {
-        model.renameSignal(other.bins[key].signal, this.bins[key].signal);
+        renameSignal(other.bins[key].signal, this.bins[key].signal);
+        // Ensure that we don't have duplicate names for signal pairs
+        this.bins[key].as = unique([...this.bins[key].as, ...other.bins[key].as], hash);
       } else {
         this.bins[key] = other.bins[key];
       }
@@ -140,7 +144,7 @@ export class BinNode extends DataFlowNode {
   }
 
   public producedFields() {
-    return new Set(flatten(vals(this.bins).map(c => c.as)));
+    return new Set(flatten(flatten(vals(this.bins).map(c => c.as))));
   }
 
   public dependentFields() {
@@ -156,10 +160,11 @@ export class BinNode extends DataFlowNode {
       vals(this.bins).map(bin => {
         const transform: VgTransform[] = [];
 
+        const [binAs, ...remainingAs] = bin.as;
         const binTrans: VgBinTransform = {
           type: 'bin',
           field: bin.field,
-          as: bin.as,
+          as: binAs,
           signal: bin.signal,
           ...bin.bin
         };
@@ -175,6 +180,16 @@ export class BinNode extends DataFlowNode {
 
         transform.push(binTrans);
 
+        for (const as of remainingAs) {
+          for (let i = 0; i < 2; i++) {
+            transform.push({
+              type: 'formula',
+              expr: vgField({field: binAs[i]}, {expr: 'datum'}),
+              as: as[i]
+            });
+          }
+        }
+
         if (bin.formula) {
           transform.push({
             type: 'formula',
@@ -182,7 +197,6 @@ export class BinNode extends DataFlowNode {
             as: bin.formulaAs
           });
         }
-
         return transform;
       })
     );

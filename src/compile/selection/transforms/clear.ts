@@ -19,7 +19,7 @@ const clear: TransformCompiler = {
 
   topLevelSignals: (model, selCmpt, signals) => {
     if (inputBindings.has(selCmpt)) {
-      selCmpt.project.forEach(proj => {
+      selCmpt.project.items.forEach(proj => {
         const idx = signals.findIndex(n => n.name === varName(`${selCmpt.name}_${proj.field}`));
         if (idx !== -1) {
           signals[idx].on.push({events: selCmpt.clear, update: 'null'});
@@ -39,7 +39,7 @@ const clear: TransformCompiler = {
 
     // Be as minimalist as possible when adding clear triggers to minimize dataflow execution.
     if (selCmpt.type === 'interval') {
-      selCmpt.project.forEach(proj => {
+      selCmpt.project.items.forEach(proj => {
         const vIdx = signals.findIndex(n => n.name === proj.signals.visual);
         addClear(vIdx, '[0, 0]');
 

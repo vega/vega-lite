@@ -1,0 +1,13 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "data": {"url": "data/population.json"},
+  "mark": "boxplot",
+  "encoding": {
+    "x": {"field": "age", "type": "ordinal"},
+    "y": {"field": "people", "type": "quantitative"},
+    "tooltip": {
+      "field": "year",
+      "type": "quantitative"
+    }
+  }
+}

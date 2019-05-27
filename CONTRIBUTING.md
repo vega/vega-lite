@@ -16,7 +16,7 @@ See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUE
 
 ### Looking for a Task to Contribute
 
-You can find [tasks with the ":pray: Help wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/%3Apray%3A%20Help%20wanted). Please add a comment in an issues if you are planning to work on a major task.
+You can find [tasks with the "Help wanted" label in the issue tracker :pray:](https://github.com/vega/vega-lite/labels/Help%20wanted%20%3Apray%3A). Please add a comment in an issues if you are planning to work on a major task.
 
 ### Help Create New Examples
 
@@ -176,14 +176,14 @@ We use the [Visual Studio Code](https://code.visualstudio.com/) editor.
 
 - VSCode has nice built-in Typescript support!
 - We already include project settings to hide compiled files (`*.js`, `*.js.map`). This should work automatically if you open the `vega-lite` folder with VSCode.
-- Make sure to install [TSLint](https://marketplace.visualstudio.com/items?itemName=eg2.tslint), [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions.
+- Make sure to install [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint), [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions.
 - The [vscode-jest-runner](https://marketplace.visualstudio.com/items?itemName=firsttris.vscode-jest-runner) extension is also very helpful for debugging tests.
 
 ## Manually Testing with Vega-Editor
 
 To manually test your changes locally, you should have a local instance of [Vega Editor](https://github.com/vega/editor) and link Vega-Lite to the editor (See [Vega Editor's README](https://github.com/vega/editor#local-testing--debugging) for instructions).
 
-To update the Vega-Lite code in the editor, you need to compile TypeScript to JavaScript. The easiest way is to run `yarn tsc -b src -w` in the Vega-Lite directory. This command will automatically recompile the code whenever you make changes.
+To update the Vega-Lite code in the editor, you need to compile TypeScript to JavaScript. The easiest way is to run `yarn tsc:src -w` in the Vega-Lite directory. This command will automatically recompile the code whenever you make changes.
 
 ## Pull Requests and Travis
 

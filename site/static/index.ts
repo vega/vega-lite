@@ -48,7 +48,7 @@ selectAll('h2, h3, h4, h5, h6').each(function(this: d3.BaseType) {
   const sel = select(this);
   const name = sel.attr('id');
   const title = sel.text();
-  sel.html('<a href="#' + name + '" class="anchor"><span class="octicon octicon-link"></span></a>' + trim(title));
+  sel.html(`<a href="#${name}" class="anchor"><span class="octicon octicon-link"></span></a>${trim(title)}`);
 });
 
 /* Documentation */
@@ -59,7 +59,7 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
   const vis = $target.append('div').attr('class', 'example-vis');
 
   // Decrease visual noise by removing $schema and description from code examples.
-  const textClean = specText.replace(/(\s)+\"(\$schema|description)\": \".*?\",/g, '');
+  const textClean = specText.replace(/(\s)+"(\$schema|description)": ".*?",/g, '');
   const code = $target
     .append('pre')
     .attr('class', 'example-code')
@@ -92,7 +92,6 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
       .append('a')
       .text('Open in Vega Editor')
       .attr('href', '#')
-      // tslint:disable-next-line
       .on('click', function() {
         post(window, editorURL, {
           mode: 'vega-lite',
@@ -196,8 +195,8 @@ function setSlide(
 ) {
   return () => {
     // Reset all slides
-    for (let i = 0; i < indicators.length; i++) {
-      indicators[i].setAttribute('data-state', '');
+    for (const [i, indicator] of indicators.entries()) {
+      indicator.setAttribute('data-state', '');
       slides[i].setAttribute('data-state', '');
       carouselHide(slides, indicators, links, i);
     }
@@ -222,17 +221,12 @@ if (carousel) {
   const indicators = carousel.querySelectorAll('.indicator');
   const links = carousel.querySelectorAll('.slide-nav');
 
-  // tslint:disable-next-line:prefer-for-of
-  for (let i = 0; i < indicators.length; i++) {
-    indicators[i].addEventListener(
-      'click',
-      setSlide(slides, indicators, links, +indicators[i].getAttribute('data-slide'))
-    );
+  for (const indicator of indicators) {
+    indicator.addEventListener('click', setSlide(slides, indicators, links, +indicator.getAttribute('data-slide')));
   }
 
-  // tslint:disable-next-line:prefer-for-of
-  for (let i = 0; i < links.length; i++) {
-    links[i].addEventListener('click', setSlide(slides, indicators, links, +links[i].getAttribute('data-slide')));
+  for (const link of links) {
+    link.addEventListener('click', setSlide(slides, indicators, links, +link.getAttribute('data-slide')));
   }
 
   carousel.querySelector('.next-slide').addEventListener('click', () => {

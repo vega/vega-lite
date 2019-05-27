@@ -1,9 +1,11 @@
 // Place your settings in this file to overwrite default and user settings.
 {
   "editor.tabSize": 2,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.tslint": true
-  },
+  "editor.trimAutoWhitespace": true,
+  "files.insertFinalNewline": true,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
   "files.exclude": {
     "coverage/**/*": true,
     "_site/**/*": true
@@ -12,10 +14,9 @@
     "build": true
   },
   "files.trimTrailingWhitespace": true,
-  "tsimporter.filesToExclude": ["build/**"],
-  "tsimporter.spaceBetweenBraces": false,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
-  "editor.formatOnSave": true,
-  "typescript.referencesCodeLens.enabled": true
+  "typescript.referencesCodeLens.enabled": true,
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.autoFixOnSave": true
 }

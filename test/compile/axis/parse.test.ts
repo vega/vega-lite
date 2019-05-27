@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {Y} from '../../../src/channel';
 import {parseLayerAxes, parseUnitAxes} from '../../../src/compile/axis/parse';
 import {parseLayerModel, parseUnitModelWithScale} from '../../util';

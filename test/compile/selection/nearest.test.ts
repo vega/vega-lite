@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {tooltip} from '../../../src/compile/mark/mixins';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import nearest from '../../../src/compile/selection/transforms/nearest';

@@ -109,6 +109,7 @@
         - [Dimension & Orientation]({{site.baseurl}}/docs/boxplot.html#dimension--orientation)
         - [The Parts of Box Plots]({{site.baseurl}}/docs/boxplot.html#parts)
         - [Color, Size, and Opacity Encoding Channels]({{site.baseurl}}/docs/boxplot.html#color-size-and-opacity-encoding-channels)
+        - [Tooltip Encoding Channels]({{site.baseurl}}/docs/boxplot.html#tooltip-encoding-channels)
         - [Mark Config]({{site.baseurl}}/docs/boxplot.html#config)
     - [Circle]({{site.baseurl}}/docs/circle.html)
         - [Circle Mark Properties]({{site.baseurl}}/docs/circle.html#properties)

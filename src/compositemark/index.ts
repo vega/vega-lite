@@ -1,5 +1,5 @@
-import {Encoding} from '../encoding';
 import {Field} from '../channeldef';
+import {Encoding} from '../encoding';
 import {NormalizerParams} from '../normalize/index';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {EncodingFacetMapping} from '../spec/facet';

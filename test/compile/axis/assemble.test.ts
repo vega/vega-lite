@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {assembleAxis} from '../../../src/compile/axis/assemble';
 import {AxisComponent} from '../../../src/compile/axis/component';
 import {defaultConfig} from '../../../src/config';

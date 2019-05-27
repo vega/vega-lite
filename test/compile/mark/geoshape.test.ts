@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {geoshape} from '../../../src/compile/mark/geoshape';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 

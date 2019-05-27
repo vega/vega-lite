@@ -1,4 +1,4 @@
-import {ScaleChannel, SCALE_CHANNELS, SHAPE} from '../../channel';
+import {SCALE_CHANNELS, ScaleChannel, SHAPE} from '../../channel';
 import {hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../../channeldef';
 import {GEOSHAPE} from '../../mark';
 import {
@@ -42,7 +42,7 @@ export function parseScaleCore(model: Model) {
  * Parse scales for all channels of a model.
  */
 function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
-  const {encoding, config, mark} = model;
+  const {encoding, mark} = model;
 
   return SCALE_CHANNELS.reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
     let fieldDef: TypedFieldDef<string>;
@@ -66,7 +66,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
     if (fieldDef && specifiedScale !== null && specifiedScale !== false) {
       specifiedScale = specifiedScale || {};
 
-      const sType = scaleType(specifiedScale, channel, fieldDef, mark, config.scale);
+      const sType = scaleType(specifiedScale, channel, fieldDef, mark);
       scaleComponents[channel] = new ScaleComponent(model.scaleName(channel + '', true), {
         value: sType,
         explicit: specifiedScale.type === sType

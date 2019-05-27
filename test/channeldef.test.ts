@@ -197,10 +197,10 @@ describe('fieldDef', () => {
 
   describe('functionalTitleFormatter', () => {
     it('should return correct title for argmin', () => {
-      expect(functionalTitleFormatter({field: 'f', aggregate: {argmin: 'a'}}, {})).toBe('f for argmin(a)');
+      expect(functionalTitleFormatter({field: 'f', aggregate: {argmin: 'a'}})).toBe('f for argmin(a)');
     });
     it('should return correct title for aggregate', () => {
-      expect(functionalTitleFormatter({field: 'f', aggregate: {argmax: 'a'}}, {})).toBe('f for argmax(a)');
+      expect(functionalTitleFormatter({field: 'f', aggregate: {argmax: 'a'}})).toBe('f for argmax(a)');
     });
   });
 

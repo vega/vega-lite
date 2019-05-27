@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {COLOR, X, Y} from '../../../src/channel';
 import {rule} from '../../../src/compile/mark/rule';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';

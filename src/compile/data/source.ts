@@ -65,7 +65,7 @@ export class SourceNode extends DataFlowNode {
     return !!this._name;
   }
 
-  get generator() {
+  get isGenerator() {
     return this._generator;
   }
   get dataName() {

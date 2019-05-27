@@ -99,14 +99,16 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
           return 'vertical';
         }
       }
-    /* tslint:disable */
-    case RULE: // intentionally fall through
+
+    // falls through
+    case RULE:
       // return undefined for line segment rule and bar with both axis ranged
       if (x2 && y2) {
         return undefined;
       }
 
-    case AREA: // intentionally fall through
+    // falls through
+    case AREA:
       // If there are range for both x and y, y (vertical) has higher precedence.
       if (y2) {
         if (isFieldDef(y) && isBinned(y.bin)) {
@@ -128,9 +130,10 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
         }
       }
 
-    case LINE: // intentional fall through
-    case TICK: // Tick is opposite to bar, line, area and never have ranged mark.
-      /* tslint:enable */
+    // falls through
+    case LINE:
+    case TICK: {
+      // Tick is opposite to bar, line, area and never have ranged mark.
       const xIsContinuous = isFieldDef(encoding.x) && isContinuous(encoding.x);
       const yIsContinuous = isFieldDef(encoding.y) && isContinuous(encoding.y);
       if (xIsContinuous && !yIsContinuous) {
@@ -172,6 +175,7 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
 
         return undefined;
       }
+    }
   }
   return 'vertical';
 }

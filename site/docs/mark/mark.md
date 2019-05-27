@@ -63,7 +63,7 @@ Note: If [mark property encoding channels](encoding.html#mark-prop) are specifie
 
 ### General Mark Properties
 
-{% include table.html props="type,style,clip,order" source="MarkDef" %}
+{% include table.html props="type,style,tooltip,clip,order" source="MarkDef" %}
 
 {:#offset}
 

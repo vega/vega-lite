@@ -8,8 +8,8 @@ import {
   FILLOPACITY,
   OPACITY,
   POSITION_SCALE_CHANNELS,
-  ScaleChannel,
   SCALE_CHANNELS,
+  ScaleChannel,
   SHAPE,
   SIZE,
   STROKE,
@@ -172,7 +172,7 @@ export function parseRangeForChannel(
             return makeExplicit(specifiedScale[property]);
           case 'scheme':
             return makeExplicit(parseScheme(specifiedScale[property]));
-          case 'rangeStep':
+          case 'rangeStep': {
             const rangeStep = specifiedScale[property];
             if (rangeStep !== null) {
               if (!sizeSpecified) {
@@ -182,6 +182,7 @@ export function parseRangeForChannel(
                 log.warn(log.message.rangeStepDropped(channel));
               }
             }
+          }
         }
       }
     }
@@ -254,7 +255,7 @@ function defaultRange(
       } else {
         return [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
       }
-    case SIZE:
+    case SIZE: {
       // TODO: support custom rangeMin, rangeMax
       const rangeMin = sizeRangeMin(mark, zero, config);
       const rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
@@ -267,6 +268,7 @@ function defaultRange(
       } else {
         return [rangeMin, rangeMax];
       }
+    }
     case STROKEWIDTH:
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minStrokeWidth, config.scale.maxStrokeWidth];
@@ -364,7 +366,7 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: (number | SignalRef)[], config: 
   const scaleConfig = config.scale;
   switch (mark) {
     case 'bar':
-    case 'tick':
+    case 'tick': {
       if (config.scale.maxBandSize !== undefined) {
         return config.scale.maxBandSize;
       }
@@ -375,7 +377,7 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: (number | SignalRef)[], config: 
       } else {
         return new SignalRefWrapper(() => `${min.signal} - 1`);
       }
-
+    }
     case 'line':
     case 'trail':
     case 'rule':
@@ -384,7 +386,7 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: (number | SignalRef)[], config: 
       return config.scale.maxFontSize;
     case 'point':
     case 'square':
-    case 'circle':
+    case 'circle': {
       if (config.scale.maxSize) {
         return config.scale.maxSize;
       }
@@ -395,6 +397,7 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: (number | SignalRef)[], config: 
       } else {
         return new SignalRefWrapper(() => `pow(${MAX_SIZE_RANGE_STEP_RATIO} * ${pointStep.signal}, 2)`);
       }
+    }
   }
   /* istanbul ignore next: should never reach here */
   // sizeRangeMax not implemented for the mark

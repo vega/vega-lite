@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import * as properties from '../../../src/compile/axis/properties';
 import {defaultLabelAlign, defaultLabelBaseline, labelAngle} from '../../../src/compile/axis/properties';
 import {TimeUnit} from '../../../src/timeunit';
@@ -81,12 +79,7 @@ describe('compile/axis', () => {
 
   describe('values', () => {
     it('should return correct timestamp values for DateTimes', () => {
-      const values = properties.values(
-        {values: [{year: 1970}, {year: 1980}]},
-        null,
-        {field: 'a', type: 'temporal'},
-        'x'
-      );
+      const values = properties.values({values: [{year: 1970}, {year: 1980}]}, null, {field: 'a', type: 'temporal'});
 
       expect(values).toEqual([
         {signal: 'datetime(1970, 0, 1, 0, 0, 0, 0)'},
@@ -95,7 +88,7 @@ describe('compile/axis', () => {
     });
 
     it('should simply return values for non-DateTime', () => {
-      const values = properties.values({values: [1, 2, 3, 4]}, null, {field: 'a', type: 'quantitative'}, 'x');
+      const values = properties.values({values: [1, 2, 3, 4]}, null, {field: 'a', type: 'quantitative'});
       expect(values).toEqual([1, 2, 3, 4]);
     });
 
@@ -112,7 +105,7 @@ describe('compile/axis', () => {
         },
         data: {url: 'data/movies.json'}
       });
-      const values = properties.values({}, model1, model1.fieldDef('y'), 'y');
+      const values = properties.values({}, model1, model1.fieldDef('y'));
 
       expect(values).toBeUndefined();
     });

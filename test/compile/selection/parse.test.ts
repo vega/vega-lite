@@ -1,8 +1,5 @@
-/* tslint:disable quotemark */
-
 import {selector as parseSelector} from 'vega-event-selector';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import {SelectionProjectionComponent} from '../../../src/compile/selection/transforms/project';
 import {keys} from '../../../src/util';
 import {parseUnitModel} from '../../util';
 
@@ -29,7 +26,7 @@ describe('Selection', () => {
 
     expect(component.one.name).toBe('one');
     expect(component.one.type).toBe('single');
-    expect<SelectionProjectionComponent>(component['one'].project).toEqual(
+    expect(component['one'].project.items).toEqual(
       expect.arrayContaining([{field: '_vgsid_', type: 'E', signals: {data: 'one__vgsid_'}}])
     );
     expect(component['one'].events).toEqual(parseSelector('click', 'scope'));
@@ -37,7 +34,7 @@ describe('Selection', () => {
     expect(component.two.name).toBe('two');
     expect(component.two.type).toBe('multi');
     expect(component.two.toggle).toBe('event.shiftKey');
-    expect<SelectionProjectionComponent>(component['two'].project).toEqual(
+    expect(component['two'].project.items).toEqual(
       expect.arrayContaining([{field: '_vgsid_', type: 'E', signals: {data: 'two__vgsid_'}}])
     );
     expect(component['two'].events).toEqual(parseSelector('click', 'scope'));
@@ -46,7 +43,7 @@ describe('Selection', () => {
     expect(component.three.type).toBe('interval');
     expect(component.three.translate).toBe('[mousedown, window:mouseup] > window:mousemove!');
     expect(component.three.zoom).toBe('wheel!');
-    expect<SelectionProjectionComponent>(component['three'].project).toEqual(
+    expect(component['three'].project.items).toEqual(
       expect.arrayContaining([
         {field: 'Horsepower', channel: 'x', type: 'R', signals: {data: 'three_Horsepower', visual: 'three_x'}},
         {
@@ -88,7 +85,7 @@ describe('Selection', () => {
 
     expect(component.one.name).toBe('one');
     expect(component.one.type).toBe('single');
-    expect<SelectionProjectionComponent>(component['one'].project).toEqual(
+    expect(component['one'].project.items).toEqual(
       expect.arrayContaining([{field: 'Cylinders', type: 'E', signals: {data: 'one_Cylinders'}}])
     );
     expect(component['one'].events).toEqual(parseSelector('dblclick', 'scope'));
@@ -96,7 +93,7 @@ describe('Selection', () => {
     expect(component.two.name).toBe('two');
     expect(component.two.type).toBe('multi');
     expect(component.two.toggle).toBe('event.ctrlKey');
-    expect<SelectionProjectionComponent>(component['two'].project).toEqual(
+    expect(component['two'].project.items).toEqual(
       expect.arrayContaining([
         {field: 'Origin', channel: 'color', type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}}
       ])
@@ -107,7 +104,7 @@ describe('Selection', () => {
     expect(component.three.type).toBe('interval');
     expect(component.three.translate).toEqual(false);
     expect(component.three.zoom).toBe('wheel[event.altKey]');
-    expect<SelectionProjectionComponent>(component['three'].project).toEqual(
+    expect(component['three'].project.items).toEqual(
       expect.arrayContaining([
         {
           field: 'Miles_per_Gallon',
@@ -143,7 +140,7 @@ describe('Selection', () => {
 
     expect(component.one.name).toBe('one');
     expect(component.one.type).toBe('single');
-    expect<SelectionProjectionComponent>(component['one'].project).toEqual(
+    expect(component['one'].project.items).toEqual(
       expect.arrayContaining([{field: 'Cylinders', type: 'E', signals: {data: 'one_Cylinders'}}])
     );
     expect(component['one'].events).toEqual(parseSelector('dblclick', 'scope'));
@@ -151,7 +148,7 @@ describe('Selection', () => {
     expect(component.two.name).toBe('two');
     expect(component.two.type).toBe('multi');
     expect(component.two.toggle).toBe('event.ctrlKey');
-    expect<SelectionProjectionComponent>(component['two'].project).toEqual(
+    expect(component['two'].project.items).toEqual(
       expect.arrayContaining([
         {field: 'Origin', channel: 'color', type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}}
       ])
@@ -162,7 +159,7 @@ describe('Selection', () => {
     expect(component.three.type).toBe('interval');
     expect(!component.three.translate).toBeTruthy();
     expect(component.three.zoom).toBe('wheel[event.altKey]');
-    expect<SelectionProjectionComponent>(component['three'].project).toEqual(
+    expect(component['three'].project.items).toEqual(
       expect.arrayContaining([
         {
           field: 'Miles_per_Gallon',
@@ -193,7 +190,7 @@ describe('Selection', () => {
         one: {type: 'interval', encodings: ['x']}
       });
 
-      expect<SelectionProjectionComponent>(c['one'].project).toEqual(
+      expect(c['one'].project.items).toEqual(
         expect.arrayContaining([
           {field: 'Origin', channel: 'x', type: 'E', signals: {data: 'one_Origin', visual: 'one_x'}}
         ])
@@ -213,7 +210,7 @@ describe('Selection', () => {
         one: {type: 'interval', encodings: ['x']}
       });
 
-      expect<SelectionProjectionComponent>(c['one'].project).toEqual(
+      expect(c['one'].project.items).toEqual(
         expect.arrayContaining([
           {field: 'Origin', channel: 'x', type: 'E', signals: {data: 'one_Origin', visual: 'one_x'}}
         ])
@@ -235,7 +232,7 @@ describe('Selection', () => {
         one: {type: 'single', encodings: ['x']}
       });
 
-      expect<SelectionProjectionComponent>(c['one'].project).toEqual(
+      expect(c['one'].project.items).toEqual(
         expect.arrayContaining([
           {field: 'Acceleration', channel: 'x', type: 'R-RE', signals: {data: 'one_Acceleration', visual: 'one_x'}}
         ])
@@ -255,7 +252,7 @@ describe('Selection', () => {
         one: {type: 'multi', encodings: ['x']}
       });
 
-      expect<SelectionProjectionComponent>(c['one'].project).toEqual(
+      expect(c['one'].project.items).toEqual(
         expect.arrayContaining([
           {field: 'Acceleration', channel: 'x', type: 'R-RE', signals: {data: 'one_Acceleration', visual: 'one_x'}}
         ])
@@ -269,17 +266,17 @@ describe('Selection', () => {
         three: {type: 'interval', init: {x: [10, 100]}}
       });
 
-      expect<SelectionProjectionComponent>(component['one'].project).toEqual(
+      expect(component['one'].project.items).toEqual(
         expect.arrayContaining([{field: 'Origin', type: 'E', signals: {data: 'one_Origin'}}])
       );
 
-      expect<SelectionProjectionComponent>(component['two'].project).toEqual(
+      expect(component['two'].project.items).toEqual(
         expect.arrayContaining([
           {channel: 'color', field: 'Origin', type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}}
         ])
       );
 
-      expect<SelectionProjectionComponent>(component['three'].project).toEqual(
+      expect(component['three'].project.items).toEqual(
         expect.arrayContaining([
           {field: 'Horsepower', channel: 'x', type: 'R', signals: {data: 'three_Horsepower', visual: 'three_x'}}
         ])

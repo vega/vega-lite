@@ -3,7 +3,6 @@
 /_layouts
 /_site
 /.*
-/build/examples
 /build/site
 /coverage
 /data
@@ -23,6 +22,8 @@ jest-puppeteer.config.js
 npm-debug.log*
 rollup.config.js
 tsconfig.json
-tslint.json
+.eslintrc.js
+prettier*
 yarn-debug.log*
 yarn-error.log*
+*.tsbuildinfo

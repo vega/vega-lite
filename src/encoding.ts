@@ -6,8 +6,6 @@ import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRang
 import {
   binRequiresRange,
   ChannelDef,
-  ColorFieldDefWithCondition,
-  ColorValueDefWithCondition,
   Field,
   FieldDef,
   FieldDefWithoutScale,
@@ -29,6 +27,8 @@ import {
   SecondaryFieldDef,
   ShapeFieldDefWithCondition,
   ShapeValueDefWithCondition,
+  StringFieldDefWithCondition,
+  StringValueDefWithCondition,
   TextFieldDef,
   TextFieldDefWithCondition,
   TextValueDefWithCondition,
@@ -112,7 +112,7 @@ export interface Encoding<F extends Field> {
    * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.
    * 2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme).
    */
-  color?: ColorFieldDefWithCondition<F> | ColorValueDefWithCondition<F>;
+  color?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
 
   /**
    * Fill color of the marks.
@@ -120,7 +120,7 @@ export interface Encoding<F extends Field> {
    *
    * _Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`).
    */
-  fill?: ColorFieldDefWithCondition<F> | ColorValueDefWithCondition<F>;
+  fill?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
 
   /**
    * Stroke color of the marks.
@@ -129,7 +129,7 @@ export interface Encoding<F extends Field> {
    * _Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`).
    */
 
-  stroke?: ColorFieldDefWithCondition<F> | ColorValueDefWithCondition<F>;
+  stroke?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
 
   /**
    * Opacity of the marks.

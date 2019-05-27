@@ -129,7 +129,7 @@ We can also set `interpolate` to `"step-after"` to create a step-chart.
 
 <span class="vl-example" data-name="line_step"></span>
 
-For the list of all supported `interpolate` properties, please see the [mark definition](mark.html#mark-def) documentation.
+For the list of all supported `interpolate` properties, please see the [line mark properties](#properties) section.
 
 ### Geo Line
 

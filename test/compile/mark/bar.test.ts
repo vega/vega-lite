@@ -1,5 +1,3 @@
-/* tslint:disable quotemark */
-
 import {PositionFieldDef, SecondaryFieldDef} from '../../../src/channeldef';
 import {bar} from '../../../src/compile/mark/bar';
 import {fieldInvalidPredicate, fieldInvalidTestValueRef} from '../../../src/compile/mark/valueref';
@@ -167,7 +165,7 @@ describe('Mark: Bar', () => {
 
   it('should draw horizontal bar, with y from zero to field value and bar with quantitative x, x2, and y', () => {
     const y: PositionFieldDef<string> = {field: 'bin_start', type: 'quantitative'};
-    const y2: PositionFieldDef<string> = {field: 'bin_end', type: 'quantitative'};
+    const y2: SecondaryFieldDef<string> = {field: 'bin_end'};
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
       mark: 'bar',

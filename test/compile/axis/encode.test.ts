@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import * as encode from '../../../src/compile/axis/encode';
 import {parseUnitModelWithScale} from '../../util';
 
@@ -12,7 +10,7 @@ describe('compile/axis/encode', () => {
           x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         }
       });
-      const labels = encode.labels(model, 'x', {}, 'bottom');
+      const labels = encode.labels(model, 'x', {});
       expect(labels.angle).toBeUndefined();
     });
 
@@ -24,7 +22,7 @@ describe('compile/axis/encode', () => {
         },
         config: {axisX: {labelAngle: 90}}
       });
-      const labels = encode.labels(model, 'x', {}, 'bottom');
+      const labels = encode.labels(model, 'x', {});
       expect(labels.angle).toBeUndefined();
     });
 
@@ -35,7 +33,7 @@ describe('compile/axis/encode', () => {
           x: {field: 'a', type: 'temporal', timeUnit: 'quarter'}
         }
       });
-      const labels = encode.labels(model, 'x', {}, 'bottom');
+      const labels = encode.labels(model, 'x', {});
       const expected = "'Q' + quarter(datum.value)";
       expect(labels.text.signal).toEqual(expected);
     });
@@ -47,7 +45,7 @@ describe('compile/axis/encode', () => {
           x: {field: 'a', type: 'temporal', timeUnit: 'yearquartermonth'}
         }
       });
-      const labels = encode.labels(model, 'x', {}, 'bottom');
+      const labels = encode.labels(model, 'x', {});
       const expected = "'Q' + quarter(datum.value) + ' ' + timeFormat(datum.value, '%b %Y')";
       expect(labels.text.signal).toEqual(expected);
     });

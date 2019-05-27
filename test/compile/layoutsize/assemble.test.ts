@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {X} from '../../../src/channel';
 import {sizeSignals} from '../../../src/compile/layoutsize/assemble';
 import * as log from '../../../src/log';

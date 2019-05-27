@@ -158,8 +158,7 @@ export function labels(
   fieldDef: TypedFieldDef<string>,
   labelsSpec: any,
   model: UnitModel,
-  channel: NonPositionScaleChannel,
-  legendCmp: LegendComponent
+  channel: NonPositionScaleChannel
 ) {
   const legend = model.legend(channel);
   const config = model.config;

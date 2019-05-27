@@ -1,5 +1,4 @@
-/* tslint:disable:quotemark */
-
+import {NewSignal, PushSignal} from 'vega';
 import {X} from '../../../src/channel';
 import {assembleScalesForModel} from '../../../src/compile/scale/assemble';
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
@@ -191,8 +190,8 @@ describe('Selection + Scales', () => {
 
     it('should be marked as push: outer', () => {
       const signals = assembleUnitSelectionSignals(model.children[0] as UnitModel, []);
-      const hp = signals.filter(s => s.name === 'grid_Horsepower');
-      const mpg = signals.filter(s => s.name === 'grid_Miles_per_Gallon');
+      const hp = signals.filter(s => s.name === 'grid_Horsepower') as PushSignal[];
+      const mpg = signals.filter(s => s.name === 'grid_Miles_per_Gallon') as PushSignal[];
 
       expect(hp.length).toBe(1);
       expect(hp[0].push).toBe('outer');
@@ -209,7 +208,7 @@ describe('Selection + Scales', () => {
       const signals = assembleTopLevelSignals(model.children[0] as UnitModel, []);
       const hp = signals.filter(s => s.name === 'grid_Horsepower');
       const mpg = signals.filter(s => s.name === 'grid_Miles_per_Gallon');
-      let named = signals.filter(s => s.name === 'grid');
+      let named = signals.filter(s => s.name === 'grid') as NewSignal[];
 
       expect(hp.length).toBe(1);
       expect(mpg.length).toBe(1);

@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {WindowTransformNode} from '../../../src/compile/data/window';
 import {Transform} from '../../../src/transform';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';

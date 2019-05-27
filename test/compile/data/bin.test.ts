@@ -1,5 +1,3 @@
-/* tslint:disable:quotemark */
-
 import {BinNode} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';
@@ -205,7 +203,7 @@ describe('compile/data/bin', () => {
     const model = makeMovieExample(t);
 
     const binNode = BinNode.makeFromTransform(null, t, model);
-    expect(binNode.hash()).toBe('Bin 1594083826');
+    expect(binNode.hash()).toBe('Bin 1499261512');
   });
 
   it('should generate the correct dependent fields', () => {
@@ -229,7 +227,7 @@ describe('compile/data/bin', () => {
     const model = makeMovieExample(t);
 
     const binNode = BinNode.makeFromTransform(null, t, model);
-    expect(binNode.hash()).toBe('Bin 1594083826');
+    expect(binNode.hash()).toBe('Bin 1499261512');
     expect(binNode.producedFields()).toEqual(new Set(['binned_acceleration_start', 'binned_acceleration_stop']));
   });
 
@@ -237,5 +235,65 @@ describe('compile/data/bin', () => {
     const parent = new DataFlowNode(null);
     const bin = new BinNode(parent, {});
     expect(bin.clone().parent).toBeNull();
+  });
+
+  it('should preserve "as" when merging with other node', () => {
+    const parent = new DataFlowNode(null);
+    const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
+    const binNodeB = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['bar', 'bar_end']]}});
+
+    binNodeA.merge(binNodeB, () => {});
+    expect(binNodeA).toEqual(
+      new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}})
+    );
+  });
+
+  it('should not have duplicate members of "as" after merging with other node', () => {
+    const parent = new DataFlowNode(null);
+    const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
+    const binNodeB = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}});
+
+    binNodeA.merge(binNodeB, () => {});
+    expect(binNodeA).toEqual(
+      new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}})
+    );
+  });
+
+  it('should create formulas for members of "as" when assembled', () => {
+    const parent = new DataFlowNode(null);
+    const binNode = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}});
+    const transforms = binNode.assemble();
+
+    expect(transforms[1]).toEqual({type: 'formula', expr: 'datum["foo"]', as: 'bar'});
+    expect(transforms[2]).toEqual({type: 'formula', expr: 'datum["foo_end"]', as: 'bar_end'});
+  });
+
+  it('should resassign children of BinNode when merging', () => {
+    const parent = new DataFlowNode(null);
+    const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
+    const binNodeB = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['bar', 'bar_end']]}});
+    const childA = new DataFlowNode(binNodeA);
+    const childB = new DataFlowNode(binNodeB);
+
+    binNodeA.merge(binNodeB, () => {});
+
+    expect(binNodeB.children.length).toEqual(0);
+    expect(binNodeA.children.length).toEqual(2);
+    expect(binNodeA.children).toContain(childA);
+    expect(binNodeA.children).toContain(childB);
+  });
+
+  it('should keep non-conflicting bins of BinNodes when merging', () => {
+    const parent = new DataFlowNode(null);
+    const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
+    const binNodeB = new BinNode(parent, {bar: {bin: {}, field: 'bar', as: [['bar', 'bar_end']]}});
+
+    binNodeA.merge(binNodeB, () => {});
+    expect(binNodeA).toEqual(
+      new BinNode(parent, {
+        foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]},
+        bar: {bin: {}, field: 'bar', as: [['bar', 'bar_end']]}
+      })
+    );
   });
 });
