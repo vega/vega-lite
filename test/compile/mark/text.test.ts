@@ -11,11 +11,10 @@ describe('Mark: Text', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'text',
       encoding: {
-        x: {aggregate: 'sum', field: 'a', type: 'quantitative'},
+        x: {aggregate: 'sum', field: 'a', type: 'quantitative', stack: 'zero'},
         color: {field: 'b', type: 'ordinal'}
       },
-      data: {url: 'data/barley.json'},
-      config: {stack: 'zero'}
+      data: {url: 'data/barley.json'}
     });
 
     const props = text.encodeEntry(model);
@@ -31,11 +30,10 @@ describe('Mark: Text', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'text',
       encoding: {
-        y: {aggregate: 'sum', field: 'a', type: 'quantitative'},
+        y: {aggregate: 'sum', field: 'a', type: 'quantitative', stack: 'zero'},
         color: {field: 'b', type: 'ordinal'}
       },
-      data: {url: 'data/barley.json'},
-      config: {stack: 'zero'}
+      data: {url: 'data/barley.json'}
     });
 
     const props = text.encodeEntry(model);
