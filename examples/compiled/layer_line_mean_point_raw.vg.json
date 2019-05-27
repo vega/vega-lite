@@ -55,9 +55,6 @@
           "opacity": {"value": 0.3},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date (year)\": timeFormat(datum[\"year_date\"], '%Y'), \"price\": format(datum[\"price\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "year_date"},
           "y": {"scale": "y", "field": "price"}
         }
@@ -72,9 +69,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date (year)\": timeFormat(datum[\"year_date\"], '%Y'), \"Mean of price\": format(datum[\"mean_price\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "year_date"},
           "y": {"scale": "y", "field": "mean_price"},
           "defined": {

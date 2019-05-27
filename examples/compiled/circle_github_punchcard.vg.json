@@ -62,9 +62,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"time (day)\": timeFormat(datum[\"day_time\"], '%A'), \"time (hours)\": timeFormat(datum[\"hours_time\"], '%H'), \"Sum of count\": format(datum[\"sum_count\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "hours_time"},
           "y": {"scale": "y", "field": "day_time"},
           "size": {"scale": "size", "field": "sum_count"},

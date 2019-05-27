@@ -63,9 +63,6 @@
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
-                  "tooltip": {
-                    "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of temp_max\": format(datum[\"mean_temp_max\"], \"\"), \"location\": ''+datum[\"location\"]}"
-                  },
                   "x": {
                     "scale": "child__repeat_repeat_temp_max_x",
                     "field": "month_date"
@@ -170,9 +167,6 @@
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
-                  "tooltip": {
-                    "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\"), \"location\": ''+datum[\"location\"]}"
-                  },
                   "x": {
                     "scale": "child__repeat_repeat_precipitation_x",
                     "field": "month_date"
@@ -275,9 +269,6 @@
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
-                  "tooltip": {
-                    "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of wind\": format(datum[\"mean_wind\"], \"\"), \"location\": ''+datum[\"location\"]}"
-                  },
                   "x": {
                     "scale": "child__repeat_repeat_wind_x",
                     "field": "month_date"

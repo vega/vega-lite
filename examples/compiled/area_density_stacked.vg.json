@@ -73,9 +73,6 @@
             "update": {
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "organ"},
-              "tooltip": {
-                "signal": "{\"value\": format(datum[\"value\"], \"\"), \"density\": format(datum[\"density\"], \"\"), \"organ\": ''+datum[\"organ\"]}"
-              },
               "x": {"scale": "x", "field": "value"},
               "y": {"scale": "y", "field": "density_end"},
               "y2": {"scale": "y", "field": "density_start"},

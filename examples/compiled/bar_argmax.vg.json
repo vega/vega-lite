@@ -37,9 +37,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"Production_Budget for max US_Gross\": format(datum[\"argmax_US_Gross\"].Production_Budget, \"\"), \"Major_Genre\": ''+datum[\"Major_Genre\"]}"
-          },
           "x": {"scale": "x", "field": "argmax_US_Gross.Production_Budget"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "Major_Genre"},

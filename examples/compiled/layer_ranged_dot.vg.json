@@ -69,9 +69,6 @@
           "encode": {
             "update": {
               "stroke": {"value": "#db646f"},
-              "tooltip": {
-                "signal": "{\"Life Expectancy (years)\": format(datum[\"life_expect\"], \"\"), \"Country\": ''+datum[\"country\"], \"country\": ''+datum[\"country\"]}"
-              },
               "x": {"scale": "x", "field": "life_expect"},
               "y": {"scale": "y", "field": "country"},
               "defined": {
@@ -91,9 +88,6 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"scale": "color", "field": "year"},
-          "tooltip": {
-            "signal": "{\"Life Expectancy (years)\": format(datum[\"life_expect\"], \"\"), \"Country\": ''+datum[\"country\"], \"Year\": ''+datum[\"year\"]}"
-          },
           "x": {"scale": "x", "field": "life_expect"},
           "y": {"scale": "y", "field": "country"},
           "size": {"value": 100}

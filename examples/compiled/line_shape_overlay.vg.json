@@ -34,9 +34,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "defined": {
@@ -54,9 +51,6 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "shape": {"value": "square"}

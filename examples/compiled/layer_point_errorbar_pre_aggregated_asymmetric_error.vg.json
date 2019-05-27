@@ -108,9 +108,6 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"yield_center\": format(datum[\"yield_center\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
-          },
           "x": [
             {
               "test": "datum[\"yield_center\"] === null || isNaN(datum[\"yield_center\"])",

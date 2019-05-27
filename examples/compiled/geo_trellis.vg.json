@@ -99,14 +99,7 @@
           "type": "shape",
           "style": ["geoshape"],
           "from": {"data": "facet"},
-          "encode": {
-            "update": {
-              "fill": {"scale": "color", "field": "pct"},
-              "tooltip": {
-                "signal": "{\"geo\": ''+datum[\"geo\"], \"pct\": format(datum[\"pct\"], \"\")}"
-              }
-            }
-          },
+          "encode": {"update": {"fill": {"scale": "color", "field": "pct"}}},
           "transform": [
             {
               "type": "geoshape",

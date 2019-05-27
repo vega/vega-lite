@@ -36,9 +36,6 @@
           "opacity": {"value": 0.7},
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "y2": {"scale": "y", "value": 0},
@@ -57,9 +54,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "defined": {
@@ -77,9 +71,6 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
         }
