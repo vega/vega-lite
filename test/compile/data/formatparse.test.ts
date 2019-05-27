@@ -35,10 +35,12 @@ describe('compile/data/formatparse', () => {
 
       const ancestorParese = new AncestorParse();
       expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParese).parse).toEqual({
+        a: 'number',
         b: 'date'
       });
 
       expect(ParseNode.makeExplicit(null, model, ancestorParese).parse).toEqual({
+        a: 'number',
         c: 'number',
         d: 'date'
       });
@@ -161,7 +163,9 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse())).toBeNull();
+      expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse).toEqual({
+        foo: 'number'
+      });
     });
 
     it('should add flatten for nested fields', () => {
@@ -174,7 +178,7 @@ describe('compile/data/formatparse', () => {
       });
 
       expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse).toEqual({
-        'foo.bar': 'flatten',
+        'foo.bar': 'number',
         'foo.baz': 'flatten'
       });
     });
@@ -191,7 +195,6 @@ describe('compile/data/formatparse', () => {
           }
         },
         encoding: {
-          x: {field: 'a', type: 'quantitative'},
           y: {field: 'b', type: 'quantitative'}
         }
       });

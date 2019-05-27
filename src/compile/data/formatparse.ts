@@ -15,7 +15,7 @@ import {forEachLeaf} from '../../logical';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
-import {accessPathDepth, accessPathWithDatum, duplicate, hash, keys, removePathFromField} from '../../util';
+import {accessPathDepth, accessPathWithDatum, duplicate, hash, keys, removePathFromField, contains} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
@@ -146,7 +146,7 @@ export class ParseNode extends DataFlowNode {
     function add(fieldDef: TypedFieldDef<string>) {
       if (isTimeFormatFieldDef(fieldDef)) {
         implicit[fieldDef.field] = 'date';
-      } else if (isNumberFieldDef(fieldDef)) {
+      } else if (isNumberFieldDef(fieldDef) && !contains<any>(['count', 'distinct'], fieldDef.aggregate)) {
         implicit[fieldDef.field] = 'number';
       } else if (accessPathDepth(fieldDef.field) > 1) {
         // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
