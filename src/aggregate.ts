@@ -57,10 +57,6 @@ export function isCountingAggregateOp(aggregate: string | Aggregate): boolean {
   return aggregate && isString(aggregate) && contains(COUNTING_OPS, aggregate);
 }
 
-export function isMinMaxOp(aggregate: Aggregate | string): boolean {
-  return aggregate && isString(aggregate) && contains(['min', 'max'], aggregate);
-}
-
 /** Additive-based aggregation operations.  These can be applied to stack. */
 export const SUM_OPS: AggregateOp[] = ['count', 'sum', 'distinct', 'valid', 'missing'];
 

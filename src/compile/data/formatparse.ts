@@ -1,6 +1,5 @@
 import {isNumber, isString} from 'vega-util';
 import {AncestorParse} from '.';
-import {isMinMaxOp} from '../../aggregate';
 import {getMainRangeChannel, SingleDefChannel} from '../../channel';
 import {
   isNumberFieldDef,
@@ -147,7 +146,7 @@ export class ParseNode extends DataFlowNode {
     function add(fieldDef: TypedFieldDef<string>) {
       if (isTimeFormatFieldDef(fieldDef)) {
         implicit[fieldDef.field] = 'date';
-      } else if (isNumberFieldDef(fieldDef) && isMinMaxOp(fieldDef.aggregate)) {
+      } else if (isNumberFieldDef(fieldDef)) {
         implicit[fieldDef.field] = 'number';
       } else if (accessPathDepth(fieldDef.field) > 1) {
         // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
