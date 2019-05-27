@@ -1,10 +1,10 @@
 import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning} from '../../bin';
 import {Channel} from '../../channel';
-import {FieldName, binRequiresRange, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
+import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
-import {Dict, duplicate, flatten, hash, keys, unique, vals} from '../../util';
+import {Dict, duplicate, flatten, hash, keys, replacePathInField, unique, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {binFormatExpression} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
@@ -36,6 +36,12 @@ function getSignalsFromModel(model: Model, key: string) {
     signal: model.getName(`${key}_bins`),
     extentSignal: model.getName(`${key}_extent`)
   };
+}
+
+export function getBinSignalName(model: Model, field: string, bin: boolean | BinParams) {
+  const normalizedBin = normalizeBin(bin, undefined) || {};
+  const key = binKey(normalizedBin, field);
+  return model.getName(`${key}_bins`);
 }
 
 function isBinTransform(t: TypedFieldDef<string> | BinTransform): t is BinTransform {
@@ -163,7 +169,7 @@ export class BinNode extends DataFlowNode {
         const [binAs, ...remainingAs] = bin.as;
         const binTrans: VgBinTransform = {
           type: 'bin',
-          field: bin.field,
+          field: replacePathInField(bin.field),
           as: binAs,
           signal: bin.signal,
           ...bin.bin
@@ -172,7 +178,7 @@ export class BinNode extends DataFlowNode {
         if (!bin.bin.extent && bin.extentSignal) {
           transform.push({
             type: 'extent',
-            field: bin.field,
+            field: replacePathInField(bin.field),
             signal: bin.extentSignal
           });
           binTrans.extent = {signal: bin.extentSignal};
