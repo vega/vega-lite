@@ -29,9 +29,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "Displacement"},
-          "tooltip": {
-            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Displacement\": format(datum[\"Displacement\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"}
         }

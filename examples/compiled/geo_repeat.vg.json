@@ -113,9 +113,6 @@
               "fill": {
                 "scale": "child__repeat_row_population_color",
                 "field": "population"
-              },
-              "tooltip": {
-                "signal": "{\"geo\": ''+datum[\"geo\"], \"population\": format(datum[\"population\"], \"\")}"
               }
             }
           },
@@ -155,9 +152,6 @@
               "fill": {
                 "scale": "child__repeat_row_engineers_color",
                 "field": "engineers"
-              },
-              "tooltip": {
-                "signal": "{\"geo\": ''+datum[\"geo\"], \"engineers\": format(datum[\"engineers\"], \"\")}"
               }
             }
           },
@@ -197,9 +191,6 @@
               "fill": {
                 "scale": "child__repeat_row_hurricanes_color",
                 "field": "hurricanes"
-              },
-              "tooltip": {
-                "signal": "{\"geo\": ''+datum[\"geo\"], \"hurricanes\": format(datum[\"hurricanes\"], \"\")}"
               }
             }
           },

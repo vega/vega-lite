@@ -46,9 +46,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "a"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "b"},
@@ -65,9 +62,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "red"},
-          "tooltip": {
-            "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "a", "band": 0.5},
           "y": {"scale": "y", "field": "b"},
           "defined": {"signal": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"}
