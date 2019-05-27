@@ -46,9 +46,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "bin_maxbins_6_Acceleration"},
-          "tooltip": {
-            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Acceleration (binned)\": datum[\"bin_maxbins_6_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"}
         }

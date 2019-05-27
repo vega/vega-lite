@@ -21,9 +21,11 @@ By default, the renderer will generate tooltips via native HTML ["title" attribu
 
 ## Tooltip Based on Encoding
 
-By default, Vega-Lite generates tooltips based on all fields specified in the `encoding`.
+Setting the `tooltip` property of the [mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def) (or config) to `true` enables the default tooltip, which is based on all fields specified in the `encoding`.
 
-<div class="vl-example" data-name="point_2d"></div>
+<div class="vl-example" data-name="point_2d_tooltip"></div>
+
+**Note:** This is equivalent to setting the `tooltip` property of the mark definition to `{"content": "encoding"}`.
 
 {:#data}
 

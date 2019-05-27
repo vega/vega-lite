@@ -26,9 +26,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"x\": format(datum[\"u\"], \"\"), \"sin(x)\": format(datum[\"v\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "u"},
           "y": {"scale": "y", "field": "v"},
           "defined": {
@@ -46,9 +43,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "firebrick"},
-          "tooltip": {
-            "signal": "{\"u\": format(datum[\"u\"], \"\"), \"cos(x)\": format(datum[\"w\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "u"},
           "y": {"scale": "y", "field": "w"},
           "defined": {

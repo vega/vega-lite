@@ -44,9 +44,6 @@
           "opacity": {"value": 0.3},
           "orient": {"value": "vertical"},
           "fill": {"value": "#85C5A6"},
-          "tooltip": {
-            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Avg. Temperature (°C)\": format(datum[\"average_temp_max\"], \"\"), \"Average of temp_min\": format(datum[\"average_temp_min\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "month_date"},
           "y": {"scale": "layer_0_y", "field": "average_temp_max"},
           "y2": {"scale": "layer_0_y", "field": "average_temp_min"},
@@ -66,9 +63,6 @@
         "update": {
           "stroke": {"value": "#85A9C5"},
           "interpolate": {"value": "monotone"},
-          "tooltip": {
-            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Precipitation (inches)\": format(datum[\"average_precipitation\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "month_date"},
           "y": {"scale": "layer_1_y", "field": "average_precipitation"},
           "defined": {

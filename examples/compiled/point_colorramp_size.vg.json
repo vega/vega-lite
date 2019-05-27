@@ -29,9 +29,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "Miles_per_Gallon"},
-          "tooltip": {
-            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Acceleration"},
           "size": {"scale": "size", "field": "Miles_per_Gallon"}

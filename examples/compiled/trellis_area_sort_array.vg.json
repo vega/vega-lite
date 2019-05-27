@@ -181,9 +181,6 @@
                 "update": {
                   "orient": {"value": "vertical"},
                   "fill": {"scale": "color", "field": "symbol"},
-                  "tooltip": {
-                    "signal": "{\"Time\": timeFormat(datum[\"date\"], '%Y'), \"Price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
-                  },
                   "x": {"scale": "x", "field": "date"},
                   "y": {"scale": "y", "field": "price_end"},
                   "y2": {"scale": "y", "field": "price_start"},
