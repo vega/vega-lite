@@ -17,7 +17,6 @@ import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
 import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING} from './spec/base';
 import {TopLevelProperties} from './spec/toplevel';
-import {StackOffset} from './stack';
 import {extractTitleConfig, TitleConfig} from './title';
 import {duplicate, keys, mergeDeep} from './util';
 import {BaseMarkConfig, SchemeConfig} from './vega.schema';
@@ -141,9 +140,6 @@ export interface VLOnlyConfig {
 
   /** An object hash for defining default properties for each type of selections. */
   selection?: SelectionConfig;
-
-  /** Default stack offset for stackable mark. */
-  stack?: StackOffset;
 }
 
 export interface StyleConfigIndex {
@@ -279,7 +275,6 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'timeFormat',
   'countTitle',
   'header',
-  'stack',
   'scale',
   'selection',
   'invalidValues',
