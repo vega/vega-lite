@@ -36,9 +36,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Mean of Acceleration\": format(datum[\"mean_Acceleration\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "mean_Acceleration"},

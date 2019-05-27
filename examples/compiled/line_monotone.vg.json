@@ -24,9 +24,6 @@
         "update": {
           "interpolate": {"value": "monotone"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "defined": {

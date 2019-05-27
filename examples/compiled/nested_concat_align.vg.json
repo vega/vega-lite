@@ -190,9 +190,6 @@
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
-                  "tooltip": {
-                    "signal": "{\"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating_end\"], \"\"), \"Count\": format(datum[\"__count\"], \"\")}"
-                  },
                   "x2": [
                     {
                       "test": "datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"])",
@@ -280,9 +277,6 @@
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
-                  "tooltip": {
-                    "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_20_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_20_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_20_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_IMDB_Rating_end\"], \"\"), \"Count\": format(datum[\"__count\"], \"\")}"
-                  },
                   "x2": [
                     {
                       "test": "datum[\"bin_maxbins_20_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_20_IMDB_Rating\"])",
@@ -378,9 +372,6 @@
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
-                  "tooltip": {
-                    "signal": "{\"US_Gross (binned)\": datum[\"bin_maxbins_20_US_Gross\"] === null || isNaN(datum[\"bin_maxbins_20_US_Gross\"]) ? \"null\" : format(datum[\"bin_maxbins_20_US_Gross\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_US_Gross_end\"], \"\"), \"Count\": format(datum[\"__count\"], \"\")}"
-                  },
                   "x2": [
                     {
                       "test": "datum[\"bin_maxbins_20_US_Gross\"] === null || isNaN(datum[\"bin_maxbins_20_US_Gross\"])",
@@ -468,9 +459,6 @@
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
-                  "tooltip": {
-                    "signal": "{\"Worldwide_Gross (binned)\": datum[\"bin_maxbins_20_Worldwide_Gross\"] === null || isNaN(datum[\"bin_maxbins_20_Worldwide_Gross\"]) ? \"null\" : format(datum[\"bin_maxbins_20_Worldwide_Gross\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_Worldwide_Gross_end\"], \"\"), \"Count\": format(datum[\"__count\"], \"\")}"
-                  },
                   "x2": [
                     {
                       "test": "datum[\"bin_maxbins_20_Worldwide_Gross\"] === null || isNaN(datum[\"bin_maxbins_20_Worldwide_Gross\"])",

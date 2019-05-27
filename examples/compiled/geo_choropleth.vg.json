@@ -44,12 +44,7 @@
       "type": "shape",
       "style": ["geoshape"],
       "from": {"data": "source_0"},
-      "encode": {
-        "update": {
-          "fill": {"scale": "color", "field": "rate"},
-          "tooltip": {"signal": "{\"rate\": format(datum[\"rate\"], \"\")}"}
-        }
-      },
+      "encode": {"update": {"fill": {"scale": "color", "field": "rate"}}},
       "transform": [{"type": "geoshape", "projection": "projection"}]
     }
   ],

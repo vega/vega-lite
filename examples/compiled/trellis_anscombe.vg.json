@@ -114,9 +114,6 @@
             "update": {
               "opacity": {"value": 1},
               "fill": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"X\": format(datum[\"X\"], \"\"), \"Y\": format(datum[\"Y\"], \"\")}"
-              },
               "x": [
                 {
                   "test": "datum[\"X\"] === null || isNaN(datum[\"X\"])",

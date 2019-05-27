@@ -29,9 +29,6 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\")}"
-          },
           "xc": {"scale": "x", "field": "Horsepower"},
           "yc": {"signal": "height", "mult": 0.5},
           "height": {"value": 10},

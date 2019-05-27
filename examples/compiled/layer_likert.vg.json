@@ -266,9 +266,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#6EB4FD"},
-          "tooltip": {
-            "signal": "{\"name\": ''+datum[\"name\"], \"value\": format(datum[\"value\"], \"\"), \"Number of Ratings\": format(datum[\"__count\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "value"},
           "y": {"scale": "y", "field": "name"},
           "size": {"scale": "size", "field": "__count"},
@@ -285,9 +282,6 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"name\": ''+datum[\"name\"], \"median\": format(datum[\"median\"], \"\")}"
-          },
           "xc": {"scale": "x", "field": "median"},
           "yc": {"scale": "y", "field": "name"},
           "height": {"value": 15},
@@ -305,9 +299,6 @@
           "align": {"value": "right"},
           "x": {"value": -5},
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"name\": ''+datum[\"name\"], \"lo\": ''+datum[\"lo\"]}"
-          },
           "y": {"scale": "y", "field": "name"},
           "text": {"signal": "''+datum[\"lo\"]"},
           "baseline": {"value": "middle"}
@@ -324,9 +315,6 @@
           "align": {"value": "left"},
           "x": {"value": 255},
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"name\": ''+datum[\"name\"], \"hi\": ''+datum[\"hi\"]}"
-          },
           "y": {"scale": "y", "field": "name"},
           "text": {"signal": "''+datum[\"hi\"]"},
           "baseline": {"value": "middle"}
