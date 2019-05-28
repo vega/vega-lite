@@ -179,10 +179,15 @@ export class StackNode extends DataFlowNode {
 
     out.add(this._stack.stackField);
 
-    this.getGroupbyFields().forEach(out.add);
-    this._stack.facetby.forEach(out.add);
-    const field = this._stack.sort.field as string;
-    isArray(field) ? field.forEach(out.add) : out.add(field);
+    this.getGroupbyFields().forEach(f => out.add(f));
+    this._stack.facetby.forEach(f => out.add(f));
+
+    const field = this._stack.sort.field;
+    if (isArray(field)) {
+      (field as [string]).forEach(f => out.add(f));
+    } else {
+      out.add(field as string);
+    }
 
     return out;
   }

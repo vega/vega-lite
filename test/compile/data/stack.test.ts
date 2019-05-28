@@ -285,6 +285,7 @@ describe('compile/data/stack', () => {
       ]);
     });
   });
+
   describe('StackNode.producedFields', () => {
     it('should give producedfields correctly', () => {
       const transform: Transform = {
@@ -328,6 +329,31 @@ describe('compile/data/stack', () => {
       const parent = new DataFlowNode(null);
       const stack = new StackNode(parent, null);
       expect(stack.clone().parent).toBeNull();
+    });
+  });
+
+  describe('StackNode.dependentFields', () => {
+    it('should give dependentFields correctly', () => {
+      const transform: Transform = {
+        stack: 'foo',
+        groupby: ['bar', 'baz'],
+        as: 'qux'
+      };
+      const stack = StackNode.makeFromTransform(null, transform);
+      expect(stack.dependentFields()).toEqual(new Set(['foo', 'bar', 'baz']));
+    });
+
+    it('should give dependentFields correctly when derived from encoding channel', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'bar',
+        encoding: {
+          x: {aggregate: 'sum', field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'nominal'},
+          color: {field: 'c', type: 'ordinal'}
+        }
+      });
+      const stack = StackNode.makeFromEncoding(null, model);
+      expect(stack.dependentFields()).toEqual(new Set(['sum_a', 'b', 'c']));
     });
   });
 });

@@ -26,7 +26,9 @@ export class JoinAggregateTransformNode extends DataFlowNode {
   public dependentFields() {
     const out = new Set<string>();
 
-    this.transform.groupby.forEach(f => out.add(f));
+    if (this.transform.groupby) {
+      this.transform.groupby.forEach(f => out.add(f));
+    }
     this.transform.joinaggregate
       .map(w => w.field)
       .filter(f => f !== undefined)
