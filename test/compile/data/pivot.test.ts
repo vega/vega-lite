@@ -1,4 +1,3 @@
-
 import {PivotTransformNode} from '../../../src/compile/data/pivot';
 import {Transform} from '../../../src/transform';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';

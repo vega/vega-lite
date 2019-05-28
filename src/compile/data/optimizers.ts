@@ -74,10 +74,7 @@ export class MoveParseUp extends BottomUpOptimizer {
         parent.merge(node);
       } else {
         // don't swap with nodes that produce something that the parse node depends on (e.g. lookup)
-        if (
-          parent instanceof PivotTransformNode ||
-          fieldIntersection(parent.producedFields(), node.dependentFields())
-        ) {
+        if (nodeFieldIntersection(parent, node)) {
           this.setContinue();
           return this.flags;
         }
@@ -371,7 +368,7 @@ export class MergeBins extends BottomUpOptimizer {
 
     for (const child of parent.children) {
       if (child instanceof BinNode) {
-        if (moveBinsUp && !fieldIntersection(parent.producedFields(), child.dependentFields())) {
+        if (moveBinsUp && !nodeFieldIntersection(parent, child)) {
           promotableBins.push(child);
         } else {
           remainingBins.push(child);
@@ -401,4 +398,12 @@ export class MergeBins extends BottomUpOptimizer {
     this.setContinue();
     return this.flags;
   }
+}
+
+/**
+ * Wraps fieldIntersection so that it can be called with parent and child nodes directly
+ * and check whether or not the parent node is a pivot transform
+ */
+export function nodeFieldIntersection(parent: DataFlowNode, child: DataFlowNode): boolean {
+  return parent instanceof PivotTransformNode || fieldIntersection(parent.producedFields(), child.producedFields());
 }

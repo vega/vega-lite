@@ -3,6 +3,8 @@ import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {ImputeNode} from '../../../src/compile/data/impute';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {MergeIdenticalNodes} from '../../../src/compile/data/optimizers';
+import {nodeFieldIntersection} from '../../../src/compile/data/optimizers';
+import {PivotTransformNode} from '../../../src/compile/data/pivot';
 import {Transform} from '../../../src/transform';
 import {parseLayerModel} from '../../util';
 import {FilterNode} from './../../../src/compile/data/filter';
@@ -104,6 +106,19 @@ describe('compile/data/optimizer', () => {
       expect(model.getSignalName('layer_0_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins')).toEqual(
         'layer_1_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
       );
+    });
+  });
+
+  describe('nodeFieldIntersection', () => {
+    it('should return the correct value for 2 nodes', () => {
+      const filterNode = new FilterNode(null, null, 'datum.foo > 1');
+      const pivotNode = new PivotTransformNode(null, {
+        pivot: 'a',
+        value: 'b'
+      });
+      expect(nodeFieldIntersection(filterNode, filterNode)).toBe(false);
+      expect(nodeFieldIntersection(pivotNode, filterNode)).toBe(true);
+      expect(nodeFieldIntersection(filterNode, pivotNode)).toBe(false);
     });
   });
 });
