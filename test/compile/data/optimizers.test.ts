@@ -112,18 +112,23 @@ describe('compile/data/optimizer', () => {
       const parent = new DataFlowNode(null, 'root');
 
       const c1: TimeUnitComponent = {
-        as: 'foo',
+        as: 'a_yr',
         timeUnit: 'year',
-        field: 'bar'
+        field: 'a'
       };
       const c2: TimeUnitComponent = {
-        as: 'baz',
+        as: 'b_yr',
         timeUnit: 'year',
-        field: 'qux'
+        field: 'b'
+      };
+      const c3: TimeUnitComponent = {
+        as: 'c_yr',
+        timeUnit: 'year',
+        field: 'c'
       };
 
-      new TimeUnitNode(parent, {[hash(c1)]: c1});
       new TimeUnitNode(parent, {[hash(c1)]: c1, [hash(c2)]: c2});
+      new TimeUnitNode(parent, {[hash(c1)]: c1, [hash(c3)]: c3});
 
       const optimizer = new MergeTimeUnits();
       optimizer.run(parent.children[0]);
@@ -131,12 +136,13 @@ describe('compile/data/optimizer', () => {
       expect(parent.children).toHaveLength(1);
 
       const mergedNode: TimeUnitNode = parent.children[0] as TimeUnitNode;
-      expect(mergedNode.producedFields()).toEqual(new Set(['foo', 'baz']));
-      expect(mergedNode.dependentFields()).toEqual(new Set(['bar', 'qux']));
+      expect(mergedNode.producedFields()).toEqual(new Set(['a_yr', 'b_yr', 'c_yr']));
+      expect(mergedNode.dependentFields()).toEqual(new Set(['a', 'b', 'c']));
 
       expect(mergedNode.assemble()).toEqual([
-        {as: 'foo', expr: 'datetime(year(datum["bar"]), 0, 1, 0, 0, 0, 0)', type: 'formula'},
-        {as: 'baz', expr: 'datetime(year(datum["qux"]), 0, 1, 0, 0, 0, 0)', type: 'formula'}
+        {as: 'a_yr', expr: 'datetime(year(datum["a"]), 0, 1, 0, 0, 0, 0)', type: 'formula'},
+        {as: 'c_yr', expr: 'datetime(year(datum["c"]), 0, 1, 0, 0, 0, 0)', type: 'formula'},
+        {as: 'b_yr', expr: 'datetime(year(datum["b"]), 0, 1, 0, 0, 0, 0)', type: 'formula'}
       ]);
     });
   });
