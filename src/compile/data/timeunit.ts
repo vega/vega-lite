@@ -57,6 +57,10 @@ export class TimeUnitNode extends DataFlowNode {
     });
   }
 
+  /**
+   * Merge together TimeUnitNodes assigning the children of `other` to `this`
+   * and removing `other`.
+   */
   public merge(other: TimeUnitNode) {
     this.formula = {...this.formula, ...other.formula};
     for (const child of other.children) {

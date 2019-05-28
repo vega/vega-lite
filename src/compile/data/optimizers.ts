@@ -171,6 +171,9 @@ export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
   }
 }
 
+/**
+ * Merge adjacent time unit nodes.
+ */
 export class MergeTimeUnits extends BottomUpOptimizer {
   public run(node: DataFlowNode): OptimizerFlags {
     this.setContinue();

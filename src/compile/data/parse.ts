@@ -139,12 +139,12 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
     } else if (isTimeUnit(t)) {
       derivedType = 'date';
       const parsedAs = ancestorParse.getWithExplicit(t.field);
+      // Create parse node because the input to time unit is always date.
       if (parsedAs.value === undefined) {
         head = new ParseNode(head, {[t.field]: derivedType});
         ancestorParse.set(t.field, derivedType, false);
       }
       transformNode = head = TimeUnitNode.makeFromTransform(head, t);
-      // Create parse node because the input to time unit is always date.
     } else if (isAggregate(t)) {
       transformNode = head = AggregateNode.makeFromTransform(head, t);
       derivedType = 'number';
