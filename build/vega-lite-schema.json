@@ -1694,7 +1694,8 @@
           "type": "string"
         },
         "options": {
-          "items": {},
+          "items": {
+          },
           "type": "array"
         },
         "type": {
@@ -2469,6 +2470,16 @@
         }
       ]
     },
+    "ConditionalValueDef<(string|null|Gradient)>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|null|Gradient)>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<(string|null|Gradient)>>"
+        }
+      ]
+    },
     "ConditionalValueDef": {
       "anyOf": [
         {
@@ -2725,6 +2736,34 @@
             "string",
             "null"
           ]
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(string|null|Gradient)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -3005,6 +3044,34 @@
             "string",
             "null"
           ]
+        }
+      },
+      "required": [
+        "selection",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalSelection<ValueDef<(string|null|Gradient)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "selection": {
+          "$ref": "#/definitions/SelectionOperand",
+          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -3734,7 +3801,8 @@
       ],
       "type": "string"
     },
-    "EventStream": {},
+    "EventStream": {
+    },
     "FacetFieldDef": {
       "additionalProperties": false,
       "properties": {
@@ -5538,6 +5606,112 @@
       ],
       "type": "object"
     },
+    "Gradient": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/GradientLinear"
+        },
+        {
+          "$ref": "#/definitions/GradientRadial"
+        }
+      ]
+    },
+    "GradientLinear": {
+      "additionalProperties": false,
+      "properties": {
+        "gradient": {
+          "enum": [
+            "linear"
+          ],
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "stops": {
+          "items": {
+            "$ref": "#/definitions/GradientStop"
+          },
+          "type": "array"
+        },
+        "x1": {
+          "type": "number"
+        },
+        "x2": {
+          "type": "number"
+        },
+        "y1": {
+          "type": "number"
+        },
+        "y2": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "gradient",
+        "stops"
+      ],
+      "type": "object"
+    },
+    "GradientRadial": {
+      "additionalProperties": false,
+      "properties": {
+        "gradient": {
+          "enum": [
+            "radial"
+          ],
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "r1": {
+          "type": "number"
+        },
+        "r2": {
+          "type": "number"
+        },
+        "stops": {
+          "items": {
+            "$ref": "#/definitions/GradientStop"
+          },
+          "type": "array"
+        },
+        "x1": {
+          "type": "number"
+        },
+        "x2": {
+          "type": "number"
+        },
+        "y1": {
+          "type": "number"
+        },
+        "y2": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "gradient",
+        "stops"
+      ],
+      "type": "object"
+    },
+    "GradientStop": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "type": "string"
+        },
+        "offset": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "offset",
+        "color"
+      ],
+      "type": "object"
+    },
     "GraticuleGenerator": {
       "additionalProperties": false,
       "properties": {
@@ -5876,7 +6050,8 @@
         "keyvals": {
           "anyOf": [
             {
-              "items": {},
+              "items": {
+              },
               "type": "array"
             },
             {
@@ -5947,7 +6122,8 @@
         "keyvals": {
           "anyOf": [
             {
-              "items": {},
+              "items": {
+              },
               "type": "array"
             },
             {
@@ -10333,10 +10509,10 @@
       "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,(string|null)>"
     },
     "StringValueDefWithCondition<TypeForShape>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null|Gradient)>"
     },
     "StringValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(string|null)>"
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(string|null|Gradient)>"
     },
     "StrokeCap": {
       "enum": [
@@ -12158,11 +12334,22 @@
       "type": "string"
     },
     "Value": {
-      "type": [
-        "number",
-        "string",
-        "boolean",
-        "null"
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/definitions/Gradient"
+        }
       ]
     },
     "YValueDef": {
@@ -12227,10 +12414,10 @@
       ],
       "type": "object"
     },
-    "ValueDefWithCondition<MarkPropFieldDef,(string|null)>": {
+    "ValueDefWithCondition<MarkPropFieldDef,(string|null|Gradient)>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ValueDefWithOptionalCondition<MarkPropFieldDef,(string|null)>"
+          "$ref": "#/definitions/ValueDefWithOptionalCondition<MarkPropFieldDef,(string|null|Gradient)>"
         },
         {
           "$ref": "#/definitions/ConditionOnlyDef<MarkPropFieldDef>"
@@ -12249,10 +12436,10 @@
       ],
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
     },
-    "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
+    "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null|Gradient)>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ValueDefWithOptionalCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
+          "$ref": "#/definitions/ValueDefWithOptionalCondition<MarkPropFieldDef<TypeForShape>,(string|null|Gradient)>"
         },
         {
           "$ref": "#/definitions/ConditionOnlyDef<MarkPropFieldDef<TypeForShape>>"
@@ -12271,7 +12458,7 @@
       ],
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
     },
-    "ValueDefWithOptionalCondition<MarkPropFieldDef,(string|null)>": {
+    "ValueDefWithOptionalCondition<MarkPropFieldDef,(string|null|Gradient)>": {
       "additionalProperties": false,
       "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
@@ -12281,11 +12468,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionalStringValueDef"
+              "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalStringValueDef"
+                "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
               },
               "type": "array"
             }
@@ -12293,11 +12480,18 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "null"
-          ]
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -12336,7 +12530,7 @@
       ],
       "type": "object"
     },
-    "ValueDefWithOptionalCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
+    "ValueDefWithOptionalCondition<MarkPropFieldDef<TypeForShape>,(string|null|Gradient)>": {
       "additionalProperties": false,
       "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
@@ -12346,11 +12540,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldDef<TypeForShape>"
             },
             {
-              "$ref": "#/definitions/ConditionalStringValueDef"
+              "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalStringValueDef"
+                "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
               },
               "type": "array"
             }
@@ -12358,11 +12552,18 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "null"
-          ]
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
