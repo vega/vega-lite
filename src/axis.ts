@@ -15,7 +15,7 @@ import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {LayoutAlign, VgEncodeChannel} from './vega.schema';
+import {LayoutAlign, OmitValueRef, VgEncodeChannel} from './vega.schema';
 
 export type BaseAxisNoSignals = AxisMixins &
   BaseAxis<
@@ -34,6 +34,8 @@ export type BaseAxisNoSignals = AxisMixins &
     number[],
     TitleAnchor
   >;
+
+type BaseAxisNoSignals = AxisMixins & OmitValueRef<BaseAxis>;
 
 export type ConditionalAxisProp =
   | 'labelAlign'
