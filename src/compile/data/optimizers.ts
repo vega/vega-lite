@@ -178,7 +178,7 @@ export class MergeTimeUnits extends BottomUpOptimizer {
   public run(node: DataFlowNode): OptimizerFlags {
     this.setContinue();
     const parent = node.parent;
-    const timeUnitChildren = parent.children.filter((x): x is TimeUnitNode => x instanceof TimeUnitNode);
+    const timeUnitChildren = parent.children.filter(x => x instanceof TimeUnitNode) as TimeUnitNode[];
     const combination = timeUnitChildren.pop();
     for (const timeUnit of timeUnitChildren) {
       this.setMutated();
