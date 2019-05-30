@@ -21,11 +21,12 @@
       "mark": {"type": "point", "opacity": 0.3},
       "encoding": {
         "x": {
+          "title": "Date",
           "field": "date",
           "type": "temporal"
         },
         "y": {
-          "axis": {"title": "Max Temp"},
+          "title": "Max Temperature",
           "field": "temp_max",
           "type": "quantitative"
         }
