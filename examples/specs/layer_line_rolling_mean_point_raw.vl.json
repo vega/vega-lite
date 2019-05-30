@@ -1,0 +1,52 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "description": "Plot showing a 30 day rolling average with raw values in the background.",
+  "width": 400,
+  "height": 300,
+  "data": {"url": "data/seattle-weather.csv"},
+  "transform": [
+        {
+          "frame": [-15, 15],
+          "window": [
+            {
+              "field": "temp_max",
+              "op": "mean",
+              "as": "rolling_mean"
+            }
+          ]
+        }
+      ],
+  "layer": [
+    { 
+      "mark": {"type": "point", "opacity": 0.3},
+      "encoding": {
+        "x": {
+          "field": "date",
+          "type": "temporal"
+        },
+        "y": {
+          "axis": {"title": "Max Temp"},
+          "field": "temp_max",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "color": "red",
+        "size": 3,
+        "type": "line"
+      },
+      "encoding": {
+        "x": {
+          "field": "date",
+          "type": "temporal"
+        },
+        "y": {
+          "field": "rolling_mean",
+          "type": "quantitative"
+        }
+      }
+    }
+  ]
+}

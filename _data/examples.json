@@ -419,6 +419,10 @@
         "title": "Layering mean values over raw values"
       },
       {
+        "name": "layer_line_rolling_mean_point_raw",
+        "title": "Layering rolling mean values over raw values"
+      },
+      {
         "name": "wheat_wages",
         "title": "Wheat and Wages Example",
         "description": "A recreation of William Playfair’s classic chart visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Based on a chart by @manzt."
