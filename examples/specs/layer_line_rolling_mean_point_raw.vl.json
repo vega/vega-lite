@@ -4,18 +4,17 @@
   "width": 400,
   "height": 300,
   "data": {"url": "data/seattle-weather.csv"},
-  "transform": [
+  "transform": [{
+      "frame": [-15, 15],
+      "window": [
         {
-          "frame": [-15, 15],
-          "window": [
-            {
-              "field": "temp_max",
-              "op": "mean",
-              "as": "rolling_mean"
-            }
-          ]
+          "field": "temp_max",
+          "op": "mean",
+          "as": "rolling_mean"
         }
-      ],
+      ]
+    }
+  ],
   "layer": [
     { 
       "mark": {"type": "point", "opacity": 0.3},
