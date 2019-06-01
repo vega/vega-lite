@@ -394,7 +394,7 @@ To provide themes for all scales, the scale config (`config: {scale: {...}}`) ca
 
 #### Range
 
-{% include table.html props="maxBandSize,minBandSize,maxFontSize,minFontSize,maxOpacity,minOpacity,maxSize,minSize,maxStrokeWidth,minStrokeWidth,rangeStep,textXRangeStep" source="ScaleConfig" %}
+{% include table.html props="maxBandSize,minBandSize,maxFontSize,minFontSize,maxOpacity,minOpacity,maxSize,minSize,maxStrokeWidth,minStrokeWidth,rangeStep" source="ScaleConfig" %}
 
 #### Other
 
