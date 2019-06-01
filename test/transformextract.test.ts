@@ -52,6 +52,7 @@ describe('extractTransforms()', () => {
     'layer_falkensee.vl.json',
     'layer_histogram_global_mean.vl.json',
     'layer_histogram.vl.json',
+    'layer_likert.vl.json',
     'layer_line_color_rule.vl.json',
     'layer_line_errorband_2d_horizontal_borders_strokedash.vl.json',
     'layer_line_errorband_ci.vl.json',

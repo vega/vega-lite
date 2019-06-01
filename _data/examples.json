@@ -383,6 +383,19 @@
         "name": "layer_falkensee",
         "title": "Line Chart with Highlighted Rectangles",
         "style": "background-size: auto 90%; background-position-y: center !important;"
+      },
+      {
+        "name": "layer_line_mean_point_raw",
+        "title": "Layering mean values over raw values"
+      },
+      {
+        "name": "layer_line_rolling_mean_point_raw",
+        "title": "Layering rolling mean values over raw values"
+      },
+      {
+        "name": "layer_likert",
+        "title": "Likert Scale Ratings Distributions and Medians",
+        "description": "Likert Scale Ratings Distributions and Medians. (Figure 9. from @jhoffswell and @zcliu's 'Interactive Repair of Tables Extracted from PDF Documents on Mobile Devices' -- http://idl.cs.washington.edu/files/2019-InteractiveTableRepair-CHI.pdf)"
       }
     ],
     "Other Layered Plots": [
@@ -413,14 +426,6 @@
         "name": "bar_layered_weather",
         "title": "Weekly Weather Plot",
         "description": "Inspired by <a href='https://vega.github.io/vega-editor/?mode=vega&spec=weather'>this Vega example</a>. Weekly weather data plot representing high/low ranges of record temperatures (light grey), average temperatures (dark grey), and both predicted and observed temperatures (black) for the given week. The first five days have high/low ranges of observed temperatures, and the last five days have ranges of predicted temperatures, where the upper barbell represents the range of high temperature predictions and the lower barbell represents the range of low temperature predictions. Created by @melissatdiamond."
-      },
-      {
-        "name": "layer_line_mean_point_raw",
-        "title": "Layering mean values over raw values"
-      },
-      {
-        "name": "layer_line_rolling_mean_point_raw",
-        "title": "Layering rolling mean values over raw values"
       },
       {
         "name": "wheat_wages",
