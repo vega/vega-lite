@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Likert Scale Ratings Distributions and Medians. (Figure 9. from @jhoffswell and @zcliu's 'Interactive Repair of Tables Extracted from PDF Documents on Mobile Devices' -- http://idl.cs.washington.edu/files/2019-InteractiveTableRepair-CHI.pdf)",
+  "description": "Likert Scale Ratings Distributions and Medians. (Figure 9 from @jhoffswell and @zcliu's ['Interactive Repair of Tables Extracted from PDF Documents on Mobile Devices'](https://idl.cs.washington.edu/files/2019-InteractiveTableRepair-CHI.pdf))",
   "autosize": "pad",
   "padding": 5,
   "width": 250,
