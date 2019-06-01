@@ -984,7 +984,6 @@
         "field": "type_PREDICT", "type": "ordinal",
         "title": "Predicted Type",
         "scale": {
-          "rangeStep": 18,
           "domain": ["Vertical", "Matrix", "Enumeration", "Attribute/Value", "Other", "Horizontal", "Calendar", "", "Navigational", "Form", "Formatting", "Not Applicable"]
         },
         "axis": {"grid": true, "labelAngle": 300, "labelOverlap": false}
@@ -993,7 +992,6 @@
         "field": "type_ORIG", "type": "ordinal",
         "title": "Labeled Type",
         "scale": {
-          "rangeStep": 18,
           "domain": ["Vertical", "Matrix", "Enumeration", "Attribute/Value", "Other", "Horizontal", "Calendar", "", "Navigational", "Form", "Formatting", "Not Applicable"]
         },
         "axis": {
@@ -1014,7 +1012,6 @@
         "field": "type_PREDICT",
         "type": "ordinal",
         "scale": {
-          "rangeStep": 18,
           "domain": ["Vertical", "Matrix", "Enumeration", "Attribute/Value", "Other", "Horizontal", "Calendar", "", "Navigational", "Form", "Formatting", "Not Applicable"]
         }
       }
@@ -1027,7 +1024,6 @@
         "field": "type_ORIG",
         "type": "ordinal",
         "scale": {
-          "rangeStep": 18,
           "domain": ["Vertical", "Matrix", "Enumeration", "Attribute/Value", "Other", "Horizontal", "Calendar", "", "Navigational", "Form", "Formatting", "Not Applicable"]
         }
       }
@@ -1096,6 +1092,7 @@
   }],
   "config": {
     "view": {"stroke": null},
+    "scale": {"rangeStep": 18, "textXRangeStep": 18},
     "axis": {
       "domain": false,
       "ticks": false
