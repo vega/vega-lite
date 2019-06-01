@@ -4786,7 +4786,6 @@
               "type": "ordinal",
               "title": "Predicted Type",
               "scale": {
-                "rangeStep": 18,
                 "domain": [
                   "Vertical",
                   "Matrix",
@@ -4809,7 +4808,6 @@
               "type": "ordinal",
               "title": "Labeled Type",
               "scale": {
-                "rangeStep": 18,
                 "domain": [
                   "Vertical",
                   "Matrix",
@@ -4852,7 +4850,6 @@
               "type": "ordinal",
               "title": "Predicted Type",
               "scale": {
-                "rangeStep": 18,
                 "domain": [
                   "Vertical",
                   "Matrix",
@@ -4875,7 +4872,6 @@
               "type": "ordinal",
               "title": "Labeled Type",
               "scale": {
-                "rangeStep": 18,
                 "domain": [
                   "Vertical",
                   "Matrix",
@@ -4914,7 +4910,6 @@
           "field": "type_PREDICT",
           "type": "ordinal",
           "scale": {
-            "rangeStep": 18,
             "domain": [
               "Vertical",
               "Matrix",
@@ -4941,7 +4936,6 @@
           "field": "type_ORIG",
           "type": "ordinal",
           "scale": {
-            "rangeStep": 18,
             "domain": [
               "Vertical",
               "Matrix",
@@ -5101,6 +5095,7 @@
   ],
   "config": {
     "view": {"stroke": null},
+    "scale": {"rangeStep": 18, "textXRangeStep": 18},
     "axis": {"domain": false, "ticks": false},
     "rule": {"size": 2}
   }
