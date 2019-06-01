@@ -38,7 +38,7 @@ export interface EncodingSortField<F> {
    *
    * __Default value:__ If unspecified, defaults to the field specified in the outer data reference.
    */
-  field?: F;
+  field?: F; // Field is optional because `"op": "count"` does not require a field.
   /**
    * An [aggregate operation](https://vega.github.io/vega-lite/docs/aggregate.html#ops) to perform on the field prior to sorting (e.g., `"count"`, `"mean"` and `"median"`).
    * An aggregation is required when there are multiple values of the sort field for each encoded data field.
