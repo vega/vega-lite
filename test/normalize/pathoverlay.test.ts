@@ -47,7 +47,7 @@ describe('PathOverlayNormalizer', () => {
   it('correctly normalizes line with transparent point overlayed.', () => {
     const spec: TopLevelSpec = {
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
-      mark: {type: 'line', point: 'transparent'},
+      mark: {type: 'line', point: 'transparent', tooltip: ''},
       encoding: {
         x: {field: 'date', type: 'temporal'},
         y: {field: 'price', type: 'quantitative'}
@@ -58,14 +58,14 @@ describe('PathOverlayNormalizer', () => {
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
       layer: [
         {
-          mark: 'line',
+          mark: {type: 'line', tooltip: ''},
           encoding: {
             x: {field: 'date', type: 'temporal'},
             y: {field: 'price', type: 'quantitative'}
           }
         },
         {
-          mark: {type: 'point', opacity: 0, filled: true},
+          mark: {type: 'point', opacity: 0, filled: true, tooltip: ''},
           encoding: {
             x: {field: 'date', type: 'temporal'},
             y: {field: 'price', type: 'quantitative'}

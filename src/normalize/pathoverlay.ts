@@ -133,7 +133,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
         ...(projection ? {projection} : {}),
         mark: {
           type: 'line',
-          ...pick(markDef, ['clip', 'interpolate', 'tension']),
+          ...pick(markDef, ['clip', 'interpolate', 'tension', 'tooltip']),
           ...lineOverlay
         },
         encoding: overlayEncoding
@@ -146,7 +146,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           type: 'point',
           opacity: 1,
           filled: true,
-          ...pick(markDef, ['clip']),
+          ...pick(markDef, ['clip', 'tooltip']),
           ...pointOverlay
         },
         encoding: overlayEncoding
