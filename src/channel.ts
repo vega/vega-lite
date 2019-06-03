@@ -278,11 +278,10 @@ export function supportLegend(channel: NonPositionScaleChannel) {
     case SIZE:
     case SHAPE:
     case OPACITY:
+    case STROKEWIDTH:
       return true;
-
     case FILLOPACITY:
     case STROKEOPACITY:
-    case STROKEWIDTH:
       return false;
   }
 }
