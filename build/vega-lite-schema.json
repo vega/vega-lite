@@ -2349,87 +2349,6 @@
       },
       "type": "object"
     },
-    "ConditionOnlyDef<MarkPropFieldDef>": {
-      "additionalProperties": false,
-      "description": "A Condition<ValueDef | FieldDef> only definition.\n{\n   condition: {field: ...} | {value: ...}\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalValueDef"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
-        }
-      },
-      "required": [
-        "condition"
-      ],
-      "type": "object"
-    },
-    "ConditionOnlyDef<MarkPropFieldDef<TypeForShape>>": {
-      "additionalProperties": false,
-      "description": "A Condition<ValueDef | FieldDef> only definition.\n{\n   condition: {field: ...} | {value: ...}\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef<TypeForShape>"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalValueDef"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
-        }
-      },
-      "required": [
-        "condition"
-      ],
-      "type": "object"
-    },
-    "ConditionOnlyDef<TextFieldDef>": {
-      "additionalProperties": false,
-      "description": "A Condition<ValueDef | FieldDef> only definition.\n{\n   condition: {field: ...} | {value: ...}\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalTextFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalValueDef"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
-        }
-      },
-      "required": [
-        "condition"
-      ],
-      "type": "object"
-    },
     "ConditionalMarkPropFieldDef": {
       "anyOf": [
         {
@@ -9173,7 +9092,7 @@
     },
     "RepeatRef": {
       "additionalProperties": false,
-      "description": "Reference to a repeated value.",
+      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n} \n Reference to a repeated value.",
       "properties": {
         "repeat": {
           "enum": [
@@ -12235,52 +12154,9 @@
       "type": "object"
     },
     "ValueDefWithCondition<MarkPropFieldDef,(string|null)>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ValueDefWithOptionalCondition<MarkPropFieldDef,(string|null)>"
-        },
-        {
-          "$ref": "#/definitions/ConditionOnlyDef<MarkPropFieldDef>"
-        }
-      ],
-      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
-    },
-    "ValueDefWithCondition<MarkPropFieldDef,number>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ValueDefWithOptionalCondition<MarkPropFieldDef,number>"
-        },
-        {
-          "$ref": "#/definitions/ConditionOnlyDef<MarkPropFieldDef>"
-        }
-      ],
-      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
-    },
-    "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ValueDefWithOptionalCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
-        },
-        {
-          "$ref": "#/definitions/ConditionOnlyDef<MarkPropFieldDef<TypeForShape>>"
-        }
-      ],
-      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
-    },
-    "ValueDefWithCondition<TextFieldDef,Value>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ValueDefWithOptionalCondition<TextFieldDef,Value>"
-        },
-        {
-          "$ref": "#/definitions/ConditionOnlyDef<TextFieldDef>"
-        }
-      ],
-      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
-    },
-    "ValueDefWithOptionalCondition<MarkPropFieldDef,(string|null)>": {
       "additionalProperties": false,
-      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "minProperties": 1,
       "properties": {
         "condition": {
           "anyOf": [
@@ -12307,14 +12183,12 @@
           ]
         }
       },
-      "required": [
-        "value"
-      ],
       "type": "object"
     },
-    "ValueDefWithOptionalCondition<MarkPropFieldDef,number>": {
+    "ValueDefWithCondition<MarkPropFieldDef,number>": {
       "additionalProperties": false,
-      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "minProperties": 1,
       "properties": {
         "condition": {
           "anyOf": [
@@ -12338,14 +12212,12 @@
           "type": "number"
         }
       },
-      "required": [
-        "value"
-      ],
       "type": "object"
     },
-    "ValueDefWithOptionalCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
+    "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
       "additionalProperties": false,
-      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "minProperties": 1,
       "properties": {
         "condition": {
           "anyOf": [
@@ -12372,14 +12244,12 @@
           ]
         }
       },
-      "required": [
-        "value"
-      ],
       "type": "object"
     },
-    "ValueDefWithOptionalCondition<TextFieldDef,Value>": {
+    "ValueDefWithCondition<TextFieldDef,Value>": {
       "additionalProperties": false,
-      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "minProperties": 1,
       "properties": {
         "condition": {
           "anyOf": [
@@ -12403,9 +12273,6 @@
           "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
         }
       },
-      "required": [
-        "value"
-      ],
       "type": "object"
     },
     "ViewBackground": {
