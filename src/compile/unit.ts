@@ -136,7 +136,8 @@ export class UnitModel extends ModelWithField {
         if (isFieldDef(channelDef)) {
           fieldDef = channelDef;
           specifiedScale = channelDef.scale;
-        } else if (hasConditionalFieldDef<string, any>(channelDef)) { // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
+        } else if (hasConditionalFieldDef<string, any>(channelDef)) {
+          // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
           fieldDef = channelDef.condition;
           specifiedScale = channelDef.condition['scale'];
         }
