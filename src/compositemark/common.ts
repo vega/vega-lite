@@ -14,13 +14,14 @@ import {
 } from '../channeldef';
 import {Encoding, fieldDefs} from '../encoding';
 import * as log from '../log';
-import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
+import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef, TooltipMixins} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 
 export type GenericCompositeMarkDef<T> = GenericMarkDef<T> &
-  ColorMixins & {
+  ColorMixins &
+  TooltipMixins & {
     /**
      * The opacity (value between [0,1]) of the mark.
      */
@@ -93,6 +94,7 @@ export function filterTooltipWithAggregatedField<F extends Field>(
   return {customTooltipWithoutAggregatedField, filteredEncoding};
 }
 
+// FIXME
 export function getCompositeMarkTooltip(
   tooltipSummary: CompositeMarkTooltipSummary[],
   continuousAxisChannelDef: PositionFieldDef<string>,
@@ -176,7 +178,7 @@ export function partLayerMixins<P extends PartsMixins<any>>(
   compositeMarkConfig: P,
   partBaseSpec: NormalizedUnitSpec
 ): NormalizedUnitSpec[] {
-  const {clip, color, opacity} = markDef;
+  const {clip, color, opacity, tooltip} = markDef;
 
   const mark = markDef.type;
 
@@ -189,6 +191,7 @@ export function partLayerMixins<P extends PartsMixins<any>>(
           ...(clip ? {clip} : {}),
           ...(color ? {color} : {}),
           ...(opacity ? {opacity} : {}),
+          ...(tooltip ? {tooltip} : {}),
           ...(isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : {type: partBaseSpec.mark}),
           style: `${mark}-${part}`,
           ...(isBoolean(markDef[part]) ? {} : (markDef[part] as MarkConfig))
