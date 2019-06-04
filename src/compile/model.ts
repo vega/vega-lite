@@ -1,4 +1,4 @@
-import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
+quimport {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
 import {isString} from 'vega-util';
 import {Channel, FACET_CHANNELS, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef';
@@ -470,7 +470,9 @@ export abstract class Model {
   }
 
   /**
-   * Request a data source name for the given data source type and mark that data source as required. This method should be called in parse, so that all used data source can be correctly instantiated in assembleData().
+   * Request a data source name for the given data source type and mark that data source as required.
+   * This method should be called in parse, so that all used data source can be correctly instantiated in assembleData().
+   * You can lookup the correct dataset name in assemble with `lookupDataSource`.
    */
   public requestDataName(name: DataSourceType) {
     const fullName = this.getName(name);
