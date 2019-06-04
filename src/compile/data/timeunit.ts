@@ -25,12 +25,13 @@ export class TimeUnitNode extends DataFlowNode {
     const formula = model.reduceFieldDef(
       (timeUnitComponent: TimeUnitComponent, fieldDef) => {
         if (fieldDef.timeUnit) {
-          const f = vgField(fieldDef, {forAs: true});
-          timeUnitComponent[f] = {
-            as: f,
+          const as = vgField(fieldDef, {forAs: true});
+          const component = {
+            as: as,
             timeUnit: fieldDef.timeUnit,
             field: fieldDef.field
           };
+          timeUnitComponent[hash(component)] = component;
         }
         return timeUnitComponent;
       },
@@ -45,17 +46,27 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   public static makeFromTransform(parent: DataFlowNode, t: TimeUnitTransform) {
+    const component = {
+      as: t.as,
+      timeUnit: t.timeUnit,
+      field: t.field
+    };
+
     return new TimeUnitNode(parent, {
-      [t.field]: {
-        as: t.as,
-        timeUnit: t.timeUnit,
-        field: t.field
-      }
+      [hash(component)]: component
     });
   }
 
+  /**
+   * Merge together TimeUnitNodes assigning the children of `other` to `this`
+   * and removing `other`.
+   */
   public merge(other: TimeUnitNode) {
     this.formula = {...this.formula, ...other.formula};
+    for (const child of other.children) {
+      other.removeChild(child);
+      child.parent = this;
+    }
     other.remove();
   }
 

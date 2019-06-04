@@ -71,9 +71,9 @@
         {
           "type": "aggregate",
           "groupby": ["month_date"],
-          "ops": ["median", "mean"],
+          "ops": ["mean", "median"],
           "fields": ["precipitation", "precipitation"],
-          "as": ["median_precipitation", "mean_precipitation"]
+          "as": ["mean_precipitation", "median_precipitation"]
         }
       ]
     }
