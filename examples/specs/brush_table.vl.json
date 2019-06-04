@@ -27,6 +27,7 @@
       {"filter": {"field": "rank", "lt": 20}}
     ],
     "hconcat": [{
+      "width": 50,
       "title": "Horsepower",
       "mark": "text",
       "encoding": {
@@ -34,6 +35,7 @@
         "y": {"field": "row_number", "type": "ordinal", "axis": null}
       }
     }, {
+      "width": 50,
       "title": "MPG",
       "mark": "text",
       "encoding": {
@@ -41,6 +43,7 @@
         "y": {"field": "row_number", "type": "ordinal", "axis": null}
       }
     }, {
+      "width": 50,
       "title": "Origin",
       "mark": "text",
       "encoding": {

@@ -173,18 +173,9 @@ export interface ScaleConfig {
    * If true, values that exceed the data domain are clamped to either the minimum or maximum range value
    */
   clamp?: boolean;
-  /**
-   *  Default range step for `x` band and point scales of text marks.
-   *
-   * __Default value:__ `90`
-   *
-   *  @minimum 0
-   */
-  textXRangeStep?: number; // FIXME: consider if we will rename this "tableColumnWidth"
 
   /**
-   * Default range step for band and point scales of (1) the `y` channel
-   * and (2) the `x` channel when the mark is not `text`.
+   * Default range step for band and point scales of the `x` and `y` channels.
    *
    * __Default value:__ `20`
    *
@@ -393,7 +384,6 @@ export interface ScaleConfig {
 }
 
 export const defaultScaleConfig: ScaleConfig = {
-  textXRangeStep: 90,
   rangeStep: 20,
   pointPadding: 0.5,
 
@@ -531,7 +521,7 @@ export interface Scale {
    *
    * If `rangeStep` is `null` or if the view contains the scale's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` for `x` scales and `height` for `y` scales), `rangeStep` will be automatically determined to fit the size of the view.
    *
-   * __Default value:__  derived the [scale config](https://vega.github.io/vega-lite/docs/config.html#scale-config)'s `textXRangeStep` (`90` by default) for x-scales of `text` marks and `rangeStep` (`21` by default) for x-scales of other marks and y-scales.
+   * __Default value:__  derived the [scale config](https://vega.github.io/vega-lite/docs/config.html#scale-config)'s `rangeStep` (`20` by default).
    *
    * __Warning__: If `rangeStep` is `null` and the cardinality of the scale's domain is higher than `width` or `height`, the rangeStep might become less than one pixel and the mark might not appear correctly.
    *

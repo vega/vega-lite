@@ -113,13 +113,7 @@ function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height'): Layout
   } else if (model.hasProjection) {
     return config.view[sizeType];
   } else {
-    // No scale - set default size
-    if (sizeType === 'width' && model.mark === 'text') {
-      // width for text mark without x-field is a bit wider than typical range step
-      return config.scale.textXRangeStep;
-    }
-
-    // Set width/height equal to rangeStep config or if rangeStep is null, use value from default scale config.
+    // No scale - set default width/height to rangeStep config or if rangeStep is null, use value from default scale config.
     return config.scale.rangeStep || defaultScaleConfig.rangeStep;
   }
 }

@@ -118,26 +118,6 @@ describe('compile/scale', () => {
         }
       });
 
-      it("should return config.scale.textXRangeStep by default for text mark's x band/point scales.", () => {
-        for (const scaleType of ['point', 'band'] as ScaleType[]) {
-          expect(
-            parseRangeForChannel(
-              'x',
-              identity,
-              scaleType,
-              NOMINAL,
-              {},
-              {scale: {textXRangeStep: 55}},
-              undefined,
-              'text',
-              false,
-              'plot_width',
-              []
-            )
-          ).toEqual(makeImplicit({step: 55}));
-        }
-      });
-
       it('should return specified rangeStep if topLevelSize is undefined for band/point scales', () => {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
           expect(
@@ -214,26 +194,6 @@ describe('compile/scale', () => {
               {view: {width: 200}, scale: {rangeStep: null}},
               undefined,
               'point',
-              false,
-              'plot_width',
-              []
-            )
-          ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
-        }
-      });
-
-      it('should return default topLevelSize for text if textXRangeStep config is null', () => {
-        for (const scaleType of ['point', 'band'] as ScaleType[]) {
-          expect(
-            parseRangeForChannel(
-              'x',
-              identity,
-              scaleType,
-              NOMINAL,
-              {},
-              {view: {width: 200}, scale: {textXRangeStep: null}},
-              undefined,
-              'text',
               false,
               'plot_width',
               []

@@ -47,7 +47,7 @@ This example shows a plot with a continuous y-scale and a discrete x-scale:
 
 <span class="vl-example" data-name="bar_size_fit"></span>
 
-- If `x` / `y` is not mapped to a field, the width / height is derived from [config.scale.rangeStep](#scale-config) except for the width when the mark is `text`. In that case, the width will be drawn from [config.scale.textXRangeStep](#scale-config).
+- If `x` / `y` is not mapped to a field, the width / height is derived from [config.scale.rangeStep](#scale-config).
 
 For example, the following plot use `21` as a default height.
 
