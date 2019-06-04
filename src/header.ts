@@ -105,6 +105,13 @@ export interface CoreHeader extends FormatMixins {
   // ---------- Label ----------
 
   /**
+   * A boolean flag indicating if labels should be included as part of the header.
+   *
+   * __Default value:__ `true`.
+   */
+  labels?: boolean;
+
+  /**
    * Horizontal text alignment of header labels.
    */
   labelAlign?: Align;
