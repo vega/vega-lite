@@ -231,14 +231,8 @@ function defaultRange(
     case X:
     case Y:
       if (util.contains(['point', 'band'], scaleType) && !noRangeStep) {
-        if (channel === X && mark === 'text') {
-          if (config.scale.textXRangeStep) {
-            return {step: config.scale.textXRangeStep};
-          }
-        } else {
-          if (config.scale.rangeStep) {
-            return {step: config.scale.rangeStep};
-          }
+        if (config.scale.rangeStep) {
+          return {step: config.scale.rangeStep};
         }
       }
 
