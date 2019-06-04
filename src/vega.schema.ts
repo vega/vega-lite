@@ -24,6 +24,7 @@ import {NiceTime, ScaleType} from './scale';
 import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
+import {SortOrder} from './sort';
 
 export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
@@ -857,11 +858,9 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
 
 export const VG_MARK_CONFIGS = flagKeys(VG_MARK_CONFIG_INDEX);
 
-export type VgComparatorOrder = 'ascending' | 'descending';
-
 export interface VgComparator {
   field?: string | string[];
-  order?: VgComparatorOrder | VgComparatorOrder[];
+  order?: SortOrder | SortOrder[];
 }
 
 export interface VgWindowTransform {

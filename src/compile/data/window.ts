@@ -3,9 +3,10 @@ import {isAggregateOp} from '../../aggregate';
 import {vgField} from '../../channeldef';
 import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
-import {VgComparator, VgComparatorOrder, VgJoinAggregateTransform, VgWindowTransform} from '../../vega.schema';
+import {VgComparator, VgJoinAggregateTransform, VgWindowTransform} from '../../vega.schema';
 import {unique} from './../../util';
 import {DataFlowNode} from './dataflow';
+import {SortOrder} from '../../sort';
 
 /**
  * A class for the window transform nodes
@@ -26,12 +27,9 @@ export class WindowTransformNode extends DataFlowNode {
   public dependentFields() {
     const out = new Set<string>();
 
-    if (this.transform.groupby) {
-      this.transform.groupby.forEach(f => out.add(f));
-    }
-    if (this.transform.sort) {
-      this.transform.sort.forEach(m => out.add(m.field));
-    }
+    (this.transform.groupby || []).forEach(f => out.add(f));
+    (this.transform.sort || []).forEach(m => out.add(m.field));
+
     this.transform.window
       .map(w => w.field)
       .filter(f => f !== undefined)
@@ -79,7 +77,7 @@ export class WindowTransformNode extends DataFlowNode {
     }
 
     const sortFields: string[] = [];
-    const sortOrder: VgComparatorOrder[] = [];
+    const sortOrder: SortOrder[] = [];
     if (this.transform.sort !== undefined) {
       for (const sortField of this.transform.sort) {
         sortFields.push(sortField.field);

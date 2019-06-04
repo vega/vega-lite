@@ -3,10 +3,11 @@ import {FieldName, getTypedFieldDef, isFieldDef, TypedFieldDef, vgField} from '.
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate, getFirstDefined, hash} from '../../util';
-import {VgComparatorOrder, VgCompare, VgTransform} from '../../vega.schema';
+import {VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
+import {SortFields, SortOrder} from '../../sort';
 
 function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce(
@@ -46,7 +47,7 @@ export interface StackComponent {
    * Field that determines order of levels in the stacked charts.
    * Used in both but optional in transform.
    */
-  sort: VgCompare;
+  sort: SortFields;
 
   /** Mode for stacking marks.
    */
@@ -88,14 +89,14 @@ export class StackNode extends DataFlowNode {
     const {stack, groupby, as, offset = 'zero'} = stackTransform;
 
     const sortFields: string[] = [];
-    const sortOrder: VgComparatorOrder[] = [];
+    const sortOrder: SortOrder[] = [];
     if (stackTransform.sort !== undefined) {
       for (const sortField of stackTransform.sort) {
         sortFields.push(sortField.field);
         sortOrder.push(getFirstDefined(sortField.order, 'ascending'));
       }
     }
-    const sort: VgCompare = {
+    const sort: SortFields = {
       field: sortFields,
       order: sortOrder
     };
@@ -135,7 +136,7 @@ export class StackNode extends DataFlowNode {
     const stackby = getStackByFields(model);
     const orderDef = model.encoding.order;
 
-    let sort: VgCompare;
+    let sort: SortFields;
     if (isArray(orderDef) || isFieldDef(orderDef)) {
       sort = sortParams(orderDef);
     } else {
@@ -181,13 +182,7 @@ export class StackNode extends DataFlowNode {
 
     this.getGroupbyFields().forEach(f => out.add(f));
     this._stack.facetby.forEach(f => out.add(f));
-
-    const field = this._stack.sort.field;
-    if (isArray(field)) {
-      (field as [string]).forEach(f => out.add(f));
-    } else {
-      out.add(field as string);
-    }
+    this._stack.sort.field.forEach(f => out.add(f));
 
     return out;
   }
