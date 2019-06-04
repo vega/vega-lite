@@ -44,9 +44,6 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "key"},
-              "tooltip": {
-                "signal": "{\"x\": format(datum[\"x\"], \"\"), \"value\": format(datum[\"value\"], \"\"), \"key\": ''+datum[\"key\"]}"
-              },
               "x": {"scale": "x", "field": "x"},
               "y": {"scale": "y", "field": "value"},
               "defined": {
