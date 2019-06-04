@@ -182,15 +182,5 @@ describe('compile/layout', () => {
       const size = sizeSignals(model, 'width');
       expect(size).toEqual([{name: 'width', value: 17}]);
     });
-
-    it('should return textXRangeStep if axis is not mapped for X of text mark', () => {
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: 'text',
-        encoding: {},
-        config: {scale: {textXRangeStep: 91}}
-      });
-      const size = sizeSignals(model, 'width');
-      expect(size).toEqual([{name: 'width', value: 91}]);
-    });
   });
 });

@@ -7,19 +7,18 @@ describe('compile/layout', () => {
         width: 123,
         height: 456,
         mark: 'text',
-        encoding: {},
-        config: {scale: {textXRangeStep: 91}}
+        encoding: {}
       });
 
       expect(model.component.layoutSize.explicit.width).toBe(123);
       expect(model.component.layoutSize.explicit.height).toBe(456);
     });
 
-    it('should have width = default textXRangeStep for text mark without x', () => {
+    it('should have width = default xRangeStep for text mark without x', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'text',
         encoding: {},
-        config: {scale: {textXRangeStep: 91}}
+        config: {scale: {rangeStep: 91}}
       });
 
       expect(model.component.layoutSize.implicit.width).toBe(91);
