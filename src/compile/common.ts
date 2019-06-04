@@ -15,10 +15,11 @@ import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {getFirstDefined, stringify} from '../util';
-import {BaseMarkConfig, VgCompare, VgEncodeEntry} from '../vega.schema';
+import {BaseMarkConfig, VgEncodeEntry} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
+import {SortFields} from '../sort';
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {
   for (const property of propsList) {
@@ -176,7 +177,7 @@ export function timeFormatExpression(
 export function sortParams(
   orderDef: OrderFieldDef<string> | OrderFieldDef<string>[],
   fieldRefOption?: FieldRefOption
-): VgCompare {
+): SortFields {
   return (isArray(orderDef) ? orderDef : [orderDef]).reduce(
     (s, orderChannelDef) => {
       s.field.push(vgField(orderChannelDef, fieldRefOption));
