@@ -18,6 +18,10 @@ An integral part of the data visualization process is encoding data with visual 
     "y": ...,
     "x2": ...,
     "y2": ...,
+    "xError": ...,
+    "yError": ...,
+    "xError2": ...,
+    "yError2": ...,
 
     // Geographic Position Channels
     "longtitude": ...,
