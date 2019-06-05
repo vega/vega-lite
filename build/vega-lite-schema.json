@@ -5590,6 +5590,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "labelFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style of the header label."
+        },
         "labelLimit": {
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
@@ -5643,6 +5647,10 @@
           "description": "Font size of the header title.",
           "minimum": 0,
           "type": "number"
+        },
+        "titleFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style of the header title."
         },
         "titleFontWeight": {
           "$ref": "#/definitions/FontWeight",
@@ -5705,6 +5713,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "labelFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style of the header label."
+        },
         "labelLimit": {
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
@@ -5759,6 +5771,10 @@
           "description": "Font size of the header title.",
           "minimum": 0,
           "type": "number"
+        },
+        "titleFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style of the header title."
         },
         "titleFontWeight": {
           "$ref": "#/definitions/FontWeight",
