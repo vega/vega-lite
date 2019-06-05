@@ -83,7 +83,7 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 ### Title
 
-{% include table.html props="title,titleAlign,titleAnchor,titleAngle,titleBaseline,titleColor,titleFont,titleFontSize,titleFontWeight,titleLimit,titleOpacity,titlePadding,titleX,titleY" source="Axis" %}
+{% include table.html props="title,titleAlign,titleAnchor,titleAngle,titleBaseline,titleColor,titleFont,titleFontSize,titleFontStyle,titleFontWeight,titleLimit,titleOpacity,titlePadding,titleX,titleY" source="Axis" %}
 
 For example, the following plot has a customized x-axis title.
 
