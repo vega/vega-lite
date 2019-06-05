@@ -21,3 +21,5 @@ examples/all-examples.json
 build/*
 !build/vega-lite-schema.json
 .jekyll-metadata
+prettier.config.js
+.eslintrc.js
