@@ -1,5 +1,5 @@
 import {Color} from './vega.schema';
-import {Align, FontWeight, Orient, TextBaseline, TitleAnchor, TitleConfig} from 'vega';
+import {Align, FontWeight, Orient, TextBaseline, TitleAnchor, TitleConfig, FontStyle} from 'vega';
 import {FormatMixins, Guide, VlOnlyGuideConfig} from './guide';
 import {keys} from './util';
 
@@ -11,6 +11,7 @@ export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof CoreHeader]: keyof TitleC
   titleColor: 'color',
   titleFont: 'font',
   titleFontSize: 'fontSize',
+  titleFontStyle: 'fontStyle',
   titleFontWeight: 'fontWeight',
   titleLimit: 'limit',
   titleOrient: 'orient',
@@ -24,6 +25,7 @@ export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof CoreHeader]: keyof TitleC
   labelColor: 'color',
   labelFont: 'font',
   labelFontSize: 'fontSize',
+  labelFontStyle: 'fontStyle',
   labelLimit: 'limit',
   labelOrient: 'orient',
   labelPadding: 'offset'
@@ -61,6 +63,7 @@ export interface CoreHeader extends FormatMixins {
    * __Default value:__ `"middle"`
    */
   titleBaseline?: TextBaseline;
+
   /**
    * Color of the header title, can be in hex color code or regular color name.
    */
@@ -77,6 +80,11 @@ export interface CoreHeader extends FormatMixins {
    * @minimum 0
    */
   titleFontSize?: number;
+
+  /**
+   * The font style of the header title.
+   */
+  titleFontStyle?: FontStyle;
 
   /**
    * Font weight of the header title.
@@ -148,6 +156,11 @@ export interface CoreHeader extends FormatMixins {
    * @minimum 0
    */
   labelFontSize?: number;
+
+  /**
+   * The font style of the header label.
+   */
+  labelFontStyle?: FontStyle;
 
   /**
    * The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.
