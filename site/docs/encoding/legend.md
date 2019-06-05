@@ -70,7 +70,7 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### Labels
 
-{% include table.html props="format,formatType,labelAlign,labelBaseline,labelColor,labelFont,labelFontSize,labelLimit,labelOffset,labelOverlap" source="Legend" %}
+{% include table.html props="format,formatType,labelAlign,labelBaseline,labelColor,labelFont,labelFontSize,labelFontStyle,labelLimit,labelOffset,labelOverlap" source="Legend" %}
 
 ### Symbols
 
