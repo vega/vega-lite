@@ -28,6 +28,9 @@ import {SortOrder} from './sort';
 
 export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
+/**
+ * @format color-hex
+ */
 export type Color = string;
 
 export interface VgData {

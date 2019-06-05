@@ -1,3 +1,4 @@
+import {Color} from './vega.schema';
 import {Align, FontWeight, Orient, TextBaseline, TitleAnchor, TitleConfig} from 'vega';
 import {FormatMixins, Guide, VlOnlyGuideConfig} from './guide';
 import {keys} from './util';
@@ -63,7 +64,7 @@ export interface CoreHeader extends FormatMixins {
   /**
    * Color of the header title, can be in hex color code or regular color name.
    */
-  titleColor?: string;
+  titleColor?: Color;
 
   /**
    * Font of the header title. (e.g., `"Helvetica Neue"`).
@@ -134,7 +135,7 @@ export interface CoreHeader extends FormatMixins {
   /**
    * The color of the header label, can be in hex color code or regular color name.
    */
-  labelColor?: string;
+  labelColor?: Color;
 
   /**
    * The font of the header label.
