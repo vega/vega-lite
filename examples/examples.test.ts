@@ -14,9 +14,11 @@ const vgSchema = require('vega/build/vega-schema.json');
 const ajv = new Ajv({
   validateSchema: true,
   allErrors: true,
-  extendRefs: 'fail'
+  extendRefs: 'fail',
+  schemaId: 'auto' // for draft 04 and 06 schemas
 });
 
+ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
 ajv.addFormat('color-hex', () => true);
 
 const validateVl = ajv.compile(vlSchema);
