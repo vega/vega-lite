@@ -38,7 +38,7 @@ import {Flag, keys} from './util';
 export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
 export type OmitValueRef<T> = {
-  [P in keyof T]?: Exclude<Exclude<Exclude<T[P], ScaledValueRef<any>>, NumericValueRef>, ColorValueRef>
+  [P in keyof T]?: T[P] extends ScaledValueRef<any> | NumericValueRef | ColorValueRef ? never : T[P]
 };
 
 export interface VgData {
