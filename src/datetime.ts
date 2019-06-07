@@ -208,8 +208,9 @@ function normalizeDay(d: string | number) {
  * Return Vega Expression for a particular date time.
  * @param d
  * @param normalize whether to normalize quarter, month, day.
+ * @param toJSON whether to return the date in JSON format
  */
-export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
+export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false, toJSON = false) {
   const units: (string | number)[] = [];
 
   if (normalize && d.day !== undefined) {
@@ -260,9 +261,19 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
     }
   }
 
+  const unitsString = units.join(', ');
+
+  if (toJSON) {
+    if (d.utc) {
+      return new Function(`return new Date(Date.UTC(${unitsString}))`)().toJSON();
+    } else {
+      return new Function(`return new Date(${unitsString})`)().toJSON();
+    }
+  }
+
   if (d.utc) {
-    return `utc(${units.join(', ')})`;
+    return `utc(${unitsString})`;
   } else {
-    return `datetime(${units.join(', ')})`;
+    return `datetime(${unitsString})`;
   }
 }
