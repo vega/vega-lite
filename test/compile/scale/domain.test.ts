@@ -902,6 +902,24 @@ describe('compile/scale', () => {
         fields: [[1, 2, 3, 4], [3, 4, 5, 6]]
       });
     });
+
+    it('should not add sort to explicit domain and sort', () => {
+      log.wrap(localLogger => {
+        const domain = mergeDomains([[1, 2, 3, 4], {field: 'foo', data: 'data', sort: {op: 'sum', field: 'value'}}]);
+
+        expect(domain).toEqual({
+          fields: [[1, 2, 3, 4], {field: 'foo', data: 'data'}],
+          sort: true
+        });
+
+        expect(localLogger.warns[0]).toEqual(
+          log.message.domainSortDropped({
+            op: 'mean',
+            field: 'c'
+          })
+        );
+      });
+    });
   });
 
   describe('domainSort()', () => {

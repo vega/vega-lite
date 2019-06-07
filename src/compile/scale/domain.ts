@@ -1,5 +1,5 @@
 import {AggregateOp} from 'vega';
-import {isObject, isString} from 'vega-util';
+import {isArray, isObject, isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {isBinning} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
@@ -433,7 +433,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
     util.hash
   );
 
-  const sorts: VgSortField[] = util.unique(
+  const sorts: (VgSortField | 'fixed')[] = util.unique(
     domains
       .map(d => {
         if (isDataRefDomain(d)) {
@@ -449,6 +449,8 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
             }
           }
           return s;
+        } else if (isArray(d)) {
+          return 'fixed'; // if the domain is an array, it defines a sort order
         }
         return undefined;
       })
@@ -466,9 +468,12 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
         log.warn(log.message.MORE_THAN_ONE_SORT);
         sort = true;
       }
+      if (sort === 'fixed') {
+        sort = false;
+      }
       return {
         ...domain,
-        sort
+        ...(sort ? {sort} : {})
       };
     }
     return domain;
@@ -477,22 +482,20 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
   // only keep simple sort properties that work with unioned domains
   const simpleSorts = util.unique(
     sorts.map(s => {
-      if (util.isBoolean(s)) {
-        return s;
-      }
-      if (s.op === 'count') {
+      if (util.isBoolean(s) || s === 'fixed' || s.op === 'count') {
         return s;
       }
       log.warn(log.message.domainSortDropped(s));
       return true;
     }),
     util.hash
-  ) as VgUnionSortField[];
+  ) as (VgUnionSortField | 'fixed')[];
 
   let sort: VgUnionSortField;
 
   if (simpleSorts.length === 1) {
-    sort = simpleSorts[0];
+    const s = simpleSorts[0];
+    sort = s === 'fixed' ? false : s;
   } else if (simpleSorts.length > 1) {
     log.warn(log.message.MORE_THAN_ONE_SORT);
     sort = true;
