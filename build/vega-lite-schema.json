@@ -1993,7 +1993,6 @@
       "type": "object"
     },
     "Color": {
-      "format": "color-hex",
       "type": "string"
     },
     "Encoding": {
