@@ -54,7 +54,7 @@ export type ScaleType =
  */
 const SCALE_CATEGORY_INDEX: {
   // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-  [k in ScaleType]: ScaleType | 'numeric' | 'ordinal-position' | 'discretizing'
+  [k in ScaleType]: ScaleType | 'numeric' | 'ordinal-position' | 'discretizing';
 } = {
   linear: 'numeric',
   log: 'numeric',
@@ -92,7 +92,7 @@ export function scaleCompatible(scaleType1: ScaleType, scaleType2: ScaleType) {
  */
 const SCALE_PRECEDENCE_INDEX: {
   // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-  [k in ScaleType]: number
+  [k in ScaleType]: number;
 } = {
   // numeric
   linear: 0,

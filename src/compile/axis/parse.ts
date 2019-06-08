@@ -38,7 +38,7 @@ export function parseLayerAxes(model: LayerModel) {
   const {axes, resolve} = model.component;
   const axisCount: {
     // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-    [k in AxisOrient]: number
+    [k in AxisOrient]: number;
   } = {top: 0, bottom: 0, right: 0, left: 0};
 
   for (const child of model.children) {

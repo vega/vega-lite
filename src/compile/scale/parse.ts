@@ -87,7 +87,7 @@ function parseNonUnitScaleCore(model: Model) {
 
   const scaleTypeWithExplicitIndex: {
     // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-    [k in ScaleChannel]?: Explicit<ScaleType>
+    [k in ScaleChannel]?: Explicit<ScaleType>;
   } = {};
   const resolve = model.component.resolve;
 
