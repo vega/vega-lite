@@ -157,7 +157,7 @@ export const FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
 export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = ['filled', 'color', 'tooltip'];
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
-  [k in typeof PRIMITIVE_MARKS[0]]?: (keyof MarkConfigMixins[k])[]
+  [k in typeof PRIMITIVE_MARKS[0]]?: (keyof MarkConfigMixins[k])[];
 } = {
   area: ['line', 'point'],
   bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
