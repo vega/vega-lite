@@ -19,7 +19,6 @@ const ajv = new Ajv({
 });
 
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
-ajv.addFormat('color-hex', () => true);
 
 const validateVl = ajv.compile(vlSchema);
 const validateVg = ajv.compile(vgSchema);

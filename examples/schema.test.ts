@@ -11,8 +11,6 @@ describe('Schema', () => {
       extendRefs: 'fail'
     });
 
-    ajv.addFormat('color-hex', () => true);
-
     // now validate our data against the schema
     const valid = ajv.validateSchema(specSchema);
 
