@@ -548,6 +548,15 @@ export interface Scale {
   scheme?: string | SchemeParams;
 
   /**
+   * The alignment of the steps within the scale range.
+   *
+   * This value must lie in the range `[0,1]`. A value of `0.5` indicates that the steps should be centered within the range. A value of `0` or `1` may be used to shift the bands to one side, say to position them adjacent to an axis.
+   *
+   * __Default value:__ `0.5`
+   */
+  align?: number;
+
+  /**
    * An array of bin boundaries over the scale domain. If provided, axes and legends will use the bin boundaries to inform the choice of tick marks and text labels.
    */
   bins?: number[];
@@ -653,6 +662,7 @@ export interface Scale {
 const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {
   type: 1,
   domain: 1,
+  align: 1,
   range: 1,
   rangeStep: 1,
   scheme: 1,
@@ -690,7 +700,7 @@ export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = flagKeys(NON_TYPE_DOM
 
 export const SCALE_TYPE_INDEX = generateScaleTypeIndex();
 
-export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale) {
+export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale): boolean {
   switch (propName) {
     case 'type':
     case 'domain':
@@ -708,6 +718,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
       return isContinuousToContinuous(scaleType) || contains(['point', 'band'], scaleType);
     case 'paddingOuter':
     case 'rangeStep':
+    case 'align':
       return contains(['point', 'band'], scaleType);
     case 'paddingInner':
       return scaleType === 'band';
@@ -736,8 +747,6 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
         )
       );
   }
-  /* istanbul ignore next: should never reach here*/
-  throw new Error(`Invalid scale property ${propName}.`);
 }
 
 /**
@@ -751,6 +760,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
         return log.message.cannotUseScalePropertyWithNonColor(channel);
       }
       return undefined;
+    case 'align':
     case 'type':
     case 'bins':
     case 'domain':
@@ -769,8 +779,6 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
     case 'zero':
       return undefined; // GOOD!
   }
-  /* istanbul ignore next: it should never reach here */
-  throw new Error(`Invalid scale property "${propName}".`);
 }
 
 export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type): boolean {

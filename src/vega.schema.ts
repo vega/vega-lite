@@ -1,30 +1,11 @@
-import {
-  AggregateOp,
-  Align,
-  Compare as VgCompare,
-  ExprRef as VgExprRef,
-  Field as VgField,
-  FlattenTransform as VgFlattenTransform,
-  FoldTransform as VgFoldTransform,
-  FontStyle as VgFontStyle,
-  FontWeight as VgFontWeight,
-  LayoutAlign,
-  Orientation,
-  ProjectionType,
-  SampleTransform as VgSampleTransform,
-  SignalRef,
-  SortField as VgSortField,
-  TextBaseline as VgTextBaseline,
-  Title as VgTitle,
-  UnionSortField as VgUnionSortField
-} from 'vega';
+import {AggregateOp, Align, Compare as VgCompare, ExprRef as VgExprRef, Field as VgField, FlattenTransform as VgFlattenTransform, FoldTransform as VgFoldTransform, FontStyle as VgFontStyle, FontWeight as VgFontWeight, LayoutAlign, Orientation, ProjectionType, SampleTransform as VgSampleTransform, SignalRef, SortField as VgSortField, TextBaseline as VgTextBaseline, Title as VgTitle, UnionSortField as VgUnionSortField} from 'vega';
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
+import {SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
-import {SortOrder} from './sort';
 
 export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
@@ -191,6 +172,7 @@ export interface VgProjection {
 export interface VgScale {
   name: string;
   type: ScaleType;
+  align?: number;
   domain?: VgDomain;
   domainRaw?: SignalRef;
   bins?: number[] | SignalRef;
