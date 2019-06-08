@@ -312,6 +312,24 @@ export function supportMark(channel: Channel, mark: Mark) {
   return getSupportedMark(channel)[mark];
 }
 
+const ALL_MARKS: {[m in Mark]: 'always'} = {
+  // all marks
+  area: 'always',
+  bar: 'always',
+  circle: 'always',
+  geoshape: 'always',
+  line: 'always',
+  rule: 'always',
+  point: 'always',
+  rect: 'always',
+  square: 'always',
+  trail: 'always',
+  text: 'always',
+  tick: 'always'
+};
+
+const {geoshape: _g, ...ALL_MARKS_EXCEPT_GEOSHAPE} = ALL_MARKS;
+
 /**
  * Return a dictionary showing whether a channel supports mark type.
  * @param channel
@@ -338,39 +356,13 @@ function getSupportedMark(channel: Channel): SupportedMark {
     case FACET:
     case ROW: // falls through
     case COLUMN:
-      return {
-        // all marks
-        point: 'always',
-        tick: 'always',
-        rule: 'always',
-        circle: 'always',
-        square: 'always',
-        bar: 'always',
-        rect: 'always',
-        line: 'always',
-        trail: 'always',
-        area: 'always',
-        text: 'always',
-        geoshape: 'always'
-      };
+      return ALL_MARKS;
     case X:
     case Y:
     case LATITUDE:
     case LONGITUDE:
-      return {
-        // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
-        point: 'always',
-        tick: 'always',
-        rule: 'always',
-        circle: 'always',
-        square: 'always',
-        bar: 'always',
-        rect: 'always',
-        line: 'always',
-        trail: 'always',
-        area: 'always',
-        text: 'always'
-      };
+      // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
+      return ALL_MARKS_EXCEPT_GEOSHAPE;
     case X2:
     case Y2:
     case LATITUDE2:
