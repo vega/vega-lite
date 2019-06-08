@@ -9208,6 +9208,10 @@
     "Scale": {
       "additionalProperties": false,
       "properties": {
+        "align": {
+          "description": "The alignment of the steps within the scale range.\n\nThis value must lie in the range `[0,1]`. A value of `0.5` indicates that the steps should be centered within the range. A value of `0` or `1` may be used to shift the bands to one side, say to position them adjacent to an axis.\n\n__Default value:__ `0.5`",
+          "type": "number"
+        },
         "base": {
           "description": "The logarithm base of the `log` scale (default `10`).",
           "type": "number"
