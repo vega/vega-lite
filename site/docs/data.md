@@ -131,7 +131,7 @@ The sequence generator creates a set of numeric values based on given start, sto
 
 {% include table.html props="start,stop,step,as" source="SequenceParams" %}
 
-For example, the following specification generates a domain of number values and then uses calculate transforms to draw sine and cosine curves:
+For example, the following specification generates a domain of number values and then uses calculate transforms to draw a sine curve:
 
 <span class="vl-example" data-name="sequence_line"></span>
 
