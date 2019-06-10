@@ -527,23 +527,31 @@ export type Dir = 'ltr' | 'rtl';
 export interface BaseMarkConfig {
   /**
    * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without `x2`.
+   *
+   * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
    */
-  x?: number;
+  x?: number | 'width';
 
   /**
    * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without `y2`
+   *
+   * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y?: number;
+  y?: number | 'height';
 
   /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   *
+   * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
    */
-  x2?: number;
+  x2?: number | 'width';
 
   /**
    * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   *
+   * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y2?: number;
+  y2?: number | 'width';
 
   /**
    * Default Fill Color.  This has higher precedence than `config.color`
