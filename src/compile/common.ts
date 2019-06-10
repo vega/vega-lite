@@ -12,6 +12,7 @@ import {
 import {Config, StyleConfigIndex} from '../config';
 import {MarkConfig, MarkDef} from '../mark';
 import {ScaleType} from '../scale';
+import {SortFields} from '../sort';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {getFirstDefined, stringify} from '../util';
@@ -19,7 +20,6 @@ import {BaseMarkConfig, VgEncodeEntry} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
-import {SortFields} from '../sort';
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {
   for (const property of propsList) {
@@ -103,7 +103,7 @@ export function formatSignalRef(
       return {
         signal: binFormatExpression(startField, endField, format, config)
       };
-    } else if (fieldDef.type === 'quantitative') {
+    } else if (fieldDef.type === 'quantitative' || format) {
       return {
         signal: `${formatExpr(vgField(fieldDef, {expr, binSuffix: 'range'}), format)}`
       };
