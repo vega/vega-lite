@@ -22,6 +22,7 @@ export const X: 'x' = 'x';
 export const Y: 'y' = 'y';
 export const X2: 'x2' = 'x2';
 export const Y2: 'y2' = 'y2';
+
 // Geo Position
 export const LATITUDE: 'latitude' = 'latitude';
 export const LONGITUDE: 'longitude' = 'longitude';
@@ -55,18 +56,17 @@ export const HREF: 'href' = 'href';
 
 export type PositionChannel = 'x' | 'y' | 'x2' | 'y2';
 
-export type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
-
-export function isGeoPositionChannel(c: Channel): c is GeoPositionChannel {
-  switch (c) {
-    case LATITUDE:
-    case LATITUDE2:
-    case LONGITUDE:
-    case LONGITUDE2:
-      return true;
-  }
-  return false;
+const POSITION_CHANNEL_INDEX: Flag<PositionChannel> = {
+  x: 1,
+  y: 1,
+  x2: 1,
+  y2: 1
+};
+export function isPositionChannel(c: Channel): c is PositionChannel {
+  return c in POSITION_CHANNEL_INDEX;
 }
+
+export type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
 
 export function getPositionChannelFromLatLong(channel: GeoPositionChannel): PositionChannel {
   switch (channel) {
@@ -81,21 +81,21 @@ export function getPositionChannelFromLatLong(channel: GeoPositionChannel): Posi
   }
 }
 
-export const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel> = {
+const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel> = {
   longitude: 1,
   longitude2: 1,
   latitude: 1,
   latitude2: 1
 };
 
+export function isGeoPositionChannel(c: Channel): c is GeoPositionChannel {
+  return c in GEOPOSITION_CHANNEL_INDEX;
+}
+
 export const GEOPOSITION_CHANNELS = flagKeys(GEOPOSITION_CHANNEL_INDEX);
 
 const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
-  // position
-  x: 1,
-  y: 1,
-  x2: 1,
-  y2: 1,
+  ...POSITION_CHANNEL_INDEX,
 
   ...GEOPOSITION_CHANNEL_INDEX,
 
