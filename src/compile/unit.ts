@@ -38,11 +38,12 @@ import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
 import {ScaleIndex} from './scale/component';
 import {
   assembleTopLevelSignals,
+  assembleUnitSelectionAggregateData,
   assembleUnitSelectionData,
   assembleUnitSelectionMarks,
   assembleUnitSelectionSignals
 } from './selection/assemble';
-import {parseUnitSelection} from './selection/parse';
+import {parseUnitSelection, parseUnitSelectionComparisonTest} from './selection/parse';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -204,6 +205,10 @@ export class UnitModel extends ModelWithField {
     this.component.selection = parseUnitSelection(this, this.selection);
   }
 
+  public parseSelectionComparisons() {
+    parseUnitSelectionComparisonTest(this, this.component.selection);
+  }
+
   public parseMarkGroup() {
     this.component.mark = parseMarkGroups(this);
   }
@@ -222,6 +227,10 @@ export class UnitModel extends ModelWithField {
 
   public assembleSelectionData(data: VgData[]): VgData[] {
     return assembleUnitSelectionData(this, data);
+  }
+
+  public assembleSelectionAggregateData(data: VgData[]): VgData[] {
+    return assembleUnitSelectionAggregateData(this, data);
   }
 
   public assembleLayout(): VgLayout {

@@ -10,6 +10,7 @@ import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {Model} from './model';
 import {RepeaterValue} from './repeater';
+// import {parseSelectionComparisonFilterTransform} from './selection/parse';
 
 export abstract class BaseConcatModel extends Model {
   constructor(
@@ -40,6 +41,14 @@ export abstract class BaseConcatModel extends Model {
       keys(child.component.selection).forEach(key => {
         this.component.selection[key] = child.component.selection[key];
       });
+    }
+  }
+  public parseSelectionComparisons() {
+    // Parse conditional test in encoding channels and filter transforms
+    // for Selection Comparison predicates and store data for creating
+    // aggregate stores
+    for (const child of this.children) {
+      child.parseSelectionComparisons();
     }
   }
 
@@ -74,6 +83,10 @@ export abstract class BaseConcatModel extends Model {
 
   public assembleSelectionData(data: VgData[]): VgData[] {
     return this.children.reduce((db, child) => child.assembleSelectionData(db), data);
+  }
+
+  public assembleSelectionAggregateData(data: VgData[]): VgData[] {
+    return this.children.reduce((db, child) => child.assembleSelectionAggregateData(db), data);
   }
 
   public assembleMarks(): any[] {

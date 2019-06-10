@@ -3448,6 +3448,12 @@
       },
       "type": "object"
     },
+    "DatumSelectionComparisonPredicate": {
+      "additionalProperties": {
+        "$ref": "#/definitions/SelectionComparisonPredicate"
+      },
+      "type": "object"
+    },
     "Day": {
       "maximum": 7,
       "minimum": 1,
@@ -4892,7 +4898,7 @@
       "properties": {
         "filter": {
           "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "The `filter` property must be one of the predicate definitions:\n\n1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,\nwhere `datum` can be used to refer to the current data object\n\n2) one of the field predicates: [`equal`](https://vega.github.io/vega-lite/docs/filter.html#equal-predicate),\n[`lt`](https://vega.github.io/vega-lite/docs/filter.html#lt-predicate),\n[`lte`](https://vega.github.io/vega-lite/docs/filter.html#lte-predicate),\n[`gt`](https://vega.github.io/vega-lite/docs/filter.html#gt-predicate),\n[`gte`](https://vega.github.io/vega-lite/docs/filter.html#gte-predicate),\n[`range`](https://vega.github.io/vega-lite/docs/filter.html#range-predicate),\n[`oneOf`](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate),\nor [`valid`](https://vega.github.io/vega-lite/docs/filter.html#valid-predicate),\n\n3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate)\n\n4) a logical operand that combines (1), (2), or (3)."
+          "description": "The `filter` property must be one of the predicate definitions:\n\n1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,\nwhere `datum` can be used to refer to the current data object\n\n2) one of the field predicates: [`equal`](https://vega.github.io/vega-lite/docs/filter.html#equal-predicate),\n[`lt`](https://vega.github.io/vega-lite/docs/filter.html#lt-predicate),\n[`lte`](https://vega.github.io/vega-lite/docs/filter.html#lte-predicate),\n[`gt`](https://vega.github.io/vega-lite/docs/filter.html#gt-predicate),\n[`gte`](https://vega.github.io/vega-lite/docs/filter.html#gte-predicate),\n[`range`](https://vega.github.io/vega-lite/docs/filter.html#range-predicate),\n[`oneOf`](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate),\nor [`valid`](https://vega.github.io/vega-lite/docs/filter.html#valid-predicate),\n\n3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate)\n\n4) a [comparison selection predicate]\n\n5) a logical operand that combines (1), (2), (3) or (4)."
         }
       },
       "required": [
@@ -8920,6 +8926,9 @@
         },
         {
           "type": "string"
+        },
+        {
+          "$ref": "#/definitions/DatumSelectionComparisonPredicate"
         }
       ]
     },
@@ -9735,6 +9744,45 @@
           ]
         }
       },
+      "type": "object"
+    },
+    "SelectionComparisonPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/AggregateOp"
+        },
+        "eql": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "gt": {
+          "type": "string"
+        },
+        "gte": {
+          "type": "string"
+        },
+        "lt": {
+          "type": "string"
+        },
+        "lte": {
+          "type": "string"
+        },
+        "neql": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "eql",
+        "field",
+        "gt",
+        "gte",
+        "lt",
+        "lte",
+        "neql"
+      ],
       "type": "object"
     },
     "SelectionConfig": {

@@ -1,6 +1,6 @@
 import {InlineDataset, isUrlData} from '../../data';
 import {Dict} from '../../util';
-import {VgData} from '../../vega.schema';
+import {VgData, VgFilterTransform} from '../../vega.schema';
 import {DataComponent} from './';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
@@ -257,4 +257,60 @@ export function assembleRootData(dataComponent: DataComponent, datasets: Dict<In
   }
 
   return data;
+}
+
+export function assembleDataPosition(data: VgData[]): VgData[] {
+  const sortedData: VgData[] = [];
+  const visited: Boolean[] = new Array(data.length).fill(false);
+
+  const edges = data.map(d => {
+    const dependsOn = [];
+    const transforms = d.transform;
+    if (transforms) {
+      let matches: string[] = [];
+      const filters = transforms.filter(t => t.type === 'filter') as VgFilterTransform[];
+      const exprs = filters.map(f => f.expr);
+      for (const expr of exprs) {
+        // Is there a better alternative for this?
+        // Tests for strings vlComparisonTest('<result>'
+        // Many browser vendors don't support Regex lookbehinds thus capturing is used
+        const regex = /vlComparisonTest\('(.+?)'/g;
+        const startIndex = "vlComparisonTest('".length;
+        matches = expr.match(regex);
+        if (matches) {
+          matches = matches.map(m => m.slice(startIndex, -1));
+          matches.forEach(store => {
+            const index = data.findIndex(s => s.name === store);
+            if (index != -1) {
+              dependsOn.push(index);
+            }
+          });
+        }
+      }
+    }
+    if (d.source) {
+      dependsOn.push(data.findIndex(s => s.name === d.source));
+    }
+    return dependsOn;
+  });
+
+  edges.forEach((e, i) => {
+    if (!visited[i]) {
+      topologicalSort(i, e);
+    }
+  });
+
+  function topologicalSort(i: number, e: number[]) {
+    visited[i] = true;
+    if (e.length) {
+      e.forEach(index => {
+        if (!visited[index]) {
+          topologicalSort(index, edges[index]);
+        }
+      });
+    }
+    sortedData.push(data[i]);
+  }
+
+  return sortedData;
 }

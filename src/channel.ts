@@ -57,6 +57,8 @@ export type PositionChannel = 'x' | 'y' | 'x2' | 'y2';
 
 export type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
 
+export type TextTooltipChannel = 'text' | 'tooltip';
+
 export function isGeoPositionChannel(c: Channel): c is GeoPositionChannel {
   switch (c) {
     case LATITUDE:
@@ -120,6 +122,11 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   key: 1,
   tooltip: 1,
   href: 1
+};
+
+const TEXT_TOOLTIP_CHANNEL_INDEX: Flag<TextTooltipChannel> = {
+  text: 1,
+  tooltip: 1
 };
 
 export type ColorChannel = 'color' | 'fill' | 'stroke';
@@ -300,6 +307,16 @@ export type ScaleChannel = typeof SCALE_CHANNELS[0];
 export function isScaleChannel(channel: Channel): channel is ScaleChannel {
   return !!SCALE_CHANNEL_INDEX[channel];
 }
+
+// Declare CONDITION_CHANNEL_INDEX
+const CONDITION_CHANNEL_INDEX = {
+  ...NONPOSITION_SCALE_CHANNEL_INDEX,
+  ...TEXT_TOOLTIP_CHANNEL_INDEX
+};
+
+/** List of channels that support conditional encoding */
+export const CONDITION_CHANNELS = flagKeys(CONDITION_CHANNEL_INDEX);
+export type ConditionChannel = typeof CONDITION_CHANNELS[0];
 
 export type SupportedMark = {[mark in Mark]?: 'always' | 'binned'};
 

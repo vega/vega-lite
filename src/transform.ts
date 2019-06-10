@@ -26,7 +26,9 @@ export interface FilterTransform {
    *
    * 3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate)
    *
-   * 4) a logical operand that combines (1), (2), or (3).
+   * 4) a [comparison selection predicate]
+   *
+   * 5) a logical operand that combines (1), (2), (3) or (4).
    */
   // TODO: https://github.com/vega/vega-lite/issues/2901
   filter: LogicalOperand<Predicate>;

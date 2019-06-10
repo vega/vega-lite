@@ -1,7 +1,7 @@
 import {SingleDefChannel} from '../../channel';
 import {FieldRefOption, isScaleFieldDef, TypedFieldDef, vgField} from '../../channeldef';
 import {DateTime} from '../../datetime';
-import {fieldFilterExpression} from '../../predicate';
+import {fieldFilterExpression, FieldPredicate} from '../../predicate';
 import {isSortArray} from '../../sort';
 import {CalculateTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
@@ -40,7 +40,8 @@ export class CalculateNode extends DataFlowNode {
         const calculate =
           sort
             .map((sortValue, i) => {
-              return `${fieldFilterExpression({field, timeUnit, equal: sortValue})} ? ${i} : `;
+              // Fixing Interface for SelectionComparison in Predicate should fix this
+              return `${fieldFilterExpression({field, timeUnit, equal: sortValue} as FieldPredicate)} ? ${i} : `;
             })
             .join('') + sort.length;
 

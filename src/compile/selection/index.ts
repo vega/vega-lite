@@ -1,4 +1,4 @@
-import {Binding, NewSignal, SignalRef} from 'vega';
+import {Binding, NewSignal, SignalRef, AggregateOp} from 'vega';
 import {stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel';
 import {
@@ -20,6 +20,7 @@ import single from './single';
 import {SelectionProjection, SelectionProjectionComponent} from './transforms/project';
 
 export const STORE = '_store';
+export const AGG_STORE = '_aggregate_store';
 export const TUPLE = '_tuple';
 export const MODIFY = '_modify';
 export const SELECTION_DOMAIN = '_selection_domain_';
@@ -51,6 +52,18 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   zoom?: any;
   nearest?: any;
   clear?: any;
+  aggregates?: ComparisonFieldAggregate[];
+  data?: string;
+}
+
+export interface ComparisonFieldAggregate {
+  sfield: string;
+  op: AggregateOp;
+}
+
+export interface SelectionAggregate {
+  selection: string;
+  aggregates: ComparisonFieldAggregate[];
 }
 
 export interface SelectionCompiler<T extends SelectionType = SelectionType> {

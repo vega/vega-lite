@@ -238,6 +238,8 @@ export abstract class Model {
     this.renameTopLevelLayoutSizeSignal();
 
     this.parseSelections();
+    this.parseSelectionComparisons(); //depends on selections
+
     this.parseProjection();
     this.parseData(); // (pathorder) depends on markDef; selection filters depend on parsed selections; depends on projection because some transforms require the finalized projection name.
     this.parseAxesAndHeaders(); // depends on scale and layout size
@@ -248,6 +250,7 @@ export abstract class Model {
   public abstract parseData(): void;
 
   public abstract parseSelections(): void;
+  public abstract parseSelectionComparisons(): void;
 
   public parseScale() {
     parseScales(this);
@@ -285,6 +288,7 @@ export abstract class Model {
   public abstract assembleSignals(): NewSignal[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
+  public abstract assembleSelectionAggregateData(data: VgData[]): VgData[];
 
   public assembleGroupStyle(): string {
     if (this.type === 'unit' || this.type === 'layer') {
@@ -631,7 +635,7 @@ export abstract class Model {
    * Traverse a model's hierarchy to get a particular selection component.
    */
   public getSelectionComponent(variableName: string, origName: string): SelectionComponent {
-    let sel = this.component.selection[variableName];
+    let sel = this.component.selection && this.component.selection[variableName];
     if (!sel && this.parent) {
       sel = this.parent.getSelectionComponent(variableName, origName);
     }

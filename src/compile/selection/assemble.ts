@@ -1,7 +1,15 @@
 import {Signal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
-import {forEachSelection, MODIFY, SELECTION_DOMAIN, STORE, VL_SELECTION_RESOLVE} from '.';
+import {
+  forEachSelection,
+  MODIFY,
+  SELECTION_DOMAIN,
+  STORE,
+  VL_SELECTION_RESOLVE,
+  AGG_STORE,
+  ComparisonFieldAggregate
+} from '.';
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
@@ -116,6 +124,37 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
     const contains = data.filter(d => d.name === selCmpt.name + STORE);
     if (!contains.length) {
       data.push({name: selCmpt.name + STORE});
+    }
+  });
+
+  return data;
+}
+
+export function assembleUnitSelectionAggregateData(model: UnitModel, data: VgData[]): VgData[] {
+  forEachSelection(model, selCmpt => {
+    const {aggregates} = selCmpt;
+    if (aggregates) {
+      const containsAggregateStore = data.filter(d => d.name === selCmpt.name + AGG_STORE);
+      if (!containsAggregateStore.length) {
+        const aggregateStore = {} as VgData;
+
+        aggregateStore.name = selCmpt.name + AGG_STORE;
+        aggregateStore.source = model.lookupDataSource(selCmpt.data);
+        aggregateStore.transform = [{type: 'filter', expr: `vlSelectionTest('${selCmpt.name + STORE}', datum)`}];
+
+        const params = selCmpt.aggregates.reduce(
+          (p: any, a: ComparisonFieldAggregate): any => {
+            p.fields.push(a.sfield);
+            p.ops.push(a.op);
+            p.as.push(`${a.sfield}_${a.op}`);
+            return p;
+          },
+          {fields: [], ops: [], as: []}
+        );
+
+        aggregateStore.transform.push({type: 'aggregate', ...params});
+        data.push(aggregateStore);
+      }
     }
   });
 

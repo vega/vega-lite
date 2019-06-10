@@ -3,17 +3,21 @@ import {valueExpr, vgField} from './channeldef';
 import {DateTime} from './datetime';
 import {LogicalOperand} from './logical';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit} from './timeunit';
+import {AggregateOp} from 'vega';
+import {Flag, flagKeys, varName} from './util';
+import {AGG_STORE} from './compile/selection';
 
+// Lookup for better strategies for implementing Selection Comparison Interfaces
 export type Predicate =
   // a) FieldPredicate (but we don't type FieldFilter here so the schema has no nesting
   // and thus the documentation shows all of the types clearly)
-  | FieldEqualPredicate
+  | FieldEqualPredicate<SelectionComparisonPredicate>
   | FieldRangePredicate
   | FieldOneOfPredicate
-  | FieldLTPredicate
-  | FieldGTPredicate
-  | FieldLTEPredicate
-  | FieldGTEPredicate
+  | FieldLTPredicate<SelectionComparisonPredicate>
+  | FieldGTPredicate<SelectionComparisonPredicate>
+  | FieldLTEPredicate<SelectionComparisonPredicate>
+  | FieldGTEPredicate<SelectionComparisonPredicate>
   | FieldValidPredicate
   // b) Selection Predicate
   | SelectionPredicate
@@ -21,11 +25,11 @@ export type Predicate =
   | string;
 
 export type FieldPredicate =
-  | FieldEqualPredicate
-  | FieldLTPredicate
-  | FieldGTPredicate
-  | FieldLTEPredicate
-  | FieldGTEPredicate
+  | FieldEqualPredicate<SelectionComparisonPredicate>
+  | FieldLTPredicate<SelectionComparisonPredicate>
+  | FieldGTPredicate<SelectionComparisonPredicate>
+  | FieldLTEPredicate<SelectionComparisonPredicate>
+  | FieldGTEPredicate<SelectionComparisonPredicate>
   | FieldRangePredicate
   | FieldOneOfPredicate
   | FieldValidPredicate;
@@ -55,58 +59,101 @@ export interface FieldPredicateBase {
   field: string;
 }
 
-export interface FieldEqualPredicate extends FieldPredicateBase {
+export const DEFAULT_AGGREGATE = 'mean';
+export type ComparisonOp = 'lt' | 'gt' | 'lte' | 'gte' | 'equal' | 'nequal';
+
+const COMPARISON_OPERATOR_INDEX: Flag<ComparisonOp> = {
+  lt: 1,
+  lte: 1,
+  gt: 1,
+  gte: 1,
+  equal: 1,
+  nequal: 1
+};
+
+export const COMPARISON_OPERATORS = flagKeys(COMPARISON_OPERATOR_INDEX);
+
+export function getComparisonOperator(keys: string[]): ComparisonOp {
+  for (const key of keys) {
+    if (COMPARISON_OPERATORS.includes(key as ComparisonOp)) return key as ComparisonOp;
+  }
+  return null;
+}
+
+// What should be the type of return here??
+export function isSelectionComparisonPredicate(predicate: any) {
+  if (predicate && typeof predicate === 'object' && !!predicate.field) {
+    const operator = getComparisonOperator(Object.keys(predicate));
+    return operator ? !!predicate[operator].selection : false;
+  }
+  return false;
+}
+
+export type SelectionComparisonPredicate = {
+  field: string;
+  aggregate?: AggregateOp;
+  selection: string;
+};
+
+// https://stackoverflow.com/questions/55457347/dynamic-keys-and-value-type-checking-in-typescript
+// export type DatumSelectionComparisonPredicate = {[key in ComparisonOp]: SelectionComparisonPredicate} & {
+//   field: string;
+// };
+
+export interface FieldEqualPredicate<T> extends FieldPredicateBase {
   /**
    * The value that the field should be equal to.
    */
-  equal: string | number | boolean | DateTime;
+
+  // Suggest better alternative for types
+  equal: string | number | boolean | DateTime | T extends SelectionComparisonPredicate ? T : number;
 }
 
-export function isFieldEqualPredicate(predicate: any): predicate is FieldEqualPredicate {
+export function isFieldEqualPredicate(predicate: any): predicate is FieldEqualPredicate<null> {
   return predicate && !!predicate.field && predicate.equal !== undefined;
 }
 
-export interface FieldLTPredicate extends FieldPredicateBase {
+export interface FieldLTPredicate<T> extends FieldPredicateBase {
   /**
    * The value that the field should be less than.
    */
-  lt: string | number | DateTime;
+  lt: string | number | DateTime | T extends SelectionComparisonPredicate ? T : number;
 }
 
-export function isFieldLTPredicate(predicate: any): predicate is FieldLTPredicate {
+export function isFieldLTPredicate(predicate: any): predicate is FieldLTPredicate<null> {
   return predicate && !!predicate.field && predicate.lt !== undefined;
 }
 
-export interface FieldLTEPredicate extends FieldPredicateBase {
+export interface FieldLTEPredicate<T> extends FieldPredicateBase {
   /**
    * The value that the field should be less than or equals to.
    */
-  lte: string | number | DateTime;
+  lte: string | number | DateTime | T extends SelectionComparisonPredicate ? T : number;
 }
 
-export function isFieldLTEPredicate(predicate: any): predicate is FieldLTEPredicate {
+export function isFieldLTEPredicate(predicate: any): predicate is FieldLTEPredicate<null> {
   return predicate && !!predicate.field && predicate.lte !== undefined;
 }
 
-export interface FieldGTPredicate extends FieldPredicateBase {
+export interface FieldGTPredicate<T> extends FieldPredicateBase {
   /**
    * The value that the field should be greater than.
    */
-  gt: string | number | DateTime;
+  gt: string | number | DateTime | T extends SelectionComparisonPredicate ? T : number;
 }
 
-export function isFieldGTPredicate(predicate: any): predicate is FieldGTPredicate {
+export function isFieldGTPredicate(predicate: any): predicate is FieldGTPredicate<null> {
   return predicate && !!predicate.field && predicate.gt !== undefined;
 }
 
-export interface FieldGTEPredicate extends FieldPredicateBase {
+export interface FieldGTEPredicate<T> extends FieldPredicateBase {
   /**
    * The value that the field should be greater than or equals to.
    */
-  gte: string | number | DateTime;
+  gte: string | number | DateTime | T extends SelectionComparisonPredicate ? T : number;
 }
 
-export function isFieldGTEPredicate(predicate: any): predicate is FieldGTEPredicate {
+export function isFieldGTEPredicate(predicate: any): predicate is FieldGTEPredicate<null> {
   return predicate && !!predicate.field && predicate.gte !== undefined;
 }
 
@@ -158,12 +205,12 @@ export function isFieldPredicate(
   predicate: Predicate
 ): predicate is
   | FieldOneOfPredicate
-  | FieldEqualPredicate
+  | FieldEqualPredicate<SelectionComparisonPredicate>
   | FieldRangePredicate
-  | FieldLTPredicate
-  | FieldGTPredicate
-  | FieldLTEPredicate
-  | FieldGTEPredicate {
+  | FieldLTPredicate<SelectionComparisonPredicate>
+  | FieldGTPredicate<SelectionComparisonPredicate>
+  | FieldLTEPredicate<SelectionComparisonPredicate>
+  | FieldGTEPredicate<SelectionComparisonPredicate> {
   return (
     isFieldOneOfPredicate(predicate) ||
     isFieldEqualPredicate(predicate) ||
@@ -183,6 +230,17 @@ function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], tim
   return vals.map(v => predicateValueExpr(v, timeUnit));
 }
 
+function predicateComparisonSelectionExpr(predicate: FieldPredicate): string {
+  const dfield = predicate.field;
+  const operator = getComparisonOperator(Object.keys(predicate)) as ComparisonOp;
+  const comparisonSpec = predicate[operator];
+  const sfield = comparisonSpec.field;
+  const aggregate = comparisonSpec.aggregate ? comparisonSpec.aggregate : DEFAULT_AGGREGATE;
+  const aggStore = varName(comparisonSpec.selection + AGG_STORE);
+  return `vlComparisonTest('${aggStore}', datum, {operator: '${operator}', sfieldAggregate: '${sfield}_${aggregate}', on: '${dfield}'})`;
+  // return `datum`;
+}
+
 // This method is used by Voyager.  Do not change its behavior without changing Voyager.
 export function fieldFilterExpression(predicate: FieldPredicate, useInRange = true) {
   const {field, timeUnit} = predicate;
@@ -193,7 +251,9 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
       'time(' + timeUnitFieldExpr(timeUnit, field) + ')'
     : vgField(predicate, {expr: 'datum'});
 
-  if (isFieldEqualPredicate(predicate)) {
+  if (isSelectionComparisonPredicate(predicate)) {
+    return predicateComparisonSelectionExpr(predicate);
+  } else if (isFieldEqualPredicate(predicate)) {
     return fieldExpr + '===' + predicateValueExpr(predicate.equal, timeUnit);
   } else if (isFieldLTPredicate(predicate)) {
     const upper = predicate.lt;

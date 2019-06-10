@@ -111,6 +111,10 @@ export class FacetModel extends ModelWithField {
     this.component.selection = this.child.component.selection;
   }
 
+  public parseSelectionComparisons() {
+    this.child.parseSelectionComparisons();
+  }
+
   public parseMarkGroup() {
     this.child.parseMarkGroup();
   }
@@ -132,6 +136,10 @@ export class FacetModel extends ModelWithField {
 
   public assembleSelectionData(data: VgData[]): VgData[] {
     return this.child.assembleSelectionData(data);
+  }
+
+  public assembleSelectionAggregateData(data: VgData[]): VgData[] {
+    return this.child.assembleSelectionAggregateData(data);
   }
 
   private getHeaderLayoutMixins(): VgLayout {

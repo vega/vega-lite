@@ -76,6 +76,12 @@ export class LayerModel extends Model {
     }
   }
 
+  public parseSelectionComparisons() {
+    for (const child of this.children) {
+      child.parseSelectionComparisons();
+    }
+  }
+
   public parseMarkGroup() {
     for (const child of this.children) {
       child.parseMarkGroup();
@@ -105,6 +111,10 @@ export class LayerModel extends Model {
 
   public assembleSelectionData(data: VgData[]): VgData[] {
     return this.children.reduce((db, child) => child.assembleSelectionData(db), data);
+  }
+
+  public assembleSelectionAggregateData(data: VgData[]): VgData[] {
+    return this.children.reduce((db, child) => child.assembleSelectionAggregateData(db), data);
   }
 
   public assembleTitle(): VgTitle {

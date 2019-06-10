@@ -13,7 +13,7 @@ import {
 } from '../spec/toplevel';
 import {keys, mergeDeep} from '../util';
 import {buildModel} from './buildmodel';
-import {assembleRootData} from './data/assemble';
+import {assembleRootData, assembleDataPosition} from './data/assemble';
 // import {draw} from './data/debug';
 import {optimizeDataflow} from './data/optimize';
 import {Model} from './model';
@@ -144,10 +144,16 @@ function assembleTopLevelModel(
   // Config with Vega-Lite only config removed.
   const vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
 
-  const data = [].concat(
-    model.assembleSelectionData([]),
-    // only assemble data in the root
-    assembleRootData(model.component.data, datasets)
+  const data = assembleDataPosition(
+    [].concat(
+      model.assembleSelectionData([]),
+      // only assemble data in the root
+      assembleRootData(model.component.data, datasets),
+      // can be merged with assembleSelectionData, keeping
+      // it here as an option to explore other
+      // alternatives to reposition data objects
+      model.assembleSelectionAggregateData([])
+    )
   );
 
   const projections = model.assembleProjections();
