@@ -896,13 +896,12 @@ export function isNumberFieldDef(fieldDef: TypedFieldDef<any>) {
 }
 
 /**
- * Check if the field def uses a time format or does not use any format but is temporal (this does not cover field defs that are temporal but use a number format).
+ * Check if the field def uses a time format or does not use any format but is temporal
+ * (this does not cover field defs that are temporal but use a number format).
  */
 export function isTimeFormatFieldDef(fieldDef: TypedFieldDef<string>): boolean {
-  const formatType =
-    (isPositionFieldDef(fieldDef) && fieldDef.axis && fieldDef.axis.formatType) ||
-    (isMarkPropFieldDef(fieldDef) && fieldDef.legend && fieldDef.legend.formatType) ||
-    (isTextFieldDef(fieldDef) && fieldDef.formatType);
+  const guide = getGuide(fieldDef);
+  const formatType = (guide && guide.formatType) || (isTextFieldDef(fieldDef) && fieldDef.formatType);
   return formatType === 'time' || (!formatType && isTimeFieldDef(fieldDef));
 }
 
