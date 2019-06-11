@@ -117,7 +117,7 @@
     "fast-deep-equal": "~2.0.1",
     "fast-json-stable-stringify": "~2.0.0",
     "json-stringify-pretty-compact": "~2.0.0",
-    "tslib": "~1.9.3",
+    "tslib": "~1.10.0",
     "vega-event-selector": "~2.0.0",
     "vega-expression": "~2.6.0",
     "vega-typings": "0.7.1",
