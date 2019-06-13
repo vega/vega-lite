@@ -1,7 +1,11 @@
 # Vega-Lite <a href="https://vega.github.io/vega-lite/"><img align="right" src="https://github.com/vega/logos/blob/master/assets/VL_Color@64.png?raw=true" height="38"></img></a>
 
-[![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite) [![Build Status](https://travis-ci.org/vega/vega-lite.svg?branch=master)](https://travis-ci.org/vega/vega-lite) [![codecov](https://codecov.io/gh/vega/vega-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/vega/vega-lite) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=rounded)](https://github.com/prettier/prettier) [![Greenkeeper badge](https://badges.greenkeeper.io/vega/vega-lite.svg)](https://greenkeeper.io/)
-[![](https://data.jsdelivr.com/v1/package/npm/vega-lite/badge?style=rounded)](https://www.jsdelivr.com/package/npm/vega-lite)
+[![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
+[![Build Status](https://travis-ci.org/vega/vega-lite.svg?branch=master)](https://travis-ci.org/vega/vega-lite)
+[![codecov](https://codecov.io/gh/vega/vega-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/vega/vega-lite)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=rounded)](https://github.com/prettier/prettier)
+[![Greenkeeper](https://badges.greenkeeper.io/vega/vega-lite.svg)](https://greenkeeper.io/)
+[![JSDevlivr](https://data.jsdelivr.com/v1/package/npm/vega-lite/badge?style=rounded)](https://www.jsdelivr.com/package/npm/vega-lite)
 
 ![Teaser](site/static/teaser.png)
 
