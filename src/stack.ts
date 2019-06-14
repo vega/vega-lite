@@ -1,4 +1,4 @@
-import {isArray} from 'vega-util';
+import {isArray, isBoolean} from 'vega-util';
 import {SUM_OPS} from './aggregate';
 import {NonPositionChannel, NONPOSITION_CHANNELS, X, X2, Y2} from './channel';
 import {
@@ -144,7 +144,11 @@ export function stack(
   // Automatically determine offset
   let offset: StackOffset;
   if (stackedFieldDef.stack !== undefined) {
-    offset = stackedFieldDef.stack;
+    if (isBoolean(stackedFieldDef.stack)) {
+      offset = stackedFieldDef.stack ? 'zero' : null;
+    } else {
+      offset = stackedFieldDef.stack;
+    }
   } else if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
     // Bar and Area with sum ops are automatically stacked by default
     offset = getFirstDefined(stackConfig, 'zero');
