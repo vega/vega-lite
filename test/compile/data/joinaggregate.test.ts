@@ -99,6 +99,20 @@ describe('compile/data/joinaggregate', () => {
     expect(joinaggregate.dependentFields()).toEqual(new Set(['g', 'f']));
   });
 
+  it('should generate the correct dependent fields when groupby is undefined', () => {
+    const transform: Transform = {
+      joinaggregate: [
+        {
+          field: 'f',
+          op: 'mean',
+          as: 'mean_f'
+        }
+      ]
+    };
+    const joinaggregate = new JoinAggregateTransformNode(null, transform);
+    expect(joinaggregate.dependentFields()).toEqual(new Set(['f']));
+  });
+
   it('should clone to an equivalent version', () => {
     const transform: Transform = {
       joinaggregate: [

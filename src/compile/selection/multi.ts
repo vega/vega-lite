@@ -1,10 +1,7 @@
 import {Signal} from 'vega';
-import {stringValue} from 'vega-util';
-import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
-import {SelectionInit} from '../../selection';
+import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from '.';
 import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
-import {assembleInit} from './assemble';
 import {TUPLE_FIELDS} from './transforms/project';
 
 export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionComponent<'single' | 'multi'>) {
@@ -43,17 +40,6 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
       ]
     }
   ];
-
-  if (selCmpt.init) {
-    const insert = selCmpt.init.map((i: SelectionInit | SelectionInit[]) => {
-      const str = assembleInit(i);
-      return `{${update}: ${str}}`;
-    });
-    signals.push({
-      name: `${name}_init`,
-      init: `modify(${stringValue(selCmpt.name + STORE)}, [${insert}])`
-    });
-  }
 
   return signals;
 }

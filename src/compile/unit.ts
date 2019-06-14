@@ -4,8 +4,8 @@ import {
   Channel,
   GEOPOSITION_CHANNELS,
   NONPOSITION_SCALE_CHANNELS,
-  SCALE_CHANNELS,
   ScaleChannel,
+  SCALE_CHANNELS,
   SingleDefChannel,
   supportLegend,
   X,
@@ -136,7 +136,8 @@ export class UnitModel extends ModelWithField {
         if (isFieldDef(channelDef)) {
           fieldDef = channelDef;
           specifiedScale = channelDef.scale;
-        } else if (hasConditionalFieldDef(channelDef)) {
+        } else if (hasConditionalFieldDef<string, any>(channelDef)) {
+          // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
           fieldDef = channelDef.condition;
           specifiedScale = channelDef.condition['scale'];
         }
@@ -179,7 +180,7 @@ export class UnitModel extends ModelWithField {
       if (channelDef) {
         const legend = isFieldDef(channelDef)
           ? channelDef.legend
-          : hasConditionalFieldDef(channelDef)
+          : hasConditionalFieldDef<string, any>(channelDef) // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
           ? channelDef.condition['legend']
           : null;
 

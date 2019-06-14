@@ -134,7 +134,7 @@ export const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'tit
  */
 export const AXIS_PROPERTY_TYPE: {
   // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-  [k in keyof VgAxis]: 'main' | 'grid' | 'both'
+  [k in keyof VgAxis]: 'main' | 'grid' | 'both';
 } = {
   grid: 'grid',
   gridColor: 'grid',

@@ -1,7 +1,7 @@
 import {AxisOrient} from 'vega';
-import {FACET_CHANNELS, FacetChannel} from '../../channel';
+import {FacetChannel, FACET_CHANNELS} from '../../channel';
 import {title as fieldDefTitle} from '../../channeldef';
-import {contains} from '../../util';
+import {contains, getFirstDefined} from '../../util';
 import {assembleAxis} from '../axis/assemble';
 import {FacetModel} from '../facet';
 import {parseGuideResolve} from '../resolve';
@@ -41,12 +41,14 @@ function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
 
     const labelOrient = getHeaderProperty('labelOrient', fieldDef, model.config, channel);
 
+    const header = fieldDef.header || {};
+    const labels = getFirstDefined(header.labels, true);
     const headerType = contains(['bottom', 'right'], labelOrient) ? 'footer' : 'header';
 
     model.component.layoutHeaders[channel] = {
       title,
       facetFieldDef: fieldDef,
-      [headerType]: channel === 'facet' ? [] : [makeHeaderComponent(model, channel, true)]
+      [headerType]: channel === 'facet' ? [] : [makeHeaderComponent(model, channel, labels)]
     };
   }
 }

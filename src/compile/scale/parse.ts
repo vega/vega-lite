@@ -1,4 +1,4 @@
-import {SCALE_CHANNELS, ScaleChannel, SHAPE} from '../../channel';
+import {ScaleChannel, SCALE_CHANNELS, SHAPE} from '../../channel';
 import {hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../../channeldef';
 import {GEOSHAPE} from '../../mark';
 import {
@@ -58,7 +58,8 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
     if (isFieldDef(channelDef)) {
       fieldDef = channelDef;
       specifiedScale = channelDef.scale;
-    } else if (hasConditionalFieldDef(channelDef)) {
+    } else if (hasConditionalFieldDef<string, any>(channelDef)) {
+      // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
       fieldDef = channelDef.condition;
       specifiedScale = channelDef.condition['scale']; // We use ['scale'] since we know that channel here has scale for sure
     }
@@ -86,7 +87,7 @@ function parseNonUnitScaleCore(model: Model) {
 
   const scaleTypeWithExplicitIndex: {
     // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-    [k in ScaleChannel]?: Explicit<ScaleType>
+    [k in ScaleChannel]?: Explicit<ScaleType>;
   } = {};
   const resolve = model.component.resolve;
 

@@ -1,8 +1,8 @@
 import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
 import {contains, flagKeys} from './util';
-import {BaseMarkConfig} from './vega.schema';
-// import {Gradient} from './channeldef';
+import {BaseMarkConfig, Color} from './vega.schema';
+
 export const AREA: 'area' = 'area';
 export const BAR: 'bar' = 'bar';
 export const LINE: 'line' = 'line';
@@ -67,8 +67,7 @@ export interface ColorMixins {
    *
    * __Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
    */
-  color?: string;
-  // color?: string |Gradient;
+  color?: Color;
 }
 
 export interface TooltipContent {
@@ -158,7 +157,7 @@ export const FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
 export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = ['filled', 'color', 'tooltip'];
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
-  [k in typeof PRIMITIVE_MARKS[0]]?: (keyof MarkConfigMixins[k])[]
+  [k in typeof PRIMITIVE_MARKS[0]]?: (keyof MarkConfigMixins[k])[];
 } = {
   area: ['line', 'point'],
   bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],

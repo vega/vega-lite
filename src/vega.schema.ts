@@ -22,12 +22,16 @@ import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {Gradient} from './channeldef';
+import {SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
 export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
+/**
+ * @format color-hex
+ */
 export type Color = string;
 
 export interface VgData {
@@ -188,6 +192,7 @@ export interface VgProjection {
 export interface VgScale {
   name: string;
   type: ScaleType;
+  align?: number;
   domain?: VgDomain;
   domainRaw?: SignalRef;
   bins?: number[] | SignalRef;
@@ -523,23 +528,31 @@ export type Dir = 'ltr' | 'rtl';
 export interface BaseMarkConfig {
   /**
    * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without `x2`.
+   *
+   * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
    */
-  x?: number;
+  x?: number | 'width';
 
   /**
    * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without `y2`
+   *
+   * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y?: number;
+  y?: number | 'height';
 
   /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   *
+   * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
    */
-  x2?: number;
+  x2?: number | 'width';
 
   /**
    * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   *
+   * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y2?: number;
+  y2?: number | 'width';
 
   /**
    * Default Fill Color.  This has higher precedence than `config.color`
@@ -858,11 +871,9 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
 
 export const VG_MARK_CONFIGS = flagKeys(VG_MARK_CONFIG_INDEX);
 
-export type VgComparatorOrder = 'ascending' | 'descending';
-
 export interface VgComparator {
   field?: string | string[];
-  order?: VgComparatorOrder | VgComparatorOrder[];
+  order?: SortOrder | SortOrder[];
 }
 
 export interface VgWindowTransform {

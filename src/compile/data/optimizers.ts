@@ -172,6 +172,23 @@ export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
 }
 
 /**
+ * Merge adjacent time unit nodes.
+ */
+export class MergeTimeUnits extends BottomUpOptimizer {
+  public run(node: DataFlowNode): OptimizerFlags {
+    this.setContinue();
+    const parent = node.parent;
+    const timeUnitChildren = parent.children.filter(x => x instanceof TimeUnitNode) as TimeUnitNode[];
+    const combination = timeUnitChildren.pop();
+    for (const timeUnit of timeUnitChildren) {
+      this.setMutated();
+      combination.merge(timeUnit);
+    }
+    return this.flags;
+  }
+}
+
+/**
  * Clones the subtree and ignores output nodes except for the leaves, which are renamed.
  */
 function cloneSubtree(facet: FacetNode) {
@@ -323,7 +340,7 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
 
     // Build groupedAggregates
     for (const agg of aggChildren) {
-      const groupBys = hash(keys(agg.groupBy).sort());
+      const groupBys = hash(agg.groupBy);
       if (!(groupBys in groupedAggregates)) {
         groupedAggregates[groupBys] = [];
       }

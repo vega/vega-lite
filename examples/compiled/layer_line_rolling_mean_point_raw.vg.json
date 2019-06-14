@@ -1,22 +1,25 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Plot showing average data with raw values in the background.",
+  "description": "Plot showing a 30 day rolling average with raw values in the background.",
   "autosize": "pad",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 400,
+  "height": 300,
   "style": "cell",
   "data": [
     {
       "name": "source_0",
-      "url": "data/stocks.csv",
+      "url": "data/seattle-weather.csv",
       "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [
-        {"type": "filter", "expr": "datum.symbol==='GOOG'"},
         {
-          "type": "formula",
-          "as": "year_date",
-          "expr": "datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)"
+          "type": "window",
+          "params": [null],
+          "as": ["rolling_mean"],
+          "ops": ["mean"],
+          "fields": ["temp_max"],
+          "sort": {"field": [], "order": []},
+          "frame": [-15, 15]
         }
       ]
     },
@@ -25,21 +28,8 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "aggregate",
-          "groupby": ["year_date"],
-          "ops": ["mean"],
-          "fields": ["price"],
-          "as": ["mean_price"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
           "type": "filter",
-          "expr": "datum[\"year_date\"] !== null && !isNaN(datum[\"year_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp_max\"] !== null && !isNaN(datum[\"temp_max\"])"
         }
       ]
     }
@@ -49,17 +39,17 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.3},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"date (year)\": timeFormat(datum[\"year_date\"], '%Y'), \"price\": format(datum[\"price\"], \"\")}"
+            "signal": "{\"Date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"Max Temperature\": format(datum[\"temp_max\"], \"\")}"
           },
-          "x": {"scale": "x", "field": "year_date"},
-          "y": {"scale": "y", "field": "price"}
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "temp_max"}
         }
       }
     },
@@ -67,18 +57,19 @@
       "name": "layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"year_date\"]", "order": "descending"},
-      "from": {"data": "data_0"},
+      "sort": {"field": "datum[\"date\"]", "order": "descending"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "stroke": {"value": "#4c78a8"},
+          "stroke": {"value": "red"},
           "tooltip": {
-            "signal": "{\"date (year)\": timeFormat(datum[\"year_date\"], '%Y'), \"Mean of price\": format(datum[\"mean_price\"], \"\")}"
+            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"rolling_mean\": format(datum[\"rolling_mean\"], \"\")}"
           },
-          "x": {"scale": "x", "field": "year_date"},
-          "y": {"scale": "y", "field": "mean_price"},
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "rolling_mean"},
+          "strokeWidth": {"value": 3},
           "defined": {
-            "signal": "datum[\"year_date\"] !== null && !isNaN(datum[\"year_date\"]) && datum[\"mean_price\"] !== null && !isNaN(datum[\"mean_price\"])"
+            "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"rolling_mean\"] !== null && !isNaN(datum[\"rolling_mean\"])"
           }
         }
       }
@@ -90,8 +81,8 @@
       "type": "time",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "year_date"},
-          {"data": "data_0", "field": "year_date"}
+          {"data": "data_0", "field": "date"},
+          {"data": "source_0", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -101,8 +92,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "price"},
-          {"data": "data_0", "field": "mean_price"}
+          {"data": "data_0", "field": "temp_max"},
+          {"data": "source_0", "field": "rolling_mean"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -115,15 +106,10 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "date (year)",
+      "title": "Date",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
-        }
-      },
       "zindex": 1
     },
     {
@@ -143,7 +129,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "price, Mean of price",
+      "title": "Max Temperature",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1

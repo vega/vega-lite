@@ -1,3 +1,4 @@
+import {Color} from './../vega.schema';
 import {isArray, isNumber} from 'vega-util';
 import {Config} from '../config';
 import {Data} from '../data';
@@ -123,14 +124,14 @@ export interface BaseViewBackground
    *
    * __Default value:__ `undefined`
    */
-  fill?: string | null;
+  fill?: Color | null;
 
   /**
    * The stroke color.
    *
    * __Default value:__ `"#ddd"`
    */
-  stroke?: string | null;
+  stroke?: Color | null;
 }
 
 export interface ViewBackground extends BaseViewBackground {

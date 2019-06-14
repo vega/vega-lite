@@ -67,6 +67,8 @@ In addition to [common properties of a view specification](spec.html#common), a 
 
 <span class="vl-example" data-name="vconcat_weather"></span>
 
+{:#concat}
+
 ## General (Wrappable) Concatenation
 
 To put multiple views into a flexible flow layout, set the `"concat"` to an array of view specifications and specify the `"columns"` property to set the number of maximum items per rows.

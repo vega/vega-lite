@@ -37,7 +37,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y'): VgEncodeEntr
       spacing: 0,
       reverse: scale.get('reverse')
     });
-  } else if (isFieldDef(fieldDef) && scale && hasDiscreteDomain(scaleType)) {
+  } else if (isFieldDef(fieldDef) && scale && hasDiscreteDomain(scaleType) && !fieldDef2) {
     /* istanbul ignore else */
     if (scaleType === ScaleType.BAND) {
       return mixins.bandPosition(fieldDef, channel, model);
