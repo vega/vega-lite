@@ -186,6 +186,10 @@
           "$ref": "#/definitions/FontWeight",
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
+        "height": {
+          "description": "Height of the marks.",
+          "type": "number"
+        },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
           "format": "uri",
@@ -324,6 +328,10 @@
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
+        "width": {
+          "description": "Width of the marks.",
+          "type": "number"
+        },
         "x": {
           "anyOf": [
             {
@@ -336,7 +344,7 @@
               "type": "string"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
           "anyOf": [
@@ -364,7 +372,7 @@
               "type": "string"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
           "anyOf": [
@@ -1178,6 +1186,10 @@
           "$ref": "#/definitions/FontWeight",
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
+        "height": {
+          "description": "Height of the marks.",
+          "type": "number"
+        },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
           "format": "uri",
@@ -1270,6 +1282,10 @@
         "tooltip": {
           "description": "The tooltip text to show upon mouse hover."
         },
+        "width": {
+          "description": "Width of the marks.",
+          "type": "number"
+        },
         "x": {
           "anyOf": [
             {
@@ -1282,7 +1298,7 @@
               "type": "string"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
           "anyOf": [
@@ -1310,7 +1326,7 @@
               "type": "string"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
           "anyOf": [
@@ -2089,7 +2105,7 @@
               "$ref": "#/definitions/XValueDef"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
           "anyOf": [
@@ -2133,7 +2149,7 @@
               "$ref": "#/definitions/YValueDef"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
           "anyOf": [
@@ -3843,7 +3859,7 @@
               "$ref": "#/definitions/XValueDef"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
           "anyOf": [
@@ -3887,7 +3903,7 @@
               "$ref": "#/definitions/YValueDef"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
           "anyOf": [
@@ -7053,6 +7069,10 @@
           "$ref": "#/definitions/FontWeight",
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
+        "height": {
+          "description": "Height of the marks.",
+          "type": "number"
+        },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
           "format": "uri",
@@ -7180,6 +7200,10 @@
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
+        "width": {
+          "description": "Width of the marks.",
+          "type": "number"
+        },
         "x": {
           "anyOf": [
             {
@@ -7192,7 +7216,7 @@
               "type": "string"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
           "anyOf": [
@@ -7220,7 +7244,7 @@
               "type": "string"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
           "anyOf": [
@@ -7542,6 +7566,10 @@
           "$ref": "#/definitions/FontWeight",
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
+        "height": {
+          "description": "Height of the marks.",
+          "type": "number"
+        },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
           "format": "uri",
@@ -7652,6 +7680,10 @@
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
+        "width": {
+          "description": "Width of the marks.",
+          "type": "number"
+        },
         "x": {
           "anyOf": [
             {
@@ -7664,7 +7696,7 @@
               "type": "string"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
           "anyOf": [
@@ -7692,7 +7724,7 @@
               "type": "string"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
           "anyOf": [
@@ -7794,6 +7826,10 @@
         "fontWeight": {
           "$ref": "#/definitions/FontWeight",
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "height": {
+          "description": "Height of the marks.",
+          "type": "number"
         },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
@@ -7956,6 +7992,10 @@
           "$ref": "#/definitions/Mark",
           "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
         },
+        "width": {
+          "description": "Width of the marks.",
+          "type": "number"
+        },
         "x": {
           "anyOf": [
             {
@@ -7968,7 +8008,7 @@
               "type": "string"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
           "anyOf": [
@@ -8004,7 +8044,7 @@
               "type": "string"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
           "anyOf": [
@@ -8388,6 +8428,10 @@
           "$ref": "#/definitions/FontWeight",
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
+        "height": {
+          "description": "Height of the marks.",
+          "type": "number"
+        },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
           "format": "uri",
@@ -8512,6 +8556,10 @@
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
+        "width": {
+          "description": "Width of the marks.",
+          "type": "number"
+        },
         "x": {
           "anyOf": [
             {
@@ -8524,7 +8572,7 @@
               "type": "string"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
           "anyOf": [
@@ -8560,7 +8608,7 @@
               "type": "string"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
           "anyOf": [
@@ -9206,6 +9254,10 @@
           "$ref": "#/definitions/FontWeight",
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
+        "height": {
+          "description": "Height of the marks.",
+          "type": "number"
+        },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
           "format": "uri",
@@ -9316,6 +9368,10 @@
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
+        "width": {
+          "description": "Width of the marks.",
+          "type": "number"
+        },
         "x": {
           "anyOf": [
             {
@@ -9328,7 +9384,7 @@
               "type": "string"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
           "anyOf": [
@@ -9356,7 +9412,7 @@
               "type": "string"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
           "anyOf": [
@@ -10686,6 +10742,10 @@
           "$ref": "#/definitions/FontWeight",
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
+        "height": {
+          "description": "Height of the marks.",
+          "type": "number"
+        },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
           "format": "uri",
@@ -10800,6 +10860,10 @@
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
+        "width": {
+          "description": "Width of the marks.",
+          "type": "number"
+        },
         "x": {
           "anyOf": [
             {
@@ -10812,7 +10876,7 @@
               "type": "string"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
           "anyOf": [
@@ -10840,7 +10904,7 @@
               "type": "string"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
           "anyOf": [
@@ -11009,6 +11073,10 @@
           "$ref": "#/definitions/FontWeight",
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
+        "height": {
+          "description": "Height of the marks.",
+          "type": "number"
+        },
         "href": {
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
           "format": "uri",
@@ -11124,6 +11192,10 @@
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
+        "width": {
+          "description": "Width of the marks.",
+          "type": "number"
+        },
         "x": {
           "anyOf": [
             {
@@ -11136,7 +11208,7 @@
               "type": "string"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
           "anyOf": [
@@ -11164,7 +11236,7 @@
               "type": "string"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
           "anyOf": [

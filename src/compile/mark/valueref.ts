@@ -337,7 +337,7 @@ export function midPoint({
 /**
  * Convert special "width" and "height" values in Vega-Lite into Vega value ref.
  */
-function vgValueRef(channel: Channel, value: Value) {
+export function vgValueRef(channel: Channel, value: Value) {
   if (contains(['x', 'x2'], channel) && value === 'width') {
     return {field: {group: 'width'}};
   } else if (contains(['y', 'y2'], channel) && value === 'height') {
