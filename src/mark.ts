@@ -1,13 +1,8 @@
 import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
 import {contains, flagKeys} from './util';
-<<<<<<< HEAD
-import {BaseMarkConfig} from './vega.schema';
-// import {Gradient} from './channeldef';
-=======
 import {BaseMarkConfig, Color} from './vega.schema';
 
->>>>>>> master
 export const AREA: 'area' = 'area';
 export const BAR: 'bar' = 'bar';
 export const LINE: 'line' = 'line';
