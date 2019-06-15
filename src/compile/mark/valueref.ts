@@ -23,7 +23,8 @@ import {
   title,
   TypedFieldDef,
   Value,
-  vgField
+  vgField,
+  Gradient
 } from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding, forEach} from '../../encoding';
