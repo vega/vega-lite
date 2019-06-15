@@ -4,7 +4,7 @@ import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
 import {ScaleFieldDef, TypedFieldDef} from '../../channeldef';
 import {Config} from '../../config';
 import * as log from '../../log';
-import {BarConfig, Mark, MarkDef} from '../../mark';
+import {Mark, MarkDef, RectConfig} from '../../mark';
 import {
   channelScalePropertyIncompatability,
   Domain,
@@ -214,7 +214,7 @@ export function padding(
   scaleConfig: ScaleConfig,
   fieldDef: TypedFieldDef<string>,
   markDef: MarkDef,
-  barConfig: BarConfig
+  barConfig: RectConfig
 ) {
   if (util.contains([X, Y], channel)) {
     if (isContinuousToContinuous(scaleType)) {
