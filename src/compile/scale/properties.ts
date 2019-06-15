@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
 import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
-import {ScaleFieldDef, TypedFieldDef, vgField} from '../../channeldef';
+import {ScaleFieldDef, TypedFieldDef} from '../../channeldef';
 import {Config} from '../../config';
 import * as log from '../../log';
 import {BarConfig, Mark, MarkDef} from '../../mark';
@@ -22,6 +22,7 @@ import {Type} from '../../type';
 import * as util from '../../util';
 import {contains, getFirstDefined, keys} from '../../util';
 import {VgScale} from '../../vega.schema';
+import {getBinSignalName} from '../data/bin';
 import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
@@ -180,9 +181,9 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
 export function bins(model: Model, fieldDef: TypedFieldDef<string>) {
   const bin = fieldDef.bin;
   if (isBinning(bin)) {
-    const signal = model.getName(vgField(fieldDef, {suffix: 'bins'}));
+    const binSignal = getBinSignalName(model, fieldDef.field, bin);
     return new SignalRefWrapper(() => {
-      return model.getSignalName(signal);
+      return model.getSignalName(binSignal);
     });
   } else if (isBinned(bin) && isBinParams(bin) && bin.step !== undefined) {
     // start and stop will be determined from the scale domain

@@ -1,6 +1,6 @@
 {
   "$ref": "#/definitions/TopLevelSpec",
-  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "Aggregate": {
       "anyOf": [
@@ -129,8 +129,8 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config)."
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
@@ -325,20 +325,60 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "x": {
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "y": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "height"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         }
       },
       "type": "object"
@@ -1036,8 +1076,8 @@
           "type": "number"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config)."
         },
         "continuousBandSize": {
           "description": "The default size of the bars on continuous scales.\n\n__Default value:__ `5`",
@@ -1214,20 +1254,60 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "x": {
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "y": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "height"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         }
       },
       "type": "object"
@@ -1450,20 +1530,60 @@
           "description": "The tooltip text to show upon mouse hover."
         },
         "x": {
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "y": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "height"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         }
       },
       "type": "object"
@@ -1694,8 +1814,7 @@
           "type": "string"
         },
         "options": {
-          "items": {
-          },
+          "items": {},
           "type": "array"
         },
         "type": {
@@ -1858,8 +1977,8 @@
           "type": "boolean"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config)."
         },
         "extent": {
           "anyOf": [
@@ -1941,16 +2060,16 @@
       "additionalProperties": false,
       "properties": {
         "fill": {
-          "description": "The fill color of the interval mark.\n\n__Default value:__ `#333333`",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "The fill color of the interval mark.\n\n__Default value:__ `#333333`"
         },
         "fillOpacity": {
           "description": "The fill opacity of the interval mark (a value between 0 and 1).\n\n__Default value:__ `0.125`",
           "type": "number"
         },
         "stroke": {
-          "description": "The stroke color of the interval mark.\n\n__Default value:__ `#ffffff`",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "The stroke color of the interval mark.\n\n__Default value:__ `#ffffff`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke and space lengths,\nfor creating dashed or dotted lines.",
@@ -1993,6 +2112,7 @@
       "type": "object"
     },
     "Color": {
+      "format": "color-hex",
       "type": "string"
     },
     "Encoding": {
@@ -2227,7 +2347,7 @@
               "$ref": "#/definitions/XValueDef"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
           "anyOf": [
@@ -2238,7 +2358,7 @@
               "$ref": "#/definitions/XValueDef"
             }
           ],
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "xError": {
           "anyOf": [
@@ -2271,7 +2391,7 @@
               "$ref": "#/definitions/YValueDef"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
           "anyOf": [
@@ -2282,7 +2402,7 @@
               "$ref": "#/definitions/YValueDef"
             }
           ],
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "yError": {
           "anyOf": [
@@ -2347,87 +2467,6 @@
           "type": "number"
         }
       },
-      "type": "object"
-    },
-    "ConditionOnlyDef<MarkPropFieldDef>": {
-      "additionalProperties": false,
-      "description": "A Condition<ValueDef | FieldDef> only definition.\n{\n   condition: {field: ...} | {value: ...}\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalValueDef"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
-        }
-      },
-      "required": [
-        "condition"
-      ],
-      "type": "object"
-    },
-    "ConditionOnlyDef<MarkPropFieldDef<TypeForShape>>": {
-      "additionalProperties": false,
-      "description": "A Condition<ValueDef | FieldDef> only definition.\n{\n   condition: {field: ...} | {value: ...}\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef<TypeForShape>"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalValueDef"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
-        }
-      },
-      "required": [
-        "condition"
-      ],
-      "type": "object"
-    },
-    "ConditionOnlyDef<TextFieldDef>": {
-      "additionalProperties": false,
-      "description": "A Condition<ValueDef | FieldDef> only definition.\n{\n   condition: {field: ...} | {value: ...}\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalTextFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalValueDef"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
-        }
-      },
-      "required": [
-        "condition"
-      ],
       "type": "object"
     },
     "ConditionalMarkPropFieldDef": {
@@ -3668,8 +3707,8 @@
           "type": "boolean"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config)."
         },
         "extent": {
           "$ref": "#/definitions/ErrorBarExtent",
@@ -3747,8 +3786,8 @@
           "type": "boolean"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config)."
         },
         "extent": {
           "$ref": "#/definitions/ErrorBarExtent",
@@ -3801,8 +3840,7 @@
       ],
       "type": "string"
     },
-    "EventStream": {
-    },
+    "EventStream": {},
     "FacetFieldDef": {
       "additionalProperties": false,
       "properties": {
@@ -4128,7 +4166,7 @@
               "$ref": "#/definitions/XValueDef"
             }
           ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
           "anyOf": [
@@ -4139,7 +4177,7 @@
               "$ref": "#/definitions/XValueDef"
             }
           ],
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "xError": {
           "anyOf": [
@@ -4172,7 +4210,7 @@
               "$ref": "#/definitions/YValueDef"
             }
           ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
           "anyOf": [
@@ -4183,7 +4221,7 @@
               "$ref": "#/definitions/YValueDef"
             }
           ],
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "yError": {
           "anyOf": [
@@ -5831,8 +5869,8 @@
           "type": "number"
         },
         "labelColor": {
-          "description": "The color of the header label, can be in hex color code or regular color name.",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "The color of the header label, can be in hex color code or regular color name."
         },
         "labelFont": {
           "description": "The font of the header label.",
@@ -5842,6 +5880,10 @@
           "description": "The font size of the header label, in pixels.",
           "minimum": 0,
           "type": "number"
+        },
+        "labelFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style of the header label."
         },
         "labelLimit": {
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
@@ -5854,6 +5896,10 @@
         "labelPadding": {
           "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
           "type": "number"
+        },
+        "labels": {
+          "description": "A boolean flag indicating if labels should be included as part of the header.\n\n__Default value:__ `true`.",
+          "type": "boolean"
         },
         "title": {
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.",
@@ -5881,8 +5927,8 @@
           "description": "Vertical text baseline for the header title. One of `\"top\"`, `\"bottom\"`, `\"middle\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "titleColor": {
-          "description": "Color of the header title, can be in hex color code or regular color name.",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Color of the header title, can be in hex color code or regular color name."
         },
         "titleFont": {
           "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
@@ -5892,6 +5938,10 @@
           "description": "Font size of the header title.",
           "minimum": 0,
           "type": "number"
+        },
+        "titleFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style of the header title."
         },
         "titleFontWeight": {
           "$ref": "#/definitions/FontWeight",
@@ -5942,8 +5992,8 @@
           "type": "number"
         },
         "labelColor": {
-          "description": "The color of the header label, can be in hex color code or regular color name.",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "The color of the header label, can be in hex color code or regular color name."
         },
         "labelFont": {
           "description": "The font of the header label.",
@@ -5953,6 +6003,10 @@
           "description": "The font size of the header label, in pixels.",
           "minimum": 0,
           "type": "number"
+        },
+        "labelFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style of the header label."
         },
         "labelLimit": {
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
@@ -5965,6 +6019,10 @@
         "labelPadding": {
           "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
           "type": "number"
+        },
+        "labels": {
+          "description": "A boolean flag indicating if labels should be included as part of the header.\n\n__Default value:__ `true`.",
+          "type": "boolean"
         },
         "shortTimeLabels": {
           "description": "Whether month names and weekday names should be abbreviated.\n\n__Default value:__  `false`",
@@ -5993,8 +6051,8 @@
           "description": "Vertical text baseline for the header title. One of `\"top\"`, `\"bottom\"`, `\"middle\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "titleColor": {
-          "description": "Color of the header title, can be in hex color code or regular color name.",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Color of the header title, can be in hex color code or regular color name."
         },
         "titleFont": {
           "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
@@ -6004,6 +6062,10 @@
           "description": "Font size of the header title.",
           "minimum": 0,
           "type": "number"
+        },
+        "titleFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style of the header title."
         },
         "titleFontWeight": {
           "$ref": "#/definitions/FontWeight",
@@ -6050,8 +6112,7 @@
         "keyvals": {
           "anyOf": [
             {
-              "items": {
-              },
+              "items": {},
               "type": "array"
             },
             {
@@ -6122,8 +6183,7 @@
         "keyvals": {
           "anyOf": [
             {
-              "items": {
-              },
+              "items": {},
               "type": "array"
             },
             {
@@ -6774,7 +6834,7 @@
         },
         "orient": {
           "$ref": "#/definitions/LegendOrient",
-          "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of `\"left\"`, `\"right\"`, `\"top-left\"`, `\"top-right\"`, `\"bottom-left\"`, `\"bottom-right\"`, `\"none\"`.\n\n__Default value:__ `\"right\"`"
+          "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of `\"left\"`, `\"right\"`, `\"top\"`, `\"bottom\"`, `\"top-left\"`, `\"top-right\"`, `\"bottom-left\"`, `\"bottom-right\"`, `\"none\"`.\n\n__Default value:__ `\"right\"`"
         },
         "padding": {
           "description": "The padding between the border and content of the legend group.\n\n__Default value:__ `0`.",
@@ -6827,7 +6887,7 @@
         },
         "symbolType": {
           "$ref": "#/definitions/SymbolShape",
-          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   * In addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n   *\n   * __Default value:__ `\"circle\"`.\n   *"
+          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\nIn addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n\n__Default value:__ `\"circle\"`."
         },
         "tickCount": {
           "description": "The desired number of tick values for quantitative legends.",
@@ -7050,7 +7110,7 @@
         },
         "labelOverlap": {
           "$ref": "#/definitions/LabelOverlap",
-          "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `\"greedy\"` for `log scales otherwise `true`.\n   *"
+          "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `\"greedy\"` for `log scales otherwise `true`."
         },
         "labelPadding": {
           "description": "Padding in pixels between the legend and legend labels.",
@@ -7158,7 +7218,7 @@
         },
         "symbolType": {
           "$ref": "#/definitions/SymbolShape",
-          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   * In addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n   *\n   * __Default value:__ `\"circle\"`.\n   *"
+          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\nIn addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n\n__Default value:__ `\"circle\"`."
         },
         "title": {
           "description": "Set to null to disable title for the axis, legend, or header.",
@@ -7363,8 +7423,8 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config)."
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
@@ -7548,20 +7608,60 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "x": {
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "y": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "height"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         }
       },
       "type": "object"
@@ -7812,8 +7912,8 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config)."
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
@@ -7980,20 +8080,60 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "x": {
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "y": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "height"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         }
       },
       "type": "object"
@@ -8025,8 +8165,8 @@
           "type": "boolean"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config)."
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
@@ -8244,12 +8384,32 @@
           "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
         },
         "x": {
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2Offset": {
           "description": "Offset for x2-position.",
@@ -8260,12 +8420,32 @@
           "type": "number"
         },
         "y": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "height"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2Offset": {
           "description": "Offset for y2-position.",
@@ -8578,8 +8758,8 @@
           "type": "boolean"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config)."
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
@@ -8760,12 +8940,32 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "x": {
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2Offset": {
           "description": "Offset for x2-position.",
@@ -8776,12 +8976,32 @@
           "type": "number"
         },
         "y": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "height"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2Offset": {
           "description": "Offset for y2-position.",
@@ -9039,9 +9259,12 @@
             },
             {
               "type": "null"
+            },
+            {
+              "type": "boolean"
             }
           ],
-          "description": "Type of stacking offset if the field should be stacked.\n`stack` is only applicable for `x` and `y` channels with continuous domains.\nFor example, `stack` of `y` can be used to customize stacking for a vertical bar chart.\n\n`stack` can be one of the following values:\n- `\"zero\"`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](https://vega.github.io/vega-lite/docs/stack.html#bar) and [area](https://vega.github.io/vega-lite/docs/stack.html#area) chart).\n- `\"normalize\"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](https://vega.github.io/vega-lite/docs/stack.html#normalized). <br/>\n-`\"center\"` - stacking with center baseline (for [streamgraph](https://vega.github.io/vega-lite/docs/stack.html#streamgraph)).\n- `null` - No-stacking. This will produce layered [bar](https://vega.github.io/vega-lite/docs/stack.html#layered-bar-chart) and area chart.\n\n__Default value:__ `zero` for plots with all of the following conditions are true:\n(1) the mark is `bar` or `area`;\n(2) the stacked measure channel (x or y) has a linear scale;\n(3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, `null` by default."
+          "description": "Type of stacking offset if the field should be stacked.\n`stack` is only applicable for `x` and `y` channels with continuous domains.\nFor example, `stack` of `y` can be used to customize stacking for a vertical bar chart.\n\n`stack` can be one of the following values:\n- `\"zero\"` or `true`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](https://vega.github.io/vega-lite/docs/stack.html#bar) and [area](https://vega.github.io/vega-lite/docs/stack.html#area) chart).\n- `\"normalize\"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](https://vega.github.io/vega-lite/docs/stack.html#normalized). <br/>\n-`\"center\"` - stacking with center baseline (for [streamgraph](https://vega.github.io/vega-lite/docs/stack.html#streamgraph)).\n- `null` or `false` - No-stacking. This will produce layered [bar](https://vega.github.io/vega-lite/docs/stack.html#layered-bar-chart) and area chart.\n\n__Default value:__ `zero` for plots with all of the following conditions are true:\n(1) the mark is `bar` or `area`;\n(2) the stacked measure channel (x or y) has a linear scale;\n(3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, `null` by default."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -9342,7 +9565,7 @@
     },
     "RepeatRef": {
       "additionalProperties": false,
-      "description": "Reference to a repeated value.",
+      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n} \n Reference to a repeated value.",
       "properties": {
         "repeat": {
           "enum": [
@@ -9433,6 +9656,10 @@
     "Scale": {
       "additionalProperties": false,
       "properties": {
+        "align": {
+          "description": "The alignment of the steps within the scale range.\n\nThis value must lie in the range `[0,1]`. A value of `0.5` indicates that the steps should be centered within the range. A value of `0` or `1` may be used to shift the bands to one side, say to position them adjacent to an axis.\n\n__Default value:__ `0.5`",
+          "type": "number"
+        },
         "base": {
           "description": "The logarithm base of the `log` scale (default `10`).",
           "type": "number"
@@ -10570,8 +10797,8 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config)."
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
@@ -10742,20 +10969,60 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "x": {
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "y": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "height"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         }
       },
       "type": "object"
@@ -10853,8 +11120,8 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config)."
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
@@ -11026,20 +11293,60 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "x": {
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "x2": {
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
         },
         "y": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "height"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         },
         "y2": {
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         }
       },
       "type": "object"
@@ -12414,6 +12721,7 @@
       ],
       "type": "object"
     },
+<<<<<<< HEAD
     "ValueDefWithCondition<MarkPropFieldDef,(string|null|Gradient)>": {
       "anyOf": [
         {
@@ -12459,397 +12767,408 @@
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
     },
     "ValueDefWithOptionalCondition<MarkPropFieldDef,(string|null|Gradient)>": {
+=======
+    "ValueDefWithCondition<MarkPropFieldDef,(string|null)>": {
+>>>>>>> master
       "additionalProperties": false,
-      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
-            },
-            {
-              "items": {
+        "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+        "minProperties": 1,
+        "properties": {
+          "condition": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ConditionalMarkPropFieldDef"
+              },
+              {
                 "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
               },
-              "type": "array"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
+              {
+                "items": {
+                  "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
+                },
+                "type": "array"
+              }
+            ],
+            "description": "A field definition or one or more value definition(s) with a selection predicate."
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/definitions/Gradient"
+              }
+            ],
+            "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          }
         },
-        "value": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/Gradient"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
-        }
+        "type": "object"
       },
-      "required": [
-        "value"
-      ],
-      "type": "object"
-    },
-    "ValueDefWithOptionalCondition<MarkPropFieldDef,number>": {
-      "additionalProperties": false,
-      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionalNumberValueDef"
-            },
-            {
-              "items": {
+      "ValueDefWithCondition<MarkPropFieldDef,number>": {
+        "additionalProperties": false,
+        "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+        "minProperties": 1,
+        "properties": {
+          "condition": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ConditionalMarkPropFieldDef"
+              },
+              {
                 "$ref": "#/definitions/ConditionalNumberValueDef"
               },
-              "type": "array"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
+              {
+                "items": {
+                  "$ref": "#/definitions/ConditionalNumberValueDef"
+                },
+                "type": "array"
+              }
+            ],
+            "description": "A field definition or one or more value definition(s) with a selection predicate."
+          },
+          "value": {
+            "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+            "type": "number"
+          }
         },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": "number"
-        }
+        "type": "object"
       },
-      "required": [
-        "value"
-      ],
-      "type": "object"
-    },
-    "ValueDefWithOptionalCondition<MarkPropFieldDef<TypeForShape>,(string|null|Gradient)>": {
-      "additionalProperties": false,
-      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef<TypeForShape>"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
-            },
-            {
-              "items": {
+      "ValueDefWithOptionalCondition<MarkPropFieldDef<TypeForShape>,(string|null|Gradient)>": {
+        "additionalProperties": false,
+        "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+        "minProperties": 1,
+        "properties": {
+          "condition": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ConditionalMarkPropFieldDef<TypeForShape>"
+              },
+              {
                 "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
               },
-              "type": "array"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
+              {
+                "items": {
+                  "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
+                },
+                "type": "array"
+              }
+            ],
+            "description": "A field definition or one or more value definition(s) with a selection predicate."
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/definitions/Gradient"
+              }
+            ],
+            "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          }
         },
-        "value": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/Gradient"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
-        }
+        "type": "object"
       },
-      "required": [
-        "value"
-      ],
-      "type": "object"
-    },
-    "ValueDefWithOptionalCondition<TextFieldDef,Value>": {
-      "additionalProperties": false,
-      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalTextFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef"
-            },
-            {
-              "items": {
+      "ValueDefWithCondition<TextFieldDef,Value>": {
+        "additionalProperties": false,
+        "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+        "minProperties": 1,
+        "properties": {
+          "condition": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ConditionalTextFieldDef"
+              },
+              {
                 "$ref": "#/definitions/ConditionalValueDef"
               },
-              "type": "array"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
+              {
+                "items": {
+                  "$ref": "#/definitions/ConditionalValueDef"
+                },
+                "type": "array"
+              }
+            ],
+            "description": "A field definition or one or more value definition(s) with a selection predicate."
+          },
+          "value": {
+            "$ref": "#/definitions/Value",
+            "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          }
         },
-        "value": {
-          "$ref": "#/definitions/Value",
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
-        }
+        "type": "object"
       },
-      "required": [
-        "value"
-      ],
-      "type": "object"
-    },
-    "ViewBackground": {
-      "additionalProperties": false,
-      "properties": {
-        "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
-          "type": "number"
-        },
-        "fill": {
-          "description": "The fill color.\n\n__Default value:__ `undefined`",
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "fillOpacity": {
-          "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "opacity": {
-          "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "stroke": {
-          "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`",
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "strokeCap": {
-          "$ref": "#/definitions/StrokeCap",
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
-        },
-        "strokeDash": {
-          "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
-          "items": {
+      "ViewBackground": {
+        "additionalProperties": false,
+        "properties": {
+          "cornerRadius": {
+            "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
             "type": "number"
           },
-          "type": "array"
-        },
-        "strokeDashOffset": {
-          "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
-          "type": "number"
-        },
-        "strokeJoin": {
-          "$ref": "#/definitions/StrokeJoin",
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
-        },
-        "strokeMiterLimit": {
-          "description": "The miter limit at which to bevel a line join.",
-          "type": "number"
-        },
-        "strokeOpacity": {
-          "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "strokeWidth": {
-          "description": "The stroke width, in pixels.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "style": {
-          "description": "A string or array of strings indicating the name of custom styles to apply to the view background. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles.\n\n__Default value:__ `\"cell\"`\n__Note:__ Any specified view background properties will augment the default style.",
-          "type": "string"
-        }
-      },
-      "type": "object"
-    },
-    "ViewConfig": {
-      "additionalProperties": false,
-      "properties": {
-        "clip": {
-          "description": "Whether the view should be clipped.",
-          "type": "boolean"
-        },
-        "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
-          "type": "number"
-        },
-        "fill": {
-          "description": "The fill color.\n\n__Default value:__ `undefined`",
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "fillOpacity": {
-          "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "height": {
-          "description": "The default height of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) y-scale with `rangeStep` = `null`.\n\n__Default value:__ `200`",
-          "type": "number"
-        },
-        "opacity": {
-          "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "stroke": {
-          "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`",
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "strokeCap": {
-          "$ref": "#/definitions/StrokeCap",
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
-        },
-        "strokeDash": {
-          "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
-          "items": {
+          "fill": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/Color"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The fill color.\n\n__Default value:__ `undefined`"
+          },
+          "fillOpacity": {
+            "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
+            "maximum": 1,
+            "minimum": 0,
             "type": "number"
           },
-          "type": "array"
-        },
-        "strokeDashOffset": {
-          "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
-          "type": "number"
-        },
-        "strokeJoin": {
-          "$ref": "#/definitions/StrokeJoin",
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
-        },
-        "strokeMiterLimit": {
-          "description": "The miter limit at which to bevel a line join.",
-          "type": "number"
-        },
-        "strokeOpacity": {
-          "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "strokeWidth": {
-          "description": "The stroke width, in pixels.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "width": {
-          "description": "The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.\n\n__Default value:__ `200`",
-          "type": "number"
-        }
-      },
-      "type": "object"
-    },
-    "WindowFieldDef": {
-      "additionalProperties": false,
-      "properties": {
-        "as": {
-          "$ref": "#/definitions/FieldName",
-          "description": "The output name for the window operation."
-        },
-        "field": {
-          "$ref": "#/definitions/FieldName",
-          "description": "The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `count`, `rank`, `dense_rank`."
-        },
-        "op": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AggregateOp"
+          "opacity": {
+            "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "stroke": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/Color"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`"
+          },
+          "strokeCap": {
+            "$ref": "#/definitions/StrokeCap",
+            "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
+          },
+          "strokeDash": {
+            "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
+            "items": {
+              "type": "number"
             },
-            {
-              "$ref": "#/definitions/WindowOnlyOp"
-            }
-          ],
-          "description": "The window or aggregation operation to apply within a window (e.g.,`rank`, `lead`, `sum`, `average` or `count`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops)."
+            "type": "array"
+          },
+          "strokeDashOffset": {
+            "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+            "type": "number"
+          },
+          "strokeJoin": {
+            "$ref": "#/definitions/StrokeJoin",
+            "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+          },
+          "strokeMiterLimit": {
+            "description": "The miter limit at which to bevel a line join.",
+            "type": "number"
+          },
+          "strokeOpacity": {
+            "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "strokeWidth": {
+            "description": "The stroke width, in pixels.",
+            "minimum": 0,
+            "type": "number"
+          },
+          "style": {
+            "description": "A string or array of strings indicating the name of custom styles to apply to the view background. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles.\n\n__Default value:__ `\"cell\"`\n__Note:__ Any specified view background properties will augment the default style.",
+            "type": "string"
+          }
         },
-        "param": {
-          "description": "Parameter values for the window functions. Parameter values can be omitted for operations that do not accept a parameter.\n\nSee the list of all supported operations and their parameters [here](https://vega.github.io/vega-lite/docs/transforms/window.html).",
-          "type": "number"
-        }
+        "type": "object"
       },
-      "required": [
-        "op",
-        "as"
-      ],
-      "type": "object"
-    },
-    "WindowOnlyOp": {
-      "enum": [
-        "row_number",
-        "rank",
-        "dense_rank",
-        "percent_rank",
-        "cume_dist",
-        "ntile",
-        "lag",
-        "lead",
-        "first_value",
-        "last_value",
-        "nth_value"
-      ],
-      "type": "string"
-    },
-    "WindowTransform": {
-      "additionalProperties": false,
-      "properties": {
-        "frame": {
-          "description": "A frame specification as a two-element array indicating how the sliding window should proceed. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. The default value is `[null, 0]`, indicating that the sliding window includes the current object and all preceding objects. The value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object. Finally, `[null, null]` indicates that the window frame should always include all data objects. If you this frame and want to assign the same value to add objects, you can use the simpler [join aggregate transform](https://vega.github.io/vega-lite/docs/joinaggregate.html). The only operators affected are the aggregation operations and the `first_value`, `last_value`, and `nth_value` window operations. The other window operations are not affected by this.\n\n__Default value:__:  `[null, 0]` (includes the current object and all preceding objects)",
-          "items": {
-            "type": [
-              "null",
-              "number"
-            ]
+      "ViewConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "clip": {
+            "description": "Whether the view should be clipped.",
+            "type": "boolean"
           },
-          "type": "array"
-        },
-        "groupby": {
-          "description": "The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be in a single window.",
-          "items": {
-            "$ref": "#/definitions/FieldName"
+          "cornerRadius": {
+            "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+            "type": "number"
           },
-          "type": "array"
-        },
-        "ignorePeers": {
-          "description": "Indicates if the sliding window frame should ignore peer values (data that are considered identical by the sort criteria). The default is false, causing the window frame to expand to include all peer values. If set to true, the window frame will be defined by offset values only. This setting only affects those operations that depend on the window frame, namely aggregation operations and the first_value, last_value, and nth_value window operations.\n\n__Default value:__ `false`",
-          "type": "boolean"
-        },
-        "sort": {
-          "description": "A sort field definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).",
-          "items": {
-            "$ref": "#/definitions/SortField"
+          "fill": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/Color"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The fill color.\n\n__Default value:__ `undefined`"
           },
-          "type": "array"
-        },
-        "window": {
-          "description": "The definition of the fields in the window, and what calculations to use.",
-          "items": {
-            "$ref": "#/definitions/WindowFieldDef"
+          "fillOpacity": {
+            "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
           },
-          "type": "array"
-        }
+          "height": {
+            "description": "The default height of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) y-scale with `rangeStep` = `null`.\n\n__Default value:__ `200`",
+            "type": "number"
+          },
+          "opacity": {
+            "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "stroke": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/Color"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`"
+          },
+          "strokeCap": {
+            "$ref": "#/definitions/StrokeCap",
+            "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
+          },
+          "strokeDash": {
+            "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "strokeDashOffset": {
+            "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+            "type": "number"
+          },
+          "strokeJoin": {
+            "$ref": "#/definitions/StrokeJoin",
+            "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+          },
+          "strokeMiterLimit": {
+            "description": "The miter limit at which to bevel a line join.",
+            "type": "number"
+          },
+          "strokeOpacity": {
+            "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "strokeWidth": {
+            "description": "The stroke width, in pixels.",
+            "minimum": 0,
+            "type": "number"
+          },
+          "width": {
+            "description": "The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.\n\n__Default value:__ `200`",
+            "type": "number"
+          }
+        },
+        "type": "object"
       },
-      "required": [
-        "window"
-      ],
-      "type": "object"
+      "WindowFieldDef": {
+        "additionalProperties": false,
+        "properties": {
+          "as": {
+            "$ref": "#/definitions/FieldName",
+            "description": "The output name for the window operation."
+          },
+          "field": {
+            "$ref": "#/definitions/FieldName",
+            "description": "The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `count`, `rank`, `dense_rank`."
+          },
+          "op": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/AggregateOp"
+              },
+              {
+                "$ref": "#/definitions/WindowOnlyOp"
+              }
+            ],
+            "description": "The window or aggregation operation to apply within a window (e.g.,`rank`, `lead`, `sum`, `average` or `count`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops)."
+          },
+          "param": {
+            "description": "Parameter values for the window functions. Parameter values can be omitted for operations that do not accept a parameter.\n\nSee the list of all supported operations and their parameters [here](https://vega.github.io/vega-lite/docs/transforms/window.html).",
+            "type": "number"
+          }
+        },
+        "required": [
+          "op",
+          "as"
+        ],
+        "type": "object"
+      },
+      "WindowOnlyOp": {
+        "enum": [
+          "row_number",
+          "rank",
+          "dense_rank",
+          "percent_rank",
+          "cume_dist",
+          "ntile",
+          "lag",
+          "lead",
+          "first_value",
+          "last_value",
+          "nth_value"
+        ],
+        "type": "string"
+      },
+      "WindowTransform": {
+        "additionalProperties": false,
+        "properties": {
+          "frame": {
+            "description": "A frame specification as a two-element array indicating how the sliding window should proceed. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. The default value is `[null, 0]`, indicating that the sliding window includes the current object and all preceding objects. The value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object. Finally, `[null, null]` indicates that the window frame should always include all data objects. If you this frame and want to assign the same value to add objects, you can use the simpler [join aggregate transform](https://vega.github.io/vega-lite/docs/joinaggregate.html). The only operators affected are the aggregation operations and the `first_value`, `last_value`, and `nth_value` window operations. The other window operations are not affected by this.\n\n__Default value:__:  `[null, 0]` (includes the current object and all preceding objects)",
+            "items": {
+              "type": [
+                "null",
+                "number"
+              ]
+            },
+            "type": "array"
+          },
+          "groupby": {
+            "description": "The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be in a single window.",
+            "items": {
+              "$ref": "#/definitions/FieldName"
+            },
+            "type": "array"
+          },
+          "ignorePeers": {
+            "description": "Indicates if the sliding window frame should ignore peer values (data that are considered identical by the sort criteria). The default is false, causing the window frame to expand to include all peer values. If set to true, the window frame will be defined by offset values only. This setting only affects those operations that depend on the window frame, namely aggregation operations and the first_value, last_value, and nth_value window operations.\n\n__Default value:__ `false`",
+            "type": "boolean"
+          },
+          "sort": {
+            "description": "A sort field definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).",
+            "items": {
+              "$ref": "#/definitions/SortField"
+            },
+            "type": "array"
+          },
+          "window": {
+            "description": "The definition of the fields in the window, and what calculations to use.",
+            "items": {
+              "$ref": "#/definitions/WindowFieldDef"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "window"
+        ],
+        "type": "object"
+      }
     }
   }
-}

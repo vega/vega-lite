@@ -115,19 +115,19 @@ describe('Mark: Rect', () => {
       data: {url: 'data/cars.json'},
       mark: 'rect',
       encoding: {
-        y: {aggregate: 'min', field: 'Horsepower', type: 'quantitative'},
-        y2: {aggregate: 'max', field: 'Horsepower', type: 'quantitative'},
-        x: {aggregate: 'min', field: 'Acceleration', type: 'quantitative'},
-        x2: {aggregate: 'max', field: 'Acceleration', type: 'quantitative'}
+        y: {field: 'hp1', type: 'quantitative'},
+        y2: {field: 'hp2'},
+        x: {field: 'origin1', type: 'ordinal'},
+        x2: {field: 'origin2'}
       }
     });
     const props = rect.encodeEntry(model);
 
     it('should draw rectangle with x, x2, y, y2', () => {
-      expect(props.x).toEqual({scale: 'x', field: 'min_Acceleration'});
-      expect(props.x2).toEqual({scale: 'x', field: 'max_Acceleration'});
-      expect(props.y).toEqual({scale: 'y', field: 'min_Horsepower'});
-      expect(props.y2).toEqual({scale: 'y', field: 'max_Horsepower'});
+      expect(props.x).toEqual({scale: 'x', field: 'origin1', band: 0.5});
+      expect(props.x2).toEqual({scale: 'x', field: 'origin2', band: 0.5});
+      expect(props.y).toEqual({scale: 'y', field: 'hp1'});
+      expect(props.y2).toEqual({scale: 'y', field: 'hp2'});
     });
   });
 

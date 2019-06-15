@@ -17,7 +17,7 @@ For example, the following bar chart is titled "A Simple Bar Chart".
 
 A `title` parameter object can contain the following properties:
 
-{% include table.html props="text,anchor,angle,baseline,color,font,fontSize,fontWeight,frame,limit,offset,orient,style,zindex" source="TitleParams" %}
+{% include table.html props="text,anchor,angle,baseline,color,font,fontSize,fontStyle,fontWeight,frame,limit,offset,orient,style,zindex" source="TitleParams" %}
 
 For example, we can customize the `anchor` of the title of a bar chart.
 

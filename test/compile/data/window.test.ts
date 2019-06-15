@@ -125,6 +125,22 @@ describe('compile/data/window', () => {
     expect(window.dependentFields()).toEqual(new Set(['g', 'f']));
   });
 
+  it('should generate the correct dependent fields when groupby and sort are undefined', () => {
+    const transform: Transform = {
+      window: [
+        {
+          field: 'w',
+          op: 'row_number',
+          as: 'ordered_row_number'
+        }
+      ],
+      ignorePeers: false,
+      frame: [null, 0]
+    };
+    const window = new WindowTransformNode(null, transform);
+    expect(window.dependentFields()).toEqual(new Set(['w']));
+  });
+
   it('should clone to an equivalent version', () => {
     const transform: Transform = {
       window: [

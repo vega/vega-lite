@@ -23,6 +23,7 @@ import {
   VgSortField,
   VgUnionSortField
 } from '../../vega.schema';
+import {getBinSignalName} from '../data/bin';
 import {sortArrayIndexField} from '../data/calculate';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
@@ -278,11 +279,12 @@ function parseSingleChannelDomain(
       ];
     } else {
       // continuous scales
-      if (isBinning(fieldDef.bin)) {
-        const signalName = model.getName(vgField(fieldDef, {suffix: 'bins'}));
+      const {bin} = fieldDef;
+      if (isBinning(bin)) {
+        const binSignal = getBinSignalName(model, fieldDef.field, bin);
         return [
           new SignalRefWrapper(() => {
-            const signal = model.getSignalName(signalName);
+            const signal = model.getSignalName(binSignal);
             return `[${signal}.start, ${signal}.stop]`;
           })
         ];

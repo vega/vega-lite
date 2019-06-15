@@ -2,7 +2,7 @@ import {Binding} from 'vega';
 import {SingleDefUnitChannel} from './channel';
 import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
-import {EventStream} from './vega.schema';
+import {EventStream, Color} from './vega.schema';
 
 export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'single' | 'multi' | 'interval';
@@ -136,7 +136,7 @@ export interface BrushConfig {
    * __Default value:__ `#333333`
    *
    */
-  fill?: string;
+  fill?: Color;
   /**
    * The fill opacity of the interval mark (a value between 0 and 1).
    *
@@ -148,7 +148,7 @@ export interface BrushConfig {
    *
    * __Default value:__ `#ffffff`
    */
-  stroke?: string;
+  stroke?: Color;
   /**
    * The stroke opacity of the interval mark (a value between 0 and 1).
    */

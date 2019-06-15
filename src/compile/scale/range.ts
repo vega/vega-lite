@@ -8,8 +8,8 @@ import {
   FILLOPACITY,
   OPACITY,
   POSITION_SCALE_CHANNELS,
-  SCALE_CHANNELS,
   ScaleChannel,
+  SCALE_CHANNELS,
   SHAPE,
   SIZE,
   STROKE,
@@ -18,7 +18,6 @@ import {
   X,
   Y
 } from '../../channel';
-import {vgField} from '../../channeldef';
 import {Config} from '../../config';
 import * as log from '../../log';
 import {Mark} from '../../mark';
@@ -38,6 +37,7 @@ import {
 import {Type} from '../../type';
 import * as util from '../../util';
 import {isSignalRef, isVgRangeStep, SchemeConfig, VgRange} from '../../vega.schema';
+import {getBinSignalName} from '../data/bin';
 import {Rename, SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
@@ -112,7 +112,7 @@ function getRangeStep(model: UnitModel, channel: 'x' | 'y'): number | SignalRef 
       // TODO: support the case without range step
     }
   } else if (fieldDef && fieldDef.bin && isBinning(fieldDef.bin)) {
-    const binSignal = model.getName(vgField(fieldDef, {suffix: 'bins'}));
+    const binSignal = getBinSignalName(model, fieldDef.field, fieldDef.bin);
 
     // TODO: extract this to be range step signal
     const sizeType = getSizeType(channel);

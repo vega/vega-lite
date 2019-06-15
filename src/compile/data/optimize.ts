@@ -74,6 +74,8 @@ function optimizationDataflowHelper(dataComponent: DataComponent, model: Model) 
 
   mutatedFlag = runOptimizer(new optimizers.MergeAggregateNodes(), getLeaves(roots), mutatedFlag);
 
+  mutatedFlag = runOptimizer(new optimizers.MergeTimeUnits(), getLeaves(roots), mutatedFlag);
+
   mutatedFlag = runOptimizer(new optimizers.MergeIdenticalNodes(), roots, mutatedFlag);
 
   dataComponent.sources = roots;

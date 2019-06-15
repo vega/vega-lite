@@ -70,7 +70,7 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### Labels
 
-{% include table.html props="format,formatType,labelAlign,labelBaseline,labelColor,labelFont,labelFontSize,labelLimit,labelOffset,labelOverlap" source="Legend" %}
+{% include table.html props="format,formatType,labelAlign,labelBaseline,labelColor,labelFont,labelFontSize,labelFontStyle,labelLimit,labelOffset,labelOverlap" source="Legend" %}
 
 ### Symbols
 
@@ -82,7 +82,7 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### Title
 
-{% include table.html props="title,titleAlign,titleBaseline,titleColor,titleFont,titleFontSize,titleFontWeight,titleLimit,titlePadding" source="Legend" %}
+{% include table.html props="title,titleAlign,titleAnchor,titleBaseline,titleColor,titleFont,titleFontSize,titleFontStyle,titleFontWeight,titleLimit,titleOpacity,titlePadding" source="Legend" %}
 
 <!--
 ### Custom Legend Encodings

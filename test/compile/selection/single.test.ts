@@ -87,10 +87,6 @@ describe('Single Selection', () => {
             force: true
           }
         ]
-      },
-      {
-        name: 'thr_ee_init',
-        init: 'modify("thr_ee_store", [{unit: "", fields: thr_ee_tuple_fields, values: [50]}])'
       }
     ]);
 
@@ -106,10 +102,6 @@ describe('Single Selection', () => {
             force: true
           }
         ]
-      },
-      {
-        name: 'four_init',
-        init: 'modify("four_store", [{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}])'
       }
     ]);
 
@@ -165,8 +157,26 @@ describe('Single Selection', () => {
     expect(assembleUnitSelectionData(model, data)).toEqual([
       {name: 'one_store'},
       {name: 'two_store'},
-      {name: 'thr_ee_store'},
-      {name: 'four_store'}
+      {
+        name: 'thr_ee_store',
+        values: [
+          {
+            unit: '""',
+            fields: [{type: 'E', field: 'Horsepower'}],
+            values: [50]
+          }
+        ]
+      },
+      {
+        name: 'four_store',
+        values: [
+          {
+            unit: '""',
+            fields: [{field: 'Horsepower', channel: 'x', type: 'E'}, {field: 'Origin', channel: 'color', type: 'E'}],
+            values: [50, 'Japan']
+          }
+        ]
+      }
     ]);
   });
 

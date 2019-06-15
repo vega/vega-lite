@@ -289,7 +289,7 @@ For example, the following bar chart has uses a band scale for its x-position.
 
 To customize the range of band and point scales, users can provide the following properties:
 
-{% include table.html props="padding,paddingInner,paddingOuter,rangeStep,round" source="Scale" %}
+{% include table.html props="align,padding,paddingInner,paddingOuter,rangeStep,round" source="Scale" %}
 
 For example, we can set the `rangeStep` property to make the bands of the bars smaller.
 
