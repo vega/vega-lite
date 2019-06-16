@@ -97,8 +97,10 @@ export function getSort(model: UnitModel): VgCompare {
     const dimensionChannelDef = encoding[markDef.orient === 'horizontal' ? 'y' : 'x'];
     if (isFieldDef(dimensionChannelDef)) {
       const s = dimensionChannelDef.sort;
-      const sortField = isSortField(s)
-        ? vgField(
+
+      if (isSortField(s)) {
+        return {
+          field: vgField(
             {
               // FIXME: this op might not already exist?
               // FIXME: what if dimensionChannel (x or y) contains custom domain?
@@ -107,16 +109,16 @@ export function getSort(model: UnitModel): VgCompare {
             },
             {expr: 'datum'}
           )
-        : vgField(dimensionChannelDef, {
+        };
+      } else {
+        return {
+          field: vgField(dimensionChannelDef, {
             // For stack with imputation, we only have bin_mid
             binSuffix: model.stack && model.stack.impute ? 'mid' : undefined,
             expr: 'datum'
-          });
-
-      return {
-        field: sortField,
-        order: 'descending'
-      };
+          })
+        };
+      }
     }
     return undefined;
   }
