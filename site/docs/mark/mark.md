@@ -97,6 +97,40 @@ Marks can act as hyperlinks when the `href` property or [channel](encoding.html#
 
 <span class="vl-example" data-name="point_href"></span>
 
+{:#config}
+
+## Mark Config
+
+```js
+// Top-level View Specification
+{
+  ...
+  "config": {
+    "mark": ...,
+    "area": ...,
+    "bar": ...,
+    "circle": ...,
+    "line": ...,
+    "point": ...,
+    "rect": ...,
+    "rule": ...,
+    "geoshape": ...,
+    "square": ...,
+    "text": ...,
+    "tick": ...
+  }
+}
+```
+
+The `mark` property of the [`config`](config.html) object sets the default properties for all marks. In addition, the `config` object also provides mark-specific config using its mark type as the property name (e.g., `config.area`) for defining default properties for each mark.
+
+The global mark config (`config.mark`) supports all standard mark properties (except `type`, `style`, `clip`, and `orient`). For mark-specific config, please see the documentation for each mark type.
+
+Note:
+
+1. If [mark properties in mark definition](#mark-def) or [mark property encoding channels](encoding.html#mark-prop) are specified, these config values will be overridden.
+2. Mark config do not support [offset mark properties](#offset).
+
 {:#style-config}
 
 ## Mark Style Config
@@ -132,10 +166,11 @@ For example, to set a default shape and stroke width for `point` marks with a st
 
 Styles can then be invoked by including a `style` property within a [mark definition object](#mark-def).
 
-In addition to custom `style` names, Vega-Lite includes the following built-in style names:
+Note: To customize the style for guides (axes, headers, and legends), Vega-Lite also includes the following built-in style names:
 
 - `"guide-label"`: style for axis, legend, and header labels
 - `"guide-title"`: style for axis, legend, and header titles
+- `"group-title"`: styles for chart titles
 
 ### Example: Styling Labels
 
@@ -144,37 +179,3 @@ You can use [`text` marks](text.html) as labels for other marks by setting `styl
 <span class="vl-example" data-name="layer_bar_labels_style"></span>
 
 See also: [a similar example that uses mark definition to configure offset, align, and baseline](text.html#labels).
-
-{:#config}
-
-## Mark Config
-
-```js
-// Top-level View Specification
-{
-  ...
-  "config": {
-    "mark": ...,
-    "area": ...,
-    "bar": ...,
-    "circle": ...,
-    "line": ...,
-    "point": ...,
-    "rect": ...,
-    "rule": ...,
-    "geoshape": ...,
-    "square": ...,
-    "text": ...,
-    "tick": ...
-  }
-}
-```
-
-The `mark` property of the [`config`](config.html) object sets the default properties for all marks. In addition, the `config` object also provides mark-specific config using its mark type as the property name (e.g., `config.area`) for defining default properties for each mark.
-
-The global mark config (`config.mark`) supports all standard mark properties (except `type`, `style`, `clip`, and `orient`). For mark-specific config, please see the documentation for each mark type.
-
-Note:
-
-1. If [mark properties in mark definition](#mark-def) or [mark property encoding channels](encoding.html#mark-prop) are specified, these config values will be overridden.
-2. Mark config do not support [offset mark properties](#offset).
