@@ -207,7 +207,8 @@ export interface ScaleConfig {
   /**
    * Default outer padding for `x` and `y` band-ordinal scales.
    *
-   * If not specified, by default, band scale's paddingOuter is paddingInner/2.
+   * __Default value:__ `paddingInner/2` (which makes _width/height = number of unique values * step_)
+   *
    * @minimum 0
    * @maximum 1
    */
@@ -261,7 +262,7 @@ export interface ScaleConfig {
   /**
    * Default outer padding for `x` and `y` point-ordinal scales.
    *
-   * __Default value:__ `0.5`
+   * __Default value:__ `0.5` (which makes _width/height = number of unique values * step_)
    *
    * @minimum 0
    * @maximum 1
@@ -576,7 +577,7 @@ export interface Scale {
    * For _[point](https://vega.github.io/vega-lite/docs/scale.html#point)_ scales, alias for `paddingOuter`.
    *
    * __Default value:__ For _continuous_ scales, derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `continuousPadding`.
-   * For _band and point_ scales, see `paddingInner` and `paddingOuter`.
+   * For _band and point_ scales, see `paddingInner` and `paddingOuter`.  By default, Vega-Lite sets padding such that _width/height = number of unique values * step_.
    *
    * @minimum 0
    */
@@ -599,6 +600,7 @@ export interface Scale {
    * as a fraction of the step size. This value must lie in the range [0,1].
    *
    * __Default value:__ derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `bandPaddingOuter` for band scales and `pointPadding` for point scales.
+   * By default, Vega-Lite sets outer padding such that _width/height = number of unique values * step_.
    *
    * @minimum 0
    * @maximum 1
