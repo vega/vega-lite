@@ -117,7 +117,7 @@ function defaultSizeRef(
       if (scaleType === ScaleType.POINT) {
         const scaleRange = scale.get('range');
         if (isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
-          return {value: scaleRange.step - 1};
+          return {value: scaleRange.step - 2};
         }
         log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL);
       } else {
@@ -133,9 +133,9 @@ function defaultSizeRef(
   const value = getFirstDefined(
     // No scale is like discrete bar (with one item)
     config[mark].discreteBandSize,
-    config.scale.rangeStep ? config.scale.rangeStep - 1 : undefined,
-    // If somehow default rangeStep is set to null or undefined, use 20 as back up
-    20
+    config.scale.rangeStep ? config.scale.rangeStep - 2 : undefined,
+    // If somehow default rangeStep is set to null or undefined, use 18 as back up
+    18
   );
   return {value};
 }
