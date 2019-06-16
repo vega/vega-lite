@@ -1053,265 +1053,6 @@
       },
       "type": "object"
     },
-    "BarConfig": {
-      "additionalProperties": false,
-      "properties": {
-        "align": {
-          "$ref": "#/definitions/Align",
-          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
-        },
-        "angle": {
-          "description": "The rotation angle of the text, in degrees.",
-          "maximum": 360,
-          "minimum": 0,
-          "type": "number"
-        },
-        "baseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
-        },
-        "binSpacing": {
-          "description": "Offset between bars for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).\n\n__Default value:__ `1`",
-          "minimum": 0,
-          "type": "number"
-        },
-        "color": {
-          "$ref": "#/definitions/Color",
-          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config)."
-        },
-        "continuousBandSize": {
-          "description": "The default size of the bars on continuous scales.\n\n__Default value:__ `5`",
-          "minimum": 0,
-          "type": "number"
-        },
-        "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
-          "type": "number"
-        },
-        "cursor": {
-          "$ref": "#/definitions/Cursor",
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
-        },
-        "dir": {
-          "$ref": "#/definitions/Dir",
-          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
-        },
-        "discreteBandSize": {
-          "description": "The default size of the bars with discrete dimensions.  If unspecified, the default size is  `bandSize-1`,\nwhich provides 1 pixel offset between bars.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "dx": {
-          "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
-          "type": "number"
-        },
-        "dy": {
-          "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
-          "type": "number"
-        },
-        "ellipsis": {
-          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
-          "type": "string"
-        },
-        "fill": {
-          "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
-        },
-        "fillOpacity": {
-          "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "filled": {
-          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `false` for `point`, `line` and `rule`; otherwise, `true`.\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
-          "type": "boolean"
-        },
-        "font": {
-          "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-          "type": "string"
-        },
-        "fontSize": {
-          "description": "The font size, in pixels.",
-          "type": "number"
-        },
-        "fontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "The font style (e.g., `\"italic\"`)."
-        },
-        "fontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
-        },
-        "href": {
-          "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
-          "format": "uri",
-          "type": "string"
-        },
-        "interpolate": {
-          "$ref": "#/definitions/Interpolate",
-          "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-        },
-        "limit": {
-          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
-        },
-        "opacity": {
-          "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "order": {
-          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
-          "type": [
-            "null",
-            "boolean"
-          ]
-        },
-        "orient": {
-          "$ref": "#/definitions/Orientation",
-          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-        },
-        "radius": {
-          "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "shape": {
-          "description": "Shape of the point marks. Supported values include:\n- plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n- the line symbol `\"stroke\"`\n- centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n- a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n__Default value:__ `\"circle\"`",
-          "type": "string"
-        },
-        "size": {
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "stroke": {
-          "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
-        },
-        "strokeCap": {
-          "$ref": "#/definitions/StrokeCap",
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
-        },
-        "strokeDash": {
-          "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        "strokeDashOffset": {
-          "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
-          "type": "number"
-        },
-        "strokeJoin": {
-          "$ref": "#/definitions/StrokeJoin",
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
-        },
-        "strokeMiterLimit": {
-          "description": "The miter limit at which to bevel a line join.",
-          "type": "number"
-        },
-        "strokeOpacity": {
-          "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "strokeWidth": {
-          "description": "The stroke width, in pixels.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "tension": {
-          "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "text": {
-          "description": "Placeholder text if the `text` channel is not specified",
-          "type": "string"
-        },
-        "theta": {
-          "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
-          "type": "number"
-        },
-        "tooltip": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/TooltipContent"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
-        },
-        "x": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "enum": [
-                "width"
-              ],
-              "type": "string"
-            }
-          ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
-        },
-        "x2": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "enum": [
-                "width"
-              ],
-              "type": "string"
-            }
-          ],
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
-        },
-        "y": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "enum": [
-                "height"
-              ],
-              "type": "string"
-            }
-          ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
-        },
-        "y2": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "enum": [
-                "width"
-              ],
-              "type": "string"
-            }
-          ],
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
-        }
-      },
-      "type": "object"
-    },
     "BaseLegendLayout": {
       "additionalProperties": false,
       "properties": {
@@ -3145,7 +2886,7 @@
           "type": "string"
         },
         "bar": {
-          "$ref": "#/definitions/BarConfig",
+          "$ref": "#/definitions/RectConfig",
           "description": "Bar-Specific Config"
         },
         "boxplot": {
@@ -3249,7 +2990,7 @@
           "description": "An object hash that defines default range arrays or schemes for using with scales.\nFor a full list of scale range configuration options, please see the [corresponding section of the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#config)."
         },
         "rect": {
-          "$ref": "#/definitions/MarkConfig",
+          "$ref": "#/definitions/RectConfig",
           "description": "Rect-Specific Config"
         },
         "repeat": {
@@ -9374,6 +9115,265 @@
           "type": "object"
         }
       ]
+    },
+    "RectConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "align": {
+          "$ref": "#/definitions/Align",
+          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+        },
+        "angle": {
+          "description": "The rotation angle of the text, in degrees.",
+          "maximum": 360,
+          "minimum": 0,
+          "type": "number"
+        },
+        "baseline": {
+          "$ref": "#/definitions/TextBaseline",
+          "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+        },
+        "binSpacing": {
+          "description": "Offset between bars for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).\n\n__Default value:__ `1`",
+          "minimum": 0,
+          "type": "number"
+        },
+        "color": {
+          "$ref": "#/definitions/Color",
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config)."
+        },
+        "continuousBandSize": {
+          "description": "The default size of the bars on continuous scales.\n\n__Default value:__ `5`",
+          "minimum": 0,
+          "type": "number"
+        },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cursor": {
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
+        },
+        "discreteBandSize": {
+          "description": "The default size of the bars with discrete dimensions.  If unspecified, the default size is  `bandSize-1`,\nwhich provides 1 pixel offset between bars.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "dx": {
+          "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "dy": {
+          "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
+          "type": "string"
+        },
+        "fill": {
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+        },
+        "fillOpacity": {
+          "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "filled": {
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `false` for `point`, `line` and `rule`; otherwise, `true`.\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
+          "type": "boolean"
+        },
+        "font": {
+          "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
+          "type": "string"
+        },
+        "fontSize": {
+          "description": "The font size, in pixels.",
+          "type": "number"
+        },
+        "fontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style (e.g., `\"italic\"`)."
+        },
+        "fontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "href": {
+          "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
+          "format": "uri",
+          "type": "string"
+        },
+        "interpolate": {
+          "$ref": "#/definitions/Interpolate",
+          "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+        },
+        "limit": {
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
+          "type": "number"
+        },
+        "opacity": {
+          "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
+        "orient": {
+          "$ref": "#/definitions/Orientation",
+          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+        },
+        "radius": {
+          "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "shape": {
+          "description": "Shape of the point marks. Supported values include:\n- plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n- the line symbol `\"stroke\"`\n- centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n- a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n__Default value:__ `\"circle\"`",
+          "type": "string"
+        },
+        "size": {
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "stroke": {
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+        },
+        "strokeCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
+        },
+        "strokeDash": {
+          "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "strokeDashOffset": {
+          "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+          "type": "number"
+        },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
+          "type": "number"
+        },
+        "strokeOpacity": {
+          "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "strokeWidth": {
+          "description": "The stroke width, in pixels.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "tension": {
+          "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "text": {
+          "description": "Placeholder text if the `text` channel is not specified",
+          "type": "string"
+        },
+        "theta": {
+          "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "tooltip": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TooltipContent"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
+        },
+        "x": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without `x2`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+        },
+        "x2": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+        },
+        "y": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "height"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+        },
+        "y2": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+        }
+      },
+      "type": "object"
     },
     "RepeatMapping": {
       "additionalProperties": false,

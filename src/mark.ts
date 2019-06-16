@@ -116,7 +116,7 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
   order?: null | boolean;
 }
 
-export interface BarBinSpacingMixins {
+export interface RectBinSpacingMixins {
   /**
    * Offset between bars for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).
    *
@@ -161,6 +161,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
 } = {
   area: ['line', 'point'],
   bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
+  rect: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
   line: ['point'],
   text: ['shortTimeLabels'],
   tick: ['bandSize', 'thickness']
@@ -180,7 +181,7 @@ export interface MarkConfigMixins {
   area?: AreaConfig;
 
   /** Bar-Specific Config */
-  bar?: BarConfig;
+  bar?: RectConfig;
 
   /** Circle-Specific Config */
   circle?: MarkConfig;
@@ -192,7 +193,7 @@ export interface MarkConfigMixins {
   point?: MarkConfig;
 
   /** Rect-Specific Config */
-  rect?: MarkConfig;
+  rect?: RectConfig;
 
   /** Rule-Specific Config */
   rule?: MarkConfig;
@@ -213,7 +214,7 @@ export interface MarkConfigMixins {
   geoshape?: MarkConfig;
 }
 
-export interface BarConfig extends BarBinSpacingMixins, MarkConfig {
+export interface RectConfig extends RectBinSpacingMixins, MarkConfig {
   /**
    * The default size of the bars on continuous scales.
    *
@@ -328,16 +329,23 @@ export interface MarkDefMixins {
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 export interface MarkDef<M extends string | Mark = Mark>
   extends GenericMarkDef<M>,
-    BarBinSpacingMixins,
+    RectBinSpacingMixins,
     MarkConfig,
     PointOverlayMixins,
     LineOverlayMixins,
     TickThicknessMixins,
     MarkDefMixins {}
 
-export const defaultBarConfig: BarConfig = {
+const DEFAULT_RECT_BAND_SIZE = 5;
+
+export const defaultBarConfig: RectConfig = {
   binSpacing: 1,
-  continuousBandSize: 5
+  continuousBandSize: DEFAULT_RECT_BAND_SIZE
+};
+
+export const defaultRectConfig: RectConfig = {
+  binSpacing: 0,
+  continuousBandSize: DEFAULT_RECT_BAND_SIZE
 };
 
 export interface TextConfig extends MarkConfig {

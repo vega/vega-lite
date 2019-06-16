@@ -25,6 +25,26 @@ describe('Mark: Rect', () => {
     });
   });
 
+  describe('simple vertical 1D', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: 'rect',
+      encoding: {
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
+      }
+    });
+    const props = rect.encodeEntry(model);
+
+    it('should draw bar, with y from zero to field value and x band', () => {
+      expect(props).toMatchObject({
+        x: {field: {group: 'width'}},
+        x2: {value: 0},
+        y: {scale: 'y', field: 'mean_Acceleration'},
+        y2: {scale: 'y', value: 0}
+      });
+    });
+  });
+
   describe('simple horizontal', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
