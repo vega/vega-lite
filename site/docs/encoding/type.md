@@ -4,15 +4,17 @@ title: Type
 permalink: /docs/type.html
 ---
 
-If a field is specified, the channel definition **must** describe the encoded data's [type of measurement (level of measurement)](https://en.wikipedia.org/wiki/Level_of_measurement). The supported data types are: [`"quantitative"`](#quantitative), [`"temporal"`](#temporal), [`"ordinal"`](#ordinal), [`"nominal"`](#nominal), and [`"geojson"`](#geojson).
+If a field is specified, the channel definition **must** describe the encoded data's type based on their [level of measurement](https://en.wikipedia.org/wiki/Level_of_measurement). The supported data types are: [`"quantitative"`](#quantitative), [`"temporal"`](#temporal), [`"ordinal"`](#ordinal), [`"nominal"`](#nominal), and [`"geojson"`](#geojson).
 
-{% include table.html props="type" source="FieldDef" %}
+{% include table.html props="type" source="TypedFieldDef" %}
 
 {:#quantitative}
 
 ## Quantitative
 
 Quantitative data expresses some kind of quantity. Typically this is numerical data. For example `7.3`, `42.0`, `12.1`.
+
+Quantitative data can represent either the ratio or interval [level of measurement](https://en.wikipedia.org/wiki/Level_of_measurement). By default, Vega-Lite includes zero values in the x, y, and size scales for quantitative fields, which is more appropriate for ratio data. However, you can manually set the [scale's `zero` property](https://vega.github.io/vega-lite/docs/scale.html#continuous) to `false` if you have interval data.
 
 {:#temporal}
 
