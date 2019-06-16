@@ -31,7 +31,7 @@
       "name": "marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"year_date\"]", "order": "descending"},
+      "sort": {"field": "datum[\"year_date\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

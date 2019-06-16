@@ -36,7 +36,7 @@
       "name": "marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
+      "sort": {"field": "datum[\"month_date\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

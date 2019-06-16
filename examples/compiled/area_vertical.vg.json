@@ -32,7 +32,7 @@
       "name": "marks",
       "type": "area",
       "style": ["area"],
-      "sort": {"field": "datum[\"year_Year\"]", "order": "descending"},
+      "sort": {"field": "datum[\"year_Year\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

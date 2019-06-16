@@ -35,7 +35,7 @@
           "name": "marks",
           "type": "trail",
           "style": ["trail"],
-          "sort": {"field": "datum[\"date\"]", "order": "descending"},
+          "sort": {"field": "datum[\"date\"]"},
           "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {

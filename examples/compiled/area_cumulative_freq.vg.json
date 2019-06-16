@@ -28,7 +28,7 @@
       "name": "marks",
       "type": "area",
       "style": ["area"],
-      "sort": {"field": "datum[\"IMDB_Rating\"]", "order": "descending"},
+      "sort": {"field": "datum[\"IMDB_Rating\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

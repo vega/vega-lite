@@ -246,7 +246,7 @@
               "name": "concat_1_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"lc.time\"]", "order": "descending"},
+              "sort": {"field": "datum[\"lc.time\"]"},
               "from": {"data": "faceted_path_concat_1_main"},
               "encode": {
                 "update": {

@@ -67,7 +67,7 @@
       "name": "layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"year_date\"]", "order": "descending"},
+      "sort": {"field": "datum[\"year_date\"]"},
       "from": {"data": "data_0"},
       "encode": {
         "update": {

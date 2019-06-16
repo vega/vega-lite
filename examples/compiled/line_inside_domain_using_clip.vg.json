@@ -23,7 +23,7 @@
       "type": "line",
       "clip": true,
       "style": ["line"],
-      "sort": {"field": "datum[\"wavelength\"]", "order": "descending"},
+      "sort": {"field": "datum[\"wavelength\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

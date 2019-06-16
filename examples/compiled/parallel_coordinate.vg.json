@@ -91,7 +91,7 @@
           "name": "layer_1_marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"key\"]", "order": "descending"},
+          "sort": {"field": "datum[\"key\"]"},
           "from": {"data": "faceted_path_layer_1_main"},
           "encode": {
             "update": {
