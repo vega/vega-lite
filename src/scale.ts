@@ -215,14 +215,6 @@ export interface ScaleConfig {
   barBandPaddingInner?: number;
 
   /**
-   * Default outer padding for `x` and `y` band-ordinal scales of `"bar"` marks.
-   * If not specified, by default, band scale's paddingOuter is paddingInner/2.
-   * @minimum 0
-   * @maximum 1
-   */
-  barBandPaddingOuter?: number;
-
-  /**
    * Default inner padding for `x` and `y` band-ordinal scales of `"rect"` marks.
    *
    * __Default value:__ `0`
@@ -231,14 +223,6 @@ export interface ScaleConfig {
    * @maximum 1
    */
   rectBandPaddingInner?: number;
-
-  /**
-   * Default outer padding for `x` and `y` band-ordinal scales of `"rect"` marks.
-   * If not specified, by default, band scale's paddingOuter is paddingInner/2.
-   * @minimum 0
-   * @maximum 1
-   */
-  rectBandPaddingOuter?: number;
 
   /**
    * Default padding for continuous scales.
