@@ -94,11 +94,16 @@ export function getSort(model: UnitModel): VgCompare {
     return sortParams(order, {expr: 'datum'});
   } else if (isPathMark(mark)) {
     // For both line and area, we sort values based on dimension by default
-    const dimensionChannelDef = encoding[markDef.orient === 'horizontal' ? 'y' : 'x'];
+    const dimensionChannel = markDef.orient === 'horizontal' ? 'y' : 'x';
+    const dimensionChannelDef = encoding[dimensionChannel];
     if (isFieldDef(dimensionChannelDef)) {
       const s = dimensionChannelDef.sort;
 
-      if (isSortField(s)) {
+      if (isArray(s)) {
+        return {
+          field: vgField(dimensionChannelDef, {prefix: dimensionChannel, suffix: 'sort_index', expr: 'datum'})
+        };
+      } else if (isSortField(s)) {
         return {
           field: vgField(
             {
