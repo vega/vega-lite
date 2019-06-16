@@ -110,7 +110,7 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    * - For `bar`, this represents the band size of the bar, in pixels.
    * - For `text`, this represents the font size, in pixels.
    *
-   * __Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.
+   * __Default value:__ `30` for point, circle, square marks; `rangeStep` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.
    *
    * @minimum 0
    */

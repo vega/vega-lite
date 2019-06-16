@@ -202,7 +202,7 @@ describe('Mark: Bar', () => {
 
     it('should draw bar from zero to field value and y with center position and height = rangeStep - 1', () => {
       expect(props.yc).toEqual({scale: 'y', field: 'Origin'});
-      expect(props.height).toEqual({value: defaultScaleConfig.rangeStep - 1});
+      expect(props.height).toEqual({value: defaultScaleConfig.rangeStep - 2});
       expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
       expect(props.x2).toEqual({scale: 'x', value: 0});
       expect(props.width).toBeUndefined();
@@ -704,7 +704,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should not use config.mark.size', () => {
-      expect(props.width).toEqual({value: 19});
+      expect(props.width).toEqual({value: 18});
     });
   });
 
