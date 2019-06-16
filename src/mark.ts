@@ -74,6 +74,9 @@ export interface TooltipContent {
   content: 'encoding' | 'data';
 }
 
+/** @hide */
+export type Hide = 'hide';
+
 export interface MarkConfig extends ColorMixins, BaseMarkConfig {
   // ========== VL-Specific ==========
 
@@ -118,6 +121,13 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    * For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.
    */
   order?: null | boolean;
+
+  /**
+   * Defines how Vega-Lite should handle marks for invalid values (`null` and `NaN`).
+   * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
+   * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
+   */
+  invalid?: 'filter' | Hide | null;
 }
 
 export interface RectBinSpacingMixins {
@@ -158,7 +168,7 @@ export const FILL_CONFIG = ['fill', 'fillOpacity'];
 
 export const FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
 
-export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = ['filled', 'color', 'tooltip'];
+export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = ['filled', 'color', 'tooltip', 'invalid'];
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   [k in typeof PRIMITIVE_MARKS[0]]?: (keyof MarkConfigMixins[k])[];
@@ -172,7 +182,8 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
 };
 
 export const defaultMarkConfig: MarkConfig = {
-  color: '#4c78a8'
+  color: '#4c78a8',
+  invalid: 'filter'
 };
 
 export interface MarkConfigMixins {

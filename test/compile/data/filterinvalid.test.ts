@@ -29,11 +29,11 @@ describe('compile/data/nullfilter', () => {
       });
     });
 
-    it('should add filterNull for Q and T when invalidValues is "filter".', () => {
+    it('should add filterNull for Q and T when invalid is "filter".', () => {
       const model = parseUnitModelWithScale(
         mergeDeep<TopLevel<NormalizedUnitSpec>>(spec, {
           config: {
-            invalidValues: 'filter'
+            mark: {invalid: 'filter'}
           }
         })
       );
@@ -43,11 +43,11 @@ describe('compile/data/nullfilter', () => {
       });
     });
 
-    it('should add no null filter if when invalidValues is null', () => {
+    it('should add no null filter if when invalid is null', () => {
       const model = parseUnitModelWithScale(
         mergeDeep<TopLevel<NormalizedUnitSpec>>(spec, {
           config: {
-            invalidValues: null
+            mark: {invalid: null}
           }
         })
       );

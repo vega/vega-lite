@@ -4,6 +4,7 @@ import {isPathMark} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
 import {Dict, keys} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
+import {getMarkPropOrConfig} from '../common';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
@@ -17,8 +18,10 @@ export class FilterInvalidNode extends DataFlowNode {
   }
 
   public static make(parent: DataFlowNode, model: UnitModel): FilterInvalidNode {
-    const {config, mark} = model;
-    if (config.invalidValues !== 'filter') {
+    const {config, mark, markDef} = model;
+
+    const invalid = getMarkPropOrConfig('invalid', markDef, config);
+    if (invalid !== 'filter') {
       return null;
     }
 
