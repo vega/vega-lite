@@ -253,6 +253,24 @@ describe('Mark', () => {
       });
     });
 
+    it("should order by x's custom sort order by default if x is the dimension", () => {
+      const model = parseUnitModelWithScale({
+        data: {url: 'data/movies.json'},
+        mark: 'line',
+        encoding: {
+          x: {
+            type: 'nominal',
+            field: 'Name',
+            sort: ['Peter', 'Mary', 'Paul']
+          },
+          y: {type: 'quantitative', field: 'Score'}
+        }
+      });
+      expect(getSort(model)).toEqual({
+        field: 'datum["x_Name_sort_index"]'
+      });
+    });
+
     it('should not order by a missing dimension', () => {
       const model = parseUnitModelWithScale({
         data: {url: 'data/movies.json'},
