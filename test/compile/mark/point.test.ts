@@ -17,7 +17,7 @@ describe('Mark: Point', () => {
         ...moreEncoding
       },
       data: {url: 'data/barley.json'},
-      config: {invalidValues: null, ...moreConfig}
+      config: {mark: {invalid: null}, ...moreConfig}
     };
   }
 
