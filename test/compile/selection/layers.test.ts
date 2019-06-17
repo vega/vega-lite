@@ -28,7 +28,7 @@ describe('Layered Selections', () => {
         }
       }
     ],
-    config: {mark: {tooltip: null}, invalidValues: 'hide'}
+    config: {mark: {tooltip: null, invalid: 'hide'}}
   });
 
   layers.parse();
