@@ -60,7 +60,7 @@
       "name": "layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"a\"]", "order": "descending"},
+      "sort": {"field": "datum[\"a\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

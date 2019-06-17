@@ -39,7 +39,7 @@
           "name": "marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"x\"]", "order": "descending"},
+          "sort": {"field": "datum[\"x\"]"},
           "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {

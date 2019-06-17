@@ -100,7 +100,7 @@
               "name": "child__repeat_column_temp_max_layer_0_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
+              "sort": {"field": "datum[\"month_date\"]"},
               "from": {
                 "data": "faceted_path_child__repeat_column_temp_max_layer_0_main"
               },
@@ -148,7 +148,7 @@
               "name": "child__repeat_column_temp_max_layer_1_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
+              "sort": {"field": "datum[\"month_date\"]"},
               "from": {
                 "data": "faceted_path_child__repeat_column_temp_max_layer_1_main"
               },
@@ -248,7 +248,7 @@
               "name": "child__repeat_column_precipitation_layer_0_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
+              "sort": {"field": "datum[\"month_date\"]"},
               "from": {
                 "data": "faceted_path_child__repeat_column_precipitation_layer_0_main"
               },
@@ -296,7 +296,7 @@
               "name": "child__repeat_column_precipitation_layer_1_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
+              "sort": {"field": "datum[\"month_date\"]"},
               "from": {
                 "data": "faceted_path_child__repeat_column_precipitation_layer_1_main"
               },
@@ -396,7 +396,7 @@
               "name": "child__repeat_column_wind_layer_0_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
+              "sort": {"field": "datum[\"month_date\"]"},
               "from": {
                 "data": "faceted_path_child__repeat_column_wind_layer_0_main"
               },
@@ -444,7 +444,7 @@
               "name": "child__repeat_column_wind_layer_1_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
+              "sort": {"field": "datum[\"month_date\"]"},
               "from": {
                 "data": "faceted_path_child__repeat_column_wind_layer_1_main"
               },

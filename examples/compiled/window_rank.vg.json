@@ -75,7 +75,7 @@
           "name": "marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"matchday\"]", "order": "descending"},
+          "sort": {"field": "datum[\"matchday\"]"},
           "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {

@@ -38,7 +38,7 @@
       "name": "marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"rank\"]", "order": "descending"},
+      "sort": {"field": "datum[\"rank\"]"},
       "from": {"data": "data_0"},
       "encode": {
         "update": {

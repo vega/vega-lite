@@ -20,7 +20,7 @@
       "name": "marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"x\"]", "order": "descending"},
+      "sort": {"field": "datum[\"x\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

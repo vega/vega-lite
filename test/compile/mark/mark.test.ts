@@ -249,8 +249,7 @@ describe('Mark', () => {
         }
       });
       expect(getSort(model)).toEqual({
-        field: 'datum["bin_maxbins_10_IMDB_Rating"]',
-        order: 'descending'
+        field: 'datum["bin_maxbins_10_IMDB_Rating"]'
       });
     });
 

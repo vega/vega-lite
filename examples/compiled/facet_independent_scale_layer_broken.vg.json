@@ -140,7 +140,7 @@
               "name": "child_layer_0_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"age\"]", "order": "descending"},
+              "sort": {"field": "datum[\"age\"]"},
               "from": {"data": "faceted_path_child_layer_0_main"},
               "encode": {
                 "update": {
