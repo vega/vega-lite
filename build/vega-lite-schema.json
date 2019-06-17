@@ -10166,12 +10166,6 @@
           "minimum": 0,
           "type": "number"
         },
-        "barBandPaddingOuter": {
-          "description": "Default outer padding for `x` and `y` band-ordinal scales of `\"bar\"` marks.\nIf not specified, by default, band scale's paddingOuter is paddingInner/2.",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
         "clamp": {
           "description": "If true, values that exceed the data domain are clamped to either the minimum or maximum range value",
           "type": "boolean"
@@ -10259,12 +10253,6 @@
         },
         "rectBandPaddingInner": {
           "description": "Default inner padding for `x` and `y` band-ordinal scales of `\"rect\"` marks.\n\n__Default value:__ `0`",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "rectBandPaddingOuter": {
-          "description": "Default outer padding for `x` and `y` band-ordinal scales of `\"rect\"` marks.\nIf not specified, by default, band scale's paddingOuter is paddingInner/2.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"

@@ -273,11 +273,10 @@ export function paddingOuter(
     // Padding is only set for X and Y by default.
     // Basically it doesn't make sense to add padding for color and size.
     if (scaleType === ScaleType.BAND) {
-      const {bandPaddingOuter, barBandPaddingOuter, rectBandPaddingOuter} = scaleConfig;
+      const {bandPaddingOuter} = scaleConfig;
 
       return getFirstDefined(
         bandPaddingOuter,
-        mark === 'bar' ? barBandPaddingOuter : rectBandPaddingOuter,
         /* By default, paddingOuter is paddingInner / 2. The reason is that
           size (width/height) = step * (cardinality - paddingInner + 2 * paddingOuter).
           and we want the width/height to be integer by default.
