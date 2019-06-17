@@ -116,7 +116,7 @@ describe('extractTransforms()', () => {
 
         const spec = JSON.parse(specString);
 
-        // Use invalid =  "hide" so we don't include filterInvalid in the comparison
+        // Use invalid = "hide" so we don't include filterInvalid in the comparison
         const config = initConfig({...spec.config, mark: {invalid: 'hide'}});
 
         const extractSpec = extractTransforms(normalize(spec, config), config) as TopLevelSpec;
