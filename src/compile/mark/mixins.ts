@@ -16,7 +16,7 @@ import {isPathMark, Mark, MarkConfig, MarkDef} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
 import {contains, Dict, getFirstDefined, keys} from '../../util';
 import {VgEncodeChannel, VgEncodeEntry, VgValueRef, VG_MARK_CONFIGS} from '../../vega.schema';
-import {getMarkConfig, getStyleConfig} from '../common';
+import {getMarkConfig, getMarkPropOrConfig, getStyleConfig} from '../common';
 import {expression} from '../predicate';
 import {assembleSelectionPredicate} from '../selection/assemble';
 import {UnitModel} from '../unit';
@@ -128,9 +128,11 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
 }
 
 function wrapAllFieldsInvalid(model: UnitModel, channel: Channel, valueRef: VgValueRef | VgValueRef[]): VgEncodeEntry {
-  const {config, mark} = model;
+  const {config, mark, markDef} = model;
 
-  if (config.invalidValues === 'hide' && valueRef && !isPathMark(mark)) {
+  const invalid = getMarkPropOrConfig('invalid', markDef, config);
+
+  if (invalid === 'hide' && valueRef && !isPathMark(mark)) {
     // For non-path marks, we have to exclude invalid values (null and NaN) for scales with continuous domains.
     // For path marks, we will use "defined" property and skip these values instead.
     const test = allFieldsInvalidPredicate(model, {invalid: true, channels: SCALE_CHANNELS});
@@ -190,7 +192,10 @@ function allFieldsInvalidPredicate(
   return undefined;
 }
 export function defined(model: UnitModel): VgEncodeEntry {
-  if (model.config.invalidValues) {
+  const {config, markDef} = model;
+
+  const invalid = getMarkPropOrConfig('invalid', markDef, config);
+  if (invalid) {
     const signal = allFieldsInvalidPredicate(model, {channels: ['x', 'y']});
 
     if (signal) {

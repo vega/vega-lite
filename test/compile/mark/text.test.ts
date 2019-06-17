@@ -181,7 +181,7 @@ describe('Mark: Text', () => {
       },
       data: {url: 'data/cars.json'},
       config: {
-        invalidValues: 'hide'
+        mark: {invalid: 'hide'}
       }
     };
     const model = parseModelWithScale(spec);
