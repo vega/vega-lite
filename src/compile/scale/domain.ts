@@ -29,9 +29,9 @@ import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection';
 import {SignalRefWrapper} from '../signal';
+import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
-import {Explicit, mergeValuesWithExplicit, makeExplicit, makeImplicit} from '../split';
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {
@@ -312,6 +312,18 @@ function parseSingleChannelDomain(
         ]);
       }
     }
+  } else if (fieldDef.timeUnit && util.contains(['time', 'utc'], scaleType)) {
+    const data = model.requestDataName(MAIN);
+    return makeImplicit([
+      {
+        data,
+        field: model.vgField(channel)
+      },
+      {
+        data,
+        field: model.vgField(channel, {suffix: 'end'})
+      }
+    ]);
   } else if (sort) {
     return makeImplicit([
       {

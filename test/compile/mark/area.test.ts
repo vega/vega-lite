@@ -80,7 +80,7 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should have scale for x', () => {
-      expect(props.x).toEqual({scale: X, field: 'year_Year'});
+      expect(props.x).toEqual({signal: 'scale("x", 0.5 * datum["year_Year"] + 0.5 * datum["year_Year_end"])'});
     });
 
     it('should have scale for y', () => {
@@ -97,7 +97,7 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should have scale for x', () => {
-      expect(props.x).toEqual({scale: X, field: 'year_Year'});
+      expect(props.x).toEqual({signal: 'scale("x", 0.5 * datum["year_Year"] + 0.5 * datum["year_Year_end"])'});
     });
 
     it('should have scale for y', () => {
@@ -149,7 +149,7 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should have scale for y', () => {
-      expect(props.y).toEqual({scale: Y, field: 'year_Year'});
+      expect(props.y).toEqual({signal: 'scale("y", 0.5 * datum["year_Year"] + 0.5 * datum["year_Year_end"])'});
     });
 
     it('should have scale for x', () => {
@@ -238,7 +238,7 @@ describe('Mark: Area', () => {
         }
       });
       const props = area.encodeEntry(model);
-      expect(props.x).toEqual({scale: 'x', field: 'year_Year'});
+      expect(props.x).toEqual({signal: 'scale("x", 0.5 * datum["year_Year"] + 0.5 * datum["year_Year_end"])'});
       expect(props.y).toEqual({scale: 'y', field: 'min_Weight_in_lbs'});
       expect(props.y2).toEqual({scale: 'y', field: 'max_Weight_in_lbs'});
     });
@@ -254,7 +254,7 @@ describe('Mark: Area', () => {
         }
       });
       const props = area.encodeEntry(model);
-      expect(props.y).toEqual({scale: 'y', field: 'year_Year'});
+      expect(props.y).toEqual({signal: 'scale("y", 0.5 * datum["year_Year"] + 0.5 * datum["year_Year_end"])'});
       expect(props.x).toEqual({scale: 'x', field: 'min_Weight_in_lbs'});
       expect(props.x2).toEqual({scale: 'x', field: 'max_Weight_in_lbs'});
     });

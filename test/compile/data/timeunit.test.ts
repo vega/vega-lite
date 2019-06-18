@@ -28,6 +28,11 @@ describe('compile/data/timeunit', () => {
           type: 'formula',
           as: 'month_a',
           expr: 'datetime(0, month(datum["a"]), 1, 0, 0, 0, 0)'
+        },
+        {
+          type: 'formula',
+          as: 'month_a_end',
+          expr: 'datetime(0, month(datum["a"])+1, 1, 0, 0, 0, 0)'
         }
       ]);
     });
@@ -56,7 +61,7 @@ describe('compile/data/timeunit', () => {
       });
       const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
       expect(timeUnitNode.hash()).toBe(
-        'TimeUnit {"{\\"as\\":\\"month_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":\\"month\\"}":{"as":"month_a","field":"a","timeUnit":"month"}}'
+        'TimeUnit {"{\\"as\\":\\"month_a\\",\\"band\\":true,\\"field\\":\\"a\\",\\"timeUnit\\":\\"month\\"}":{"as":"month_a","band":true,"field":"a","timeUnit":"month"}}'
       );
     });
   });

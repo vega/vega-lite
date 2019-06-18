@@ -395,7 +395,7 @@ export function binPosition({
     y2: reverse ? spacing : 0
   };
   const channel2 = channel === X ? X2 : Y2;
-  if (isBinning(fieldDef.bin)) {
+  if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {
       [channel2]: ref.bin({
         channel,
