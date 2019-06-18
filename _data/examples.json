@@ -614,6 +614,10 @@
       {
         "name": "selection_heatmap",
         "title": "Selectable Heatmap"
+      },
+      {
+        "name": "bar_count_minimap",
+        "title": "Bar chart with a minimap"
       }
     ],
     "Interactive Multi-View Displays": [
