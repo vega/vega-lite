@@ -236,13 +236,17 @@ function binMidSignal({
   scaleName,
   fieldDef,
   fieldDef2,
-  offset
+  offset,
+  band
 }: {
   scaleName: string;
   fieldDef: TypedFieldDef<string>;
   fieldDef2?: SecondaryFieldDef<string>;
   offset: number;
+  band?: number;
 }) {
+  band = getFirstDefined(band, 0.5);
+
   const start = vgField(fieldDef, {expr: 'datum'});
   const end =
     fieldDef2 !== undefined
@@ -250,7 +254,7 @@ function binMidSignal({
       : vgField(fieldDef, {binSuffix: 'end', expr: 'datum'});
 
   return {
-    signal: `scale("${scaleName}", (${start} + ${end}) / 2)`,
+    signal: `scale("${scaleName}", ${band} * ${start} + ${1 - band} * ${end})`,
     ...(offset ? {offset} : {})
   };
 }
