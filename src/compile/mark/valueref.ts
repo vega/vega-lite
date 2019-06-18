@@ -33,7 +33,7 @@ import * as log from '../../log';
 import {isPathMark, Mark, MarkDef} from '../../mark';
 import {hasDiscreteDomain, isContinuousToContinuous, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
-import {QUANTITATIVE} from '../../type';
+import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, getFirstDefined} from '../../util';
 import {VgValueRef} from '../../vega.schema';
 import {binFormatExpression, formatSignalRef, getMarkConfig} from '../common';
@@ -301,10 +301,10 @@ export function midPoint({
     if (isFieldDef(channelDef)) {
       if (isTypedFieldDef(channelDef)) {
         const band = isPositionFieldDef(channelDef) ? channelDef.band : undefined;
-        if (isBinning(channelDef.bin)) {
+        if (isBinning(channelDef.bin) || channelDef.timeUnit) {
           // Use middle only for x an y to place marks in the center between start and end of the bin range.
           // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
-          if (contains([X, Y], channel) && channelDef.type === QUANTITATIVE) {
+          if (contains([X, Y], channel) && contains([QUANTITATIVE, TEMPORAL], channelDef.type)) {
             if (stack && stack.impute) {
               // For stack, we computed bin_mid so we can impute.
               return fieldRef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
