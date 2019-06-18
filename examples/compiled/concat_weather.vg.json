@@ -267,7 +267,7 @@
                   "value": 0
                 },
                 {
-                  "signal": "scale(\"concat_2_x\", (datum[\"bin_maxbins_10_temp_min\"] + datum[\"bin_maxbins_10_temp_min_end\"]) / 2)"
+                  "signal": "scale(\"concat_2_x\", 0.5 * datum[\"bin_maxbins_10_temp_min\"] + 0.5 * datum[\"bin_maxbins_10_temp_min_end\"])"
                 }
               ],
               "y": [
@@ -276,7 +276,7 @@
                   "field": {"group": "height"}
                 },
                 {
-                  "signal": "scale(\"concat_2_y\", (datum[\"bin_maxbins_10_temp_max\"] + datum[\"bin_maxbins_10_temp_max_end\"]) / 2)"
+                  "signal": "scale(\"concat_2_y\", 0.5 * datum[\"bin_maxbins_10_temp_max\"] + 0.5 * datum[\"bin_maxbins_10_temp_max_end\"])"
                 }
               ],
               "size": {"scale": "size", "field": "__count"}
