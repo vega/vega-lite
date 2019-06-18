@@ -1,0 +1,45 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "data": {"url": "data/cars.json"},
+  "hconcat": [{
+    "mark": "bar",
+    "encoding": {
+      "y": {
+        "field": "Name",
+        "type": "nominal",
+        "scale": {"domain": {"selection": "brush"}},
+        "axis": {"minExtent": 200, "title": null},
+        "sort": {"encoding": "x", "order": "descending"}
+      },
+      "x": {
+        "aggregate": "count",
+        "type": "quantitative",
+        "scale":{"domain":  [0, 6]},
+        "axis": {"orient": "top"}
+      }
+    }
+  }, {
+    "height": 200,
+    "width": 50,
+    "selection": {
+      "brush": {
+        "type": "interval",
+        "encodings": ["y"]
+      }
+    },
+    "mark": "bar",
+    "encoding": {
+      "y": {
+        "field": "Name",
+        "type": "nominal",
+        "sort": {"encoding": "x", "order": "descending"},
+        "axis": null
+      },
+      "x": {
+        "aggregate": "count",
+        "type": "quantitative",
+        "axis": null
+      }
+    }
+  }]
+}
