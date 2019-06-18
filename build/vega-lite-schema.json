@@ -342,6 +342,14 @@
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
         },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit.",
+          "enum": [
+            0,
+            0.5
+          ],
+          "type": "number"
+        },
         "tooltip": {
           "anyOf": [
             {
@@ -7667,6 +7675,14 @@
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
         },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit.",
+          "enum": [
+            0,
+            0.5
+          ],
+          "type": "number"
+        },
         "tooltip": {
           "anyOf": [
             {
@@ -8206,6 +8222,14 @@
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
         },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit.",
+          "enum": [
+            0,
+            0.5
+          ],
+          "type": "number"
+        },
         "tooltip": {
           "anyOf": [
             {
@@ -8527,6 +8551,14 @@
         "thickness": {
           "description": "Thickness of the tick mark.\n\n__Default value:__  `1`",
           "minimum": 0,
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit.",
+          "enum": [
+            0,
+            0.5
+          ],
           "type": "number"
         },
         "tooltip": {
@@ -9136,6 +9168,14 @@
         },
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit.",
+          "enum": [
+            0,
+            0.5
+          ],
           "type": "number"
         },
         "tooltip": {
@@ -9967,6 +10007,14 @@
         },
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit.",
+          "enum": [
+            0,
+            0.5
+          ],
           "type": "number"
         },
         "tooltip": {
@@ -11671,6 +11719,14 @@
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
         },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit.",
+          "enum": [
+            0,
+            0.5
+          ],
+          "type": "number"
+        },
         "tooltip": {
           "anyOf": [
             {
@@ -12016,6 +12072,14 @@
         "thickness": {
           "description": "Thickness of the tick mark.\n\n__Default value:__  `1`",
           "minimum": 0,
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit.",
+          "enum": [
+            0,
+            0.5
+          ],
           "type": "number"
         },
         "tooltip": {

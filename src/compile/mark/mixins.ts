@@ -214,6 +214,8 @@ export function nonPosition(
     return ref.midPoint({
       channel,
       channelDef: cDef,
+      markDef,
+      config,
       scaleName: model.scaleName(channel),
       scale: model.getScaleComponent(channel),
       stack: null, // No need to provide stack for non-position as it does not affect mid point
@@ -376,7 +378,7 @@ export function binPosition({
   fieldDef2,
   channel,
   scaleName,
-  mark,
+  markDef,
   spacing = 0,
   reverse
 }: {
@@ -384,7 +386,7 @@ export function binPosition({
   fieldDef2?: ValueDef | SecondaryFieldDef<string>;
   channel: 'x' | 'y';
   scaleName: string;
-  mark: Mark;
+  markDef: MarkDef<Mark>;
   spacing?: number;
   reverse: boolean;
 }) {
@@ -395,17 +397,17 @@ export function binPosition({
     y2: reverse ? spacing : 0
   };
   const channel2 = channel === X ? X2 : Y2;
-  if (isBinning(fieldDef.bin)) {
+  if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {
       [channel2]: ref.bin({
         channel,
         fieldDef,
         scaleName,
-        mark,
+        markDef,
         side: 'start',
         offset: binSpacing[`${channel}2`]
       }),
-      [channel]: ref.bin({channel, fieldDef, scaleName, mark, side: 'end', offset: binSpacing[channel]})
+      [channel]: ref.bin({channel, fieldDef, scaleName, markDef, side: 'end', offset: binSpacing[channel]})
     };
   } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
     return {
@@ -446,10 +448,11 @@ export function pointPosition(
           channel,
           channelDef,
           channel2Def,
+          markDef,
+          config,
           scaleName,
           scale,
           stack,
-          mark,
           offset,
           defaultRef: ref.positionDefault({
             markDef,
@@ -559,10 +562,11 @@ function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax',
     channel,
     channelDef,
     channel2Def: encoding[channel],
+    markDef,
+    config,
     scaleName,
     scale,
     stack,
-    mark,
     offset,
     defaultRef: undefined
   });

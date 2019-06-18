@@ -201,6 +201,23 @@ export function getMainRangeChannel(channel: Channel): Channel {
   return channel;
 }
 
+/**
+ * Get the main channel for a range channel. E.g. `x` for `x2`.
+ */
+export function getSecondaryRangeChannel(channel: Channel): SecondaryRangeChannel {
+  switch (channel) {
+    case 'x':
+      return 'x2';
+    case 'y':
+      return 'y2';
+    case 'latitude':
+      return 'latitude2';
+    case 'longitude':
+      return 'longitude2';
+  }
+  return undefined;
+}
+
 // CHANNELS without COLUMN, ROW
 export const UNIT_CHANNELS = keys(UNIT_CHANNEL_INDEX);
 

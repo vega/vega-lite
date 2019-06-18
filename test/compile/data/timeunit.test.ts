@@ -14,7 +14,7 @@ function assembleFromTransform(t: TimeUnitTransform) {
 
 describe('compile/data/timeunit', () => {
   describe('parseUnit', () => {
-    it('should return a dictionary of formula transform', () => {
+    it('should return a dictionary of a formula transform for point', () => {
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
@@ -28,6 +28,29 @@ describe('compile/data/timeunit', () => {
           type: 'formula',
           as: 'month_a',
           expr: 'datetime(0, month(datum["a"]), 1, 0, 0, 0, 0)'
+        }
+      ]);
+    });
+
+    it('should return a dictionary of formula transforms for bar', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
+        }
+      });
+
+      expect(assembleFromEncoding(model)).toEqual([
+        {
+          type: 'formula',
+          as: 'month_a',
+          expr: 'datetime(0, month(datum["a"]), 1, 0, 0, 0, 0)'
+        },
+        {
+          type: 'formula',
+          as: 'month_a_end',
+          expr: 'datetime(0, month(datum["a"])+1, 1, 0, 0, 0, 0)'
         }
       ]);
     });
@@ -46,7 +69,7 @@ describe('compile/data/timeunit', () => {
   });
 
   describe('hash', () => {
-    it('should generate the correct hash', () => {
+    it('should generate the correct hash for point', () => {
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
@@ -57,6 +80,19 @@ describe('compile/data/timeunit', () => {
       const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
       expect(timeUnitNode.hash()).toBe(
         'TimeUnit {"{\\"as\\":\\"month_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":\\"month\\"}":{"as":"month_a","field":"a","timeUnit":"month"}}'
+      );
+    });
+    it('should generate the correct hash for bar', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
+        }
+      });
+      const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
+      expect(timeUnitNode.hash()).toBe(
+        'TimeUnit {"{\\"as\\":\\"month_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":\\"month\\"}":{"as":"month_a","band":true,"field":"a","timeUnit":"month"}}'
       );
     });
   });

@@ -55,7 +55,8 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
   // x, x2, and width -- we must specify two of these in all conditions
   if (
     isFieldDef(fieldDef) &&
-    (isBinning(fieldDef.bin) || isBinned(fieldDef.bin)) &&
+    // FIXME use band to determine condition here
+    (isBinning(fieldDef.bin) || isBinned(fieldDef.bin) || (fieldDef.timeUnit && !fieldDef2)) &&
     !hasSizeDef &&
     !hasDiscreteDomain(scaleType)
   ) {
@@ -63,7 +64,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
       fieldDef,
       fieldDef2,
       channel,
-      mark,
+      markDef,
       scaleName,
       spacing: getFirstDefined(markDef.binSpacing, config[mark].binSpacing),
       reverse: scale.get('reverse')

@@ -223,7 +223,7 @@ export function padding(
       }
 
       const {type, orient} = markDef;
-      if (type === 'bar' && !fieldDef.bin) {
+      if (type === 'bar' && !fieldDef.bin && !fieldDef.timeUnit) {
         if ((orient === 'vertical' && channel === 'x') || (orient === 'horizontal' && channel === 'y')) {
           return barConfig.continuousBandSize;
         }
