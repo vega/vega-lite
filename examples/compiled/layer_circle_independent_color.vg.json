@@ -107,7 +107,7 @@
               "value": 0
             },
             {
-              "signal": "scale(\"x\", (datum[\"bin_maxbins_10_Acceleration\"] + datum[\"bin_maxbins_10_Acceleration_end\"]) / 2)"
+              "signal": "scale(\"x\", 0.5 * datum[\"bin_maxbins_10_Acceleration\"] + 0.5 * datum[\"bin_maxbins_10_Acceleration_end\"])"
             }
           ],
           "y": [
@@ -116,7 +116,7 @@
               "field": {"group": "height"}
             },
             {
-              "signal": "scale(\"y\", (datum[\"bin_maxbins_10_Horsepower\"] + datum[\"bin_maxbins_10_Horsepower_end\"]) / 2)"
+              "signal": "scale(\"y\", 0.5 * datum[\"bin_maxbins_10_Horsepower\"] + 0.5 * datum[\"bin_maxbins_10_Horsepower_end\"])"
             }
           ],
           "size": {"scale": "size", "field": "__count"},
@@ -141,7 +141,7 @@
               "value": 0
             },
             {
-              "signal": "scale(\"x\", (datum[\"bin_maxbins_10_Acceleration\"] + datum[\"bin_maxbins_10_Acceleration_end\"]) / 2)"
+              "signal": "scale(\"x\", 0.5 * datum[\"bin_maxbins_10_Acceleration\"] + 0.5 * datum[\"bin_maxbins_10_Acceleration_end\"])"
             }
           ],
           "y": [
@@ -150,7 +150,7 @@
               "field": {"group": "height"}
             },
             {
-              "signal": "scale(\"y\", (datum[\"bin_maxbins_10_Horsepower\"] + datum[\"bin_maxbins_10_Horsepower_end\"]) / 2)"
+              "signal": "scale(\"y\", 0.5 * datum[\"bin_maxbins_10_Horsepower\"] + 0.5 * datum[\"bin_maxbins_10_Horsepower_end\"])"
             }
           ],
           "size": {"scale": "size", "field": "__count"},

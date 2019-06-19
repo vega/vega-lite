@@ -49,7 +49,7 @@ describe('compile/mark/valueref', () => {
         scale: undefined,
         defaultRef
       });
-      expect(ref).toEqual({signal: 'scale("x", (datum["bin_start"] + datum["bin_end"]) / 2)'});
+      expect(ref).toEqual({signal: 'scale("x", 0.5 * datum["bin_start"] + 0.5 * datum["bin_end"])'});
     });
   });
 });
