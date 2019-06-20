@@ -50,6 +50,11 @@ export class LocalLogger implements LoggerInterface {
     this.debugs.push(...args);
     return this;
   }
+
+  public error(...args: any[]) {
+    throw Error(...args);
+    return this; // @ts-ignore
+  }
 }
 
 export function wrap(f: (logger: LocalLogger) => void) {
