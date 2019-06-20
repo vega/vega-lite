@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "$schema": "https://vega.github.io/schema/vega/v4.json",
     "description": "Cars from Japan compared to all cars. Demonstrates independent legends in layers.",
     "autosize": "pad",
     "padding": 5,
