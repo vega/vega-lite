@@ -60,18 +60,15 @@ yarn build && yarn tsc -m commonjs
 # add the compiled files, commit and tag!
 git add build/** -f
 
-# commit, tag and push to gh-pages and swap back to master
+# commit, tag and push to gh-pages and swap back to v2
 set +e
 git commit -m "Release $version $gitsha"
 set -e
 git tag -am "Release v$version." "v$version"
 
-# swap back to the clean master and push the new tag
-git checkout master
+# swap back to the clean v2 and push the new tag
+git checkout v2
 git push --tags
 
 # 3. SCHEMA
 scripts/deploy-schema.sh
-
-# 4. GITHUB PAGES PUBLISH
-scripts/deploy-gh.sh

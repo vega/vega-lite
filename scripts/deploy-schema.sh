@@ -6,7 +6,7 @@ version=$(scripts/version.sh vega-lite)
 
 pushd ../schema/vega-lite/
 
-git checkout master
+git checkout v2
 git pull
 
 rm -f v$version.json
