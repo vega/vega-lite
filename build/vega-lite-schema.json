@@ -6852,17 +6852,23 @@
     "LegendLayout": {
       "additionalProperties": false,
       "properties": {
+        "'bottom-left'": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "'bottom-right'": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "'top-left'": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "'top-right'": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
         "anchor": {
           "$ref": "#/definitions/TitleAnchor",
           "description": "The anchor point for legend orient group layout."
         },
         "bottom": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "bottom-left": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "bottom-right": {
           "$ref": "#/definitions/BaseLegendLayout"
         },
         "bounds": {
@@ -6920,12 +6926,6 @@
           "$ref": "#/definitions/BaseLegendLayout"
         },
         "top": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "top-left": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "top-right": {
           "$ref": "#/definitions/BaseLegendLayout"
         }
       },
