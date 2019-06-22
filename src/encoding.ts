@@ -296,43 +296,43 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
             }
             aggregate.push(aggregateEntry);
           }
-        } else if (isTypedFieldDef(channelDef) && isBinning(bin)) {
-          bins.push({bin, field, as: newField});
-          // Add additional groupbys for range and end of bins
-          groupby.push(vgField(channelDef, {binSuffix: 'end'}));
-          if (binRequiresRange(channelDef, channel)) {
-            groupby.push(vgField(channelDef, {binSuffix: 'range'}));
-          }
-          // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
-          if (isPositionChannel) {
-            const secondaryChannel: SecondaryFieldDef<string> = {
-              field: newField + '_end'
-            };
-            encoding[channel + '2'] = secondaryChannel;
-          }
-          newFieldDef.bin = 'binned';
-          if (!isSecondaryRangeChannel(channel)) {
-            newFieldDef['type'] = 'quantitative';
-          }
-        } else if (timeUnit) {
-          timeUnits.push({timeUnit, field, as: newField});
-
-          // Add formatting to appropriate property based on the type of channel we're processing
-          const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
-          const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';
-          if (channel === 'text' || channel === 'tooltip') {
-            newFieldDef['format'] = newFieldDef['format'] || format;
-            if (formatType) {
-              newFieldDef['formatType'] = formatType;
-            }
-          } else if (isNonPositionScaleChannel(channel)) {
-            newFieldDef['legend'] = {format, ...(formatType ? {formatType} : {}), ...newFieldDef['legend']};
-          } else if (isPositionChannel) {
-            newFieldDef['axis'] = {format, ...(formatType ? {formatType} : {}), ...newFieldDef['axis']};
-          }
-        }
-        if (!aggOp) {
+        } else {
           groupby.push(newField);
+          if (isTypedFieldDef(channelDef) && isBinning(bin)) {
+            bins.push({bin, field, as: newField});
+            // Add additional groupbys for range and end of bins
+            groupby.push(vgField(channelDef, {binSuffix: 'end'}));
+            if (binRequiresRange(channelDef, channel)) {
+              groupby.push(vgField(channelDef, {binSuffix: 'range'}));
+            }
+            // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
+            if (isPositionChannel) {
+              const secondaryChannel: SecondaryFieldDef<string> = {
+                field: newField + '_end'
+              };
+              encoding[channel + '2'] = secondaryChannel;
+            }
+            newFieldDef.bin = 'binned';
+            if (!isSecondaryRangeChannel(channel)) {
+              newFieldDef['type'] = 'quantitative';
+            }
+          } else if (timeUnit) {
+            timeUnits.push({timeUnit, field, as: newField});
+
+            // Add formatting to appropriate property based on the type of channel we're processing
+            const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
+            const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';
+            if (channel === 'text' || channel === 'tooltip') {
+              newFieldDef['format'] = newFieldDef['format'] || format;
+              if (formatType) {
+                newFieldDef['formatType'] = formatType;
+              }
+            } else if (isNonPositionScaleChannel(channel)) {
+              newFieldDef['legend'] = {format, ...(formatType ? {formatType} : {}), ...newFieldDef['legend']};
+            } else if (isPositionChannel) {
+              newFieldDef['axis'] = {format, ...(formatType ? {formatType} : {}), ...newFieldDef['axis']};
+            }
+          }
         }
         // now the field should refer to post-transformed field instead
         encoding[channel] = newFieldDef;
