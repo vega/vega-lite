@@ -383,7 +383,9 @@ function getSupportedMark(channel: Channel): SupportedMark {
         circle: 'binned',
         point: 'binned',
         square: 'binned',
-        tick: 'binned'
+        tick: 'binned',
+        line: 'binned',
+        trail: 'binned'
       };
     case SIZE:
       return {

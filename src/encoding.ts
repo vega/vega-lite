@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
-import {isBinning} from './bin';
+import {isBinned, isBinning} from './bin';
 import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark} from './channel';
 import {
   binRequiresRange,
@@ -364,7 +364,7 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
 
     // circle, point, square and tick only support x2/y2 when their corresponding x/y fieldDef
     // has "binned" data and thus need x2/y2 to specify the bin-end field.
-    if (isFieldDef(primaryFieldDef) && isFieldDef(encoding[channel]) && primaryFieldDef.bin === 'binned') {
+    if (isFieldDef(primaryFieldDef) && isFieldDef(encoding[channel]) && isBinned(primaryFieldDef.bin)) {
       return true;
     } else {
       return false;
