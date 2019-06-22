@@ -1,16 +1,12 @@
 import {vgField} from '../../channeldef';
-import {fieldExpr, TimeUnit} from '../../timeunit';
+import {fieldExpr} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, vals} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
-export interface TimeUnitComponent {
-  as: string;
-  timeUnit: TimeUnit;
-  field: string;
-}
+export type TimeUnitComponent = TimeUnitTransform;
 
 export class TimeUnitNode extends DataFlowNode {
   public clone() {
