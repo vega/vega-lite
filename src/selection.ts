@@ -10,6 +10,7 @@ export type SelectionResolution = 'global' | 'union' | 'intersect';
 
 export type SelectionInit = boolean | number | string | DateTime;
 export type SelectionInitArray = boolean[] | number[] | string[] | DateTime[];
+
 export interface SelectionInitMapping {
   [key: string]: SelectionInit;
 }
