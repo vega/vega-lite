@@ -289,14 +289,17 @@ export class RemoveUnnecessaryNodes extends TopDownOptimizer {
 }
 
 /**
- * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
+ * Inserts an intermediate ParseNode containing all non-conflicting parse fields and removes the empty ParseNodes.
+ *
+ * We assume that dependent paths that do not have a parse node can be just merged.
  */
 export class MergeParse extends BottomUpOptimizer {
   public run(node: DataFlowNode): optimizers.OptimizerFlags {
     const parent = node.parent;
-    const parseChildren = parent.children.filter((x): x is ParseNode => x instanceof ParseNode);
+    const originalChildren = [...parent.children];
+    const parseChildren = originalChildren.filter((x): x is ParseNode => x instanceof ParseNode);
 
-    if (parseChildren.length > 1) {
+    if (parent.numChildren() > 1 && parseChildren.length >= 1) {
       const commonParse = {};
       for (const parseNode of parseChildren) {
         const parse = parseNode.parse;
@@ -311,18 +314,24 @@ export class MergeParse extends BottomUpOptimizer {
       if (keys(commonParse).length !== 0) {
         this.setMutated();
         const mergedParseNode = new ParseNode(parent, commonParse);
-        for (const parseNode of parseChildren) {
-          for (const key of keys(commonParse)) {
-            delete parseNode.parse[key];
+        for (const childNode of originalChildren) {
+          if (childNode instanceof ParseNode) {
+            for (const key of keys(commonParse)) {
+              delete childNode.parse[key];
+            }
           }
-          parent.removeChild(parseNode);
-          parseNode.parent = mergedParseNode;
-          if (keys(parseNode.parse).length === 0) {
-            parseNode.remove();
+
+          parent.removeChild(childNode);
+          childNode.parent = mergedParseNode;
+
+          // remove empty parse nodes
+          if (childNode instanceof ParseNode && keys(childNode.parse).length === 0) {
+            childNode.remove();
           }
         }
       }
     }
+
     this.setContinue();
     return this.flags;
   }

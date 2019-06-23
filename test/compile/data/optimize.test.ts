@@ -30,7 +30,24 @@ describe('compile/data/optimize', () => {
       expect(children[0].parse).toEqual({a: 'number'});
       expect(children[1].parse).toEqual({a: 'boolean'});
     });
+
+    it('should merge when there is no parse node', () => {
+      const root = new DataFlowNode(null, 'root');
+      const parse = new ParseNode(root, {a: 'number', b: 'string'});
+      const parseChild = new DataFlowNode(parse);
+      const otherChild = new DataFlowNode(root);
+      const optimizer = new MergeParse();
+      optimizer.run(parse);
+      expect(root.children.length).toEqual(1);
+      const mergedParseNode = root.children[0] as ParseNode;
+      expect(mergedParseNode.parse).toEqual({a: 'number', b: 'string'});
+      const children = mergedParseNode.children;
+      expect(children).toHaveLength(2);
+      expect(children[0]).toEqual(otherChild);
+      expect(children[1]).toEqual(parseChild);
+    });
   });
+
   describe('optimizeDataFlow', () => {
     it('should move up common parse', () => {
       const source = new SourceNode(null);
@@ -54,6 +71,7 @@ describe('compile/data/optimize', () => {
       expect(commonParse.children[1]).toBeInstanceOf(ParseNode);
       expect(commonParse.children[1]).toEqual(parseTwo);
     });
+
     it('should push parse up from lowest level first to avoid conflicting common parse', () => {
       const source = new SourceNode(null);
       const parseOne = new ParseNode(source, {a: 'time'});
