@@ -5473,10 +5473,10 @@ ts-jest@^24.0.2:
     semver "^5.5"
     yargs-parser "10.x"
 
-ts-json-schema-generator@^0.48.0:
-  version "0.48.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.48.0.tgz#4e43eced2f9806414cdbe3e6a38a55c1110f9f06"
-  integrity sha512-rsWjDSDTsiVpVzALzsZEeGvtKu+rqhoDJ+OZKB74W7RIbLy0dRmhreYRROfVjFR7uzIbWHT+UXsGeEu4SRZ6Hg==
+ts-json-schema-generator@^0.50.0:
+  version "0.50.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.50.0.tgz#4b0edd7b5566775918006fb31c806f0612fc0afe"
+  integrity sha512-Tm8S64CB+97Tp9bSYkbmUASyyAsEVL+O41nxLER6XjuJIBX23H3Gzps8Yd7hQNJ/4s0NB3Hha4IJVuubjfuAAg==
   dependencies:
     commander "~2.20.0"
     glob "~7.1.4"
