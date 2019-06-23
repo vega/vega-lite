@@ -5923,7 +5923,7 @@
           "type": "array"
         },
         "init": {
-          "$ref": "#/definitions/SelectionInitArrayMapping",
+          "$ref": "#/definitions/SelectionInitIntervalMapping",
           "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of\ninitial values."
         },
         "mark": {
@@ -6008,7 +6008,7 @@
           "type": "array"
         },
         "init": {
-          "$ref": "#/definitions/SelectionInitArrayMapping",
+          "$ref": "#/definitions/SelectionInitIntervalMapping",
           "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of\ninitial values."
         },
         "mark": {
@@ -10056,37 +10056,65 @@
         }
       ]
     },
-    "SelectionInitArray": {
+    "SelectionInitInterval": {
       "anyOf": [
         {
-          "items": {
-            "type": "boolean"
-          },
+          "items": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
           "type": "array"
         },
         {
-          "items": {
-            "type": "number"
-          },
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
           "type": "array"
         },
         {
-          "items": {
-            "type": "string"
-          },
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
           "type": "array"
         },
         {
-          "items": {
-            "$ref": "#/definitions/DateTime"
-          },
+          "items": [
+            {
+              "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
           "type": "array"
         }
       ]
     },
-    "SelectionInitArrayMapping": {
+    "SelectionInitIntervalMapping": {
       "additionalProperties": {
-        "$ref": "#/definitions/SelectionInitArray"
+        "$ref": "#/definitions/SelectionInitInterval"
       },
       "type": "object"
     },
