@@ -227,7 +227,7 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "medians",
       "transform": [
         {
@@ -237,7 +237,7 @@
       ]
     },
     {
-      "name": "data_2",
+      "name": "data_1",
       "source": "values",
       "transform": [
         {"type": "filter", "expr": "datum.name != 'Toolbar_First'"},
@@ -262,7 +262,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "#6EB4FD"},
@@ -280,7 +280,7 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["tick"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -348,8 +348,8 @@
       "type": "point",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "name"},
           {"data": "data_1", "field": "name"},
+          {"data": "data_0", "field": "name"},
           {"data": "medians", "field": "name"}
         ]
       },
@@ -359,7 +359,7 @@
     {
       "name": "size",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "__count"},
+      "domain": {"data": "data_1", "field": "__count"},
       "range": [0, 361],
       "zero": true
     }
