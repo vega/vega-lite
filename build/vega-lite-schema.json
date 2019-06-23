@@ -8655,7 +8655,6 @@
     },
     "PartsMixins<BoxPlotPart>": {
       "additionalProperties": false,
-      "description": "Make all properties in T optional",
       "properties": {
         "box": {
           "anyOf": [
@@ -8712,7 +8711,6 @@
     },
     "PartsMixins<ErrorBandPart>": {
       "additionalProperties": false,
-      "description": "Make all properties in T optional",
       "properties": {
         "band": {
           "anyOf": [
@@ -8739,7 +8737,6 @@
     },
     "PartsMixins<ErrorBarPart>": {
       "additionalProperties": false,
-      "description": "Make all properties in T optional",
       "properties": {
         "rule": {
           "anyOf": [
