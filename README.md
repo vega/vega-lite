@@ -28,18 +28,13 @@ Vega-Lite gets significant contributions from its community. In particular [Will
 ## Citing Vega-Lite
 
 ```bib
-@article{Satyanarayan2017,
+@article{2017-vega-lite,
   doi = {10.1109/tvcg.2016.2599030},
-  url = {https://doi.org/10.1109/tvcg.2016.2599030},
   year = {2017},
-  month = jan,
-  publisher = {Institute of Electrical and Electronics Engineers ({IEEE})},
-  volume = {23},
-  number = {1},
-  pages = {341--350},
   author = {Arvind Satyanarayan and Dominik Moritz and Kanit Wongsuphasawat and Jeffrey Heer},
   title = {Vega-Lite: A Grammar of Interactive Graphics},
-  journal = {{IEEE} Transactions on Visualization and Computer Graphics}
+  journal = {{IEEE} Transactions on Visualization \& Computer Graphics (Proc. InfoVis)},
+  url = {http://idl.cs.washington.edu/papers/vega-lite},
 }
 ```
 
