@@ -10,7 +10,7 @@
     {
       "name": "source_0",
       "url": "data/seattle-weather.csv",
-      "format": {"type": "csv"}
+      "format": {"type": "csv", "parse": {"date": "date"}}
     },
     {
       "name": "data_0",
@@ -38,7 +38,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
           "type": "filter",
           "expr": "!(length(data(\"click_store\"))) || (vlSelectionTest(\"click_store\", datum))"
