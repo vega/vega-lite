@@ -6,7 +6,7 @@
   "data": [
     {"name": "source_0", "url": "data/barley.json", "format": {"type": "json"}},
     {
-      "name": "data_1",
+      "name": "data_2",
       "source": "source_0",
       "transform": [
         {
@@ -146,7 +146,7 @@
     {
       "name": "trellis_barley_x",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "median_yield"},
+      "domain": {"data": "data_2", "field": "median_yield"},
       "range": [0, {"signal": "trellis_barley_child_width"}],
       "zero": false,
       "nice": true
@@ -165,7 +165,7 @@
     {
       "name": "trellis_barley_color",
       "type": "ordinal",
-      "domain": {"data": "data_1", "field": "year", "sort": true},
+      "domain": {"data": "data_2", "field": "year", "sort": true},
       "range": "category"
     }
   ],

@@ -19,7 +19,7 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
         {
@@ -54,7 +54,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -81,7 +81,7 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "x"},
-          {"data": "data_1", "field": "x"}
+          {"data": "data_0", "field": "x"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -94,7 +94,7 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "y"},
-          {"data": "data_1", "field": "y"}
+          {"data": "data_0", "field": "y"}
         ]
       },
       "range": [{"signal": "height"}, 0],
