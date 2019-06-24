@@ -254,7 +254,7 @@ describe('encoding', () => {
         bins: [{bin: {maxbins: 10}, field: 'a', as: 'bin_maxbins_10_a'}],
         timeUnits: [],
         aggregate: [{op: 'count', as: internalField('count')}],
-        groupby: ['bin_maxbins_10_a_end', 'bin_maxbins_10_a_range', 'bin_maxbins_10_a'],
+        groupby: ['bin_maxbins_10_a', 'bin_maxbins_10_a_end', 'bin_maxbins_10_a_range'],
         encoding: {
           x: {field: 'bin_maxbins_10_a', type: 'quantitative', title: 'a (binned)', bin: 'binned'},
           x2: {field: 'bin_maxbins_10_a_end'},

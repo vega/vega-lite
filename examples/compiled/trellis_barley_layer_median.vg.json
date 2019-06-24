@@ -19,7 +19,7 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_2",
       "source": "source_0",
       "transform": [
         {
@@ -32,7 +32,7 @@
       ]
     },
     {
-      "name": "data_2",
+      "name": "data_3",
       "source": "source_0",
       "transform": [
         {
@@ -139,8 +139,8 @@
       },
       "data": [
         {
+          "name": "data_1",
           "source": "trellis_barley_facet",
-          "name": "data_0",
           "transform": [
             {
               "type": "aggregate",
@@ -152,8 +152,8 @@
           ]
         },
         {
+          "name": "data_2",
           "source": "trellis_barley_facet",
-          "name": "data_1",
           "transform": [
             {
               "type": "aggregate",
@@ -176,7 +176,7 @@
           "name": "trellis_barley_child_layer_0_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": {"value": "transparent"},
@@ -199,7 +199,7 @@
           "name": "trellis_barley_child_layer_1_marks",
           "type": "rule",
           "style": ["rule"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "stroke": {"value": "black"},
@@ -242,8 +242,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "median_yield"},
-          {"data": "data_2", "field": "median_yield"}
+          {"data": "data_2", "field": "median_yield"},
+          {"data": "data_3", "field": "median_yield"}
         ]
       },
       "range": [0, {"signal": "trellis_barley_child_width"}],
@@ -264,7 +264,7 @@
     {
       "name": "trellis_barley_color",
       "type": "ordinal",
-      "domain": {"data": "data_1", "field": "year", "sort": true},
+      "domain": {"data": "data_2", "field": "year", "sort": true},
       "range": "category"
     }
   ],

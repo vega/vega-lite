@@ -33,7 +33,7 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "source_0",
       "transform": [{"type": "formula", "expr": "datum.y - 50", "as": "ny"}]
     }
@@ -69,7 +69,7 @@
       "clip": true,
       "style": ["area"],
       "sort": {"field": "datum[\"x\"]"},
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "orient": {"value": "vertical"},
@@ -95,7 +95,7 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "x"},
-          {"data": "data_1", "field": "x"}
+          {"data": "data_0", "field": "x"}
         ]
       },
       "range": [0, {"signal": "width"}],

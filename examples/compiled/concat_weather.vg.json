@@ -7,11 +7,29 @@
     {
       "name": "source_0",
       "url": "data/weather.csv",
-      "format": {"type": "csv"},
+      "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [{"type": "filter", "expr": "datum.location === 'Seattle'"}]
     },
     {
       "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "as": "month_date",
+          "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["month_date"],
+          "ops": ["mean", "median"],
+          "fields": ["precipitation", "precipitation"],
+          "as": ["mean_precipitation", "median_precipitation"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
       "source": "source_0",
       "transform": [
         {
@@ -57,25 +75,6 @@
           "expr": "datum[\"bin_maxbins_10_temp_min\"] !== null && !isNaN(datum[\"bin_maxbins_10_temp_min\"]) && datum[\"bin_maxbins_10_temp_max\"] !== null && !isNaN(datum[\"bin_maxbins_10_temp_max\"])"
         }
       ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {
-          "type": "formula",
-          "as": "month_date",
-          "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["month_date"],
-          "ops": ["mean", "median"],
-          "fields": ["precipitation", "precipitation"],
-          "as": ["mean_precipitation", "median_precipitation"]
-        }
-      ]
     }
   ],
   "signals": [
@@ -111,7 +110,7 @@
           "name": "concat_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -182,7 +181,7 @@
           "name": "concat_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -253,7 +252,7 @@
           "name": "concat_2_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": {"value": "transparent"},
@@ -311,7 +310,7 @@
     {
       "name": "size",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "__count"},
+      "domain": {"data": "data_1", "field": "__count"},
       "range": [
         0,
         {
@@ -323,7 +322,7 @@
     {
       "name": "concat_0_x",
       "type": "band",
-      "domain": {"data": "data_1", "field": "month_date", "sort": true},
+      "domain": {"data": "data_0", "field": "month_date", "sort": true},
       "range": {"step": {"signal": "concat_0_x_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -331,7 +330,7 @@
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "mean_precipitation"},
+      "domain": {"data": "data_0", "field": "mean_precipitation"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
       "zero": true
@@ -339,7 +338,7 @@
     {
       "name": "concat_1_x",
       "type": "band",
-      "domain": {"data": "data_1", "field": "month_date", "sort": true},
+      "domain": {"data": "data_0", "field": "month_date", "sort": true},
       "range": {"step": {"signal": "concat_1_x_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -347,7 +346,7 @@
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "median_precipitation"},
+      "domain": {"data": "data_0", "field": "median_precipitation"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

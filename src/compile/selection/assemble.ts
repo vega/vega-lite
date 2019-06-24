@@ -5,7 +5,7 @@ import {forEachSelection, MODIFY, SELECTION_DOMAIN, STORE, unitName, VL_SELECTIO
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
-import {SelectionInit, SelectionInitArray} from '../../selection';
+import {SelectionInit, SelectionInitInterval} from '../../selection';
 import {accessPathWithDatum, keys, logicalExpr, varName} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
@@ -16,7 +16,7 @@ import {UnitModel} from '../unit';
 import {forEachTransform} from './transforms/transforms';
 
 export function assembleInit(
-  init: (SelectionInit | SelectionInit[] | SelectionInitArray)[] | SelectionInit,
+  init: (SelectionInit | SelectionInit[] | SelectionInitInterval)[] | SelectionInit,
   wrap: (str: string) => string = identity
 ): string {
   if (isArray(init)) {
@@ -28,7 +28,9 @@ export function assembleInit(
   return wrap(JSON.stringify(init));
 }
 
-export function assembleInitData(init: (SelectionInit | SelectionInit[] | SelectionInitArray)[] | SelectionInit): any {
+export function assembleInitData(
+  init: (SelectionInit | SelectionInit[] | SelectionInitInterval)[] | SelectionInit
+): any {
   if (isArray(init)) {
     return init.map(v => assembleInitData(v));
   } else if (isDateTime(init)) {

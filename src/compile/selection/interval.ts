@@ -4,7 +4,7 @@ import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
 import {ScaleChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {hasContinuousDomain} from '../../scale';
-import {SelectionInitArray} from '../../selection';
+import {SelectionInitInterval} from '../../selection';
 import {keys} from '../../util';
 import {EventStream} from '../../vega.schema';
 import {UnitModel} from '../unit';
@@ -190,7 +190,7 @@ function channelSignals(
   model: UnitModel,
   selCmpt: SelectionComponent<'interval'>,
   proj: SelectionProjection,
-  init?: SelectionInitArray
+  init?: SelectionInitInterval
 ): NewSignal[] {
   const channel = proj.channel;
   const vname = proj.signals.visual;

@@ -7,14 +7,13 @@
     {
       "name": "source_0",
       "url": "data/weather.csv",
-      "format": {"type": "csv"},
+      "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [{"type": "filter", "expr": "datum.location === 'Seattle'"}]
     },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
           "type": "formula",
           "as": "month_date",
