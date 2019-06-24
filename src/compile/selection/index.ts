@@ -5,7 +5,7 @@ import {
   BrushConfig,
   SELECTION_ID,
   SelectionInit,
-  SelectionInitArray,
+  SelectionInitInterval,
   SelectionResolution,
   SelectionType
 } from '../../selection';
@@ -32,7 +32,7 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   // Use conditional typing (https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html)
   // so we have stricter type of init (as the type of init depends on selection type)
   init?: (T extends 'interval'
-    ? SelectionInitArray //
+    ? SelectionInitInterval
     : T extends 'single'
     ? SelectionInit
     : SelectionInit | SelectionInit[])[]; // multi

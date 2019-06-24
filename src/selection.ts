@@ -9,13 +9,13 @@ export type SelectionType = 'single' | 'multi' | 'interval';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
 
 export type SelectionInit = boolean | number | string | DateTime;
-export type SelectionInitArray = boolean[] | number[] | string[] | DateTime[];
+export type SelectionInitInterval = [boolean, boolean] | [number, number] | [string, string] | [DateTime, DateTime];
+
 export interface SelectionInitMapping {
   [key: string]: SelectionInit;
 }
-
-export interface SelectionInitArrayMapping {
-  [key: string]: SelectionInitArray;
+export interface SelectionInitIntervalMapping {
+  [key: string]: SelectionInitInterval;
 }
 
 export interface BaseSelectionDef {
@@ -219,7 +219,7 @@ export interface IntervalSelectionConfig extends BaseSelectionDef {
    * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of
    * initial values.
    */
-  init?: SelectionInitArrayMapping;
+  init?: SelectionInitIntervalMapping;
 }
 
 export interface SingleSelection extends SingleSelectionConfig {
