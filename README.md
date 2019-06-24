@@ -24,3 +24,22 @@ Read about future plans in [our roadmap](https://docs.google.com/document/d/1fsc
 The development of Vega-Lite is led by the alumni and members of the [University of Washington Interactive Data Lab](https://idl.cs.washington.edu) (UW IDL), including [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw) (now at Apple), [Dominik Moritz](https://twitter.com/domoritz) (UW IDL), [Arvind Satyanarayan](https://twitter.com/arvindsatya1) (now at MIT), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) (UW IDL).
 
 Vega-Lite gets significant contributions from its community. In particular [Will Strimling](https://willium.com), [Yuhan (Zoe) Lu](https://github.com/YuhanLu), [Souvik Sen](https://github.com/invokesus), [Chanwut Kittivorawong](https://github.com/chanwutk), [Matthew Chun](https://github.com/mattwchun), [Akshat Shrivastava](https://github.com/AkshatSh), [Saba Noorassa](https://github.com/Saba9), and [Sira Horradarn](https://github.com/sirahd). Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.
+
+## Citing Vega-Lite
+
+```bib
+@article{Satyanarayan2017,
+  doi = {10.1109/tvcg.2016.2599030},
+  url = {https://doi.org/10.1109/tvcg.2016.2599030},
+  year = {2017},
+  month = jan,
+  publisher = {Institute of Electrical and Electronics Engineers ({IEEE})},
+  volume = {23},
+  number = {1},
+  pages = {341--350},
+  author = {Arvind Satyanarayan and Dominik Moritz and Kanit Wongsuphasawat and Jeffrey Heer},
+  title = {Vega-Lite: A Grammar of Interactive Graphics},
+  journal = {{IEEE} Transactions on Visualization and Computer Graphics}
+}
+```
+
