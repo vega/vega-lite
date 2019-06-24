@@ -272,6 +272,9 @@ EventStream:
   link: "https://vega.github.io/vega/docs/event-streams/"
 SelectionResolution:
   link: "selection.html#resolve"
+SelectionInitArrayMapping:
+  name: "Object | Array"
+  link: "selection.html#init"
 
 # Types
 DateTime:
