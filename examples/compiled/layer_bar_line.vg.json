@@ -20,7 +20,7 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
         {
@@ -42,7 +42,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -81,7 +81,7 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "a"},
+          {"data": "data_0", "field": "a"},
           {"data": "source_0", "field": "a"}
         ],
         "sort": true
@@ -95,7 +95,7 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "b"},
+          {"data": "data_0", "field": "b"},
           {"data": "source_0", "field": "b"}
         ]
       },

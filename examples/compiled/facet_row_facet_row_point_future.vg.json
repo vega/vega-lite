@@ -10,7 +10,7 @@
       "transform": [{"type": "aggregate", "groupby": ["Origin"]}]
     },
     {
-      "name": "data_1",
+      "name": "data_2",
       "source": "source_0",
       "transform": [
         {
@@ -204,7 +204,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Horsepower"},
+      "domain": {"data": "data_2", "field": "Horsepower"},
       "range": [0, {"signal": "child_child_width"}],
       "nice": true,
       "zero": true
@@ -212,7 +212,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Acceleration"},
+      "domain": {"data": "data_2", "field": "Acceleration"},
       "range": [{"signal": "child_child_height"}, 0],
       "nice": true,
       "zero": true
