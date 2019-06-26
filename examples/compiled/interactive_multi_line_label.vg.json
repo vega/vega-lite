@@ -25,9 +25,7 @@
     {
       "name": "data_1",
       "source": "source_0",
-      "transform": [
-        {"type": "filter", "expr": "(vlSelectionTest(\"label_store\", datum))"}
-      ]
+      "transform": [{"type": "filter", "expr": "(vlSelectionTest(\"label_store\", datum))"}]
     },
     {
       "name": "data_2",
@@ -64,9 +62,7 @@
     {
       "name": "unit",
       "value": {},
-      "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
-      ]
+      "on": [{"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}]
     },
     {"name": "label", "update": "vlSelectionResolve(\"label_store\")"},
     {
@@ -133,10 +129,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "opacity": [
-            {"test": "(vlSelectionTest(\"label_store\", datum))", "value": 1},
-            {"value": 0}
-          ],
+          "opacity": [{"test": "(vlSelectionTest(\"label_store\", datum))", "value": 1}, {"value": 0}],
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "symbol"},
           "x": {"scale": "x", "field": "date"},
@@ -191,6 +184,10 @@
           "align": {"value": "left"},
           "dx": {"value": 5},
           "dy": {"value": -5},
+          "fill": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"price\": format(datum[\"price\"], \"\"), \"date\": timeFormat(datum[\"date\"], '%b %d, %Y')}"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "text": {"signal": "format(datum[\"price\"], \"\")"},
@@ -251,10 +248,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {
-        "fields": [
-          {"data": "source_0", "field": "symbol"},
-          {"data": "data_0", "field": "symbol"}
-        ],
+        "fields": [{"data": "source_0", "field": "symbol"}, {"data": "data_0", "field": "symbol"}],
         "sort": true
       },
       "range": "category"
