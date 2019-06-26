@@ -114,7 +114,7 @@
           "name": "child_marks",
           "type": "area",
           "style": ["area"],
-          "sort": {"field": "datum[\"value\"]", "order": "descending"},
+          "sort": {"field": "datum[\"value\"]"},
           "from": {"data": "facet"},
           "encode": {
             "update": {
