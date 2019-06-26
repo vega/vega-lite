@@ -67,7 +67,7 @@
           "name": "marks",
           "type": "area",
           "style": ["area"],
-          "sort": {"field": "datum[\"value\"]", "order": "descending"},
+          "sort": {"field": "datum[\"value\"]"},
           "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {

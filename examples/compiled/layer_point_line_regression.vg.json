@@ -49,10 +49,7 @@
       "name": "layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {
-        "field": "datum[\"Rotten_Tomatoes_Rating\"]",
-        "order": "descending"
-      },
+      "sort": {"field": "datum[\"Rotten_Tomatoes_Rating\"]"},
       "from": {"data": "data_1"},
       "encode": {
         "update": {
