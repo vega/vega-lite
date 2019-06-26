@@ -61,11 +61,13 @@ export const PRIMITIVE_MARKS = flagKeys(MARK_INDEX);
 
 export interface ColorMixins {
   /**
-   * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
+   * Default color.
    *
    * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
    *
-   * __Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
+   * __Note:__
+   * - This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
+   * - The `fill` and `stroke` properties have higher precedence than `color` and will override `color`.
    */
   color?: Color;
 }
