@@ -42,9 +42,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"Name\": ''+datum[\"Name\"], \"Score\": format(datum[\"Score\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Name"},
           "y": {"scale": "y", "field": "Score"},
           "defined": {
