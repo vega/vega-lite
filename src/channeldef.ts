@@ -788,7 +788,10 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
       log.warn(warning);
     }
   }
-  return fieldDef;
+  return {
+    ...fieldDef,
+    ...(fieldDef.field !== undefined ? {field: `${fieldDef.field}`} : {})
+  };
 }
 
 export function normalizeBin(bin: BinParams | boolean | 'binned', channel: Channel) {
