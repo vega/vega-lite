@@ -288,7 +288,7 @@
       {
         "name": "window_top_k_others",
         "title": "Top-K plot with Others",
-        "description": "By [Trevor Manz](github.com/manzt), adapted from https://observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example.",
+        "description": "By @manzt, adapted from https://observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example.",
         "style": "background-size: 110%"
       },
       {
