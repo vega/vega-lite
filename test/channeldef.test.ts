@@ -68,6 +68,11 @@ describe('fieldDef', () => {
       expect(normalize(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
     });
 
+    it('should normalize non-string field to string', () => {
+      const fieldDef: TypedFieldDef<string> = {field: 1 as any, type: 'q' as any};
+      expect(normalize(fieldDef, 'x')).toEqual({field: '1', type: 'quantitative'});
+    });
+
     it(
       'normalizes yearmonthday to become yearmonthdate.',
       log.wrap(localLogger => {
