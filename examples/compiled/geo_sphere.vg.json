@@ -37,7 +37,7 @@
         "update": {
           "stroke": {"value": "black"},
           "strokeWidth": {"value": 0.5},
-          "fill": {"value": "#4c78a8"}
+          "fill": {"value": "transparent"}
         }
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]

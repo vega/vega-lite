@@ -13,6 +13,7 @@ import {
 } from '../channel';
 import {getTypedFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../channeldef';
 import {Config} from '../config';
+import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
 import {Legend} from '../legend';
@@ -84,7 +85,9 @@ export class UnitModel extends ModelWithField {
 
     const encodingWithRepeaterReplaced = replaceRepeaterInEncoding(spec.encoding || {}, repeater);
 
-    this.markDef = normalizeMarkDef(spec.mark, encodingWithRepeaterReplaced, config);
+    this.markDef = normalizeMarkDef(spec.mark, encodingWithRepeaterReplaced, config, {
+      graticule: spec.data && isGraticuleGenerator(spec.data)
+    });
     const encoding = (this.encoding = normalizeEncoding(encodingWithRepeaterReplaced, this.markDef));
 
     // calculate stack properties
