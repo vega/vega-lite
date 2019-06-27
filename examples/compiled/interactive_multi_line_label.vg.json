@@ -191,6 +191,7 @@
           "align": {"value": "left"},
           "dx": {"value": 5},
           "dy": {"value": -5},
+          "fill": {"value": "black"},
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "text": {"signal": "format(datum[\"price\"], \"\")"},
