@@ -26,7 +26,6 @@ An integral part of the data visualization process is encoding data with visual 
     // Geographic Position Channels
     "longtitude": ...,
     "latitude": ...,
-    ...
 
     // Mark Properties Channels
     "color": ...,
