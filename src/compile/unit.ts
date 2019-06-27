@@ -82,12 +82,10 @@ export class UnitModel extends ModelWithField {
     });
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
 
-    const encoding = (this.encoding = normalizeEncoding(
-      replaceRepeaterInEncoding(spec.encoding || {}, repeater),
-      mark
-    ));
+    const encodingWithRepeaterReplaced = replaceRepeaterInEncoding(spec.encoding || {}, repeater);
 
-    this.markDef = normalizeMarkDef(spec.mark, encoding, config);
+    this.markDef = normalizeMarkDef(spec.mark, encodingWithRepeaterReplaced, config);
+    const encoding = (this.encoding = normalizeEncoding(encodingWithRepeaterReplaced, this.markDef));
 
     // calculate stack properties
     this.stack = stack(mark, encoding);

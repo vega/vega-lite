@@ -23,10 +23,6 @@ import {UnitModel} from '../unit';
 import * as ref from './valueref';
 import {fieldInvalidPredicate} from './valueref';
 
-function isVisible(c: string) {
-  return c !== 'transparent' && c !== null && c !== undefined;
-}
-
 export function color(model: UnitModel): VgEncodeEntry {
   const {markDef, encoding, config} = model;
   const {filled, type: markType} = markDef;
@@ -43,13 +39,20 @@ export function color(model: UnitModel): VgEncodeEntry {
 
   const defaultFill = getFirstDefined(
     markDef.fill,
+    filled === true ? markDef.color : undefined,
     configValue.fill,
+    filled === true ? configValue.color : undefined,
     // If there is no fill, always fill symbols, bar, geoshape
     // with transparent fills https://github.com/vega/vega-lite/issues/1316
     transparentIfNeeded
   );
 
-  const defaultStroke = getFirstDefined(markDef.stroke, configValue.stroke);
+  const defaultStroke = getFirstDefined(
+    markDef.stroke,
+    filled === false ? markDef.color : undefined,
+    configValue.stroke,
+    filled === false ? configValue.color : undefined
+  );
 
   const colorVgChannel = filled ? 'fill' : 'stroke';
 
@@ -58,56 +61,25 @@ export function color(model: UnitModel): VgEncodeEntry {
     ...(defaultStroke ? {stroke: {value: defaultStroke}} : {})
   };
 
-  if (encoding.fill || encoding.stroke) {
-    // ignore encoding.color, markDef.color, config.color
-    if (markDef.color) {
-      // warn for markDef.color  (no need to warn encoding.color as it will be dropped in normalized already)
-      log.warn(log.message.droppingColor('property', {fill: 'fill' in encoding, stroke: 'stroke' in encoding}));
-    }
-
-    return {
-      ...nonPosition('fill', model, {defaultValue: getFirstDefined(defaultFill, transparentIfNeeded)}),
-      ...nonPosition('stroke', model, {defaultValue: defaultStroke})
-    };
-  } else if (encoding.color) {
-    return {
-      ...fillStrokeMarkDefAndConfig,
-      // override them with encoded color field
-      ...nonPosition('color', model, {
-        vgChannel: colorVgChannel,
-        // apply default fill/stroke first, then color config, then transparent if needed.
-        defaultValue: getFirstDefined(
-          markDef[colorVgChannel],
-          markDef.color,
-          configValue[colorVgChannel],
-          configValue.color,
-          filled ? transparentIfNeeded : undefined
-        )
-      })
-    };
-  } else if (isVisible(markDef.fill) || isVisible(markDef.stroke)) {
-    // Ignore markDef.color
-    if (markDef.color) {
-      log.warn(log.message.droppingColor('property', {fill: 'fill' in markDef, stroke: 'stroke' in markDef}));
-    }
-    return fillStrokeMarkDefAndConfig;
-  } else if (markDef.color) {
-    return {
-      ...fillStrokeMarkDefAndConfig, // in this case, fillStrokeMarkDefAndConfig only include config
-
-      // override config with markDef.color
-      [colorVgChannel]: {value: markDef.color}
-    };
-  } else if (isVisible(configValue.fill) || isVisible(configValue.stroke)) {
-    // ignore config.color
-    return fillStrokeMarkDefAndConfig;
-  } else if (configValue.color) {
-    return {
-      ...(transparentIfNeeded ? {fill: {value: 'transparent'}} : {}),
-      [colorVgChannel]: {value: configValue.color}
-    };
+  if (markDef.color && (filled ? markDef.fill : markDef.stroke)) {
+    log.warn(log.message.droppingColor('property', {fill: 'fill' in markDef, stroke: 'stroke' in markDef}));
   }
-  return {};
+
+  return {
+    ...fillStrokeMarkDefAndConfig,
+    ...nonPosition('color', model, {
+      vgChannel: colorVgChannel,
+      defaultValue: filled ? defaultFill : defaultStroke
+    }),
+    ...nonPosition('fill', model, {
+      // if there is encoding.fill, include default fill just in case we have conditional-only fill encoding
+      defaultValue: encoding.fill ? defaultFill : undefined
+    }),
+    ...nonPosition('stroke', model, {
+      // if there is encoding.stroke, include default fill just in case we have conditional-only stroke encoding
+      defaultValue: encoding.stroke ? defaultStroke : undefined
+    })
+  };
 }
 
 export type Ignore = Record<'size' | 'orient', 'ignore' | 'include'>;

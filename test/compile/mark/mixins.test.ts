@@ -77,66 +77,58 @@ describe('compile/mark/mixins', () => {
       expect(colorMixins.fill['value']).toBe('transparent');
     });
 
-    it(
-      'ignores color if fill is specified',
-      log.wrap(logger => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          mark: 'point',
-          encoding: {
-            x: {
-              field: 'gender',
-              type: 'nominal',
-              scale: {rangeStep: 6},
-              axis: null
-            },
-            fill: {
-              field: 'gender',
-              type: 'nominal',
-              scale: {range: ['#EA98D2', '#659CCA']}
-            },
-            color: {
-              field: 'gender',
-              type: 'nominal',
-              scale: {range: ['#EA98D2', '#659CCA']}
-            }
+    it('combines color with fill when filled=false', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'point',
+        encoding: {
+          x: {
+            field: 'gender',
+            type: 'nominal',
+            scale: {rangeStep: 6},
+            axis: null
           },
-          data: {url: 'data/population.json'}
-        });
-
-        const colorMixins = color(model);
-        expect(colorMixins.stroke).not.toBeDefined();
-        expect(colorMixins.fill).toEqual({field: 'gender', scale: 'fill'});
-        expect(logger.warns[0]).toEqual(log.message.droppingColor('encoding', {fill: true}));
-      })
-    );
-
-    it(
-      'ignores color property if fill is specified',
-      log.wrap(logger => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          mark: {type: 'point', color: 'red'},
-          encoding: {
-            x: {
-              field: 'gender',
-              type: 'nominal',
-              scale: {rangeStep: 6},
-              axis: null
-            },
-            fill: {
-              field: 'gender',
-              type: 'nominal',
-              scale: {range: ['#EA98D2', '#659CCA']}
-            }
+          fill: {
+            field: 'gender',
+            type: 'nominal',
+            scale: {range: ['#EA98D2', '#659CCA']}
           },
-          data: {url: 'data/population.json'}
-        });
+          color: {
+            field: 'gender',
+            type: 'nominal',
+            scale: {range: ['#EA98D2', '#659CCA']}
+          }
+        },
+        data: {url: 'data/population.json'}
+      });
 
-        const colorMixins = color(model);
-        expect(colorMixins.stroke).not.toBeDefined();
-        expect(colorMixins.fill).toEqual({field: 'gender', scale: 'fill'});
-        expect(logger.warns[0]).toEqual(log.message.droppingColor('property', {fill: true}));
-      })
-    );
+      const colorMixins = color(model);
+      expect(colorMixins.stroke).toEqual({field: 'gender', scale: 'color'});
+      expect(colorMixins.fill).toEqual({field: 'gender', scale: 'fill'});
+    });
+
+    it('ignores color property if fill is specified', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', color: 'red'},
+        encoding: {
+          x: {
+            field: 'gender',
+            type: 'nominal',
+            scale: {rangeStep: 6},
+            axis: null
+          },
+          fill: {
+            field: 'gender',
+            type: 'nominal',
+            scale: {range: ['#EA98D2', '#659CCA']}
+          }
+        },
+        data: {url: 'data/population.json'}
+      });
+
+      const colorMixins = color(model);
+      expect(colorMixins.stroke).toEqual({value: 'red'});
+      expect(colorMixins.fill).toEqual({field: 'gender', scale: 'fill'});
+    });
 
     it(
       'should apply stroke property over color property',
@@ -154,21 +146,17 @@ describe('compile/mark/mixins', () => {
       })
     );
 
-    it(
-      'should apply ignore color property when fill is specified',
-      log.wrap(logger => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          mark: {type: 'point', color: 'red', fill: 'blue'},
-          encoding: {
-            x: {field: 'Horsepower', type: 'quantitative'},
-            y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-          }
-        });
-        const props = color(model);
-        expect(props.stroke).not.toBeDefined();
-        expect(logger.warns[0]).toEqual(log.message.droppingColor('property', {fill: true}));
-      })
-    );
+    it('combines color with fill', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', color: 'red', fill: 'blue'},
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'}
+        }
+      });
+      const props = color(model);
+      expect(props.stroke).toEqual({value: 'red'});
+    });
 
     it('should apply color property', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
