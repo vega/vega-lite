@@ -9,7 +9,6 @@
     "type": "orthographic"
   },
   "mark": {
-    "type": "geoshape",
-    "stroke": "#4c78a8"
+    "type": "geoshape"
   }
 }

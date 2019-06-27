@@ -87,7 +87,7 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
   /**
    * Whether the mark's color should be used as fill color instead of stroke color.
    *
-   * __Default value:__ `false` for `point`, `line` and `rule`; otherwise, `true`.
+   * __Default value:__ `false` for all `point`, `line`, and `rule` marks as well as `geoshape` marks for [`graticule`](https://vega.github.io/vega-lite/docs/data.html#graticule) data sources; otherwise, `true`.
    *
    * __Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
    *

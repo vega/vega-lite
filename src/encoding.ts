@@ -403,7 +403,6 @@ export function normalizeEncoding(encoding: Encoding<string>, markDef: MarkDef):
 
     // Drop color if either fill or stroke is specified
 
-    // FIXME
     if (channel === 'color' && (markDef.filled ? 'fill' in encoding : 'stroke' in encoding)) {
       log.warn(log.message.droppingColor('encoding', {fill: 'fill' in encoding, stroke: 'stroke' in encoding}));
       return normalizedEncoding;
