@@ -288,7 +288,7 @@
       {
         "name": "window_top_k_others",
         "title": "Top-K plot with Others",
-        "description": "By [Trevor Manz](github.com/manzt), adapted from https://observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example.",
+        "description": "By [Trevor Manz](https://github.com/manzt), adapted from https://observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example.",
         "style": "background-size: 110%"
       },
       {
@@ -430,7 +430,7 @@
       {
         "name": "wheat_wages",
         "title": "Wheat and Wages Example",
-        "description": "A recreation of William Playfair’s classic chart visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Based on a chart by @manzt."
+        "description": "A recreation of William Playfair’s classic chart visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Based on a chart by [@manzt](https://github.com/manzt)."
       }
     ]
   },
