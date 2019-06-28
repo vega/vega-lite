@@ -35,7 +35,14 @@ for (const category of Object.keys(examples)) {
 
       console.log('Processing', name);
 
-      fs.writeFileSync(`site/examples/${name}.vl.json`, fs.readFileSync(`examples/specs/${name}.vl.json`));
+      const fileContent = fs.readFileSync(`examples/specs/${name}.vl.json`);
+
+      if (!example.description) {
+        const parsed = JSON.parse(fileContent);
+        example.description = parsed.description;
+      }
+
+      fs.writeFileSync(`site/examples/${name}.vl.json`, fileContent);
       fs.writeFileSync(`site/examples/${name}.md`, createPage(example));
       fileMap[`examples/compiled/${name}.svg`] = `examples/compiled/${name}.png`;
     }
