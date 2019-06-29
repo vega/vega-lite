@@ -2,7 +2,7 @@ import {Binding} from 'vega';
 import {SingleDefUnitChannel} from './channel';
 import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
-import {EventStream, Color} from './vega.schema';
+import {Color, EventStream} from './vega.schema';
 
 export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'single' | 'multi' | 'interval';
@@ -25,7 +25,7 @@ export interface BaseSelectionConfig {
    *
    * __Default value:__ `dblclick`.
    *
-   * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
+   * __See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation.
    */
   clear?: EventStream | boolean;
 
@@ -39,6 +39,7 @@ export interface BaseSelectionConfig {
    * selections' data queries are resolved when applied in a filter transform,
    * conditional encoding rule, or scale domain.
    *
+   * __See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation.
    */
   resolve?: SelectionResolution;
 
@@ -46,17 +47,19 @@ export interface BaseSelectionConfig {
   // predicate?: string;
   // domain?: SelectionDomain;
 
-  // Transforms
-
   /**
    * An array of encoding channels. The corresponding data field values
    * must match for a data tuple to fall within the selection.
+   *
+   * __See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.
    */
   encodings?: SingleDefUnitChannel[];
 
   /**
    * An array of field names whose values must match for a data tuple to
    * fall within the selection.
+   *
+   * __See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.
    */
   fields?: FieldName[];
 
@@ -74,7 +77,7 @@ export interface SingleSelectionConfig extends BaseSelectionConfig {
    * Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)
    * or can be a mapping between projected field/encodings and binding definitions.
    *
-   * See the [bind transform](https://vega.github.io/vega-lite/docs/bind.html) documentation for more information.
+   * __See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.
    */
   bind?: Binding | {[key: string]: Binding};
 
@@ -82,12 +85,14 @@ export interface SingleSelectionConfig extends BaseSelectionConfig {
    * When true, an invisible voronoi diagram is computed to accelerate discrete
    * selection. The data value _nearest_ the mouse cursor is added to the selection.
    *
-   * See the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.
+   * __See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.
    */
   nearest?: boolean;
 
   /**
    * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.
+   *
+   * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
   init?: SelectionInitMapping;
 }
@@ -101,7 +106,7 @@ export interface MultiSelectionConfig extends BaseSelectionConfig {
    * __Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,
    * data values are toggled when a user interacts with the shift-key pressed).
    *
-   * See the [toggle transform](https://vega.github.io/vega-lite/docs/toggle.html) documentation for more information.
+   * __See also:__ [`toggle`](https://vega.github.io/vega-lite/docs/toggle.html) documentation.
    */
   toggle?: string | boolean;
 
@@ -109,13 +114,15 @@ export interface MultiSelectionConfig extends BaseSelectionConfig {
    * When true, an invisible voronoi diagram is computed to accelerate discrete
    * selection. The data value _nearest_ the mouse cursor is added to the selection.
    *
-   * See the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.
+   * __See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.
    */
   nearest?: boolean;
 
   /**
    * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial
    * value (or array of values).
+   *
+   * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
   init?: SelectionInitMapping | SelectionInitMapping[];
 }
@@ -169,6 +176,8 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
    * __Default value:__ `true`, which corresponds to
    * `[mousedown, window:mouseup] > window:mousemove!` which corresponds to
    * clicks and dragging within an interval selection to reposition it.
+   *
+   * __See also:__ [`translate`](https://vega.github.io/vega-lite/docs/translate.html) documentation.
    */
   translate?: string | boolean;
 
@@ -178,8 +187,9 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
    * definition](https://vega.github.io/vega/docs/event-streams/). Currently,
    * only `wheel` events are supported.
    *
-   *
    * __Default value:__ `true`, which corresponds to `wheel!`.
+   *
+   * __See also:__ [`zoom`](https://vega.github.io/vega-lite/docs/zoom.html) documentation.
    */
   zoom?: string | boolean;
 
@@ -187,6 +197,8 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
    * Establishes a two-way binding between the interval selection and the scales
    * used within the same view. This allows a user to interactively pan and
    * zoom the view.
+   *
+   * __See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.
    */
   bind?: 'scales';
 
@@ -194,12 +206,16 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
    * An interval selection also adds a rectangle mark to depict the
    * extents of the interval. The `mark` property can be used to customize the
    * appearance of the mark.
+   *
+   * __See also:__ [`mark`](https://vega.github.io/vega-lite/docs/selection-mark.html) documentation.
    */
   mark?: BrushConfig;
 
   /**
    * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of
    * initial values.
+   *
+   * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
   init?: SelectionInitIntervalMapping;
 }

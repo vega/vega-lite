@@ -47,49 +47,47 @@ For example, try the different types against the example selection (named `pts`)
 
 <div id="selection_type" class="vl-example" data-name="selection_type_single"></div>
 
+{:#selection-props}
+
 ## Selection Properties
+
+While selection types provide useful defaults, it can often be useful to override these properties to customize the interaction design.
+
+### Common Selection Properties
 
 {:#selection-on}
 
-While selection types provide useful defaults, it can often be useful to override these properties to customize the interaction design. The following properties are available to do so:
+All selection types support the following properties:
 
-{% include table.html props="on,init,empty,resolve,mark" source="IntervalSelection" %}
+{% include table.html props="clear,empty,on,resolve,encodings,fields" source="IntervalSelection" %}
 
 For instance, with the `on` property, a single rectangle in the heatmap below can now be selected on mouse hover instead.
 
 <div class="vl-example" data-name="selection_type_single_mouseover"></div>
 
-{:#interval-mark}
+{:#single}
 
-### Interval Selection Marks
+### Single Selection Properties
 
-Every interval selection also adds a rectangle mark to the visualization, to depict the extents of the selected region. The appearance of this mark can be customized with the following properties, specified under `mark`.
+In addition to all [common selection properties](#selection-props), single selections support the following properties:
 
-{% include table.html props="fill,fillOpacity,stroke,strokeOpacity,strokeWidth,strokeDash,strokeDashOffset" source="BrushConfig" %}
+{% include table.html props="init,bind,nearest" source="SingleSelection" %}
 
-For example, the spec below imagines two users, Alex and Morgan, who can each drag out an interval selection. To prevent collision between the two selections, Morgan must press the shift key while dragging out their interval (while Alex must not). Morgan's interval is depicted with the default grey rectangle, and Morgan's with a customized red rectangle.
+{:#multi}
 
-_Note:_ the two intervals do not have any effect on the visualization yet (we'll cover that next!).
+### Multi Selection Properties
 
-<div class="vl-example" data-name="selection_interval_mark_style"></div>
+In addition to all [common selection properties](#selection-props), multi selections support the following properties:
 
-## Selection Transformations
+{% include table.html props="init,nearest,toggle" source="MultiSelection" %}
 
-Vega-Lite provides a number of selection _transformations_ to further customize the behaviour of a selection. These include:
+{:#interval}
 
-- For `single` selections:
-  - [`bind`](bind.html) to input elements (also known as dynamic query widgets).
-  - [`nearest`](nearest.html) to accelerate selecting values.
-  - project over [`fields`](project.html) or [`encodings`](project.html) to change the inclusion criteria (or data query).
-- For `multi` selections:
-  - [`toggle`](toggle.html) to insert or remove data values based on their membership within the selection.
-  - [`nearest`](nearest.html) to accelerate selecting values.
-  - project over [`fields`](project.html) or [`encodings`](project.html) to change the inclusion criteria (or data query).
-- For `interval` selections:
-  - [`bind`](bind.html) to scale functions to enable panning &amp; zooming.
-  - project over [`fields`](project.html) or [`encodings`](project.html) to change the inclusion criteria (or data query).
-  - [`translate`](translate.html) to move the selection back-and-forth.
-  - [`zoom`](zoom.html) to resize the selection.
+### Interval Selection Properties
+
+In addition to all [common selection properties](#selection-props), interval selections support the following properties:
+
+{% include table.html props="bind,init,mark,translate,zoom" source="IntervalSelection" %}
 
 ## Using Selections
 
@@ -155,36 +153,6 @@ When using selections with filter operators, logical composition can be used to 
 <div class="vl-example" data-name="selection_filter_composition"></div>
 
 _Note:_ Logical composition is **not** supported when selections are used to drive scale domains.
-
-{:#init}
-
-## Initialize Selections
-
-To initialize a selection, set the `init` property to a map or array of maps from [projected channels or field names](project.html) to the initial value of the selection. Single selections are initialized with a map to single values, multi selections are initialized with an array of maps to single values, and interval selections are initialized with a single map to arrays of values.
-
-In the example below, we inialize the `"brush"` selection to the extent of the brush for yhe `x` and `y` encoding channels. The values specify the start and end of the interval selection.
-
-<div class="vl-example" data-name="interactive_brush"></div>
-
-In the example below, we initalize the `"CylYr"` selection by setting the values for the `"Cylinders"` and `"Years"` fields. The values are single values because the selection is a of type `single`.
-
-<div class="vl-example" data-name="interactive_query_widgets"></div>
-
-{:#resolve}
-
-## Resolving Selections in Data-Driven Views
-
-When a selection is defined within a data-driven view (i.e., a view that is part of a [facet](facet.html) or [repeat](repeat.html)), the desired behaviour can be ambiguous. Consider the scatterplot matrix (SPLOM) example below, which has an interval selection named `brush`. Should there be only one brush across all cells, or should each cell have its own brush? In the latter case, how should points be highlighted in all the other cells?
-
-The aptly named `resolve` property addresses this ambiguity, and can be set to one of the following values (click to apply it to the SPLOM example, and drag out an interval in different cells):
-
-- <a href="javascript:changeSpec('selection_resolution', 'selection_resolution_global')">`global`</a> (**default**) -- only one brush exists for the entire SPLOM. When the user begins to drag, any previous brushes are cleared, and a new one is constructed.
-
-- <a href="javascript:changeSpec('selection_resolution', 'selection_resolution_union')">`union`</a> -- each cell contains its own brush, and points are highlighted if they lie within _any_ of these individual brushes.
-
-- <a href="javascript:changeSpec('selection_resolution', 'selection_resolution_intersect')">`intersect`</a> -- each cell contains its own brush, and points are highlighted only if they fall within _all_ of these individual brushes.
-
-<div id="selection_resolution" class="vl-example" data-name="selection_resolution_global"></div>
 
 {:#config}
 
