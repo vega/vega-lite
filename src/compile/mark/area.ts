@@ -6,10 +6,23 @@ export const area: MarkCompiler = {
   vgMark: 'area',
   encodeEntry: (model: UnitModel) => {
     return {
-      ...mixins.baseEncodeEntry(model, {color: 'include', size: 'ignore', orient: 'include'}),
-      ...mixins.pointPosition('x', model, 'zeroOrMin'),
-      ...mixins.pointPosition('y', model, 'zeroOrMin'),
-      ...mixins.pointPosition2(model, 'zeroOrMin', model.markDef.orient === 'horizontal' ? 'x2' : 'y2'),
+      ...mixins.baseEncodeEntry(model, {
+        align: 'ignore',
+        baseline: 'ignore',
+        color: 'include',
+        orient: 'include',
+        size: 'ignore'
+      }),
+      ...mixins.pointOrRangePosition('x', model, {
+        defaultRef: 'zeroOrMin',
+        defaultRef2: 'zeroOrMin',
+        range: model.markDef.orient === 'horizontal'
+      }),
+      ...mixins.pointOrRangePosition('y', model, {
+        defaultRef: 'zeroOrMin',
+        defaultRef2: 'zeroOrMin',
+        range: model.markDef.orient === 'vertical'
+      }),
       ...mixins.defined(model)
     };
   }
