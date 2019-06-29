@@ -34,8 +34,8 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "width": 50,
-          "height": 50,
+          "width": {"value": 50},
+          "height": {"value": 50},
           "tooltip": {
             "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\"), \"img\": ''+datum[\"img\"]}"
           },
