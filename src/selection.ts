@@ -18,7 +18,7 @@ export interface SelectionInitIntervalMapping {
   [key: string]: SelectionInitInterval;
 }
 
-export interface BaseSelectionDef {
+export interface BaseSelectionConfig {
   /**
    * A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.
    * For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).
@@ -57,7 +57,7 @@ export interface BaseSelectionDef {
   empty?: 'all' | 'none';
 }
 
-export interface SingleSelectionConfig extends BaseSelectionDef {
+export interface SingleSelectionConfig extends BaseSelectionConfig {
   /**
    * Clears the selection, emptying it of all values. Can be an
    * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
@@ -91,7 +91,7 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
   init?: SelectionInitMapping;
 }
 
-export interface MultiSelectionConfig extends BaseSelectionDef {
+export interface MultiSelectionConfig extends BaseSelectionConfig {
   /**
    * Clears the selection, emptying it of all values. Can be an
    * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
@@ -168,7 +168,7 @@ export interface BrushConfig {
   strokeDashOffset?: number;
 }
 
-export interface IntervalSelectionConfig extends BaseSelectionDef {
+export interface IntervalSelectionConfig extends BaseSelectionConfig {
   /**
    * Clears the selection, emptying it of all values. Can be an
    * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
