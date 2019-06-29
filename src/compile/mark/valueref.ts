@@ -15,6 +15,7 @@ import {
   FieldName,
   FieldRefOption,
   format,
+  getFieldDef,
   hasConditionalFieldDef,
   isFieldDef,
   isTypedFieldDef,
@@ -34,7 +35,7 @@ import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
 import {contains, getFirstDefined} from '../../util';
 import {VgValueRef} from '../../vega.schema';
-import {formatSignalRef, getMarkConfig} from '../common';
+import {binFormatExpression, formatSignalRef, getMarkConfig} from '../common';
 import {ScaleComponent} from '../scale/component';
 
 function midPointWithPositionInvalidTest(
@@ -353,27 +354,41 @@ export function vgValueRef(channel: Channel, value: Value) {
 export function tooltipForEncoding(
   encoding: Encoding<string>,
   config: Config,
-  {reactiveGeom}: {reactiveGeom?: boolean}
+  {reactiveGeom}: {reactiveGeom?: boolean} = {}
 ) {
   const keyValues: string[] = [];
   const usedKey = {};
+  const toSkip = {};
+  const expr = reactiveGeom ? 'datum.datum' : 'datum';
+  const tooltipTuples: {channel: Channel; key: string; value: string}[] = [];
 
-  function add(fieldDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: Channel) {
+  function add(fDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: Channel) {
     const mainChannel = getMainRangeChannel(channel);
-    if (channel !== mainChannel) {
-      fieldDef = {
-        ...fieldDef,
-        type: encoding[mainChannel].type
-      };
-    }
+
+    const fieldDef: TypedFieldDef<string> = isTypedFieldDef(fDef)
+      ? fDef
+      : {
+          ...fDef,
+          type: encoding[mainChannel].type // for secondary field def, copy type from main channel
+        };
 
     const key = title(fieldDef, config, {allowDisabling: false});
-    const value = text(fieldDef, config, reactiveGeom ? 'datum.datum' : 'datum').signal;
 
-    if (!usedKey[key]) {
-      keyValues.push(`${stringValue(key)}: ${value}`);
+    let value = text(fieldDef, config, expr).signal;
+
+    if (channel === 'x' || channel === 'y') {
+      const channel2 = channel === 'x' ? 'x2' : 'y2';
+      const fieldDef2 = getFieldDef(encoding[channel2]);
+
+      if (isBinned(fieldDef.bin) && fieldDef2) {
+        const startField = vgField(fieldDef, {expr});
+        const endField = vgField(fieldDef2, {expr});
+        value = binFormatExpression(startField, endField, format(fieldDef), config);
+        toSkip[channel2] = true;
+      }
     }
-    usedKey[key] = true;
+
+    tooltipTuples.push({channel, key, value});
   }
 
   forEach(encoding, (channelDef, channel) => {
@@ -383,6 +398,14 @@ export function tooltipForEncoding(
       add(channelDef.condition, channel);
     }
   });
+
+  for (const {channel, key, value} of tooltipTuples) {
+    if (!toSkip[channel] && !usedKey[key]) {
+      keyValues.push(`${stringValue(key)}: ${value}`);
+      usedKey[key] = true;
+    }
+  }
+
   return keyValues.length ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
 
