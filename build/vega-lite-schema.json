@@ -191,7 +191,7 @@
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "height": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n>>>>>>> feat: Add image mark (rebasing #4429)\n/**\nheight of the marks.",
+          "description": "Height of the marks.",
           "type": "number"
         },
         "href": {
@@ -333,7 +333,7 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "width": {
-          "description": "Width the marks.",
+          "description": "Width of the marks.",
           "type": "number"
         },
         "x": {
@@ -1195,7 +1195,7 @@
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "height": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n>>>>>>> feat: Add image mark (rebasing #4429)\n/**\nheight of the marks.",
+          "description": "Height of the marks.",
           "type": "number"
         },
         "href": {
@@ -1291,7 +1291,7 @@
           "description": "The tooltip text to show upon mouse hover."
         },
         "width": {
-          "description": "Width the marks.",
+          "description": "Width of the marks.",
           "type": "number"
         },
         "x": {
@@ -2982,7 +2982,7 @@
           "description": "Header configuration, which determines default properties for row [headers](https://vega.github.io/vega-lite/docs/header.html).\n\nFor a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config)."
         },
         "image": {
-          "$ref": "#/definitions/MarkConfig",
+          "$ref": "#/definitions/RectConfig",
           "description": "Image-specific Config"
         },
         "invalidValues": {
@@ -7109,7 +7109,7 @@
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "height": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n>>>>>>> feat: Add image mark (rebasing #4429)\n/**\nheight of the marks.",
+          "description": "Height of the marks.",
           "type": "number"
         },
         "href": {
@@ -7240,7 +7240,7 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "width": {
-          "description": "Width the marks.",
+          "description": "Width of the marks.",
           "type": "number"
         },
         "x": {
@@ -7611,7 +7611,7 @@
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "height": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n>>>>>>> feat: Add image mark (rebasing #4429)\n/**\nheight of the marks.",
+          "description": "Height of the marks.",
           "type": "number"
         },
         "href": {
@@ -7725,7 +7725,7 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "width": {
-          "description": "Width the marks.",
+          "description": "Width of the marks.",
           "type": "number"
         },
         "x": {
@@ -7876,7 +7876,7 @@
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "height": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n>>>>>>> feat: Add image mark (rebasing #4429)\n/**\nheight of the marks.",
+          "description": "Height of the marks.",
           "type": "number"
         },
         "href": {
@@ -8041,7 +8041,7 @@
           "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
         },
         "width": {
-          "description": "Width the marks.",
+          "description": "Width of the marks.",
           "type": "number"
         },
         "x": {
@@ -8482,7 +8482,7 @@
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "height": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n>>>>>>> feat: Add image mark (rebasing #4429)\n/**\nheight of the marks.",
+          "description": "Height of the marks.",
           "type": "number"
         },
         "href": {
@@ -8610,7 +8610,7 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "width": {
-          "description": "Width the marks.",
+          "description": "Width of the marks.",
           "type": "number"
         },
         "x": {
@@ -9309,7 +9309,7 @@
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "height": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n>>>>>>> feat: Add image mark (rebasing #4429)\n/**\nheight of the marks.",
+          "description": "Height of the marks.",
           "type": "number"
         },
         "href": {
@@ -9423,7 +9423,7 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "width": {
-          "description": "Width the marks.",
+          "description": "Width of the marks.",
           "type": "number"
         },
         "x": {
@@ -10831,7 +10831,7 @@
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "height": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n>>>>>>> feat: Add image mark (rebasing #4429)\n/**\nheight of the marks.",
+          "description": "Height of the marks.",
           "type": "number"
         },
         "href": {
@@ -10949,7 +10949,7 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "width": {
-          "description": "Width the marks.",
+          "description": "Width of the marks.",
           "type": "number"
         },
         "x": {
@@ -11166,7 +11166,7 @@
           "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "height": {
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without `y2`\n>>>>>>> feat: Add image mark (rebasing #4429)\n/**\nheight of the marks.",
+          "description": "Height of the marks.",
           "type": "number"
         },
         "href": {
@@ -11285,7 +11285,7 @@
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "width": {
-          "description": "Width the marks.",
+          "description": "Width of the marks.",
           "type": "number"
         },
         "x": {
