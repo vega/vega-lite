@@ -4,7 +4,22 @@ import {isContinuous, isFieldDef, TypedFieldDef} from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
 import * as log from '../../log';
-import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
+import {
+  AREA,
+  BAR,
+  CIRCLE,
+  IMAGE,
+  isMarkDef,
+  LINE,
+  Mark,
+  MarkDef,
+  POINT,
+  RECT,
+  RULE,
+  SQUARE,
+  TEXT,
+  TICK
+} from '../../mark';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, getFirstDefined} from '../../util';
 import {getMarkConfig} from '../common';
@@ -69,6 +84,7 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
     case SQUARE:
     case TEXT:
     case RECT:
+    case IMAGE:
       // orient is meaningless for these marks.
       return undefined;
   }

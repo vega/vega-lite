@@ -209,6 +209,11 @@ export interface Encoding<F extends Field> {
   href?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
 
   /**
+   * The URL of an image mark
+   */
+  url?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
+
+  /**
    * Order of the marks.
    * - For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).
    * - For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).  Setting `order` to `{"value": null}` makes the line marks use the original order in the data sources.
@@ -511,6 +516,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'y':
       case 'order':
       case 'href':
+      case 'url':
       case 'x2':
       case 'y2':
       // falls through

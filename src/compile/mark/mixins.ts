@@ -1,3 +1,4 @@
+import {Align} from 'vega';
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
 import {Channel, NonPositionScaleChannel, ScaleChannel, SCALE_CHANNELS, X, X2, Y2} from '../../channel';
@@ -11,6 +12,7 @@ import {
   TypedFieldDef,
   ValueDef
 } from '../../channeldef';
+import {Config} from '../../config';
 import * as log from '../../log';
 import {isPathMark, Mark, MarkConfig, MarkDef} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
@@ -110,10 +112,10 @@ export function color(model: UnitModel): VgEncodeEntry {
   return {};
 }
 
-export type Ignore = Record<'size' | 'orient', 'ignore' | 'include'>;
+export type Ignore = Record<'color' | 'size' | 'orient', 'ignore' | 'include'>;
 
 export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
-  const {fill, stroke} = color(model);
+  const {fill = undefined, stroke = undefined} = ignore.color === 'include' ? color(model) : {};
   return {
     ...markDefProperties(model.markDef, ignore),
     ...wrapAllFieldsInvalid(model, 'fill', fill),
@@ -310,7 +312,7 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   }
 }
 
-export function text(model: UnitModel, channel: 'text' | 'href' = 'text') {
+export function text(model: UnitModel, channel: 'text' | 'href' | 'url' = 'text') {
   const channelDef = model.encoding[channel];
   return wrapCondition(model, channelDef, channel, cDef => ref.text(cDef, model.config));
 }
@@ -379,7 +381,7 @@ export function centeredPointPositionWithSize(
   const centerChannel: 'xc' | 'yc' = channel === 'x' ? 'xc' : 'yc';
   const sizeChannel = channel === 'x' ? 'width' : 'height';
   return {
-    ...pointPosition(channel, model, defaultPosRef, centerChannel),
+    ...pointPosition(channel, model, defaultPosRef, {vgChannel: centerChannel}),
     ...nonPosition('size', model, {defaultRef: defaultSizeRef, vgChannel: sizeChannel})
   };
 }
@@ -438,7 +440,7 @@ export function pointPosition(
   channel: 'x' | 'y',
   model: UnitModel,
   defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax',
-  vgChannel?: 'x' | 'y' | 'xc' | 'yc'
+  {vgChannel}: {vgChannel?: 'x' | 'y' | 'xc' | 'yc'} = {}
 ) {
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
@@ -479,6 +481,53 @@ export function pointPosition(
   return {
     [vgChannel || channel]: valueRef
   };
+}
+
+const ALIGNED_X_CHANNEL: {[a in Align]: VgEncodeChannel} = {
+  left: 'x',
+  center: 'xc',
+  right: 'x2'
+};
+
+const BASELINED_Y_CHANNEL = {
+  top: 'y2',
+  middle: 'yc',
+  bottom: 'y'
+};
+
+export function rangePosition(
+  channel: 'x' | 'y',
+  model: UnitModel,
+  {
+    defaultRef,
+    defaultRef2
+  }: {
+    defaultRef: 'zeroOrMin' | 'zeroOrMax';
+    defaultRef2: 'zeroOrMin' | 'zeroOrMax';
+  }
+) {
+  const {markDef, config} = model;
+  const channel2 = channel === 'x' ? 'x2' : 'y2';
+  const sizeChannel = channel === 'x' ? 'width' : 'height';
+
+  const pos2Mixins = pointPosition2(model, defaultRef2, channel2);
+
+  const vgChannel = pos2Mixins[sizeChannel] ? alignedChannel(channel, markDef, config) : channel;
+
+  return {
+    ...pointPosition(channel, model, defaultRef, {vgChannel}),
+    ...pos2Mixins
+  };
+}
+
+function alignedChannel(channel: 'x' | 'y', markDef: MarkDef, config: Config) {
+  const alignChannel = channel === 'x' ? 'align' : 'baseline';
+  const align = getFirstDefined(markDef[alignChannel], getMarkConfig(alignChannel, markDef, config));
+  if (channel === 'x') {
+    return ALIGNED_X_CHANNEL[align || 'center'];
+  } else {
+    return BASELINED_Y_CHANNEL[align || 'middle'];
+  }
 }
 
 /**
