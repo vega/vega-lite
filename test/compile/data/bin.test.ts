@@ -1,9 +1,9 @@
-import {VgBinTransform} from './../../../build/src/vega.schema.d';
 import {BinNode, getBinSignalName} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';
 import {parseUnitModelWithScale} from '../../util';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {VgBinTransform} from './../../../src/vega.schema';
 
 function assembleFromEncoding(model: ModelWithField) {
   return BinNode.makeFromEncoding(null, model).assemble();
