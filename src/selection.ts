@@ -20,6 +20,16 @@ export interface SelectionInitIntervalMapping {
 
 export interface BaseSelectionConfig {
   /**
+   * Clears the selection, emptying it of all values. Can be an
+   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
+   *
+   * __Default value:__ `dblclick`.
+   *
+   * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
+   */
+  clear?: EventStream | boolean;
+
+  /**
    * A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.
    * For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).
    */
@@ -59,15 +69,6 @@ export interface BaseSelectionConfig {
 
 export interface SingleSelectionConfig extends BaseSelectionConfig {
   /**
-   * Clears the selection, emptying it of all values. Can be an
-   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
-   *
-   * __Default value:__ `dblclick`.
-   *
-   * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
-   */
-  clear?: EventStream | boolean;
-  /**
    * Establish a two-way binding between a single selection and input elements
    * (also known as dynamic query widgets). A binding takes the form of
    * Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)
@@ -92,16 +93,6 @@ export interface SingleSelectionConfig extends BaseSelectionConfig {
 }
 
 export interface MultiSelectionConfig extends BaseSelectionConfig {
-  /**
-   * Clears the selection, emptying it of all values. Can be an
-   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
-   *
-   * __Default value:__ `dblclick`.
-   *
-   * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
-   */
-  clear?: EventStream | boolean;
-
   /**
    * Controls whether data values should be toggled or only ever inserted into
    * multi selections. Can be `true`, `false` (for insertion only), or a
@@ -169,15 +160,6 @@ export interface BrushConfig {
 }
 
 export interface IntervalSelectionConfig extends BaseSelectionConfig {
-  /**
-   * Clears the selection, emptying it of all values. Can be an
-   * [EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
-   *
-   * __Default value:__ `dblclick`.
-   *
-   * See the [clear](https://vega.github.io/vega-lite/docs/clear.html) documentation for more information.
-   */
-  clear?: EventStream | boolean;
   /**
    * When truthy, allows a user to interactively move an interval selection
    * back-and-forth. Can be `true`, `false` (to disable panning), or a

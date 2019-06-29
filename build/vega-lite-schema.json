@@ -5962,6 +5962,7 @@
           ]
         },
         "type": {
+          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `single` -- to select a single discrete data value on `click`.\n- `multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.\n- `interval` -- to select a continuous range of data values on `drag`.",
           "enum": [
             "interval"
           ],
@@ -8149,6 +8150,7 @@
           ]
         },
         "type": {
+          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `single` -- to select a single discrete data value on `click`.\n- `multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.\n- `interval` -- to select a continuous range of data values on `drag`.",
           "enum": [
             "multi"
           ],
@@ -10352,6 +10354,7 @@
           "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain."
         },
         "type": {
+          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `single` -- to select a single discrete data value on `click`.\n- `multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.\n- `interval` -- to select a continuous range of data values on `drag`.",
           "enum": [
             "single"
           ],
