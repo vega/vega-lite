@@ -112,7 +112,7 @@ export function color(model: UnitModel): VgEncodeEntry {
   return {};
 }
 
-export type Ignore = Record<'color' | 'size' | 'orient', 'ignore' | 'include'>;
+export type Ignore = Record<'color' | 'size' | 'orient' | 'align' | 'baseline', 'ignore' | 'include'>;
 
 export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
   const {fill = undefined, stroke = undefined} = ignore.color === 'include' ? color(model) : {};
@@ -490,10 +490,29 @@ const ALIGNED_X_CHANNEL: {[a in Align]: VgEncodeChannel} = {
 };
 
 const BASELINED_Y_CHANNEL = {
-  top: 'y2',
+  top: 'y',
   middle: 'yc',
-  bottom: 'y'
+  bottom: 'y2'
 };
+
+export function pointOrRangePosition(
+  channel: 'x' | 'y',
+  model: UnitModel,
+  {
+    defaultRef,
+    defaultRef2,
+    range
+  }: {
+    defaultRef: 'zeroOrMin' | 'zeroOrMax' | VgValueRef;
+    defaultRef2: 'zeroOrMin' | 'zeroOrMax';
+    range: boolean;
+  }
+) {
+  if (range) {
+    return rangePosition(channel, model, {defaultRef, defaultRef2});
+  }
+  return pointPosition(channel, model, defaultRef);
+}
 
 export function rangePosition(
   channel: 'x' | 'y',
@@ -502,7 +521,7 @@ export function rangePosition(
     defaultRef,
     defaultRef2
   }: {
-    defaultRef: 'zeroOrMin' | 'zeroOrMax';
+    defaultRef: 'zeroOrMin' | 'zeroOrMax' | VgValueRef;
     defaultRef2: 'zeroOrMin' | 'zeroOrMax';
   }
 ) {
@@ -534,7 +553,7 @@ function alignedChannel(channel: 'x' | 'y', markDef: MarkDef, config: Config) {
  * Return mixins for x2, y2.
  * If channel is not specified, return one channel based on orientation.
  */
-export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel: 'x2' | 'y2') {
+function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel: 'x2' | 'y2') {
   const {encoding, mark, markDef, stack, config} = model;
 
   const baseChannel = channel === 'x2' ? 'x' : 'y';

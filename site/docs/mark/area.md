@@ -44,7 +44,7 @@ permalink: /docs/area.html
 
 An area mark definition can contain any [standard mark properties](mark.html#mark-def) and the following line interpolation as well as line and point overlay properties:
 
-{% include table.html props="orient,interpolate,tension,line,point" source="MarkDef" %}
+{% include table.html props="align,baseline,orient,interpolate,tension,line,point" source="MarkDef" %}
 
 ## Examples
 

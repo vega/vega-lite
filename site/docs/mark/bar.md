@@ -44,7 +44,7 @@ Bar marks are useful in many visualizations, including bar charts, [stacked bar 
 
 A bar mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
-{% include table.html props="orient,binSpacing,cornerRadius" source="MarkDef" %}
+{% include table.html props="orient,align,baseline,binSpacing,cornerRadius" source="MarkDef" %}
 
 ## Examples
 

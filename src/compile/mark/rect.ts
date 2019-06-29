@@ -18,7 +18,13 @@ export const rect: MarkCompiler = {
   vgMark: 'rect',
   encodeEntry: (model: UnitModel) => {
     return {
-      ...mixins.baseEncodeEntry(model, {color: 'include', size: 'ignore', orient: 'ignore'}),
+      ...mixins.baseEncodeEntry(model, {
+        align: 'ignore',
+        baseline: 'ignore',
+        color: 'ignore',
+        orient: 'ignore',
+        size: 'ignore'
+      }),
       ...rectPosition(model, 'x', 'rect'),
       ...rectPosition(model, 'y', 'rect')
     };
@@ -82,10 +88,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
       defaultSizeRef(mark, markDef, sizeChannel, scaleName, scale, config)
     );
   } else {
-    return {
-      ...mixins.pointPosition(channel, model, 'zeroOrMax'),
-      ...mixins.pointPosition2(model, 'zeroOrMin', channel2)
-    };
+    return mixins.rangePosition(channel, model, {defaultRef: 'zeroOrMax', defaultRef2: 'zeroOrMin'});
   }
 }
 
