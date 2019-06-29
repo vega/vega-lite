@@ -7,12 +7,10 @@
       {"a": "G","b": 19}, {"a": "H","b": 87}, {"a": "I","b": 52}
     ]
   },
+  "width": {"step": 11},
   "mark": "bar",
   "encoding": {
-    "x": {
-      "field": "a", "type": "ordinal",
-      "scale": {"rangeStep": 11}
-    },
+    "x": {"field": "a", "type": "ordinal"},
     "y": {"field": "b", "type": "quantitative"}
   }
 }

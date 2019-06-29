@@ -9,7 +9,7 @@ import {parseModel, parseModelWithScale, parseUnitModelWithScale} from '../../ut
 describe('src/compile', () => {
   it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES wihtout type, domain, and range properties', () => {
     expect(toSet(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES)).toEqual(
-      toSet(without(SCALE_PROPERTIES, ['type', 'domain', 'range', 'rangeStep', 'scheme']))
+      toSet(without(SCALE_PROPERTIES, ['type', 'domain', 'range', 'scheme']))
     );
   });
 
@@ -209,7 +209,7 @@ describe('src/compile', () => {
                 y: {
                   field: 'a',
                   type: 'nominal',
-                  scale: {rangeStep: 17}
+                  scale: {padding: 0.2}
                 }
               }
             },
@@ -219,20 +219,20 @@ describe('src/compile', () => {
                 y: {
                   field: 'a',
                   type: 'nominal',
-                  scale: {rangeStep: 17}
+                  scale: {padding: 0.2}
                 }
               }
             }
           ]
         });
         parseScales(model);
-        expect(model.getScaleComponent('y').explicit.range).toEqual({step: 17});
+        expect(model.getScaleComponent('y').explicit.padding).toEqual(0.2);
         expect(logger.warns).toHaveLength(0);
       })
     );
 
     describe('x ordinal point', () => {
-      it('should create an x point scale with rangeStep and no range', () => {
+      it('should create an x point scale with a step-based range ', () => {
         const model = parseUnitModelWithScale({
           mark: 'point',
           encoding: {

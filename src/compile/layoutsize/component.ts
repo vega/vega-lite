@@ -1,6 +1,6 @@
 import {Split} from '../split';
 
-export type LayoutSize = number | 'range-step' | 'merged';
+export type LayoutSize = number | 'step' | 'merged';
 
 export interface LayoutSizeIndex {
   width?: LayoutSize;

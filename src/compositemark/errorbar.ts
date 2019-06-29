@@ -8,6 +8,7 @@ import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize/index';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
+import {Step} from '../spec/base';
 import {TitleParams} from '../title';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys, titlecase} from '../util';
@@ -304,8 +305,8 @@ export function errorBarParams<
     name?: string;
     description?: string;
     transform?: Transform[];
-    width?: number;
-    height?: number;
+    width?: number | Step;
+    height?: number | Step;
   };
   tooltipEncoding: ErrorEncoding<string>;
 } {

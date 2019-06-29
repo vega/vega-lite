@@ -8,7 +8,8 @@
   "encoding": {
     "x": {
       "aggregate": "sum", "field": "people", "type": "quantitative",
-      "axis": {"title": "population"}}
+      "axis": {"title": "population"}
+    }
   },
-  "config": {"scale": {"rangeStep": 21}}
+  "config": {"view": {"discreteWidth": {"step": 21}}}
 }

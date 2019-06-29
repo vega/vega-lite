@@ -8,6 +8,7 @@
   ],
   "facet": {"column": {"field": "gender", "type": "nominal"}},
   "spec": {
+    "width": {"step": 17},
     "mark": "bar",
     "encoding": {
       "y": {
@@ -15,8 +16,7 @@
         "axis": {"title": "population"}
       },
       "x": {
-        "field": "age", "type": "ordinal",
-        "scale": {"rangeStep": 17}
+        "field": "age", "type": "ordinal"
       },
       "color": {
         "field": "gender", "type": "nominal",

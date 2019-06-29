@@ -1,7 +1,7 @@
-import {VgBinTransform} from './../../../build/src/vega.schema.d';
 import {BinNode, getBinSignalName} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';
+import {VgBinTransform} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';
 

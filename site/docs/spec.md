@@ -119,8 +119,10 @@ To create layered and multi-view graphics, please refer to the following pages:
     "view": { // - View Configuration
 
       // View Size
-      "width": ...,
-      "height": ...,
+      "continuousWidth": ...,
+      "continuousHeight": ...,
+      "discreteWidth": ...,
+      "discreteHeight": ...,
       // View Background Properties
       "fill": ...,
       "stroke": ...,
@@ -133,8 +135,8 @@ To create layered and multi-view graphics, please refer to the following pages:
 
 The style of a single view visualization can be customized by specifying the `view` property of the `config` object. The view config support all [view background properties](#view-background) except `"style"`.
 
-In addition, the `width` and `height` properties of the `view` configuration determine the width of a single view with a continuous x-scale and the height of a single view with a continuous y-scale respectively.
+In addition, the following properties of the `view` configuration determine the default width and height of single and layered views.
 
-{% include table.html props="width,height" source="ViewConfig" %}
+{% include table.html props="continuousWidth,continuousHeight,discreteWidth,discreteHeight,step" source="ViewConfig" %}
 
 **For more information about view size, please see the [size](size.html) documentation.**

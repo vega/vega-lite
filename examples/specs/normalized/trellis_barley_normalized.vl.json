@@ -10,6 +10,7 @@
     "sort": {"op": "median", "field": "yield"}
   },
   "spec": {
+    "height": {"step": 12},
     "mark": "point",
     "encoding": {
       "x": {
@@ -21,8 +22,7 @@
       "y": {
         "field": "variety",
         "type": "ordinal",
-        "sort": {"encoding": "x", "order": "descending"},
-        "scale": {"rangeStep": 12}
+        "sort": {"encoding": "x", "order": "descending"}
       },
       "color": {"field": "year", "type": "nominal"}
     }

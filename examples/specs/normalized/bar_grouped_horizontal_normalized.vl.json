@@ -1,14 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "data": {"url": "data/population.json"},
-  "transform": [
-    {"filter": "datum.year == 2000"},
-    {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
-  ],
+  "transform": [{"filter": "datum.year == 2000"}, {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}],
   "spacing": 10,
   "config": {"view": {"stroke": "transparent"}, "axis": {"domainWidth": 1}},
   "facet": {"row": {"field": "age", "type": "ordinal"}},
   "spec": {
+    "height": {"step": 6},
     "mark": "bar",
     "encoding": {
       "x": {
@@ -20,7 +18,6 @@
       "y": {
         "field": "gender",
         "type": "nominal",
-        "scale": {"rangeStep": 6},
         "axis": null
       },
       "color": {
