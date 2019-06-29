@@ -29,6 +29,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
   const {config, encoding, markDef} = model;
 
   const channel2 = channel === 'x' ? 'x2' : 'y2';
+  const sizeChannel = channel === 'x' ? 'width' : 'height';
   const fieldDef = encoding[channel];
   const fieldDef2 = encoding[channel2];
 
@@ -37,14 +38,20 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
   const scaleName = model.scaleName(channel);
 
   const orient = markDef.orient;
-  const sizeDef = encoding.size;
+  const hasSizeDef =
+    encoding[sizeChannel] ||
+    encoding.size ||
+    markDef[sizeChannel] ||
+    markDef.size ||
+    getMarkConfig('size', markDef, config, {vgChannel: sizeChannel});
+
   const isBand = channel === 'x' ? orient === 'vertical' : orient === 'horizontal';
 
   // x, x2, and width -- we must specify two of these in all conditions
   if (
     isFieldDef(fieldDef) &&
     (isBinning(fieldDef.bin) || isBinned(fieldDef.bin)) &&
-    !sizeDef &&
+    !hasSizeDef &&
     !hasDiscreteDomain(scaleType)
   ) {
     return mixins.binPosition({
@@ -57,8 +64,6 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
       reverse: scale.get('reverse')
     });
   } else if (((isFieldDef(fieldDef) && hasDiscreteDomain(scaleType)) || isBand) && !fieldDef2) {
-    const sizeChannel = channel === 'x' ? 'width' : 'height';
-
     // vertical
     if (isFieldDef(fieldDef) && scaleType === ScaleType.BAND) {
       return mixins.bandPosition(
