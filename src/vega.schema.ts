@@ -526,14 +526,14 @@ export type Dir = 'ltr' | 'rtl';
 
 export interface BaseMarkConfig {
   /**
-   * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without `x2`.
+   * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without specified `x2` or `width`.
    *
    * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
    */
   x?: number | 'width';
 
   /**
-   * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without `y2`
+   * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without specified `y2` or `height`.
    *
    * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
@@ -552,6 +552,16 @@ export interface BaseMarkConfig {
    * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
   y2?: number | 'width';
+
+  /**
+   * Width of the marks.
+   */
+  width?: number;
+
+  /**
+   * Height of the marks.
+   */
+  height?: number;
 
   /**
    * Default Fill Color.  This has higher precedence than `config.color`
@@ -855,7 +865,9 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
   x: 1,
   y: 1,
   x2: 1,
-  y2: 1
+  y2: 1,
+  width: 1,
+  height: 1
 
   // commented below are vg channel that do not have mark config.
   // xc'|'width'|'yc'|'height'

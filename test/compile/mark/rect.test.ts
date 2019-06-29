@@ -5,6 +5,44 @@ import * as log from '../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Rect', () => {
+  describe('simple with width and height', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'rect', width: 50, height: 49},
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {type: 'quantitative', field: 'y'}
+      }
+    });
+    const props = rect.encodeEntry(model);
+
+    it('should draw centered rect ', () => {
+      expect(props.x).toEqual({scale: 'x', field: 'x'});
+      expect(props.width).toEqual({value: 50});
+      expect(props.y).toEqual({scale: 'y', field: 'y'});
+      expect(props.height).toEqual({value: 49});
+    });
+  });
+
+  describe('simple with fixed x2 and y2', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'rect', x2: -1, y2: -2},
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {type: 'quantitative', field: 'y'}
+      }
+    });
+    const props = rect.encodeEntry(model);
+
+    it('should draw centered rect ', () => {
+      expect(props.x).toEqual({scale: 'x', field: 'x'});
+      expect(props.x2).toEqual({value: -1});
+      expect(props.y).toEqual({scale: 'y', field: 'y'});
+      expect(props.y2).toEqual({value: -2});
+    });
+  });
+
   describe('simple vertical', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
