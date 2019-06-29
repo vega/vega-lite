@@ -222,17 +222,22 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
   init?: SelectionInitIntervalMapping;
 }
 
-export interface SingleSelection extends SingleSelectionConfig {
-  type: 'single';
+export interface BaseSelectionDef<T extends 'single' | 'multi' | 'interval'> {
+  /**
+   * Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:
+   *
+   * - `single` -- to select a single discrete data value on `click`.
+   * - `multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.
+   * - `interval` -- to select a continuous range of data values on `drag`.
+   */
+  type: T;
 }
 
-export interface MultiSelection extends MultiSelectionConfig {
-  type: 'multi';
-}
+export interface SingleSelection extends BaseSelectionDef<'single'>, SingleSelectionConfig {}
 
-export interface IntervalSelection extends IntervalSelectionConfig {
-  type: 'interval';
-}
+export interface MultiSelection extends BaseSelectionDef<'multi'>, MultiSelectionConfig {}
+
+export interface IntervalSelection extends BaseSelectionDef<'interval'>, IntervalSelectionConfig {}
 
 export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
 
