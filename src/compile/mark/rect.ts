@@ -45,7 +45,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
     markDef.size ||
     getMarkConfig('size', markDef, config, {vgChannel: sizeChannel});
 
-  const isBand = channel === 'x' ? orient === 'vertical' : orient === 'horizontal';
+  const isBarBand = channel === 'x' ? orient === 'vertical' : orient === 'horizontal';
 
   // x, x2, and width -- we must specify two of these in all conditions
   if (
@@ -63,7 +63,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
       spacing: getFirstDefined(markDef.binSpacing, config[mark].binSpacing),
       reverse: scale.get('reverse')
     });
-  } else if (((isFieldDef(fieldDef) && hasDiscreteDomain(scaleType)) || isBand) && !fieldDef2) {
+  } else if (((isFieldDef(fieldDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !fieldDef2) {
     // vertical
     if (isFieldDef(fieldDef) && scaleType === ScaleType.BAND) {
       return mixins.bandPosition(
