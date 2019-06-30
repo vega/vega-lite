@@ -264,6 +264,8 @@ MultiSelectionConfig:
 IntervalSelectionConfig:
   name: Selection
   link: "selection.html#definition"
+Binding:
+  link: "bind.html"
 BrushConfig:
   name: Mark
   link: "selection.html#interval-mark"
