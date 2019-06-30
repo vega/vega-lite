@@ -185,6 +185,9 @@ ConditionalStringValueDef:
 
 FieldDef:
   link: "encoding.html#field"
+FieldDefWithoutScale:
+  name: FieldDef
+  link: "encoding.html#field"
 LatLongFieldDef:
   name: FieldDef
   link: "encoding.html#field"
@@ -220,6 +223,8 @@ Axis:
   link: "axis.html"
 Bin:
   link: "bin.html"
+Field:
+  link: "field.html"
 RepeatRef:
   link: "field.html#repeat-ref"
 Legend:

@@ -169,11 +169,13 @@ export interface FieldDefBase<F, B extends Bin = Bin> {
    * __Required.__ A string defining the name of the field from which to pull a data value
    * or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.
    *
-   * __Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `"field": "foo.bar"` and `"field": "foo['bar']"`).
+   * __See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.
+   *
+   * __Notes:__
+   * 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `"field": "foo.bar"` and `"field": "foo['bar']"`).
    * If field names contain dots or brackets but are not nested, you can use `\\` to escape dots and brackets (e.g., `"a\\.b"` and `"a\\[0\\]"`).
    * See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).
-   *
-   * __Note:__ `field` is not required if `aggregate` is `count`.
+   * 2) `field` is not required if `aggregate` is `count`.
    */
   field?: F;
 
@@ -184,6 +186,8 @@ export interface FieldDefBase<F, B extends Bin = Bin> {
    * or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).
    *
    * __Default value:__ `undefined` (None)
+   *
+   * __See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation.
    */
   timeUnit?: TimeUnit;
 
@@ -192,6 +196,8 @@ export interface FieldDefBase<F, B extends Bin = Bin> {
    * (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
    *
    * __Default value:__ `undefined` (None)
+   *
+   * __See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation.
    */
   aggregate?: Aggregate | HiddenCompositeAggregate;
 
@@ -203,6 +209,8 @@ export interface FieldDefBase<F, B extends Bin = Bin> {
    * - If `"binned"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
    *
    * __Default value:__ `false`
+   *
+   * __See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation.
    */
   bin?: B;
 }
@@ -231,6 +239,8 @@ export interface TypeMixins<T extends Type> {
    * - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `"temporal"` (for using a temporal scale) or [`"ordinal"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).
    * - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `"cat"` using `{"aggregate": "distinct", "field": "cat", "type": "quantitative"}`. The `"type"` of the aggregate output is `"quantitative"`.
    * - Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).
+   *
+   * __See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation.
    */
   type: T;
 }
@@ -264,6 +274,8 @@ export interface SortableFieldDef<
    * __Default value:__ `"ascending"`
    *
    * __Note:__ `null` is not supported for `row` and `column`.
+   *
+   * __See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation.
    */
   sort?: Sort<F>;
 }
@@ -283,6 +295,8 @@ export interface ScaleFieldDef<
    * If `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).
    *
    * __Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.
+   *
+   * __See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation.
    */
   scale?: Scale | null;
 }
@@ -312,6 +326,8 @@ export interface PositionFieldDef<F extends Field>
    * If `null`, the axis for the encoding channel will be removed.
    *
    * __Default value:__ If undefined, default [axis properties](https://vega.github.io/vega-lite/docs/axis.html) are applied.
+   *
+   * __See also:__ [`axis`](https://vega.github.io/vega-lite/docs/axis.html) documentation.
    */
   axis?: Axis | null;
 
@@ -330,6 +346,8 @@ export interface PositionFieldDef<F extends Field>
    * (1) the mark is `bar` or `area`;
    * (2) the stacked measure channel (x or y) has a linear scale;
    * (3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, `null` by default.
+   *
+   * __See also:__ [`stack`](https://vega.github.io/vega-lite/docs/stack.html) documentation.
    */
   stack?: StackOffset | null | boolean;
 
@@ -337,6 +355,8 @@ export interface PositionFieldDef<F extends Field>
    * An object defining the properties of the Impute Operation to be applied.
    * The field value of the other positional channel is taken as `key` of the `Impute` Operation.
    * The field of the `color` channel if specified is used as `groupby` of the `Impute` Operation.
+   *
+   * __See also:__ [`impute`](https://vega.github.io/vega-lite/docs/impute.html) documentation.
    */
   impute?: ImputeParams;
 }
@@ -354,6 +374,8 @@ export type MarkPropFieldDef<F extends Field, T extends Type = Type> = ScaleFiel
    * If `null`, the legend for the encoding channel will be removed.
    *
    * __Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.
+   *
+   * __See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation.
    */
   legend?: Legend | null;
 };
