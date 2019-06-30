@@ -139,4 +139,8 @@ In addition, the following properties of the `view` configuration determine the 
 
 {% include table.html props="continuousWidth,continuousHeight,discreteWidth,discreteHeight,step" source="ViewConfig" %}
 
+For example, setting the `step` property in the view config can adjust default discrete step in the plot.
+
+<span class="vl-example" data-name="bar_1d_step_config"></span>
+
 **For more information about view size, please see the [size](size.html) documentation.**

@@ -11,5 +11,5 @@
       "axis": {"title": "population"}
     }
   },
-  "config": {"view": {"discreteWidth": {"step": 21}}}
+  "config": {"view": {"step": 15}}
 }

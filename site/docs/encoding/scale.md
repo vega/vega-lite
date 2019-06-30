@@ -287,9 +287,15 @@ For example, the following bar chart has uses a band scale for its x-position.
 <a name="padding"/>
 {:#range-step}
 
-To customize the step size of band scales for x/y-fields, we can set the step property of the view's `width`/`height`:
+To customize the step size of band scales for x/y-fields, we can set the step property of the view's `width`/`height`.
 
-<span class="vl-example" data-name="step_small"></span>
+For example, we can either make a bar chart have a fixed width:
+
+<span class="vl-example" data-name="bar_size_fit"></span>
+
+or set the width per discrete step:
+
+<span class="vl-example" data-name="bar_size_step_small"></span>
 
 To customize the range of band and point scales, users can provide the following properties:
 
