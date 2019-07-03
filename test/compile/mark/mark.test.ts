@@ -1,14 +1,4 @@
-import {
-  COLOR,
-  DETAIL,
-  FILLOPACITY,
-  OPACITY,
-  SIZE,
-  STROKEOPACITY,
-  STROKEWIDTH,
-  UNIT_CHANNELS
-} from '../../../src/channel';
-import {getSort, parseMarkGroups, pathGroupingFields} from '../../../src/compile/mark/mark';
+import {getSort, parseMarkGroups} from '../../../src/compile/mark/mark';
 import {UnitModel} from '../../../src/compile/unit';
 import {GEOSHAPE} from '../../../src/mark';
 import {
@@ -287,50 +277,6 @@ describe('Mark', () => {
         }
       });
       expect(getSort(model)).toBeUndefined();
-    });
-  });
-
-  describe('pathGroupingFields()', () => {
-    it('should return fields for unaggregate detail, color, size, opacity fieldDefs.', () => {
-      for (const channel of [DETAIL, COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]) {
-        expect(pathGroupingFields('line', {[channel]: {field: 'a', type: 'nominal'}})).toEqual(['a']);
-      }
-    });
-
-    it('should not return a field for size of a trail mark.', () => {
-      expect(pathGroupingFields('trail', {size: {field: 'a', type: 'nominal'}})).toEqual([]);
-    });
-
-    it('should not return fields for aggregate detail, color, size, opacity fieldDefs.', () => {
-      for (const channel of [DETAIL, COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]) {
-        expect(pathGroupingFields('line', {[channel]: {aggregate: 'mean', field: 'a', type: 'nominal'}})).toEqual([]);
-      }
-    });
-
-    it('should return condition detail fields for color, size, shape', () => {
-      for (const channel of [COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]) {
-        expect(
-          pathGroupingFields('line', {
-            [channel]: {
-              condition: {selection: 'sel', field: 'a', type: 'nominal'}
-            }
-          })
-        ).toEqual(['a']);
-      }
-    });
-
-    it('should not return errors for all channels', () => {
-      for (const channel of UNIT_CHANNELS) {
-        expect(() => {
-          pathGroupingFields('line', {
-            [channel]: {field: 'a', type: 'nominal'}
-          });
-        }).not.toThrow();
-      }
-    });
-
-    it('should not include fields from tooltip', () => {
-      expect(pathGroupingFields('line', {tooltip: {field: 'a', type: 'nominal'}})).toEqual([]);
     });
   });
 

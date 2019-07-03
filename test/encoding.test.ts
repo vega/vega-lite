@@ -1,7 +1,24 @@
-import {X2, Y2} from '../src/channel';
+import {
+  COLOR,
+  DETAIL,
+  FILLOPACITY,
+  OPACITY,
+  SIZE,
+  STROKEOPACITY,
+  STROKEWIDTH,
+  UNIT_CHANNELS,
+  X2,
+  Y2
+} from '../src/channel';
 import {isPositionFieldDef} from '../src/channeldef';
 import {defaultConfig} from '../src/config';
-import {Encoding, extractTransformsFromEncoding, markChannelCompatible, normalizeEncoding} from '../src/encoding';
+import {
+  Encoding,
+  extractTransformsFromEncoding,
+  markChannelCompatible,
+  normalizeEncoding,
+  pathGroupingFields
+} from '../src/encoding';
 import * as log from '../src/log';
 import {CIRCLE, POINT, SQUARE, TICK} from '../src/mark';
 import {internalField} from '../src/util';
@@ -390,6 +407,50 @@ describe('encoding', () => {
       expect(markChannelCompatible(encoding, Y2, POINT)).toBe(false);
       expect(markChannelCompatible(encoding, Y2, SQUARE)).toBe(false);
       expect(markChannelCompatible(encoding, Y2, TICK)).toBe(false);
+    });
+  });
+
+  describe('pathGroupingFields()', () => {
+    it('should return fields for unaggregate detail, color, size, opacity fieldDefs.', () => {
+      for (const channel of [DETAIL, COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]) {
+        expect(pathGroupingFields('line', {[channel]: {field: 'a', type: 'nominal'}})).toEqual(['a']);
+      }
+    });
+
+    it('should not return a field for size of a trail mark.', () => {
+      expect(pathGroupingFields('trail', {size: {field: 'a', type: 'nominal'}})).toEqual([]);
+    });
+
+    it('should not return fields for aggregate detail, color, size, opacity fieldDefs.', () => {
+      for (const channel of [DETAIL, COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]) {
+        expect(pathGroupingFields('line', {[channel]: {aggregate: 'mean', field: 'a', type: 'nominal'}})).toEqual([]);
+      }
+    });
+
+    it('should return condition detail fields for color, size, shape', () => {
+      for (const channel of [COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]) {
+        expect(
+          pathGroupingFields('line', {
+            [channel]: {
+              condition: {selection: 'sel', field: 'a', type: 'nominal'}
+            }
+          })
+        ).toEqual(['a']);
+      }
+    });
+
+    it('should not return errors for all channels', () => {
+      for (const channel of UNIT_CHANNELS) {
+        expect(() => {
+          pathGroupingFields('line', {
+            [channel]: {field: 'a', type: 'nominal'}
+          });
+        }).not.toThrow();
+      }
+    });
+
+    it('should not include fields from tooltip', () => {
+      expect(pathGroupingFields('line', {tooltip: {field: 'a', type: 'nominal'}})).toEqual([]);
     });
   });
 });

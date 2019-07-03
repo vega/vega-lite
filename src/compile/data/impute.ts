@@ -1,9 +1,9 @@
 import {SignalRef} from 'vega';
 import {isFieldDef} from '../../channeldef';
+import {pathGroupingFields} from '../../encoding';
 import {ImputeSequence, ImputeTransform, isImputeSequence} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {VgFormulaTransform, VgImputeTransform, VgWindowTransform} from '../../vega.schema';
-import {pathGroupingFields} from '../mark/mark';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
