@@ -499,3 +499,73 @@ export function reduce<T, U extends {[k in Channel]?: any}>(
     }
   }, init);
 }
+
+/**
+ * Returns list of path grouping fields for the given encoding
+ */
+export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): string[] {
+  return keys(encoding).reduce((details, channel) => {
+    switch (channel) {
+      // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, cursor should not cause lines to group
+      case 'x':
+      case 'y':
+      case 'order':
+      case 'href':
+      case 'x2':
+      case 'y2':
+      // falls through
+
+      case 'latitude':
+      case 'longitude':
+      case 'latitude2':
+      case 'longitude2':
+      // TODO: case 'cursor':
+
+      // text, shape, shouldn't be a part of line/trail/area [falls through]
+      case 'text':
+      case 'shape':
+      // falls through
+
+      // tooltip fields should not be added to group by [falls through]
+      case 'tooltip':
+        return details;
+      case 'detail':
+      case 'key': {
+        const channelDef = encoding[channel];
+        if (isArray(channelDef) || isFieldDef(channelDef)) {
+          (isArray(channelDef) ? channelDef : [channelDef]).forEach(fieldDef => {
+            if (!fieldDef.aggregate) {
+              details.push(vgField(fieldDef, {}));
+            }
+          });
+        }
+        return details;
+      }
+
+      case 'size':
+        if (mark === 'trail') {
+          // For trail, size should not group trail lines.
+          return details;
+        }
+      // For line, it should group lines.
+
+      // falls through
+      case 'color':
+      case 'fill':
+      case 'stroke':
+      case 'opacity':
+      case 'fillOpacity':
+      case 'strokeOpacity':
+      case 'strokeWidth': {
+        // TODO strokeDashOffset:
+        // falls through
+
+        const fieldDef = getTypedFieldDef<string>(encoding[channel]);
+        if (fieldDef && !fieldDef.aggregate) {
+          details.push(vgField(fieldDef, {}));
+        }
+        return details;
+      }
+    }
+  }, []);
+}
