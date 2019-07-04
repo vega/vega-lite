@@ -134,7 +134,7 @@ export interface Legend
   type?: 'symbol' | 'gradient';
 
   /**
-   * A natural number indicating the z-index of the legend.
+   * A non-negative integer indicating the z-index of the legend.
    * If zindex is 0, legend should be drawn behind all chart elements.
    * To put them in front, use zindex = 1.
    *
