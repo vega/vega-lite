@@ -326,7 +326,7 @@ describe('compile/mark/mixins', () => {
       });
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
-        signal: '{"baz": \'\'+datum["Foobar"]}'
+        signal: '{"baz": datum["Foobar"]}'
       });
     });
   });

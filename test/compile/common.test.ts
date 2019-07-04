@@ -136,5 +136,11 @@ describe('Common', () => {
         signal: 'format(parent["foo"], ".2f")'
       });
     });
+
+    it('should leave ordinal data without format unformatted', () => {
+      expect(formatSignalRef({field: 'foo', type: 'ordinal'}, undefined, 'datum', {})).toEqual({
+        signal: 'datum["foo"]'
+      });
+    });
   });
 });
