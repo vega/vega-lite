@@ -28,16 +28,14 @@ import {
   isContinuousToDiscrete,
   isExtendedScheme,
   Scale,
-  ScaleType,
   scaleTypeSupportProperty,
   Scheme
 } from '../../scale';
 import {isStep, LayoutSizeMixins} from '../../spec/base';
-import {Type} from '../../type';
 import * as util from '../../util';
 import {isSignalRef, SchemeConfig, VgRange} from '../../vega.schema';
 import {getBinSignalName} from '../data/bin';
-import {Rename, SignalRefWrapper} from '../signal';
+import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
@@ -57,31 +55,8 @@ export function parseUnitScaleRange(model: UnitModel) {
     if (!localScaleCmpt) {
       return;
     }
-    const mergedScaleCmpt = model.getScaleComponent(channel);
 
-    const specifiedScale = model.specifiedScales[channel];
-    const fieldDef = model.fieldDef(channel);
-
-    const scaleType = mergedScaleCmpt.get('type');
-    const sizeType = getSizeType(channel);
-
-    const rangeWithExplicit = parseRangeForChannel(
-      channel,
-      model.getSignalName.bind(model),
-      scaleType,
-      fieldDef.type,
-      specifiedScale,
-      model.config,
-      localScaleCmpt.get('zero'),
-      model.mark,
-      model.getName(sizeType),
-      model.size,
-      model.fit,
-      {
-        x: getBinStepSignal(model, 'x'),
-        y: getBinStepSignal(model, 'y')
-      }
-    );
+    const rangeWithExplicit = parseRangeForChannel(channel, model);
 
     localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
   });
@@ -108,20 +83,13 @@ function getBinStepSignal(model: UnitModel, channel: 'x' | 'y'): SignalRefWrappe
 /**
  * Return mixins that includes one of the Vega range types (explicit range, range.step, range.scheme).
  */
-export function parseRangeForChannel(
-  channel: Channel,
-  getSignalName: Rename,
-  scaleType: ScaleType,
-  type: Type,
-  specifiedScale: Scale,
-  config: Config,
-  zero: boolean,
-  mark: Mark,
-  sizeSignal: string,
-  size: LayoutSizeMixins,
-  fit: boolean = false,
-  xyStepSignals: {x?: SignalRefWrapper; y?: SignalRefWrapper} = {}
-): Explicit<VgRange> {
+export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): Explicit<VgRange> {
+  const specifiedScale = model.specifiedScales[channel];
+  const {size, fit} = model;
+
+  const mergedScaleCmpt = model.getScaleComponent(channel);
+  const scaleType = mergedScaleCmpt.get('type');
+
   // Check if any of the range properties is specified.
   // If so, check if it is compatible and make sure that we only output one of the properties
   for (const property of RANGE_PROPERTIES) {
@@ -161,22 +129,7 @@ export function parseRangeForChannel(
     }
   }
 
-  return makeImplicit(
-    defaultRange(
-      channel,
-      getSignalName,
-      scaleType,
-      type,
-      config,
-      zero,
-      mark,
-      sizeSignal,
-      size,
-      xyStepSignals,
-      specifiedScale.domain,
-      fit
-    )
-  );
+  return makeImplicit(defaultRange(channel, model));
 }
 
 function parseScheme(scheme: Scheme): SchemeConfig {
@@ -189,23 +142,21 @@ function parseScheme(scheme: Scheme): SchemeConfig {
   return {scheme: scheme};
 }
 
-function defaultRange(
-  channel: Channel,
-  getSignalName: Rename,
-  scaleType: ScaleType,
-  type: Type,
-  config: Config,
-  zero: boolean,
-  mark: Mark,
-  sizeSignal: string,
-  size: LayoutSizeMixins,
-  xyStepSignals: {x?: SignalRefWrapper; y?: SignalRefWrapper},
-  domain: Domain,
-  fit: boolean
-): VgRange {
+function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
+  const {size, config, fit, mark} = model;
+
+  const getSignalName = model.getSignalName.bind(model);
+
+  const {type} = model.fieldDef(channel);
+
+  const mergedScaleCmpt = model.getScaleComponent(channel);
+  const scaleType = mergedScaleCmpt.get('type');
+
+  const {domain} = model.specifiedScales[channel];
+
   switch (channel) {
     case X:
-    case Y:
+    case Y: {
       // If there is no explicit width/height for discrete x/y scales
       if (util.contains(['point', 'band'], scaleType)) {
         if (channel === X && !size.width) {
@@ -228,16 +179,21 @@ function defaultRange(
       // We will later replace these temporary names with
       // the final name in assembleScaleRange()
 
+      const sizeType = getSizeType(channel);
+      const sizeSignal = model.getName(sizeType);
+
       if (channel === Y && hasContinuousDomain(scaleType)) {
         // For y continuous scale, we have to start from the height as the bottom part has the max value.
         return [SignalRefWrapper.fromName(getSignalName, sizeSignal), 0];
       } else {
         return [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
       }
+    }
     case SIZE: {
       // TODO: support custom rangeMin, rangeMax
+      const zero = model.component.scales[channel].get('zero');
       const rangeMin = sizeRangeMin(mark, zero, config);
-      const rangeMax = sizeRangeMax(mark, size, xyStepSignals, config);
+      const rangeMax = sizeRangeMax(mark, size, model, config);
       if (isContinuousToDiscrete(scaleType)) {
         return interpolateRange(
           rangeMin,
@@ -341,12 +297,12 @@ function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
 
 export const MAX_SIZE_RANGE_STEP_RATIO = 0.95;
 
-function sizeRangeMax(
-  mark: Mark,
-  size: LayoutSizeMixins,
-  xyStepSignals: {x?: SignalRefWrapper; y?: SignalRefWrapper},
-  config: Config
-): number | SignalRef {
+function sizeRangeMax(mark: Mark, size: LayoutSizeMixins, model: UnitModel, config: Config): number | SignalRef {
+  const xyStepSignals = {
+    x: getBinStepSignal(model, 'x'),
+    y: getBinStepSignal(model, 'y')
+  };
+
   switch (mark) {
     case 'bar':
     case 'tick': {

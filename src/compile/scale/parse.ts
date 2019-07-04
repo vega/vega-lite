@@ -20,14 +20,16 @@ import {parseScaleDomain} from './domain';
 import {parseScaleProperty, parseScaleRange} from './properties';
 import {scaleType} from './type';
 
-export function parseScales(model: Model) {
+export function parseScales(model: Model, {ignoreRange}: {ignoreRange?: boolean} = {}) {
   parseScaleCore(model);
   parseScaleDomain(model);
   for (const prop of NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES) {
     parseScaleProperty(model, prop);
   }
-  // range depends on zero
-  parseScaleRange(model);
+  if (!ignoreRange) {
+    // range depends on zero
+    parseScaleRange(model);
+  }
 }
 
 export function parseScaleCore(model: Model) {

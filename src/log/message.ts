@@ -21,14 +21,6 @@ export const INVALID_SPEC = 'Invalid spec';
 // FIT
 export const FIT_NON_SINGLE = 'Autosize "fit" only works for single views and layered views.';
 
-export function cannotUseStepWithFit(sizeType: 'width' | 'height') {
-  return `Cannot use a "step" ${sizeType} when "autosize" is "fit".`;
-}
-
-export function cannotUseStepWithContinuous(sizeType: 'width' | 'height') {
-  return `Cannot use a "step" ${sizeType} when the ${sizeType === 'width' ? 'x' : 'y'}-field is continuous.`;
-}
-
 // SELECTION
 export function cannotProjectOnChannelWithoutField(channel: Channel) {
   return `Cannot project a selection on encoding channel "${channel}", which has no field.`;
