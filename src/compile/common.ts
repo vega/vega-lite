@@ -108,7 +108,7 @@ export function formatSignalRef(
         signal: `${formatExpr(vgField(fieldDef, {expr, binSuffix: 'range'}), format)}`
       };
     } else {
-      return {signal: `''+${vgField(fieldDef, {expr})}`};
+      return {signal: `${vgField(fieldDef, {expr})}`};
     }
   }
 }
