@@ -10,8 +10,8 @@
     "sort": {"op": "median", "field": "yield"}
   },
   "spec": {
-    "height": {"step": 12},
     "mark": "point",
+    "height": {"step": 12},
     "encoding": {
       "x": {
         "aggregate": "median",
