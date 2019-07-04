@@ -287,13 +287,6 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {
-              "test": "!(length(data(\"pts_store\"))) || (!(vlSelectionTest(\"pts_store\", datum)))",
-              "value": "grey"
-            },
-            {"scale": "color", "field": "__count"}
-          ],
           "tooltip": {
             "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },

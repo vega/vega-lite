@@ -146,7 +146,6 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": {"scale": "color", "field": "Origin"},
               "opacity": {"scale": "opacity", "field": "Cylinders"},
               "tooltip": {
                 "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"

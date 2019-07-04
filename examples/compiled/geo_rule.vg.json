@@ -128,8 +128,8 @@
             "signal": "{\"origin_longitude\": format(datum[\"origin_longitude\"], \"\"), \"origin_latitude\": format(datum[\"origin_latitude\"], \"\"), \"dest_longitude\": format(datum[\"dest_longitude\"], \"\"), \"dest_latitude\": format(datum[\"dest_latitude\"], \"\")}"
           },
           "x": {"field": "layer_2_x"},
-          "y": {"field": "layer_2_y"},
           "x2": {"field": "layer_2_x2"},
+          "y": {"field": "layer_2_y"},
           "y2": {"field": "layer_2_y2"}
         }
       }

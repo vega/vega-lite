@@ -129,8 +129,8 @@
             "signal": "{\"ThresholdValue\": format(datum[\"ThresholdValue\"], \"\")}"
           },
           "x": {"value": 0},
-          "y": {"scale": "y", "field": "ThresholdValue"},
-          "x2": {"field": {"group": "width"}}
+          "x2": {"field": {"group": "width"}},
+          "y": {"scale": "y", "field": "ThresholdValue"}
         }
       }
     },

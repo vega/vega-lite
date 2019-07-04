@@ -39,8 +39,8 @@
           "tooltip": {
             "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\"), \"img\": ''+datum[\"img\"]}"
           },
-          "x": {"scale": "x", "field": "x"},
-          "y": {"scale": "y", "field": "y"},
+          "xc": {"scale": "x", "field": "x"},
+          "yc": {"scale": "y", "field": "y"},
           "url": {"signal": "''+datum[\"img\"]"}
         }
       }

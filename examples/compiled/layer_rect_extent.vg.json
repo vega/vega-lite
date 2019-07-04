@@ -67,8 +67,8 @@
             "signal": "{\"Min of Miles_per_Gallon\": format(datum[\"min_Miles_per_Gallon\"], \"\")}"
           },
           "x": {"value": 0},
-          "y": {"scale": "y", "field": "min_Miles_per_Gallon"},
-          "x2": {"field": {"group": "width"}}
+          "x2": {"field": {"group": "width"}},
+          "y": {"scale": "y", "field": "min_Miles_per_Gallon"}
         }
       }
     },
@@ -84,8 +84,8 @@
             "signal": "{\"Max of Miles_per_Gallon\": format(datum[\"max_Miles_per_Gallon\"], \"\")}"
           },
           "x": {"value": 0},
-          "y": {"scale": "y", "field": "max_Miles_per_Gallon"},
-          "x2": {"field": {"group": "width"}}
+          "x2": {"field": {"group": "width"}},
+          "y": {"scale": "y", "field": "max_Miles_per_Gallon"}
         }
       }
     },
@@ -96,7 +96,6 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
           "opacity": {"value": 0.2},
           "tooltip": {
             "signal": "{\"Max of Miles_per_Gallon\": format(datum[\"max_Miles_per_Gallon\"], \"\"), \"Min of Miles_per_Gallon\": format(datum[\"min_Miles_per_Gallon\"], \"\")}"

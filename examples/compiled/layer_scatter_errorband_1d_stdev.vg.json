@@ -72,7 +72,6 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.3},
-          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"Mean of Miles_per_Gallon\": format(datum[\"center_Miles_per_Gallon\"], \"\"), \"Mean + stdev of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Mean - stdev of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\")}"
           },

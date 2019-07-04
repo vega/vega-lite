@@ -87,7 +87,6 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.2},
-          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"Mean of Miles_per_Gallon\": format(datum[\"center_Miles_per_Gallon\"], \"\"), \"Mean + stdev of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Mean - stdev of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\")}"
           },
@@ -110,8 +109,8 @@
             "signal": "{\"Mean of Miles_per_Gallon\": format(datum[\"mean_Miles_per_Gallon\"], \"\")}"
           },
           "x": {"value": 0},
-          "y": {"scale": "y", "field": "mean_Miles_per_Gallon"},
-          "x2": {"field": {"group": "width"}}
+          "x2": {"field": {"group": "width"}},
+          "y": {"scale": "y", "field": "mean_Miles_per_Gallon"}
         }
       }
     }

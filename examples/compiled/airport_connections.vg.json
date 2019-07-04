@@ -173,8 +173,8 @@
             "signal": "{\"latitude\": format(datum[\"latitude\"], \"\"), \"longitude\": format(datum[\"longitude\"], \"\"), \"lat2\": format(datum[\"lat2\"], \"\"), \"lon2\": format(datum[\"lon2\"], \"\")}"
           },
           "x": {"field": "layer_1_x"},
-          "y": {"field": "layer_1_y"},
           "x2": {"field": "layer_1_x2"},
+          "y": {"field": "layer_1_y"},
           "y2": {"field": "layer_1_y2"}
         }
       }

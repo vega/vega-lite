@@ -160,7 +160,6 @@
           "from": {"data": "facet"},
           "encode": {
             "update": {
-              "fill": {"value": "#4c78a8"},
               "tooltip": {
                 "signal": "{\"b\": ''+datum[\"b\"], \"a\": ''+datum[\"a\"]}"
               },

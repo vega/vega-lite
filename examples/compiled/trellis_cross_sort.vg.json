@@ -290,8 +290,8 @@
                 "signal": "{\"Median of median_y_by_b\": format(datum[\"median_median_y_by_b\"], \"\")}"
               },
               "x": {"value": 0},
-              "y": {"scale": "y", "field": "median_median_y_by_b"},
-              "x2": {"field": {"group": "width"}}
+              "x2": {"field": {"group": "width"}},
+              "y": {"scale": "y", "field": "median_median_y_by_b"}
             }
           }
         }

@@ -47,7 +47,6 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "max_temp"},
           "tooltip": {
             "signal": "{\"Day\": timeFormat(datum[\"date_date\"], '%e'), \"Month\": timeFormat(datum[\"month_date\"], '%b'), \"Max of temp\": format(datum[\"max_temp\"], \"\")}"
           },

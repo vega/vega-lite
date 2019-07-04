@@ -122,7 +122,6 @@
       "from": {"data": "data_2"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "event"},
           "tooltip": {
             "signal": "{\"start (year)\": timeFormat(datum[\"year_start\"], '%Y'), \"end (year)\": timeFormat(datum[\"year_end\"], '%Y'), \"event\": ''+datum[\"event\"]}"
           },

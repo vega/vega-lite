@@ -74,7 +74,6 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "__count"},
           "tooltip": {
             "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_60_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_60_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_60_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_60_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
