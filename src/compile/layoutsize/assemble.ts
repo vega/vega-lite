@@ -19,7 +19,7 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): NewSign
   // Read size signal name from name map, just in case it is the top-level size signal that got renamed.
   const name = model.getSizeSignalRef(sizeType).signal;
 
-  if (size === 'range-step') {
+  if (size === 'step') {
     const scaleComponent = model.getScaleComponent(channel);
 
     if (scaleComponent) {
@@ -49,7 +49,7 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): NewSign
       }
     }
     /* istanbul ignore next: Condition should not happen -- only for warning in development. */
-    throw new Error('layout size is range step although there is no rangeStep.');
+    throw new Error('layout size is step although width/height is not step.');
   } else {
     return [
       {

@@ -6,10 +6,8 @@
   "title": "2010 Daily Max Temperature (F) in Seattle, WA",
   "config": {
       "view": {
-          "strokeWidth": 0
-      },
-      "scale": {
-          "rangeStep": 13
+          "strokeWidth": 0,
+          "step": 13
       },
       "axis": {
           "domain": false

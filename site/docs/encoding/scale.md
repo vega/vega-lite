@@ -103,14 +103,14 @@ The range of the scale represents the set of output visual values. Vega-Lite aut
 
 | Channels | Default Range |
 | :-- | :-- |
-| `x` | The range is _always_ `[0, width]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`width`](size.html) property or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales. |
-| `y` | The range is _always_ `[0, height]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`height`](size.html) property or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales. |
+| `x` | The range is _always_ `[0, width]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`width`](size.html) property. |
+| `y` | The range is _always_ `[0, height]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`height`](size.html) property. |
 | `opacity` | Derived from the [scale config](#config)'s `min/maxOpacity`. |
 | `color` | Derived from the following [named ranges](scale.html#range-config) based on the field's [`type`](type.html): <br/> • `"category"` for _nominal_ fields. <br/> • `"ordinal"` for _ordinal_ fields. <br/> • `"heatmap"` for _quantitative_ and _temporal_ fields with `"rect"` marks and `"ramp'` for other marks. <br/><br/> See the [color scheme](#scheme) section for examples. |
 | `size` | Derived from the following [named ranges](#config) based on the `mark` type: <br/> • `min/maxBandSize` for bar and tick. <br/> • `min/maxStrokeWidth` for line and rule. <br/> • `min/maxSize` for point, square, and circle <br/> • `min/maxFontSize` for text |
 | `shape` | Derived from the [pre-defined named range](#range-config) `"symbol"`. |
 
-To customize range values, users can directly specify `range`, or the special range properties: [`rangeStep`](#range-step) and [`padding`](#padding) for [band](#band) and [point](#point) scales and [`scheme`](#scheme) for [ordinal](#ordinal) and [continuous](#continuous) color scales.
+To customize range values, users can directly specify `range` or specify the special [`scheme`](#scheme) property for [ordinal](#ordinal) and [continuous](#continuous) color scales.
 
 {% include table.html props="range" source="Scale" %}
 
@@ -287,13 +287,19 @@ For example, the following bar chart has uses a band scale for its x-position.
 <a name="padding"/>
 {:#range-step}
 
+To customize the step size of band scales for x/y-fields, we can set the step property of the view's `width`/`height`.
+
+For example, we can either make a bar chart have a fixed width:
+
+<span class="vl-example" data-name="bar_size_fit"></span>
+
+or set the width per discrete step:
+
+<span class="vl-example" data-name="bar_size_step_small"></span>
+
 To customize the range of band and point scales, users can provide the following properties:
 
-{% include table.html props="align,padding,paddingInner,paddingOuter,rangeStep,round" source="Scale" %}
-
-For example, we can set the `rangeStep` property to make the bands of the bars smaller.
-
-<span class="vl-example" data-name="bar_size_rangestep_small"></span>
+{% include table.html props="align,padding,paddingInner,paddingOuter,round" source="Scale" %}
 
 {:#discretizing}
 
@@ -394,7 +400,7 @@ To provide themes for all scales, the scale config (`config: {scale: {...}}`) ca
 
 #### Range
 
-{% include table.html props="maxBandSize,minBandSize,maxFontSize,minFontSize,maxOpacity,minOpacity,maxSize,minSize,maxStrokeWidth,minStrokeWidth,rangeStep" source="ScaleConfig" %}
+{% include table.html props="maxBandSize,minBandSize,maxFontSize,minFontSize,maxOpacity,minOpacity,maxSize,minSize,maxStrokeWidth,minStrokeWidth" source="ScaleConfig" %}
 
 #### Other
 

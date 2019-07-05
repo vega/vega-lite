@@ -37,8 +37,6 @@ export class LayerModel extends Model {
       ...(spec.height ? {height: spec.height} : {})
     };
 
-    this.initSize(layoutSize);
-
     this.children = spec.layer.map((layer, i) => {
       if (isLayerSpec(layer)) {
         return new LayerModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config, fit);

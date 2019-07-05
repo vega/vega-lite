@@ -246,6 +246,10 @@ const POSITION_SCALE_CHANNEL_INDEX: {x: 1; y: 1} = {x: 1, y: 1};
 export const POSITION_SCALE_CHANNELS = flagKeys(POSITION_SCALE_CHANNEL_INDEX);
 export type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
 
+export function getSizeType(channel: PositionScaleChannel) {
+  return channel === 'x' ? 'width' : 'height';
+}
+
 // NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without X, Y
 const {
   // x2 and y2 share the same scale as x and y

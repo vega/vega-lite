@@ -13,7 +13,6 @@ describe('compile/mark/mixins', () => {
           x: {
             field: 'gender',
             type: 'nominal',
-            scale: {rangeStep: 6},
             axis: null
           },
           color: {
@@ -36,7 +35,6 @@ describe('compile/mark/mixins', () => {
           x: {
             field: 'gender',
             type: 'nominal',
-            scale: {rangeStep: 6},
             axis: null
           },
           color: {
@@ -60,7 +58,6 @@ describe('compile/mark/mixins', () => {
           x: {
             field: 'gender',
             type: 'nominal',
-            scale: {rangeStep: 6},
             axis: null
           },
           stroke: {
@@ -84,7 +81,6 @@ describe('compile/mark/mixins', () => {
           x: {
             field: 'gender',
             type: 'nominal',
-            scale: {rangeStep: 6},
             axis: null
           },
           fill: {
@@ -113,7 +109,6 @@ describe('compile/mark/mixins', () => {
           x: {
             field: 'gender',
             type: 'nominal',
-            scale: {rangeStep: 6},
             axis: null
           },
           fill: {

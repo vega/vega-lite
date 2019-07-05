@@ -5,7 +5,7 @@ import {
   parseRangeForChannel
 } from '../../../src/compile/scale/range';
 import {makeExplicit, makeImplicit} from '../../../src/compile/split';
-import {Config, defaultConfig} from '../../../src/config';
+import {Config, defaultConfig, DEFAULT_STEP} from '../../../src/config';
 import * as log from '../../../src/log';
 import {Mark} from '../../../src/mark';
 import {CONTINUOUS_TO_CONTINUOUS_SCALES, DISCRETE_DOMAIN_SCALES, ScaleType} from '../../../src/scale';
@@ -28,9 +28,8 @@ describe('compile/scale', () => {
               defaultConfig,
               true,
               'point',
-              false,
               'plot_width',
-              []
+              {}
             )
           ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
         }
@@ -48,9 +47,8 @@ describe('compile/scale', () => {
               defaultConfig,
               true,
               'point',
-              false,
               'plot_height',
-              []
+              {}
             )
           ).toEqual(makeImplicit([{signal: 'plot_height'}, 0]));
         }
@@ -68,9 +66,8 @@ describe('compile/scale', () => {
               defaultConfig,
               true,
               'point',
-              true,
               'plot_height',
-              []
+              {height: 200}
             )
           ).toEqual(makeImplicit([0, {signal: 'plot_height'}]));
         }
@@ -89,16 +86,15 @@ describe('compile/scale', () => {
               defaultConfig,
               true,
               'point',
-              false,
               'plot_width',
-              []
+              {}
             )
           ).toEqual(makeExplicit([0, 100]));
           expect(localLogger.warns.length).toEqual(0);
         })
       );
 
-      it('should return config.scale.rangeStep for band/point scales by default.', () => {
+      it('should return config.view.discreteWidth for x- band/point scales by default.', () => {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
           expect(
             parseRangeForChannel(
@@ -110,36 +106,34 @@ describe('compile/scale', () => {
               defaultConfig,
               undefined,
               'point',
-              false,
               'plot_width',
-              []
+              {}
             )
           ).toEqual(expect.objectContaining(makeImplicit({step: 20})));
         }
       });
 
-      it('should return specified rangeStep if topLevelSize is undefined for band/point scales', () => {
+      it('should return config.view.discreteWidth for y- band/point scales by default.', () => {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
           expect(
             parseRangeForChannel(
-              'x',
+              'y',
               identity,
               scaleType,
               NOMINAL,
-              {rangeStep: 23},
+              {},
               defaultConfig,
               undefined,
-              'text',
-              false,
-              'plot_width',
-              []
+              'point',
+              'plot_height',
+              {}
             )
-          ).toEqual(makeExplicit({step: 23}));
+          ).toEqual(expect.objectContaining(makeImplicit({step: 20})));
         }
       });
 
       it(
-        'should drop rangeStep if topLevelSize is specified for band/point scales',
+        'should drop rangeStep if model is fit',
         log.wrap(localLogger => {
           for (const scaleType of ['point', 'band'] as ScaleType[]) {
             expect(
@@ -148,41 +142,20 @@ describe('compile/scale', () => {
                 identity,
                 scaleType,
                 NOMINAL,
-                {rangeStep: 23},
+                {},
                 defaultConfig,
                 undefined,
                 'text',
-                true,
                 'plot_width',
-                []
+                {width: {step: 23}},
+                true
               )
             ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
           }
-          expect(localLogger.warns[0]).toEqual(log.message.rangeStepDropped('x'));
+          expect(localLogger.warns[0]).toEqual(log.message.stepDropped('width', 'fit'));
         })
       );
-
-      it('should return default topLevelSize if rangeStep is null for band/point scales', () => {
-        for (const scaleType of ['point', 'band'] as ScaleType[]) {
-          expect(
-            parseRangeForChannel(
-              'x',
-              identity,
-              scaleType,
-              NOMINAL,
-              {rangeStep: null},
-              defaultConfig,
-              undefined,
-              'text',
-              false,
-              'plot_width',
-              []
-            )
-          ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
-        }
-      });
-
-      it('should return default topLevelSize if rangeStep config is null', () => {
+      it('should return specified step if topLevelSize is undefined for band/point scales', () => {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
           expect(
             parseRangeForChannel(
@@ -191,12 +164,30 @@ describe('compile/scale', () => {
               scaleType,
               NOMINAL,
               {},
-              {view: {width: 200}, scale: {rangeStep: null}},
+              defaultConfig,
+              undefined,
+              'text',
+              'plot_width',
+              {width: {step: 23}}
+            )
+          ).toEqual(makeExplicit({step: 23}));
+        }
+      });
+
+      it('should return default topLevelSize if config.view.discreteWidth is a number', () => {
+        for (const scaleType of ['point', 'band'] as ScaleType[]) {
+          expect(
+            parseRangeForChannel(
+              'x',
+              identity,
+              scaleType,
+              NOMINAL,
+              {},
+              {view: {discreteWidth: 200}},
               undefined,
               'point',
-              false,
               'plot_width',
-              []
+              {}
             )
           ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
         }
@@ -211,18 +202,15 @@ describe('compile/scale', () => {
                 identity,
                 scaleType,
                 QUANTITATIVE,
-                {rangeStep: 23},
+                {},
                 defaultConfig,
                 undefined,
                 'text',
-                true,
                 'plot_width',
-                []
+                {width: {step: 23}}
               )
             ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
-            expect(localLogger.warns[0]).toEqual(
-              log.message.scalePropertyNotWorkWithScaleType(scaleType, 'rangeStep', 'x')
-            );
+            expect(localLogger.warns[0]).toEqual(log.message.stepDropped('width', 'continuous'));
           })();
         }
       });
@@ -240,9 +228,8 @@ describe('compile/scale', () => {
             defaultConfig,
             undefined,
             'point',
-            false,
             'plot_width',
-            []
+            {}
           )
         ).toEqual(makeExplicit({scheme: 'warm'}));
       });
@@ -258,9 +245,8 @@ describe('compile/scale', () => {
             defaultConfig,
             undefined,
             'point',
-            false,
             'plot_width',
-            []
+            {}
           )
         ).toEqual(makeExplicit({scheme: 'warm', extent: [0.2, 1]}));
       });
@@ -276,9 +262,8 @@ describe('compile/scale', () => {
             defaultConfig,
             undefined,
             'point',
-            false,
             'plot_width',
-            []
+            {}
           )
         ).toEqual(makeExplicit(['red', 'green', 'blue']));
       });
@@ -294,9 +279,8 @@ describe('compile/scale', () => {
             defaultConfig,
             undefined,
             'point',
-            false,
             'plot_width',
-            []
+            {}
           )
         ).toEqual(makeImplicit('category'));
       });
@@ -312,9 +296,8 @@ describe('compile/scale', () => {
             defaultConfig,
             undefined,
             'point',
-            false,
             'plot_width',
-            []
+            {}
           )
         ).toEqual(makeImplicit('ordinal'));
       });
@@ -330,9 +313,8 @@ describe('compile/scale', () => {
             defaultConfig,
             undefined,
             'point',
-            false,
             'plot_width',
-            []
+            {}
           )
         ).toEqual(makeImplicit('ramp'));
       });
@@ -348,9 +330,8 @@ describe('compile/scale', () => {
             defaultConfig,
             undefined,
             'point',
-            false,
             'plot_width',
-            []
+            {}
           )
         ).toEqual(makeExplicit({scheme: 'viridis', count: 3}));
       });
@@ -368,9 +349,8 @@ describe('compile/scale', () => {
               defaultConfig,
               undefined,
               'point',
-              false,
               'plot_width',
-              []
+              {}
             )
           ).toEqual(makeImplicit('ramp'));
         });
@@ -387,9 +367,8 @@ describe('compile/scale', () => {
             defaultConfig,
             undefined,
             'point',
-            false,
             'plot_width',
-            []
+            {}
           )
         ).toEqual(makeImplicit('ramp'));
       });
@@ -405,9 +384,8 @@ describe('compile/scale', () => {
             defaultConfig,
             undefined,
             'point',
-            false,
             'plot_width',
-            []
+            {}
           )
         ).toEqual(makeImplicit('ramp'));
       });
@@ -425,9 +403,8 @@ describe('compile/scale', () => {
             defaultConfig,
             undefined,
             'point',
-            false,
             'plot_width',
-            []
+            {}
           )
         ).toEqual(makeImplicit([defaultConfig.scale.minOpacity, defaultConfig.scale.maxOpacity]));
       });
@@ -449,9 +426,8 @@ describe('compile/scale', () => {
               config,
               undefined,
               'bar',
-              false,
               'plot_width',
-              []
+              {}
             )
           ).toEqual(makeImplicit([2, 9]));
         });
@@ -467,11 +443,10 @@ describe('compile/scale', () => {
               defaultConfig,
               undefined,
               'bar',
-              false,
               'plot_width',
-              []
+              {}
             )
-          ).toEqual(makeImplicit([2, defaultConfig.scale.rangeStep - 1]));
+          ).toEqual(makeImplicit([2, DEFAULT_STEP - 1]));
         });
       });
 
@@ -490,14 +465,13 @@ describe('compile/scale', () => {
               config,
               undefined,
               'tick',
-              false,
               'plot_width',
-              []
+              {}
             )
           ).toEqual(makeImplicit([4, 9]));
         });
 
-        it('should return [(default)minBandSize, rangeStep-1] by default since maxSize config is not specified', () => {
+        it('should return [(default)minBandSize, step-1] by default since maxSize config is not specified', () => {
           expect(
             parseRangeForChannel(
               'size',
@@ -508,11 +482,10 @@ describe('compile/scale', () => {
               defaultConfig,
               undefined,
               'tick',
-              false,
               'plot_width',
-              []
+              {}
             )
-          ).toEqual(makeImplicit([defaultConfig.scale.minBandSize, defaultConfig.scale.rangeStep - 1]));
+          ).toEqual(makeImplicit([defaultConfig.scale.minBandSize, DEFAULT_STEP - 1]));
         });
       });
 
@@ -528,9 +501,8 @@ describe('compile/scale', () => {
               defaultConfig,
               undefined,
               'text',
-              false,
               'plot_width',
-              []
+              {}
             )
           ).toEqual(makeImplicit([defaultConfig.scale.minFontSize, defaultConfig.scale.maxFontSize]));
         });
@@ -548,9 +520,8 @@ describe('compile/scale', () => {
               defaultConfig,
               undefined,
               'rule',
-              false,
               'plot_width',
-              []
+              {}
             )
           ).toEqual(makeImplicit([defaultConfig.scale.minStrokeWidth, defaultConfig.scale.maxStrokeWidth]));
         });
@@ -567,19 +538,7 @@ describe('compile/scale', () => {
             };
 
             expect(
-              parseRangeForChannel(
-                'size',
-                identity,
-                'linear',
-                QUANTITATIVE,
-                {},
-                config,
-                undefined,
-                m,
-                false,
-                'plot_width',
-                []
-              )
+              parseRangeForChannel('size', identity, 'linear', QUANTITATIVE, {}, config, undefined, m, 'plot_width', {})
             ).toEqual(makeImplicit([5, 25]));
           }
         });
@@ -587,19 +546,10 @@ describe('compile/scale', () => {
         it('should return [0, (minBandSize-2)^2] if both x and y are discrete and size is quantitative (thus use zero=true, by default)', () => {
           for (const m of ['point', 'square', 'circle'] as Mark[]) {
             expect(
-              parseRangeForChannel(
-                'size',
-                identity,
-                'linear',
-                QUANTITATIVE,
-                {},
-                defaultConfig,
-                true,
-                m,
-                false,
-                'plot_width',
-                [11, 13] // xyRangeSteps
-              )
+              parseRangeForChannel('size', identity, 'linear', QUANTITATIVE, {}, defaultConfig, true, m, 'plot_width', {
+                width: {step: 11},
+                height: {step: 13}
+              })
             ).toEqual(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
@@ -616,9 +566,11 @@ describe('compile/scale', () => {
                 defaultConfig,
                 false,
                 m,
-                false,
                 'plot_width',
-                [11, 13] // xyRangeSteps
+                {
+                  width: {step: 11},
+                  height: {step: 13}
+                }
               )
             ).toEqual(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
@@ -636,9 +588,11 @@ describe('compile/scale', () => {
                 defaultConfig,
                 false,
                 m,
-                false,
                 'plot_width',
-                [11, 13] // xyRangeSteps
+                {
+                  width: {step: 11},
+                  height: {step: 13}
+                }
               )
             ).toEqual(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
@@ -647,19 +601,10 @@ describe('compile/scale', () => {
         it('should return [0, (xRangeStep-2)^2] if x is discrete and y is continuous and size is quantitative (thus use zero=true, by default)', () => {
           for (const m of ['point', 'square', 'circle'] as Mark[]) {
             expect(
-              parseRangeForChannel(
-                'size',
-                identity,
-                'linear',
-                QUANTITATIVE,
-                {},
-                defaultConfig,
-                true,
-                m,
-                false,
-                'plot_width',
-                [11] // xyRangeSteps only have one value
-              )
+              parseRangeForChannel('size', identity, 'linear', QUANTITATIVE, {}, defaultConfig, true, m, 'plot_width', {
+                width: {step: 11},
+                height: {step: 13}
+              })
             ).toEqual(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
@@ -677,9 +622,8 @@ describe('compile/scale', () => {
                 defaultConfig,
                 undefined,
                 'point',
-                false,
                 'plot_width',
-                []
+                {}
               )
             ).toEqual(makeImplicit({signal: 'sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))'}));
           });
@@ -696,9 +640,8 @@ describe('compile/scale', () => {
               defaultConfig,
               undefined,
               'point',
-              false,
               'plot_width',
-              []
+              {}
             )
           ).toEqual(makeImplicit({signal: 'sequence(9, 361 + (361 - 9) / (3 - 1), (361 - 9) / (3 - 1))'}));
         });
@@ -717,9 +660,8 @@ describe('compile/scale', () => {
             defaultConfig,
             undefined,
             'point',
-            false,
             'plot_width',
-            []
+            {}
           )
         ).toEqual(makeImplicit('symbol'));
       });
