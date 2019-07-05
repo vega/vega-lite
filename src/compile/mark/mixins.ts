@@ -282,7 +282,7 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   } else {
     return wrapCondition(model, channelDef, 'tooltip', cDef => {
       // use valueRef based on channelDef first
-      const tooltipRefFromChannelDef = ref.text(cDef, model.config, opt.reactiveGeom ? 'datum.datum' : 'datum');
+      const tooltipRefFromChannelDef = ref.text(cDef, model.config, opt.reactiveGeom ? 'datum.datum' : 'datum', false);
       if (tooltipRefFromChannelDef) {
         return tooltipRefFromChannelDef;
       }

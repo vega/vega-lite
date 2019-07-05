@@ -374,7 +374,7 @@ export function tooltipForEncoding(
 
     const key = title(fieldDef, config, {allowDisabling: false});
 
-    let value = text(fieldDef, config, expr).signal;
+    let value = text(fieldDef, config, expr, false).signal;
 
     if (channel === 'x' || channel === 'y') {
       const channel2 = channel === 'x' ? 'x2' : 'y2';
@@ -412,7 +412,8 @@ export function tooltipForEncoding(
 export function text(
   channelDef: ChannelDefWithCondition<FieldDef<string>, string | number | boolean>,
   config: Config,
-  expr: 'datum' | 'datum.datum' = 'datum'
+  expr: 'datum' | 'datum.datum' = 'datum',
+  coerce = true
 ): VgValueRef {
   // text
   if (channelDef) {
@@ -420,7 +421,7 @@ export function text(
       return {value: channelDef.value};
     }
     if (isTypedFieldDef(channelDef)) {
-      return formatSignalRef(channelDef, format(channelDef), expr, config);
+      return formatSignalRef(channelDef, format(channelDef), expr, config, coerce);
     }
   }
   return undefined;
