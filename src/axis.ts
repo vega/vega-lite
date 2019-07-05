@@ -106,7 +106,7 @@ export interface Axis extends AxisOrientMixins, BaseAxisNoSignals, Guide {
   values?: number[] | string[] | boolean[] | DateTime[];
 
   /**
-   * A non-positive integer indicating z-index of the axis.
+   * A non-negative integer indicating the z-index of the axis.
    * If zindex is 0, axes should be drawn behind all chart elements.
    * To put them in front, use `"zindex = 1"`.
    *
