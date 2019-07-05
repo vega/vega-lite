@@ -79,7 +79,7 @@ export function formatSignalRef(
   specifiedFormat: string,
   expr: 'datum' | 'parent' | 'datum.datum',
   config: Config,
-  castToString = true
+  {castToString} = {castToString: true}
 ) {
   if (isTimeFormatFieldDef(fieldDef)) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;

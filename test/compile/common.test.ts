@@ -138,13 +138,13 @@ describe('Common', () => {
     });
 
     it('should leave ordinal data without format unformatted', () => {
-      expect(formatSignalRef({field: 'foo', type: 'ordinal'}, undefined, 'datum', {}, false)).toEqual({
+      expect(formatSignalRef({field: 'foo', type: 'ordinal'}, undefined, 'datum', {}, {castToString: false})).toEqual({
         signal: 'datum["foo"]'
       });
     });
 
-    it('should coerce to strings if requested', () => {
-      expect(formatSignalRef({field: 'foo', type: 'ordinal'}, undefined, 'datum', {}, true)).toEqual({
+    it('should leave ordinal data without format unformatted but cast to string by default', () => {
+      expect(formatSignalRef({field: 'foo', type: 'ordinal'}, undefined, 'datum', {})).toEqual({
         signal: `''+datum["foo"]`
       });
     });
