@@ -61,14 +61,14 @@
             },
             {"scale": "x", "field": "lower_yield"}
           ],
-          "y": {"signal": "height", "mult": 0.5},
           "x2": [
             {
               "test": "datum[\"upper_yield\"] === null || isNaN(datum[\"upper_yield\"])",
               "value": 0
             },
             {"scale": "x", "field": "upper_yield"}
-          ]
+          ],
+          "y": {"signal": "height", "mult": 0.5}
         }
       }
     },

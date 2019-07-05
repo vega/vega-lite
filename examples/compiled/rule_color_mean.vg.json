@@ -33,8 +33,8 @@
         "update": {
           "stroke": {"scale": "color", "field": "symbol"},
           "x": {"value": 0},
-          "y": {"scale": "y", "field": "mean_price"},
           "x2": {"field": {"group": "width"}},
+          "y": {"scale": "y", "field": "mean_price"},
           "strokeWidth": {"value": 2}
         }
       }

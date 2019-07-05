@@ -36,8 +36,8 @@
         "update": {
           "width": {"value": 50},
           "height": {"value": 50},
-          "x": {"scale": "x", "field": "x"},
-          "y": {"scale": "y", "field": "y"},
+          "xc": {"scale": "x", "field": "x"},
+          "yc": {"scale": "y", "field": "y"},
           "url": {"signal": "''+datum[\"img\"]"}
         }
       }

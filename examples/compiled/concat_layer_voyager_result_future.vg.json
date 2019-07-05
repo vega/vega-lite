@@ -166,8 +166,8 @@
             "update": {
               "stroke": {"value": "black"},
               "x": {"scale": "concat_0_x", "field": "lo"},
-              "y": {"scale": "concat_0_y", "field": "study", "band": 0.5},
-              "x2": {"scale": "concat_0_x", "field": "hi"}
+              "x2": {"scale": "concat_0_x", "field": "hi"},
+              "y": {"scale": "concat_0_y", "field": "study", "band": 0.5}
             }
           }
         },
@@ -270,14 +270,14 @@
                 },
                 {"scale": "concat_1_x", "field": "from"}
               ],
-              "y": {"signal": "concat_1_height", "mult": 0.5},
               "x2": [
                 {
                   "test": "datum[\"to\"] === null || isNaN(datum[\"to\"])",
                   "value": 0
                 },
                 {"scale": "concat_1_x", "field": "to"}
-              ]
+              ],
+              "y": {"signal": "concat_1_height", "mult": 0.5}
             }
           }
         },

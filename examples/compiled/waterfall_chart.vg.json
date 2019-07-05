@@ -167,8 +167,8 @@
           "strokeWidth": {"value": 2},
           "stroke": {"value": "#404040"},
           "x": {"scale": "x", "field": "label", "offset": -22.5, "band": 0.5},
-          "y": {"scale": "y", "field": "sum"},
-          "x2": {"scale": "x", "field": "lead", "offset": 22.5, "band": 0.5}
+          "x2": {"scale": "x", "field": "lead", "offset": 22.5, "band": 0.5},
+          "y": {"scale": "y", "field": "sum"}
         }
       }
     },

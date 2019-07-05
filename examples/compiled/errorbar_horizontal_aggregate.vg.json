@@ -36,8 +36,8 @@
         "update": {
           "stroke": {"value": "black"},
           "x": {"scale": "x", "field": "min_people"},
-          "y": {"scale": "y", "field": "age", "band": 0.5},
-          "x2": {"scale": "x", "field": "max_people"}
+          "x2": {"scale": "x", "field": "max_people"},
+          "y": {"scale": "y", "field": "age", "band": 0.5}
         }
       }
     },
