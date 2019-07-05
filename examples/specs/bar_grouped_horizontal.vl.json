@@ -7,11 +7,8 @@
   ],
   "height": {"step": 6},
   "mark": "bar",
-  "spacing": 10,
   "encoding": {
-    "row": {
-      "field": "age", "type": "ordinal"
-    },
+    "row": {"field": "age", "type": "ordinal", "spacing": 10},
     "x": {
       "aggregate": "sum", "field": "people", "type": "quantitative",
       "axis": {"title": "population", "grid": false}

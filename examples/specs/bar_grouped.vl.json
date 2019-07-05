@@ -6,11 +6,10 @@
     {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
   ],
   "width": {"step": 12},
-  "spacing": 10,
   "mark": "bar",
   "encoding": {
     "column": {
-      "field": "age", "type": "ordinal"
+      "field": "age", "type": "ordinal", "spacing": 10
     },
     "y": {
       "aggregate": "sum", "field": "people", "type": "quantitative",

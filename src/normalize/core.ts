@@ -1,5 +1,6 @@
 import {isArray} from 'vega-util';
 import {COLUMN, FACET, ROW} from '../channel';
+import {Field} from '../channeldef';
 import {boxPlotNormalizer} from '../compositemark/boxplot';
 import {errorBandNormalizer} from '../compositemark/errorband';
 import {errorBarNormalizer} from '../compositemark/errorbar';
@@ -7,7 +8,15 @@ import {channelHasField, Encoding} from '../encoding';
 import * as log from '../log';
 import {Projection} from '../projection';
 import {ExtendedLayerSpec, FacetedUnitSpec, GenericSpec, UnitSpec} from '../spec';
-import {GenericFacetSpec, isFacetMapping, NormalizedFacetSpec} from '../spec/facet';
+import {GenericCompositionLayoutWithColumns} from '../spec/base';
+import {
+  FacetEncodingFieldDef,
+  FacetFieldDef,
+  FacetMapping,
+  GenericFacetSpec,
+  isFacetMapping,
+  NormalizedFacetSpec
+} from '../spec/facet';
 import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer';
 import {SpecMapper} from '../spec/map';
 import {GenericRepeatSpec} from '../spec/repeat';
@@ -120,22 +129,15 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     // Mark and encoding should be moved into the inner spec
     const {mark, width, projection, height, selection, encoding: _, ...outerSpec} = spec;
 
-    if (facet && (row || column)) {
-      log.warn(log.message.facetChannelDropped([...(row ? [ROW] : []), ...(column ? [COLUMN] : [])]));
-    }
+    const {facetMapping, layout} = this.getFacetMappingAndLayout({row, column, facet});
 
     return this.mapFacet(
       {
         ...outerSpec,
+        ...layout,
 
         // row / column has higher precedence than facet
-        facet:
-          row || column
-            ? {
-                ...(row ? {row} : {}),
-                ...(column ? {column} : {})
-              }
-            : facet,
+        facet: facetMapping,
         spec: {
           ...(projection ? {projection} : {}),
           mark,
@@ -147,6 +149,51 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       },
       params
     );
+  }
+
+  private getFacetMappingAndLayout(facets: {
+    row: FacetEncodingFieldDef<Field>;
+    column: FacetEncodingFieldDef<Field>;
+    facet: FacetEncodingFieldDef<Field>;
+  }): {facetMapping: FacetMapping<Field> | FacetFieldDef<Field>; layout: GenericCompositionLayoutWithColumns} {
+    const {row, column, facet} = facets;
+
+    if (row || column) {
+      if (facet) {
+        log.warn(log.message.facetChannelDropped([...(row ? [ROW] : []), ...(column ? [COLUMN] : [])]));
+      }
+
+      const facetMapping = {};
+      const layout = {};
+
+      for (const channel of [ROW, COLUMN]) {
+        const def = facets[channel];
+        if (def) {
+          const {align, center, spacing, columns, ...defWithoutLayout} = def;
+          facetMapping[channel] = defWithoutLayout;
+
+          for (const prop of ['align', 'center', 'spacing']) {
+            if (def[prop] !== undefined) {
+              layout[prop] = layout[prop] || {};
+              layout[prop][channel] = def[prop];
+            }
+          }
+        }
+      }
+
+      return {facetMapping, layout};
+    } else {
+      const {align, center, spacing, columns, ...facetMapping} = facet;
+      return {
+        facetMapping,
+        layout: {
+          ...(align ? {align} : {}),
+          ...(center ? {center} : {}),
+          ...(spacing ? {spacing} : {}),
+          ...(columns ? {columns} : {})
+        }
+      };
+    }
   }
 
   public mapLayer(

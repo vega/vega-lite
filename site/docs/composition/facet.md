@@ -91,6 +91,16 @@ This is the same example as [below](#row-encoding) but the facet operator is mor
 
 The [facet channels](encoding.html#facet) (`facet`, `row`, and `column`) are [encoding channels](encoding.html#channels) that serves as macros for a facet specification. Vega-Lite automatically translates this shortcut to use the facet operator.
 
+### Facet Field Definition
+
+In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), and [`timeUnit`](timeunit.html), [field definitions](#field-def) for `row`, `column` and `facet` channels may also include these properties:
+
+{% include table.html props="align,center,spacing" source="RowColumnEncodingFieldDef" %}
+
+In addition, the `facet` channel should include the `columns` property:
+
+{% include table.html props="columns" source="FacetEncodingFieldDef" %}
+
 ### Examples
 
 Here are examples of row-facet and wrapped facet plots that use encoding to specify the faceted fields. For more example, see the [example gallery]({{site.baseurl}}/examples/#trellis).
