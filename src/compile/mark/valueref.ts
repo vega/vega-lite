@@ -413,7 +413,7 @@ export function text(
   channelDef: ChannelDefWithCondition<FieldDef<string>, string | number | boolean>,
   config: Config,
   expr: 'datum' | 'datum.datum' = 'datum',
-  coerce = true
+  castToString = true
 ): VgValueRef {
   // text
   if (channelDef) {
@@ -421,7 +421,7 @@ export function text(
       return {value: channelDef.value};
     }
     if (isTypedFieldDef(channelDef)) {
-      return formatSignalRef(channelDef, format(channelDef), expr, config, coerce);
+      return formatSignalRef(channelDef, format(channelDef), expr, config, castToString);
     }
   }
   return undefined;
