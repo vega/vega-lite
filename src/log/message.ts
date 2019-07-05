@@ -190,6 +190,8 @@ export function orientOverridden(original: string, actual: string) {
 export const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN =
   'custom domain scale cannot be unioned with default field-based domain';
 
+export const RANGE_STEP_DEPRECATED = `Scale's "rangeStep" is deprecated and will be removed in Vega-Lite 5.0. Please use "width"/"height": {"step": ...} instead. See https://vega.github.io/vega-lite/docs/size.html`;
+
 export function cannotUseScalePropertyWithNonColor(prop: string) {
   return `Cannot use the scale property "${prop}" with non-color channel.`;
 }
