@@ -124,6 +124,8 @@ export function scaleTypePrecedence(scaleType: ScaleType): number {
 export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'time', 'utc'];
 const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
 
+export const QUANTITATIVE_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'symlog'];
+
 export const CONTINUOUS_TO_DISCRETE_SCALES: ScaleType[] = ['quantile', 'quantize', 'threshold'];
 const CONTINUOUS_TO_DISCRETE_INDEX = toSet(CONTINUOUS_TO_DISCRETE_SCALES);
 

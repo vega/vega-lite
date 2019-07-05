@@ -4,6 +4,7 @@ import {FacetModel} from '../src/compile/facet';
 import {LayerModel} from '../src/compile/layer';
 import {Model} from '../src/compile/model';
 import {RepeatModel} from '../src/compile/repeat';
+import {parseScales} from '../src/compile/scale/parse';
 import {UnitModel} from '../src/compile/unit';
 import {initConfig} from '../src/config';
 import {normalize} from '../src/normalize/index';
@@ -48,6 +49,12 @@ export function parseUnitModel(spec: TopLevel<NormalizedUnitSpec>) {
 export function parseUnitModelWithScale(spec: TopLevel<NormalizedUnitSpec>) {
   const model = parseUnitModel(spec);
   model.parseScale();
+  return model;
+}
+
+export function parseUnitModelWithScaleExceptRange(spec: TopLevel<NormalizedUnitSpec>) {
+  const model = parseUnitModel(spec);
+  parseScales(model, {ignoreRange: true});
   return model;
 }
 

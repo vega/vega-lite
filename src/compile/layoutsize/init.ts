@@ -17,12 +17,14 @@ export function initLayoutSize({
     const sizeType = getSizeType(channel);
     const fieldDef = getFieldDef(encoding[channel]) as PositionFieldDef<string>;
     if (isStep(size[sizeType])) {
-      if (isContinuous(fieldDef)) {
-        delete size[sizeType];
-        log.warn(log.message.cannotUseStepWithContinuous(sizeType));
-      } else if (isDiscrete(fieldDef) && fit) {
-        delete size[sizeType];
-        log.warn(log.message.cannotUseStepWithFit(sizeType));
+      if (fieldDef) {
+        if (isContinuous(fieldDef)) {
+          delete size[sizeType];
+          log.warn(log.message.stepDropped(sizeType, 'continuous'));
+        } else if (isDiscrete(fieldDef) && fit) {
+          delete size[sizeType];
+          log.warn(log.message.stepDropped(sizeType, 'fit'));
+        }
       }
     }
   }

@@ -135,7 +135,7 @@ describe('compile/compile', () => {
           x: {field: 'b', type: 'quantitative'}
         }
       }).spec;
-      expect(localLogger.warns[0]).toEqual(log.message.cannotUseStepWithFit('height'));
+      expect(localLogger.warns[0]).toEqual(log.message.stepDropped('height', 'fit'));
       expect(spec.width).toEqual(200);
       expect(spec.height).toEqual(200);
     })
