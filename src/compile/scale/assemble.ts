@@ -65,7 +65,7 @@ export function assembleScaleRange(scaleRange: VgRange, scaleName: string, chann
   // add signals to x/y range
   if (channel === 'x' || channel === 'y') {
     if (isVgRangeStep(scaleRange)) {
-      // For x/y range step, use a signal created in layout assemble instead of a constant range step.
+      // For width/height step, use a signal created in layout assemble instead of a constant step.
       return {
         step: {signal: scaleName + '_step'}
       };

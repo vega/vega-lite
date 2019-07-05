@@ -5,6 +5,7 @@
     {"filter": "datum.year == 2000"},
     {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
   ],
+  "height": {"step": 6},
   "mark": "bar",
   "spacing": 10,
   "encoding": {
@@ -17,7 +18,6 @@
     },
     "y": {
       "field": "gender", "type": "nominal",
-      "scale": {"rangeStep": 6},
       "axis": null
     },
     "color": {

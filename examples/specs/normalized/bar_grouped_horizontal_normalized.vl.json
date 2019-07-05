@@ -10,6 +10,7 @@
   "facet": {"row": {"field": "age", "type": "ordinal"}},
   "spec": {
     "mark": "bar",
+    "height": {"step": 6},
     "encoding": {
       "x": {
         "aggregate": "sum",
@@ -17,12 +18,7 @@
         "type": "quantitative",
         "axis": {"title": "population", "grid": false}
       },
-      "y": {
-        "field": "gender",
-        "type": "nominal",
-        "scale": {"rangeStep": 6},
-        "axis": null
-      },
+      "y": {"field": "gender", "type": "nominal", "axis": null},
       "color": {
         "field": "gender",
         "type": "nominal",

@@ -7,8 +7,7 @@
   "encoding": {
     "x": {
       "field": "Origin",
-      "type": "nominal",
-      "scale": {"rangeStep": null}
+      "type": "nominal"
     },
     "y": {
       "aggregate": "count",

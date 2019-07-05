@@ -22,7 +22,13 @@ export const INVALID_SPEC = 'Invalid spec';
 // FIT
 export const FIT_NON_SINGLE = 'Autosize "fit" only works for single views and layered views.';
 
-export const CANNOT_FIX_RANGE_STEP_WITH_FIT = 'Cannot use a fixed value of "rangeStep" when "autosize" is "fit".';
+export function cannotUseStepWithFit(sizeType: 'width' | 'height') {
+  return `Cannot use a "step" ${sizeType} when "autosize" is "fit".`;
+}
+
+export function cannotUseStepWithContinuous(sizeType: 'width' | 'height') {
+  return `Cannot use a "step" ${sizeType} when the ${sizeType === 'width' ? 'x' : 'y'}-field is continuous.`;
+}
 
 // SELECTION
 export function cannotProjectOnChannelWithoutField(channel: Channel) {
@@ -171,9 +177,6 @@ export function discreteChannelCannotEncode(channel: Channel, type: Type) {
 }
 
 // Mark
-export const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL =
-  'Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.';
-
 export function lineWithRange(hasX2: boolean, hasY2: boolean) {
   const channels = hasX2 && hasY2 ? 'x2 and y2' : hasX2 ? 'x2' : 'y2';
   return `Line mark is for continuous lines and thus cannot be used with ${channels}. We will use the rule mark (line segments) instead.`;
@@ -207,10 +210,6 @@ export function cannotApplySizeToNonOrientedMark(mark: Mark) {
   return `Cannot apply size to non-oriented mark "${mark}".`;
 }
 
-export function rangeStepDropped(channel: Channel) {
-  return `rangeStep for "${channel}" is dropped as top-level ${channel === 'x' ? 'width' : 'height'} is provided.`;
-}
-
 export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType, defaultScaleType: ScaleType) {
   return `Channel "${channel}" does not work with "${scaleType}" scale. We are using "${defaultScaleType}" scale instead.`;
 }
@@ -225,6 +224,14 @@ export function scalePropertyNotWorkWithScaleType(scaleType: ScaleType, propName
 
 export function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType) {
   return `Scale type "${scaleType}" does not work with mark "${mark}".`;
+}
+
+export function stepDropped(channel: 'width' | 'height', reason: 'fit' | 'continuous') {
+  const explanation =
+    reason === 'fit'
+      ? 'the view has autosize "fit" mode enabled'
+      : `the ${channel === 'width' ? 'x' : 'y'} is continuous`;
+  return `The step for "${channel}" is dropped since ${explanation}.`;
 }
 
 export function mergeConflictingProperty<T>(

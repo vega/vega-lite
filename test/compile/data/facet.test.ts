@@ -20,8 +20,7 @@ describe('compile/data/facet', () => {
             },
             x: {
               field: 'age',
-              type: 'ordinal',
-              scale: {rangeStep: 17}
+              type: 'ordinal'
             },
             color: {
               field: 'gender',

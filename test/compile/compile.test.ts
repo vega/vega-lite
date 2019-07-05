@@ -108,19 +108,34 @@ describe('compile/compile', () => {
     expect(spec.autosize).toBe('fit');
   });
 
+  it('warn if size is data driven and autosize is fit', () => {
+    const spec = compile({
+      data: {values: [{a: 'A', b: 28}]},
+      mark: 'bar',
+      autosize: 'fit',
+      encoding: {
+        x: {field: 'a', type: 'ordinal'},
+        y: {field: 'b', type: 'quantitative'}
+      }
+    }).spec;
+    expect(spec.width).toEqual(200);
+    expect(spec.height).toEqual(200);
+  });
+
   it(
     'warn if size is data driven and autosize is fit',
     log.wrap(localLogger => {
       const spec = compile({
         data: {values: [{a: 'A', b: 28}]},
+        height: {step: 20},
         mark: 'bar',
         autosize: 'fit',
         encoding: {
-          x: {field: 'a', type: 'ordinal'},
-          y: {field: 'b', type: 'quantitative'}
+          y: {field: 'a', type: 'ordinal'},
+          x: {field: 'b', type: 'quantitative'}
         }
       }).spec;
-      expect(localLogger.warns[0]).toEqual(log.message.CANNOT_FIX_RANGE_STEP_WITH_FIT);
+      expect(localLogger.warns[0]).toEqual(log.message.cannotUseStepWithFit('height'));
       expect(spec.width).toEqual(200);
       expect(spec.height).toEqual(200);
     })

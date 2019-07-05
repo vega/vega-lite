@@ -115,7 +115,7 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    * - For `bar`, this represents the band size of the bar, in pixels.
    * - For `text`, this represents the font size, in pixels.
    *
-   * __Default value:__ `30` for point, circle, square marks; `rangeStep` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.
+   * __Default value:__ `30` for point, circle, square marks; width/height's `step` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.
    *
    * @minimum 0
    */
@@ -377,7 +377,7 @@ export interface TickConfig extends MarkConfig, TickThicknessMixins {
   /**
    * The width of the ticks.
    *
-   * __Default value:__  3/4 of rangeStep.
+   * __Default value:__  3/4 of step (width step for horizontal ticks and height step for vertical ticks).
    * @minimum 0
    */
   bandSize?: number;
