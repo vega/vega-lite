@@ -4,7 +4,6 @@ import {BinTransform} from '../../../src/transform';
 import {VgBinTransform} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';
-import {VgBinTransform} from './../../../src/vega.schema';
 
 function assembleFromEncoding(model: ModelWithField) {
   return BinNode.makeFromEncoding(null, model).assemble();
