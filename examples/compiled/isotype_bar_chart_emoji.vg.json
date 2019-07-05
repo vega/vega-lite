@@ -117,7 +117,7 @@
               "baseline": {"value": "middle"},
               "fill": {"value": "black"},
               "tooltip": {
-                "signal": "{\"rank\": ''+datum[\"rank\"], \"animal\": ''+datum[\"animal\"], \"emoji\": ''+datum[\"emoji\"]}"
+                "signal": "{\"rank\": datum[\"rank\"], \"animal\": datum[\"animal\"], \"emoji\": datum[\"emoji\"]}"
               },
               "x": {"scale": "x", "field": "rank"},
               "y": {"scale": "y", "field": "animal"},

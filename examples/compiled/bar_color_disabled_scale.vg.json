@@ -42,7 +42,7 @@
         "update": {
           "fill": {"field": "color"},
           "tooltip": {
-            "signal": "{\"color\": ''+datum[\"color\"], \"b\": format(datum[\"b\"], \"\")}"
+            "signal": "{\"color\": datum[\"color\"], \"b\": format(datum[\"b\"], \"\")}"
           },
           "x": {"scale": "x", "field": "color"},
           "width": {"scale": "x", "band": true},

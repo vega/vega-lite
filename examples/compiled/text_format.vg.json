@@ -38,7 +38,7 @@
         "update": {
           "fill": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \".2f\")}"
+            "signal": "{\"Origin\": datum[\"Origin\"], \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \".2f\")}"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "Origin"},

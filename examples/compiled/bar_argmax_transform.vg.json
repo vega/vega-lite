@@ -47,7 +47,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"argmax_US_Gross.Production_Budget\": format(datum[\"argmax_US_Gross.Production_Budget\"], \"\"), \"Major_Genre\": ''+datum[\"Major_Genre\"]}"
+            "signal": "{\"argmax_US_Gross.Production_Budget\": format(datum[\"argmax_US_Gross.Production_Budget\"], \"\"), \"Major_Genre\": datum[\"Major_Genre\"]}"
           },
           "x": {"scale": "x", "field": "argmax_US_Gross\\.Production_Budget"},
           "x2": {"scale": "x", "value": 0},

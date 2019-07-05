@@ -44,7 +44,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Q3 of yield\": format(datum[\"upper_yield\"], \"\"), \"Q1 of yield\": format(datum[\"lower_yield\"], \"\"), \"Median of yield\": format(datum[\"center_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Q3 of yield\": format(datum[\"upper_yield\"], \"\"), \"Q1 of yield\": format(datum[\"lower_yield\"], \"\"), \"Median of yield\": format(datum[\"center_yield\"], \"\"), \"variety\": datum[\"variety\"]}"
           },
           "x": [
             {
@@ -73,7 +73,7 @@
         "update": {
           "fill": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\"), \"variety\": datum[\"variety\"]}"
           },
           "x": [
             {

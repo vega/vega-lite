@@ -49,7 +49,7 @@
           "opacity": {"value": 0.7},
           "fill": {"scale": "color", "field": "b"},
           "tooltip": {
-            "signal": "{\"b\": ''+datum[\"b\"], \"Quantize\": format(datum[\"b\"], \"\")}"
+            "signal": "{\"b\": datum[\"b\"], \"Quantize\": format(datum[\"b\"], \"\")}"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "b"},

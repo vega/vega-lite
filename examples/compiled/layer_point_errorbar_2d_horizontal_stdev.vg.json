@@ -54,7 +54,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stdev of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stdev of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stdev of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stdev of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": datum[\"variety\"]}"
           },
           "x": [
             {
@@ -83,7 +83,7 @@
         "update": {
           "fill": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Mean of yield\": format(datum[\"mean_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Mean of yield\": format(datum[\"mean_yield\"], \"\"), \"variety\": datum[\"variety\"]}"
           },
           "x": [
             {

@@ -60,7 +60,7 @@
             "update": {
               "fill": {"value": "#4c78a8"},
               "tooltip": {
-                "signal": "{\"Name\": ''+datum[\"Name\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
+                "signal": "{\"Name\": datum[\"Name\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
               "x": {"scale": "concat_0_x", "field": "__count"},
               "x2": {"scale": "concat_0_x", "value": 0},
@@ -322,7 +322,7 @@
             "update": {
               "fill": {"value": "#4c78a8"},
               "tooltip": {
-                "signal": "{\"Name\": ''+datum[\"Name\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
+                "signal": "{\"Name\": datum[\"Name\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
               "x": {"scale": "concat_1_x", "field": "__count"},
               "x2": {"scale": "concat_1_x", "value": 0},

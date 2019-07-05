@@ -50,7 +50,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"a\": ''+datum[\"a\"], \"Average of b\": format(datum[\"average_b\"], \"\")}"
+            "signal": "{\"a\": datum[\"a\"], \"Average of b\": format(datum[\"average_b\"], \"\")}"
           },
           "x": {"scale": "x", "field": "a"},
           "width": {"scale": "x", "band": true},

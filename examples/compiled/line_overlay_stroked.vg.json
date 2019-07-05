@@ -65,7 +65,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "tooltip": {
-                "signal": "{\"date (year)\": timeFormat(datum[\"year_date\"], '%Y'), \"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+                "signal": "{\"date (year)\": timeFormat(datum[\"year_date\"], '%Y'), \"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": datum[\"symbol\"]}"
               },
               "x": {"scale": "x", "field": "year_date"},
               "y": {"scale": "y", "field": "mean_price"},
@@ -88,7 +88,7 @@
           "fill": {"value": "white"},
           "stroke": {"scale": "color", "field": "symbol"},
           "tooltip": {
-            "signal": "{\"date (year)\": timeFormat(datum[\"year_date\"], '%Y'), \"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+            "signal": "{\"date (year)\": timeFormat(datum[\"year_date\"], '%Y'), \"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": datum[\"symbol\"]}"
           },
           "x": {"scale": "x", "field": "year_date"},
           "y": {"scale": "y", "field": "mean_price"}

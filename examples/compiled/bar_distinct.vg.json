@@ -37,7 +37,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Distinct of Name\": format(datum[\"distinct_Name\"], \"\")}"
+            "signal": "{\"Origin\": datum[\"Origin\"], \"Distinct of Name\": format(datum[\"distinct_Name\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Origin"},
           "width": {"scale": "x", "band": true},

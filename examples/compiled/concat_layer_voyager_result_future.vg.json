@@ -166,7 +166,7 @@
             "update": {
               "stroke": {"value": "black"},
               "tooltip": {
-                "signal": "{\"study\": ''+datum[\"study\"], \"lo\": format(datum[\"lo\"], \"\"), \"hi\": format(datum[\"hi\"], \"\")}"
+                "signal": "{\"study\": datum[\"study\"], \"lo\": format(datum[\"lo\"], \"\"), \"hi\": format(datum[\"hi\"], \"\")}"
               },
               "x": {"scale": "concat_0_x", "field": "lo"},
               "y": {"scale": "concat_0_y", "field": "study", "band": 0.5},
@@ -185,7 +185,7 @@
               "stroke": {"value": "black"},
               "fill": {"scale": "color", "field": "measure"},
               "tooltip": {
-                "signal": "{\"study\": ''+datum[\"study\"], \"mean\": format(datum[\"mean\"], \"\"), \"measure\": ''+datum[\"measure\"]}"
+                "signal": "{\"study\": datum[\"study\"], \"mean\": format(datum[\"mean\"], \"\"), \"measure\": datum[\"measure\"]}"
               },
               "x": {"scale": "concat_0_x", "field": "mean"},
               "y": {"scale": "concat_0_y", "field": "study", "band": 0.5},
@@ -326,7 +326,7 @@
               "align": {"value": "right"},
               "fill": {"value": "black"},
               "tooltip": {
-                "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": ''+datum[\"label\"]}"
+                "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": datum[\"label\"]}"
               },
               "x": [
                 {
@@ -351,7 +351,7 @@
               "align": {"value": "left"},
               "fill": {"value": "black"},
               "tooltip": {
-                "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": ''+datum[\"label\"]}"
+                "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": datum[\"label\"]}"
               },
               "x": [
                 {

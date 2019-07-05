@@ -84,7 +84,7 @@
             {"value": 0.5}
           ],
           "tooltip": {
-            "signal": "{\"actual\": ''+datum[\"actual\"], \"predicted\": ''+datum[\"predicted\"], \"count\": format(datum[\"count\"], \"\")}"
+            "signal": "{\"actual\": datum[\"actual\"], \"predicted\": datum[\"predicted\"], \"count\": format(datum[\"count\"], \"\")}"
           },
           "x": {"scale": "x", "field": "predicted"},
           "width": {"scale": "x", "band": true},

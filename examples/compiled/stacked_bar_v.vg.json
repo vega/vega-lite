@@ -45,7 +45,7 @@
         "update": {
           "fill": {"scale": "color", "field": "site"},
           "tooltip": {
-            "signal": "{\"variety\": ''+datum[\"variety\"], \"Sum of yield\": format(datum[\"sum_yield\"], \"\"), \"site\": ''+datum[\"site\"]}"
+            "signal": "{\"variety\": datum[\"variety\"], \"Sum of yield\": format(datum[\"sum_yield\"], \"\"), \"site\": datum[\"site\"]}"
           },
           "x": {"scale": "x", "field": "variety"},
           "width": {"scale": "x", "band": true},

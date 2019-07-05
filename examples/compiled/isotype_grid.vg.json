@@ -401,7 +401,7 @@
             {"value": "rgb(167,165,156)"}
           ],
           "tooltip": {
-            "signal": "{\"col\": ''+datum[\"col\"], \"row\": ''+datum[\"row\"]}"
+            "signal": "{\"col\": datum[\"col\"], \"row\": datum[\"row\"]}"
           },
           "x": {"scale": "x", "field": "col"},
           "y": {"scale": "y", "field": "row"},
