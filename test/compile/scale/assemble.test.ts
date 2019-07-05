@@ -106,7 +106,7 @@ describe('compile/scale/assemble', () => {
   });
 
   describe('assembleScaleRange', () => {
-    it('replaces a range step constant with a signal', () => {
+    it('replaces a step constant with a signal', () => {
       expect(assembleScaleRange({step: 21}, 'x', 'x')).toEqual({step: {signal: 'x_step'}});
     });
 

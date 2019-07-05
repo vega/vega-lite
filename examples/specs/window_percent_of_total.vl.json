@@ -22,6 +22,7 @@
     "calculate": "datum.Time/datum.TotalTime * 100",
     "as": "PercentOfTotal"
   }],
+  "height": {"step": 12},
   "mark": "bar",
   "encoding": {
     "x": {
@@ -31,12 +32,6 @@
         "title": "% of total Time"
       }
     },
-    "y": {
-      "field": "Activity",
-      "type": "nominal",
-      "scale": {
-        "rangeStep": 12
-      }
-    }
+    "y": {"field": "Activity", "type": "nominal"}
   }
 }

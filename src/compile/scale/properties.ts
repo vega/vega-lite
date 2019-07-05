@@ -162,7 +162,7 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
           tieBreakByComparing<VgScale, any>((v1, v2) => {
             switch (property) {
               case 'range':
-                // For range step, prefer larger step
+                // For step, prefer larger step
                 if (v1.step && v2.step) {
                   return v1.step - v2.step;
                 }

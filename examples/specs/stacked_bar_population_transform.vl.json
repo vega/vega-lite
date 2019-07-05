@@ -16,6 +16,7 @@
       "sort": [{"field": "gender", "order": "descending"}]
     }
   ],
+  "width": {"step": 17},
   "mark": "bar",
   "encoding": {
     "y": {
@@ -26,8 +27,7 @@
     "y2": {"field": "v2"},
     "x": {
       "field": "age",
-      "type": "ordinal",
-      "scale": {"rangeStep": 17}
+      "type": "ordinal"
     },
     "color": {
       "field": "gender",

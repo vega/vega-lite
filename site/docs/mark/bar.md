@@ -56,7 +56,7 @@ Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a s
 
 ### Bar Chart
 
-If we map a different discrete field to the `y` channel, we can produce a horizontal bar chart. Specifying `scale.rangeStep` of the discrete field will adjust the [band and point scale's range step](scale.html#band).
+If we map a different discrete field to the `y` channel, we can produce a horizontal bar chart. Specifying `"height": {"step": 17}` will adjust the bar's height per discrete step.
 
 <span class="vl-example" data-name="bar_aggregate"></span>
 
