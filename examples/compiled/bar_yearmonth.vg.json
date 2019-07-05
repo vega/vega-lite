@@ -40,9 +40,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], '%b %Y'), \"Mean of temp\": format(datum[\"mean_temp\"], \"\")}"
-          },
           "xc": {"scale": "x", "field": "yearmonth_date"},
           "width": {"value": 5},
           "y": {"scale": "y", "field": "mean_temp"},

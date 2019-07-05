@@ -25,8 +25,8 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "stroke": {"value": "#4c78a8"},
-          "fill": {"value": "transparent"}
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#4c78a8"}
         }
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]

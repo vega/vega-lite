@@ -124,9 +124,6 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
-              "tooltip": {
-                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
-              },
               "x": {"scale": "x", "field": "gender"},
               "width": {"scale": "x", "band": true},
               "y": {"scale": "y", "field": "sum_people"},

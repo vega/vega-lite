@@ -17,41 +17,39 @@ This page describe how to adjust width and height of visualizations in Vega-lite
 
 ## Width and Height of Single and Layered Plots
 
-[Single view](spec.html#single) and [layer](layer.html) specifications can contain `width` and `height` properties for customizing the view size. By default, `width` and `height` set the size of the data rectangle (plotting) dimensions. To set the overall size of the visualization, the [`autosize`](#autosize) property can be specified.
-
-### Explicitly Specified Width and Height
-
-When the top-level `width` property is specified, the width of the single plot is the specified value for all scale types of the x-axis. Similarly, when the top-level `height` property is specified, the height of the single plot is the specified value for all scale types of the y-axis.
-
-<span class="vl-example" data-name="bar_size_explicit"></span>
-
-**Note**: If numeric `rangeStep` for a discrete x/y-scale is specified when `width` / `height` is specified, the `rangeStep` will be ignored (overridden with `null`).
-
-**Warning**: If the cardinality of the x/y-field's domain is too high, the `rangeStep` might become less than one pixel and the mark might not appear correctly.
-
-<span class="vl-example" data-name="bar_size_explicit_bad"></span>
+[Single view](spec.html#single) and [layer](layer.html) specifications can contain the `width` and `height` properties for customizing the view size. By default, `width` and `height` set the size of the data rectangle (plotting) dimensions. To set the overall size of the visualization, the [`autosize`](#autosize) property can be specified.
 
 ### Default Width and Height
 
-If the top-level `width` / `height` property is not specified, the width / height of a single view is determined by the properties of the `x` / `y` channel:
+If the top-level `width` / `height` property is not specified, the width / height of a single view is determined based on the view config.
 
-- If (1) the view's [`autosize`](#autosize) type is `"fit"` or (2) the `x` / `y` axis has a continuous scale (either quantitative or time) or a discrete scale with `rangeStep` = `null`, the width/height is drawn directly from the [`config.view.width`](spec.html#config) / [`config.view.height`](spec.html#config) property.
+The width will be based on `config.view.continuousWidth` for a plot with a continuous x-field (`200` by default). For a plot with either a discrete x-field or no x-field, the width is based on `config.view.discreteWidth`, which is set to have step width based on the default step size (`config.view.step` -- `20` by default).
 
-- If the [`autosize`](#autosize) type is not `"fit"` and the `x` / `y` channel has a [band or point scale](scale.html#band) in which `rangeStep` is a number or unspecified, the width / height is [determined based on the scale's range step, paddings, and the cardinality of the encoded field (the number of possible distinct values of the field)](scale.html#band).
+Similarly, the height will be based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` for a plot with either a discrete y-field or no y-field.
 
-This example shows a plot with a continuous y-scale and a discrete x-scale:
+For example, the following bar chart has a fixed 200px height and a 20px width per x-field's discrete step.
 
 <span class="vl-example" data-name="bar_size_default"></span>
 
-- If the `x` / `y` channel has a discrete scale with `rangeStep` = `null`, the width / height is drawn directly from the [`config.view.width`](spec.html#config) / [`config.view.height`](spec.html#config) property and the band of the scale will be adjusted to fit to the width.
+### Specifying Fixed Width and Height
+
+The view `width` and `height` property can be set to numbers indicating fixed width and height of the plot.
+
+For a discrete axis, specifying a fixed size (e.g., width in the following plot) would automatically scale the discrete step to fit the size.
 
 <span class="vl-example" data-name="bar_size_fit"></span>
 
-- If `x` / `y` is not mapped to a field, the width / height is derived from [config.scale.rangeStep](#scale-config) except for the width when the mark is `text`. In that case, the width will be drawn from [config.scale.textXRangeStep](#scale-config).
+**Warning**: If the cardinality of a discrete x- or y-field is too high, the plot might become too packed.
 
-For example, the following plot use `21` as a default height.
+<span class="vl-example" data-name="bar_size_explicit_bad"></span>
 
-<span class="vl-example" data-name="bar_1d_rangestep_config"></span>
+### Specifying Width and Height per Discrete Step
+
+For a discrete x-field or discrete y-field, we can also set `width` (or `height`) to be an object indicating the width (or height) per discrete `step`.
+
+<span class="vl-example" data-name="bar_size_step_small"></span>
+
+**Note:** By default, Vega-Lite sets padding for [band and point scales](https://vega.github.io/vega-lite/docs/scale.html#band) such that _width/height = number of unique values \* step_. See [the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#band) to read more about the relationship among width/height, step, and other scale properties.
 
 ### Autosize
 
@@ -76,13 +74,13 @@ In order to `fit` a chart into specified dimensions, it has to satisfy two requi
 
 #### Example
 
-Below is an example of a bar chart that fits exactly into 300px width.
+Below is an example of a bar chart that fits exactly into 300px width and the default 200px height.
 
 <span class="vl-example" data-name="bar_fit"></span>
 
 ## Width and Height of Multi-View Displays
 
-Currently, width and height of multi-view displays including [concatenated](concat.html), [faceted](facet.html), and [repeated](repeat.html) are determined based on the size of the composed unit and layered views. To adjust the size of multi-view displays, you can `width` and `height` of the inner unit and layered views.
+The width and height of multi-view displays including [concatenated](concat.html), [faceted](facet.html), and [repeated](repeat.html) are determined based on the size of the composed unit and layered views. To adjust the size of multi-view displays, you can set the `width` and `height` properties of the inner unit and layered views.
 
 For example, you can adjust `width` and `height` of the inner single view specification to adjust the size of a faceted plot.
 

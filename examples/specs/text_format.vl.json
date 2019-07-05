@@ -1,6 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "data": {"url": "data/cars.json"},
+  "width": 50,
   "mark": "text",
   "encoding": {
     "y": {

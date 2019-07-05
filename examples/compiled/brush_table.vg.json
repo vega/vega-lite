@@ -53,19 +53,19 @@
   "signals": [
     {"name": "concat_0_width", "value": 200},
     {"name": "concat_0_height", "value": 200},
-    {"name": "concat_1_concat_0_width", "value": 90},
+    {"name": "concat_1_concat_0_width", "value": 50},
     {"name": "concat_1_concat_0_y_step", "value": 20},
     {
       "name": "concat_1_concat_0_height",
       "update": "bandspace(domain('concat_1_concat_0_y').length, 1, 0.5) * concat_1_concat_0_y_step"
     },
-    {"name": "concat_1_concat_1_width", "value": 90},
+    {"name": "concat_1_concat_1_width", "value": 50},
     {"name": "concat_1_concat_1_y_step", "value": 20},
     {
       "name": "concat_1_concat_1_height",
       "update": "bandspace(domain('concat_1_concat_1_y').length, 1, 0.5) * concat_1_concat_1_y_step"
     },
-    {"name": "concat_1_concat_2_width", "value": 90},
+    {"name": "concat_1_concat_2_width", "value": 50},
     {"name": "concat_1_concat_2_y_step", "value": 20},
     {
       "name": "concat_1_concat_2_height",
@@ -376,9 +376,6 @@
                 },
                 {"value": "grey"}
               ],
-              "tooltip": {
-                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
-              },
               "x": {"scale": "concat_0_x", "field": "Horsepower"},
               "y": {"scale": "concat_0_y", "field": "Miles_per_Gallon"}
             }
@@ -519,9 +516,6 @@
               "encode": {
                 "update": {
                   "fill": {"value": "black"},
-                  "tooltip": {
-                    "signal": "{\"Horsepower\": ''+datum[\"Horsepower\"], \"row_number\": ''+datum[\"row_number\"]}"
-                  },
                   "x": {"signal": "concat_1_concat_0_width", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_0_y", "field": "row_number"},
                   "text": {"signal": "''+datum[\"Horsepower\"]"},
@@ -552,9 +546,6 @@
               "encode": {
                 "update": {
                   "fill": {"value": "black"},
-                  "tooltip": {
-                    "signal": "{\"Miles_per_Gallon\": ''+datum[\"Miles_per_Gallon\"], \"row_number\": ''+datum[\"row_number\"]}"
-                  },
                   "x": {"signal": "concat_1_concat_1_width", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_1_y", "field": "row_number"},
                   "text": {"signal": "''+datum[\"Miles_per_Gallon\"]"},
@@ -585,9 +576,6 @@
               "encode": {
                 "update": {
                   "fill": {"value": "black"},
-                  "tooltip": {
-                    "signal": "{\"Origin\": ''+datum[\"Origin\"], \"row_number\": ''+datum[\"row_number\"]}"
-                  },
                   "x": {"signal": "concat_1_concat_2_width", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_2_y", "field": "row_number"},
                   "text": {"signal": "''+datum[\"Origin\"]"},

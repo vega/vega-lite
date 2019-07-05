@@ -1,8 +1,7 @@
 import {isNumber} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
 import {isFieldDef} from '../../channeldef';
-import {Config} from '../../config';
-import * as log from '../../log';
+import {Config, DEFAULT_STEP, getViewConfigDiscreteStep} from '../../config';
 import {MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {getFirstDefined} from '../../util';
@@ -117,9 +116,9 @@ function defaultSizeRef(
       if (scaleType === ScaleType.POINT) {
         const scaleRange = scale.get('range');
         if (isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
-          return {value: scaleRange.step - 1};
+          return {value: scaleRange.step - 2};
         }
-        log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL);
+        return {value: DEFAULT_STEP - 2};
       } else {
         // BAND
         return ref.bandRef(scaleName);
@@ -130,12 +129,13 @@ function defaultSizeRef(
     }
   }
   // No Scale
+
+  const step = getViewConfigDiscreteStep(config.view, sizeChannel);
+
   const value = getFirstDefined(
     // No scale is like discrete bar (with one item)
     config[mark].discreteBandSize,
-    config.scale.rangeStep ? config.scale.rangeStep - 1 : undefined,
-    // If somehow default rangeStep is set to null or undefined, use 20 as back up
-    20
+    step - 2
   );
   return {value};
 }

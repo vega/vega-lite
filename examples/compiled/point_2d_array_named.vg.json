@@ -48,9 +48,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
-          },
           "x": {"scale": "plotname_x", "field": "a"},
           "y": {"scale": "plotname_y", "field": "b"}
         }

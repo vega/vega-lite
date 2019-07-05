@@ -39,7 +39,7 @@ import {
 } from './channeldef';
 import {Config} from './config';
 import * as log from './log';
-import {Mark} from './mark';
+import {Mark, MarkDef} from './mark';
 import {EncodingFacetMapping} from './spec/facet';
 import {getDateTimeComponents} from './timeunit';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
@@ -109,7 +109,7 @@ export interface Encoding<F extends Field> {
    * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
    *
    * _Note:_
-   * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.
+   * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    * 2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme).
    */
   color?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
@@ -118,7 +118,7 @@ export interface Encoding<F extends Field> {
    * Fill color of the marks.
    * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
    *
-   * _Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`).
+   * _Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    */
   fill?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
 
@@ -126,7 +126,7 @@ export interface Encoding<F extends Field> {
    * Stroke color of the marks.
    * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
    *
-   * _Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`).
+   * _Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    */
 
   stroke?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
@@ -199,7 +199,9 @@ export interface Encoding<F extends Field> {
   text?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
 
   /**
-   * The tooltip text to show upon mouse hover.
+   * The tooltip text to show upon mouse hover. Specifying `tooltip` encoding overrides [the `tooltip` property in the mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
+   *
+   * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite.
    */
   tooltip?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F> | TextFieldDef<F>[] | null;
 
@@ -378,7 +380,9 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
   return true;
 }
 
-export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encoding<string> {
+export function normalizeEncoding(encoding: Encoding<string>, markDef: MarkDef): Encoding<string> {
+  const mark = markDef.type;
+
   return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel | string) => {
     if (!isChannel(channel)) {
       // Drop invalid channel
@@ -402,7 +406,8 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
     }
 
     // Drop color if either fill or stroke is specified
-    if (channel === 'color' && ('fill' in encoding || 'stroke' in encoding)) {
+
+    if (channel === 'color' && (markDef.filled ? 'fill' in encoding : 'stroke' in encoding)) {
       log.warn(log.message.droppingColor('encoding', {fill: 'fill' in encoding, stroke: 'stroke' in encoding}));
       return normalizedEncoding;
     }

@@ -37,9 +37,9 @@
   "config": {
     "scale": {
       "bandPaddingInner": 0,
-      "bandPaddingOuter": 0,
-      "rangeStep": 40
+      "bandPaddingOuter": 0
     },
+    "view": {"step": 40},
     "range": {
       "ramp": {
         "scheme": "yellowgreenblue"

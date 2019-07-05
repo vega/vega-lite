@@ -15,6 +15,7 @@ import {isUnitSpec, NormalizedUnitSpec} from '../spec/unit';
 import {keys, omit} from '../util';
 import {NonFacetUnitNormalizer, NormalizerParams} from './base';
 import {PathOverlayNormalizer} from './pathoverlay';
+import {RangeStepNormalizer} from './rangestep';
 import {RuleForRangedLineNormalizer} from './ruleforrangedline';
 
 export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec, ExtendedLayerSpec> {
@@ -23,7 +24,8 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     errorBarNormalizer,
     errorBandNormalizer,
     new PathOverlayNormalizer(),
-    new RuleForRangedLineNormalizer()
+    new RuleForRangedLineNormalizer(),
+    new RangeStepNormalizer()
   ];
 
   public map(spec: GenericSpec<FacetedUnitSpec, ExtendedLayerSpec>, params: NormalizerParams) {

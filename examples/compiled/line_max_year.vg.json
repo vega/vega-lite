@@ -39,9 +39,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], '%b %Y'), \"Max of temp_max\": format(datum[\"max_temp_max\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "yearmonth_date"},
           "y": {"scale": "y", "field": "max_temp_max"},
           "defined": {

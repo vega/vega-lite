@@ -304,9 +304,6 @@
             },
             {"value": "grey"}
           ],
-          "tooltip": {
-            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": format(datum[\"Cylinders\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
-          },
           "x": [
             {
               "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",

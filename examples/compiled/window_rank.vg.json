@@ -80,9 +80,6 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "team"},
-              "tooltip": {
-                "signal": "{\"matchday\": ''+datum[\"matchday\"], \"rank\": ''+datum[\"rank\"], \"team\": ''+datum[\"team\"]}"
-              },
               "x": {"scale": "x", "field": "matchday"},
               "y": {"scale": "y", "field": "rank"}
             }

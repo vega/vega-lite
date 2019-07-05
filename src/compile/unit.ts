@@ -13,6 +13,7 @@ import {
 } from '../channel';
 import {getTypedFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../channeldef';
 import {Config} from '../config';
+import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
 import {Legend} from '../legend';
@@ -29,6 +30,7 @@ import {AxisIndex} from './axis/component';
 import {parseUnitAxes} from './axis/parse';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
+import {initLayoutSize} from './layoutsize/init';
 import {parseUnitLayoutSize} from './layoutsize/parse';
 import {LegendIndex} from './legend/component';
 import {normalizeMarkDef} from './mark/init';
@@ -75,22 +77,27 @@ export class UnitModel extends ModelWithField {
   ) {
     super(spec, 'unit', parent, parentGivenName, config, repeater, undefined, spec.view);
 
-    this.initSize({
-      ...parentGivenSize,
-      ...(spec.width ? {width: spec.width} : {}),
-      ...(spec.height ? {height: spec.height} : {})
-    });
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
 
-    const encoding = (this.encoding = normalizeEncoding(
-      replaceRepeaterInEncoding(spec.encoding || {}, repeater),
-      mark
-    ));
+    const encodingWithRepeaterReplaced = replaceRepeaterInEncoding(spec.encoding || {}, repeater);
 
-    this.markDef = normalizeMarkDef(spec.mark, encoding, config);
+    this.markDef = normalizeMarkDef(spec.mark, encodingWithRepeaterReplaced, config, {
+      graticule: spec.data && isGraticuleGenerator(spec.data)
+    });
+    const encoding = (this.encoding = normalizeEncoding(encodingWithRepeaterReplaced, this.markDef));
+
+    this.size = initLayoutSize({
+      encoding,
+      fit,
+      size: {
+        ...parentGivenSize,
+        ...(spec.width ? {width: spec.width} : {}),
+        ...(spec.height ? {height: spec.height} : {})
+      }
+    });
 
     // calculate stack properties
-    this.stack = stack(mark, encoding, this.config.stack);
+    this.stack = stack(mark, encoding);
     this.specifiedScales = this.initScales(mark, encoding);
 
     this.specifiedAxes = this.initAxes(encoding);

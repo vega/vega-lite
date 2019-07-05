@@ -1,9 +1,9 @@
 import {PositionFieldDef, SecondaryFieldDef} from '../../../src/channeldef';
 import {bar} from '../../../src/compile/mark/bar';
 import {fieldInvalidPredicate, fieldInvalidTestValueRef} from '../../../src/compile/mark/valueref';
+import {DEFAULT_STEP} from '../../../src/config';
 import * as log from '../../../src/log';
 import {defaultBarConfig} from '../../../src/mark';
-import {defaultScaleConfig} from '../../../src/scale';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Bar', () => {
@@ -200,9 +200,9 @@ describe('Mark: Bar', () => {
     });
     const props = bar.encodeEntry(model);
 
-    it('should draw bar from zero to field value and y with center position and height = rangeStep - 1', () => {
+    it('should draw bar from zero to field value and y with center position and height = discreteHeight - 2', () => {
       expect(props.yc).toEqual({scale: 'y', field: 'Origin'});
-      expect(props.height).toEqual({value: defaultScaleConfig.rangeStep - 1});
+      expect(props.height).toEqual({value: DEFAULT_STEP - 2});
       expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
       expect(props.x2).toEqual({scale: 'x', value: 0});
       expect(props.width).toBeUndefined();
@@ -704,7 +704,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should not use config.mark.size', () => {
-      expect(props.width).toEqual({value: 19});
+      expect(props.width).toEqual({value: 18});
     });
   });
 

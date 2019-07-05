@@ -101,7 +101,7 @@ describe('Selection time unit', () => {
           y: {field: 'price', type: 'quantitative'}
         }
       },
-      {invalidValues: 'hide'}
+      {mark: {invalid: 'hide'}}
     );
     const data0 = getData(model).filter(d => d.name === 'data_0')[0].transform;
     const data1 = getData(model).filter(d => d.name === 'data_1')[0].transform;

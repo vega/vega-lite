@@ -2,8 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
-  "width": 120,
-  "height": 120,
+  "height": 200,
   "style": "cell",
   "data": [
     {
@@ -21,6 +20,13 @@
       ]
     }
   ],
+  "signals": [
+    {"name": "x_step", "value": 40},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    }
+  ],
   "marks": [
     {
       "name": "marks",
@@ -30,9 +36,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Origin"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "__count"},
@@ -46,7 +49,7 @@
       "name": "x",
       "type": "band",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
-      "range": [0, {"signal": "width"}],
+      "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
     },

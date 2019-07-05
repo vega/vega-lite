@@ -24,7 +24,12 @@ import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, getFirstDefined} from '../../util';
 import {getMarkConfig} from '../common';
 
-export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, config: Config) {
+export function normalizeMarkDef(
+  mark: Mark | MarkDef,
+  encoding: Encoding<string>,
+  config: Config,
+  {graticule}: {graticule: boolean}
+) {
   const markDef: MarkDef = isMarkDef(mark) ? {...mark} : {type: mark};
 
   // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
@@ -42,7 +47,7 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
 
   const specifiedFilled = markDef.filled;
   if (specifiedFilled === undefined) {
-    markDef.filled = filled(markDef, config);
+    markDef.filled = graticule ? false : filled(markDef, config);
   }
 
   // set cursor, which should be pointer if href channel is present unless otherwise specified

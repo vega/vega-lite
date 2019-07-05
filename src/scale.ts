@@ -124,6 +124,8 @@ export function scaleTypePrecedence(scaleType: ScaleType): number {
 export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'time', 'utc'];
 const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
 
+export const QUANTITATIVE_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'symlog'];
+
 export const CONTINUOUS_TO_DISCRETE_SCALES: ScaleType[] = ['quantile', 'quantize', 'threshold'];
 const CONTINUOUS_TO_DISCRETE_INDEX = toSet(CONTINUOUS_TO_DISCRETE_SCALES);
 
@@ -173,24 +175,6 @@ export interface ScaleConfig {
    * If true, values that exceed the data domain are clamped to either the minimum or maximum range value
    */
   clamp?: boolean;
-  /**
-   *  Default range step for `x` band and point scales of text marks.
-   *
-   * __Default value:__ `90`
-   *
-   *  @minimum 0
-   */
-  textXRangeStep?: number; // FIXME: consider if we will rename this "tableColumnWidth"
-
-  /**
-   * Default range step for band and point scales of (1) the `y` channel
-   * and (2) the `x` channel when the mark is not `text`.
-   *
-   * __Default value:__ `20`
-   *
-   * @minimum 0
-   */
-  rangeStep?: number | null;
 
   /**
    * Default inner padding for `x` and `y` band-ordinal scales.
@@ -225,14 +209,6 @@ export interface ScaleConfig {
   barBandPaddingInner?: number;
 
   /**
-   * Default outer padding for `x` and `y` band-ordinal scales of `"bar"` marks.
-   * If not specified, by default, band scale's paddingOuter is paddingInner/2.
-   * @minimum 0
-   * @maximum 1
-   */
-  barBandPaddingOuter?: number;
-
-  /**
    * Default inner padding for `x` and `y` band-ordinal scales of `"rect"` marks.
    *
    * __Default value:__ `0`
@@ -241,14 +217,6 @@ export interface ScaleConfig {
    * @maximum 1
    */
   rectBandPaddingInner?: number;
-
-  /**
-   * Default outer padding for `x` and `y` band-ordinal scales of `"rect"` marks.
-   * If not specified, by default, band scale's paddingOuter is paddingInner/2.
-   * @minimum 0
-   * @maximum 1
-   */
-  rectBandPaddingOuter?: number;
 
   /**
    * Default padding for continuous scales.
@@ -288,7 +256,7 @@ export interface ScaleConfig {
   /**
    * The default max value for mapping quantitative fields to bar's size/bandSize.
    *
-   * If undefined (default), we will use the scale's `rangeStep` - 1.
+   * If undefined (default), we will use the axis's size (width or height) - 1.
    * @minimum 0
    */
   maxBandSize?: number;
@@ -393,8 +361,6 @@ export interface ScaleConfig {
 }
 
 export const defaultScaleConfig: ScaleConfig = {
-  textXRangeStep: 90,
-  rangeStep: 20,
   pointPadding: 0.5,
 
   barBandPaddingInner: 0.1,
@@ -408,7 +374,7 @@ export const defaultScaleConfig: ScaleConfig = {
   minOpacity: 0.3,
   maxOpacity: 0.8,
 
-  // FIXME: revise if these *can* become ratios of rangeStep
+  // FIXME: revise if these *can* become ratios of width/height step
   minSize: 9, // Point size is area. For square point, 9 = 3 pixel ^ 2, not too small!
 
   minStrokeWidth: 1,
@@ -521,23 +487,11 @@ export interface Scale {
    *
    * 1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.
    *
-   * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`) or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales.
+   * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`).
    */
   range?: number[] | string[] | string;
 
   // ordinal
-  /**
-   * The distance between the starts of adjacent bands or points in [band](https://vega.github.io/vega-lite/docs/scale.html#band) and [point](https://vega.github.io/vega-lite/docs/scale.html#point) scales.
-   *
-   * If `rangeStep` is `null` or if the view contains the scale's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` for `x` scales and `height` for `y` scales), `rangeStep` will be automatically determined to fit the size of the view.
-   *
-   * __Default value:__  derived the [scale config](https://vega.github.io/vega-lite/docs/config.html#scale-config)'s `textXRangeStep` (`90` by default) for x-scales of `text` marks and `rangeStep` (`21` by default) for x-scales of other marks and y-scales.
-   *
-   * __Warning__: If `rangeStep` is `null` and the cardinality of the scale's domain is higher than `width` or `height`, the rangeStep might become less than one pixel and the mark might not appear correctly.
-   *
-   * @minimum 0
-   */
-  rangeStep?: number | null;
 
   /**
    * A string indicating a color [scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme) name (e.g., `"category10"` or `"blues"`) or a [scheme parameter object](https://vega.github.io/vega-lite/docs/scale.html#scheme-params).
@@ -666,7 +620,6 @@ const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {
   domain: 1,
   align: 1,
   range: 1,
-  rangeStep: 1,
   scheme: 1,
   bins: 1,
   // Other properties
@@ -689,14 +642,7 @@ const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {
 
 export const SCALE_PROPERTIES = flagKeys(SCALE_PROPERTY_INDEX);
 
-const {
-  type,
-  domain,
-  range,
-  rangeStep,
-  scheme,
-  ...NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX
-} = SCALE_PROPERTY_INDEX;
+const {type, domain, range, scheme, ...NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX} = SCALE_PROPERTY_INDEX;
 
 export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = flagKeys(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
 
@@ -719,7 +665,6 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'padding':
       return isContinuousToContinuous(scaleType) || contains(['point', 'band'], scaleType);
     case 'paddingOuter':
-    case 'rangeStep':
     case 'align':
       return contains(['point', 'band'], scaleType);
     case 'paddingInner':
@@ -774,7 +719,6 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
     case 'padding':
     case 'paddingInner':
     case 'paddingOuter':
-    case 'rangeStep':
     case 'reverse':
     case 'round':
     case 'clamp':

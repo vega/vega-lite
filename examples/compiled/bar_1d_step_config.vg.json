@@ -3,7 +3,7 @@
   "autosize": "pad",
   "padding": 5,
   "width": 200,
-  "height": 21,
+  "height": 15,
   "style": "cell",
   "data": [
     {
@@ -32,13 +32,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"population\": format(datum[\"sum_people\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "sum_people"},
           "x2": {"scale": "x", "value": 0},
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 20}
+          "height": {"value": 13}
         }
       }
     }

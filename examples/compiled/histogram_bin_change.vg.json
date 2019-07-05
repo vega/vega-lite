@@ -53,9 +53,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_30_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_30_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_30_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_30_IMDB_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-          },
           "x2": [
             {
               "test": "datum[\"bin_maxbins_30_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_30_IMDB_Rating\"])",

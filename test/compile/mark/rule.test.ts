@@ -210,12 +210,11 @@ describe('Mark: Rule', () => {
       mark: 'rule',
       encoding: {
         y: {field: 'a', type: 'ordinal'},
-        x: {aggregate: 'sum', field: 'b', type: 'quantitative'},
+        x: {aggregate: 'sum', field: 'b', type: 'quantitative', stack: 'zero'},
         color: {field: 'Origin', type: 'nominal'}
       },
       config: {
-        stack: 'zero',
-        invalidValues: null
+        mark: {invalid: null}
       }
     });
 
@@ -233,12 +232,11 @@ describe('Mark: Rule', () => {
       mark: 'rule',
       encoding: {
         x: {field: 'a', type: 'ordinal'},
-        y: {aggregate: 'sum', field: 'b', type: 'quantitative'},
+        y: {aggregate: 'sum', field: 'b', type: 'quantitative', stack: 'zero'},
         color: {field: 'Origin', type: 'nominal'}
       },
       config: {
-        stack: 'zero',
-        invalidValues: null
+        mark: {invalid: null}
       }
     });
 

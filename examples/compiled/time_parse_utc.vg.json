@@ -40,9 +40,6 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "mean_Horsepower"},
           "text": {"signal": "timeFormat(datum[\"year_Year\"], '%Y')"},

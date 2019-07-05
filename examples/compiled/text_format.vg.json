@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
-  "width": 90,
+  "width": 50,
   "style": "cell",
   "data": [
     {
@@ -37,9 +37,6 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \".2f\")}"
-          },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "Origin"},
           "text": {"signal": "format(datum[\"mean_Horsepower\"], \".2f\")"},

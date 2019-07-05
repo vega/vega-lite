@@ -113,9 +113,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"Mean of Miles_per_Gallon\": format(datum[\"mean_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
-          },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "mean_Miles_per_Gallon"},
           "defined": {
