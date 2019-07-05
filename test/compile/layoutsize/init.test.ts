@@ -14,7 +14,7 @@ describe('compile/layout', () => {
           }
         });
 
-        expect(localLogger.warns[0]).toEqual(log.message.cannotUseStepWithContinuous('width'));
+        expect(localLogger.warns[0]).toEqual(log.message.stepDropped('width', 'continuous'));
 
         expect(model.component.layoutSize.get('width')).toBe(200);
       })
