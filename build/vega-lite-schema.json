@@ -124,6 +124,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "aspect": {
+          "description": "Whether to keep aspect ratio of image marks.",
+          "type": "boolean"
+        },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
@@ -158,7 +162,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -275,7 +279,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -1146,6 +1150,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "aspect": {
+          "description": "Whether to keep aspect ratio of image marks.",
+          "type": "boolean"
+        },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
@@ -1176,7 +1184,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -1243,7 +1251,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -2110,6 +2118,17 @@
           ],
           "description": "The tooltip text to show upon mouse hover. Specifying `tooltip` encoding overrides [the `tooltip` property in the mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def).\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite."
         },
+        "url": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/TextValueDefWithCondition"
+            }
+          ],
+          "description": "The URL of an image mark."
+        },
         "x": {
           "anyOf": [
             {
@@ -2975,6 +2994,10 @@
         "headerRow": {
           "$ref": "#/definitions/HeaderConfig",
           "description": "Header configuration, which determines default properties for row [headers](https://vega.github.io/vega-lite/docs/header.html).\n\nFor a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config)."
+        },
+        "image": {
+          "$ref": "#/definitions/RectConfig",
+          "description": "Image-specific Config"
         },
         "legend": {
           "$ref": "#/definitions/LegendConfig",
@@ -3920,6 +3943,17 @@
             }
           ],
           "description": "The tooltip text to show upon mouse hover. Specifying `tooltip` encoding overrides [the `tooltip` property in the mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def).\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite."
+        },
+        "url": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/TextValueDefWithCondition"
+            }
+          ],
+          "description": "The URL of an image mark."
         },
         "x": {
           "anyOf": [
@@ -7121,6 +7155,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "aspect": {
+          "description": "Whether to keep aspect ratio of image marks.",
+          "type": "boolean"
+        },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
@@ -7155,7 +7193,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -7261,7 +7299,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -7650,6 +7688,7 @@
         "area",
         "bar",
         "line",
+        "image",
         "trail",
         "point",
         "text",
@@ -7674,6 +7713,10 @@
           "maximum": 360,
           "minimum": 0,
           "type": "number"
+        },
+        "aspect": {
+          "description": "Whether to keep aspect ratio of image marks.",
+          "type": "boolean"
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
@@ -7709,7 +7752,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -7798,7 +7841,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -7941,6 +7984,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "aspect": {
+          "description": "Whether to keep aspect ratio of image marks.",
+          "type": "boolean"
+        },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
@@ -7984,7 +8031,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -8101,7 +8148,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -8562,6 +8609,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "aspect": {
+          "description": "Whether to keep aspect ratio of image marks.",
+          "type": "boolean"
+        },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
@@ -8600,7 +8651,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -8689,7 +8740,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -9388,6 +9439,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "aspect": {
+          "description": "Whether to keep aspect ratio of image marks.",
+          "type": "boolean"
+        },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
@@ -9437,7 +9492,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -9526,7 +9581,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -10549,7 +10604,8 @@
         "text",
         "tooltip",
         "href",
-        "key"
+        "key",
+        "url"
       ],
       "type": "string"
     },
@@ -10987,6 +11043,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "aspect": {
+          "description": "Whether to keep aspect ratio of image marks.",
+          "type": "boolean"
+        },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
@@ -11021,7 +11081,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -11114,7 +11174,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -11327,6 +11387,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "aspect": {
+          "description": "Whether to keep aspect ratio of image marks.",
+          "type": "boolean"
+        },
         "bandSize": {
           "description": "The width of the ticks.\n\n__Default value:__  3/4 of step (width step for horizontal ticks and height step for vertical ticks).",
           "minimum": 0,
@@ -11366,7 +11430,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -11455,7 +11519,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",

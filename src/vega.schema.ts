@@ -546,6 +546,16 @@ export interface BaseMarkConfig {
   y?: number | 'height';
 
   /**
+   * Width of the marks.
+   */
+  width?: number;
+
+  /**
+   * Height of the marks.
+   */
+  height?: number;
+
+  /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    *
    * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
@@ -560,17 +570,12 @@ export interface BaseMarkConfig {
   y2?: number | 'width';
 
   /**
-   * Width of the marks.
+   * Whether to keep aspect ratio of image marks.
    */
-  width?: number;
+  aspect?: boolean;
 
   /**
-   * Height of the marks.
-   */
-  height?: number;
-
-  /**
-   * Default Fill Color.  This has higher precedence than `config.color`
+   * Default Fill Color.  This has higher precedence than `config.color`.
    *
    * __Default value:__ (None)
    *
@@ -578,7 +583,7 @@ export interface BaseMarkConfig {
   fill?: Color;
 
   /**
-   * Default Stroke Color.  This has higher precedence than `config.color`
+   * Default Stroke Color.  This has higher precedence than `config.color`.
    *
    * __Default value:__ (None)
    *
@@ -873,10 +878,11 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
   x2: 1,
   y2: 1,
   width: 1,
-  height: 1
+  height: 1,
+  aspect: 1
 
   // commented below are vg channel that do not have mark config.
-  // xc'|'width'|'yc'|'height'
+  // xc'|'yc'
   // clip: 1,
   // endAngle: 1,
   // innerRadius: 1,

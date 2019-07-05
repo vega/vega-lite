@@ -8,7 +8,7 @@ export interface MarkCompiler {
   /**
    * Underlying vega Mark type for the Vega-Lite mark.
    */
-  vgMark: 'area' | 'line' | 'symbol' | 'rect' | 'rule' | 'text' | 'trail' | 'shape';
+  vgMark: 'area' | 'line' | 'image' | 'rect' | 'rule' | 'shape' | 'symbol' | 'text' | 'trail';
 
   encodeEntry: (model: UnitModel) => VgEncodeEntry;
 
