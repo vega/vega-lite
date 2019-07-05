@@ -20,7 +20,7 @@ export const rect: MarkCompiler = {
       ...mixins.baseEncodeEntry(model, {
         align: 'ignore',
         baseline: 'ignore',
-        color: 'ignore',
+        color: 'include',
         orient: 'ignore',
         size: 'ignore'
       }),
