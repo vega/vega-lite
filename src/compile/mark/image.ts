@@ -7,7 +7,13 @@ export const image: MarkCompiler = {
   vgMark: 'image',
   encodeEntry: (model: UnitModel) => {
     return {
-      ...mixins.baseEncodeEntry(model, {color: 'ignore', size: 'ignore', orient: 'ignore'}),
+      ...mixins.baseEncodeEntry(model, {
+        align: 'ignore',
+        baseline: 'ignore',
+        color: 'ignore',
+        orient: 'ignore',
+        size: 'ignore'
+      }),
       ...rectPosition(model, 'x', 'image'),
       ...rectPosition(model, 'y', 'image'),
       ...mixins.text(model, 'url')

@@ -9,7 +9,13 @@ export const geoshape: MarkCompiler = {
   vgMark: 'shape',
   encodeEntry: (model: UnitModel) => {
     return {
-      ...mixins.baseEncodeEntry(model, {color: 'include', size: 'ignore', orient: 'ignore'})
+      ...mixins.baseEncodeEntry(model, {
+        align: 'ignore',
+        baseline: 'ignore',
+        color: 'include',
+        size: 'ignore',
+        orient: 'ignore'
+      })
     };
   },
   postEncodingTransform: (model: UnitModel): VgPostEncodingTransform[] => {

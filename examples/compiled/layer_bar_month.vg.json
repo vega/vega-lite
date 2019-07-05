@@ -74,8 +74,8 @@
         "update": {
           "stroke": {"value": "firebrick"},
           "x": {"value": 0},
-          "y": {"scale": "y", "field": "mean_precipitation"},
           "x2": {"field": {"group": "width"}},
+          "y": {"scale": "y", "field": "mean_precipitation"},
           "strokeWidth": {"value": 3}
         }
       }
