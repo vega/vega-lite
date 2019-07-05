@@ -55,7 +55,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"% of total Time\": format(datum[\"PercentOfTotal\"], \"\"), \"Activity\": ''+datum[\"Activity\"]}"
+            "signal": "{\"% of total Time\": format(datum[\"PercentOfTotal\"], \"\"), \"Activity\": datum[\"Activity\"]}"
           },
           "x": {"scale": "x", "field": "PercentOfTotal"},
           "x2": {"scale": "x", "value": 0},

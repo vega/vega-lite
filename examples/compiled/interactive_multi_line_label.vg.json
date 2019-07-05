@@ -117,7 +117,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "tooltip": {
-                "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+                "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": datum[\"symbol\"]}"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
@@ -143,7 +143,7 @@
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "symbol"},
           "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": datum[\"symbol\"]}"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
@@ -161,7 +161,7 @@
           "stroke": {"value": "transparent"},
           "isVoronoi": {"value": true},
           "tooltip": {
-            "signal": "{\"date\": timeFormat(datum.datum[\"date\"], '%b %d, %Y'), \"price\": format(datum.datum[\"price\"], \"\"), \"symbol\": ''+datum.datum[\"symbol\"]}"
+            "signal": "{\"date\": timeFormat(datum.datum[\"date\"], '%b %d, %Y'), \"price\": format(datum.datum[\"price\"], \"\"), \"symbol\": datum.datum[\"symbol\"]}"
           }
         }
       },
@@ -225,7 +225,7 @@
           "dy": {"value": -5},
           "fill": {"scale": "fill", "field": "symbol"},
           "tooltip": {
-            "signal": "{\"price\": format(datum[\"price\"], \"\"), \"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"symbol\": ''+datum[\"symbol\"]}"
+            "signal": "{\"price\": format(datum[\"price\"], \"\"), \"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"symbol\": datum[\"symbol\"]}"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},

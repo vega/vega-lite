@@ -144,7 +144,7 @@
                   "orient": {"value": "vertical"},
                   "fill": {"scale": "color", "field": "symbol"},
                   "tooltip": {
-                    "signal": "{\"Time\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"Price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+                    "signal": "{\"Time\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"Price\": format(datum[\"price\"], \"\"), \"symbol\": datum[\"symbol\"]}"
                   },
                   "x": {"scale": "x", "field": "date"},
                   "y": {"scale": "y", "field": "price_end"},

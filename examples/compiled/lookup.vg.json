@@ -49,7 +49,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"group\": ''+datum[\"group\"], \"Mean of age\": format(datum[\"mean_age\"], \"\")}"
+            "signal": "{\"group\": datum[\"group\"], \"Mean of age\": format(datum[\"mean_age\"], \"\")}"
           },
           "x": {"scale": "x", "field": "group"},
           "width": {"scale": "x", "band": true},

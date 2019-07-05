@@ -33,7 +33,7 @@
         "update": {
           "stroke": {"scale": "color", "field": "symbol"},
           "tooltip": {
-            "signal": "{\"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+            "signal": "{\"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": datum[\"symbol\"]}"
           },
           "x": {"value": 0},
           "y": {"scale": "y", "field": "mean_price"},

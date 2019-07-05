@@ -90,7 +90,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Day\": ''+datum[\"Day\"], \"Value\": format(datum[\"Value\"], \"\")}"
+            "signal": "{\"Day\": datum[\"Day\"], \"Value\": format(datum[\"Value\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Day"},
           "width": {"scale": "x", "band": true},
@@ -108,7 +108,7 @@
         "update": {
           "fill": {"value": "#e45755"},
           "tooltip": {
-            "signal": "{\"Day\": ''+datum[\"Day\"], \"baseline\": format(datum[\"baseline\"], \"\"), \"Value\": format(datum[\"Value\"], \"\")}"
+            "signal": "{\"Day\": datum[\"Day\"], \"baseline\": format(datum[\"baseline\"], \"\"), \"Value\": format(datum[\"Value\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Day"},
           "width": {"scale": "x", "band": true},
@@ -147,7 +147,7 @@
           "dy": {"value": -2},
           "fill": {"value": "black"},
           "tooltip": {
-            "signal": "{\"PM2.5 Value\": format(datum[\"ThresholdValue\"], \"\"), \"Threshold\": ''+datum[\"Threshold\"]}"
+            "signal": "{\"PM2.5 Value\": format(datum[\"ThresholdValue\"], \"\"), \"Threshold\": datum[\"Threshold\"]}"
           },
           "x": {"field": {"group": "width"}},
           "y": {"scale": "y", "field": "ThresholdValue"},

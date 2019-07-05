@@ -118,7 +118,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"longitude\": format(datum[\"longitude\"], \"\"), \"latitude\": format(datum[\"latitude\"], \"\"), \"order\": ''+datum[\"order\"]}"
+            "signal": "{\"longitude\": format(datum[\"longitude\"], \"\"), \"latitude\": format(datum[\"latitude\"], \"\"), \"order\": datum[\"order\"]}"
           },
           "x": {"field": "layer_2_x"},
           "y": {"field": "layer_2_y"}

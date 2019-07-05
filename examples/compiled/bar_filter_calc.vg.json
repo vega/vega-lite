@@ -50,7 +50,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"b2\": format(datum[\"b2\"], \"\"), \"a\": ''+datum[\"a\"]}"
+            "signal": "{\"b2\": format(datum[\"b2\"], \"\"), \"a\": datum[\"a\"]}"
           },
           "x": {"scale": "x", "field": "a"},
           "width": {"scale": "x", "band": true},

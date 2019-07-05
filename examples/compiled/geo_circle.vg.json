@@ -49,7 +49,7 @@
           "opacity": {"value": 0.7},
           "fill": {"scale": "color", "field": "digit"},
           "tooltip": {
-            "signal": "{\"longitude\": format(datum[\"longitude\"], \"\"), \"latitude\": format(datum[\"latitude\"], \"\"), \"digit\": ''+datum[\"digit\"]}"
+            "signal": "{\"longitude\": format(datum[\"longitude\"], \"\"), \"latitude\": format(datum[\"latitude\"], \"\"), \"digit\": datum[\"digit\"]}"
           },
           "x": {"field": "x"},
           "y": {"field": "y"},

@@ -74,7 +74,7 @@
           "fill": {"value": "black"},
           "opacity": {"value": 0.6},
           "tooltip": {
-            "signal": "{\"cx\": format(datum[\"cx\"], \"\"), \"cy\": format(datum[\"cy\"], \"\"), \"bLabel\": ''+datum[\"bLabel\"]}"
+            "signal": "{\"cx\": format(datum[\"cx\"], \"\"), \"cy\": format(datum[\"cy\"], \"\"), \"bLabel\": datum[\"bLabel\"]}"
           },
           "x": {"field": "layer_1_x"},
           "y": {"field": "layer_1_y"},
@@ -95,7 +95,7 @@
           "strokeWidth": {"value": 2},
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "id"},
-          "tooltip": {"signal": "{\"id\": ''+datum[\"id\"]}"}
+          "tooltip": {"signal": "{\"id\": datum[\"id\"]}"}
         }
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]

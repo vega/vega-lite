@@ -79,7 +79,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"lower_yield\": format(datum[\"upper_upper_yield\"], \"\"), \"upper_yield\": format(datum[\"lower_upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"lower_yield\": format(datum[\"upper_upper_yield\"], \"\"), \"upper_yield\": format(datum[\"lower_upper_yield\"], \"\"), \"variety\": datum[\"variety\"]}"
           },
           "x": [
             {
@@ -109,7 +109,7 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "black"},
           "tooltip": {
-            "signal": "{\"center\": format(datum[\"center\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"center\": format(datum[\"center\"], \"\"), \"variety\": datum[\"variety\"]}"
           },
           "x": [
             {

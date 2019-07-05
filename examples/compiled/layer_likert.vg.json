@@ -267,7 +267,7 @@
         "update": {
           "fill": {"value": "#6EB4FD"},
           "tooltip": {
-            "signal": "{\"name\": ''+datum[\"name\"], \"value\": format(datum[\"value\"], \"\"), \"Number of Ratings\": format(datum[\"__count\"], \"\")}"
+            "signal": "{\"name\": datum[\"name\"], \"value\": format(datum[\"value\"], \"\"), \"Number of Ratings\": format(datum[\"__count\"], \"\")}"
           },
           "x": {"scale": "x", "field": "value"},
           "y": {"scale": "y", "field": "name"},
@@ -286,7 +286,7 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "black"},
           "tooltip": {
-            "signal": "{\"name\": ''+datum[\"name\"], \"median\": format(datum[\"median\"], \"\")}"
+            "signal": "{\"name\": datum[\"name\"], \"median\": format(datum[\"median\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "median"},
           "yc": {"scale": "y", "field": "name"},
@@ -306,7 +306,7 @@
           "x": {"value": -5},
           "fill": {"value": "black"},
           "tooltip": {
-            "signal": "{\"name\": ''+datum[\"name\"], \"lo\": ''+datum[\"lo\"]}"
+            "signal": "{\"name\": datum[\"name\"], \"lo\": datum[\"lo\"]}"
           },
           "y": {"scale": "y", "field": "name"},
           "text": {"signal": "''+datum[\"lo\"]"},
@@ -325,7 +325,7 @@
           "x": {"value": 255},
           "fill": {"value": "black"},
           "tooltip": {
-            "signal": "{\"name\": ''+datum[\"name\"], \"hi\": ''+datum[\"hi\"]}"
+            "signal": "{\"name\": datum[\"name\"], \"hi\": datum[\"hi\"]}"
           },
           "y": {"scale": "y", "field": "name"},
           "text": {"signal": "''+datum[\"hi\"]"},

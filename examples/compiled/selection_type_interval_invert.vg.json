@@ -295,7 +295,7 @@
             {"scale": "color", "field": "__count"}
           ],
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
+            "signal": "{\"Origin\": datum[\"Origin\"], \"Cylinders\": datum[\"Cylinders\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},

@@ -146,7 +146,7 @@
                 "update": {
                   "stroke": {"scale": "color", "field": "gender"},
                   "tooltip": {
-                    "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
+                    "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"age\": datum[\"age\"], \"gender\": datum[\"gender\"]}"
                   },
                   "x": {"scale": "child_x", "field": "age"},
                   "y": {"scale": "y", "field": "sum_people"},
@@ -168,7 +168,7 @@
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "gender"},
               "tooltip": {
-                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
+                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"age\": datum[\"age\"], \"gender\": datum[\"gender\"]}"
               },
               "x": {"scale": "child_x", "field": "age"},
               "y": {"scale": "y", "field": "sum_people"}

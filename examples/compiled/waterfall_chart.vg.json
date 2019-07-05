@@ -150,7 +150,7 @@
             {"value": "#93c4aa"}
           ],
           "tooltip": {
-            "signal": "{\"Months\": ''+datum[\"label\"], \"Amount\": format(datum[\"previous_sum\"], \"\"), \"sum\": format(datum[\"sum\"], \"\")}"
+            "signal": "{\"Months\": datum[\"label\"], \"Amount\": format(datum[\"previous_sum\"], \"\"), \"sum\": format(datum[\"sum\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "label", "band": 0.5},
           "width": {"value": 45},
@@ -170,7 +170,7 @@
           "strokeWidth": {"value": 2},
           "stroke": {"value": "#404040"},
           "tooltip": {
-            "signal": "{\"Months\": ''+datum[\"label\"], \"lead\": ''+datum[\"lead\"], \"sum\": format(datum[\"sum\"], \"\")}"
+            "signal": "{\"Months\": datum[\"label\"], \"lead\": datum[\"lead\"], \"sum\": format(datum[\"sum\"], \"\")}"
           },
           "x": {"scale": "x", "field": "label", "offset": -22.5, "band": 0.5},
           "y": {"scale": "y", "field": "sum"},
@@ -189,7 +189,7 @@
           "dy": {"value": -4},
           "fill": {"value": "#404040"},
           "tooltip": {
-            "signal": "{\"Months\": ''+datum[\"label\"], \"sum_inc\": format(datum[\"sum_inc\"], \"\")}"
+            "signal": "{\"Months\": datum[\"label\"], \"sum_inc\": format(datum[\"sum_inc\"], \"\")}"
           },
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "sum_inc"},
@@ -209,7 +209,7 @@
           "dy": {"value": 4},
           "fill": {"value": "#404040"},
           "tooltip": {
-            "signal": "{\"Months\": ''+datum[\"label\"], \"sum_dec\": format(datum[\"sum_dec\"], \"\")}"
+            "signal": "{\"Months\": datum[\"label\"], \"sum_dec\": format(datum[\"sum_dec\"], \"\")}"
           },
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "sum_dec"},
@@ -235,7 +235,7 @@
             {"value": "white"}
           ],
           "tooltip": {
-            "signal": "{\"Months\": ''+datum[\"label\"], \"center\": format(datum[\"center\"], \"\"), \"text_amount\": ''+datum[\"text_amount\"]}"
+            "signal": "{\"Months\": datum[\"label\"], \"center\": format(datum[\"center\"], \"\"), \"text_amount\": datum[\"text_amount\"]}"
           },
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "center"},

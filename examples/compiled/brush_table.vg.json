@@ -377,7 +377,7 @@
                 {"value": "grey"}
               ],
               "tooltip": {
-                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": datum[\"Cylinders\"]}"
               },
               "x": {"scale": "concat_0_x", "field": "Horsepower"},
               "y": {"scale": "concat_0_y", "field": "Miles_per_Gallon"}
@@ -520,7 +520,7 @@
                 "update": {
                   "fill": {"value": "black"},
                   "tooltip": {
-                    "signal": "{\"Horsepower\": ''+datum[\"Horsepower\"], \"row_number\": ''+datum[\"row_number\"]}"
+                    "signal": "{\"Horsepower\": datum[\"Horsepower\"], \"row_number\": datum[\"row_number\"]}"
                   },
                   "x": {"signal": "concat_1_concat_0_width", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_0_y", "field": "row_number"},
@@ -553,7 +553,7 @@
                 "update": {
                   "fill": {"value": "black"},
                   "tooltip": {
-                    "signal": "{\"Miles_per_Gallon\": ''+datum[\"Miles_per_Gallon\"], \"row_number\": ''+datum[\"row_number\"]}"
+                    "signal": "{\"Miles_per_Gallon\": datum[\"Miles_per_Gallon\"], \"row_number\": datum[\"row_number\"]}"
                   },
                   "x": {"signal": "concat_1_concat_1_width", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_1_y", "field": "row_number"},
@@ -586,7 +586,7 @@
                 "update": {
                   "fill": {"value": "black"},
                   "tooltip": {
-                    "signal": "{\"Origin\": ''+datum[\"Origin\"], \"row_number\": ''+datum[\"row_number\"]}"
+                    "signal": "{\"Origin\": datum[\"Origin\"], \"row_number\": datum[\"row_number\"]}"
                   },
                   "x": {"signal": "concat_1_concat_2_width", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_2_y", "field": "row_number"},

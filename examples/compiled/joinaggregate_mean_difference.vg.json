@@ -64,7 +64,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"IMDB Rating\": format(datum[\"IMDB_Rating\"], \"\"), \"Title\": ''+datum[\"Title\"]}"
+            "signal": "{\"IMDB Rating\": format(datum[\"IMDB_Rating\"], \"\"), \"Title\": datum[\"Title\"]}"
           },
           "x": {"scale": "x", "field": "IMDB_Rating"},
           "x2": {"scale": "x", "value": 0},

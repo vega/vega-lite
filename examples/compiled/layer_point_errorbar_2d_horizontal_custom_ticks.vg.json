@@ -81,7 +81,7 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "teal"},
           "tooltip": {
-            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": datum[\"variety\"]}"
           },
           "xc": [
             {
@@ -106,7 +106,7 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "teal"},
           "tooltip": {
-            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": datum[\"variety\"]}"
           },
           "xc": [
             {
@@ -130,7 +130,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": datum[\"variety\"]}"
           },
           "x": [
             {
@@ -159,7 +159,7 @@
         "update": {
           "fill": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Mean of yield\": format(datum[\"mean_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Mean of yield\": format(datum[\"mean_yield\"], \"\"), \"variety\": datum[\"variety\"]}"
           },
           "x": [
             {

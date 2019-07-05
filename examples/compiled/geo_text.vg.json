@@ -100,7 +100,7 @@
           "dy": {"value": -10},
           "fill": {"value": "black"},
           "tooltip": {
-            "signal": "{\"lon\": format(datum[\"lon\"], \"\"), \"lat\": format(datum[\"lat\"], \"\"), \"city\": ''+datum[\"city\"]}"
+            "signal": "{\"lon\": format(datum[\"lon\"], \"\"), \"lat\": format(datum[\"lat\"], \"\"), \"city\": datum[\"city\"]}"
           },
           "x": {"field": "layer_1_layer_1_x"},
           "y": {"field": "layer_1_layer_1_y"},

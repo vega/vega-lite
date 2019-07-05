@@ -115,7 +115,7 @@
                 "field": "population"
               },
               "tooltip": {
-                "signal": "{\"geo\": ''+datum[\"geo\"], \"population\": format(datum[\"population\"], \"\")}"
+                "signal": "{\"geo\": datum[\"geo\"], \"population\": format(datum[\"population\"], \"\")}"
               }
             }
           },
@@ -157,7 +157,7 @@
                 "field": "engineers"
               },
               "tooltip": {
-                "signal": "{\"geo\": ''+datum[\"geo\"], \"engineers\": format(datum[\"engineers\"], \"\")}"
+                "signal": "{\"geo\": datum[\"geo\"], \"engineers\": format(datum[\"engineers\"], \"\")}"
               }
             }
           },
@@ -199,7 +199,7 @@
                 "field": "hurricanes"
               },
               "tooltip": {
-                "signal": "{\"geo\": ''+datum[\"geo\"], \"hurricanes\": format(datum[\"hurricanes\"], \"\")}"
+                "signal": "{\"geo\": datum[\"geo\"], \"hurricanes\": format(datum[\"hurricanes\"], \"\")}"
               }
             }
           },

@@ -40,7 +40,7 @@
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "a"},
           "tooltip": {
-            "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\"), \"a\": ''+datum[\"a\"]}"
+            "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\"), \"a\": datum[\"a\"]}"
           },
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "y"}

@@ -44,7 +44,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"rank\": ''+datum[\"rank\"], \"options.price\": format(datum[\"options.price\"], \"\")}"
+            "signal": "{\"rank\": datum[\"rank\"], \"options.price\": format(datum[\"options.price\"], \"\")}"
           },
           "x": {"scale": "x", "field": "rank"},
           "y": {"scale": "y", "field": "options\\.price"},

@@ -36,7 +36,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"min_people\"], \"\"), \"Max of people\": format(datum[\"max_people\"], \"\")}"
+            "signal": "{\"age\": datum[\"age\"], \"population\": format(datum[\"min_people\"], \"\"), \"Max of people\": format(datum[\"max_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "min_people"},
@@ -53,7 +53,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"min_people\"], \"\")}"
+            "signal": "{\"age\": datum[\"age\"], \"population\": format(datum[\"min_people\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "yc": {"scale": "y", "field": "min_people"},
@@ -71,7 +71,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"max_people\"], \"\")}"
+            "signal": "{\"age\": datum[\"age\"], \"population\": format(datum[\"max_people\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "yc": {"scale": "y", "field": "max_people"},
@@ -90,7 +90,7 @@
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"mean_people\"], \"\")}"
+            "signal": "{\"age\": datum[\"age\"], \"population\": format(datum[\"mean_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "mean_people"},
