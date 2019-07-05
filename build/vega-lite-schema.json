@@ -125,7 +125,7 @@
           "type": "number"
         },
         "aspect": {
-          "description": "whether to keep aspect ratio in image marks",
+          "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
         },
         "baseline": {
@@ -162,7 +162,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -279,7 +279,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -1151,7 +1151,7 @@
           "type": "number"
         },
         "aspect": {
-          "description": "whether to keep aspect ratio in image marks",
+          "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
         },
         "baseline": {
@@ -1184,7 +1184,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -1251,7 +1251,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -2127,7 +2127,7 @@
               "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
-          "description": "The URL of an image mark"
+          "description": "The URL of an image mark."
         },
         "x": {
           "anyOf": [
@@ -3953,7 +3953,7 @@
               "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
-          "description": "The URL of an image mark"
+          "description": "The URL of an image mark."
         },
         "x": {
           "anyOf": [
@@ -7156,7 +7156,7 @@
           "type": "number"
         },
         "aspect": {
-          "description": "whether to keep aspect ratio in image marks",
+          "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
         },
         "baseline": {
@@ -7193,7 +7193,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -7299,7 +7299,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -7715,7 +7715,7 @@
           "type": "number"
         },
         "aspect": {
-          "description": "whether to keep aspect ratio in image marks",
+          "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
         },
         "baseline": {
@@ -7752,7 +7752,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -7841,7 +7841,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -7985,7 +7985,7 @@
           "type": "number"
         },
         "aspect": {
-          "description": "whether to keep aspect ratio in image marks",
+          "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
         },
         "baseline": {
@@ -8031,7 +8031,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -8148,7 +8148,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -8610,7 +8610,7 @@
           "type": "number"
         },
         "aspect": {
-          "description": "whether to keep aspect ratio in image marks",
+          "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
         },
         "baseline": {
@@ -8651,7 +8651,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -8740,7 +8740,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -9440,7 +9440,7 @@
           "type": "number"
         },
         "aspect": {
-          "description": "whether to keep aspect ratio in image marks",
+          "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
         },
         "baseline": {
@@ -9492,7 +9492,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -9581,7 +9581,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -11044,7 +11044,7 @@
           "type": "number"
         },
         "aspect": {
-          "description": "whether to keep aspect ratio in image marks",
+          "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
         },
         "baseline": {
@@ -11081,7 +11081,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -11174,7 +11174,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -11388,7 +11388,7 @@
           "type": "number"
         },
         "aspect": {
-          "description": "whether to keep aspect ratio in image marks",
+          "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
         },
         "bandSize": {
@@ -11430,7 +11430,7 @@
         },
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -11519,7 +11519,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",

@@ -570,12 +570,12 @@ export interface BaseMarkConfig {
   y2?: number | 'width';
 
   /**
-   * whether to keep aspect ratio in image marks
+   * Whether to keep aspect ratio of image marks.
    */
   aspect?: boolean;
 
   /**
-   * Default Fill Color.  This has higher precedence than `config.color`
+   * Default Fill Color.  This has higher precedence than `config.color`.
    *
    * __Default value:__ (None)
    *
@@ -583,7 +583,7 @@ export interface BaseMarkConfig {
   fill?: Color;
 
   /**
-   * Default Stroke Color.  This has higher precedence than `config.color`
+   * Default Stroke Color.  This has higher precedence than `config.color`.
    *
    * __Default value:__ (None)
    *

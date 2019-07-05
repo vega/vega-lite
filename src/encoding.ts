@@ -211,7 +211,7 @@ export interface Encoding<F extends Field> {
   href?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
 
   /**
-   * The URL of an image mark
+   * The URL of an image mark.
    */
   url?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
 
