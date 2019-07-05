@@ -721,7 +721,7 @@ export interface BaseMarkConfig {
   // Text / Label Mark Config
 
   /**
-   * The horizontal alignment of the text. One of `"left"`, `"right"`, `"center"`.
+   * The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `"left"`, `"right"`, `"center"`.
    */
   align?: Align;
 
@@ -733,10 +733,9 @@ export interface BaseMarkConfig {
   angle?: number;
 
   /**
-   * The vertical alignment of the text. One of `"top"`, `"middle"`, `"bottom"`.
+   * The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `"top"`, `"middle"`, `"bottom"`.
    *
    * __Default value:__ `"middle"`
-   *
    */
   baseline?: VgTextBaseline;
 

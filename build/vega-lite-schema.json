@@ -116,7 +116,7 @@
       "properties": {
         "align": {
           "$ref": "#/definitions/Align",
-          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+          "description": "The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`."
         },
         "angle": {
           "description": "The rotation angle of the text, in degrees.",
@@ -130,7 +130,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+          "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
           "$ref": "#/definitions/Color",
@@ -1142,7 +1142,7 @@
       "properties": {
         "align": {
           "$ref": "#/definitions/Align",
-          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+          "description": "The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`."
         },
         "angle": {
           "description": "The rotation angle of the text, in degrees.",
@@ -1156,7 +1156,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+          "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
@@ -7147,7 +7147,7 @@
       "properties": {
         "align": {
           "$ref": "#/definitions/Align",
-          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+          "description": "The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`."
         },
         "angle": {
           "description": "The rotation angle of the text, in degrees.",
@@ -7161,7 +7161,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+          "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
           "$ref": "#/definitions/Color",
@@ -7706,7 +7706,7 @@
       "properties": {
         "align": {
           "$ref": "#/definitions/Align",
-          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+          "description": "The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`."
         },
         "angle": {
           "description": "The rotation angle of the text, in degrees.",
@@ -7720,7 +7720,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+          "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
           "$ref": "#/definitions/Color",
@@ -7976,7 +7976,7 @@
       "properties": {
         "align": {
           "$ref": "#/definitions/Align",
-          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+          "description": "The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`."
         },
         "angle": {
           "description": "The rotation angle of the text, in degrees.",
@@ -7990,7 +7990,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+          "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "binSpacing": {
           "description": "Offset between bars for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).\n\n__Default value:__ `1`",
@@ -8601,7 +8601,7 @@
       "properties": {
         "align": {
           "$ref": "#/definitions/Align",
-          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+          "description": "The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`."
         },
         "angle": {
           "description": "The rotation angle of the text, in degrees.",
@@ -8615,7 +8615,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+          "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "clip": {
           "description": "Whether a mark be clipped to the enclosing group’s width and height.",
@@ -9431,7 +9431,7 @@
       "properties": {
         "align": {
           "$ref": "#/definitions/Align",
-          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+          "description": "The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`."
         },
         "angle": {
           "description": "The rotation angle of the text, in degrees.",
@@ -9445,7 +9445,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+          "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "binSpacing": {
           "description": "Offset between bars for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).\n\n__Default value:__ `1`",
@@ -11035,7 +11035,7 @@
       "properties": {
         "align": {
           "$ref": "#/definitions/Align",
-          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+          "description": "The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`."
         },
         "angle": {
           "description": "The rotation angle of the text, in degrees.",
@@ -11049,7 +11049,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+          "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
           "$ref": "#/definitions/Color",
@@ -11379,7 +11379,7 @@
       "properties": {
         "align": {
           "$ref": "#/definitions/Align",
-          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+          "description": "The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`."
         },
         "angle": {
           "description": "The rotation angle of the text, in degrees.",
@@ -11398,7 +11398,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+          "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
           "$ref": "#/definitions/Color",

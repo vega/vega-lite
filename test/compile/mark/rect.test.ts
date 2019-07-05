@@ -17,9 +17,47 @@ describe('Mark: Rect', () => {
     const props = rect.encodeEntry(model);
 
     it('should draw centered rect ', () => {
+      expect(props.xc).toEqual({scale: 'x', field: 'x'});
+      expect(props.width).toEqual({value: 50});
+      expect(props.yc).toEqual({scale: 'y', field: 'y'});
+      expect(props.height).toEqual({value: 49});
+    });
+  });
+
+  describe('simple with width and height with left align and top baseline', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'rect', width: 50, height: 49, align: 'left', baseline: 'top'},
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {type: 'quantitative', field: 'y'}
+      }
+    });
+    const props = rect.encodeEntry(model);
+
+    it('should draw rect with proper alignment', () => {
       expect(props.x).toEqual({scale: 'x', field: 'x'});
       expect(props.width).toEqual({value: 50});
       expect(props.y).toEqual({scale: 'y', field: 'y'});
+      expect(props.height).toEqual({value: 49});
+    });
+  });
+
+  describe('simple with width and height with right align and bottom baseline', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'rect', width: 50, height: 49, align: 'right', baseline: 'bottom'},
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {type: 'quantitative', field: 'y'}
+      }
+    });
+    const props = rect.encodeEntry(model);
+
+    it('should draw rect with proper alignment', () => {
+      expect(props.x2).toEqual({scale: 'x', field: 'x'});
+      expect(props.width).toEqual({value: 50});
+      expect(props.y2).toEqual({scale: 'y', field: 'y'});
       expect(props.height).toEqual({value: 49});
     });
   });

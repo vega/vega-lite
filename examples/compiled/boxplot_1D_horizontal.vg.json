@@ -155,8 +155,8 @@
             "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "lower_whisker_people"},
-          "y": {"signal": "height", "mult": 0.5},
-          "x2": {"scale": "x", "field": "lower_box_people"}
+          "x2": {"scale": "x", "field": "lower_box_people"},
+          "y": {"signal": "height", "mult": 0.5}
         }
       }
     },
@@ -172,8 +172,8 @@
             "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "upper_box_people"},
-          "y": {"signal": "height", "mult": 0.5},
-          "x2": {"scale": "x", "field": "upper_whisker_people"}
+          "x2": {"scale": "x", "field": "upper_whisker_people"},
+          "y": {"signal": "height", "mult": 0.5}
         }
       }
     },

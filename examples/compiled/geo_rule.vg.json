@@ -122,8 +122,8 @@
         "update": {
           "stroke": {"value": "black"},
           "x": {"field": "layer_2_x"},
-          "y": {"field": "layer_2_y"},
           "x2": {"field": "layer_2_x2"},
+          "y": {"field": "layer_2_y"},
           "y2": {"field": "layer_2_y2"}
         }
       }

@@ -170,8 +170,8 @@
           "opacity": {"value": 0.35},
           "stroke": {"value": "#000"},
           "x": {"field": "layer_1_x"},
-          "y": {"field": "layer_1_y"},
           "x2": {"field": "layer_1_x2"},
+          "y": {"field": "layer_1_y"},
           "y2": {"field": "layer_1_y2"}
         }
       }
