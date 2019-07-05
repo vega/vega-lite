@@ -62,7 +62,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [dashcard](https://github.com/scottcame/dashcard): a simple [Bootstrap](https://getbootstrap.com/)-based UI for dynamic dashboarding using Vega-Lite and [Mondrian](https://community.hds.com/docs/DOC-1009853) via a [REST API](https://github.com/ojbc/mondrian-rest).
 - [histbook](https://github.com/diana-hep/histbook), a versatile, high-performance histogram toolkit for Numpy.
 - [Olmsted](https://github.com/matsengrp/olmsted): a web application for biologists to explore and visualize the adapative immune system using deep sequenced B-cell receptor data. The app uses Vega's interactive capabilities in the context of a React/Redux application to allow users to drill down into the data at multiple levels of granularity, and is currently being used by HIV researchers in the quest for a vaccine. [Demo available here](https://olmstedviz.org).
-- [Lens.org](https://www.lens.org/): Provides free search and analysis for over 120 million patents and 200 million scholarly works. Simplified interface for creating Vega Lite data visualisations.
+- [Lens.org](https://www.lens.org/): Provides free search and analysis for millions of patents and scholarly works. Simplified interface for creating Vega-Lite data visualisations.
 
 ## Tools for Embedding Vega-Lite Visualizations
 
