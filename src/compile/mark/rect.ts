@@ -17,14 +17,14 @@ export const rect: MarkCompiler = {
   vgMark: 'rect',
   encodeEntry: (model: UnitModel) => {
     return {
-      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
+      ...mixins.baseEncodeEntry(model, {color: 'include', size: 'ignore', orient: 'ignore'}),
       ...rectPosition(model, 'x', 'rect'),
       ...rectPosition(model, 'y', 'rect')
     };
   }
 };
 
-export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' | 'rect'): VgEncodeEntry {
+export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' | 'rect' | 'image'): VgEncodeEntry {
   const {config, encoding, markDef} = model;
 
   const channel2 = channel === 'x' ? 'x2' : 'y2';
@@ -89,7 +89,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
 }
 
 function defaultSizeRef(
-  mark: 'bar' | 'rect',
+  mark: 'bar' | 'rect' | 'image',
   markDef: MarkDef,
   sizeChannel: 'width' | 'height',
   scaleName: string,

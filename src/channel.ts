@@ -54,6 +54,8 @@ export const KEY: 'key' = 'key';
 export const TOOLTIP: 'tooltip' = 'tooltip';
 export const HREF: 'href' = 'href';
 
+export const URL: 'url' = 'url';
+
 export type PositionChannel = 'x' | 'y' | 'x2' | 'y2';
 
 const POSITION_CHANNEL_INDEX: Flag<PositionChannel> = {
@@ -119,7 +121,8 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   detail: 1,
   key: 1,
   tooltip: 1,
-  href: 1
+  href: 1,
+  url: 1
 };
 
 export type ColorChannel = 'color' | 'fill' | 'stroke';
@@ -163,8 +166,6 @@ export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[number];
 export const SINGLE_DEF_UNIT_CHANNELS = keys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
 
 export type SingleDefUnitChannel = typeof SINGLE_DEF_UNIT_CHANNELS[number];
-
-// export type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column' | 'facet';
 
 export function isSingleDefUnitChannel(str: string): str is SingleDefUnitChannel {
   return !!SINGLE_DEF_UNIT_CHANNEL_INDEX[str];
@@ -238,6 +239,7 @@ const {
   text: _t,
   tooltip: _tt,
   href: _hr,
+  url: _u,
   // detail and order have no scale
   detail: _dd,
   key: _k,
@@ -302,6 +304,7 @@ const ALL_MARKS: {[m in Mark]: 'always'} = {
   bar: 'always',
   circle: 'always',
   geoshape: 'always',
+  image: 'always',
   line: 'always',
   rule: 'always',
   point: 'always',
@@ -352,10 +355,11 @@ function getSupportedMark(channel: Channel): SupportedMark {
     case LATITUDE2:
     case LONGITUDE2:
       return {
-        rule: 'always',
-        bar: 'always',
-        rect: 'always',
         area: 'always',
+        bar: 'always',
+        image: 'always',
+        rect: 'always',
+        rule: 'always',
         circle: 'binned',
         point: 'binned',
         square: 'binned',
@@ -379,6 +383,9 @@ function getSupportedMark(channel: Channel): SupportedMark {
       return {point: 'always', geoshape: 'always'};
     case TEXT:
       return {text: 'always'};
+
+    case URL:
+      return {image: 'always'};
   }
 }
 
@@ -401,10 +408,11 @@ export function rangeType(channel: Channel): RangeType {
     case ROW:
     case COLUMN:
     case SHAPE:
-    // TEXT, TOOLTIP, and HREF have no scale but have discrete output [falls through]
+    // TEXT, TOOLTIP, URL, and HREF have no scale but have discrete output [falls through]
     case TEXT:
     case TOOLTIP:
     case HREF:
+    case URL:
       return 'discrete';
 
     // Color can be either continuous or discrete, depending on scale type.
@@ -424,6 +432,4 @@ export function rangeType(channel: Channel): RangeType {
     case ORDER:
       return undefined;
   }
-  /* istanbul ignore next: should never reach here. */
-  throw new Error('rangeType not implemented for ' + channel);
 }
