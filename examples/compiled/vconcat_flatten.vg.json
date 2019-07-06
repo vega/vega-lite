@@ -41,7 +41,7 @@
         },
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"lc\"] && datum[\"lc\"][\"mag\"])",
+          "expr": "datum[\"lc\"] && datum[\"lc\"][\"mag\"]",
           "as": "lc.mag"
         }
       ]

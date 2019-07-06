@@ -24,10 +24,7 @@
     {
       "name": "source_0",
       "url": "data/wheat.json",
-      "format": {
-        "type": "json",
-        "parse": {"year": "number", "wages": "number"}
-      },
+      "format": {"type": "json", "parse": {"year": "number"}},
       "transform": [
         {"type": "formula", "expr": "+datum.year + 5", "as": "year_end"}
       ]

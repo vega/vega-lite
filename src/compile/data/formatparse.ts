@@ -3,6 +3,7 @@ import {AncestorParse} from '.';
 import {isMinMaxOp} from '../../aggregate';
 import {getMainRangeChannel, SingleDefChannel} from '../../channel';
 import {
+  isFieldDef,
   isNumberFieldDef,
   isScaleFieldDef,
   isTimeFormatFieldDef,
@@ -13,6 +14,7 @@ import {isGenerator, Parse} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import * as log from '../../log';
 import {forEachLeaf} from '../../logical';
+import {isPathMark} from '../../mark';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
@@ -21,7 +23,6 @@ import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
 import {DataFlowNode} from './dataflow';
-import {getSort} from '../mark/mark';
 
 /**
  * Remove quotes from a string.
@@ -150,8 +151,7 @@ export class ParseNode extends DataFlowNode {
         implicit[fieldDef.field] = 'date';
       } else if (
         isNumberFieldDef(fieldDef) &&
-        (isMinMaxOp(fieldDef.aggregate) || // we need to parse numbers to support correct min and max
-          (isUnitModel(model) && getSort(model))) // we also need to parse so we can sort numbers in line and area charts correctly
+        isMinMaxOp(fieldDef.aggregate) // we need to parse numbers to support correct min and max
       ) {
         implicit[fieldDef.field] = 'number';
       } else if (accessPathDepth(fieldDef.field) > 1) {
@@ -182,13 +182,24 @@ export class ParseNode extends DataFlowNode {
               type: mainFieldDef.type
             });
           } else {
-            throw new Error(
-              `Non-secondary channel ${channel} must have type in its field definition ${JSON.stringify(fieldDef)}`
-            );
+            throw new Error(log.message.nonSecondaryMustHaveType(channel, fieldDef));
           }
         }
       });
     }
+
+    // also parse the dimension field of path marks
+    if (isUnitModel(model)) {
+      const {mark, markDef, encoding} = model;
+      if (isPathMark(mark)) {
+        const dimensionChannel = markDef.orient === 'horizontal' ? 'y' : 'x';
+        const dimensionChannelDef = encoding[dimensionChannel];
+        if (isFieldDef(dimensionChannelDef) && dimensionChannelDef.type === 'quantitative') {
+          implicit[dimensionChannelDef.field] = 'number';
+        }
+      }
+    }
+
     return this.makeWithAncestors(parent, {}, implicit, ancestorParse);
   }
 

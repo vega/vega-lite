@@ -24,8 +24,7 @@
           "type": "formula",
           "expr": "toNumber(datum[\"wavelength\"])",
           "as": "wavelength"
-        },
-        {"type": "formula", "expr": "toNumber(datum[\"power\"])", "as": "power"}
+        }
       ]
     }
   ],

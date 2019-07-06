@@ -9,10 +9,7 @@
     {
       "name": "source_0",
       "url": "data/driving.json",
-      "format": {
-        "type": "json",
-        "parse": {"miles": "number", "gas": "number", "year": "date"}
-      }
+      "format": {"type": "json", "parse": {"year": "date", "miles": "number"}}
     },
     {
       "name": "data_0",

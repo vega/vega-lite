@@ -23,13 +23,6 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"}
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "data_0",
-      "transform": [
         {
           "type": "filter",
           "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
@@ -49,7 +42,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -68,7 +61,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"a\"]"},
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "red"},
@@ -88,8 +81,8 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "a"},
-          {"data": "data_0", "field": "a"}
+          {"data": "data_0", "field": "a"},
+          {"data": "source_0", "field": "a"}
         ],
         "sort": true
       },
@@ -102,8 +95,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "b"},
-          {"data": "data_0", "field": "b"}
+          {"data": "data_0", "field": "b"},
+          {"data": "source_0", "field": "b"}
         ]
       },
       "range": [{"signal": "height"}, 0],

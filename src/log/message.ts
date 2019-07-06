@@ -1,8 +1,8 @@
 import {AggregateOp} from 'vega';
-import {CompositeMark} from '../compositemark';
 import {Aggregate} from '../aggregate';
 import {Channel, FacetChannel, GeoPositionChannel} from '../channel';
-import {TypedFieldDef} from '../channeldef';
+import {SecondaryFieldDef, TypedFieldDef} from '../channeldef';
+import {CompositeMark} from '../compositemark';
 import {ErrorBarCenter, ErrorBarExtent} from '../compositemark/errorbar';
 import {DateTime, DateTimeExpr} from '../datetime';
 import {Mark} from '../mark';
@@ -167,6 +167,10 @@ export function discreteChannelCannotEncode(channel: Channel, type: Type) {
   return `Using discrete channel "${channel}" to encode "${type}" field can be misleading as it does not encode ${
     type === 'ordinal' ? 'order' : 'magnitude'
   }.`;
+}
+
+export function nonSecondaryMustHaveType(channel: Channel, fieldDef: SecondaryFieldDef<string>) {
+  return `Non-secondary channel ${channel} must have type in its field definition ${JSON.stringify(fieldDef)}`;
 }
 
 // Mark
