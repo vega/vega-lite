@@ -261,6 +261,24 @@ describe('Mark', () => {
       });
     });
 
+    it('should order by the right channel when sort by encoding', () => {
+      const model = parseUnitModelWithScale({
+        data: {url: 'data/movies.json'},
+        mark: 'line',
+        encoding: {
+          x: {
+            type: 'nominal',
+            field: 'Name',
+            sort: 'y'
+          },
+          y: {type: 'quantitative', field: 'Score'}
+        }
+      });
+      expect(getSort(model)).toEqual({
+        field: 'datum["Score"]'
+      });
+    });
+
     it('should not order by a missing dimension', () => {
       const model = parseUnitModelWithScale({
         data: {url: 'data/movies.json'},

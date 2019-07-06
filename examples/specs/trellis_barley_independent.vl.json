@@ -21,8 +21,7 @@
     "y": {
       "field": "variety",
       "type": "ordinal",
-      "sort": "-x",
-      "scale": {"rangeStep": 12}
+      "sort": "-x"
     },
     "color": {"field": "year", "type": "nominal"}
   },
