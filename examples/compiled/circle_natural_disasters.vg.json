@@ -78,9 +78,9 @@
       "labelAlign": "center",
       "labelBaseline": "top",
       "labelOverlap": true,
-      "zindex": 1
+      "zindex": 0
     },
-    {"scale": "y", "orient": "left", "grid": false, "zindex": 1}
+    {"scale": "y", "orient": "left", "grid": false, "zindex": 0}
   ],
   "legends": [
     {

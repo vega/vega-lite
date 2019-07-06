@@ -201,7 +201,7 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/10)"},
-      "zindex": 1
+      "zindex": 0
     },
     {
       "scale": "y",
@@ -210,7 +210,7 @@
       "title": "Horsepower (binned)",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/10)"},
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "legends": [

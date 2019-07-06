@@ -210,7 +210,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_0_width/10)"},
-          "zindex": 1
+          "zindex": 0
         },
         {
           "scale": "concat_0_y",
@@ -219,7 +219,7 @@
           "title": "Rotten_Tomatoes_Rating (binned)",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_0_height/10)"},
-          "zindex": 1
+          "zindex": 0
         }
       ],
       "legends": [
@@ -313,25 +313,6 @@
       ],
       "axes": [
         {
-          "scale": "concat_1_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "Major_Genre",
-          "labelAngle": 320,
-          "labelAlign": "right",
-          "labelBaseline": "top",
-          "zindex": 1
-        },
-        {
-          "scale": "concat_1_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "concat_1_y",
           "orient": "left",
           "gridScale": "concat_1_x",
@@ -342,6 +323,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_1_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Major_Genre",
+          "labelAngle": 320,
+          "labelAlign": "right",
+          "labelBaseline": "top",
+          "zindex": 0
+        },
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
           "zindex": 0
         }
       ]

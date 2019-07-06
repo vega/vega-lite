@@ -126,14 +126,14 @@
       "labelAlign": "right",
       "labelAngle": 270,
       "labelBaseline": "middle",
-      "zindex": 1
+      "zindex": 0
     },
     {
       "scale": "y",
       "orient": "left",
       "grid": false,
       "title": "actual",
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "legends": [

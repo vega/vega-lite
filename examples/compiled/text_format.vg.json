@@ -62,7 +62,7 @@
       "grid": false,
       "title": "Origin",
       "labelOverlap": true,
-      "zindex": 1
+      "zindex": 0
     }
   ]
 }

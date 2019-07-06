@@ -89,7 +89,7 @@
       "grid": false,
       "domain": false,
       "ticks": false,
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "legends": [

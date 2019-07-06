@@ -69,7 +69,7 @@
           "title": "population",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -181,17 +181,6 @@
       ],
       "axes": [
         {
-          "scale": "child_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "age",
-          "labelAlign": "right",
-          "labelAngle": 270,
-          "labelBaseline": "middle",
-          "labelOverlap": true,
-          "zindex": 1
-        },
-        {
           "scale": "y",
           "orient": "left",
           "gridScale": "child_x",
@@ -202,6 +191,17 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "age",
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "labelOverlap": true,
           "zindex": 0
         }
       ]

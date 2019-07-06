@@ -97,7 +97,7 @@
       "labelAlign": "center",
       "labelBaseline": "top",
       "labelOverlap": true,
-      "zindex": 1
+      "zindex": 0
     },
     {
       "scale": "y",
@@ -110,7 +110,7 @@
           "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
         }
       },
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "legends": [

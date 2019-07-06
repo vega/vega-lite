@@ -79,16 +79,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Mean of b",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -99,6 +89,16 @@
       "ticks": false,
       "zindex": 0
     },
-    {"scale": "y", "orient": "left", "grid": false, "title": "a", "zindex": 1}
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Mean of b",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {"scale": "y", "orient": "left", "grid": false, "title": "a", "zindex": 0}
   ]
 }

@@ -192,26 +192,6 @@
         {
           "scale": "concat_0_x",
           "orient": "bottom",
-          "grid": false,
-          "encode": {
-            "grid": {
-              "update": {
-                "strokeDash": {"value": [3, 3]},
-                "stroke": [
-                  {"test": "datum.value === 0", "value": "#666"},
-                  {"value": "#CCC"}
-                ]
-              }
-            }
-          },
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "concat_0_x",
-          "orient": "bottom",
           "encode": {
             "grid": {
               "update": {
@@ -234,13 +214,33 @@
           "zindex": 0
         },
         {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "grid": false,
+          "encode": {
+            "grid": {
+              "update": {
+                "strokeDash": {"value": [3, 3]},
+                "stroke": [
+                  {"test": "datum.value === 0", "value": "#666"},
+                  {"value": "#CCC"}
+                ]
+              }
+            }
+          },
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
           "scale": "concat_0_y",
           "orient": "left",
           "grid": false,
           "domain": false,
           "labelPadding": 5,
           "ticks": false,
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },

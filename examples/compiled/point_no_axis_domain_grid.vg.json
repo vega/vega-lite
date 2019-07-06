@@ -63,7 +63,7 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
+      "zindex": 0
     },
     {
       "scale": "y",
@@ -72,7 +72,7 @@
       "title": "Miles_per_Gallon",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "config": {"axis": {"domain": false, "grid": false}}

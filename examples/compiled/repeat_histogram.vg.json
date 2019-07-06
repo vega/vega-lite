@@ -263,25 +263,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_Horsepower_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "Horsepower (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_Horsepower_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_repeat_Horsepower_y",
           "orient": "left",
           "gridScale": "child__repeat_repeat_Horsepower_x",
@@ -292,6 +273,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Horsepower_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Horsepower (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Horsepower_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -347,25 +347,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_Miles_per_Gallon_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "Miles_per_Gallon (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_Miles_per_Gallon_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_repeat_Miles_per_Gallon_y",
           "orient": "left",
           "gridScale": "child__repeat_repeat_Miles_per_Gallon_x",
@@ -376,6 +357,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Miles_per_Gallon_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Miles_per_Gallon (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Miles_per_Gallon_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -431,25 +431,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_Acceleration_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "Acceleration (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_Acceleration_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_repeat_Acceleration_y",
           "orient": "left",
           "gridScale": "child__repeat_repeat_Acceleration_x",
@@ -460,6 +441,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Acceleration_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Acceleration (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Acceleration_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -515,25 +515,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_Displacement_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "Displacement (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_Displacement_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_repeat_Displacement_y",
           "orient": "left",
           "gridScale": "child__repeat_repeat_Displacement_x",
@@ -544,6 +525,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Displacement_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Displacement (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Displacement_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]

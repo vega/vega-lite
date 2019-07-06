@@ -87,7 +87,7 @@
           "title": "population",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -106,7 +106,7 @@
           "labelAngle": 270,
           "labelBaseline": "middle",
           "labelOverlap": true,
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
