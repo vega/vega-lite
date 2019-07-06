@@ -196,14 +196,14 @@
           "labelAlign": "right",
           "labelAngle": 270,
           "labelBaseline": "middle",
-          "zindex": 0
+          "zindex": 1
         },
         {
           "scale": "child_y",
           "orient": "left",
           "grid": false,
           "title": "b",
-          "zindex": 0
+          "zindex": 1
         }
       ]
     }

@@ -383,7 +383,7 @@
       "labelAngle": 270,
       "labelBaseline": "middle",
       "labelOverlap": true,
-      "zindex": 0
+      "zindex": 1
     },
     {
       "scale": "y",
@@ -391,7 +391,7 @@
       "grid": false,
       "title": "Origin",
       "labelOverlap": true,
-      "zindex": 0
+      "zindex": 1
     }
   ],
   "legends": [
