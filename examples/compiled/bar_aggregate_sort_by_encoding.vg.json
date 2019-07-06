@@ -65,7 +65,7 @@
       "domain": {
         "data": "source_0",
         "field": "age",
-        "sort": {"op": "sum", "field": "people"}
+        "sort": {"op": "sum", "field": "people", "order": "descending"}
       },
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
