@@ -36,7 +36,7 @@
         {"type": "flatten", "fields": ["lc"], "as": ["lc"]},
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"lc\"] && datum[\"lc\"][\"time\"])",
+          "expr": "datum[\"lc\"] && datum[\"lc\"][\"time\"]",
           "as": "lc.time"
         },
         {
