@@ -8,7 +8,7 @@
     {
       "name": "source_0",
       "url": "data/github.csv",
-      "format": {"type": "csv", "parse": {"time": "date"}},
+      "format": {"type": "csv", "parse": {"time": "date", "count": "number"}},
       "transform": [
         {
           "type": "formula",

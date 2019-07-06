@@ -11,7 +11,14 @@
       "url": "data/us-10m.json",
       "format": {"type": "topojson", "feature": "states"}
     },
-    {"name": "source_1", "url": "data/airports.csv", "format": {"type": "csv"}},
+    {
+      "name": "source_1",
+      "url": "data/airports.csv",
+      "format": {
+        "type": "csv",
+        "parse": {"longitude": "number", "latitude": "number"}
+      }
+    },
     {
       "name": "data_0",
       "source": "source_1",
@@ -32,7 +39,16 @@
     {
       "name": "source_2",
       "url": "data/flights-airport.csv",
-      "format": {"type": "csv", "parse": {"origin": "string"}},
+      "format": {
+        "type": "csv",
+        "parse": {
+          "origin": "string",
+          "origin_longitude": "number",
+          "origin_latitude": "number",
+          "dest_longitude": "number",
+          "dest_latitude": "number"
+        }
+      },
       "transform": [
         {"type": "filter", "expr": "datum[\"origin\"]===\"SEA\""},
         {

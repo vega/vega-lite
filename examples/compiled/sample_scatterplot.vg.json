@@ -4,7 +4,14 @@
   "padding": 5,
   "height": 200,
   "data": [
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {
+        "type": "json",
+        "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
+      }
+    },
     {
       "name": "data_0",
       "source": "source_0",

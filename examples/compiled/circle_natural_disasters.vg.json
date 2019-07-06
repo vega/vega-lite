@@ -9,7 +9,7 @@
     {
       "name": "source_0",
       "url": "data/disasters.csv",
-      "format": {"type": "csv"},
+      "format": {"type": "csv", "parse": {"Deaths": "number"}},
       "transform": [
         {"type": "filter", "expr": "datum.Entity !== 'All natural disasters'"},
         {

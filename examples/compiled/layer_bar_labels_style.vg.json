@@ -10,8 +10,15 @@
       "values": [{"a": "A", "b": 28}, {"a": "B", "b": 55}, {"a": "C", "b": 43}]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -21,7 +28,7 @@
     },
     {
       "name": "data_2",
-      "source": "source_0",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",

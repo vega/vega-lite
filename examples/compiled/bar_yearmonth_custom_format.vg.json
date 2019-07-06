@@ -10,7 +10,7 @@
     {
       "name": "source_0",
       "url": "data/seattle-temps.csv",
-      "format": {"type": "csv", "parse": {"date": "date"}},
+      "format": {"type": "csv", "parse": {"date": "date", "temp": "number"}},
       "transform": [
         {
           "type": "formula",

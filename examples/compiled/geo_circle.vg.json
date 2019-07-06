@@ -9,7 +9,10 @@
     {
       "name": "source_0",
       "url": "data/zipcodes.csv",
-      "format": {"type": "csv"},
+      "format": {
+        "type": "csv",
+        "parse": {"longitude": "number", "latitude": "number"}
+      },
       "transform": [
         {
           "type": "formula",

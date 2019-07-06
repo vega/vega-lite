@@ -12,7 +12,14 @@
       "url": "data/us-10m.json",
       "format": {"type": "topojson", "feature": "states"}
     },
-    {"name": "source_1", "url": "data/airports.csv", "format": {"type": "csv"}},
+    {
+      "name": "source_1",
+      "url": "data/airports.csv",
+      "format": {
+        "type": "csv",
+        "parse": {"longitude": "number", "latitude": "number"}
+      }
+    },
     {
       "name": "source_2",
       "values": [

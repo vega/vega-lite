@@ -27,6 +27,11 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"undefined\"])",
+          "as": "undefined"
+        },
         {"type": "formula", "expr": "log(datum.x)/log(10)", "as": "log_x"},
         {
           "type": "extent",

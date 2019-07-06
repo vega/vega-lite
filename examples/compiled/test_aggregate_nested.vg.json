@@ -39,7 +39,7 @@
         },
         {
           "type": "formula",
-          "expr": "datum[\"properties\"] && datum[\"properties\"][\"yield\"]",
+          "expr": "toNumber(datum[\"properties\"] && datum[\"properties\"][\"yield\"])",
           "as": "properties.yield"
         },
         {

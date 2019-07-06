@@ -19,6 +19,12 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "formula",
+          "expr": "toNumber(datum[\"start\"])",
+          "as": "start"
+        },
+        {"type": "formula", "expr": "toNumber(datum[\"end\"])", "as": "end"},
+        {
           "type": "filter",
           "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"])"
         }

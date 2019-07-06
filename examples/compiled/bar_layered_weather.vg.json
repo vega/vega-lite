@@ -18,52 +18,52 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "datum[\"record\"] && datum[\"record\"][\"low\"]",
+          "expr": "toNumber(datum[\"record\"] && datum[\"record\"][\"low\"])",
           "as": "record.low"
         },
         {
           "type": "formula",
-          "expr": "datum[\"record\"] && datum[\"record\"][\"high\"]",
+          "expr": "toNumber(datum[\"record\"] && datum[\"record\"][\"high\"])",
           "as": "record.high"
         },
         {
           "type": "formula",
-          "expr": "datum[\"normal\"] && datum[\"normal\"][\"low\"]",
+          "expr": "toNumber(datum[\"normal\"] && datum[\"normal\"][\"low\"])",
           "as": "normal.low"
         },
         {
           "type": "formula",
-          "expr": "datum[\"normal\"] && datum[\"normal\"][\"high\"]",
+          "expr": "toNumber(datum[\"normal\"] && datum[\"normal\"][\"high\"])",
           "as": "normal.high"
         },
         {
           "type": "formula",
-          "expr": "datum[\"actual\"] && datum[\"actual\"][\"low\"]",
+          "expr": "toNumber(datum[\"actual\"] && datum[\"actual\"][\"low\"])",
           "as": "actual.low"
         },
         {
           "type": "formula",
-          "expr": "datum[\"actual\"] && datum[\"actual\"][\"high\"]",
+          "expr": "toNumber(datum[\"actual\"] && datum[\"actual\"][\"high\"])",
           "as": "actual.high"
         },
         {
           "type": "formula",
-          "expr": "datum[\"forecast\"] && datum[\"forecast\"][\"low\"] && datum[\"forecast\"][\"low\"][\"low\"]",
+          "expr": "toNumber(datum[\"forecast\"] && datum[\"forecast\"][\"low\"] && datum[\"forecast\"][\"low\"][\"low\"])",
           "as": "forecast.low.low"
         },
         {
           "type": "formula",
-          "expr": "datum[\"forecast\"] && datum[\"forecast\"][\"low\"] && datum[\"forecast\"][\"low\"][\"high\"]",
+          "expr": "toNumber(datum[\"forecast\"] && datum[\"forecast\"][\"low\"] && datum[\"forecast\"][\"low\"][\"high\"])",
           "as": "forecast.low.high"
         },
         {
           "type": "formula",
-          "expr": "datum[\"forecast\"] && datum[\"forecast\"][\"high\"] && datum[\"forecast\"][\"high\"][\"low\"]",
+          "expr": "toNumber(datum[\"forecast\"] && datum[\"forecast\"][\"high\"] && datum[\"forecast\"][\"high\"][\"low\"])",
           "as": "forecast.high.low"
         },
         {
           "type": "formula",
-          "expr": "datum[\"forecast\"] && datum[\"forecast\"][\"high\"] && datum[\"forecast\"][\"high\"][\"high\"]",
+          "expr": "toNumber(datum[\"forecast\"] && datum[\"forecast\"][\"high\"] && datum[\"forecast\"][\"high\"][\"high\"])",
           "as": "forecast.high.high"
         }
       ]

@@ -9,7 +9,15 @@
     {
       "name": "source_0",
       "url": "data/flights-2k.json",
-      "format": {"type": "json", "parse": {"date": "date"}},
+      "format": {
+        "type": "json",
+        "parse": {
+          "date": "date",
+          "distance": "number",
+          "undefined": "number",
+          "delay": "number"
+        }
+      },
       "transform": [
         {
           "type": "extent",

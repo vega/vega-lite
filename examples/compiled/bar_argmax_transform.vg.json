@@ -20,7 +20,7 @@
         },
         {
           "type": "formula",
-          "expr": "datum[\"argmax_US_Gross\"] && datum[\"argmax_US_Gross\"][\"Production_Budget\"]",
+          "expr": "toNumber(datum[\"argmax_US_Gross\"] && datum[\"argmax_US_Gross\"][\"Production_Budget\"])",
           "as": "argmax_US_Gross.Production_Budget"
         },
         {

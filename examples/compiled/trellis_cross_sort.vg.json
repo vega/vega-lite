@@ -21,6 +21,8 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
+        {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"},
         {
           "type": "joinaggregate",
           "as": ["median_x_by_a"],

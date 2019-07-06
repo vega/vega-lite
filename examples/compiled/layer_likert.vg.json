@@ -231,15 +231,36 @@
       "source": "medians",
       "transform": [
         {
+          "type": "formula",
+          "expr": "toNumber(datum[\"median\"])",
+          "as": "median"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
           "type": "filter",
           "expr": "datum[\"median\"] !== null && !isNaN(datum[\"median\"])"
         }
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_2",
       "source": "values",
       "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"value\"])",
+          "as": "value"
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"undefined\"])",
+          "as": "undefined"
+        },
         {"type": "filter", "expr": "datum.name != 'Toolbar_First'"},
         {"type": "filter", "expr": "datum.name != 'Tablet_First'"},
         {"type": "filter", "expr": "datum.name != 'Participant ID'"},
@@ -262,7 +283,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "fill": {"value": "#6EB4FD"},
@@ -280,7 +301,7 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["tick"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -299,7 +320,7 @@
       "name": "layer_2_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "medians"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "align": {"value": "right"},
@@ -318,7 +339,7 @@
       "name": "layer_3_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "medians"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "align": {"value": "left"},
@@ -348,9 +369,9 @@
       "type": "point",
       "domain": {
         "fields": [
+          {"data": "data_2", "field": "name"},
           {"data": "data_1", "field": "name"},
-          {"data": "data_0", "field": "name"},
-          {"data": "medians", "field": "name"}
+          {"data": "data_0", "field": "name"}
         ]
       },
       "range": [0, {"signal": "height"}],
@@ -359,7 +380,7 @@
     {
       "name": "size",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "__count"},
+      "domain": {"data": "data_2", "field": "__count"},
       "range": [0, 361],
       "zero": true
     }

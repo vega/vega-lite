@@ -9,7 +9,14 @@
     {
       "name": "source_0",
       "url": "data/population_engineers_hurricanes.csv",
-      "format": {"type": "csv"}
+      "format": {
+        "type": "csv",
+        "parse": {
+          "population": "number",
+          "engineers": "number",
+          "hurricanes": "number"
+        }
+      }
     },
     {
       "name": "source_1",

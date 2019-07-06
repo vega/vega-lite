@@ -16,11 +16,50 @@
     {
       "name": "source_1",
       "url": "data/flights-airport.csv",
-      "format": {"type": "csv"}
+      "format": {"type": "csv", "parse": {"lat2": "number", "lon2": "number"}}
     },
     {"name": "source_2", "url": "data/airports.csv", "format": {"type": "csv"}},
     {
       "name": "data_0",
+      "source": "source_1",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["origin"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["routes"]
+        },
+        {
+          "type": "lookup",
+          "from": "source_2",
+          "key": "iata",
+          "fields": ["origin"],
+          "values": ["state", "latitude", "longitude"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum.state !== 'PR' && datum.state !== 'VI'"
+        },
+        {
+          "type": "geojson",
+          "fields": ["longitude", "latitude"],
+          "signal": "layer_2_geojson_0"
+        },
+        {
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["longitude", "latitude"],
+          "as": ["layer_2_x", "layer_2_y"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"routes\"] !== null && !isNaN(datum[\"routes\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
       "source": "source_1",
       "transform": [
         {
@@ -63,45 +102,6 @@
           "projection": "projection",
           "fields": ["lon2", "lat2"],
           "as": ["layer_1_x2", "layer_1_y2"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_1",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["origin"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["routes"]
-        },
-        {
-          "type": "lookup",
-          "from": "source_2",
-          "key": "iata",
-          "fields": ["origin"],
-          "values": ["state", "latitude", "longitude"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum.state !== 'PR' && datum.state !== 'VI'"
-        },
-        {
-          "type": "geojson",
-          "fields": ["longitude", "latitude"],
-          "signal": "layer_2_geojson_0"
-        },
-        {
-          "type": "geopoint",
-          "projection": "projection",
-          "fields": ["longitude", "latitude"],
-          "as": ["layer_2_x", "layer_2_y"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"routes\"] !== null && !isNaN(datum[\"routes\"])"
         }
       ]
     }
@@ -164,7 +164,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.35},
@@ -184,7 +184,7 @@
       "type": "symbol",
       "style": ["circle"],
       "sort": {"field": ["datum[\"routes\"]"], "order": ["descending"]},
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -228,7 +228,7 @@
     {
       "name": "size",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "routes"},
+      "domain": {"data": "data_0", "field": "routes"},
       "range": [0, 1000],
       "zero": true
     }

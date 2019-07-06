@@ -19,12 +19,15 @@
     {
       "name": "source_2",
       "url": "data/monarchs.json",
-      "format": {"type": "json"}
+      "format": {"type": "json", "parse": {"start": "number", "end": "number"}}
     },
     {
       "name": "source_0",
       "url": "data/wheat.json",
-      "format": {"type": "json"},
+      "format": {
+        "type": "json",
+        "parse": {"year": "number", "wheat": "number", "wages": "number"}
+      },
       "transform": [
         {"type": "formula", "expr": "+datum.year + 5", "as": "year_end"}
       ]
@@ -43,6 +46,7 @@
       "name": "data_1",
       "source": "source_1",
       "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"year\"])", "as": "year"},
         {
           "type": "filter",
           "expr": "datum[\"year\"] !== null && !isNaN(datum[\"year\"])"
@@ -51,22 +55,6 @@
     },
     {
       "name": "data_2",
-      "source": "source_2",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "((!datum.commonwealth && datum.index % 2) ? -1: 1) * 2 + 95",
-          "as": "offset"
-        },
-        {"type": "formula", "expr": "95", "as": "y"},
-        {
-          "type": "filter",
-          "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_3",
       "source": "source_2",
       "transform": [
         {
@@ -82,6 +70,22 @@
         {
           "type": "filter",
           "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"off2\"] !== null && !isNaN(datum[\"off2\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "source_2",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "((!datum.commonwealth && datum.index % 2) ? -1: 1) * 2 + 95",
+          "as": "offset"
+        },
+        {"type": "formula", "expr": "95", "as": "y"},
+        {
+          "type": "filter",
+          "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
         }
       ]
     }
@@ -196,7 +200,7 @@
       "name": "layer_5_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "stroke": {"value": "#000"},
@@ -224,7 +228,7 @@
       "name": "layer_6_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "baseline": {"value": "bottom"},
@@ -255,9 +259,9 @@
           {"data": "data_0", "field": "year_end"},
           {"data": "data_1", "field": "year"},
           {"data": "source_0", "field": "year"},
-          {"data": "data_2", "field": "start"},
-          {"data": "data_2", "field": "end"},
-          {"data": "data_3", "field": "x"}
+          {"data": "data_3", "field": "start"},
+          {"data": "data_3", "field": "end"},
+          {"data": "data_2", "field": "x"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -272,9 +276,9 @@
         "fields": [
           {"data": "data_0", "field": "wheat"},
           {"data": "source_0", "field": "wages"},
-          {"data": "data_2", "field": "y"},
-          {"data": "data_2", "field": "offset"},
-          {"data": "data_3", "field": "off2"}
+          {"data": "data_3", "field": "y"},
+          {"data": "data_3", "field": "offset"},
+          {"data": "data_2", "field": "off2"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -284,7 +288,7 @@
     {
       "name": "fill",
       "type": "ordinal",
-      "domain": {"data": "data_2", "field": "commonwealth", "sort": true},
+      "domain": {"data": "data_3", "field": "commonwealth", "sort": true},
       "range": ["black", "white"]
     }
   ],

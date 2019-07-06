@@ -4,7 +4,11 @@
   "padding": 5,
   "data": [
     {"name": "brush_store"},
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json", "parse": {"undefined": "number"}}
+    },
     {
       "name": "data_0",
       "source": "source_0",

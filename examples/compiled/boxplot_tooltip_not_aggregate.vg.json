@@ -8,10 +8,52 @@
     {
       "name": "source_0",
       "url": "data/population.json",
-      "format": {"type": "json"}
+      "format": {
+        "type": "json",
+        "parse": {"people": "number", "year": "number"}
+      }
     },
     {
       "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["age"],
+          "ops": ["q1", "q3", "median", "min", "max"],
+          "fields": ["people", "people", "people", "people", "people"],
+          "as": [
+            "lower_box_people",
+            "upper_box_people",
+            "mid_box_people",
+            "min_people",
+            "max_people"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"lower_box_people\"] !== null && !isNaN(datum[\"lower_box_people\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"mid_box_people\"] !== null && !isNaN(datum[\"mid_box_people\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
       "source": "source_0",
       "transform": [
         {
@@ -24,22 +66,8 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "(datum[\"people\"] < datum[\"lower_box_people\"] - 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"])) || (datum[\"people\"] > datum[\"upper_box_people\"] + 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]))"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_0",
+      "name": "data_4",
+      "source": "data_3",
       "transform": [
         {
           "type": "filter",
@@ -65,8 +93,8 @@
       ]
     },
     {
-      "name": "data_3",
-      "source": "data_2",
+      "name": "data_5",
+      "source": "data_4",
       "transform": [
         {
           "type": "filter",
@@ -75,8 +103,8 @@
       ]
     },
     {
-      "name": "data_4",
-      "source": "data_2",
+      "name": "data_6",
+      "source": "data_4",
       "transform": [
         {
           "type": "filter",
@@ -85,41 +113,16 @@
       ]
     },
     {
-      "name": "data_5",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["age"],
-          "ops": ["q1", "q3", "median", "min", "max"],
-          "fields": ["people", "people", "people", "people", "people"],
-          "as": [
-            "lower_box_people",
-            "upper_box_people",
-            "mid_box_people",
-            "min_people",
-            "max_people"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "data_6",
-      "source": "data_5",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"lower_box_people\"] !== null && !isNaN(datum[\"lower_box_people\"])"
-        }
-      ]
-    },
-    {
       "name": "data_7",
-      "source": "data_5",
+      "source": "data_3",
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"mid_box_people\"] !== null && !isNaN(datum[\"mid_box_people\"])"
+          "expr": "(datum[\"people\"] < datum[\"lower_box_people\"] - 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"])) || (datum[\"people\"] > datum[\"upper_box_people\"] + 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]))"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
         }
       ]
     }
@@ -133,7 +136,7 @@
       "name": "layer_0_layer_0_marks",
       "type": "symbol",
       "style": ["point", "boxplot-outliers"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_7"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -149,7 +152,7 @@
       "name": "layer_0_layer_1_layer_0_marks",
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_5"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -166,7 +169,7 @@
       "name": "layer_0_layer_1_layer_1_marks",
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
-      "from": {"data": "data_4"},
+      "from": {"data": "data_6"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -183,7 +186,7 @@
       "name": "layer_1_layer_0_marks",
       "type": "rect",
       "style": ["bar", "boxplot-box"],
-      "from": {"data": "data_6"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -201,7 +204,7 @@
       "name": "layer_1_layer_1_marks",
       "type": "rect",
       "style": ["tick", "boxplot-median"],
-      "from": {"data": "data_7"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -223,11 +226,11 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "age"},
-          {"data": "data_3", "field": "age"},
-          {"data": "data_4", "field": "age"},
+          {"data": "data_7", "field": "age"},
+          {"data": "data_5", "field": "age"},
           {"data": "data_6", "field": "age"},
-          {"data": "data_7", "field": "age"}
+          {"data": "data_1", "field": "age"},
+          {"data": "data_2", "field": "age"}
         ],
         "sort": true
       },
@@ -240,14 +243,14 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "people"},
-          {"data": "data_3", "field": "lower_whisker_people"},
-          {"data": "data_3", "field": "lower_box_people"},
-          {"data": "data_4", "field": "upper_box_people"},
-          {"data": "data_4", "field": "upper_whisker_people"},
-          {"data": "data_6", "field": "lower_box_people"},
+          {"data": "data_7", "field": "people"},
+          {"data": "data_5", "field": "lower_whisker_people"},
+          {"data": "data_5", "field": "lower_box_people"},
           {"data": "data_6", "field": "upper_box_people"},
-          {"data": "data_7", "field": "mid_box_people"}
+          {"data": "data_6", "field": "upper_whisker_people"},
+          {"data": "data_1", "field": "lower_box_people"},
+          {"data": "data_1", "field": "upper_box_people"},
+          {"data": "data_2", "field": "mid_box_people"}
         ]
       },
       "range": [{"signal": "height"}, 0],

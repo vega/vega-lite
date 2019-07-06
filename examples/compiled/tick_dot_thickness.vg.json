@@ -9,7 +9,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json"},
+      "format": {"type": "json", "parse": {"Horsepower": "number"}},
       "transform": [
         {
           "type": "filter",

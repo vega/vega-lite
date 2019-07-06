@@ -10,7 +10,10 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json", "parse": {"Miles_per_Gallon": "number"}}
+      "format": {
+        "type": "json",
+        "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
+      }
     },
     {
       "name": "data_0",

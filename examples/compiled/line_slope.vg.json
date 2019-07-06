@@ -9,7 +9,7 @@
     {
       "name": "source_0",
       "url": "data/barley.json",
-      "format": {"type": "json"},
+      "format": {"type": "json", "parse": {"yield": "number"}},
       "transform": [
         {
           "type": "aggregate",

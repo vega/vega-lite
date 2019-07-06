@@ -9,7 +9,10 @@
     {
       "name": "source_0",
       "url": "data/seattle-weather.csv",
-      "format": {"type": "csv"},
+      "format": {
+        "type": "csv",
+        "parse": {"precipitation": "number", "undefined": "number"}
+      },
       "transform": [
         {
           "type": "extent",
