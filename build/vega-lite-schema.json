@@ -794,7 +794,7 @@
           "description": "Explicitly set the visible axis tick values."
         },
         "zindex": {
-          "description": "A non-negative integer indicating the z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use `\"zindex = 1\"`.\n\n__Default value:__ `1` (in front of the marks) for actual axis and `0` (behind the marks) for grids.",
+          "description": "A non-negative integer indicating the z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, set `zindex` to `1` or more.\n\n__Default value:__ `0` (behind the marks).",
           "minimum": 0,
           "type": "number"
         }

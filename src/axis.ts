@@ -109,9 +109,9 @@ export interface Axis extends AxisOrientMixins, BaseAxisNoSignals, Guide {
   /**
    * A non-negative integer indicating the z-index of the axis.
    * If zindex is 0, axes should be drawn behind all chart elements.
-   * To put them in front, use `"zindex = 1"`.
+   * To put them in front, set `zindex` to `1` or more.
    *
-   * __Default value:__ `1` (in front of the marks) for actual axis and `0` (behind the marks) for grids.
+   * __Default value:__ `0` (behind the marks).
    *
    * @TJS-type integer
    * @minimum 0
