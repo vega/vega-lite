@@ -1,7 +1,7 @@
 import {Axis as VgAxis, AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
-import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
+import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
 import {FieldDefBase, isTimeFormatFieldDef, toFieldDefBase} from '../../channeldef';
 import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
@@ -292,6 +292,8 @@ function getProperty<K extends keyof AxisComponentProps>(
   const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldDef);
   const orient = getFirstDefined(specifiedAxis.orient, properties.orient(channel));
 
+  const {mark, config} = model;
+
   switch (property) {
     case 'scale':
       return model.scaleName(channel);
@@ -302,7 +304,7 @@ function getProperty<K extends keyof AxisComponentProps>(
       if (isTimeFormatFieldDef(fieldDef)) {
         return undefined;
       }
-      return numberFormat(fieldDef, specifiedAxis.format, model.config);
+      return numberFormat(fieldDef, specifiedAxis.format, config);
     case 'formatType':
       // Same as format, We don't include temporal field here as we apply format in encode block
       if (isTimeFormatFieldDef(fieldDef)) {
@@ -353,6 +355,8 @@ function getProperty<K extends keyof AxisComponentProps>(
     }
     case 'values':
       return properties.values(specifiedAxis, model, fieldDef);
+    case 'zindex':
+      return getFirstDefined(specifiedAxis.zindex, properties.defaultZindex(mark, fieldDef));
   }
   // Otherwise, return specified property.
   return isAxisProperty(property) ? specifiedAxis[property] : undefined;
