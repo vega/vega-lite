@@ -2,6 +2,7 @@ import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
 import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
+import {Flag} from './util';
 
 export type SortOrder = 'ascending' | 'descending';
 
@@ -82,6 +83,25 @@ export type SortByChannel =
   | 'strokeOpacity'
   | 'opacity'
   | 'text';
+
+const SORT_BY_CHANNEL_INDEX: Flag<SortByChannel> = {
+  x: 1,
+  y: 1,
+  color: 1,
+  fill: 1,
+  stroke: 1,
+  strokeWidth: 1,
+  size: 1,
+  shape: 1,
+  fillOpacity: 1,
+  strokeOpacity: 1,
+  opacity: 1,
+  text: 1
+};
+
+export function isSortByChannel(c: string): c is SortByChannel {
+  return !!SORT_BY_CHANNEL_INDEX[c];
+}
 
 export type SortByChannelDesc =
   | '-x'

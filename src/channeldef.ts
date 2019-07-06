@@ -14,7 +14,7 @@ import * as log from './log';
 import {LogicalOperand} from './logical';
 import {Predicate} from './predicate';
 import {Scale} from './scale';
-import {Sort, SortOrder} from './sort';
+import {isSortByChannel, Sort, SortOrder} from './sort';
 import {isFacetFieldDef} from './spec/facet';
 import {StackOffset} from './stack';
 import {
@@ -745,7 +745,7 @@ export function normalize(channelDef: ChannelDef, channel: Channel): ChannelDef<
   return channelDef;
 }
 export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
-  const {aggregate, timeUnit, bin} = fieldDef;
+  const {aggregate, timeUnit, bin, field} = fieldDef;
   // Drop invalid aggregate
   if (aggregate && !isAggregateOp(aggregate) && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
     const {aggregate: _, ...fieldDefWithoutAggregate} = fieldDef;
@@ -758,6 +758,13 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
     fieldDef = {
       ...fieldDef,
       timeUnit: normalizeTimeUnit(timeUnit)
+    };
+  }
+
+  if (field) {
+    fieldDef = {
+      ...fieldDef,
+      field: `${fieldDef.field}`
     };
   }
 
@@ -810,10 +817,25 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
       log.warn(warning);
     }
   }
-  return {
-    ...fieldDef,
-    ...(fieldDef.field !== undefined ? {field: `${fieldDef.field}`} : {})
-  };
+
+  if (isSortableFieldDef(fieldDef) && isString(fieldDef.sort)) {
+    const {sort} = fieldDef;
+    if (isSortByChannel(sort)) {
+      return {
+        ...fieldDef,
+        sort: {encoding: sort}
+      };
+    }
+    const sub = sort.substr(1);
+    if (sort.charAt(0) === '-' && isSortByChannel(sub)) {
+      return {
+        ...fieldDef,
+        sort: {encoding: sub, order: 'descending'}
+      };
+    }
+  }
+
+  return fieldDef;
 }
 
 export function normalizeBin(bin: BinParams | boolean | 'binned', channel: Channel) {

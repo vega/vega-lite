@@ -1,8 +1,8 @@
-import {AggregateOp, Order} from 'vega';
+import {AggregateOp} from 'vega';
 import {isObject, isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {isBinning} from '../../bin';
-import {isChannel, isScaleChannel, isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../channel';
+import {isScaleChannel, ScaleChannel} from '../../channel';
 import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
@@ -329,17 +329,6 @@ function normalizeSortField(sort: EncodingSortField<string>, isStacked: boolean)
   };
 }
 
-function sortByEncoding(encoding: SingleDefUnitChannel, order: Order, model: UnitModel) {
-  const isStacked = model.stack !== null;
-  const {aggregate, field} = model.fieldDef(encoding);
-  const sortField: EncodingSortField<string> = {
-    op: aggregate as AggregateOp, // Once we decouple aggregate from aggregate op we won't have to cast here
-    field,
-    ...(order ? {order} : {})
-  };
-  return normalizeSortField(sortField, isStacked);
-}
-
 export function domainSort(
   model: UnitModel,
   channel: ScaleChannel,
@@ -368,25 +357,20 @@ export function domainSort(
     return normalizeSortField(sort, isStacked);
   } else if (isSortByEncoding(sort)) {
     const {encoding, order} = sort;
-    return sortByEncoding(encoding, order, model);
-  } else if (isString(sort)) {
-    const sub = sort.substr(1);
-    if (isChannel(sort)) {
-      // e.g., "x", "y"
-      return sortByEncoding(sort, undefined, model);
-    } else if (isSingleDefUnitChannel(sub)) {
-      // e.g., "-x", "-y"
-      return sortByEncoding(sub, 'descending', model);
-    } else if (sort === 'descending') {
-      return {
-        op: 'min',
-        field: model.vgField(channel),
-        order: 'descending'
-      };
-    }
-  }
-
-  if (util.contains(['ascending', undefined /* default =ascending*/], sort)) {
+    const {aggregate, field} = model.fieldDef(encoding);
+    const sortField: EncodingSortField<string> = {
+      op: aggregate as AggregateOp, // Once we decouple aggregate from aggregate op we won't have to cast here
+      field,
+      order
+    };
+    return normalizeSortField(sortField, isStacked);
+  } else if (sort === 'descending') {
+    return {
+      op: 'min',
+      field: model.vgField(channel),
+      order: 'descending'
+    };
+  } else if (util.contains(['ascending', undefined /* default =ascending*/], sort)) {
     return true;
   }
 
