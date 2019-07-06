@@ -744,36 +744,28 @@ export function normalize(channelDef: ChannelDef, channel: Channel): ChannelDef<
   }
   return channelDef;
 }
-export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
-  const {aggregate, timeUnit, bin, field} = fieldDef;
+export function normalizeFieldDef(fd: FieldDef<string>, channel: Channel) {
+  const {aggregate, timeUnit, bin, field} = fd;
+  const fieldDef = {...fd};
+
   // Drop invalid aggregate
   if (aggregate && !isAggregateOp(aggregate) && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
-    const {aggregate: _, ...fieldDefWithoutAggregate} = fieldDef;
     log.warn(log.message.invalidAggregate(aggregate));
-    fieldDef = fieldDefWithoutAggregate;
+    delete fieldDef.aggregate;
   }
 
   // Normalize Time Unit
   if (timeUnit) {
-    fieldDef = {
-      ...fieldDef,
-      timeUnit: normalizeTimeUnit(timeUnit)
-    };
+    fieldDef.timeUnit = normalizeTimeUnit(timeUnit);
   }
 
   if (field) {
-    fieldDef = {
-      ...fieldDef,
-      field: `${fieldDef.field}`
-    };
+    fieldDef.field = `${field}`;
   }
 
   // Normalize bin
   if (isBinning(bin)) {
-    fieldDef = {
-      ...fieldDef,
-      bin: normalizeBin(bin, channel)
-    } as FieldDef<string>;
+    fieldDef.bin = normalizeBin(bin, channel);
   }
 
   if (isBinned(bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {
@@ -786,18 +778,12 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
     const fullType = getFullName(type);
     if (type !== fullType) {
       // convert short type to full type
-      fieldDef = {
-        ...fieldDef,
-        type: fullType
-      };
+      fieldDef.type = fullType;
     }
     if (type !== 'quantitative') {
       if (isCountingAggregateOp(aggregate)) {
         log.warn(log.message.invalidFieldTypeForCountAggregate(type, aggregate));
-        fieldDef = {
-          ...fieldDef,
-          type: 'quantitative'
-        };
+        fieldDef.type = 'quantitative';
       }
     }
   } else if (!isSecondaryRangeChannel(channel)) {
@@ -805,10 +791,7 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
     const newType = defaultType(fieldDef as TypedFieldDef<any>, channel);
     log.warn(log.message.missingFieldType(channel, newType));
 
-    fieldDef = {
-      ...fieldDef,
-      type: newType
-    };
+    fieldDef['type'] = newType;
   }
 
   if (isTypedFieldDef(fieldDef)) {
