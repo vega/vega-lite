@@ -1,6 +1,5 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
-import {SingleDefUnitChannel} from './channel';
 import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
 
@@ -60,7 +59,7 @@ export interface SortByEncoding {
   /**
    * The [encoding channel](https://vega.github.io/vega-lite/docs/encoding.html#channels) to sort by (e.g., `"x"`, `"y"`)
    */
-  encoding: SingleDefUnitChannel;
+  encoding: SortByChannel;
 
   /**
    * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
@@ -70,7 +69,37 @@ export interface SortByEncoding {
 
 export type SortArray = number[] | string[] | boolean[] | DateTime[];
 
-export type Sort<F> = SortArray | SortOrder | EncodingSortField<F> | SortByEncoding | null;
+export type SortByChannel =
+  | 'x'
+  | 'y'
+  | 'color'
+  | 'fill'
+  | 'stroke'
+  | 'strokeWidth'
+  | 'size'
+  | 'shape'
+  | 'fillOpacity'
+  | 'strokeOpacity'
+  | 'opacity'
+  | 'text';
+
+export type SortByChannelDesc =
+  | '-x'
+  | '-y'
+  | '-color'
+  | '-fill'
+  | '-stroke'
+  | '-strokeWidth'
+  | '-size'
+  | '-shape'
+  | '-fillOpacity'
+  | '-strokeOpacity'
+  | '-opacity'
+  | '-text';
+
+export type AllSortString = SortOrder | SortByChannel | SortByChannelDesc;
+
+export type Sort<F> = SortArray | AllSortString | EncodingSortField<F> | SortByEncoding | null;
 
 export function isSortByEncoding<F>(sort: Sort<F>): sort is SortByEncoding {
   return !!sort && !!sort['encoding'];

@@ -61,13 +61,17 @@ To order the data by the values' natural order in Javascript (e.g.,`"a"` < `"b"`
 
 ### Sort by Another Encoding Channel
 
-To sort data by another encoding channel, the `sort` property can be an object with the `encoding` property:
+To sort data by another encoding channel, the `sort` property can be an encoding channel name to sort by (e.g., `"x"` or `"y"`) with an optional minus prefix for descending sort (e.g., `"-x"` to sort by x-field, descending).
+
+For example, the following plot sorts the y-values by the x-values (in descending order).
+
+<div class="vl-example" data-name="bar_aggregate_sort_by_encoding"></div>
+
+This is equivalent to using an object with the `encoding` and optional `"order"` property:
 
 {% include table.html props="encoding,order" source="SortByEncoding" %}
 
-For example, the following plot sorts the y-values by the x-values.
-
-<div class="vl-example" data-name="bar_aggregate_sort_by_encoding"></div>
+For example, `"sort": "-x"` is equivalent to `"sort": {"encoding": "x", "order": "descending"}`.
 
 ### Sort by a Different Field
 

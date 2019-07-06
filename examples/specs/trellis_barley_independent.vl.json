@@ -21,7 +21,12 @@
     "y": {
       "field": "variety",
       "type": "ordinal",
+<<<<<<< HEAD
       "sort": {"encoding": "x", "order": "descending"}
+=======
+      "sort": "-x",
+      "scale": {"rangeStep": 12}
+>>>>>>> c21f90e9e... feat:  Add a short-form for sort by encoding (e.g., `sort: "x"`, `sort: "-x"`)
     },
     "color": {"field": "year", "type": "nominal"}
   },

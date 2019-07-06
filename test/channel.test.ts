@@ -18,7 +18,7 @@ describe('channel', () => {
 
   describe('SINGLE_DEF_CHANNELS', () => {
     it('should be CHANNELS without detail and order', () => {
-      expect(SINGLE_DEF_CHANNELS).toEqual(without(CHANNELS, ['detail', 'order']));
+      expect(SINGLE_DEF_CHANNELS).toEqual(without(CHANNELS, ['detail', 'order', 'tooltip']));
     });
   });
 

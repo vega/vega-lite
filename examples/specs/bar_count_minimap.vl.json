@@ -9,7 +9,7 @@
         "type": "nominal",
         "scale": {"domain": {"selection": "brush"}},
         "axis": {"minExtent": 200, "title": null},
-        "sort": {"encoding": "x", "order": "descending"}
+        "sort": "-x"
       },
       "x": {
         "aggregate": "count",
@@ -32,7 +32,7 @@
       "y": {
         "field": "Name",
         "type": "nominal",
-        "sort": {"encoding": "x", "order": "descending"},
+        "sort": "-x",
         "axis": null
       },
       "x": {

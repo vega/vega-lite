@@ -95,6 +95,19 @@
       ],
       "type": "string"
     },
+    "AllSortString": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SortOrder"
+        },
+        {
+          "$ref": "#/definitions/SortByChannel"
+        },
+        {
+          "$ref": "#/definitions/SortByChannelDesc"
+        }
+      ]
+    },
     "AnyMark": {
       "anyOf": [
         {
@@ -10602,7 +10615,6 @@
         "strokeOpacity",
         "opacity",
         "text",
-        "tooltip",
         "href",
         "key",
         "url"
@@ -10773,7 +10785,7 @@
           "$ref": "#/definitions/SortArray"
         },
         {
-          "$ref": "#/definitions/SortOrder"
+          "$ref": "#/definitions/AllSortString"
         },
         {
           "$ref": "#/definitions/EncodingSortField"
@@ -10814,11 +10826,45 @@
         }
       ]
     },
+    "SortByChannel": {
+      "enum": [
+        "x",
+        "y",
+        "color",
+        "fill",
+        "stroke",
+        "strokeWidth",
+        "size",
+        "shape",
+        "fillOpacity",
+        "strokeOpacity",
+        "opacity",
+        "text"
+      ],
+      "type": "string"
+    },
+    "SortByChannelDesc": {
+      "enum": [
+        "-x",
+        "-y",
+        "-color",
+        "-fill",
+        "-stroke",
+        "-strokeWidth",
+        "-size",
+        "-shape",
+        "-fillOpacity",
+        "-strokeOpacity",
+        "-opacity",
+        "-text"
+      ],
+      "type": "string"
+    },
     "SortByEncoding": {
       "additionalProperties": false,
       "properties": {
         "encoding": {
-          "$ref": "#/definitions/SingleDefUnitChannel",
+          "$ref": "#/definitions/SortByChannel",
           "description": "The [encoding channel](https://vega.github.io/vega-lite/docs/encoding.html#channels) to sort by (e.g., `\"x\"`, `\"y\"`)"
         },
         "order": {
