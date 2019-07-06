@@ -354,6 +354,19 @@
   ],
   "axes": [
     {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
       "scale": "x",
       "orient": "top",
       "grid": false,
@@ -366,7 +379,7 @@
       "labelAngle": 270,
       "labelBaseline": "middle",
       "labelOverlap": true,
-      "zindex": 1
+      "zindex": 0
     },
     {
       "scale": "y",
@@ -375,19 +388,6 @@
       "title": "Temperature (F)",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
-      "gridScale": "x",
-      "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "domain": false,
-      "labels": false,
-      "maxExtent": 0,
-      "minExtent": 0,
-      "ticks": false,
       "zindex": 0
     }
   ]

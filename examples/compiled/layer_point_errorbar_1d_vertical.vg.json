@@ -112,15 +112,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "yield",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
@@ -128,6 +119,15 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "yield",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

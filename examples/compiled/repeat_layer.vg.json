@@ -171,6 +171,19 @@
       ],
       "axes": [
         {
+          "scale": "child__repeat_column_temp_max_y",
+          "orient": "left",
+          "gridScale": "child__repeat_column_temp_max_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
           "scale": "child__repeat_column_temp_max_x",
           "orient": "bottom",
           "grid": false,
@@ -184,7 +197,7 @@
               "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
             }
           },
-          "zindex": 1
+          "zindex": 0
         },
         {
           "scale": "child__repeat_column_temp_max_y",
@@ -193,19 +206,6 @@
           "title": "Mean of temp_max",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_column_temp_max_y",
-          "orient": "left",
-          "gridScale": "child__repeat_column_temp_max_x",
-          "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "domain": false,
-          "labels": false,
-          "maxExtent": 0,
-          "minExtent": 0,
-          "ticks": false,
           "zindex": 0
         }
       ]
@@ -313,6 +313,19 @@
       ],
       "axes": [
         {
+          "scale": "child__repeat_column_precipitation_y",
+          "orient": "left",
+          "gridScale": "child__repeat_column_precipitation_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
           "scale": "child__repeat_column_precipitation_x",
           "orient": "bottom",
           "grid": false,
@@ -326,7 +339,7 @@
               "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
             }
           },
-          "zindex": 1
+          "zindex": 0
         },
         {
           "scale": "child__repeat_column_precipitation_y",
@@ -335,19 +348,6 @@
           "title": "Mean of precipitation",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_column_precipitation_y",
-          "orient": "left",
-          "gridScale": "child__repeat_column_precipitation_x",
-          "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "domain": false,
-          "labels": false,
-          "maxExtent": 0,
-          "minExtent": 0,
-          "ticks": false,
           "zindex": 0
         }
       ]
@@ -455,6 +455,19 @@
       ],
       "axes": [
         {
+          "scale": "child__repeat_column_wind_y",
+          "orient": "left",
+          "gridScale": "child__repeat_column_wind_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
           "scale": "child__repeat_column_wind_x",
           "orient": "bottom",
           "grid": false,
@@ -468,7 +481,7 @@
               "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
             }
           },
-          "zindex": 1
+          "zindex": 0
         },
         {
           "scale": "child__repeat_column_wind_y",
@@ -477,19 +490,6 @@
           "title": "Mean of wind",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_column_wind_y",
-          "orient": "left",
-          "gridScale": "child__repeat_column_wind_x",
-          "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "domain": false,
-          "labels": false,
-          "maxExtent": 0,
-          "minExtent": 0,
-          "ticks": false,
           "zindex": 0
         }
       ]

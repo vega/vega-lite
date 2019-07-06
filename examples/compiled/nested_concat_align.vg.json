@@ -225,25 +225,6 @@
           ],
           "axes": [
             {
-              "scale": "concat_0_child__repeat_column_Rotten_Tomatoes_Rating_x",
-              "orient": "bottom",
-              "grid": false,
-              "title": "Rotten_Tomatoes_Rating (binned)",
-              "labelFlush": true,
-              "labelOverlap": true,
-              "tickCount": {"signal": "ceil(width/10)"},
-              "zindex": 1
-            },
-            {
-              "scale": "concat_0_child__repeat_column_Rotten_Tomatoes_Rating_y",
-              "orient": "left",
-              "grid": false,
-              "title": "Count",
-              "labelOverlap": true,
-              "tickCount": {"signal": "ceil(concat_0_height/40)"},
-              "zindex": 1
-            },
-            {
               "scale": "concat_0_child__repeat_column_Rotten_Tomatoes_Rating_y",
               "orient": "left",
               "gridScale": "concat_0_child__repeat_column_Rotten_Tomatoes_Rating_x",
@@ -254,6 +235,25 @@
               "maxExtent": 0,
               "minExtent": 0,
               "ticks": false,
+              "zindex": 0
+            },
+            {
+              "scale": "concat_0_child__repeat_column_Rotten_Tomatoes_Rating_x",
+              "orient": "bottom",
+              "grid": false,
+              "title": "Rotten_Tomatoes_Rating (binned)",
+              "labelFlush": true,
+              "labelOverlap": true,
+              "tickCount": {"signal": "ceil(width/10)"},
+              "zindex": 0
+            },
+            {
+              "scale": "concat_0_child__repeat_column_Rotten_Tomatoes_Rating_y",
+              "orient": "left",
+              "grid": false,
+              "title": "Count",
+              "labelOverlap": true,
+              "tickCount": {"signal": "ceil(concat_0_height/40)"},
               "zindex": 0
             }
           ]
@@ -312,25 +312,6 @@
           ],
           "axes": [
             {
-              "scale": "concat_0_child__repeat_column_IMDB_Rating_x",
-              "orient": "bottom",
-              "grid": false,
-              "title": "IMDB_Rating (binned)",
-              "labelFlush": true,
-              "labelOverlap": true,
-              "tickCount": {"signal": "ceil(width/10)"},
-              "zindex": 1
-            },
-            {
-              "scale": "concat_0_child__repeat_column_IMDB_Rating_y",
-              "orient": "left",
-              "grid": false,
-              "title": "Count",
-              "labelOverlap": true,
-              "tickCount": {"signal": "ceil(concat_0_height/40)"},
-              "zindex": 1
-            },
-            {
               "scale": "concat_0_child__repeat_column_IMDB_Rating_y",
               "orient": "left",
               "gridScale": "concat_0_child__repeat_column_IMDB_Rating_x",
@@ -341,6 +322,25 @@
               "maxExtent": 0,
               "minExtent": 0,
               "ticks": false,
+              "zindex": 0
+            },
+            {
+              "scale": "concat_0_child__repeat_column_IMDB_Rating_x",
+              "orient": "bottom",
+              "grid": false,
+              "title": "IMDB_Rating (binned)",
+              "labelFlush": true,
+              "labelOverlap": true,
+              "tickCount": {"signal": "ceil(width/10)"},
+              "zindex": 0
+            },
+            {
+              "scale": "concat_0_child__repeat_column_IMDB_Rating_y",
+              "orient": "left",
+              "grid": false,
+              "title": "Count",
+              "labelOverlap": true,
+              "tickCount": {"signal": "ceil(concat_0_height/40)"},
               "zindex": 0
             }
           ]
@@ -407,25 +407,6 @@
           ],
           "axes": [
             {
-              "scale": "concat_1_child__repeat_column_US_Gross_x",
-              "orient": "bottom",
-              "grid": false,
-              "title": "US_Gross (binned)",
-              "labelFlush": true,
-              "labelOverlap": true,
-              "tickCount": {"signal": "ceil(width/10)"},
-              "zindex": 1
-            },
-            {
-              "scale": "concat_1_child__repeat_column_US_Gross_y",
-              "orient": "left",
-              "grid": false,
-              "title": "Count",
-              "labelOverlap": true,
-              "tickCount": {"signal": "ceil(concat_1_height/40)"},
-              "zindex": 1
-            },
-            {
               "scale": "concat_1_child__repeat_column_US_Gross_y",
               "orient": "left",
               "gridScale": "concat_1_child__repeat_column_US_Gross_x",
@@ -436,6 +417,25 @@
               "maxExtent": 0,
               "minExtent": 0,
               "ticks": false,
+              "zindex": 0
+            },
+            {
+              "scale": "concat_1_child__repeat_column_US_Gross_x",
+              "orient": "bottom",
+              "grid": false,
+              "title": "US_Gross (binned)",
+              "labelFlush": true,
+              "labelOverlap": true,
+              "tickCount": {"signal": "ceil(width/10)"},
+              "zindex": 0
+            },
+            {
+              "scale": "concat_1_child__repeat_column_US_Gross_y",
+              "orient": "left",
+              "grid": false,
+              "title": "Count",
+              "labelOverlap": true,
+              "tickCount": {"signal": "ceil(concat_1_height/40)"},
               "zindex": 0
             }
           ]
@@ -494,25 +494,6 @@
           ],
           "axes": [
             {
-              "scale": "concat_1_child__repeat_column_Worldwide_Gross_x",
-              "orient": "bottom",
-              "grid": false,
-              "title": "Worldwide_Gross (binned)",
-              "labelFlush": true,
-              "labelOverlap": true,
-              "tickCount": {"signal": "ceil(width/10)"},
-              "zindex": 1
-            },
-            {
-              "scale": "concat_1_child__repeat_column_Worldwide_Gross_y",
-              "orient": "left",
-              "grid": false,
-              "title": "Count",
-              "labelOverlap": true,
-              "tickCount": {"signal": "ceil(concat_1_height/40)"},
-              "zindex": 1
-            },
-            {
               "scale": "concat_1_child__repeat_column_Worldwide_Gross_y",
               "orient": "left",
               "gridScale": "concat_1_child__repeat_column_Worldwide_Gross_x",
@@ -523,6 +504,25 @@
               "maxExtent": 0,
               "minExtent": 0,
               "ticks": false,
+              "zindex": 0
+            },
+            {
+              "scale": "concat_1_child__repeat_column_Worldwide_Gross_x",
+              "orient": "bottom",
+              "grid": false,
+              "title": "Worldwide_Gross (binned)",
+              "labelFlush": true,
+              "labelOverlap": true,
+              "tickCount": {"signal": "ceil(width/10)"},
+              "zindex": 0
+            },
+            {
+              "scale": "concat_1_child__repeat_column_Worldwide_Gross_y",
+              "orient": "left",
+              "grid": false,
+              "title": "Count",
+              "labelOverlap": true,
+              "tickCount": {"signal": "ceil(concat_1_height/40)"},
               "zindex": 0
             }
           ]

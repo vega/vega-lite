@@ -93,7 +93,7 @@ export function assembleAxis(
       grid: false,
       ...(titleString ? {title: titleString} : {}),
       ...axis,
-      zindex: getFirstDefined(zindex, 1) // put axis line above marks by default
+      zindex: getFirstDefined(zindex, 0) // put axis line above marks by default
     };
   }
 }
@@ -127,9 +127,9 @@ export function assembleAxisSignals(model: Model): NewSignal[] {
 export function assembleAxes(axisComponents: AxisComponentIndex, config: Config): VgAxis[] {
   const {x = [], y = []} = axisComponents;
   return [
-    ...x.map(a => assembleAxis(a, 'main', config)),
     ...x.map(a => assembleAxis(a, 'grid', config)),
-    ...y.map(a => assembleAxis(a, 'main', config)),
-    ...y.map(a => assembleAxis(a, 'grid', config))
+    ...y.map(a => assembleAxis(a, 'grid', config)),
+    ...x.map(a => assembleAxis(a, 'main', config)),
+    ...y.map(a => assembleAxis(a, 'main', config))
   ].filter(a => a); // filter undefined
 }

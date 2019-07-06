@@ -100,7 +100,7 @@
           "title": "Price",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -123,7 +123,7 @@
               "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
             }
           },
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },

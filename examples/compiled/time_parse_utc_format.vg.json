@@ -76,7 +76,7 @@
           "update": {"text": {"signal": "timeFormat(datum.value, '%H')"}}
         }
       },
-      "zindex": 1
+      "zindex": 0
     }
   ]
 }

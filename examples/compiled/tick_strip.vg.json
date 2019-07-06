@@ -64,16 +64,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Horsepower",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -85,12 +75,22 @@
       "zindex": 0
     },
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Horsepower",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "grid": false,
       "title": "Cylinders",
       "labelOverlap": true,
-      "zindex": 1
+      "zindex": 0
     }
   ]
 }

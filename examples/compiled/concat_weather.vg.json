@@ -124,6 +124,19 @@
       ],
       "axes": [
         {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "gridScale": "concat_0_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
           "scale": "concat_0_x",
           "orient": "bottom",
           "grid": false,
@@ -137,7 +150,7 @@
               "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
             }
           },
-          "zindex": 1
+          "zindex": 0
         },
         {
           "scale": "concat_0_y",
@@ -146,19 +159,6 @@
           "title": "Mean of precipitation",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_0_height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "concat_0_y",
-          "orient": "left",
-          "gridScale": "concat_0_x",
-          "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
-          "domain": false,
-          "labels": false,
-          "maxExtent": 0,
-          "minExtent": 0,
-          "ticks": false,
           "zindex": 0
         }
       ]
@@ -192,6 +192,19 @@
       ],
       "axes": [
         {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "gridScale": "concat_1_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
           "scale": "concat_1_x",
           "orient": "bottom",
           "grid": false,
@@ -205,7 +218,7 @@
               "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
             }
           },
-          "zindex": 1
+          "zindex": 0
         },
         {
           "scale": "concat_1_y",
@@ -214,19 +227,6 @@
           "title": "Median of precipitation",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_1_height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "concat_1_y",
-          "orient": "left",
-          "gridScale": "concat_1_x",
-          "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
-          "domain": false,
-          "labels": false,
-          "maxExtent": 0,
-          "minExtent": 0,
-          "ticks": false,
           "zindex": 0
         }
       ]
@@ -283,7 +283,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_2_width/10)"},
-          "zindex": 1
+          "zindex": 0
         },
         {
           "scale": "concat_2_y",
@@ -292,7 +292,7 @@
           "title": "temp_max (binned)",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_2_height/10)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     }

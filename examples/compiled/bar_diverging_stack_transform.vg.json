@@ -347,16 +347,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Percentage",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -368,6 +358,16 @@
       "zindex": 0
     },
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Percentage",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "grid": false,
@@ -376,7 +376,7 @@
       "minExtent": 60,
       "offset": 5,
       "ticks": false,
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "legends": [

@@ -160,25 +160,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_column_distance_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "distance (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_column_distance_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_column_distance_y",
           "orient": "left",
           "gridScale": "child__repeat_column_distance_x",
@@ -189,6 +170,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_distance_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "distance (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_distance_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -241,25 +241,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_column_delay_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "delay (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_column_delay_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_column_delay_y",
           "orient": "left",
           "gridScale": "child__repeat_column_delay_x",
@@ -270,6 +251,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_delay_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "delay (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_delay_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -319,25 +319,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_column_time_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "time (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_column_time_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_column_time_y",
           "orient": "left",
           "gridScale": "child__repeat_column_time_x",
@@ -348,6 +329,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_time_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "time (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_time_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]

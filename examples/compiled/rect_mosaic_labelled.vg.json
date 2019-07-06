@@ -121,7 +121,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -180,7 +180,7 @@
           "title": "Cylinders",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_1_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     }
