@@ -100,19 +100,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "labelFlush": true,
-      "labelOverlap": true,
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
-        }
-      },
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "layer_0_y",
       "grid": true,
       "domain": false,
@@ -123,6 +110,19 @@
       "zindex": 0
     },
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "labelFlush": true,
+      "labelOverlap": true,
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+        }
+      },
+      "zindex": 0
+    },
+    {
       "scale": "layer_0_y",
       "orient": "left",
       "grid": false,
@@ -130,7 +130,7 @@
       "titleColor": "#85C5A6",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
+      "zindex": 0
     },
     {
       "scale": "layer_1_y",
@@ -140,7 +140,7 @@
       "titleColor": "#85A9C5",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
+      "zindex": 0
     }
   ]
 }

@@ -362,15 +362,6 @@
         {
           "scale": "child_x",
           "orient": "bottom",
-          "grid": false,
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child_x",
-          "orient": "bottom",
           "grid": true,
           "tickCount": {"signal": "ceil(child_width/40)"},
           "domain": false,
@@ -378,6 +369,15 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child_x",
+          "orient": "bottom",
+          "grid": false,
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_width/40)"},
           "zindex": 0
         }
       ]

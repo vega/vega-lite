@@ -87,7 +87,7 @@
           "grid": false,
           "title": "variety",
           "labelOverlap": true,
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -106,7 +106,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },

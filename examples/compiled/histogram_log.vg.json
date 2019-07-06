@@ -97,16 +97,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "x1, x2",
-      "tickCount": 5,
-      "labelFlush": true,
-      "labelOverlap": "greedy",
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "tickCount": 5,
       "gridScale": "y",
       "grid": true,
@@ -120,15 +110,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "Count of Records",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -137,6 +118,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "x1, x2",
+      "tickCount": 5,
+      "labelFlush": true,
+      "labelOverlap": "greedy",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Count of Records",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

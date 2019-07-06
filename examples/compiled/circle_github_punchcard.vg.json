@@ -112,7 +112,7 @@
           "update": {"text": {"signal": "timeFormat(datum.value, '%H')"}}
         }
       },
-      "zindex": 1
+      "zindex": 0
     },
     {
       "scale": "y",
@@ -125,7 +125,7 @@
           "update": {"text": {"signal": "timeFormat(datum.value, '%A')"}}
         }
       },
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "legends": [

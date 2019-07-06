@@ -62,7 +62,7 @@
           "title": "value",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -96,7 +96,7 @@
           "labelAlign": "right",
           "labelAngle": 270,
           "labelBaseline": "middle",
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },

@@ -108,16 +108,6 @@
         {
           "scale": "trellis_barley_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "Median of yield",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "trellis_barley_x",
-          "orient": "bottom",
           "gridScale": "trellis_barley_y",
           "grid": true,
           "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
@@ -129,12 +119,22 @@
           "zindex": 0
         },
         {
+          "scale": "trellis_barley_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Median of yield",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
+          "zindex": 0
+        },
+        {
           "scale": "trellis_barley_y",
           "orient": "left",
           "grid": false,
           "title": "variety",
           "labelOverlap": true,
-          "zindex": 1
+          "zindex": 0
         }
       ]
     }

@@ -215,16 +215,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_sepalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_sepalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_sepalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -238,15 +228,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_sepalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_sepalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_sepalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -255,6 +236,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_sepalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_sepalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -305,16 +305,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -328,15 +318,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -345,6 +326,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -395,16 +395,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_petalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_petalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_petalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -418,15 +408,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_petalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_petalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_petalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -435,6 +416,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_petalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_petalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -485,16 +485,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_petalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_petalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_petalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -508,15 +498,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_petalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_petalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_petalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -525,6 +506,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_petalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_petalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -575,16 +575,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_sepalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_sepalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalLength__repeat_column_sepalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -598,15 +588,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_sepalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_sepalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalLength__repeat_column_sepalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -615,6 +596,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_sepalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_sepalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -665,16 +665,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_sepalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_sepalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalLength__repeat_column_sepalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -688,15 +678,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_sepalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_sepalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalLength__repeat_column_sepalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -705,6 +686,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_sepalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_sepalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -755,16 +755,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_petalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_petalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalLength__repeat_column_petalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -778,15 +768,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_petalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_petalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalLength__repeat_column_petalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -795,6 +776,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_petalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_petalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -845,16 +845,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_petalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_petalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalLength__repeat_column_petalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -868,15 +858,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_petalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_petalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalLength__repeat_column_petalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -885,6 +866,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_petalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_petalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -935,16 +935,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -958,15 +948,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -975,6 +956,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1025,16 +1025,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1048,15 +1038,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1065,6 +1046,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1115,16 +1115,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_petalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_petalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_petalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1138,15 +1128,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_petalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_petalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_petalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1155,6 +1136,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_petalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_petalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1205,16 +1205,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1228,15 +1218,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1245,6 +1226,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1295,16 +1295,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_sepalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_sepalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_sepalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1318,15 +1308,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_sepalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_sepalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_sepalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1335,6 +1316,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_sepalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_sepalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1385,16 +1385,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1408,15 +1398,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1425,6 +1406,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1475,16 +1475,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_petalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_petalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_petalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1498,15 +1488,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_petalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_petalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_petalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1515,6 +1496,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_petalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_petalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1565,16 +1565,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_petalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_petalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_petalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1588,15 +1578,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_petalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_petalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_petalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1605,6 +1586,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_petalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_petalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]

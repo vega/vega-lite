@@ -66,16 +66,6 @@
         {
           "scale": "child__repeat_column_Origin_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "Horsepower",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_column_Origin_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_column_Origin_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -89,15 +79,6 @@
         {
           "scale": "child__repeat_column_Origin_y",
           "orient": "left",
-          "grid": false,
-          "title": "Miles_per_Gallon",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_column_Origin_y",
-          "orient": "left",
           "gridScale": "child__repeat_column_Origin_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -106,6 +87,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_Origin_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Horsepower",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_Origin_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Miles_per_Gallon",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ],
@@ -163,16 +163,6 @@
         {
           "scale": "child__repeat_column_Cylinders_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "Horsepower",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_column_Cylinders_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_column_Cylinders_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -186,15 +176,6 @@
         {
           "scale": "child__repeat_column_Cylinders_y",
           "orient": "left",
-          "grid": false,
-          "title": "Miles_per_Gallon",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_column_Cylinders_y",
-          "orient": "left",
           "gridScale": "child__repeat_column_Cylinders_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -203,6 +184,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_Cylinders_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Horsepower",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_Cylinders_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Miles_per_Gallon",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ],
