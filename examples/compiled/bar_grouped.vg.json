@@ -30,11 +30,15 @@
     }
   ],
   "signals": [
-    {"name": "child_width", "value": {"step": 12}},
+    {"name": "x_step", "value": 12},
+    {
+      "name": "child_width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    },
     {"name": "child_height", "value": 200}
   ],
   "layout": {
-    "padding": 20,
+    "padding": {"row": 20, "column": 10},
     "offset": {"columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -120,9 +124,6 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
-              "tooltip": {
-                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"gender\": datum[\"gender\"]}"
-              },
               "x": {"scale": "x", "field": "gender"},
               "width": {"scale": "x", "band": true},
               "y": {"scale": "y", "field": "sum_people"},
@@ -138,7 +139,7 @@
       "name": "x",
       "type": "band",
       "domain": {"data": "source_0", "field": "gender", "sort": true},
-      "range": [0, {"signal": "child_width"}],
+      "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
     },
