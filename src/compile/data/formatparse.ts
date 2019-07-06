@@ -194,7 +194,11 @@ export class ParseNode extends DataFlowNode {
       if (isPathMark(mark)) {
         const dimensionChannel = markDef.orient === 'horizontal' ? 'y' : 'x';
         const dimensionChannelDef = encoding[dimensionChannel];
-        if (isFieldDef(dimensionChannelDef) && dimensionChannelDef.type === 'quantitative') {
+        if (
+          isFieldDef(dimensionChannelDef) &&
+          dimensionChannelDef.type === 'quantitative' &&
+          !(dimensionChannelDef.field in implicit)
+        ) {
           implicit[dimensionChannelDef.field] = 'number';
         }
       }
