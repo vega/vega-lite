@@ -148,8 +148,8 @@ const CHANNEL_INDEX = {
 
 export const CHANNELS = keys(CHANNEL_INDEX);
 
-const {order: _o, detail: _d, ...SINGLE_DEF_CHANNEL_INDEX} = CHANNEL_INDEX;
-const {order: _o1, detail: _d1, row: _r, column: _c, facet: _f, ...SINGLE_DEF_UNIT_CHANNEL_INDEX} = CHANNEL_INDEX;
+const {order: _o, detail: _d, tooltip: _tt1, ...SINGLE_DEF_CHANNEL_INDEX} = CHANNEL_INDEX;
+const {row: _r, column: _c, facet: _f, ...SINGLE_DEF_UNIT_CHANNEL_INDEX} = SINGLE_DEF_CHANNEL_INDEX;
 /**
  * Channels that cannot have an array of channelDef.
  * model.fieldDef, getFieldDef only work for these channels.

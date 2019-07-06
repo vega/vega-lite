@@ -128,6 +128,8 @@ SingleDefChannel:
 SingleDefUnitChannel:
   name: "Channel"
   link: "encoding.html#channels"
+AllSortString:
+  name: "String"
 
 # Channel Definitions
 NumericFieldDefWithCondition:

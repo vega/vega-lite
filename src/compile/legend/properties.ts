@@ -43,6 +43,7 @@ export function defaultSymbolType(
   switch (mark) {
     case 'bar':
     case 'rect':
+    case 'image':
     case 'square':
       return 'square';
     case 'line':
