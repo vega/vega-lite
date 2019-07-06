@@ -1,3 +1,4 @@
+import {LayoutAlign} from 'vega';
 import {BinParams} from '../bin';
 import {ChannelDef, Field, FieldDef, TypedFieldDef} from '../channeldef';
 import {Header} from '../header';
@@ -34,16 +35,48 @@ export interface FacetFieldDef<F extends Field> extends TypedFieldDef<F, Standar
   sort?: SortArray | SortOrder | EncodingSortField<F> | null;
 }
 
-export interface FacetMapping<F extends Field> {
+export type FacetEncodingFieldDef<F extends Field> = FacetFieldDef<F> & GenericCompositionLayoutWithColumns;
+
+export interface RowColumnEncodingFieldDef<F extends Field> extends FacetFieldDef<F> {
+  // Manually declarae this separated from GenericCompositionLayout as we don't support RowCol object in RowColumnEncodingFieldDef
+
+  /**
+   * The alignment to apply to row/column facet's subplot.
+   * The supported string values are `"all"`, `"each"`, and `"none"`.
+   *
+   * - For `"none"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.
+   * - For `"each"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.
+   * - For `"all"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.
+   *
+   * __Default value:__ `"all"`.
+   */
+  align?: LayoutAlign;
+
+  /**
+   * Boolean flag indicating if facet's subviews should be centered relative to their respective rows or columns.
+   *
+   * __Default value:__ `false`
+   */
+  center?: boolean;
+
+  /**
+   * The spacing in pixels between facet's sub-views.
+   *
+   * __Default value__: Depends on `"spacing"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)
+   */
+  spacing?: number;
+}
+
+export interface FacetMapping<F extends Field, FD extends FacetFieldDef<F> = FacetFieldDef<F>> {
   /**
    * A field definition for the vertical facet of trellis plots.
    */
-  row?: FacetFieldDef<F>;
+  row?: FD;
 
   /**
    * A field definition for the horizontal facet of trellis plots.
    */
-  column?: FacetFieldDef<F>;
+  column?: FD;
 }
 
 export function isFacetMapping<F extends Field>(f: FacetFieldDef<F> | FacetMapping<F>): f is FacetMapping<F> {
@@ -53,13 +86,13 @@ export function isFacetMapping<F extends Field>(f: FacetFieldDef<F> | FacetMappi
 /**
  * Facet mapping for encoding macro
  */
-export interface EncodingFacetMapping<F extends Field> extends FacetMapping<F> {
+export interface EncodingFacetMapping<F extends Field> extends FacetMapping<F, RowColumnEncodingFieldDef<F>> {
   /**
    * A field definition for the (flexible) facet of trellis plots.
    *
    * If either `row` or `column` is specified, this channel will be ignored.
    */
-  facet?: FacetFieldDef<F>;
+  facet?: FacetEncodingFieldDef<F>;
 }
 
 export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is FacetFieldDef<F> {
