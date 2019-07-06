@@ -17,6 +17,14 @@
         {"x": 6, "y": 40},
         {"x": 7, "y": 20}
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
+        {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"}
+      ]
     }
   ],
   "marks": [
@@ -25,7 +33,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"x\"]"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -45,7 +53,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "x"},
+      "domain": {"data": "data_0", "field": "x"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": false
@@ -53,7 +61,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "y"},
+      "domain": {"data": "data_0", "field": "y"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

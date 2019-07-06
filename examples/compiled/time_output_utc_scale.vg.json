@@ -24,6 +24,11 @@
         {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
           "type": "formula",
+          "expr": "toNumber(datum[\"price\"])",
+          "as": "price"
+        },
+        {
+          "type": "formula",
           "as": "yearmonthdatehoursminutes_date",
           "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), hours(datum[\"date\"]), minutes(datum[\"date\"]), 0, 0)"
         }

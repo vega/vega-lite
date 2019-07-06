@@ -10,7 +10,15 @@
     {
       "name": "source_0",
       "url": "data/iris.json",
-      "format": {"type": "json"},
+      "format": {
+        "type": "json",
+        "parse": {
+          "petalLength": "number",
+          "petalWidth": "number",
+          "sepalLength": "number",
+          "sepalWidth": "number"
+        }
+      },
       "transform": [
         {
           "type": "window",

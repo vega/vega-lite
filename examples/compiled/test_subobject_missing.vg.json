@@ -19,7 +19,7 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "datum[\"options\"] && datum[\"options\"][\"price\"]",
+          "expr": "toNumber(datum[\"options\"] && datum[\"options\"][\"price\"])",
           "as": "options.price"
         },
         {"type": "filter", "expr": "datum.options != null"}

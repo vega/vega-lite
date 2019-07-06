@@ -19,6 +19,11 @@
       "transform": [
         {
           "type": "formula",
+          "expr": "toNumber(datum[\"Score\"])",
+          "as": "Score"
+        },
+        {
+          "type": "formula",
           "expr": "datum[\"Name\"]===\"Peter\" ? 0 : datum[\"Name\"]===\"Mary\" ? 1 : datum[\"Name\"]===\"Paul\" ? 2 : 3",
           "as": "x_Name_sort_index"
         }
