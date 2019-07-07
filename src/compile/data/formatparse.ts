@@ -1,13 +1,7 @@
 import {isNumber, isString} from 'vega-util';
 import {AncestorParse} from '.';
 import {getMainRangeChannel, SingleDefChannel} from '../../channel';
-import {
-  isNumberFieldDef,
-  isScaleFieldDef,
-  isTimeFormatFieldDef,
-  isTypedFieldDef,
-  TypedFieldDef
-} from '../../channeldef';
+import {isScaleFieldDef, isTimeFormatFieldDef, isTypedFieldDef, TypedFieldDef} from '../../channeldef';
 import {isGenerator, Parse} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import * as log from '../../log';
@@ -146,7 +140,8 @@ export class ParseNode extends DataFlowNode {
     function add(fieldDef: TypedFieldDef<string>) {
       if (isTimeFormatFieldDef(fieldDef)) {
         implicit[fieldDef.field] = 'date';
-      } else if (isNumberFieldDef(fieldDef)) {
+      } else if (fieldDef.type == 'quantitative' && fieldDef.field) {
+        // Parse quantitative fields as numbers so that we e.g. sort them correctly
         implicit[fieldDef.field] = 'number';
       } else if (accessPathDepth(fieldDef.field) > 1) {
         // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.

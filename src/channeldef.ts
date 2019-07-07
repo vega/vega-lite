@@ -916,10 +916,6 @@ export function channelCompatibility(
   throw new Error('channelCompatability not implemented for channel ' + channel);
 }
 
-export function isNumberFieldDef(fieldDef: TypedFieldDef<any>) {
-  return fieldDef.type === 'quantitative' || isBinning(fieldDef.bin);
-}
-
 /**
  * Check if the field def uses a time format or does not use any format but is temporal
  * (this does not cover field defs that are temporal but use a number format).
