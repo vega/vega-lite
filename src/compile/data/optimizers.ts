@@ -3,20 +3,19 @@ import {Dict, fieldIntersection, flatten, hash, hasIntersection, keys, some} fro
 import {Model} from '../model';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
+import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {ParseNode} from './formatparse';
+import {IdentifierNode} from './identifier';
 import {JoinAggregateTransformNode} from './joinaggregate';
 import {FACET_SCALE_PREFIX} from './optimize';
-import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
+import {BottomUpOptimizer, TopDownOptimizer, isDataSourceNode} from './optimizer';
 import * as optimizers from './optimizers';
-import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
-import {CalculateNode} from './calculate';
-import {IdentifierNode} from './identifier';
 
 export interface OptimizerFlags {
   /**
@@ -30,29 +29,6 @@ export interface OptimizerFlags {
 }
 
 /**
- * Start optimization path at the leaves. Useful for merging up or removing things.
- *
- * If the callback returns true, the recursion continues.
- */
-export function iterateFromLeaves(f: (node: DataFlowNode) => OptimizerFlags) {
-  function optimizeNextFromLeaves(node: DataFlowNode): boolean {
-    if (node instanceof SourceNode) {
-      return false;
-    }
-
-    const next = node.parent;
-    const {continueFlag, mutatedFlag} = f(node);
-    let childFlag = false;
-    if (continueFlag) {
-      childFlag = optimizeNextFromLeaves(next);
-    }
-    return mutatedFlag || childFlag;
-  }
-
-  return optimizeNextFromLeaves;
-}
-
-/**
  * Move parse nodes up to forks.
  */
 export class MoveParseUp extends BottomUpOptimizer {
@@ -60,7 +36,7 @@ export class MoveParseUp extends BottomUpOptimizer {
     const parent = node.parent;
     // move parse up by merging or swapping
     if (node instanceof ParseNode) {
-      if (parent instanceof SourceNode) {
+      if (isDataSourceNode(parent)) {
         return this.flags;
       }
 
@@ -388,7 +364,7 @@ export class MergeBins extends BottomUpOptimizer {
   }
   public run(node: DataFlowNode): OptimizerFlags {
     const parent = node.parent;
-    const moveBinsUp = !(parent instanceof SourceNode || parent instanceof FilterNode || parent instanceof ParseNode);
+    const moveBinsUp = !(isDataSourceNode(parent) || parent instanceof FilterNode || parent instanceof ParseNode);
 
     const promotableBins: BinNode[] = [];
     const remainingBins: BinNode[] = [];
@@ -430,13 +406,13 @@ export class MergeBins extends BottomUpOptimizer {
 /**
  * Merge calculate nodes and move bin nodes up through forks. Stop at filters and parse as we want them to stay before the calculate node.
  *
- * Simialr to MergeBins but for Calculate Nodes.
+ * Similar to MergeBins but for Calculate Nodes.
  */
 export class MergeCalculate extends BottomUpOptimizer {
   public run(node: DataFlowNode): OptimizerFlags {
     const parent = node.parent;
     const moveCalcssUp = !(
-      parent instanceof SourceNode ||
+      isDataSourceNode(parent) ||
       parent instanceof ParseNode ||
       // Filter nodes stay before calculates to reduce computation.
       parent instanceof FilterNode ||

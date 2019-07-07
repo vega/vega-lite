@@ -11,6 +11,10 @@ export class SequenceNode extends DataFlowNode {
     super(parent);
   }
 
+  public producedFields() {
+    return new Set(this.params.as || 'data');
+  }
+
   public assemble(): VgSequenceTransform {
     return {
       type: 'sequence',

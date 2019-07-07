@@ -9,10 +9,10 @@ import {DataFlowNode} from './dataflow';
 
 export class FilterInvalidNode extends DataFlowNode {
   public clone() {
-    return new FilterInvalidNode(null, {...this.fieldDefs});
+    return new FilterInvalidNode(null, {...this.filter});
   }
 
-  constructor(parent: DataFlowNode, private fieldDefs: Dict<FieldDef<string>>) {
+  constructor(parent: DataFlowNode, public readonly filter: Dict<FieldDef<string>>) {
     super(parent);
   }
 
@@ -47,14 +47,14 @@ export class FilterInvalidNode extends DataFlowNode {
     return new FilterInvalidNode(parent, filter);
   }
 
-  get filter() {
-    return this.fieldDefs;
+  public dependentFields() {
+    return new Set(keys(this.filter));
   }
 
   // create the VgTransforms for each of the filtered fields
   public assemble(): VgFilterTransform {
     const filters = keys(this.filter).reduce((vegaFilters, field) => {
-      const fieldDef = this.fieldDefs[field];
+      const fieldDef = this.filter[field];
       const ref = fieldRef(fieldDef, {expr: 'datum'});
 
       if (fieldDef !== null) {
