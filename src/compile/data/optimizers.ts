@@ -285,12 +285,11 @@ export class MergeParse extends BottomUpOptimizer {
           if (commonParse[k] === undefined) {
             commonParse[k] = parse[k];
           } else if (commonParse[k] !== parse[k]) {
-            conflictingParse.add(k); // conflicting parse field
+            conflictingParse.add(k);
           }
         }
       }
 
-      // remove all conflicting parse fields here
       for (const field of conflictingParse) {
         delete commonParse[field];
       }
