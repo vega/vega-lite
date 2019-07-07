@@ -16,11 +16,6 @@
           "as": "row_symbol_sort_index"
         },
         {
-          "type": "formula",
-          "expr": "datum[\"symbol\"]===\"MSFT\" ? 0 : datum[\"symbol\"]===\"AAPL\" ? 1 : datum[\"symbol\"]===\"IBM\" ? 2 : datum[\"symbol\"]===\"AMZN\" ? 3 : 4",
-          "as": "row_symbol_sort_index"
-        },
-        {
           "type": "impute",
           "field": "price",
           "groupby": ["symbol", "symbol"],

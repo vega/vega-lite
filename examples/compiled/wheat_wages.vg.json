@@ -17,11 +17,6 @@
       ]
     },
     {
-      "name": "source_2",
-      "url": "data/monarchs.json",
-      "format": {"type": "json"}
-    },
-    {
       "name": "source_0",
       "url": "data/wheat.json",
       "format": {"type": "json", "parse": {"year": "number"}},
@@ -50,15 +45,32 @@
       ]
     },
     {
-      "name": "data_2",
-      "source": "source_2",
+      "name": "source_2",
+      "url": "data/monarchs.json",
+      "format": {"type": "json"},
       "transform": [
+        {
+          "type": "formula",
+          "expr": "((!datum.commonwealth && datum.index % 2) ? -1: 1) + 95",
+          "as": "off2"
+        },
         {
           "type": "formula",
           "expr": "((!datum.commonwealth && datum.index % 2) ? -1: 1) * 2 + 95",
           "as": "offset"
         },
         {"type": "formula", "expr": "95", "as": "y"},
+        {
+          "type": "formula",
+          "expr": "+datum.start + (+datum.end - +datum.start)/2",
+          "as": "x"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_2",
+      "transform": [
         {
           "type": "filter",
           "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
@@ -69,16 +81,6 @@
       "name": "data_3",
       "source": "source_2",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "((!datum.commonwealth && datum.index % 2) ? -1: 1) + 95",
-          "as": "off2"
-        },
-        {
-          "type": "formula",
-          "expr": "+datum.start + (+datum.end - +datum.start)/2",
-          "as": "x"
-        },
         {
           "type": "filter",
           "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"off2\"] !== null && !isNaN(datum[\"off2\"])"

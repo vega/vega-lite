@@ -16,13 +16,7 @@
           "ops": ["mean", "mean", "stderr"],
           "fields": ["yield", "yield", "yield"],
           "as": ["mean_yield", "center_yield", "extent_yield"]
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
+        },
         {
           "type": "formula",
           "expr": "datum[\"center_yield\"] + datum[\"extent_yield\"]",
@@ -36,8 +30,18 @@
       ]
     },
     {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"upper_yield\"] !== null && !isNaN(datum[\"upper_yield\"])"
+        }
+      ]
+    },
+    {
       "name": "data_1",
-      "source": "data_0",
+      "source": "source_0",
       "transform": [
         {
           "type": "filter",
@@ -47,17 +51,7 @@
     },
     {
       "name": "data_2",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"upper_yield\"] !== null && !isNaN(datum[\"upper_yield\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "data_0",
+      "source": "source_0",
       "transform": [
         {
           "type": "filter",
@@ -100,7 +94,7 @@
       "name": "layer_0_layer_1_marks",
       "type": "rect",
       "style": ["tick", "errorbar-ticks"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -125,7 +119,7 @@
       "name": "layer_0_layer_2_marks",
       "type": "rule",
       "style": ["rule", "errorbar-rule"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "stroke": {"value": "#4682b4"},
@@ -180,9 +174,9 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "lower_yield"},
+          {"data": "data_0", "field": "upper_yield"},
+          {"data": "data_2", "field": "lower_yield"},
           {"data": "data_2", "field": "upper_yield"},
-          {"data": "data_3", "field": "lower_yield"},
-          {"data": "data_3", "field": "upper_yield"},
           {"data": "source_0", "field": "mean_yield"}
         ]
       },
@@ -196,8 +190,8 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "variety"},
+          {"data": "data_0", "field": "variety"},
           {"data": "data_2", "field": "variety"},
-          {"data": "data_3", "field": "variety"},
           {"data": "source_0", "field": "variety"}
         ],
         "sort": true

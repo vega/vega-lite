@@ -85,11 +85,8 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "aggregate",
-          "groupby": ["Origin"],
-          "ops": ["min"],
-          "fields": ["xc"],
-          "as": ["min_xc"]
+          "type": "filter",
+          "expr": "datum[\"nx\"] !== null && !isNaN(datum[\"nx\"]) && datum[\"ny\"] !== null && !isNaN(datum[\"ny\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
         }
       ]
     },
@@ -98,8 +95,11 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "filter",
-          "expr": "datum[\"nx\"] !== null && !isNaN(datum[\"nx\"]) && datum[\"ny\"] !== null && !isNaN(datum[\"ny\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
+          "type": "aggregate",
+          "groupby": ["Origin"],
+          "ops": ["min"],
+          "fields": ["xc"],
+          "as": ["min_xc"]
         }
       ]
     },
@@ -136,7 +136,7 @@
           "name": "concat_0_marks",
           "type": "text",
           "style": ["text"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "align": {"value": "center"},
@@ -180,7 +180,7 @@
           "name": "concat_1_layer_0_marks",
           "type": "rect",
           "style": ["rect"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "Origin"},
@@ -234,9 +234,9 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "min_xc"},
-          {"data": "data_1", "field": "nx"},
-          {"data": "data_1", "field": "nx2"},
+          {"data": "data_1", "field": "min_xc"},
+          {"data": "data_0", "field": "nx"},
+          {"data": "data_0", "field": "nx2"},
           {"data": "data_2", "field": "xc"}
         ]
       },
@@ -249,8 +249,8 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Origin"},
-          {"data": "data_1", "field": "Origin"}
+          {"data": "data_1", "field": "Origin"},
+          {"data": "data_0", "field": "Origin"}
         ],
         "sort": true
       },
@@ -259,7 +259,7 @@
     {
       "name": "opacity",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Cylinders"},
+      "domain": {"data": "data_0", "field": "Cylinders"},
       "range": [0.3, 0.8],
       "zero": false
     },
@@ -268,8 +268,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "ny"},
-          {"data": "data_1", "field": "ny2"},
+          {"data": "data_0", "field": "ny"},
+          {"data": "data_0", "field": "ny2"},
           {"data": "data_2", "field": "yc"}
         ]
       },

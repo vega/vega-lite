@@ -88,7 +88,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"previous_sum\"] !== null && !isNaN(datum[\"previous_sum\"])"
+          "expr": "datum[\"sum_inc\"] !== null && !isNaN(datum[\"sum_inc\"])"
         }
       ]
     },
@@ -98,7 +98,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"sum\"] !== null && !isNaN(datum[\"sum\"])"
+          "expr": "datum[\"previous_sum\"] !== null && !isNaN(datum[\"previous_sum\"])"
         }
       ]
     },
@@ -108,7 +108,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"sum_inc\"] !== null && !isNaN(datum[\"sum_inc\"])"
+          "expr": "datum[\"sum_dec\"] !== null && !isNaN(datum[\"sum_dec\"])"
         }
       ]
     },
@@ -118,7 +118,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"sum_dec\"] !== null && !isNaN(datum[\"sum_dec\"])"
+          "expr": "datum[\"sum\"] !== null && !isNaN(datum[\"sum\"])"
         }
       ]
     },
@@ -138,7 +138,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "fill": [
@@ -163,7 +163,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_4"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -182,7 +182,7 @@
       "name": "layer_2_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "baseline": {"value": "bottom"},
@@ -202,7 +202,7 @@
       "name": "layer_3_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_4"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "baseline": {"value": "top"},
@@ -251,11 +251,11 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "label"},
           {"data": "data_2", "field": "label"},
-          {"data": "data_2", "field": "lead"},
-          {"data": "data_3", "field": "label"},
           {"data": "data_4", "field": "label"},
+          {"data": "data_4", "field": "lead"},
+          {"data": "data_1", "field": "label"},
+          {"data": "data_3", "field": "label"},
           {"data": "data_5", "field": "label"}
         ]
       },
@@ -268,11 +268,11 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "previous_sum"},
-          {"data": "data_1", "field": "sum"},
+          {"data": "data_2", "field": "previous_sum"},
           {"data": "data_2", "field": "sum"},
-          {"data": "data_3", "field": "sum_inc"},
-          {"data": "data_4", "field": "sum_dec"},
+          {"data": "data_4", "field": "sum"},
+          {"data": "data_1", "field": "sum_inc"},
+          {"data": "data_3", "field": "sum_dec"},
           {"data": "data_5", "field": "center"}
         ]
       },

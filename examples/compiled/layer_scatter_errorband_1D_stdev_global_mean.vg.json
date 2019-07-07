@@ -36,13 +36,7 @@
             "center_Miles_per_Gallon",
             "extent_Miles_per_Gallon"
           ]
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_1",
-      "transform": [
+        },
         {
           "type": "formula",
           "expr": "datum[\"center_Miles_per_Gallon\"] + datum[\"extent_Miles_per_Gallon\"]",
@@ -52,7 +46,13 @@
           "type": "formula",
           "expr": "datum[\"center_Miles_per_Gallon\"] - datum[\"extent_Miles_per_Gallon\"]",
           "as": "lower_Miles_per_Gallon"
-        },
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_1",
+      "transform": [
         {
           "type": "filter",
           "expr": "datum[\"lower_Miles_per_Gallon\"] !== null && !isNaN(datum[\"lower_Miles_per_Gallon\"])"

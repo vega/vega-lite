@@ -16,13 +16,7 @@
           "ops": ["mean", "mean", "stderr"],
           "fields": ["yield", "yield", "yield"],
           "as": ["mean_yield", "center_yield", "extent_yield"]
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
+        },
         {
           "type": "formula",
           "expr": "datum[\"center_yield\"] + datum[\"extent_yield\"]",
@@ -32,7 +26,13 @@
           "type": "formula",
           "expr": "datum[\"center_yield\"] - datum[\"extent_yield\"]",
           "as": "lower_yield"
-        },
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
           "type": "filter",
           "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
