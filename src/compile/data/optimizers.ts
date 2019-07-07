@@ -438,7 +438,9 @@ export class MergeCalculate extends BottomUpOptimizer {
     const moveCalcssUp = !(
       parent instanceof SourceNode ||
       parent instanceof ParseNode ||
-      // identifier nodes need to stay before filters
+      // Filter nodes stay before calculates to reduce computation.
+      parent instanceof FilterNode ||
+      // Identifier nodes need to stay before calculates.
       parent instanceof IdentifierNode
     );
 
