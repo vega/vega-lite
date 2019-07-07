@@ -2,14 +2,7 @@ import {isNumber, isString} from 'vega-util';
 import {AncestorParse} from '.';
 import {isMinMaxOp} from '../../aggregate';
 import {getMainRangeChannel, SingleDefChannel} from '../../channel';
-import {
-  isFieldDef,
-  isNumberFieldDef,
-  isScaleFieldDef,
-  isTimeFormatFieldDef,
-  isTypedFieldDef,
-  TypedFieldDef
-} from '../../channeldef';
+import {isFieldDef, isScaleFieldDef, isTimeFormatFieldDef, isTypedFieldDef, TypedFieldDef} from '../../channeldef';
 import {isGenerator, Parse} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import * as log from '../../log';
@@ -175,15 +168,11 @@ export class ParseNode extends DataFlowNode {
           add(fieldDef);
         } else {
           const mainChannel = getMainRangeChannel(channel);
-          if (mainChannel !== channel) {
-            const mainFieldDef = model.fieldDef(mainChannel as SingleDefChannel) as TypedFieldDef<string>;
-            add({
-              ...fieldDef,
-              type: mainFieldDef.type
-            });
-          } else {
-            throw new Error(log.message.nonSecondaryMustHaveType(channel, fieldDef));
-          }
+          const mainFieldDef = model.fieldDef(mainChannel as SingleDefChannel) as TypedFieldDef<string>;
+          add({
+            ...fieldDef,
+            type: mainFieldDef.type
+          });
         }
       });
     }
