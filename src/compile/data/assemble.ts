@@ -87,7 +87,6 @@ function makeWalkTree(data: VgData[]) {
       node instanceof SequenceNode ||
       node instanceof FilterInvalidNode ||
       node instanceof FilterNode ||
-      node instanceof CalculateNode ||
       node instanceof GeoPointNode ||
       node instanceof GeoJSONNode ||
       node instanceof AggregateNode ||
@@ -104,11 +103,12 @@ function makeWalkTree(data: VgData[]) {
 
     if (
       node instanceof BinNode ||
+      node instanceof CalculateNode ||
       node instanceof TimeUnitNode ||
       node instanceof ImputeNode ||
       node instanceof StackNode
     ) {
-      dataSource.transform = dataSource.transform.concat(node.assemble());
+      dataSource.transform.push(...node.assemble());
     }
 
     if (node instanceof OutputNode) {

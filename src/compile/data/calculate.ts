@@ -4,27 +4,25 @@ import {DateTime} from '../../datetime';
 import {fieldFilterExpression} from '../../predicate';
 import {isSortArray} from '../../sort';
 import {CalculateTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
+import {duplicate, hash, keys, Dict, vals} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 import {getDependentFields} from './expressions';
 
-/**
- * We don't know what a calculate node depends on so we should never move it beyond anything that produces fields.
- */
-
 export class CalculateNode extends DataFlowNode {
-  private _dependentFields: Set<string>;
-
   public clone() {
-    return new CalculateNode(null, duplicate(this.transform));
+    return new CalculateNode(null, duplicate(this.calculates));
   }
 
-  constructor(parent: DataFlowNode, private readonly transform: CalculateTransform) {
+  constructor(parent: DataFlowNode, private calculates: Dict<CalculateTransform>) {
     super(parent);
+  }
 
-    this._dependentFields = getDependentFields(this.transform.calculate);
+  public static makeFromTransform(parent: DataFlowNode, transform: CalculateTransform) {
+    return new CalculateNode(parent, {
+      [transform.as]: transform
+    });
   }
 
   public static parseAllForSortIndex(parent: DataFlowNode, model: ModelWithField) {
@@ -44,7 +42,7 @@ export class CalculateNode extends DataFlowNode {
             })
             .join('') + sort.length;
 
-        parent = new CalculateNode(parent, {
+        parent = this.makeFromTransform(parent, {
           calculate,
           as: sortArrayIndexField(fieldDef, channel, {forAs: true})
         });
@@ -53,24 +51,59 @@ export class CalculateNode extends DataFlowNode {
     return parent;
   }
 
+  /**
+   * Merge calculate nodes. This method either integrates the bin config from the other node
+   * or if this node already has a bin config, renames the corresponding signal in the model.
+   */
+  public merge(other: CalculateNode) {
+    for (const key of keys(other.calculates)) {
+      if (key in this.calculates) {
+        // make sure we are not merging something incompatible
+        if (this.calculates[key].calculate !== other.calculates[key].calculate) {
+          throw new Error('Merged incompatible calculates.');
+        }
+      } else {
+        this.calculates[key] = other.calculates[key];
+      }
+    }
+
+    for (const child of other.children) {
+      other.removeChild(child);
+      child.parent = this;
+    }
+    other.remove();
+  }
+
   public producedFields() {
-    return new Set([this.transform.as]);
+    return new Set(vals(this.calculates).map(c => c.as));
   }
 
   public dependentFields() {
-    return this._dependentFields;
+    let depFields = new Set<string>();
+
+    for (const c of vals(this.calculates)) {
+      depFields = new Set([...depFields, ...getDependentFields(c.calculate)]);
+    }
+
+    return depFields;
   }
 
-  public assemble(): VgFormulaTransform {
-    return {
-      type: 'formula',
-      expr: this.transform.calculate,
-      as: this.transform.as
-    };
+  public assemble(): VgFormulaTransform[] {
+    const transforms: VgFormulaTransform[] = [];
+
+    for (const c of vals(this.calculates)) {
+      transforms.push({
+        type: 'formula',
+        expr: c.calculate,
+        as: c.as
+      });
+    }
+
+    return transforms;
   }
 
   public hash() {
-    return `Calculate ${hash(this.transform)}`;
+    return `Calculate ${hash(this.calculates)}`;
   }
 }
 

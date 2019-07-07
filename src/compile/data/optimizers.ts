@@ -15,6 +15,8 @@ import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
+import {CalculateNode} from './calculate';
+import {IdentifierNode} from './identifier';
 
 export interface OptimizerFlags {
   /**
@@ -378,7 +380,7 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
 }
 
 /**
- * Merge bin nodes and move bin nodes up through forks but stop at filters and parse as we want them to stay before the bin node.
+ * Merge bin nodes and move bin nodes up through forks. Stop at filters and parse as we want them to stay before the bin node.
  */
 export class MergeBins extends BottomUpOptimizer {
   constructor(private model: Model) {
@@ -417,6 +419,58 @@ export class MergeBins extends BottomUpOptimizer {
       const remainingBin = remainingBins.pop();
       for (const bin of remainingBins) {
         remainingBin.merge(bin, this.model.renameSignal.bind(this.model));
+      }
+      this.setMutated();
+    }
+    this.setContinue();
+    return this.flags;
+  }
+}
+
+/**
+ * Merge calculate nodes and move bin nodes up through forks. Stop at filters and parse as we want them to stay before the calculate node.
+ *
+ * Simialr to MergeBins but for Calculate Nodes.
+ */
+export class MergeCalculate extends BottomUpOptimizer {
+  public run(node: DataFlowNode): OptimizerFlags {
+    const parent = node.parent;
+    const moveCalcssUp = !(
+      parent instanceof SourceNode ||
+      parent instanceof ParseNode ||
+      // identifier nodes need to stay before filters
+      parent instanceof IdentifierNode
+    );
+
+    const promotableCalcs: CalculateNode[] = [];
+    const remainingCalcs: CalculateNode[] = [];
+
+    for (const child of parent.children) {
+      if (child instanceof CalculateNode) {
+        if (moveCalcssUp && !fieldIntersection(parent.producedFields(), child.dependentFields())) {
+          promotableCalcs.push(child);
+        } else {
+          remainingCalcs.push(child);
+        }
+      }
+    }
+
+    if (promotableCalcs.length > 0) {
+      const promotedBin = promotableCalcs.pop();
+      for (const bin of promotableCalcs) {
+        promotedBin.merge(bin);
+      }
+      this.setMutated();
+      if (parent instanceof CalculateNode) {
+        parent.merge(promotedBin);
+      } else {
+        promotedBin.swapWithParent();
+      }
+    }
+    if (remainingCalcs.length > 1) {
+      const remainingBin = remainingCalcs.pop();
+      for (const bin of remainingCalcs) {
+        remainingBin.merge(bin);
       }
       this.setMutated();
     }

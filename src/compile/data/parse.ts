@@ -127,7 +127,7 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
     let transformNode: DataFlowNode;
 
     if (isCalculate(t)) {
-      transformNode = head = new CalculateNode(head, t);
+      transformNode = head = CalculateNode.makeFromTransform(head, t);
       derivedType = 'derived';
     } else if (isFilter(t)) {
       transformNode = head = ParseNode.makeImplicitFromFilterTransform(head, t, ancestorParse) || head;

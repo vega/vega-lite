@@ -22,23 +22,41 @@ describe('compile/data/calculate', () => {
         }
       });
       const nodes = assembleFromSortArray(model);
-      expect(nodes).toEqual({
-        type: 'formula',
-        expr: 'datum["a"]==="B" ? 0 : datum["a"]==="A" ? 1 : datum["a"]==="C" ? 2 : 3',
-        as: 'x_a_sort_index'
-      });
+      expect(nodes).toEqual([
+        {
+          type: 'formula',
+          expr: 'datum["a"]==="B" ? 0 : datum["a"]==="A" ? 1 : datum["a"]==="C" ? 2 : 3',
+          as: 'x_a_sort_index'
+        }
+      ]);
     });
   });
 
   describe('dependentFields and producedFields', () => {
     it('returns the right fields', () => {
-      const node = new CalculateNode(null, {
+      const node = CalculateNode.makeFromTransform(null, {
         calculate: 'datum.foo + 2',
         as: 'bar'
       });
 
       expect(node.dependentFields()).toEqual(new Set(['foo']));
       expect(node.producedFields()).toEqual(new Set(['bar']));
+    });
+
+    it('returns the right fields for multiple calculates', () => {
+      const node = new CalculateNode(null, {
+        bar: {
+          calculate: 'datum.foo + 2',
+          as: 'bar'
+        },
+        baz: {
+          calculate: 'datum.a + datum.b',
+          as: 'baz'
+        }
+      });
+
+      expect(node.dependentFields()).toEqual(new Set(['foo', 'a', 'b']));
+      expect(node.producedFields()).toEqual(new Set(['bar', 'baz']));
     });
   });
 
@@ -56,7 +74,7 @@ describe('compile/data/calculate', () => {
       });
       const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
       expect(node.hash()).toEqual(
-        'Calculate {"as":"x_a_sort_index","calculate":"datum[\\"a\\"]===\\"B\\" ? 0 : datum[\\"a\\"]===\\"A\\" ? 1 : datum[\\"a\\"]===\\"C\\" ? 2 : 3"}'
+        'Calculate {"x_a_sort_index":{"as":"x_a_sort_index","calculate":"datum[\\"a\\"]===\\"B\\" ? 0 : datum[\\"a\\"]===\\"A\\" ? 1 : datum[\\"a\\"]===\\"C\\" ? 2 : 3"}}'
       );
     });
   });
@@ -64,7 +82,7 @@ describe('compile/data/calculate', () => {
   describe('clone', () => {
     it('should never clone parent', () => {
       const parent = new DataFlowNode(null);
-      const calculate = new CalculateNode(parent, {calculate: 'foo', as: 'bar'});
+      const calculate = new CalculateNode(parent, {bar: {calculate: 'foo', as: 'bar'}});
       expect(calculate.clone().parent).toBeNull();
     });
   });
