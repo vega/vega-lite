@@ -60,7 +60,7 @@ export class CalculateNode extends DataFlowNode {
       if (key in this.calculates) {
         // make sure we are not merging something incompatible
         if (this.calculates[key].calculate !== other.calculates[key].calculate) {
-          // Assertion.
+          /* istanbul ignore next: This should never happen. */
           throw new Error('Merged incompatible calculates.');
         }
       } else {
@@ -94,7 +94,7 @@ export class CalculateNode extends DataFlowNode {
 
     for (const {key, value} of entries(this.calculates)) {
       if (key !== value.as) {
-        // Assertion.
+        /* istanbul ignore next: This should never happen. */
         throw new Error('The key in calculate nodes needs to be the output field name.');
       }
       transforms.push({
