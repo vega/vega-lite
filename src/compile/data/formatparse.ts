@@ -150,7 +150,7 @@ export class ParseNode extends DataFlowNode {
       if (isTimeFormatFieldDef(fieldDef)) {
         implicit[fieldDef.field] = 'date';
       } else if (
-        isNumberFieldDef(fieldDef) &&
+        fieldDef.type === 'quantitative' &&
         isMinMaxOp(fieldDef.aggregate) // we need to parse numbers to support correct min and max
       ) {
         implicit[fieldDef.field] = 'number';
