@@ -356,7 +356,7 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
 }
 
 /**
- * Merge bin nodes and move bin nodes up through forks. Stop at filters and parse as we want them to stay before the bin node.
+ * Merge bin nodes and move them up through forks. Stop at filters and parse as we want them to stay before the bin node.
  */
 export class MergeBins extends BottomUpOptimizer {
   constructor(private model: Model) {
@@ -404,7 +404,7 @@ export class MergeBins extends BottomUpOptimizer {
 }
 
 /**
- * Merge calculate nodes and move bin nodes up through forks. Stop at filters and parse as we want them to stay before the calculate node.
+ * Merge calculate nodes and move them up through forks. Stop at filters and parse as we want them to stay before the calculate node.
  *
  * Similar to MergeBins but for Calculate Nodes.
  */
@@ -434,21 +434,21 @@ export class MergeCalculate extends BottomUpOptimizer {
     }
 
     if (promotableCalcs.length > 0) {
-      const promotedBin = promotableCalcs.pop();
-      for (const bin of promotableCalcs) {
-        promotedBin.merge(bin);
+      const promotedCalculate = promotableCalcs.pop();
+      for (const calc of promotableCalcs) {
+        promotedCalculate.merge(calc);
       }
       this.setMutated();
       if (parent instanceof CalculateNode) {
-        parent.merge(promotedBin);
+        parent.merge(promotedCalculate);
       } else {
-        promotedBin.swapWithParent();
+        promotedCalculate.swapWithParent();
       }
     }
     if (remainingCalcs.length > 1) {
-      const remainingBin = remainingCalcs.pop();
-      for (const bin of remainingCalcs) {
-        remainingBin.merge(bin);
+      const remainingCalculates = remainingCalcs.pop();
+      for (const calc of remainingCalcs) {
+        remainingCalculates.merge(calc);
       }
       this.setMutated();
     }
