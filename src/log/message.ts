@@ -2,6 +2,7 @@ import {AggregateOp} from 'vega';
 import {Aggregate} from '../aggregate';
 import {Channel, FacetChannel, GeoPositionChannel} from '../channel';
 import {TypedFieldDef} from '../channeldef';
+import {PropertyOf} from '../compile/split';
 import {CompositeMark} from '../compositemark';
 import {ErrorBarCenter, ErrorBarExtent} from '../compositemark/errorbar';
 import {DateTime, DateTimeExpr} from '../datetime';
@@ -226,23 +227,13 @@ export function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType) {
   return `Scale type "${scaleType}" does not work with mark "${mark}".`;
 }
 
-export function mergeConflictingProperty<T>(
-  property: string | number | symbol,
-  propertyOf: string | number | symbol,
-  v1: T,
-  v2: T
-) {
+export function mergeConflictingProperty<T>(property: string | number | symbol, propertyOf: PropertyOf, v1: T, v2: T) {
   return `Conflicting ${propertyOf.toString()} property "${property.toString()}" (${stringify(v1)} and ${stringify(
     v2
   )}).  Using ${stringify(v1)}.`;
 }
 
-export function mergeConflictingDomainProperty<T>(
-  property: string | number | symbol,
-  propertyOf: string | number | symbol,
-  v1: T,
-  v2: T
-) {
+export function mergeConflictingDomainProperty<T>(property: 'domains', propertyOf: PropertyOf, v1: T, v2: T) {
   return `Conflicting ${propertyOf.toString()} property "${property.toString()}" (${stringify(v1)} and ${stringify(
     v2
   )}).  Using the union of the two domains.`;

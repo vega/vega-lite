@@ -535,6 +535,35 @@ describe('src/compile', () => {
           }
         ]);
       });
+
+      it(
+        'should show warning if two domains are merged',
+        log.wrap(localLogger => {
+          const model = parseModelWithScale({
+            layer: [
+              {
+                mark: 'point',
+                encoding: {
+                  y: {field: 'foo', type: 'nominal', scale: {domain: [1, 2, 3]}}
+                }
+              },
+              {
+                mark: 'point',
+                encoding: {
+                  y: {field: 'foo', type: 'nominal', scale: {domain: [2, 3, 4]}}
+                }
+              }
+            ]
+          });
+
+          expect(model.children[0].component.scales.y.get('domains')).toEqual([[1, 2, 3]]);
+          expect(model.children[1].component.scales.y.get('domains')).toEqual([[2, 3, 4]]);
+
+          expect(localLogger.warns).toEqual([
+            'Conflicting scale property "domains" ([[1,2,3]] and [[2,3,4]]).  Using the union of the two domains.'
+          ]);
+        })
+      );
     });
   });
 });
