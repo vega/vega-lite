@@ -109,9 +109,9 @@
       },
       "labelAlign": "center",
       "labelBaseline": "top",
-      "zindex": 0
+      "zindex": 1
     },
-    {"scale": "y", "orient": "left", "grid": false, "zindex": 0}
+    {"scale": "y", "orient": "left", "grid": false, "zindex": 1}
   ],
   "legends": [
     {

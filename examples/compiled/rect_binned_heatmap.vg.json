@@ -146,7 +146,7 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/10)"},
-      "zindex": 0
+      "zindex": 1
     },
     {
       "scale": "y",
@@ -155,7 +155,7 @@
       "title": "Rotten_Tomatoes_Rating (binned)",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/10)"},
-      "zindex": 0
+      "zindex": 1
     }
   ],
   "legends": [
