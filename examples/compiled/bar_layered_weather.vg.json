@@ -353,21 +353,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          [10, 70],
-          {"data": "data_1", "field": "normal\\.low"},
-          {"data": "data_1", "field": "normal\\.high"},
-          {"data": "data_2", "field": "actual\\.low"},
-          {"data": "data_2", "field": "actual\\.high"},
-          {"data": "data_3", "field": "forecast\\.low\\.low"},
-          {"data": "data_3", "field": "forecast\\.low\\.high"},
-          {"data": "data_4", "field": "forecast\\.low\\.high"},
-          {"data": "data_4", "field": "forecast\\.high\\.low"},
-          {"data": "data_5", "field": "forecast\\.high\\.low"},
-          {"data": "data_5", "field": "forecast\\.high\\.high"}
-        ]
-      },
+      "domain": [10, 70],
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": false
