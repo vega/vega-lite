@@ -116,7 +116,7 @@ describe('Mark: Text', () => {
       expect(props.align).toEqual({value: 'center'});
     });
 
-    it('should map text without template', () => {
+    it('should map to text without template', () => {
       expect(props.text).toEqual({signal: `''+datum["Origin"]`});
     });
   });
