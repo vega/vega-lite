@@ -11,19 +11,20 @@
       "url": "data/flights-2k.json",
       "format": {"type": "json", "parse": {"date": "date"}},
       "transform": [
+        {"type": "formula", "expr": "hours(datum.date)", "as": "time"},
         {
           "type": "extent",
-          "field": "delay",
-          "signal": "child__repeat_column_delay_layer_1_bin_maxbins_20_delay_extent"
+          "field": "time",
+          "signal": "child__repeat_column_time_layer_1_bin_maxbins_20_time_extent"
         },
         {
           "type": "bin",
-          "field": "delay",
-          "as": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
-          "signal": "child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins",
+          "field": "time",
+          "as": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
+          "signal": "child__repeat_column_time_layer_1_bin_maxbins_20_time_bins",
           "maxbins": 20,
           "extent": {
-            "signal": "child__repeat_column_delay_layer_1_bin_maxbins_20_delay_extent"
+            "signal": "child__repeat_column_time_layer_1_bin_maxbins_20_time_extent"
           }
         },
         {
@@ -41,7 +42,21 @@
             "signal": "child__repeat_column_distance_layer_0_bin_maxbins_20_distance_extent"
           }
         },
-        {"type": "formula", "expr": "hours(datum.date)", "as": "time"}
+        {
+          "type": "extent",
+          "field": "delay",
+          "signal": "child__repeat_column_delay_layer_0_bin_maxbins_20_delay_extent"
+        },
+        {
+          "type": "bin",
+          "field": "delay",
+          "as": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
+          "signal": "child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins",
+          "maxbins": 20,
+          "extent": {
+            "signal": "child__repeat_column_delay_layer_0_bin_maxbins_20_delay_extent"
+          }
+        }
       ]
     },
     {
@@ -49,19 +64,8 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "extent",
-          "field": "time",
-          "signal": "child__repeat_column_time_layer_1_bin_maxbins_20_time_extent"
-        },
-        {
-          "type": "bin",
-          "field": "time",
-          "as": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
-          "signal": "child__repeat_column_time_layer_1_bin_maxbins_20_time_bins",
-          "maxbins": 20,
-          "extent": {
-            "signal": "child__repeat_column_time_layer_1_bin_maxbins_20_time_extent"
-          }
+          "type": "filter",
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         }
       ]
     },
@@ -69,10 +73,6 @@
       "name": "data_1",
       "source": "data_0",
       "transform": [
-        {
-          "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
-        },
         {
           "type": "aggregate",
           "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
@@ -92,30 +92,20 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
+          "groupby": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_time\"] !== null && !isNaN(datum[\"bin_maxbins_20_time\"])"
+          "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
         }
       ]
     },
     {
       "name": "data_3",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
-        }
-      ]
-    },
-    {
-      "name": "data_4",
-      "source": "data_3",
+      "source": "data_0",
       "transform": [
         {
           "type": "aggregate",
@@ -131,8 +121,8 @@
       ]
     },
     {
-      "name": "data_5",
-      "source": "data_3",
+      "name": "data_4",
+      "source": "source_0",
       "transform": [
         {
           "type": "aggregate",
@@ -144,6 +134,23 @@
         {
           "type": "filter",
           "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_5",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_maxbins_20_delay\"] !== null && !isNaN(datum[\"bin_maxbins_20_delay\"])"
         }
       ]
     },
@@ -153,31 +160,14 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
+          "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_7",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_delay\"] !== null && !isNaN(datum[\"bin_maxbins_20_delay\"])"
+          "expr": "datum[\"bin_maxbins_20_time\"] !== null && !isNaN(datum[\"bin_maxbins_20_time\"])"
         }
       ]
     }
@@ -408,7 +398,7 @@
           "name": "child__repeat_column_distance_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_6"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
               "fill": {"value": "#ddd"},
@@ -448,7 +438,7 @@
           "name": "child__repeat_column_distance_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_5"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -776,7 +766,7 @@
           "name": "child__repeat_column_delay_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_7"},
+          "from": {"data": "data_5"},
           "encode": {
             "update": {
               "fill": {"value": "#ddd"},
@@ -816,7 +806,7 @@
           "name": "child__repeat_column_delay_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_4"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -1144,7 +1134,7 @@
           "name": "child__repeat_column_time_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_6"},
           "encode": {
             "update": {
               "fill": {"value": "#ddd"},
@@ -1311,8 +1301,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_6", "field": "__count"},
-          {"data": "data_5", "field": "__count"}
+          {"data": "data_4", "field": "__count"},
+          {"data": "data_2", "field": "__count"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -1323,11 +1313,11 @@
       "name": "child__repeat_column_delay_x",
       "type": "linear",
       "domain": {
-        "signal": "[child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins.start, child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins.stop]"
+        "signal": "[child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins.start, child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
       "bins": {
-        "signal": "child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins"
+        "signal": "child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins"
       },
       "zero": false
     },
@@ -1336,8 +1326,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_7", "field": "__count"},
-          {"data": "data_4", "field": "__count"}
+          {"data": "data_5", "field": "__count"},
+          {"data": "data_3", "field": "__count"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -1361,7 +1351,7 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "__count"},
+          {"data": "data_6", "field": "__count"},
           {"data": "data_1", "field": "__count"}
         ]
       },

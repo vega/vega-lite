@@ -10,7 +10,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json", "parse": {"Year": "date"}},
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "extent",
@@ -28,6 +28,7 @@
           "maxbins": 6,
           "extent": {"signal": "bin_maxbins_6_Acceleration_extent"}
         },
+        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
         {
           "type": "aggregate",
           "groupby": [
