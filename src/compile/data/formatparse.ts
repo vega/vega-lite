@@ -188,10 +188,14 @@ export class ParseNode extends DataFlowNode {
       });
     }
 
-    // also parse the dimension field of path marks
+    // Parse quantitative dimension fields of path marks as numbers so that we sort them correctly.
     if (isUnitModel(model)) {
       const {mark, markDef, encoding} = model;
-      if (isPathMark(mark)) {
+      if (
+        isPathMark(mark) &&
+        // No need to sort by dimension if we have a connected scatterplot (order channel is present)
+        !model.encoding.order
+      ) {
         const dimensionChannel = markDef.orient === 'horizontal' ? 'y' : 'x';
         const dimensionChannelDef = encoding[dimensionChannel];
         if (
