@@ -1,8 +1,8 @@
 import {AggregateOp} from 'vega';
-import {CompositeMark} from '../compositemark';
 import {Aggregate} from '../aggregate';
 import {Channel, FacetChannel, GeoPositionChannel} from '../channel';
 import {TypedFieldDef} from '../channeldef';
+import {CompositeMark} from '../compositemark';
 import {ErrorBarCenter, ErrorBarExtent} from '../compositemark/errorbar';
 import {DateTime, DateTimeExpr} from '../datetime';
 import {Mark} from '../mark';

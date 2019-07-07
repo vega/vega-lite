@@ -206,6 +206,9 @@ export function isSecondaryRangeChannel(c: Channel): c is SecondaryRangeChannel 
   return main !== c;
 }
 
+/**
+ * Get the main channel for a range channel. E.g. `x` for `x2`.
+ */
 export function getMainRangeChannel(channel: Channel): Channel {
   switch (channel) {
     case 'x2':

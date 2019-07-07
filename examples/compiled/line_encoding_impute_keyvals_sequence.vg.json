@@ -22,6 +22,7 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"a\"])", "as": "a"},
         {
           "type": "impute",
           "field": "b",

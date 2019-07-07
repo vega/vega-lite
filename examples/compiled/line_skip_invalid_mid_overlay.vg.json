@@ -22,6 +22,13 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
         {
           "type": "filter",
           "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
@@ -35,7 +42,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"x\"]"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -54,7 +61,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -80,8 +87,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "x"},
-          {"data": "data_0", "field": "x"}
+          {"data": "data_0", "field": "x"},
+          {"data": "data_1", "field": "x"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -93,8 +100,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "y"},
-          {"data": "data_0", "field": "y"}
+          {"data": "data_0", "field": "y"},
+          {"data": "data_1", "field": "y"}
         ]
       },
       "range": [{"signal": "height"}, 0],
