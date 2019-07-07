@@ -96,7 +96,8 @@ An impute transform can also be specified as a part of the `transform` array.
       "keyvals": ...,
       "groupby": [...],
       "frame": [...],
-      "method": ...
+      "method": ...,
+      "value": ...
     }
     ...
   ],
