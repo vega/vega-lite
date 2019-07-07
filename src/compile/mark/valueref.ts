@@ -469,7 +469,7 @@ export function positionDefault({
             log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, mainChannel, {scaleType}));
           }
         } else {
-          if (scale.domainDefinitelyIncludesZero) {
+          if (scale.domainDefinitelyIncludesZero()) {
             return {
               scale: scaleName,
               value: 0

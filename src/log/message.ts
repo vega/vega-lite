@@ -237,6 +237,17 @@ export function mergeConflictingProperty<T>(
   )}).  Using ${stringify(v1)}.`;
 }
 
+export function mergeConflictingDomainProperty<T>(
+  property: string | number | symbol,
+  propertyOf: string | number | symbol,
+  v1: T,
+  v2: T
+) {
+  return `Conflicting ${propertyOf.toString()} property "${property.toString()}" (${stringify(v1)} and ${stringify(
+    v2
+  )}).  Using the union of the two domains.`;
+}
+
 export function independentScaleMeansIndependentGuide(channel: Channel) {
   return `Setting the scale to be independent for "${channel}" means we also have to set the guide (axis or legend) to be independent.`;
 }

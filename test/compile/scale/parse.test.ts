@@ -287,7 +287,7 @@ describe('src/compile', () => {
       it('should create correct color scale', () => {
         expect(scale.implicit.name).toBe('color');
         expect(scale.implicit.type).toBe('ordinal');
-        expect(scale.domains).toEqual([
+        expect(scale.get('domains')).toEqual([
           {
             data: 'main',
             field: 'origin',
@@ -312,7 +312,7 @@ describe('src/compile', () => {
         expect(scale.implicit.name).toBe('color');
         expect(scale.implicit.type).toBe('ordinal');
 
-        expect(scale.domains).toEqual([
+        expect(scale.get('domains')).toEqual([
           {
             data: 'main',
             field: 'origin',
@@ -337,7 +337,7 @@ describe('src/compile', () => {
         expect(scale.implicit.type).toBe('linear');
         expect(scale.implicit.range).toBe('ramp');
 
-        expect(scale.domains).toEqual([
+        expect(scale.get('domains')).toEqual([
           {
             data: 'main',
             field: 'origin'
@@ -478,7 +478,7 @@ describe('src/compile', () => {
           }
         });
 
-        expect(model.component.scales.x.domains).toEqual([
+        expect(model.component.scales.x.get('domains')).toEqual([
           {
             data: 'scale_child_main',
             field: 'a'
@@ -501,7 +501,7 @@ describe('src/compile', () => {
           }
         });
 
-        expect(model.component.scales.x.domains).toEqual([
+        expect(model.component.scales.x.get('domains')).toEqual([
           {
             data: 'child_main',
             field: 'a'
@@ -528,7 +528,7 @@ describe('src/compile', () => {
           }
         });
 
-        expect(model.children[0].component.scales.x.domains).toEqual([
+        expect(model.children[0].component.scales.x.get('domains')).toEqual([
           {
             data: 'child_main',
             field: 'a'
