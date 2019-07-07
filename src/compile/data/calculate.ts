@@ -4,7 +4,7 @@ import {DateTime} from '../../datetime';
 import {fieldFilterExpression} from '../../predicate';
 import {isSortArray} from '../../sort';
 import {CalculateTransform} from '../../transform';
-import {duplicate, hash, keys, Dict, vals} from '../../util';
+import {duplicate, hash, keys, Dict, vals, entries} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -60,6 +60,7 @@ export class CalculateNode extends DataFlowNode {
       if (key in this.calculates) {
         // make sure we are not merging something incompatible
         if (this.calculates[key].calculate !== other.calculates[key].calculate) {
+          // Assertion.
           throw new Error('Merged incompatible calculates.');
         }
       } else {
@@ -91,11 +92,15 @@ export class CalculateNode extends DataFlowNode {
   public assemble(): VgFormulaTransform[] {
     const transforms: VgFormulaTransform[] = [];
 
-    for (const c of vals(this.calculates)) {
+    for (const {key, value} of entries(this.calculates)) {
+      if (key !== value.as) {
+        // Assertion.
+        throw new Error('The key in calculate nodes needs to be the output field name.');
+      }
       transforms.push({
         type: 'formula',
-        expr: c.calculate,
-        as: c.as
+        expr: value.calculate,
+        as: value.as
       });
     }
 
