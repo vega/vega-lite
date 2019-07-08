@@ -27,15 +27,18 @@ import {
   SecondaryFieldDef,
   ShapeFieldDefWithCondition,
   ShapeValueDefWithCondition,
-  StringFieldDefWithCondition,
-  StringValueDefWithCondition,
+  // StringFieldDefWithCondition,
+  // StringValueDefWithCondition,
   TextFieldDef,
   TextFieldDefWithCondition,
   TextValueDefWithCondition,
   title,
   TypedFieldDef,
   ValueDef,
-  vgField
+  vgField,
+  // GradientValueDefWithCondition
+  ColorValueDefWithCondition,
+  ColorFieldDefWithCondition
 } from './channeldef';
 import {Config} from './config';
 import * as log from './log';
@@ -112,16 +115,16 @@ export interface Encoding<F extends Field> {
    * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.
    * 2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme).
    */
-  color?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
-
+  // color?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  color?: ColorFieldDefWithCondition<F> | ColorValueDefWithCondition<F>;
   /**
    * Fill color of the marks.
    * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
    *
    * _Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`).
    */
-  fill?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
-
+  // fill?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  fill?: ColorFieldDefWithCondition<F> | ColorValueDefWithCondition<F>;
   /**
    * Stroke color of the marks.
    * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
@@ -129,8 +132,8 @@ export interface Encoding<F extends Field> {
    * _Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`).
    */
 
-  stroke?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
-
+  // stroke?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  stroke?: ColorFieldDefWithCondition<F> | ColorValueDefWithCondition<F>;
   /**
    * Opacity of the marks.
    *

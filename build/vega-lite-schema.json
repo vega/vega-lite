@@ -2116,16 +2116,22 @@
       "format": "color-hex",
       "type": "string"
     },
+    "ColorFieldDefWithCondition": {
+      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,(string|null|Gradient)>"
+    },
+    "ColorValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(string|null|Gradient)>"
+    },
     "Encoding": {
       "additionalProperties": false,
       "properties": {
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -2147,10 +2153,10 @@
         "fill": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
@@ -2278,10 +2284,10 @@
         "stroke": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
@@ -3930,10 +3936,10 @@
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -3963,10 +3969,10 @@
         "fill": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
@@ -4098,10 +4104,10 @@
         "stroke": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
@@ -4380,7 +4386,7 @@
         }
       ]
     },
-    "FieldDefWithCondition<MarkPropFieldDef,(string|null)>": {
+    "FieldDefWithCondition<MarkPropFieldDef,(string|null|Gradient)>": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -4405,11 +4411,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalStringValueDef"
+              "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalStringValueDef"
+                "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
               },
               "type": "array"
             }
@@ -10736,14 +10742,8 @@
     "StringFieldDefWithCondition<TypeForShape>": {
       "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
     },
-    "StringFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,(string|null)>"
-    },
     "StringValueDefWithCondition<TypeForShape>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null|Gradient)>"
-    },
-    "StringValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(string|null|Gradient)>"
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
     },
     "StrokeCap": {
       "enum": [
@@ -12791,7 +12791,7 @@
       },
       "type": "object"
     },
-    "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null|Gradient)>": {
+    "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
       "additionalProperties": false,
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
@@ -12801,11 +12801,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldDef<TypeForShape>"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
+              "$ref": "#/definitions/ConditionalStringValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(string|null|Gradient)>"
+                "$ref": "#/definitions/ConditionalStringValueDef"
               },
               "type": "array"
             }
@@ -12813,18 +12813,11 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/Gradient"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "type": "object"
