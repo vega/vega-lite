@@ -1,4 +1,4 @@
-import {MAIN} from '../../data';
+import {MAIN, Parse} from '../../data';
 import {Dict, fieldIntersection, flatten, hash, hasIntersection, keys, some} from '../../util';
 import {Model} from '../model';
 import {AggregateNode} from './aggregate';
@@ -300,17 +300,23 @@ export class MergeParse extends BottomUpOptimizer {
     const parseChildren = parent.children.filter((child): child is ParseNode => child instanceof ParseNode);
 
     if (parent.numChildren() > 1 && parseChildren.length >= 1) {
-      const commonParse = {};
+      const commonParse: Parse = {};
+      const conflictingParse = new Set<string>();
       for (const parseNode of parseChildren) {
         const parse = parseNode.parse;
         for (const k of keys(parse)) {
-          if (commonParse[k] === undefined) {
+          if (!(k in commonParse)) {
             commonParse[k] = parse[k];
           } else if (commonParse[k] !== parse[k]) {
-            delete commonParse[k];
+            conflictingParse.add(k);
           }
         }
       }
+
+      for (const field of conflictingParse) {
+        delete commonParse[field];
+      }
+
       if (keys(commonParse).length !== 0) {
         this.setMutated();
         const mergedParseNode = new ParseNode(parent, commonParse);
@@ -372,6 +378,7 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
         }
       }
     }
+
     this.setContinue();
     return this.flags;
   }
