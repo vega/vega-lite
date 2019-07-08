@@ -65,19 +65,12 @@ function optimizationDataflowHelper(dataComponent: DataComponent, model: Model) 
   roots = roots.filter(r => r.numChildren() > 0);
 
   mutatedFlag = runOptimizer(new optimizers.MoveParseUp(), getLeaves(roots), mutatedFlag);
-
   mutatedFlag = runOptimizer(new optimizers.MergeBins(model), getLeaves(roots), mutatedFlag);
-
   mutatedFlag = runOptimizer(new optimizers.RemoveDuplicateTimeUnits(), getLeaves(roots), mutatedFlag);
-
   mutatedFlag = runOptimizer(new optimizers.MergeParse(), getLeaves(roots), mutatedFlag);
-
-  mutatedFlag = runOptimizer(new optimizers.MergeAggregateNodes(), getLeaves(roots), mutatedFlag);
-
+  mutatedFlag = runOptimizer(new optimizers.MergeAggregates(), getLeaves(roots), mutatedFlag);
   mutatedFlag = runOptimizer(new optimizers.MergeTimeUnits(), getLeaves(roots), mutatedFlag);
-
   mutatedFlag = runOptimizer(new optimizers.MergeIdenticalNodes(), roots, mutatedFlag);
-
   mutatedFlag = runOptimizer(new optimizers.MergeOutputs(), getLeaves(roots), mutatedFlag);
 
   dataComponent.sources = roots;
