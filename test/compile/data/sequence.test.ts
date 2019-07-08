@@ -3,7 +3,7 @@ import {SequenceNode} from '../../../src/compile/data/sequence';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/data/sequence', () => {
-  describe('SequenceNode', () => {
+  describe('assembled', () => {
     it('should return a proper vg transform', () => {
       const params = {
         start: 1,
@@ -19,6 +19,30 @@ describe('compile/data/sequence', () => {
       });
     });
   });
+
+  describe('producedFields', () => {
+    it('should return correct default', () => {
+      const params = {
+        start: 1,
+        stop: 10,
+        step: 2
+      };
+      const sequence = new SequenceNode(null, params);
+      expect(sequence.producedFields()).toEqual(new Set(['data']));
+    });
+
+    it('should return specified field', () => {
+      const params = {
+        start: 1,
+        stop: 10,
+        step: 2,
+        as: 'foo'
+      };
+      const sequence = new SequenceNode(null, params);
+      expect(sequence.producedFields()).toEqual(new Set(['foo']));
+    });
+  });
+
   it('should parse and add generator transform correctly', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {
