@@ -12644,7 +12644,7 @@
     },
     "ValueDefWithCondition<MarkPropFieldDef,(string|null)>": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "minProperties": 1,
       "properties": {
         "condition": {
@@ -12676,7 +12676,7 @@
     },
     "ValueDefWithCondition<MarkPropFieldDef,number>": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "minProperties": 1,
       "properties": {
         "condition": {
@@ -12705,7 +12705,7 @@
     },
     "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "minProperties": 1,
       "properties": {
         "condition": {
@@ -12737,7 +12737,7 @@
     },
     "ValueDefWithCondition<TextFieldDef,Value>": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "minProperties": 1,
       "properties": {
         "condition": {
