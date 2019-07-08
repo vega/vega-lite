@@ -28,29 +28,6 @@ export interface OptimizerFlags {
 }
 
 /**
- * Start optimization path at the leaves. Useful for merging up or removing things.
- *
- * If the callback returns true, the recursion continues.
- */
-export function iterateFromLeaves(f: (node: DataFlowNode) => OptimizerFlags) {
-  function optimizeNextFromLeaves(node: DataFlowNode): boolean {
-    if (node instanceof SourceNode) {
-      return false;
-    }
-
-    const next = node.parent;
-    const {continueFlag, mutatedFlag} = f(node);
-    let childFlag = false;
-    if (continueFlag) {
-      childFlag = optimizeNextFromLeaves(next);
-    }
-    return mutatedFlag || childFlag;
-  }
-
-  return optimizeNextFromLeaves;
-}
-
-/**
  * Move parse nodes up to forks.
  */
 export class MoveParseUp extends BottomUpOptimizer {
