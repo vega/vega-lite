@@ -1,6 +1,6 @@
 {
   "$ref": "#/definitions/TopLevelSpec",
-  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "Aggregate": {
       "anyOf": [
@@ -6897,7 +6897,7 @@
         },
         "symbolType": {
           "$ref": "#/definitions/SymbolShape",
-          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   * In addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n   *\n   * __Default value:__ `\"circle\"`.\n   *"
+          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\nIn addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n\n__Default value:__ `\"circle\"`."
         },
         "tickCount": {
           "description": "The desired number of tick values for quantitative legends.",
@@ -7120,7 +7120,7 @@
         },
         "labelOverlap": {
           "$ref": "#/definitions/LabelOverlap",
-          "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `\"greedy\"` for `log scales otherwise `true`.\n   *"
+          "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `\"greedy\"` for `log scales otherwise `true`."
         },
         "labelPadding": {
           "description": "Padding in pixels between the legend and legend labels.",
@@ -7228,7 +7228,7 @@
         },
         "symbolType": {
           "$ref": "#/definitions/SymbolShape",
-          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   * In addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n   *\n   * __Default value:__ `\"circle\"`.\n   *"
+          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\nIn addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n\n__Default value:__ `\"circle\"`."
         },
         "title": {
           "description": "Set to null to disable title for the axis, legend, or header.",
@@ -12728,6 +12728,7 @@
     "ValueDefWithCondition<MarkPropFieldDef,(string|null|Gradient)>": {
       "additionalProperties": false,
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "minProperties": 1,
       "properties": {
         "condition": {
           "anyOf": [
@@ -12766,6 +12767,7 @@
     "ValueDefWithCondition<MarkPropFieldDef,number>": {
       "additionalProperties": false,
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "minProperties": 1,
       "properties": {
         "condition": {
           "anyOf": [
@@ -12794,6 +12796,7 @@
     "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
       "additionalProperties": false,
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "minProperties": 1,
       "properties": {
         "condition": {
           "anyOf": [
@@ -12825,6 +12828,7 @@
     "ValueDefWithCondition<TextFieldDef,Value>": {
       "additionalProperties": false,
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "minProperties": 1,
       "properties": {
         "condition": {
           "anyOf": [
