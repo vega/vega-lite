@@ -72,6 +72,14 @@ describe('compile/data/filterinvalid', () => {
     });
   });
 
+  describe('clone', () => {
+    it('should copy filters', () => {
+      const node = new FilterInvalidNode(null, {foo: {field: 'foo', type: 'quantitative'}});
+      const copy = node.clone();
+      expect(copy.filter).toEqual(node.filter);
+    });
+  });
+
   describe('assemble', () => {
     it('should assemble simple filter', () => {
       const model = parseUnitModelWithScale({
