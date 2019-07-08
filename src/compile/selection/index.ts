@@ -3,11 +3,12 @@ import {stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel';
 import {
   BrushConfig,
-  SELECTION_ID,
+  IntervalSelection,
   SelectionInit,
-  SelectionInitInterval,
   SelectionResolution,
-  SelectionType
+  SelectionType,
+  SELECTION_ID,
+  SingleSelection
 } from '../../selection';
 import {accessPathWithDatum, Dict} from '../../util';
 import {EventStream} from '../../vega.schema';
@@ -29,12 +30,10 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   name: string;
   type: T;
 
-  // Use conditional typing (https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html)
-  // so we have stricter type of init (as the type of init depends on selection type)
   init?: (T extends 'interval'
-    ? SelectionInitInterval
+    ? IntervalSelection['init']['a']
     : T extends 'single'
-    ? SelectionInit
+    ? SingleSelection['init']['a']
     : SelectionInit | SelectionInit[])[]; // multi
   events: EventStream;
   // predicate?: string;

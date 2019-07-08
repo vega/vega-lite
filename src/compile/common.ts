@@ -1,4 +1,4 @@
-import {isArray} from 'vega-util';
+import {isArray, array} from 'vega-util';
 import {isBinning} from '../bin';
 import {
   FieldDefBase,
@@ -178,7 +178,7 @@ export function sortParams(
   orderDef: OrderFieldDef<string> | OrderFieldDef<string>[],
   fieldRefOption?: FieldRefOption
 ): SortFields {
-  return (isArray(orderDef) ? orderDef : [orderDef]).reduce(
+  return array(orderDef).reduce(
     (s, orderChannelDef) => {
       s.field.push(vgField(orderChannelDef, fieldRefOption));
       s.order.push(orderChannelDef.sort || 'ascending');

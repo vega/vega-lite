@@ -239,10 +239,6 @@ export interface IntervalSelection extends BaseSelectionDef<'interval'>, Interva
 
 export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
 
-export function isIntervalSelection(s: SelectionDef): s is IntervalSelection {
-  return s.type === 'interval';
-}
-
 export interface SelectionConfig {
   /**
    * The default definition for a [`single`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations
