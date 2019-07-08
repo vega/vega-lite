@@ -3256,6 +3256,18 @@
       },
       "type": "object"
     },
+    "Dict<SelectionInit>": {
+      "additionalProperties": {
+        "$ref": "#/definitions/SelectionInit"
+      },
+      "type": "object"
+    },
+    "Dict<SelectionInitInterval>": {
+      "additionalProperties": {
+        "$ref": "#/definitions/SelectionInitInterval"
+      },
+      "type": "object"
+    },
     "Dir": {
       "enum": [
         "ltr",
@@ -5939,7 +5951,7 @@
           "type": "array"
         },
         "init": {
-          "$ref": "#/definitions/SelectionInitIntervalMapping",
+          "$ref": "#/definitions/Dict<SelectionInitInterval>",
           "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of\ninitial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
         },
         "mark": {
@@ -6025,7 +6037,7 @@
           "type": "array"
         },
         "init": {
-          "$ref": "#/definitions/SelectionInitIntervalMapping",
+          "$ref": "#/definitions/Dict<SelectionInitInterval>",
           "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of\ninitial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
         },
         "mark": {
@@ -8119,11 +8131,11 @@
         "init": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SelectionInitMapping"
+              "$ref": "#/definitions/Dict<SelectionInit>"
             },
             {
               "items": {
-                "$ref": "#/definitions/SelectionInitMapping"
+                "$ref": "#/definitions/Dict<SelectionInit>"
               },
               "type": "array"
             }
@@ -8201,11 +8213,11 @@
         "init": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SelectionInitMapping"
+              "$ref": "#/definitions/Dict<SelectionInit>"
             },
             {
               "items": {
-                "$ref": "#/definitions/SelectionInitMapping"
+                "$ref": "#/definitions/Dict<SelectionInit>"
               },
               "type": "array"
             }
@@ -10098,13 +10110,7 @@
     "SelectionInit": {
       "anyOf": [
         {
-          "type": "boolean"
-        },
-        {
-          "type": "number"
-        },
-        {
-          "type": "string"
+          "$ref": "#/definitions/Value"
         },
         {
           "$ref": "#/definitions/DateTime"
@@ -10114,70 +10120,18 @@
     "SelectionInitInterval": {
       "anyOf": [
         {
-          "items": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "boolean"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "$ref": "#/definitions/Vector2<boolean>"
         },
         {
-          "items": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "number"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "$ref": "#/definitions/Vector2<number>"
         },
         {
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "$ref": "#/definitions/Vector2<string>"
         },
         {
-          "items": [
-            {
-              "$ref": "#/definitions/DateTime"
-            },
-            {
-              "$ref": "#/definitions/DateTime"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "$ref": "#/definitions/Vector2<DateTime>"
         }
       ]
-    },
-    "SelectionInitIntervalMapping": {
-      "additionalProperties": {
-        "$ref": "#/definitions/SelectionInitInterval"
-      },
-      "type": "object"
-    },
-    "SelectionInitMapping": {
-      "additionalProperties": {
-        "$ref": "#/definitions/SelectionInit"
-      },
-      "type": "object"
     },
     "SelectionPredicate": {
       "additionalProperties": false,
@@ -10338,7 +10292,7 @@
           "type": "array"
         },
         "init": {
-          "$ref": "#/definitions/SelectionInitMapping",
+          "$ref": "#/definitions/Dict<SelectionInit>",
           "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
         },
         "nearest": {
@@ -10417,7 +10371,7 @@
           "type": "array"
         },
         "init": {
-          "$ref": "#/definitions/SelectionInitMapping",
+          "$ref": "#/definitions/Dict<SelectionInit>",
           "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
         },
         "nearest": {
@@ -12763,6 +12717,58 @@
         }
       },
       "type": "object"
+    },
+    "Vector2<DateTime>": {
+      "items": [
+        {
+          "$ref": "#/definitions/DateTime"
+        },
+        {
+          "$ref": "#/definitions/DateTime"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "Vector2<boolean>": {
+      "items": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "boolean"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "Vector2<number>": {
+      "items": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "Vector2<string>": {
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
     },
     "ViewBackground": {
       "additionalProperties": false,

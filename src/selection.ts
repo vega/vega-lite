@@ -1,22 +1,16 @@
-import {Binding} from 'vega';
+import {Binding, Vector2} from 'vega';
 import {SingleDefUnitChannel} from './channel';
-import {FieldName} from './channeldef';
+import {FieldName, Value} from './channeldef';
 import {DateTime} from './datetime';
+import {Dict} from './util';
 import {Color, EventStream} from './vega.schema';
 
 export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'single' | 'multi' | 'interval';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
 
-export type SelectionInit = boolean | number | string | DateTime;
-export type SelectionInitInterval = [boolean, boolean] | [number, number] | [string, string] | [DateTime, DateTime];
-
-export interface SelectionInitMapping {
-  [key: string]: SelectionInit;
-}
-export interface SelectionInitIntervalMapping {
-  [key: string]: SelectionInitInterval;
-}
+export type SelectionInit = Value | DateTime;
+export type SelectionInitInterval = Vector2<boolean> | Vector2<number> | Vector2<string> | Vector2<DateTime>;
 
 export interface BaseSelectionConfig {
   /**
@@ -94,7 +88,7 @@ export interface SingleSelectionConfig extends BaseSelectionConfig {
    *
    * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
-  init?: SelectionInitMapping;
+  init?: Dict<SelectionInit>;
 }
 
 export interface MultiSelectionConfig extends BaseSelectionConfig {
@@ -124,7 +118,7 @@ export interface MultiSelectionConfig extends BaseSelectionConfig {
    *
    * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
-  init?: SelectionInitMapping | SelectionInitMapping[];
+  init?: Dict<SelectionInit> | Dict<SelectionInit>[];
 }
 
 export interface BrushConfig {
@@ -217,7 +211,7 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
    *
    * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
-  init?: SelectionInitIntervalMapping;
+  init?: Dict<SelectionInitInterval>;
 }
 
 export interface BaseSelectionDef<T extends 'single' | 'multi' | 'interval'> {

@@ -2,7 +2,7 @@ import {array} from 'vega-util';
 import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
-import {SelectionInitIntervalMapping, SelectionInitMapping} from '../../../selection';
+import {SelectionInit, SelectionInitInterval} from '../../../selection';
 import {Dict, hash, keys, varName} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
 import scales from './scales';
@@ -139,17 +139,17 @@ const project: TransformCompiler = {
       if (scales.has(selCmpt)) {
         log.warn(log.message.NO_INIT_SCALE_BINDINGS);
       } else {
-        function parseInit(i: SelectionInitMapping): SelectionInitMapping['a'];
-        function parseInit(i: SelectionInitIntervalMapping): SelectionInitIntervalMapping['a'];
+        function parseInit(i: Dict<SelectionInit>): SelectionInit;
+        function parseInit(i: Dict<SelectionInitInterval>): SelectionInitInterval;
         // eslint-disable-next-line no-inner-declarations
-        function parseInit(i: SelectionInitMapping | SelectionInitIntervalMapping): any {
+        function parseInit(i: Dict<any>): any {
           return proj.items.map(p => (i[p.channel] !== undefined ? i[p.channel] : i[p.field]));
         }
 
         if (selDef.type === 'single') {
           selCmpt.init = [parseInit(selDef.init)];
         } else if (selDef.type === 'multi') {
-          selCmpt.init = array(selDef.init).map(parseInit as (i: SelectionInitMapping) => SelectionInitMapping['a']);
+          selCmpt.init = array(selDef.init).map(parseInit as (i: Dict<SelectionInit>) => SelectionInit);
         }
         if (selDef.type === 'interval') {
           selCmpt.init = parseInit(selDef.init);
