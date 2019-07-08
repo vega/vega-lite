@@ -3,7 +3,7 @@ import {SequenceNode} from '../../../src/compile/data/sequence';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/data/sequence', () => {
-  describe('assembled', () => {
+  describe('assemble', () => {
     it('should return a proper vg transform', () => {
       const params = {
         start: 1,
