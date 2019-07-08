@@ -9,9 +9,8 @@ import {FilterNode} from './filter';
 import {ParseNode} from './formatparse';
 import {JoinAggregateTransformNode} from './joinaggregate';
 import {FACET_SCALE_PREFIX} from './optimize';
-import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
+import {BottomUpOptimizer, isDataSourceNode, TopDownOptimizer} from './optimizer';
 import * as optimizers from './optimizers';
-import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
@@ -35,7 +34,7 @@ export class MoveParseUp extends BottomUpOptimizer {
     const parent = node.parent;
     // move parse up by merging or swapping
     if (node instanceof ParseNode) {
-      if (parent instanceof SourceNode) {
+      if (isDataSourceNode(parent)) {
         return this.flags;
       }
 
@@ -363,7 +362,7 @@ export class MergeBins extends BottomUpOptimizer {
   }
   public run(node: DataFlowNode): OptimizerFlags {
     const parent = node.parent;
-    const moveBinsUp = !(parent instanceof SourceNode || parent instanceof FilterNode || parent instanceof ParseNode);
+    const moveBinsUp = !(isDataSourceNode(parent) || parent instanceof FilterNode || parent instanceof ParseNode);
 
     const promotableBins: BinNode[] = [];
     const remainingBins: BinNode[] = [];
