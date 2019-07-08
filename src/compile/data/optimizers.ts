@@ -18,11 +18,11 @@ import {WindowTransformNode} from './window';
 
 export interface OptimizerFlags {
   /**
-   * If true, iteration continues
+   * If true, iteration continues.
    */
   continueFlag: boolean;
   /**
-   * If true, the tree has been mutated by the function
+   * If true, the tree has been mutated by the function.
    */
   mutatedFlag: boolean;
 }
@@ -33,14 +33,14 @@ export interface OptimizerFlags {
 export class MoveParseUp extends BottomUpOptimizer {
   public run(node: DataFlowNode): OptimizerFlags {
     const parent = node.parent;
-    // move parse up by merging or swapping
+    // Move parse up by merging or swapping.
     if (node instanceof ParseNode) {
       if (parent instanceof SourceNode) {
         return this.flags;
       }
 
       if (parent.numChildren() > 1) {
-        // don't move parse further up but continue with parent.
+        // Don't move parse further up but continue with parent.
         this.setContinue();
         return this.flags;
       }
@@ -49,7 +49,7 @@ export class MoveParseUp extends BottomUpOptimizer {
         this.setMutated();
         parent.merge(node);
       } else {
-        // don't swap with nodes that produce something that the parse node depends on (e.g. lookup)
+        // Don't swap with nodes that produce something that the parse node depends on (e.g. lookup).
         if (fieldIntersection(parent.producedFields(), node.dependentFields())) {
           this.setContinue();
           return this.flags;
@@ -314,7 +314,7 @@ export class MergeParse extends BottomUpOptimizer {
   }
 }
 
-export class MergeAggregateNodes extends BottomUpOptimizer {
+export class MergeAggregates extends BottomUpOptimizer {
   public run(node: DataFlowNode): optimizers.OptimizerFlags {
     const parent = node.parent;
     const aggChildren = parent.children.filter((child): child is AggregateNode => child instanceof AggregateNode);
@@ -355,7 +355,7 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
 }
 
 /**
- * Merge bin nodes and move bin nodes up through forks but stop at filters and parse as we want them to stay before the bin node.
+ * Merge bin nodes and move them up through forks. Stop at filters and parse as we want them to stay before the bin node.
  */
 export class MergeBins extends BottomUpOptimizer {
   constructor(private model: Model) {
