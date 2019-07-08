@@ -1,6 +1,15 @@
 import {DataFlowNode} from './dataflow';
 import {OptimizerFlags} from './optimizers';
 import {SourceNode} from './source';
+import {GraticuleNode} from './graticule';
+import {SequenceNode} from './sequence';
+
+/**
+ * Whether this dataflow node is the source of the dataflow that produces data i.e. a source or a generator.
+ */
+export function isDataSourceNode(node: DataFlowNode) {
+  return node instanceof SourceNode || node instanceof GraticuleNode || node instanceof SequenceNode;
+}
 
 /**
  * Abstract base class for BottomUpOptimizer and TopDownOptimizer.
@@ -64,7 +73,7 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
   }
 
   public optimizeNextFromLeaves(node: DataFlowNode): boolean {
-    if (node instanceof SourceNode) {
+    if (isDataSourceNode(node)) {
       return false;
     }
     const next = node.parent;
