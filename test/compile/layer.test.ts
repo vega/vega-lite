@@ -22,7 +22,7 @@ describe('Layer', () => {
       expect(model.children).toHaveLength(2);
       model.parseScale();
 
-      expect(model.component.scales['x'].domains).toEqual([
+      expect(model.component.scales['x'].get('domains')).toEqual([
         {
           data: 'layer_0_main',
           field: 'a',
@@ -36,7 +36,7 @@ describe('Layer', () => {
       ]);
     });
 
-    it('should union explicit and referenced domains', () => {
+    it('should use explicit domains if specified', () => {
       const model = parseLayerModel({
         layer: [
           {
@@ -55,14 +55,7 @@ describe('Layer', () => {
       });
       model.parseScale();
 
-      expect(model.component.scales['x'].domains).toEqual([
-        [1, 2, 3],
-        {
-          data: 'layer_1_main',
-          field: 'b',
-          sort: true
-        }
-      ]);
+      expect(model.component.scales['x'].get('domains')).toEqual([[1, 2, 3]]);
     });
   });
 
@@ -95,13 +88,13 @@ describe('Layer', () => {
       model.parseScale();
 
       expect(model.component.scales['x']).toEqual(undefined);
-      expect(model.children[0].component.scales['x'].domains).toEqual([
+      expect(model.children[0].component.scales['x'].get('domains')).toEqual([
         {
           data: 'layer_0_main',
           field: 'a'
         }
       ]);
-      expect(model.children[1].component.scales['x'].domains).toEqual([
+      expect(model.children[1].component.scales['x'].get('domains')).toEqual([
         {
           data: 'layer_1_main',
           field: 'b'

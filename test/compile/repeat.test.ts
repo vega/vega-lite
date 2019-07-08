@@ -202,7 +202,7 @@ describe('Repeat', () => {
       model.parseScale();
       const colorScale = model.component.scales['color'];
 
-      expect(colorScale.domains).toHaveLength(4);
+      expect(colorScale.get('domains')).toHaveLength(4);
 
       model.parseLegends();
 

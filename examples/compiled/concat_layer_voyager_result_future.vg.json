@@ -429,7 +429,7 @@
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"fields": [[-3, 3], {"data": "data_2", "field": "mean"}]},
+      "domain": [-3, 3],
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true

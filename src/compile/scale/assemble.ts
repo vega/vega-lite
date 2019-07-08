@@ -32,7 +32,7 @@ export function assembleScalesForModel(model: Model): VgScale[] {
 
       // need to separate const and non const object destruction
       let {domainRaw} = scale;
-      const {name, type, domainRaw: _d, range: _r, ...otherScaleProps} = scale;
+      const {name, type, domains: _d, domainRaw: _dr, range: _r, ...otherScaleProps} = scale;
 
       const range = assembleScaleRange(scale.range, name, channel);
 

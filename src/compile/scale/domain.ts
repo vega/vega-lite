@@ -31,6 +31,7 @@ import {SELECTION_DOMAIN} from '../selection';
 import {SignalRefWrapper} from '../signal';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
+import {Explicit, mergeValuesWithExplicit, makeExplicit, makeImplicit} from '../split';
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {
@@ -50,7 +51,7 @@ function parseUnitScaleDomain(model: UnitModel) {
 
     const domains = parseDomainForChannel(model, channel);
     const localScaleCmpt = localScaleComponents[channel];
-    localScaleCmpt.domains = domains;
+    localScaleCmpt.setWithExplicit('domains', domains);
 
     if (isSelectionDomain(specifiedDomain)) {
       // As scale parsing occurs before selection parsing, we use a temporary
@@ -78,7 +79,7 @@ function parseUnitScaleDomain(model: UnitModel) {
       const resolve = facetParent.component.resolve.scale[channel];
 
       if (resolve === 'shared') {
-        for (const domain of domains) {
+        for (const domain of domains.value) {
           // Replace the scale domain with data output from a cloned subtree after the facet.
           if (isDataRefDomain(domain)) {
             // use data from cloned subtree (which is the same as data but with a prefix added once)
@@ -98,16 +99,22 @@ function parseNonUnitScaleDomain(model: Model) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
   util.keys(localScaleComponents).forEach((channel: ScaleChannel) => {
-    let domains: VgNonUnionDomain[];
+    let domains: Explicit<VgNonUnionDomain[]>;
     let domainRaw = null;
 
     for (const child of model.children) {
       const childComponent = child.component.scales[channel];
       if (childComponent) {
         if (domains === undefined) {
-          domains = childComponent.domains;
+          domains = childComponent.getWithExplicit('domains');
         } else {
-          domains = domains.concat(childComponent.domains);
+          domains = mergeValuesWithExplicit(
+            domains,
+            childComponent.getWithExplicit('domains'),
+            'domains',
+            'scale',
+            domainsTieBreaker
+          );
         }
 
         const dr = childComponent.get('domainRaw');
@@ -118,7 +125,7 @@ function parseNonUnitScaleDomain(model: Model) {
       }
     }
 
-    localScaleComponents[channel].domains = domains;
+    localScaleComponents[channel].setWithExplicit('domains', domains);
 
     if (domainRaw) {
       localScaleComponents[channel].set('domainRaw', domainRaw, true);
@@ -153,7 +160,7 @@ function normalizeUnaggregatedDomain(
   return domain;
 }
 
-export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): VgNonUnionDomain[] {
+export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): Explicit<VgNonUnionDomain[]> {
   const scaleType = model.getScaleComponent(channel).get('type');
 
   const domain = normalizeUnaggregatedDomain(
@@ -172,16 +179,24 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
   // If channel is either X or Y then union them with X2 & Y2 if they exist
   if (channel === 'x' && model.channelHasField('x2')) {
     if (model.channelHasField('x')) {
-      return parseSingleChannelDomain(scaleType, domain, model, 'x').concat(
-        parseSingleChannelDomain(scaleType, domain, model, 'x2')
+      return mergeValuesWithExplicit(
+        parseSingleChannelDomain(scaleType, domain, model, 'x'),
+        parseSingleChannelDomain(scaleType, domain, model, 'x2'),
+        'domain',
+        'scale',
+        domainsTieBreaker
       );
     } else {
       return parseSingleChannelDomain(scaleType, domain, model, 'x2');
     }
   } else if (channel === 'y' && model.channelHasField('y2')) {
     if (model.channelHasField('y')) {
-      return parseSingleChannelDomain(scaleType, domain, model, 'y').concat(
-        parseSingleChannelDomain(scaleType, domain, model, 'y2')
+      return mergeValuesWithExplicit(
+        parseSingleChannelDomain(scaleType, domain, model, 'y'),
+        parseSingleChannelDomain(scaleType, domain, model, 'y2'),
+        'domain',
+        'scale',
+        domainsTieBreaker
       );
     } else {
       return parseSingleChannelDomain(scaleType, domain, model, 'y2');
@@ -202,27 +217,27 @@ function parseSingleChannelDomain(
   domain: Domain,
   model: UnitModel,
   channel: ScaleChannel | 'x2' | 'y2'
-): VgNonUnionDomain[] {
+): Explicit<VgNonUnionDomain[]> {
   const fieldDef = model.fieldDef(channel);
 
   if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
     // explicit value
     const {type, timeUnit} = fieldDef;
     if (type === 'temporal' || timeUnit) {
-      return mapDomainToDataSignal<number | string | boolean | DateTime>(domain, type, timeUnit);
+      return makeExplicit(mapDomainToDataSignal<number | string | boolean | DateTime>(domain, type, timeUnit));
     }
 
-    return [domain];
+    return makeExplicit([domain]);
   }
 
   const stack = model.stack;
   if (stack && channel === stack.fieldChannel) {
     if (stack.offset === 'normalize') {
-      return [[0, 1]];
+      return makeImplicit([[0, 1]]);
     }
 
     const data = model.requestDataName(MAIN);
-    return [
+    return makeImplicit([
       {
         data,
         field: model.vgField(channel, {suffix: 'start'})
@@ -231,7 +246,7 @@ function parseSingleChannelDomain(
         data,
         field: model.vgField(channel, {suffix: 'end'})
       }
-    ];
+    ]);
   }
 
   const sort: undefined | true | VgSortField = isScaleChannel(channel)
@@ -241,7 +256,7 @@ function parseSingleChannelDomain(
   if (domain === 'unaggregated') {
     const data = model.requestDataName(MAIN);
     const {field} = fieldDef;
-    return [
+    return makeImplicit([
       {
         data,
         field: vgField({field, aggregate: 'min'})
@@ -250,17 +265,17 @@ function parseSingleChannelDomain(
         data,
         field: vgField({field, aggregate: 'max'})
       }
-    ];
+    ]);
   } else if (isBinning(fieldDef.bin)) {
     if (hasDiscreteDomain(scaleType)) {
       if (scaleType === 'bin-ordinal') {
         // we can omit the domain as it is inferred from the `bins` property
-        return [];
+        return makeImplicit([]);
       }
 
       // ordinal bin scale takes domain from bin_range, ordered by bin start
       // This is useful for both axis-based scale (x/y) and legend-based scale (other channels).
-      return [
+      return makeImplicit([
         {
           // If sort by aggregation of a specified sort field, we need to use RAW table,
           // so we can aggregate values for the scale independently from the main aggregation.
@@ -276,29 +291,29 @@ function parseSingleChannelDomain(
                 }
               : sort
         }
-      ];
+      ]);
     } else {
       // continuous scales
       const {bin} = fieldDef;
       if (isBinning(bin)) {
         const binSignal = getBinSignalName(model, fieldDef.field, bin);
-        return [
+        return makeImplicit([
           new SignalRefWrapper(() => {
             const signal = model.getSignalName(binSignal);
             return `[${signal}.start, ${signal}.stop]`;
           })
-        ];
+        ]);
       } else {
-        return [
+        return makeImplicit([
           {
             data: model.requestDataName(MAIN),
             field: model.vgField(channel, {})
           }
-        ];
+        ]);
       }
     }
   } else if (sort) {
-    return [
+    return makeImplicit([
       {
         // If sort by aggregation of a specified sort field, we need to use RAW table,
         // so we can aggregate values for the scale independently from the main aggregation.
@@ -306,14 +321,14 @@ function parseSingleChannelDomain(
         field: model.vgField(channel),
         sort: sort
       }
-    ];
+    ]);
   } else {
-    return [
+    return makeImplicit([
       {
         data: model.requestDataName(MAIN),
         field: model.vgField(channel)
       }
-    ];
+    ]);
   }
 }
 
@@ -418,6 +433,22 @@ export function canUseUnaggregatedDomain(
 }
 
 /**
+ * Tie breaker for mergeValuesWithExplicit for domains. We concat the specified values.
+ */
+function domainsTieBreaker(
+  v1: Explicit<VgNonUnionDomain[]>,
+  v2: Explicit<VgNonUnionDomain[]>,
+  property: 'domains',
+  propertyOf: 'scale'
+) {
+  if (v1.explicit && v2.explicit) {
+    log.warn(log.message.mergeConflictingDomainProperty(property, propertyOf, v1.value, v2.value));
+  }
+  // If equal score, concat the domains so that we union them later.
+  return {explicit: v1.explicit, value: [...v1.value, ...v2.value]};
+}
+
+/**
  * Converts an array of domains to a single Vega scale domain.
  */
 export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
@@ -477,10 +508,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
   // only keep simple sort properties that work with unioned domains
   const simpleSorts = util.unique(
     sorts.map(s => {
-      if (util.isBoolean(s)) {
-        return s;
-      }
-      if (s.op === 'count') {
+      if (util.isBoolean(s) || s.op === 'count') {
         return s;
       }
       log.warn(log.message.domainSortDropped(s));
@@ -562,7 +590,7 @@ export function getFieldFromDomain(domain: VgDomain): string {
 export function assembleDomain(model: Model, channel: ScaleChannel) {
   const scaleComponent = model.component.scales[channel];
 
-  const domains = scaleComponent.domains.map(domain => {
+  const domains = scaleComponent.get('domains').map(domain => {
     // Correct references to data as the original domain's data was determined
     // in parseScale, which happens before parseData. Thus the original data
     // reference can be incorrect.

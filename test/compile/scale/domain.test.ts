@@ -15,7 +15,7 @@ describe('compile/scale', () => {
     function testParseDomainForChannel(model: UnitModel, channel: ScaleChannel) {
       // Cannot parseDomain before parseScaleCore
       parseScaleCore(model);
-      return parseDomainForChannel(model, channel);
+      return parseDomainForChannel(model, channel).value;
     }
 
     it('should have correct domain with x and x2 channel', () => {
@@ -901,6 +901,12 @@ describe('compile/scale', () => {
       expect(domain).toEqual({
         fields: [[1, 2, 3, 4], [3, 4, 5, 6]]
       });
+    });
+
+    it('should return single explicit domain', () => {
+      const domain = mergeDomains([[1, 2, 3, 4]]);
+
+      expect(domain).toEqual([1, 2, 3, 4]);
     });
   });
 
