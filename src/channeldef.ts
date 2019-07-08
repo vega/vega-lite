@@ -51,7 +51,7 @@ export type ChannelDefWithCondition<F extends FieldDef<any>, V extends Value> =
   | ValueDefWithCondition<F, V>;
 
 /**
- * A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.
+ * A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.
  * {
  *   condition: {field: ...} | {value: ...},
  *   value: ...,
