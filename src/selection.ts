@@ -1,22 +1,19 @@
-import {Binding, Color} from 'vega';
+import {Binding, Color, Vector2} from 'vega';
 import {SingleDefUnitChannel} from './channel';
-import {FieldName} from './channeldef';
+import {FieldName, Value} from './channeldef';
 import {DateTime} from './datetime';
+import {Dict} from './util';
 import {EventStream} from './vega.schema';
 
 export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'single' | 'multi' | 'interval';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
 
-export type SelectionInit = boolean | number | string | DateTime;
-export type SelectionInitInterval = [boolean, boolean] | [number, number] | [string, string] | [DateTime, DateTime];
+export type SelectionInit = Value | DateTime;
+export type SelectionInitInterval = Vector2<boolean> | Vector2<number> | Vector2<string> | Vector2<DateTime>;
 
-export interface SelectionInitMapping {
-  [key: string]: SelectionInit;
-}
-export interface SelectionInitIntervalMapping {
-  [key: string]: SelectionInitInterval;
-}
+export type SelectionInitMapping = Dict<SelectionInit>;
+export type SelectionInitIntervalMapping = Dict<SelectionInitInterval>;
 
 export interface BaseSelectionConfig {
   /**
@@ -238,10 +235,6 @@ export interface MultiSelection extends BaseSelectionDef<'multi'>, MultiSelectio
 export interface IntervalSelection extends BaseSelectionDef<'interval'>, IntervalSelectionConfig {}
 
 export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
-
-export function isIntervalSelection(s: SelectionDef): s is IntervalSelection {
-  return s.type === 'interval';
-}
 
 export interface SelectionConfig {
   /**
