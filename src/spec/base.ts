@@ -141,7 +141,7 @@ export interface ViewBackground extends BaseViewBackground {
    * __Default value:__ `"cell"`
    * __Note:__ Any specified view background properties will augment the default style.
    */
-  style?: string;
+  style?: string | string[];
 }
 
 export interface BoundsMixins {
