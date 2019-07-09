@@ -9,7 +9,9 @@ export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'single' | 'multi' | 'interval';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
 
-export type SelectionInit = Value | DateTime;
+export type SelectionInitMapping = Dict<Value | DateTime>;
+
+export type SelectionInit = SelectionInitMapping[string];
 export type SelectionInitInterval = Vector2<boolean> | Vector2<number> | Vector2<string> | Vector2<DateTime>;
 
 export interface BaseSelectionConfig {

@@ -139,20 +139,14 @@ const project: TransformCompiler = {
       if (scales.has(selCmpt)) {
         log.warn(log.message.NO_INIT_SCALE_BINDINGS);
       } else {
-        function parseInit(i: Dict<SelectionInit>): SelectionInit;
-        function parseInit(i: Dict<SelectionInitInterval>): SelectionInitInterval;
-        // eslint-disable-next-line no-inner-declarations
-        function parseInit(i: Dict<any>): any {
+        const parseInit = <T extends SelectionInit | SelectionInitInterval>(i: Dict<T>): T[] => {
           return proj.items.map(p => (i[p.channel] !== undefined ? i[p.channel] : i[p.field]));
-        }
+        };
 
-        if (selDef.type === 'single') {
-          selCmpt.init = [parseInit(selDef.init)];
-        } else if (selDef.type === 'multi') {
-          selCmpt.init = array(selDef.init).map(parseInit as (i: Dict<SelectionInit>) => SelectionInit);
-        }
         if (selDef.type === 'interval') {
           selCmpt.init = parseInit(selDef.init);
+        } else {
+          selCmpt.init = array(selDef.init).map(parseInit);
         }
       }
     }
