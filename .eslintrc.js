@@ -13,9 +13,9 @@ module.exports = {
     node: true
   },
   parserOptions: {
-    // project: "tsconfig.json", // makes things slow, see https://github.com/typescript-eslint/typescript-eslint/issues/389
-    ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-    sourceType: "module" // Allows for the use of imports
+    project: "tsconfig.json",
+    ecmaVersion: 2018,
+    sourceType: "module"
   },
   rules: {
     "prettier/prettier": "warn",
@@ -24,7 +24,7 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/prefer-for-of": "error",
-    // "@typescript-eslint/no-for-in-array": "error", // requires type information
+    "@typescript-eslint/no-for-in-array": "error",
     "@typescript-eslint/no-require-imports": "error",
     "@typescript-eslint/no-parameter-properties": "off",
     "@typescript-eslint/explicit-member-accessibility": "off",
@@ -37,7 +37,7 @@ module.exports = {
         ignoreRestSiblings: true
       }
     ],
-    "@typescript-eslint/no-object-literal-type-assertion": "off", // we can do this later
+    "@typescript-eslint/no-object-literal-type-assertion": "off",
     "@typescript-eslint/no-namespace": "off", // we can do this later
     // https://eslint.org/docs/rules/
     "linebreak-style": ["error", "unix"],
