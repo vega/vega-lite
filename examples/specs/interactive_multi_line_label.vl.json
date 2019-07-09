@@ -97,7 +97,8 @@
           "encoding": {
             "fill": {
               "type": "nominal",
-              "field": "symbol"
+              "field": "symbol",
+              "legend": null
             }
           }
         }]
