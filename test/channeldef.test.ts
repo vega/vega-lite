@@ -104,7 +104,7 @@ describe('fieldDef', () => {
     it(
       'should return fieldDef with default type and throw warning if type is missing.',
       log.wrap(localLogger => {
-        const fieldDef = {field: 'a'} as TypedFieldDef<string>;
+        const fieldDef = {field: 'a'};
         expect(normalize(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
         expect(localLogger.warns[0]).toEqual(log.message.missingFieldType('x', 'quantitative'));
       })
