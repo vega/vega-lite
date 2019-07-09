@@ -31,9 +31,9 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   type: T;
 
   init?: (T extends 'interval'
-    ? IntervalSelection['init']['a']
+    ? IntervalSelection['init'][string]
     : T extends 'single'
-    ? SingleSelection['init']['a']
+    ? SingleSelection['init'][string]
     : SelectionInit | SelectionInit[])[]; // multi
   events: EventStream;
   // predicate?: string;
