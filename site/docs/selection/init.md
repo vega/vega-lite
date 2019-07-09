@@ -5,7 +5,7 @@ title: Initialzing a Selection
 permalink: /docs/init.html
 ---
 
-To initialize a selection, set the `init` property to a map or array of maps from [projected channels or field names](project.html) to the initial value of the selection. Single selections are initialized with a map to single values, multi selections are initialized with an array of maps to single values, and interval selections are initialized with a single map to arrays of values.
+To initialize a selection, set the `init` property to a map or array of maps from [projected channels or field names](project.html) to the initial value of the selection. Single selections are initialized with a map to single values, multi selections are initialized with a single map or an array of maps to single values, and interval selections are initialized with a single map to arrays of values.
 
 ## Examples
 

@@ -3256,13 +3256,13 @@
       },
       "type": "object"
     },
-    "Dict<SelectionInit>": {
+    "SelectionInitMapping": {
       "additionalProperties": {
         "$ref": "#/definitions/SelectionInit"
       },
       "type": "object"
     },
-    "Dict<SelectionInitInterval>": {
+    "SelectionInitIntervalMapping": {
       "additionalProperties": {
         "$ref": "#/definitions/SelectionInitInterval"
       },
@@ -5951,7 +5951,7 @@
           "type": "array"
         },
         "init": {
-          "$ref": "#/definitions/Dict<SelectionInitInterval>",
+          "$ref": "#/definitions/SelectionInitIntervalMapping",
           "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of\ninitial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
         },
         "mark": {
@@ -6037,7 +6037,7 @@
           "type": "array"
         },
         "init": {
-          "$ref": "#/definitions/Dict<SelectionInitInterval>",
+          "$ref": "#/definitions/SelectionInitIntervalMapping",
           "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of\ninitial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
         },
         "mark": {
@@ -8131,11 +8131,11 @@
         "init": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Dict<SelectionInit>"
+              "$ref": "#/definitions/SelectionInitMapping"
             },
             {
               "items": {
-                "$ref": "#/definitions/Dict<SelectionInit>"
+                "$ref": "#/definitions/SelectionInitMapping"
               },
               "type": "array"
             }
@@ -8213,11 +8213,11 @@
         "init": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Dict<SelectionInit>"
+              "$ref": "#/definitions/SelectionInitMapping"
             },
             {
               "items": {
-                "$ref": "#/definitions/Dict<SelectionInit>"
+                "$ref": "#/definitions/SelectionInitMapping"
               },
               "type": "array"
             }
@@ -10292,7 +10292,7 @@
           "type": "array"
         },
         "init": {
-          "$ref": "#/definitions/Dict<SelectionInit>",
+          "$ref": "#/definitions/SelectionInitMapping",
           "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
         },
         "nearest": {
@@ -10371,7 +10371,7 @@
           "type": "array"
         },
         "init": {
-          "$ref": "#/definitions/Dict<SelectionInit>",
+          "$ref": "#/definitions/SelectionInitMapping",
           "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
         },
         "nearest": {
