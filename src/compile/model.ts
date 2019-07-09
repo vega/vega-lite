@@ -286,7 +286,7 @@ export abstract class Model {
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
 
-  public assembleGroupStyle(): string {
+  public assembleGroupStyle(): string | string[] {
     if (this.type === 'unit' || this.type === 'layer') {
       return (this.view && this.view.style) || 'cell';
     }
