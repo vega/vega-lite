@@ -342,13 +342,6 @@
           "update": {"fill": {"value": "transparent"}, "opacity": {"value": 1}}
         }
       }
-    },
-    {
-      "fill": "fill",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
-      "title": "symbol",
-      "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }
   ]
 }
