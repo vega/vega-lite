@@ -437,10 +437,6 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
   }, {});
 }
 
-export function isRanged(encoding: EncodingWithFacet<any>) {
-  return encoding && ((!!encoding.x && !!encoding.x2) || (!!encoding.y && !!encoding.y2));
-}
-
 export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): FieldDef<F>[] {
   const arr: FieldDef<F>[] = [];
   for (const channel of keys(encoding)) {

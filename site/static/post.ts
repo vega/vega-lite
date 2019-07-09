@@ -2,12 +2,6 @@
 
 import {Renderers} from 'vega';
 
-import {Config as VgConfig} from 'vega';
-import {Config as VlConfig} from '../../src/config';
-
-export type Mode = 'vega' | 'vega-lite';
-export type Config = VlConfig | VgConfig;
-
 /**
  * Open editor url in a new window, and pass a message.
  */
