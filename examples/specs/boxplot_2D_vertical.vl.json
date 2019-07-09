@@ -7,7 +7,7 @@
     "extent": 1.5
   },
   "encoding": {
-    "x": {"field": "age","type": "ordinal"},
+    "x": {"field": "age", "type": "ordinal"},
     "y": {
       "field": "people",
       "type": "quantitative",

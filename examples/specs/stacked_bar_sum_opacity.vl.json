@@ -19,6 +19,6 @@
       "type": "quantitative",
       "axis": {"title": "population"}
     },
-    "opacity": {"field": "people","type": "quantitative"}
+    "opacity": {"field": "people", "type": "quantitative"}
   }
 }

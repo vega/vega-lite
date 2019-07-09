@@ -4,7 +4,7 @@
   "data": {"url": "data/cars.json"},
   "mark": "rule",
   "encoding": {
-    "x": {"field": "Origin","type": "nominal"},
+    "x": {"field": "Origin", "type": "nominal"},
     "y": {"field": "Horsepower", "aggregate": "min", "type": "quantitative"},
     "y2": {"field": "Horsepower", "aggregate": "max"}
   }

@@ -25,7 +25,7 @@
       },
       "color": {
         "field": "gender", "type": "nominal",
-        "scale": {"range": ["#e377c2","#1f77b4"]},
+        "scale": {"range": ["#e377c2", "#1f77b4"]},
         "legend": null
       }
     }

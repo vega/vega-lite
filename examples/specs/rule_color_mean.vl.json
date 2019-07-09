@@ -10,6 +10,6 @@
       "aggregate": "mean"
     },
     "size": {"value": 2},
-    "color": {"field": "symbol","type": "nominal"}
+    "color": {"field": "symbol", "type": "nominal"}
   }
 }
