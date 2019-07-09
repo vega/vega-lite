@@ -6,7 +6,7 @@
   "layer": [{
     "mark": {"type": "point", "opacity": 0.3},
     "encoding": {
-      "x": {"timeUnit":"year","field": "date", "type": "temporal"},
+      "x": {"timeUnit":"year", "field": "date", "type": "temporal"},
       "y": {"field": "price", "type": "quantitative"}
     }
   }, {

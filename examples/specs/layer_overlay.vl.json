@@ -5,7 +5,7 @@
       "data": {"url": "data/cars.json"},
       "mark": "line",
       "encoding": {
-        "x": {"field": "Cylinders","type": "ordinal"},
+        "x": {"field": "Cylinders", "type": "ordinal"},
         "y": {
           "aggregate": "max",
           "bin": false,
@@ -19,7 +19,7 @@
       "data": {"url": "data/cars.json"},
       "mark": "line",
       "encoding": {
-        "x": {"field": "Cylinders","type": "ordinal"},
+        "x": {"field": "Cylinders", "type": "ordinal"},
         "y": {
           "aggregate": "min",
           "bin": false,

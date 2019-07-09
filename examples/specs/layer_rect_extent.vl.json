@@ -5,24 +5,24 @@
   "layer": [{
     "mark": "point",
     "encoding": {
-      "x": {"field": "Horsepower","type": "quantitative"},
-      "y": {"field": "Miles_per_Gallon","type": "quantitative", "axis": {"title": "Miles per Gallon"}}
+      "x": {"field": "Horsepower", "type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon", "type": "quantitative", "axis": {"title": "Miles per Gallon"}}
     }
   },{
     "mark": "rule",
     "encoding": {
-      "y": {"aggregate": "min", "field": "Miles_per_Gallon","type": "quantitative"}
+      "y": {"aggregate": "min", "field": "Miles_per_Gallon", "type": "quantitative"}
     }
   },{
     "mark": "rule",
     "encoding": {
-      "y": {"aggregate": "max", "field": "Miles_per_Gallon","type": "quantitative"}
+      "y": {"aggregate": "max", "field": "Miles_per_Gallon", "type": "quantitative"}
     }
   },{
     "mark": "rect",
     "encoding": {
-      "y": {"aggregate": "max", "field": "Miles_per_Gallon","type": "quantitative"},
-      "y2": {"aggregate": "min", "field": "Miles_per_Gallon","type": "quantitative"},
+      "y": {"aggregate": "max", "field": "Miles_per_Gallon", "type": "quantitative"},
+      "y2": {"aggregate": "min", "field": "Miles_per_Gallon", "type": "quantitative"},
       "opacity": {"value": 0.2}
     }
   }]

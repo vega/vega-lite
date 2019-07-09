@@ -7,8 +7,8 @@
     },
     "mark": "point",
     "encoding": {
-      "x": {"field": "Horsepower","type": "quantitative"},
-      "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+      "x": {"field": "Horsepower", "type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
     }
   }, {
     "transform": [{
@@ -26,7 +26,7 @@
         "scale": {"domain": [0,25]}
       },
       "y": {
-        "field": "Displacement","type": "quantitative",
+        "field": "Displacement", "type": "quantitative",
         "scale": {"domain": [0, 500]}
       }
     }
