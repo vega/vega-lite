@@ -52,29 +52,29 @@ function runOptimizer(optimizer: BottomUpOptimizer | TopDownOptimizer, nodes: Da
 
 function optimizationDataflowHelper(dataComponent: DataComponent, model: Model) {
   let roots = dataComponent.sources;
-  const mutatedFlags: boolean[] = [];
+  const mutatedFlags: Set<boolean> = new Set();
 
-  mutatedFlags.push(runOptimizer(new optimizers.RemoveUnnecessaryNodes(), roots));
+  mutatedFlags.add(runOptimizer(new optimizers.RemoveUnnecessaryNodes(), roots));
 
   // remove source nodes that don't have any children because they also don't have output nodes
   roots = roots.filter(r => r.numChildren() > 0);
 
-  mutatedFlags.push(runOptimizer(new optimizers.RemoveUnusedSubtrees(), getLeaves(roots)));
+  mutatedFlags.add(runOptimizer(new optimizers.RemoveUnusedSubtrees(), getLeaves(roots)));
 
   roots = roots.filter(r => r.numChildren() > 0);
 
-  mutatedFlags.push(runOptimizer(new optimizers.MoveParseUp(), getLeaves(roots)));
-  mutatedFlags.push(runOptimizer(new optimizers.MergeBins(model), getLeaves(roots)));
-  mutatedFlags.push(runOptimizer(new optimizers.RemoveDuplicateTimeUnits(), getLeaves(roots)));
-  mutatedFlags.push(runOptimizer(new optimizers.MergeParse(), getLeaves(roots)));
-  mutatedFlags.push(runOptimizer(new optimizers.MergeAggregates(), getLeaves(roots)));
-  mutatedFlags.push(runOptimizer(new optimizers.MergeTimeUnits(), getLeaves(roots)));
-  mutatedFlags.push(runOptimizer(new optimizers.MergeIdenticalNodes(), roots));
-  mutatedFlags.push(runOptimizer(new optimizers.MergeOutputs(), getLeaves(roots)));
+  mutatedFlags.add(runOptimizer(new optimizers.MoveParseUp(), getLeaves(roots)));
+  mutatedFlags.add(runOptimizer(new optimizers.MergeBins(model), getLeaves(roots)));
+  mutatedFlags.add(runOptimizer(new optimizers.RemoveDuplicateTimeUnits(), getLeaves(roots)));
+  mutatedFlags.add(runOptimizer(new optimizers.MergeParse(), getLeaves(roots)));
+  mutatedFlags.add(runOptimizer(new optimizers.MergeAggregates(), getLeaves(roots)));
+  mutatedFlags.add(runOptimizer(new optimizers.MergeTimeUnits(), getLeaves(roots)));
+  mutatedFlags.add(runOptimizer(new optimizers.MergeIdenticalNodes(), roots));
+  mutatedFlags.add(runOptimizer(new optimizers.MergeOutputs(), getLeaves(roots)));
 
   dataComponent.sources = roots;
 
-  return mutatedFlags.some(isTrue);
+  return mutatedFlags.has(true);
 }
 
 /**
