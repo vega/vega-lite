@@ -1,12 +1,20 @@
-import {LabelOverlap, LegendOrient, LegendType} from 'vega';
+import {LabelOverlap, LegendOrient, LegendType, SymbolShape} from 'vega';
 import {Channel, isColorChannel} from '../../channel';
-import {TypedFieldDef, valueArray} from '../../channeldef';
+import {
+  TypedFieldDef,
+  valueArray,
+  MarkPropFieldDef,
+  FieldDefWithCondition,
+  Value,
+  ValueDefWithCondition
+} from '../../channeldef';
 import {Legend, LegendConfig} from '../../legend';
 import {Mark} from '../../mark';
 import {isContinuousToContinuous, ScaleType} from '../../scale';
 import {TimeUnit} from '../../timeunit';
 import {contains, getFirstDefined} from '../../util';
 import {Model} from '../model';
+import {getFirstConditionValue} from './encode';
 
 export function values(legend: Legend, fieldDef: TypedFieldDef<string>) {
   const vals = legend.values;
@@ -17,8 +25,39 @@ export function values(legend: Legend, fieldDef: TypedFieldDef<string>) {
   return undefined;
 }
 
-export function defaultSymbolType(mark: Mark) {
-  return mark === 'line' ? 'stroke' : 'circle';
+export function defaultSymbolType(
+  mark: Mark,
+  channel: Channel,
+  shapeChannelDef:
+    | FieldDefWithCondition<MarkPropFieldDef<string>, Value>
+    | ValueDefWithCondition<MarkPropFieldDef<string>, Value>,
+  markShape: SymbolShape
+): SymbolShape {
+  if (channel !== 'shape') {
+    // use the value from the shape encoding or the mark config if they exist
+    const shape = getFirstConditionValue(shapeChannelDef) || markShape;
+    if (shape) {
+      return shape as SymbolShape;
+    }
+  }
+
+  switch (mark) {
+    case 'bar':
+    case 'rect':
+    case 'square':
+      return 'square';
+    case 'line':
+    case 'trail':
+    case 'rule':
+      return 'stroke';
+    case 'point':
+    case 'circle':
+    case 'tick':
+    case 'geoshape':
+    case 'area':
+    case 'text':
+      return 'circle';
+  }
 }
 
 export function clipHeight(legendType: LegendType) {

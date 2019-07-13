@@ -108,13 +108,33 @@ describe('compile/legend', () => {
 
   describe('defaultSymbolType()', () => {
     it('return stroke for line', () => {
-      const overlap = properties.defaultSymbolType('line');
+      const overlap = properties.defaultSymbolType('line', 'color', {}, undefined);
       expect(overlap).toBe('stroke');
     });
 
-    it('return undefined otherwise', () => {
-      const overlap = properties.defaultSymbolType('circle');
+    it('return stroke for rule', () => {
+      const overlap = properties.defaultSymbolType('rule', 'color', {}, undefined);
+      expect(overlap).toBe('stroke');
+    });
+
+    it('return square for rect', () => {
+      const overlap = properties.defaultSymbolType('rect', 'color', {}, undefined);
+      expect(overlap).toBe('square');
+    });
+
+    it('return circle for point', () => {
+      const overlap = properties.defaultSymbolType('point', 'color', {}, undefined);
       expect(overlap).toBe('circle');
+    });
+
+    it('return the mark shape if defined', () => {
+      const overlap = properties.defaultSymbolType('point', 'color', {}, 'triangle');
+      expect(overlap).toBe('triangle');
+    });
+
+    it('return the value of the shape encoding', () => {
+      const overlap = properties.defaultSymbolType('point', 'color', {value: 'triangle'}, undefined);
+      expect(overlap).toBe('triangle');
     });
   });
 });
