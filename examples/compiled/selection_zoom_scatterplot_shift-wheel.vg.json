@@ -258,7 +258,6 @@
         "symbols": {
           "update": {
             "fill": {"value": "#4c78a8"},
-            "shape": {"value": "circle"},
             "opacity": {"value": 0.7},
             "stroke": {"value": "transparent"}
           }

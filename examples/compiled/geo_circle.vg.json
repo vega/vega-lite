@@ -73,11 +73,7 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
       "title": "digit",
-      "encode": {
-        "symbols": {
-          "update": {"shape": {"value": "circle"}, "opacity": {"value": 0.7}}
-        }
-      }
+      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
     }
   ]
 }

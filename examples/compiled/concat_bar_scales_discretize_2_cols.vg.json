@@ -119,14 +119,7 @@
           "fill": "concat_0_color",
           "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
           "symbolType": "circle",
-          "encode": {
-            "symbols": {
-              "update": {
-                "shape": {"value": "circle"},
-                "opacity": {"value": 0.7}
-              }
-            }
-          },
+          "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
           "size": "concat_0_size"
         }
       ]
@@ -181,14 +174,7 @@
           "gradientLength": {"signal": "clamp(concat_1_height, 64, 200)"},
           "labelOverlap": "greedy",
           "symbolType": "circle",
-          "encode": {
-            "symbols": {
-              "update": {
-                "shape": {"value": "circle"},
-                "opacity": {"value": 0.7}
-              }
-            }
-          },
+          "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
           "size": "concat_1_size"
         }
       ]
@@ -242,14 +228,7 @@
           "gradientLength": {"signal": "clamp(concat_2_height, 64, 200)"},
           "labelOverlap": "greedy",
           "symbolType": "circle",
-          "encode": {
-            "symbols": {
-              "update": {
-                "shape": {"value": "circle"},
-                "opacity": {"value": 0.7}
-              }
-            }
-          },
+          "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
           "size": "concat_2_size"
         }
       ]

@@ -207,9 +207,8 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
-      "symbolType": "circle",
-      "title": "gender",
-      "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
+      "symbolType": "square",
+      "title": "gender"
     }
   ],
   "config": {"style": {"cell": {"fill": "yellow"}}}

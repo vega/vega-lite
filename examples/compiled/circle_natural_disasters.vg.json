@@ -97,7 +97,6 @@
           "update": {
             "fill": {"value": "black"},
             "stroke": {"value": "black"},
-            "shape": {"value": "circle"},
             "fillOpacity": {"value": 0.8},
             "opacity": {"value": 0.8}
           }

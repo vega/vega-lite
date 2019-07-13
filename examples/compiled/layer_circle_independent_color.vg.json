@@ -229,7 +229,6 @@
         "symbols": {
           "update": {
             "fill": {"value": "#4c78a8"},
-            "shape": {"value": "circle"},
             "stroke": {"value": "transparent"}
           }
         }
@@ -244,7 +243,6 @@
         "symbols": {
           "update": {
             "fill": {"value": "firebrick"},
-            "shape": {"value": "circle"},
             "stroke": {"value": "transparent"}
           }
         }
