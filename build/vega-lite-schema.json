@@ -1870,8 +1870,14 @@
       "type": "object"
     },
     "Color": {
-      "format": "color-hex",
-      "type": "string"
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/HexColor"
+        }
+      ]
     },
     "Encoding": {
       "additionalProperties": false,
@@ -5672,6 +5678,10 @@
         }
       },
       "type": "object"
+    },
+    "HexColor": {
+      "format": "color-hex",
+      "type": "string"
     },
     "ImputeMethod": {
       "enum": [

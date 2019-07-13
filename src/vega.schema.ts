@@ -31,7 +31,9 @@ export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, Projecti
 /**
  * @format color-hex
  */
-export type Color = string;
+export type HexColor = string;
+
+export type Color = string | HexColor;
 
 export interface VgData {
   name: string;
