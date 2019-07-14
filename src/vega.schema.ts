@@ -153,7 +153,7 @@ export interface VgProjection {
   /*
    * The desired precision of the projection.
    */
-  precision?: string;
+  precision?: number;
   /*
    * GeoJSON data to which the projection should attempt to automatically fit the translate and scale parameters..
    */
