@@ -70,7 +70,7 @@
                 "text": {"type": "quantitative", "field": "price"},
                 "x": {"type": "temporal", "field": "date"},
                 "y": {"type": "quantitative", "field": "price"},
-                "fill": {"type": "nominal", "field": "symbol"}
+                "fill": {"type": "nominal", "field": "symbol", "legend": null}
               }
             }
           ]
