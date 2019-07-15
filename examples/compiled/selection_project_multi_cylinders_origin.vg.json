@@ -192,7 +192,6 @@
         "symbols": {
           "update": {
             "fill": {"value": "transparent"},
-            "shape": {"value": "circle"},
             "opacity": {"value": 0.7}
           }
         }

@@ -160,7 +160,6 @@
         "symbols": {
           "update": {
             "fill": {"value": "#4c78a8"},
-            "shape": {"value": "circle"},
             "stroke": {"value": "transparent"}
           }
         }

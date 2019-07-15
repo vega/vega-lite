@@ -134,13 +134,12 @@
     {
       "opacity": "opacity",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
+      "symbolType": "square",
       "title": "people",
       "encode": {
         "symbols": {
           "update": {
             "fill": {"value": "#4c78a8"},
-            "shape": {"value": "square"},
             "stroke": {"value": "transparent"}
           }
         }

@@ -238,7 +238,6 @@
             "symbols": {
               "update": {
                 "fill": {"value": "#4c78a8"},
-                "shape": {"value": "circle"},
                 "opacity": {"value": 0.4},
                 "stroke": {"value": "transparent"}
               }
@@ -254,7 +253,6 @@
             "symbols": {
               "update": {
                 "fill": {"value": "#4c78a8"},
-                "shape": {"value": "circle"},
                 "stroke": {"value": "transparent"}
               }
             }

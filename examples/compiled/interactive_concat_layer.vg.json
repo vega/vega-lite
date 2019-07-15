@@ -250,7 +250,7 @@
           "gradientLength": 120,
           "title": "All Movies",
           "fill": "color",
-          "symbolType": "circle"
+          "symbolType": "square"
         },
         {
           "title": "In Selected Category",

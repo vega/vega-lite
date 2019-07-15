@@ -178,7 +178,10 @@ function getProperty<K extends keyof VgLegend>(
       return getFirstDefined(legend.labelOverlap, properties.defaultLabelOverlap(scaleType));
 
     case 'symbolType':
-      return getFirstDefined(legend.symbolType, properties.defaultSymbolType(mark));
+      return getFirstDefined(
+        legend.symbolType,
+        properties.defaultSymbolType(mark, channel, encoding.shape, model.markDef.shape)
+      );
 
     case 'title':
       return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;

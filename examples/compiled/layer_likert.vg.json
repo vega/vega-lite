@@ -409,7 +409,6 @@
         "symbols": {
           "update": {
             "fill": {"value": "#6EB4FD"},
-            "shape": {"value": "circle"},
             "stroke": {"value": "transparent"}
           }
         }

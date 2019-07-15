@@ -132,13 +132,12 @@
     {
       "size": "size",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
+      "symbolType": "square",
       "title": "weather",
       "encode": {
         "symbols": {
           "update": {
             "fill": {"value": "#4c78a8"},
-            "shape": {"value": "square"},
             "opacity": {"value": 0.5},
             "stroke": {"value": "transparent"}
           }

@@ -86,7 +86,7 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
+      "symbolType": "stroke",
       "title": "symbol"
     }
   ]

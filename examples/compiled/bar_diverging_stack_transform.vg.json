@@ -387,8 +387,7 @@
       "title": "Response",
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
-      "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
+      "symbolType": "square"
     }
   ]
 }

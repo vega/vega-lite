@@ -100,11 +100,7 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "labelOverlap": "greedy",
       "symbolType": "circle",
-      "encode": {
-        "symbols": {
-          "update": {"shape": {"value": "circle"}, "opacity": {"value": 0.7}}
-        }
-      },
+      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
       "size": "size"
     }
   ]

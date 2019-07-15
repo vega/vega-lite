@@ -141,7 +141,7 @@
       "gradientLength": 120,
       "title": "Count of Records",
       "fill": "color",
-      "symbolType": "circle"
+      "symbolType": "square"
     }
   ],
   "config": {"style": {"text": {"baseline": "middle"}}}
