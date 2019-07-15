@@ -25,7 +25,9 @@
     {
       "name": "data_1",
       "source": "source_0",
-      "transform": [{"type": "filter", "expr": "(vlSelectionTest(\"label_store\", datum))"}]
+      "transform": [
+        {"type": "filter", "expr": "(vlSelectionTest(\"label_store\", datum))"}
+      ]
     },
     {
       "name": "data_2",
@@ -62,7 +64,9 @@
     {
       "name": "unit",
       "value": {},
-      "on": [{"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}]
+      "on": [
+        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+      ]
     },
     {"name": "label", "update": "vlSelectionResolve(\"label_store\")"},
     {
@@ -132,7 +136,10 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "opacity": [{"test": "(vlSelectionTest(\"label_store\", datum))", "value": 1}, {"value": 0}],
+          "opacity": [
+            {"test": "(vlSelectionTest(\"label_store\", datum))", "value": 1},
+            {"value": 0}
+          ],
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "symbol"},
           "tooltip": {
@@ -262,7 +269,10 @@
       "name": "color",
       "type": "ordinal",
       "domain": {
-        "fields": [{"data": "source_0", "field": "symbol"}, {"data": "data_0", "field": "symbol"}],
+        "fields": [
+          {"data": "source_0", "field": "symbol"},
+          {"data": "data_0", "field": "symbol"}
+        ],
         "sort": true
       },
       "range": "category"
