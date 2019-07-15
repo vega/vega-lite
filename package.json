@@ -122,7 +122,7 @@
     "vega-expression": "~2.6.0",
     "vega-typings": "0.7.1",
     "vega-util": "~1.10.0",
-    "yargs": "~13.2.4"
+    "yargs": "~13.3.0"
   },
   "peerDependencies": {
     "vega": "^5.4.0"
