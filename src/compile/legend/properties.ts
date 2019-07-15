@@ -1,11 +1,10 @@
 import {LabelOverlap, LegendOrient, LegendType, SymbolShape} from 'vega';
 import {Channel, isColorChannel} from '../../channel';
 import {
+  FieldDefWithCondition,
+  MarkPropFieldDef,
   TypedFieldDef,
   valueArray,
-  MarkPropFieldDef,
-  FieldDefWithCondition,
-  Value,
   ValueDefWithCondition
 } from '../../channeldef';
 import {Legend, LegendConfig} from '../../legend';
@@ -29,15 +28,15 @@ export function defaultSymbolType(
   mark: Mark,
   channel: Channel,
   shapeChannelDef:
-    | FieldDefWithCondition<MarkPropFieldDef<string>, Value>
-    | ValueDefWithCondition<MarkPropFieldDef<string>, Value>,
+    | FieldDefWithCondition<MarkPropFieldDef<string>, SymbolShape>
+    | ValueDefWithCondition<MarkPropFieldDef<string>, SymbolShape>,
   markShape: SymbolShape
 ): SymbolShape {
   if (channel !== 'shape') {
     // use the value from the shape encoding or the mark config if they exist
     const shape = getFirstConditionValue(shapeChannelDef) || markShape;
     if (shape) {
-      return shape as SymbolShape;
+      return shape;
     }
   }
 

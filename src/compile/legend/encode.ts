@@ -169,13 +169,11 @@ function getMaxValue(
   return getConditionValue<number>(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
 }
 
-export function getFirstConditionValue(
-  channelDef:
-    | FieldDefWithCondition<MarkPropFieldDef<string>, Value>
-    | ValueDefWithCondition<MarkPropFieldDef<string>, Value>
-) {
-  return getConditionValue(channelDef, (v: number, conditionalDef) => {
-    return getFirstDefined(v, conditionalDef.value);
+export function getFirstConditionValue<V extends Value>(
+  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, V> | ValueDefWithCondition<MarkPropFieldDef<string>, V>
+): V {
+  return getConditionValue(channelDef, (v: V, conditionalDef: Conditional<ValueDef<V>>) => {
+    return getFirstDefined<V>(v, conditionalDef.value);
   });
 }
 
