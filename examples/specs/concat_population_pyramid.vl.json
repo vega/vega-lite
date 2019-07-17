@@ -6,7 +6,7 @@
     {"filter": "datum.year == 2000"},
     {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
   ],
-  "spacing": 10,
+  "spacing": 0,
   "hconcat": [{
     "transform": [{
       "filter": {"field": "gender", "equal": "Female"}
@@ -16,11 +16,11 @@
     "encoding": {
       "y": {
         "field": "age", "type": "ordinal",
-        "axis": null
+        "axis": null, "sort": "descending"
       },
       "x": {
         "aggregate": "sum", "field": "people", "type": "quantitative",
-        "axis": {"title": "population"},
+        "axis": {"title": "population", "format": "s"},
         "sort": "descending"
       },
       "color": {
@@ -37,7 +37,7 @@
       "align": "center"
     },
     "encoding": {
-      "y": {"field": "age", "type": "ordinal", "axis": null},
+      "y": {"field": "age", "type": "ordinal", "axis": null, "sort": "descending"},
       "text": {"field": "age", "type": "quantitative"}
     }
   }, {
@@ -49,16 +49,20 @@
     "encoding": {
       "y": {
         "field": "age", "type": "ordinal", "title": null,
-        "axis": null
+        "axis": null, "sort": "descending"
       },
       "x": {
         "aggregate": "sum", "field": "people", "type": "quantitative",
-        "axis": {"title": "population"}
+        "axis": {"title": "population", "format": "s"}
       },
       "color": {
         "field": "gender", "type": "nominal",
         "legend": null
       }
     }
-  }]
+  }],
+  "config": {
+    "view": {"stroke": null},
+    "axis": {"grid": false}
+  }
 }
