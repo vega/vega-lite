@@ -499,6 +499,10 @@
       {
         "name": "nested_concat_align",
         "title": "Nested View Concatenation Aligned with Axis `minExtent`"
+      },
+      {
+        "name": "concat_population_pyramid",
+        "title": "Population Pyramid"
       }
     ]
   },
