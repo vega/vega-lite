@@ -11,7 +11,7 @@ import {
 } from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {Flag, flagKeys} from './util';
+import {Flag, keys} from './util';
 import {Color, LayoutAlign} from './vega.schema';
 
 type BaseAxisNoSignals = AxisMixins &
@@ -317,10 +317,10 @@ export function isAxisProperty(prop: string): prop is keyof Axis {
   return !!AXIS_PROPERTIES_INDEX[prop];
 }
 
-export const VG_AXIS_PROPERTIES = flagKeys(VG_AXIS_PROPERTIES_INDEX);
+export const VG_AXIS_PROPERTIES = keys(VG_AXIS_PROPERTIES_INDEX);
 
 // Export for dependent projects
-export const AXIS_PROPERTIES = flagKeys(AXIS_PROPERTIES_INDEX);
+export const AXIS_PROPERTIES = keys(AXIS_PROPERTIES_INDEX);
 
 export interface AxisConfigMixins {
   /**

@@ -5,7 +5,7 @@ import {Data} from '../data';
 import {Resolve} from '../resolve';
 import {TitleParams} from '../title';
 import {Transform} from '../transform';
-import {Flag, flagKeys} from '../util';
+import {Flag, keys} from '../util';
 import {BaseMarkConfig, LayoutAlign, RowCol} from '../vega.schema';
 import {isConcatSpec} from './concat';
 import {isFacetMapping, isFacetSpec} from './facet';
@@ -246,7 +246,7 @@ const COMPOSITION_LAYOUT_INDEX: Flag<keyof GenericCompositionLayoutWithColumns> 
   spacing: 1
 };
 
-const COMPOSITION_LAYOUT_PROPERTIES = flagKeys(COMPOSITION_LAYOUT_INDEX);
+const COMPOSITION_LAYOUT_PROPERTIES = keys(COMPOSITION_LAYOUT_INDEX);
 
 export type SpecType = 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
 

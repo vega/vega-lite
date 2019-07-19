@@ -10440,16 +10440,16 @@
         "color",
         "fill",
         "stroke",
+        "opacity",
+        "fillOpacity",
+        "strokeOpacity",
         "strokeWidth",
         "size",
         "shape",
-        "fillOpacity",
-        "strokeOpacity",
-        "opacity",
+        "key",
         "text",
         "tooltip",
-        "href",
-        "key"
+        "href"
       ],
       "type": "string"
     },

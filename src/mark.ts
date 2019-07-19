@@ -1,6 +1,6 @@
 import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
-import {contains, flagKeys} from './util';
+import {contains, keys} from './util';
 import {BaseMarkConfig, Color} from './vega.schema';
 
 export const AREA: 'area' = 'area';
@@ -57,7 +57,7 @@ export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'tra
   return contains(['line', 'area', 'trail'], m);
 }
 
-export const PRIMITIVE_MARKS = flagKeys(MARK_INDEX);
+export const PRIMITIVE_MARKS = keys(MARK_INDEX);
 
 export interface ColorMixins {
   /**

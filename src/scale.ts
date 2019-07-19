@@ -6,7 +6,7 @@ import {DateTime} from './datetime';
 import * as log from './log';
 import * as TYPE from './type';
 import {Type, TYPE_INDEX} from './type';
-import {contains, Flag, flagKeys, keys} from './util';
+import {contains, Flag, keys} from './util';
 import {ScaleInterpolate, ScaleInterpolateParams} from './vega.schema';
 
 export namespace ScaleType {
@@ -687,7 +687,7 @@ const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {
   paddingOuter: 1
 };
 
-export const SCALE_PROPERTIES = flagKeys(SCALE_PROPERTY_INDEX);
+export const SCALE_PROPERTIES = keys(SCALE_PROPERTY_INDEX);
 
 const {
   type,
@@ -698,7 +698,7 @@ const {
   ...NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX
 } = SCALE_PROPERTY_INDEX;
 
-export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = flagKeys(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
+export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = keys(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
 
 export const SCALE_TYPE_INDEX = generateScaleTypeIndex();
 
