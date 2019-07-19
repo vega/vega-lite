@@ -24,7 +24,7 @@ import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
-import {Flag, flagKeys} from './util';
+import {Flag, keys} from './util';
 
 export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
@@ -1038,7 +1038,7 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
   // url: 1,
 };
 
-export const VG_MARK_CONFIGS = flagKeys(VG_MARK_CONFIG_INDEX);
+export const VG_MARK_CONFIGS = keys(VG_MARK_CONFIG_INDEX);
 
 export interface VgComparator {
   field?: string | string[];

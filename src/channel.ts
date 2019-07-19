@@ -7,7 +7,7 @@ import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {Mark} from './mark';
 import {EncodingFacetMapping, EncodingFacetMapping as ExtendedFacetMapping} from './spec/facet';
-import {Flag, flagKeys} from './util';
+import {Flag, keys} from './util';
 
 export type Channel = keyof Encoding<any> | keyof ExtendedFacetMapping<any>;
 
@@ -92,7 +92,7 @@ export function isGeoPositionChannel(c: Channel): c is GeoPositionChannel {
   return c in GEOPOSITION_CHANNEL_INDEX;
 }
 
-export const GEOPOSITION_CHANNELS = flagKeys(GEOPOSITION_CHANNEL_INDEX);
+export const GEOPOSITION_CHANNELS = keys(GEOPOSITION_CHANNEL_INDEX);
 
 const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   ...POSITION_CHANNEL_INDEX,
@@ -136,14 +136,14 @@ const FACET_CHANNEL_INDEX: Flag<keyof EncodingFacetMapping<any>> = {
   facet: 1
 };
 
-export const FACET_CHANNELS = flagKeys(FACET_CHANNEL_INDEX);
+export const FACET_CHANNELS = keys(FACET_CHANNEL_INDEX);
 
 const CHANNEL_INDEX = {
   ...UNIT_CHANNEL_INDEX,
   ...FACET_CHANNEL_INDEX
 };
 
-export const CHANNELS = flagKeys(CHANNEL_INDEX);
+export const CHANNELS = keys(CHANNEL_INDEX);
 
 const {order: _o, detail: _d, ...SINGLE_DEF_CHANNEL_INDEX} = CHANNEL_INDEX;
 const {order: _o1, detail: _d1, row: _r, column: _c, facet: _f, ...SINGLE_DEF_UNIT_CHANNEL_INDEX} = CHANNEL_INDEX;
@@ -156,11 +156,11 @@ const {order: _o1, detail: _d1, row: _r, column: _c, facet: _f, ...SINGLE_DEF_UN
  * are not applicable for them.  Similarly, selection projection won't work with "detail" and "order".)
  */
 
-export const SINGLE_DEF_CHANNELS = flagKeys(SINGLE_DEF_CHANNEL_INDEX);
+export const SINGLE_DEF_CHANNELS = keys(SINGLE_DEF_CHANNEL_INDEX);
 
 export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[number];
 
-export const SINGLE_DEF_UNIT_CHANNELS = flagKeys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
+export const SINGLE_DEF_UNIT_CHANNELS = keys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
 
 export type SingleDefUnitChannel = typeof SINGLE_DEF_UNIT_CHANNELS[number];
 
@@ -201,7 +201,7 @@ export function getMainRangeChannel(channel: Channel): Channel {
 }
 
 // CHANNELS without COLUMN, ROW
-export const UNIT_CHANNELS = flagKeys(UNIT_CHANNEL_INDEX);
+export const UNIT_CHANNELS = keys(UNIT_CHANNEL_INDEX);
 
 // NONPOSITION_CHANNELS = UNIT_CHANNELS without X, Y, X2, Y2;
 const {
@@ -218,12 +218,12 @@ const {
   ...NONPOSITION_CHANNEL_INDEX
 } = UNIT_CHANNEL_INDEX;
 
-export const NONPOSITION_CHANNELS = flagKeys(NONPOSITION_CHANNEL_INDEX);
+export const NONPOSITION_CHANNELS = keys(NONPOSITION_CHANNEL_INDEX);
 export type NonPositionChannel = typeof NONPOSITION_CHANNELS[0];
 
 // POSITION_SCALE_CHANNELS = X and Y;
 const POSITION_SCALE_CHANNEL_INDEX: {x: 1; y: 1} = {x: 1, y: 1};
-export const POSITION_SCALE_CHANNELS = flagKeys(POSITION_SCALE_CHANNEL_INDEX);
+export const POSITION_SCALE_CHANNELS = keys(POSITION_SCALE_CHANNEL_INDEX);
 export type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
 
 // NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without X, Y
@@ -240,7 +240,7 @@ const {
   order: _oo,
   ...NONPOSITION_SCALE_CHANNEL_INDEX
 } = NONPOSITION_CHANNEL_INDEX;
-export const NONPOSITION_SCALE_CHANNELS = flagKeys(NONPOSITION_SCALE_CHANNEL_INDEX);
+export const NONPOSITION_SCALE_CHANNELS = keys(NONPOSITION_SCALE_CHANNEL_INDEX);
 export type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
 
 export function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel {
@@ -273,7 +273,7 @@ const SCALE_CHANNEL_INDEX = {
 };
 
 /** List of channels with scales */
-export const SCALE_CHANNELS = flagKeys(SCALE_CHANNEL_INDEX);
+export const SCALE_CHANNELS = keys(SCALE_CHANNEL_INDEX);
 export type ScaleChannel = typeof SCALE_CHANNELS[0];
 
 export function isScaleChannel(channel: Channel): channel is ScaleChannel {

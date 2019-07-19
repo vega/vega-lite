@@ -15,7 +15,7 @@ import {
 } from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {Flag, flagKeys} from './util';
+import {Flag, keys} from './util';
 import {Color, LayoutAlign} from './vega.schema';
 
 export type LegendConfig = LegendMixins &
@@ -283,6 +283,6 @@ const VG_LEGEND_PROPERTY_INDEX: Flag<Exclude<keyof VgLegend, 'strokeDash'>> = {
   encode: 1
 };
 
-export const LEGEND_PROPERTIES = flagKeys(COMMON_LEGEND_PROPERTY_INDEX);
+export const LEGEND_PROPERTIES = keys(COMMON_LEGEND_PROPERTY_INDEX);
 
-export const VG_LEGEND_PROPERTIES = flagKeys(VG_LEGEND_PROPERTY_INDEX);
+export const VG_LEGEND_PROPERTIES = keys(VG_LEGEND_PROPERTY_INDEX);

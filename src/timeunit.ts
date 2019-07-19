@@ -1,6 +1,6 @@
 import {DateTimeExpr, dateTimeExpr} from './datetime';
 import * as log from './log';
-import {accessPathWithDatum, Flag, flagKeys} from './util';
+import {accessPathWithDatum, Flag, keys} from './util';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
@@ -81,7 +81,7 @@ const LOCAL_SINGLE_TIMEUNIT_INDEX: Flag<LocalSingleTimeUnit> = {
   milliseconds: 1
 };
 
-export const TIMEUNIT_PARTS = flagKeys(LOCAL_SINGLE_TIMEUNIT_INDEX);
+export const TIMEUNIT_PARTS = keys(LOCAL_SINGLE_TIMEUNIT_INDEX);
 
 export function isLocalSingleTimeUnit(timeUnit: string): timeUnit is LocalSingleTimeUnit {
   return !!LOCAL_SINGLE_TIMEUNIT_INDEX[timeUnit];
@@ -222,7 +222,7 @@ const TIMEUNIT_INDEX: Flag<TimeUnit> = {
   ...UTC_MULTI_TIMEUNIT_INDEX
 };
 
-export const TIMEUNITS = flagKeys(TIMEUNIT_INDEX);
+export const TIMEUNITS = keys(TIMEUNIT_INDEX);
 
 export function isTimeUnit(t: string): t is TimeUnit {
   return !!TIMEUNIT_INDEX[t];
