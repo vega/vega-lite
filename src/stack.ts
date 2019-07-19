@@ -1,4 +1,4 @@
-import {isArray, isBoolean} from 'vega-util';
+import {isArray, isBoolean, isString} from 'vega-util';
 import {SUM_OPS} from './aggregate';
 import {NonPositionChannel, NONPOSITION_CHANNELS, X, X2, Y2} from './channel';
 import {
@@ -176,7 +176,7 @@ export function stack(
   }
 
   // Warn if stacking summative aggregate
-  if (stackedFieldDef.aggregate && !contains(SUM_OPS, stackedFieldDef.aggregate)) {
+  if (stackedFieldDef.aggregate && (!isString(stackedFieldDef.aggregate) || !SUM_OPS.has(stackedFieldDef.aggregate))) {
     log.warn(log.message.stackNonSummativeAggregate(stackedFieldDef.aggregate));
   }
 

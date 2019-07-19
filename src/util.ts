@@ -82,15 +82,6 @@ export function contains<T>(array: T[], item: T) {
   return array.indexOf(item) > -1;
 }
 
-/** Returns the array without the elements in item */
-export function without<T>(array: T[], excludedItems: T[]) {
-  return array.filter(item => !contains(excludedItems, item));
-}
-
-export function union<T>(array: T[], other: T[]) {
-  return array.concat(without(other, array));
-}
-
 /**
  * Returns true if any item returns true.
  */
@@ -290,10 +281,42 @@ export function entries<T>(x: {[key: string]: T}): {key: string; value: T}[] {
 
 // Using mapped type to declare a collect of flags for a string literal type S
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types
-export type Flag<S extends string> = {[K in S]: 1};
+type Flag<S extends string> = {[K in S]: 1};
 
-export function flagKeys<S extends string>(f: Flag<S>): S[] {
-  return keys(f) as S[];
+/**
+ * Convert a flag dictionary to a set. T is the type of which we want all possible values. S is the type of the set values.
+ */
+export function flagToSet<T extends S, S extends string = T>(f: Flag<T>): Set<S> {
+  return new Set<T>(keys(f));
+}
+
+export function setToFlag<T extends string>(s: Set<T>): Flag<T> {
+  return [...s.values()].reduce(
+    (r, v) => {
+      r[v] = 1;
+      return r;
+    },
+    {} as Flag<T>
+  );
+}
+
+export function flagWithout<A extends string, B extends A>(a: Flag<A>, b: Flag<B>): Flag<Exclude<A, B>> {
+  const r = {...a};
+  for (const k of keys(b)) {
+    delete r[k];
+  }
+  return r;
+}
+
+/**
+ * Similar to new Set<T>() but returns a set of type Set<S> taking in values of type T.
+ */
+export function newSet<T extends S, S extends string>(v: T[]): Set<T | S> {
+  return new Set(v);
+}
+
+export function setDifference<A extends string, B extends A>(a: Set<A>, b: Set<B>): Set<Exclude<A, B>> {
+  return new Set([...a].filter(x => !b.has(x))) as any;
 }
 
 export function isBoolean(b: any): b is boolean {

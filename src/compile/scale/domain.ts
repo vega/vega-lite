@@ -1,6 +1,6 @@
 import {AggregateOp} from 'vega';
 import {isObject, isString} from 'vega-util';
-import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
+import {SHARED_DOMAIN_OPS} from '../../aggregate';
 import {isBinning} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
@@ -413,7 +413,7 @@ export function canUseUnaggregatedDomain(
     };
   }
 
-  if (isString(aggregate) && !SHARED_DOMAIN_OP_INDEX[aggregate]) {
+  if (isString(aggregate) && !SHARED_DOMAIN_OPS.has(aggregate)) {
     return {
       valid: false,
       reason: log.message.unaggregateDomainWithNonSharedDomainOp(aggregate)

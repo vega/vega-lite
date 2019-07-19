@@ -7,7 +7,7 @@ import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {Mark} from './mark';
 import {EncodingFacetMapping, EncodingFacetMapping as ExtendedFacetMapping} from './spec/facet';
-import {Flag, flagKeys} from './util';
+import {flagToSet, setToFlag, setDifference, flagWithout} from './util';
 
 export type Channel = keyof Encoding<any> | keyof ExtendedFacetMapping<any>;
 
@@ -56,14 +56,14 @@ export const HREF: 'href' = 'href';
 
 export type PositionChannel = 'x' | 'y' | 'x2' | 'y2';
 
-const POSITION_CHANNEL_INDEX: Flag<PositionChannel> = {
+const POSITION_CHANNELS = flagToSet<PositionChannel, Channel>({
   x: 1,
   y: 1,
   x2: 1,
   y2: 1
-};
+});
 export function isPositionChannel(c: Channel): c is PositionChannel {
-  return c in POSITION_CHANNEL_INDEX;
+  return POSITION_CHANNELS.has(c);
 }
 
 export type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
@@ -81,23 +81,22 @@ export function getPositionChannelFromLatLong(channel: GeoPositionChannel): Posi
   }
 }
 
-const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel> = {
+const GEOPOSITION_CHANNELS = flagToSet<GeoPositionChannel>({
   longitude: 1,
   longitude2: 1,
   latitude: 1,
   latitude2: 1
-};
+});
 
 export function isGeoPositionChannel(c: Channel): c is GeoPositionChannel {
-  return c in GEOPOSITION_CHANNEL_INDEX;
+  return c in GEOPOSITION_CHANNELS;
 }
 
-export const GEOPOSITION_CHANNELS = flagKeys(GEOPOSITION_CHANNEL_INDEX);
+// CHANNELS without COLUMN, ROW
+export const UNIT_CHANNELS = flagToSet<keyof Encoding<any>>({
+  ...setToFlag(POSITION_CHANNELS),
 
-const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
-  ...POSITION_CHANNEL_INDEX,
-
-  ...GEOPOSITION_CHANNEL_INDEX,
+  ...setToFlag(GEOPOSITION_CHANNELS),
 
   // color
   color: 1,
@@ -120,7 +119,7 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   key: 1,
   tooltip: 1,
   href: 1
-};
+});
 
 export type ColorChannel = 'color' | 'fill' | 'stroke';
 
@@ -130,23 +129,14 @@ export function isColorChannel(channel: Channel): channel is ColorChannel {
 
 export type FacetChannel = keyof EncodingFacetMapping<any>;
 
-const FACET_CHANNEL_INDEX: Flag<keyof EncodingFacetMapping<any>> = {
+export const FACET_CHANNELS = flagToSet<keyof EncodingFacetMapping<any>>({
   row: 1,
   column: 1,
   facet: 1
-};
+});
 
-export const FACET_CHANNELS = flagKeys(FACET_CHANNEL_INDEX);
+export const CHANNELS = new Set<Channel>([...UNIT_CHANNELS, ...FACET_CHANNELS]);
 
-const CHANNEL_INDEX = {
-  ...UNIT_CHANNEL_INDEX,
-  ...FACET_CHANNEL_INDEX
-};
-
-export const CHANNELS = flagKeys(CHANNEL_INDEX);
-
-const {order: _o, detail: _d, ...SINGLE_DEF_CHANNEL_INDEX} = CHANNEL_INDEX;
-const {order: _o1, detail: _d1, row: _r, column: _c, facet: _f, ...SINGLE_DEF_UNIT_CHANNEL_INDEX} = CHANNEL_INDEX;
 /**
  * Channels that cannot have an array of channelDef.
  * model.fieldDef, getFieldDef only work for these channels.
@@ -156,9 +146,24 @@ const {order: _o1, detail: _d1, row: _r, column: _c, facet: _f, ...SINGLE_DEF_UN
  * are not applicable for them.  Similarly, selection projection won't work with "detail" and "order".)
  */
 
-export const SINGLE_DEF_CHANNELS: SingleDefChannel[] = flagKeys(SINGLE_DEF_CHANNEL_INDEX);
+export const SINGLE_DEF_CHANNELS: Set<SingleDefChannel> = setDifference(
+  CHANNELS,
+  flagToSet({
+    order: 1,
+    detail: 1
+  })
+);
 
-export const SINGLE_DEF_UNIT_CHANNELS: SingleDefUnitChannel[] = flagKeys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
+export const SINGLE_DEF_UNIT_CHANNELS: Set<SingleDefUnitChannel> = setDifference(
+  CHANNELS,
+  flagToSet({
+    order: 1,
+    detail: 1,
+    row: 1,
+    column: 1,
+    facet: 1
+  })
+);
 
 // Using the following line leads to TypeError: Cannot read property 'elementTypes' of undefined
 // when running the schema generator
@@ -189,12 +194,12 @@ export type SingleDefUnitChannel =
 
 export type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column' | 'facet';
 
-export function isSingleDefUnitChannel(str: string): str is SingleDefUnitChannel {
-  return !!SINGLE_DEF_UNIT_CHANNEL_INDEX[str];
+export function isSingleDefUnitChannel(channel: Channel): channel is SingleDefUnitChannel {
+  return SINGLE_DEF_UNIT_CHANNELS.has(channel as any);
 }
 
 export function isChannel(str: string): str is Channel {
-  return !!CHANNEL_INDEX[str];
+  return CHANNELS.has(str as any);
 }
 
 export type SecondaryRangeChannel = 'x2' | 'y2' | 'latitude2' | 'longitude2';
@@ -222,9 +227,6 @@ export function getMainRangeChannel(channel: Channel): Channel {
   }
   return channel;
 }
-
-// CHANNELS without COLUMN, ROW
-export const UNIT_CHANNELS = flagKeys(UNIT_CHANNEL_INDEX);
 
 // NONPOSITION_CHANNELS = UNIT_CHANNELS without X, Y, X2, Y2;
 const {

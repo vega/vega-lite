@@ -19,6 +19,7 @@ import {
   TopLevelSpec
 } from '../src/spec';
 import {normalizeAutoSize} from '../src/spec/toplevel';
+import {contains} from '../src/util';
 
 export function parseModel(inputSpec: TopLevelSpec): Model {
   const config = initConfig(inputSpec.config);
@@ -85,4 +86,9 @@ export function parseRepeatModel(spec: TopLevel<NormalizedRepeatSpec>) {
 
 export function parseConcatModel(spec: TopLevel<NormalizedConcatSpec>) {
   return new ConcatModel(spec, null, '', undefined, initConfig(spec.config));
+}
+
+/** Returns the array without the elements in item */
+export function without<T>(array: T[], excludedItems: T[]) {
+  return array.filter(item => !contains(excludedItems, item));
 }
