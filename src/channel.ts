@@ -156,38 +156,15 @@ const {order: _o1, detail: _d1, row: _r, column: _c, facet: _f, ...SINGLE_DEF_UN
  * are not applicable for them.  Similarly, selection projection won't work with "detail" and "order".)
  */
 
-export const SINGLE_DEF_CHANNELS: SingleDefChannel[] = flagKeys(SINGLE_DEF_CHANNEL_INDEX);
+export const SINGLE_DEF_CHANNELS = flagKeys(SINGLE_DEF_CHANNEL_INDEX);
 
-export const SINGLE_DEF_UNIT_CHANNELS: SingleDefUnitChannel[] = flagKeys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
+export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[number];
 
-// Using the following line leads to TypeError: Cannot read property 'elementTypes' of undefined
-// when running the schema generator
-// export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
+export const SINGLE_DEF_UNIT_CHANNELS = flagKeys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
 
-export type SingleDefUnitChannel =
-  | 'x'
-  | 'y'
-  | 'x2'
-  | 'y2'
-  | 'longitude'
-  | 'latitude'
-  | 'longitude2'
-  | 'latitude2'
-  | 'color'
-  | 'fill'
-  | 'stroke'
-  | 'strokeWidth'
-  | 'size'
-  | 'shape'
-  | 'fillOpacity'
-  | 'strokeOpacity'
-  | 'opacity'
-  | 'text'
-  | 'tooltip'
-  | 'href'
-  | 'key';
+export type SingleDefUnitChannel = typeof SINGLE_DEF_UNIT_CHANNELS[number];
 
-export type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column' | 'facet';
+// export type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column' | 'facet';
 
 export function isSingleDefUnitChannel(str: string): str is SingleDefUnitChannel {
   return !!SINGLE_DEF_UNIT_CHANNEL_INDEX[str];
