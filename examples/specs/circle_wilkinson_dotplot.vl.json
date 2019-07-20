@@ -14,7 +14,10 @@
     "window": [{"op": "rank", "as": "id"}],
     "groupby": ["data"]
   }],
-  "mark": "circle",
+  "mark": {
+  	"type": "circle",
+  	"opacity": 1
+  },
   "encoding": {
     "x": {"field": "data", "type": "ordinal"},
     "y": {"field": "id", "type": "ordinal", "axis": null, "sort": "descending"}
