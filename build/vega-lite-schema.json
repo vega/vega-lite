@@ -317,7 +317,7 @@
         "tooltip": {
           "anyOf": [
             {
-              "type": "string"
+              "$ref": "#/definitions/Value"
             },
             {
               "$ref": "#/definitions/TooltipContent"
@@ -7356,7 +7356,7 @@
         "tooltip": {
           "anyOf": [
             {
-              "type": "string"
+              "$ref": "#/definitions/Value"
             },
             {
               "$ref": "#/definitions/TooltipContent"
@@ -7836,7 +7836,7 @@
         "tooltip": {
           "anyOf": [
             {
-              "type": "string"
+              "$ref": "#/definitions/Value"
             },
             {
               "$ref": "#/definitions/TooltipContent"
@@ -8144,7 +8144,7 @@
         "tooltip": {
           "anyOf": [
             {
-              "type": "string"
+              "$ref": "#/definitions/Value"
             },
             {
               "$ref": "#/definitions/TooltipContent"
@@ -8713,7 +8713,7 @@
         "tooltip": {
           "anyOf": [
             {
-              "type": "string"
+              "$ref": "#/definitions/Value"
             },
             {
               "$ref": "#/definitions/TooltipContent"
@@ -9522,7 +9522,7 @@
         "tooltip": {
           "anyOf": [
             {
-              "type": "string"
+              "$ref": "#/definitions/Value"
             },
             {
               "$ref": "#/definitions/TooltipContent"
@@ -11043,7 +11043,7 @@
         "tooltip": {
           "anyOf": [
             {
-              "type": "string"
+              "$ref": "#/definitions/Value"
             },
             {
               "$ref": "#/definitions/TooltipContent"
@@ -11375,7 +11375,7 @@
         "tooltip": {
           "anyOf": [
             {
-              "type": "string"
+              "$ref": "#/definitions/Value"
             },
             {
               "$ref": "#/definitions/TooltipContent"

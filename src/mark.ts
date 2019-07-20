@@ -2,6 +2,7 @@ import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
 import {contains, keys} from './util';
 import {BaseMarkConfig, Color} from './vega.schema';
+import {Value} from './channeldef';
 
 export const AREA: 'area' = 'area';
 export const BAR: 'bar' = 'bar';
@@ -96,7 +97,7 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    * - If `tooltip` is `{"content": "data"}`, then all fields that appear in the highlighted data point will be used.
    * - If set to `null`, then no tooltip will be used.
    */
-  tooltip?: string | TooltipContent | null;
+  tooltip?: Value | TooltipContent | null;
 
   /**
    * Default size for marks.
