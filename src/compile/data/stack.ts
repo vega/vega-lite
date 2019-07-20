@@ -1,5 +1,6 @@
 import {isArray, isString} from 'vega-util';
 import {FieldName, getTypedFieldDef, isFieldDef, TypedFieldDef, vgField} from '../../channeldef';
+import {SortFields, SortOrder} from '../../sort';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate, getFirstDefined, hash} from '../../util';
@@ -7,7 +8,6 @@ import {VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
-import {SortFields, SortOrder} from '../../sort';
 
 function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce(
@@ -227,11 +227,10 @@ export class StackNode extends DataFlowNode {
         transform.push({
           type: 'formula',
           expr:
-            '(' +
+            '0.5*' +
             vgField(dimensionFieldDef, {expr: 'datum'}) +
-            '+' +
-            vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
-            ')/2',
+            '+0.5*' +
+            vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}),
           as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true})
         });
       }
