@@ -359,6 +359,16 @@ export interface PositionFieldDef<F extends Field>
    * __See also:__ [`impute`](https://vega.github.io/vega-lite/docs/impute.html) documentation.
    */
   impute?: ImputeParams;
+
+  /**
+   * For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band). If set to `1`, the mark size is set to the bandwidth. If set to `0.5`, the mark size is half of the bandwidth.
+   *
+   * For other marks, position on a band of a stacked, binned, or band scale.
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  band?: number;
 }
 
 /**
@@ -455,7 +465,10 @@ export function isScaleFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef
 export function isPositionFieldDef<F extends Field>(
   channelDef: ChannelDef<FieldDef<F>>
 ): channelDef is PositionFieldDef<F> {
-  return !!channelDef && (!!channelDef['axis'] || !!channelDef['stack'] || !!channelDef['impute']);
+  return (
+    !!channelDef &&
+    (!!channelDef['axis'] || !!channelDef['stack'] || !!channelDef['impute'] || channelDef['band'] !== undefined)
+  );
 }
 
 export function isMarkPropFieldDef<F extends Field>(

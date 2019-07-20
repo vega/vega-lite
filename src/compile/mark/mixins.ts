@@ -8,6 +8,7 @@ import {
   isConditionalSelection,
   isFieldDef,
   isValueDef,
+  PositionFieldDef,
   SecondaryFieldDef,
   TypedFieldDef,
   ValueDef
@@ -300,7 +301,7 @@ export function text(model: UnitModel, channel: 'text' | 'href' | 'url' = 'text'
 }
 
 export function bandPosition(
-  fieldDef: TypedFieldDef<string>,
+  fieldDef: PositionFieldDef<string>,
   channel: 'x' | 'y',
   model: UnitModel,
   defaultSizeRef?: VgValueRef
@@ -347,10 +348,12 @@ export function bandPosition(
     }
   }
 
+  const {band = 1} = fieldDef;
+
   return {
-    // FIXME: make offset works correctly here when we support group bar (https://github.com/vega/vega-lite/issues/396)
-    [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, {}),
-    [sizeChannel]: defaultSizeRef || ref.bandRef(scaleName)
+    // FIXME: make offset work correctly here when we support group bar (https://github.com/vega/vega-lite/issues/396)
+    [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, {band: (1 - band) / 2}),
+    [sizeChannel]: defaultSizeRef || ref.bandRef(scaleName, band)
   };
 }
 

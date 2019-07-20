@@ -163,6 +163,26 @@ describe('Mark: Bar', () => {
     });
   });
 
+  describe('simple horizontal with band', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: 'bar',
+      encoding: {
+        y: {field: 'Origin', type: 'nominal', band: 0.6},
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should draw bar from zero to field value and with band value for x/width', () => {
+      expect(props.y).toEqual({scale: 'y', field: 'Origin', band: 0.2});
+      expect(props.height).toEqual({scale: 'y', band: 0.6});
+      expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
+      expect(props.x2).toEqual({scale: 'x', value: 0});
+      expect(props.width).toBeUndefined();
+    });
+  });
+
   it('should draw horizontal bar, with y from zero to field value and bar with quantitative x, x2, and y', () => {
     const y: PositionFieldDef<string> = {field: 'bin_start', type: 'quantitative'};
     const y2: SecondaryFieldDef<string> = {field: 'bin_end'};
