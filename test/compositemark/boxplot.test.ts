@@ -1018,7 +1018,7 @@ describe('normalizeBoxIQR', () => {
       defaultConfig
     );
 
-    // There is correct tooltips in whisker layer
+    // There are correct tooltips in whisker layer
     const whiskerLayer = normalizedSpecWithTooltip['layer'][0]['layer'][1];
     for (const whisker of whiskerLayer['layer']) {
       const {tooltip} = whisker['encoding'];
@@ -1038,7 +1038,7 @@ describe('normalizeBoxIQR', () => {
     });
     whiskerLayer['transform'][1]['aggregate'] = whiskerAggregate.slice(0, whiskerAggregate.length - 1);
 
-    // There is correct tooltips in whisker layer
+    // There are correct tooltips in whisker layer
     const boxLayer = normalizedSpecWithTooltip['layer'][1];
     for (const box of boxLayer['layer']) {
       const {tooltip} = box['encoding'];

@@ -243,7 +243,7 @@ export function nonPosition(
 }
 
 /**
- * Return a mixin that include a Vega production rule for a Vega-Lite conditional channel definition.
+ * Return a mixin that includes a Vega production rule for a Vega-Lite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
 export function wrapCondition(
