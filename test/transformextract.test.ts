@@ -27,6 +27,7 @@ describe('extractTransforms()', () => {
     'circle_binned_maxbins_5.vl.json',
     'circle_binned.vl.json',
     'circle_github_punchcard.vl.json',
+    'circle_wilkinson_dotplot_stacked.vl.json',
     'concat_bar_layer_circle.vl.json',
     'concat_marginal_histograms.vl.json',
     'concat_population_pyramid.vl.json',
