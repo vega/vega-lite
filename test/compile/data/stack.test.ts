@@ -176,7 +176,7 @@ describe('compile/data/stack', () => {
       expect(assemble(model)).toEqual([
         {
           type: 'formula',
-          expr: '(datum["bin_maxbins_10_b"]+datum["bin_maxbins_10_b_end"])/2',
+          expr: '0.5*datum["bin_maxbins_10_b"]+0.5*datum["bin_maxbins_10_b_end"]',
           as: 'bin_maxbins_10_b_mid'
         },
         {
