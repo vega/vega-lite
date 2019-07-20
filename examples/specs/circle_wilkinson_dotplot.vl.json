@@ -16,6 +16,7 @@
   }],
   "mark": "circle",
   "encoding": {
-    "x": {"field": "data", "type": "ordinal"},   "y": {"field": "id", "type": "ordinal", "axis": null, "sort": "descending"}
+    "x": {"field": "data", "type": "ordinal"},
+    "y": {"field": "id", "type": "ordinal", "axis": null, "sort": "descending"}
   }
 }
