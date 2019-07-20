@@ -506,7 +506,6 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, cursor should not cause lines to group
       case 'x':
       case 'y':
-      case 'order':
       case 'href':
       case 'x2':
       case 'y2':
@@ -526,6 +525,14 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       // tooltip fields should not be added to group by [falls through]
       case 'tooltip':
         return details;
+
+      case 'order':
+        // order should not group line / trail
+        if (mark === 'line' || mark === 'trail') {
+          return details;
+        }
+      // but order should group area for stacking (falls through)
+
       case 'detail':
       case 'key': {
         const channelDef = encoding[channel];
@@ -544,7 +551,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
           // For trail, size should not group trail lines.
           return details;
         }
-      // For line, it should group lines.
+      // For line, size should group lines.
 
       // falls through
       case 'color':
