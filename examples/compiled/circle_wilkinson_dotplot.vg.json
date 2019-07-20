@@ -41,7 +41,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "opacity": {"value": 0.7},
+          "opacity": {"value": 1},
           "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"data\": ''+datum[\"data\"], \"id\": ''+datum[\"id\"]}"
