@@ -2,6 +2,7 @@ import * as log from '../../src/log';
 import {normalize} from '../../src/normalize/index';
 import {Transform} from '../../src/transform';
 import {defaultConfig} from '.././../src/config';
+import {isArray} from 'vega-util';
 
 describe('normalizeBoxMinMax', () => {
   it('should produce an error if both axes have aggregate boxplot', () => {
@@ -967,12 +968,13 @@ describe('normalizeBoxIQR', () => {
     const whiskerLayer = normalizedSpecWithTooltip['layer'][0]['layer'][1];
     for (const whisker of whiskerLayer['layer']) {
       const {tooltip} = whisker['encoding'];
-      expect(tooltip[tooltip.length - 1]).toEqual({
-        title: 'Mean of people',
-        type: 'quantitative',
-        field: 'mean_people'
-      });
-      whisker['encoding']['tooltip'] = tooltip.slice(0, tooltip.length - 1);
+      expect(isArray(tooltip) ? tooltip : [tooltip]).toEqual([
+        {
+          title: 'Mean of people',
+          type: 'quantitative',
+          field: 'mean_people'
+        }
+      ]);
     }
 
     const whiskerAggregate = whiskerLayer['transform'][1]['aggregate'];
@@ -981,23 +983,22 @@ describe('normalizeBoxIQR', () => {
       as: 'mean_people',
       field: 'people'
     });
-    whiskerLayer['transform'][1]['aggregate'] = whiskerAggregate.slice(0, whiskerAggregate.length - 1);
 
     // There is correct tooltips in whisker layer
     const boxLayer = normalizedSpecWithTooltip['layer'][1];
     for (const box of boxLayer['layer']) {
       const {tooltip} = box['encoding'];
-      expect(tooltip[tooltip.length - 1]).toEqual({
-        title: 'Mean of people',
-        type: 'quantitative',
-        field: 'mean_people'
-      });
-      box['encoding']['tooltip'] = tooltip.slice(0, tooltip.length - 1);
+      expect(isArray(tooltip) ? tooltip : [tooltip]).toEqual([
+        {
+          title: 'Mean of people',
+          type: 'quantitative',
+          field: 'mean_people'
+        }
+      ]);
     }
 
     const boxAggregate = boxLayer['transform'][0]['aggregate'];
     const customBoxAggregate = boxAggregate[0];
-    whiskerLayer['transform'][0]['aggregate'] = boxAggregate.slice(1);
     expect(customBoxAggregate).toEqual({op: 'mean', as: 'mean_people', field: 'people'});
 
     // There is no tooltip in outlier layer
@@ -1012,7 +1013,17 @@ describe('normalizeBoxIQR', () => {
         encoding: {
           x: {field: 'age', type: 'ordinal'},
           y: {field: 'people', type: 'quantitative'},
-          tooltip: [{field: 'people', aggregate: 'mean', type: 'quantitative'}, {field: 'year', type: 'quantitative'}]
+          tooltip: [
+            {
+              field: 'people',
+              aggregate: 'mean',
+              type: 'quantitative'
+            },
+            {
+              field: 'year',
+              type: 'quantitative'
+            }
+          ]
         }
       },
       defaultConfig
@@ -1022,12 +1033,13 @@ describe('normalizeBoxIQR', () => {
     const whiskerLayer = normalizedSpecWithTooltip['layer'][0]['layer'][1];
     for (const whisker of whiskerLayer['layer']) {
       const {tooltip} = whisker['encoding'];
-      expect(tooltip[tooltip.length - 1]).toEqual({
-        title: 'Mean of people',
-        type: 'quantitative',
-        field: 'mean_people'
-      });
-      whisker['encoding']['tooltip'] = tooltip.slice(0, tooltip.length - 1);
+      expect(isArray(tooltip) ? tooltip : [tooltip]).toEqual([
+        {
+          title: 'Mean of people',
+          type: 'quantitative',
+          field: 'mean_people'
+        }
+      ]);
     }
 
     const whiskerAggregate = whiskerLayer['transform'][1]['aggregate'];
@@ -1036,23 +1048,22 @@ describe('normalizeBoxIQR', () => {
       as: 'mean_people',
       field: 'people'
     });
-    whiskerLayer['transform'][1]['aggregate'] = whiskerAggregate.slice(0, whiskerAggregate.length - 1);
 
     // There are correct tooltips in whisker layer
     const boxLayer = normalizedSpecWithTooltip['layer'][1];
     for (const box of boxLayer['layer']) {
       const {tooltip} = box['encoding'];
-      expect(tooltip[tooltip.length - 1]).toEqual({
-        title: 'Mean of people',
-        type: 'quantitative',
-        field: 'mean_people'
-      });
-      box['encoding']['tooltip'] = tooltip.slice(0, tooltip.length - 1);
+      expect(isArray(tooltip) ? tooltip : [tooltip]).toEqual([
+        {
+          title: 'Mean of people',
+          type: 'quantitative',
+          field: 'mean_people'
+        }
+      ]);
     }
 
     const boxAggregate = boxLayer['transform'][0]['aggregate'];
     const customBoxAggregate = boxAggregate[0];
-    whiskerLayer['transform'][0]['aggregate'] = boxAggregate.slice(1);
     expect(customBoxAggregate).toEqual({op: 'mean', as: 'mean_people', field: 'people'});
 
     // There is correct tooltips in outlier layer
