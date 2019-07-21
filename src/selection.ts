@@ -1,8 +1,8 @@
-import {Binding} from 'vega';
+import {Binding, Color} from 'vega';
 import {SingleDefUnitChannel} from './channel';
 import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
-import {Color, EventStream} from './vega.schema';
+import {EventStream} from './vega.schema';
 
 export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'single' | 'multi' | 'interval';

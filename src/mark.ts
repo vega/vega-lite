@@ -1,8 +1,9 @@
+import {Color} from 'vega';
 import {toSet} from 'vega-util';
+import {Value} from './channeldef';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
 import {contains, keys} from './util';
-import {BaseMarkConfig, Color} from './vega.schema';
-import {Value} from './channeldef';
+import {BaseMarkConfig} from './vega.schema';
 
 export const AREA: 'area' = 'area';
 export const BAR: 'bar' = 'bar';
