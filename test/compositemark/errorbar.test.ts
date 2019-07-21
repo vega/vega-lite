@@ -808,7 +808,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
       if (isCalculate(calculate)) {
         expect(
           (calculate.calculate === 'datum["people"]' && calculate.as === 'lower_people') ||
-          (calculate.calculate === 'datum["people2"]' && calculate.as === 'upper_people')
+            (calculate.calculate === 'datum["people2"]' && calculate.as === 'upper_people')
         ).toBe(true);
       } else {
         expect(false).toBe(true);
@@ -1000,7 +1000,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
       if (isCalculate(calculate)) {
         expect(
           (calculate.calculate === 'datum["people"] - datum["people_error"]' && calculate.as === 'lower_people') ||
-          (calculate.calculate === 'datum["people"] + datum["people_error"]' && calculate.as === 'upper_people')
+            (calculate.calculate === 'datum["people"] + datum["people_error"]' && calculate.as === 'upper_people')
         ).toBe(true);
       } else {
         expect(false).toBe(true);
@@ -1049,7 +1049,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
       if (isCalculate(calculate)) {
         expect(
           (calculate.calculate === 'datum["people"] + datum["people_error"]' && calculate.as === 'upper_people') ||
-          (calculate.calculate === 'datum["people"] + datum["people_error2"]' && calculate.as === 'lower_people')
+            (calculate.calculate === 'datum["people"] + datum["people_error2"]' && calculate.as === 'lower_people')
         ).toBe(true);
       } else {
         expect(false).toBe(true);
