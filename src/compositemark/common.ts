@@ -99,21 +99,25 @@ export function getCompositeMarkTooltip(
   encodingWithoutContinuousAxis: Encoding<string>,
   withFieldName: boolean = true
 ): Encoding<string> {
-  const fiveSummaryTooltip: TextFieldDef<string>[] = tooltipSummary.map(
-    ({fieldPrefix, titlePrefix}): TextFieldDef<string> => ({
-      field: fieldPrefix + continuousAxisChannelDef.field,
-      type: continuousAxisChannelDef.type,
-      title: titlePrefix + (withFieldName ? ' of ' + continuousAxisChannelDef.field : '')
-    })
-  );
+  if (encodingWithoutContinuousAxis.tooltip === undefined) {
+    const fiveSummaryTooltip: TextFieldDef<string>[] = tooltipSummary.map(
+      ({fieldPrefix, titlePrefix}): TextFieldDef<string> => ({
+        field: fieldPrefix + continuousAxisChannelDef.field,
+        type: continuousAxisChannelDef.type,
+        title: titlePrefix + (withFieldName ? ' of ' + continuousAxisChannelDef.field : '')
+      })
+    );
 
-  return {
-    tooltip: [
-      ...fiveSummaryTooltip,
-      // need to cast because TextFieldDef support fewer types of bin
-      ...(fieldDefs(encodingWithoutContinuousAxis) as TextFieldDef<string>[])
-    ]
-  };
+    return {
+      tooltip: [
+        ...fiveSummaryTooltip,
+        // need to cast because TextFieldDef support fewer types of bin
+        ...(fieldDefs(encodingWithoutContinuousAxis) as TextFieldDef<string>[])
+      ]
+    };
+  } else {
+    return {tooltip: encodingWithoutContinuousAxis.tooltip};
+  }
 }
 
 export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
@@ -142,8 +146,8 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
       axis && axis.title !== undefined
         ? undefined
         : continuousAxisChannelDef.title !== undefined
-        ? continuousAxisChannelDef.title
-        : continuousAxisChannelDef.field;
+          ? continuousAxisChannelDef.title
+          : continuousAxisChannelDef.field;
 
     return partLayerMixins<P>(compositeMarkDef, partName, compositeMarkConfig, {
       mark, // TODO better remove this method and just have mark as a parameter of the method
@@ -157,11 +161,11 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
         },
         ...(isString(endPositionPrefix)
           ? {
-              [continuousAxis + '2']: {
-                field: endPositionPrefix + '_' + continuousAxisChannelDef.field,
-                type: continuousAxisChannelDef.type
-              }
+            [continuousAxis + '2']: {
+              field: endPositionPrefix + '_' + continuousAxisChannelDef.field,
+              type: continuousAxisChannelDef.type
             }
+          }
           : {}),
         ...sharedEncoding,
         ...extraEncoding
