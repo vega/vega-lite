@@ -80,6 +80,14 @@ If `stack` is `null`, the marks will be layered on top of each other. In this ex
 
 {:#order}
 
+### Diverging Stacked Bar Chart (Stacked with negative values)
+
+The stack transform can also handle negative values by creating a diverging stacked bar chart.
+
+<div class="vl-example" data-name="bar_diverging_stack_population_pyramid"></div>
+
+Note: that the stack transform cannot handle if there should be items stacked in the middle like in the ["Diverging Stacked Bar Chart with Neutral Parts"](https://vega.github.io/vega-lite/examples/bar_diverging_stack_transform.html) example.
+
 ### Sorting Stack Order
 
 You can use the order channel to sort the order of stacked marks.
