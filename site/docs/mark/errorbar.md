@@ -127,6 +127,12 @@ Here is an example of a `errorbar` with the `color` encoding channel set to `{"v
 
 <div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_color_encoding"></div>
 
+## Tooltip Encoding Channels
+
+You can add custom tooltips to error bar. The custom tooltip will override the default error bar's tooltips.
+
+<div class="vl-example" data-name="errorbar_tooltip"></div>
+
 {:#config}
 
 ## Mark Config
