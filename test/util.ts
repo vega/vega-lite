@@ -9,8 +9,6 @@ import {UnitModel} from '../src/compile/unit';
 import {initConfig} from '../src/config';
 import {normalize} from '../src/normalize/index';
 import {
-  isLayerSpec,
-  isUnitSpec,
   NormalizedConcatSpec,
   NormalizedFacetSpec,
   NormalizedLayerSpec,
@@ -19,13 +17,11 @@ import {
   TopLevel,
   TopLevelSpec
 } from '../src/spec';
-import {normalizeAutoSize} from '../src/spec/toplevel';
 
 export function parseModel(inputSpec: TopLevelSpec): Model {
   const config = initConfig(inputSpec.config);
   const spec = normalize(inputSpec, config);
-  const autosize = normalizeAutoSize(inputSpec.autosize, config.autosize, isLayerSpec(spec) || isUnitSpec(spec));
-  return buildModel(spec, null, '', undefined, undefined, config, autosize.type === 'fit');
+  return buildModel(spec, null, '', undefined, undefined, config);
 }
 
 export function parseModelWithScale(inputSpec: TopLevelSpec): Model {
@@ -35,15 +31,7 @@ export function parseModelWithScale(inputSpec: TopLevelSpec): Model {
 }
 
 export function parseUnitModel(spec: TopLevel<NormalizedUnitSpec>) {
-  return new UnitModel(
-    spec,
-    null,
-    '',
-    undefined,
-    undefined,
-    initConfig(spec.config),
-    normalizeAutoSize(spec.autosize, spec.config ? spec.config.autosize : undefined, true).type === 'fit'
-  );
+  return new UnitModel(spec, null, '', undefined, undefined, initConfig(spec.config));
 }
 
 export function parseUnitModelWithScale(spec: TopLevel<NormalizedUnitSpec>) {
@@ -65,15 +53,7 @@ export function parseUnitModelWithScaleAndLayoutSize(spec: TopLevel<NormalizedUn
 }
 
 export function parseLayerModel(spec: TopLevel<NormalizedLayerSpec>) {
-  return new LayerModel(
-    spec,
-    null,
-    '',
-    undefined,
-    undefined,
-    initConfig(spec.config),
-    normalizeAutoSize(spec.autosize, spec.config ? spec.config.autosize : undefined, true).type === 'fit'
-  );
+  return new LayerModel(spec, null, '', undefined, undefined, initConfig(spec.config));
 }
 
 export function parseFacetModel(spec: TopLevel<NormalizedFacetSpec>) {
