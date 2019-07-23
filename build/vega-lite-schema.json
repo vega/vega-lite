@@ -466,12 +466,23 @@
       "type": "object"
     },
     "AutosizeType": {
-      "enum": [
-        "pad",
-        "fit",
-        "none"
-      ],
-      "type": "string"
+      "anyOf": [
+        {
+          "enum": [
+            "pad"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "none"
+          ],
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/FitType"
+        }
+      ]
     },
     "Axis": {
       "additionalProperties": false,
@@ -5064,6 +5075,14 @@
         "filter"
       ],
       "type": "object"
+    },
+    "FitType": {
+      "enum": [
+        "fit",
+        "fit-x",
+        "fit-y"
+      ],
+      "type": "string"
     },
     "FlattenTransform": {
       "additionalProperties": false,
