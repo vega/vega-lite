@@ -105,7 +105,7 @@ An example of a `boxplot` where the `size` encoding channel is specified.
 
 ## Tooltip Encoding Channels
 
-You can add custom tooltips to box plot. The custom tooltip will override the default boxplot's tooltips.
+You can add custom tooltips to box plots. The custom tooltip will override the default boxplot's tooltips.
 
 If the field in the tooltip encoding is unaggregated, it would replace the tooltips of the outlier marks.
 
