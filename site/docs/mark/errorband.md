@@ -111,7 +111,7 @@ Here is an example of a `errorband` with the `color` encoding channel set to `{"
 
 ## Tooltip Encoding Channels
 
-You can add custom tooltips to error band. The custom tooltip will override the default error band's tooltips.
+You can add custom tooltips to error bands. The custom tooltip will override the default error band's tooltips.
 
 <div class="vl-example" data-name="errorband_tooltip"></div>
 
