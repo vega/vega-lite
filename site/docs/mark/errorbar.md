@@ -129,7 +129,7 @@ Here is an example of a `errorbar` with the `color` encoding channel set to `{"v
 
 ## Tooltip Encoding Channels
 
-You can add custom tooltips to error bar. The custom tooltip will override the default error bar's tooltips.
+You can add custom tooltips to error bars. The custom tooltip will override the default error bar's tooltips.
 
 <div class="vl-example" data-name="errorbar_tooltip"></div>
 
