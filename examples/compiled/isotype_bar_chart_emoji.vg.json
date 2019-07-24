@@ -72,7 +72,11 @@
     }
   ],
   "signals": [
-    {"name": "child_width", "value": 800},
+    {"name": "x_step", "value": 20},
+    {
+      "name": "child_width",
+      "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+    },
     {"name": "child_height", "value": 200}
   ],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "all"},
@@ -132,7 +136,7 @@
       "name": "x",
       "type": "point",
       "domain": {"data": "data_0", "field": "rank", "sort": true},
-      "range": [0, {"signal": "child_width"}],
+      "range": {"step": {"signal": "x_step"}},
       "padding": 0.5
     },
     {

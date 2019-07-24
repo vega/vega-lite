@@ -14,11 +14,11 @@
       "as": "geo"
     }
   ],
+  "width": 500,
   "facet": {"row": {"field": "group", "type": "nominal"}},
   "spec": {
     "projection": {"type": "albersUsa"},
     "mark": "geoshape",
-    "width": 500,
     "height": 300,
     "encoding": {
       "shape": {"field": "geo", "type": "geojson"},

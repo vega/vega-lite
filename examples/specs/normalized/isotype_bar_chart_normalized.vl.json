@@ -42,12 +42,12 @@
       {"country": "United States", "animal": "sheep", "col": 1}
     ]
   },
+  "width": 800,
   "facet": {
     "row": {"field": "country", "type": "nominal", "header": {"title": ""}}
   },
   "spec": {
     "mark": {"type": "point", "filled": true},
-    "width": 800,
     "height": 200,
     "encoding": {
       "x": {"field": "col", "type": "ordinal", "axis": null},

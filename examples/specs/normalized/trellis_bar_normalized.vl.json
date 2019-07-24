@@ -6,10 +6,10 @@
     {"filter": "datum.year == 2000"},
     {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
   ],
+  "width": {"step": 17},
   "facet": {"row": {"field": "gender", "type": "nominal"}},
   "spec": {
     "mark": "bar",
-    "width": {"step": 17},
     "encoding": {
       "y": {
         "aggregate": "sum",

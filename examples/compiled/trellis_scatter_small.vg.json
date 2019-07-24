@@ -22,7 +22,7 @@
   ],
   "signals": [
     {"name": "child_width", "value": 75},
-    {"name": "child_height", "value": 75}
+    {"name": "child_height", "value": 200}
   ],
   "layout": {
     "padding": 20,

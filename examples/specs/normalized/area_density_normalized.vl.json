@@ -8,10 +8,10 @@
     },
     {"density": "value", "bandwidth": 0.3, "groupby": ["organ"]}
   ],
+  "width": 300,
   "facet": {"row": {"field": "organ", "type": "nominal"}},
   "spec": {
     "mark": "area",
-    "width": 300,
     "height": 50,
     "encoding": {
       "x": {"field": "value", "type": "quantitative"},

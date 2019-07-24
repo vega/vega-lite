@@ -3,6 +3,7 @@
   "description": "Stock prices of four large companies as a small multiples of area charts.",
   "transform": [{"filter": "datum.symbol !== 'GOOG'"}],
   "data": {"url": "data/stocks.csv"},
+  "width": 300,
   "facet": {
     "row": {
       "field": "symbol",
@@ -13,7 +14,6 @@
   },
   "spec": {
     "mark": "area",
-    "width": 300,
     "height": 40,
     "encoding": {
       "x": {
