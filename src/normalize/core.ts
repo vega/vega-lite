@@ -125,6 +125,8 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     // New encoding in the inside spec should not contain row / column
     // as row/column should be moved to facet
     const {row, column, facet, ...encoding} = spec.encoding;
+    const rowOnly = row && !column;
+    const columnOnly = column && !row;
 
     // Mark and encoding should be moved into the inner spec
     const {mark, width, projection, height, selection, encoding: _, ...outerSpec} = spec;
@@ -135,14 +137,15 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       {
         ...outerSpec,
         ...layout,
-
+        ...(width && rowOnly ? {width} : {}),
+        ...(height && columnOnly ? {height} : {}),
         // row / column has higher precedence than facet
         facet: facetMapping,
         spec: {
           ...(projection ? {projection} : {}),
           mark,
-          ...(width ? {width} : {}),
-          ...(height ? {height} : {}),
+          ...(width && !rowOnly ? {width} : {}),
+          ...(height && !columnOnly ? {height} : {}),
           encoding,
           ...(selection ? {selection} : {})
         }

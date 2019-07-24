@@ -4,13 +4,14 @@ import {getFirstDefined} from '../../util';
 import {isVgRangeStep, VgRangeStep} from '../../vega.schema';
 import {isFacetModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
+import {getPositionScaleChannel} from '../../channel';
 
 export function assembleLayoutSignals(model: Model): NewSignal[] {
   return [...sizeSignals(model, 'width'), ...sizeSignals(model, 'height')];
 }
 
 export function sizeSignals(model: Model, sizeType: 'width' | 'height'): NewSignal[] {
-  const channel = sizeType === 'width' ? 'x' : 'y';
+  const channel = getPositionScaleChannel(sizeType);
   const size = model.component.layoutSize.get(sizeType);
   if (!size || size === 'merged') {
     return [];
