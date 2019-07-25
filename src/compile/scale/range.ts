@@ -85,7 +85,7 @@ function getBinStepSignal(model: UnitModel, channel: 'x' | 'y'): SignalRefWrappe
  */
 export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): Explicit<VgRange> {
   const specifiedScale = model.specifiedScales[channel];
-  const {size, fit} = model;
+  const {size} = model;
 
   const mergedScaleCmpt = model.getScaleComponent(channel);
   const scaleType = mergedScaleCmpt.get('type');
@@ -117,14 +117,9 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
     const sizeValue = size[sizeChannel];
     if (isStep(sizeValue)) {
       if (hasDiscreteDomain(scaleType)) {
-        if (!fit) {
-          return makeExplicit({step: sizeValue.step});
-        } else {
-          // If top-level size is specified, we ignore specified step.
-          log.warn(log.message.stepDropped(sizeChannel, 'fit'));
-        }
+        return makeExplicit({step: sizeValue.step});
       } else {
-        log.warn(log.message.stepDropped(sizeChannel, 'continuous'));
+        log.warn(log.message.stepDropped(sizeChannel));
       }
     }
   }
@@ -143,7 +138,7 @@ function parseScheme(scheme: Scheme): SchemeConfig {
 }
 
 function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
-  const {size, config, fit, mark} = model;
+  const {size, config, mark} = model;
 
   const getSignalName = model.getSignalName.bind(model);
 
@@ -161,12 +156,12 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       if (util.contains(['point', 'band'], scaleType)) {
         if (channel === X && !size.width) {
           const w = getViewConfigDiscreteSize(config.view, 'width');
-          if (isStep(w) && !fit) {
+          if (isStep(w)) {
             return w;
           }
         } else if (channel === Y && !size.height) {
           const h = getViewConfigDiscreteSize(config.view, 'height');
-          if (isStep(h) && !fit) {
+          if (isStep(h)) {
             return h;
           }
         }

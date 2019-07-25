@@ -26,8 +26,7 @@ export class LayerModel extends Model {
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins,
     repeater: RepeaterValue,
-    config: Config,
-    fit: boolean
+    config: Config
   ) {
     super(spec, 'layer', parent, parentGivenName, config, repeater, spec.resolve, spec.view);
 
@@ -39,11 +38,11 @@ export class LayerModel extends Model {
 
     this.children = spec.layer.map((layer, i) => {
       if (isLayerSpec(layer)) {
-        return new LayerModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config, fit);
+        return new LayerModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config);
       }
 
       if (isUnitSpec(layer)) {
-        return new UnitModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config, fit);
+        return new UnitModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config);
       }
 
       throw new Error(log.message.INVALID_SPEC);

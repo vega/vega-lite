@@ -64,13 +64,15 @@ The total size of a Vega-Lite visualization may be determined by multiple factor
 - `none`: No automatic sizing is performed. The total visualization size is determined solely by the provided width, height and padding values. For example, by default the total width is calculated as `width + padding.left + padding.right`. Any content lying outside this region will be clipped. If _autosize.contains_ is set to `"padding"`, the total width is instead simply _width_.
 - `pad`: Automatically increase the size of the view such that all visualization content is visible. This is the default _autosize_ setting, and ensures that axes, legends and other items outside the normal width and height are included. The total size will often exceed the specified width, height, and padding.
 - `fit`: Automatically adjust the layout in an attempt to force the total visualization size to fit within the given width, height and padding values. This setting causes the plotting region to be made smaller in order to accommodate axes, legends and titles. As a result, the value of the _width_ and _height_ signals may be changed to modify the layout. Though effective for many plots, the `fit` method can not always ensure that all content remains visible. For example, if the axes and legends alone require more space than the specified width and height, some of the content will be clipped. Similar to `none`, by default the total width will be `width + padding.left + padding.right`, relative to the original, unmodified _width_ value. If _autosize.contains_ is set to `"padding"`, the total width will instead be the original _width_.
+- `fit-x`: Automatically adjust the layout in an attempt to force the total visualization size to fit within the given width and left and right padding values.
+- `fit-y`: Automatically adjust the layout in an attempt to force the total visualization size to fit within the given height and top and bottom padding values.
 
 #### Limitations
 
 In order to `fit` a chart into specified dimensions, it has to satisfy two requirements:
 
 - The view must be either a [single](spec.html#single) view or a [layered](layer.html) view. Fit does not work with other kinds of composed views (`facet`/`hconcat`/`vconcat`/`repeat`).
-- The width and height of the chart cannot depend on an explicitly specified `rangeStep` of a discrete scale. Any specified `rangeStep` will be ignored.
+- The width and height of the chart cannot depend on an explicitly specified `step` of a discrete scale. Discrete scale `step` has higher precendence than `fit`, and the respective channel of fit will be dropped. E.g., an explicit `step` on a `width` will drop `x` from `fit` and make it `fit-y`.
 
 #### Example
 

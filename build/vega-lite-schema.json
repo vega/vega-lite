@@ -460,18 +460,29 @@
         },
         "type": {
           "$ref": "#/definitions/AutosizeType",
-          "description": "The sizing format type. One of `\"pad\"`, `\"fit\"` or `\"none\"`. See the [autosize type](https://vega.github.io/vega-lite/docs/size.html#autosize) documentation for descriptions of each.\n\n__Default value__: `\"pad\"`"
+          "description": "The sizing format type. One of `\"pad\"`, `\"fit\"`, `\"fit-x\"`, `\"fit-y\"`,  or `\"none\"`. See the [autosize type](https://vega.github.io/vega-lite/docs/size.html#autosize) documentation for descriptions of each.\n\n__Default value__: `\"pad\"`"
         }
       },
       "type": "object"
     },
     "AutosizeType": {
-      "enum": [
-        "pad",
-        "fit",
-        "none"
-      ],
-      "type": "string"
+      "anyOf": [
+        {
+          "enum": [
+            "pad"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "none"
+          ],
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/FitType"
+        }
+      ]
     },
     "Axis": {
       "additionalProperties": false,
@@ -5064,6 +5075,14 @@
         "filter"
       ],
       "type": "object"
+    },
+    "FitType": {
+      "enum": [
+        "fit",
+        "fit-x",
+        "fit-y"
+      ],
+      "type": "string"
     },
     "FlattenTransform": {
       "additionalProperties": false,

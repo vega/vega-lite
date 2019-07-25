@@ -1,6 +1,6 @@
 import {AggregateOp} from 'vega';
 import {Aggregate} from '../aggregate';
-import {Channel, FacetChannel, GeoPositionChannel} from '../channel';
+import {Channel, FacetChannel, GeoPositionChannel, PositionScaleChannel, getSizeType} from '../channel';
 import {TypedFieldDef} from '../channeldef';
 import {SplitParentProperty} from '../compile/split';
 import {CompositeMark} from '../compositemark';
@@ -21,6 +21,12 @@ export const INVALID_SPEC = 'Invalid spec';
 
 // FIT
 export const FIT_NON_SINGLE = 'Autosize "fit" only works for single views and layered views.';
+
+export function droppingFit(channel?: PositionScaleChannel) {
+  return channel
+    ? `Dropping "fit-${channel}" because spec has discrete ${getSizeType(channel)}.`
+    : `Dropping "fit" because spec has discrete size.`;
+}
 
 // SELECTION
 export function cannotProjectOnChannelWithoutField(channel: Channel) {
@@ -220,12 +226,8 @@ export function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType) {
   return `Scale type "${scaleType}" does not work with mark "${mark}".`;
 }
 
-export function stepDropped(channel: 'width' | 'height', reason: 'fit' | 'continuous') {
-  const explanation =
-    reason === 'fit'
-      ? 'the view has autosize "fit" mode enabled'
-      : `the ${channel === 'width' ? 'x' : 'y'} is continuous`;
-  return `The step for "${channel}" is dropped since ${explanation}.`;
+export function stepDropped(channel: 'width' | 'height') {
+  return `The step for "${channel}" is dropped because the ${channel === 'width' ? 'x' : 'y'} is continuous.`;
 }
 
 export function mergeConflictingProperty<T>(
