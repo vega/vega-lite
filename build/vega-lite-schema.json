@@ -6553,7 +6553,7 @@
           "description": "The font weight of legend label."
         },
         "labelLimit": {
-          "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `160`.",
+          "description": "Maximum allowed pixel width of legend tick labels.\n\n__Default value:__ `160`.",
           "type": "number"
         },
         "labelOffset": {
@@ -6643,7 +6643,7 @@
         },
         "symbolType": {
           "$ref": "#/definitions/SymbolShape",
-          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\nIn addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n\n__Default value:__ `\"circle\"`."
+          "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
         },
         "tickCount": {
           "description": "The desired number of tick values for quantitative legends.",
@@ -6693,7 +6693,7 @@
           "description": "The font weight of the legend title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "titleLimit": {
-          "description": "Maximum allowed pixel width of axis titles.\n\n__Default value:__ `180`.",
+          "description": "Maximum allowed pixel width of legend titles.\n\n__Default value:__ `180`.",
           "minimum": 0,
           "type": "number"
         },
@@ -6853,7 +6853,7 @@
           "description": "The font weight of legend label."
         },
         "labelLimit": {
-          "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `160`.",
+          "description": "Maximum allowed pixel width of legend tick labels.\n\n__Default value:__ `160`.",
           "type": "number"
         },
         "labelOffset": {
@@ -6974,7 +6974,7 @@
         },
         "symbolType": {
           "$ref": "#/definitions/SymbolShape",
-          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\nIn addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n\n__Default value:__ `\"circle\"`."
+          "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
         },
         "title": {
           "description": "Set to null to disable title for the axis, legend, or header.",
@@ -7013,7 +7013,7 @@
           "description": "The font weight of the legend title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "titleLimit": {
-          "description": "Maximum allowed pixel width of axis titles.\n\n__Default value:__ `180`.",
+          "description": "Maximum allowed pixel width of legend titles.\n\n__Default value:__ `180`.",
           "minimum": 0,
           "type": "number"
         },
@@ -9210,6 +9210,7 @@
         "gnomonic",
         "identity",
         "mercator",
+        "naturalEarth1",
         "orthographic",
         "stereographic",
         "transverseMercator"
