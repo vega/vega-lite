@@ -4,7 +4,7 @@ import {Encoding} from '../encoding';
 import {AnyMark, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {SelectionDef} from '../selection';
-import {BaseSpec, DataMixins, GenericCompositionLayoutWithColumns, LayerUnitMixins, ResolveMixins} from './base';
+import {BaseSpec, GenericCompositionLayoutWithColumns, LayerUnitMixins, ResolveMixins, DataMixins} from './base';
 import {TopLevel} from './toplevel';
 
 /**

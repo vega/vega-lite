@@ -17,7 +17,7 @@ export {TopLevel} from './toplevel';
 /**
  * Common properties for all types of specification
  */
-export type BaseSpec = Partial<DataMixins> & {
+export interface BaseSpec {
   /**
    * Title for the plot.
    */
@@ -34,19 +34,19 @@ export type BaseSpec = Partial<DataMixins> & {
   description?: string;
 
   /**
-   * An object describing the data source
+   * An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent.
    */
-  data?: Data;
+  data?: Data | null;
 
   /**
    * An array of data transformations such as filter and new field calculation.
    */
   transform?: Transform[];
-};
+}
 
 export interface DataMixins {
   /**
-   * An object describing the data source
+   * An object describing the data source.
    */
   data: Data;
 }
