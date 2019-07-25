@@ -49,7 +49,7 @@ For a discrete x-field or discrete y-field, we can also set `width` (or `height`
 
 <span class="vl-example" data-name="bar_size_step_small"></span>
 
-**Note:** By default, Vega-Lite sets padding for [band and point scales](https://vega.github.io/vega-lite/docs/scale.html#band) such that _width/height = number of unique values \* step_. See [the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#band) to read more about the relationship among width/height, step, and other scale properties.
+**Note:** By default, Vega-Lite sets padding for [band and point scales](scale.html#band) such that _width/height = number of unique values \* step_. See [the scale documentation](scale.html#band) to read more about the relationship among width/height, step, and other scale properties.
 
 ### Autosize
 
