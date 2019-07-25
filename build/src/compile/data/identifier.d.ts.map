@@ -1,0 +1,1 @@
+{"version":3,"file":"identifier.d.ts","sourceRoot":"","sources":["../../../../src/compile/data/identifier.ts"],"names":[],"mappings":"AACA,OAAO,EAAC,qBAAqB,EAAC,MAAM,mBAAmB,CAAC;AACxD,OAAO,EAAC,YAAY,EAAC,MAAM,YAAY,CAAC;AAExC,qBAAa,cAAe,SAAQ,YAAY;IACvC,KAAK;gBAIA,MAAM,EAAE,YAAY;IAIzB,cAAc;IAId,IAAI;IAIJ,QAAQ,IAAI,qBAAqB;CAGzC"}
