@@ -52,7 +52,7 @@
       },
       {
         "name": "bar_color_disabled_scale",
-        "title": "A bar chart encoding color names in the data"
+        "title": "A Bar Chart Encoding Color Names in the Data"
       },
       {
         "name": "bar_layered_transparent",
@@ -94,7 +94,7 @@
       },
       {
         "name": "tick_dot",
-        "title": "Dot Plot",
+        "title": "1D Strip Plot",
         "style": "background-size: auto 50%; background-position-y: center !important;"
       },
       {
@@ -256,7 +256,7 @@
       },
       {
         "name": "layer_text_heatmap",
-        "title": "Layering text over heatmap",
+        "title": "Heatmap with Labels",
         "style": "background-size: auto 55%; background-position-y: center !important;"
       }
     ],
@@ -289,13 +289,13 @@
       },
       {
         "name": "window_top_k",
-        "title": "Filtering top-K items",
+        "title": "Filtering Top-K Items",
         "description": "Here we use window transform to derive the total number of students along with the rank of the current student to determine the top K students and display their score.",
         "style": "background-size: 110%"
       },
       {
         "name": "window_top_k_others",
-        "title": "Top-K plot with Others",
+        "title": "Top-K Plot with \"Others\"",
         "description": "By @manzt, adapted from https://observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example.",
         "style": "background-size: 110%"
       },
@@ -322,7 +322,7 @@
       },
       {
         "name": "bar_argmax",
-        "title": "Bar Chart showing Argmax Value"
+        "title": "Bar Chart Showing Argmax Value"
       }
     ]
   },
@@ -330,11 +330,11 @@
     "Error Bars & Error Bands": [
       {
         "name": "layer_point_errorbar_ci",
-        "title": "Error Bars showing Confidence Interval"
+        "title": "Error Bars Showing Confidence Interval"
       },
       {
         "name": "layer_point_errorbar_stdev",
-        "title": "Error Bars showing Standard Deviation"
+        "title": "Error Bars Showing Standard Deviation"
       },
       {
         "name": "layer_line_errorband_ci",
@@ -375,7 +375,7 @@
       },
       {
         "name": "layer_bar_annotations",
-        "title": "Bar chart that highlights values beyond a threshold",
+        "title": "Bar Chart Highlighting Values beyond a Threshold",
         "description": "To create a bar chart that highlights values beyond a threshold, we use two `layer`s of `bar` marks. The lower layer shows all the bars while the upper layer shows bar with values above the threshold in red (`#e45755`).  We then `layer` a `rule` mark and a `text` mark over the bars to annotate the threshold value"
       },
       {
@@ -394,11 +394,11 @@
       },
       {
         "name": "layer_line_mean_point_raw",
-        "title": "Layering mean values over raw values"
+        "title": "Layering Averages over Raw Values"
       },
       {
         "name": "layer_line_rolling_mean_point_raw",
-        "title": "Layering rolling mean values over raw values"
+        "title": "Layering Rolling Averages over Raw Values"
       },
       {
         "name": "layer_likert",
@@ -463,7 +463,7 @@
       },
       {
         "name": "trellis_anscombe",
-        "title": "Trellis Scatter Plot showing Anscombe's Quartet"
+        "title": "Trellis Scatter Plot Showing Anscombe's Quartet"
       },
       {
         "name": "trellis_barley",
@@ -477,16 +477,16 @@
     "Repeat & Concatenation": [
       {
         "name": "repeat_layer",
-        "title": "Repeat and layer to show different weather measures"
+        "title": "Repeat and Layer to Show Different Weather Measures"
       },
       {
         "name": "vconcat_weather",
-        "title": "Vertically concatenated charts that show precipitation in Seattle",
+        "title": "Vertical Concatenation",
         "description": "Two vertically concatenated charts"
       },
       {
         "name": "repeat_histogram",
-        "title": "Horizontally repeated charts",
+        "title": "Horizontally Repeated Charts",
         "description": "Horizontally repeated charts that show the histograms of different parameters of cars in different countries"
       },
       {
@@ -519,42 +519,42 @@
       {
         "name": "geo_choropleth",
         "png": true,
-        "title": "Choropleth of unemployment rate per county"
+        "title": "Choropleth of Unemployment Rate per County"
       },
       {
         "name": "geo_circle",
         "png": true,
-        "title": "One dot per zipcode in the U.S"
+        "title": "One Dot per Zipcode in the U.S."
       },
       {
         "name": "geo_layer",
         "png": true,
-        "title": "One dot per airport in the US overlayed on geoshape"
+        "title": "One Dot per Airport in the U.S. Overlayed on Geoshape"
       },
       {
         "name": "geo_rule",
         "png": true,
-        "title": "Rules (line segments) connecting SEA to every airport reachable via direct flight"
+        "title": "Rules (line segments) Connecting SEA to every Airport Reachable via Direct Flights"
       },
       {
         "name": "geo_repeat",
         "png": true,
-        "title": "Three choropleths representing disjoint data from the same table"
+        "title": "Three Choropleths Representing Disjoint Data from the Same Table"
       },
       {
         "name": "geo_text",
         "png": true,
-        "title": "U.S. state capitals overlayed on a map of the U.S"
+        "title": "U.S. State Capitals Overlayed on a Map of U.S."
       },
       {
         "name": "geo_line",
         "png": true,
-        "title": "Line drawn between airports in the U.S. simulating a flight itinerary"
+        "title": "Line between Airports in the U.S."
       },
       {
         "name": "geo_trellis",
         "png": true,
-        "title": "Income in the U.S. by state, faceted over income brackets"
+        "title": "Income in the U.S. by State, Faceted over Income Brackets"
       },
       {
         "name": "geo_layer_line_london",
@@ -568,7 +568,7 @@
     "Interactive Charts": [
       {
         "name": "interactive_bar_select_highlight",
-        "title": "Bar chart with highlighting on hover and selection on click"
+        "title": "Bar Chart with Highlighting on Hover and Selection on Click"
       },
       {
         "name": "point_href",
@@ -629,7 +629,7 @@
       },
       {
         "name": "bar_count_minimap",
-        "title": "Bar chart with a minimap"
+        "title": "Bar Chart with a Minimap"
       }
     ],
     "Interactive Multi-View Displays": [
@@ -659,7 +659,7 @@
       {
         "name": "airport_connections",
         "png": true,
-        "title": "Connections among major U.S. airports."
+        "title": "Connections among Major U.S. Airports."
       }
     ]
   }
