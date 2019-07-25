@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import {NonArgAggregateOp} from '../src/aggregate';
 import {DETAIL, X, Y} from '../src/channel';
 import * as log from '../src/log';
 import {AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
@@ -271,7 +271,7 @@ describe('stack', () => {
     'should throws warning if the aggregated axis has a non-summative aggregate',
     log.wrap(localLogger => {
       for (const stackOffset of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
-        for (const aggregate of ['average', 'variance', 'q3'] as AggregateOp[]) {
+        for (const aggregate of ['average', 'variance', 'q3'] as NonArgAggregateOp[]) {
           const marks = stackOffset === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
           marks.forEach(mark => {
             const spec: TopLevel<NormalizedUnitSpec> = {
