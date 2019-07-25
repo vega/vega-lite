@@ -20,7 +20,7 @@ Reference documentation for common parameter **types** expected by Vega-Lite spe
 - [Number](#number)
 - [Object](#object)
 - [String](#string)
-- [URL](#url) {: .column-list }
+- [URL](#url)
 
 ## Literal Values
 
