@@ -191,7 +191,7 @@ function getFieldDefTitle(model: UnitModel, channel: 'x' | 'y') {
   return undefined;
 }
 
-function isExplicit<T extends string | number | object | boolean>(
+function isExplicit<T extends string | number | boolean | object>(
   value: T,
   property: keyof VgAxis,
   axis: Axis,

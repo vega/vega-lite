@@ -54,6 +54,10 @@ Using `area` mark with one temporal or ordinal field (typically on `x`) and one 
 
 <span class="vl-example" data-name="area"></span>
 
+You can set the fill color of an area to a [gradient](/docs/types.html#gradient).
+
+<span class="vl-example" data-name="area_gradient"></span>
+
 ### Area Chart with Overlaying Lines and Point Markers
 
 By setting the `line` and `point` properties of the mark definition to `true` or an object defining a property of the overlaying point marks, we can overlay line and point markers on top of area.

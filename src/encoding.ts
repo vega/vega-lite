@@ -6,6 +6,8 @@ import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRang
 import {
   binRequiresRange,
   ChannelDef,
+  ColorGradientFieldDefWithCondition,
+  ColorGradientValueDefWithCondition,
   Field,
   FieldDef,
   FieldDefWithoutScale,
@@ -27,14 +29,13 @@ import {
   SecondaryFieldDef,
   ShapeFieldDefWithCondition,
   ShapeValueDefWithCondition,
-  StringFieldDefWithCondition,
-  StringValueDefWithCondition,
   TextFieldDef,
   TextFieldDefWithCondition,
   TextValueDefWithCondition,
   title,
   TypedFieldDef,
   ValueDef,
+  ValueOrGradient,
   vgField
 } from './channeldef';
 import {Config} from './config';
@@ -112,7 +113,7 @@ export interface Encoding<F extends Field> {
    * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    * 2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme).
    */
-  color?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  color?: ColorGradientFieldDefWithCondition<F> | ColorGradientValueDefWithCondition<F>;
 
   /**
    * Fill color of the marks.
@@ -120,7 +121,7 @@ export interface Encoding<F extends Field> {
    *
    * _Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    */
-  fill?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  fill?: ColorGradientFieldDefWithCondition<F> | ColorGradientValueDefWithCondition<F>;
 
   /**
    * Stroke color of the marks.
@@ -129,7 +130,7 @@ export interface Encoding<F extends Field> {
    * _Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    */
 
-  stroke?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  stroke?: ColorGradientFieldDefWithCondition<F> | ColorGradientValueDefWithCondition<F>;
 
   /**
    * Opacity of the marks.
@@ -234,7 +235,7 @@ export function channelHasField<F extends Field>(encoding: EncodingWithFacet<F>,
     if (isArray(channelDef)) {
       return some(channelDef, fieldDef => !!fieldDef.field);
     } else {
-      return isFieldDef(channelDef) || hasConditionalFieldDef(channelDef);
+      return isFieldDef(channelDef) || hasConditionalFieldDef<Field, ValueOrGradient>(channelDef);
     }
   }
   return false;
@@ -452,13 +453,14 @@ export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): Fiel
   for (const channel of keys(encoding)) {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
-      (isArray(channelDef) ? channelDef : [channelDef]).forEach(def => {
+      const channelDefArray = isArray(channelDef) ? channelDef : [channelDef];
+      for (const def of channelDefArray) {
         if (isFieldDef(def)) {
           arr.push(def);
-        } else if (hasConditionalFieldDef(def)) {
+        } else if (hasConditionalFieldDef<F, ValueOrGradient>(def)) {
           arr.push(def.condition);
         }
-      });
+      }
     }
   }
   return arr;

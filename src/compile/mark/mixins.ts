@@ -4,13 +4,17 @@ import {isBinned, isBinning} from '../../bin';
 import {Channel, NonPositionScaleChannel, ScaleChannel, SCALE_CHANNELS, X, X2, Y2} from '../../channel';
 import {
   ChannelDef,
+  Conditional,
+  FieldDef,
   getTypedFieldDef,
   isConditionalSelection,
   isFieldDef,
   isValueDef,
   SecondaryFieldDef,
   TypedFieldDef,
-  ValueDef
+  Value,
+  ValueDef,
+  ValueOrGradient
 } from '../../channeldef';
 import {Config} from '../../config';
 import * as log from '../../log';
@@ -133,7 +137,7 @@ function markDefProperties(mark: MarkDef, ignore: Ignore) {
   }, {});
 }
 
-export function valueIfDefined(prop: string, value: string | number | boolean): VgEncodeEntry {
+export function valueIfDefined(prop: string, value: Value): VgEncodeEntry {
   if (value !== undefined) {
     return {[prop]: {value: value}};
   }
@@ -186,7 +190,7 @@ export function nonPosition(
   channel: NonPositionScaleChannel,
   model: UnitModel,
   opt: {
-    defaultValue?: number | string | boolean;
+    defaultValue?: ValueOrGradient;
     vgChannel?: VgEncodeChannel;
     defaultRef?: VgValueRef;
   } = {}
@@ -209,7 +213,7 @@ export function nonPosition(
 
   const channelDef = encoding[channel];
 
-  return wrapCondition(model, channelDef, vgChannel, cDef => {
+  return wrapCondition<FieldDef<string>, ValueOrGradient>(model, channelDef, vgChannel, cDef => {
     return ref.midPoint({
       channel,
       channelDef: cDef,
@@ -225,11 +229,11 @@ export function nonPosition(
  * Return a mixin that includes a Vega production rule for a Vega-Lite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
-export function wrapCondition(
+export function wrapCondition<FD extends FieldDef<any>, V extends ValueOrGradient>(
   model: UnitModel,
-  channelDef: ChannelDef,
+  channelDef: ChannelDef<FD, V>,
   vgChannel: string,
-  refFn: (cDef: ChannelDef) => VgValueRef
+  refFn: (cDef: ChannelDef<FD, V> | Conditional<ValueDef<V> | FD>) => VgValueRef
 ): VgEncodeEntry {
   const condition = channelDef && channelDef.condition;
   const valueRef = refFn(channelDef);
