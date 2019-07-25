@@ -3,6 +3,7 @@ import {
   Axis as VgAxis,
   AxisOrient,
   BaseAxis,
+  Color,
   FontStyle,
   FontWeight,
   LabelOverlap,
@@ -12,7 +13,7 @@ import {
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {Color, LayoutAlign} from './vega.schema';
+import {LayoutAlign} from './vega.schema';
 
 type BaseAxisNoSignals = AxisMixins &
   BaseAxis<

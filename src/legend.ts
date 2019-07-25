@@ -1,6 +1,7 @@
 import {
   Align,
   BaseLegend,
+  Color,
   FontStyle,
   FontWeight,
   LabelOverlap,
@@ -16,7 +17,7 @@ import {
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {Color, LayoutAlign} from './vega.schema';
+import {LayoutAlign} from './vega.schema';
 
 export type LegendConfig = LegendMixins &
   VlOnlyGuideConfig &

@@ -1,4 +1,4 @@
-import {Color} from './../vega.schema';
+import {Color} from 'vega';
 import {isArray, isNumber} from 'vega-util';
 import {Config} from '../config';
 import {Data} from '../data';
