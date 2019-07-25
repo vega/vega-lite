@@ -18,6 +18,7 @@ describe('extractTransforms()', () => {
     'bar_aggregate_sort_mean.vl.json',
     'bar_binned_data.vl.json',
     'bar_count_minimap.vl.json',
+    'bar_diverging_stack_population_pyramid.vl.json',
     'bar_month_temporal.vl.json',
     'bar_sort_by_count.vl.json',
     'circle_binned_maxbins_10.vl.json',

@@ -59,8 +59,12 @@
         "title": "Layered Bar Chart"
       },
       {
+        "name": "bar_diverging_stack_population_pyramid",
+        "title": "Diverging Stacked Bar Chart (Population Pyramid)"
+      },
+      {
         "name": "bar_diverging_stack_transform",
-        "title": "Diverging Stacked Bar Chart"
+        "title": "Diverging Stacked Bar Chart (with Neutral Parts)"
       },
       {
         "name": "layer_bar_labels",
