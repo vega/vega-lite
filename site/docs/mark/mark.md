@@ -57,7 +57,7 @@ For example, a bar chart has `mark` as a simple string `"bar"`.
 }
 ```
 
-To customize properties of a mark, users can set `mark` to be a mark definition object instead of a string describing mark type. The rest of this section lists standard mark properties for primitive mark types. Additionally, some marks may have special mark properties (listed in their documentation page). For example, [point](https://vega.github.io/vega-lite/docs/point.html#properties) marks support `shape` and `size` properties in addition to these standard properties.
+To customize properties of a mark, users can set `mark` to be a mark definition object instead of a string describing mark type. The rest of this section lists standard mark properties for primitive mark types. Additionally, some marks may have special mark properties (listed in their documentation page). For example, [point](point.html#properties) marks support `shape` and `size` properties in addition to these standard properties.
 
 Note: If [mark property encoding channels](encoding.html#mark-prop) are specified, these mark properties will be overridden.
 

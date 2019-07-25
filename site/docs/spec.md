@@ -25,7 +25,7 @@ All view specifications in Vega-Lite can contain the following properties:
 
 {% include table.html props="name,description,title,data,transform" source="TopLevelUnitSpec" %}
 
-In addition, all view composition specifications ([`layer`](layer.html), [`facet`](facet.html), [`concat`](concat.html), and [`repeat`](repeat.html)) can have the [`resolve` property for scale, axes, and legend resolution](https://vega.github.io/vega-lite/docs/resolve.html):
+In addition, all view composition specifications ([`layer`](layer.html), [`facet`](facet.html), [`concat`](concat.html), and [`repeat`](repeat.html)) can have the [`resolve` property for scale, axes, and legend resolution](resolve.html):
 
 {% include table.html props="resolve" source="TopLevelFacetSpec" %}
 

@@ -48,7 +48,7 @@ A facet [field definition](encoding.html#field-def) has the following properties
 
 **Note**
 
-1. Unlike a [positional field definition](https://vega.github.io/vega-lite/docs/encoding.html#position-field-def), a facet field definition has the `header` property instead of `scale` and `axis`.
+1. Unlike a [positional field definition](encoding.html#position-field-def), a facet field definition has the `header` property instead of `scale` and `axis`.
 2. Since `facet`, `row` and `column` represent actual data fields that are used to partition the data, they cannot encode a constant `value`. In addition, you should not facet by quantitative fields unless they are [binned](bin.html), or temporal fields unless you use [`timeUnit`](timeunit.html).
 
 {:#mapping}

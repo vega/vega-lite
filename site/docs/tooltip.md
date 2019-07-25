@@ -39,7 +39,7 @@ Setting mark's `tooltip` to `{"content": "data"}` will produce tooltips based on
 
 ## Tooltip channel
 
-To create a tooltip, Vega-Lite's [`tooltip`]({{site.baseurl}}/docs/encoding.html#mark-properties-channels) channel can be mapped to a data field. For example, this bar chart supports tooltips for field `b`. Hover over the bar and notice the simple tooltip that displays the value of field `b` for each bar.
+To create a tooltip, Vega-Lite's [`tooltip`](encoding.html#mark-properties-channels) channel can be mapped to a data field. For example, this bar chart supports tooltips for field `b`. Hover over the bar and notice the simple tooltip that displays the value of field `b` for each bar.
 
 <div class="vl-example" data-name="bar_tooltip"></div>
 
