@@ -107,7 +107,7 @@
     "vega-cli": "^5.4.0",
     "vega-datasets": "^1.25.0",
     "vega-embed": "^4.2.0",
-    "vega-tooltip": "^0.17.0",
+    "vega-tooltip": "^0.18.1",
     "yaml-front-matter": "^4.0.0"
   },
   "dependencies": {
