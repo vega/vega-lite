@@ -460,7 +460,7 @@
         },
         "type": {
           "$ref": "#/definitions/AutosizeType",
-          "description": "The sizing format type. One of `\"pad\"`, `\"fit\"` or `\"none\"`. See the [autosize type](https://vega.github.io/vega-lite/docs/size.html#autosize) documentation for descriptions of each.\n\n__Default value__: `\"pad\"`"
+          "description": "The sizing format type. One of `\"pad\"`, `\"fit\"`, `\"fit-x\"`, `\"fit-y\"`,  or `\"none\"`. See the [autosize type](https://vega.github.io/vega-lite/docs/size.html#autosize) documentation for descriptions of each.\n\n__Default value__: `\"pad\"`"
         }
       },
       "type": "object"
