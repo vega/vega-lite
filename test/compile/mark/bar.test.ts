@@ -358,6 +358,30 @@ describe('Mark: Bar', () => {
     });
   });
 
+  describe('vertical binned, with width', () => {
+    const x: PositionFieldDef<string> = {bin: true, field: 'Horsepower', type: 'quantitative'};
+
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'bar', width: 5},
+      encoding: {
+        x,
+        y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should draw bar with xc and width', () => {
+      expect(props.xc).toEqual([
+        fieldInvalidTestValueRef(x, 'x'),
+        {
+          signal: 'scale("x", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])'
+        }
+      ]);
+      expect(props.width).toEqual({value: 5});
+    });
+  });
+
   describe('vertical binned, sort descending', () => {
     const x: PositionFieldDef<string> = {bin: true, field: 'Horsepower', type: 'quantitative', sort: 'descending'};
     const model = parseUnitModelWithScaleAndLayoutSize({
@@ -478,7 +502,7 @@ describe('Mark: Bar', () => {
           field: {group: 'height'}
         },
         {
-          signal: 'scale("y", (datum["bin_maxbins_10_Horsepower"] + datum["bin_maxbins_10_Horsepower_end"]) / 2)'
+          signal: 'scale("y", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])'
         }
       ]);
       expect(props.height).toEqual({scale: 'size', field: 'mean_Acceleration'});
@@ -505,7 +529,7 @@ describe('Mark: Bar', () => {
           value: 0
         },
         {
-          signal: 'scale("x", (datum["bin_maxbins_10_Horsepower"] + datum["bin_maxbins_10_Horsepower_end"]) / 2)'
+          signal: 'scale("x", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])'
         }
       ]);
       expect(props.width).toEqual({scale: 'size', field: 'mean_Acceleration'});

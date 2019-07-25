@@ -38,7 +38,7 @@
                 },
                 "value": "black"
               },
-              "value": "none"
+              "value": null
             }
           },
           "labels": {
@@ -54,7 +54,7 @@
                 },
                 "value": "black"
               },
-              "value": "none"
+              "value":  null
             }
           }
         }

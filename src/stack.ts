@@ -137,10 +137,6 @@ export function stack(
     return sc;
   }, []);
 
-  if (stackBy.length === 0) {
-    return null;
-  }
-
   // Automatically determine offset
   let offset: StackOffset;
   if (stackedFieldDef.stack !== undefined) {
@@ -149,11 +145,13 @@ export function stack(
     } else {
       offset = stackedFieldDef.stack;
     }
-  } else if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
-    // Bar and Area with sum ops are automatically stacked by default
-    offset = getFirstDefined(stackConfig, 'zero');
-  } else {
-    offset = stackConfig;
+  } else if (stackBy.length > 0) {
+    if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
+      // Bar and Area with sum ops are automatically stacked by default
+      offset = getFirstDefined(stackConfig, 'zero');
+    } else {
+      offset = stackConfig;
+    }
   }
 
   if (!offset || !isStackOffset(offset)) {

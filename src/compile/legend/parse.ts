@@ -153,7 +153,7 @@ function getProperty<K extends keyof VgLegend>(
       return numberFormat(fieldDef, legend.format, model.config);
 
     case 'formatType':
-      // Same as format, We don't include temporal field here as we apply format in encode block
+      // Same as format, we don't include temporal field here as we apply format in encode block
       if (isTimeFormatFieldDef(fieldDef)) {
         return undefined;
       }
@@ -178,7 +178,10 @@ function getProperty<K extends keyof VgLegend>(
       return getFirstDefined(legend.labelOverlap, properties.defaultLabelOverlap(scaleType));
 
     case 'symbolType':
-      return getFirstDefined(legend.symbolType, properties.defaultSymbolType(mark));
+      return getFirstDefined(
+        legend.symbolType,
+        properties.defaultSymbolType(mark, channel, encoding.shape, model.markDef.shape)
+      );
 
     case 'title':
       return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;

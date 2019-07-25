@@ -321,7 +321,7 @@ describe('compile/mark/mixins', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point'},
         encoding: {
-          color: {field: 'Foobar', type: 'nominal', legend: {title: 'baz', format: 's'}}
+          color: {field: 'Foobar', type: 'nominal', legend: {title: 'baz'}}
         }
       });
       const props = tooltip(model);

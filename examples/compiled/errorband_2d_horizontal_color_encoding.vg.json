@@ -39,7 +39,7 @@
       "name": "layer_0_layer_0_marks",
       "type": "area",
       "style": ["area", "errorband-band"],
-      "sort": {"field": "datum[\"year_Year\"]", "order": "descending"},
+      "sort": {"field": "datum[\"year_Year\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -62,7 +62,7 @@
       "name": "layer_0_layer_1_marks",
       "type": "line",
       "style": ["line", "errorband-borders"],
-      "sort": {"field": "datum[\"year_Year\"]", "order": "descending"},
+      "sort": {"field": "datum[\"year_Year\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -82,7 +82,7 @@
       "name": "layer_0_layer_2_marks",
       "type": "line",
       "style": ["line", "errorband-borders"],
-      "sort": {"field": "datum[\"year_Year\"]", "order": "descending"},
+      "sort": {"field": "datum[\"year_Year\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

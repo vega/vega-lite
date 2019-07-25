@@ -221,6 +221,20 @@ describe('compile/data/formatparse', () => {
 
       expect(ParseNode.makeExplicit(null, model, new AncestorParse({}, {}, true))).toBeNull();
     });
+
+    it('should add parse for domains of path marks', () => {
+      const model = parseUnitModel({
+        mark: 'line',
+        encoding: {
+          x: {field: 'foo', type: 'quantitative'},
+          y: {field: 'bar', type: 'quantitative'}
+        }
+      });
+
+      expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse).toEqual({
+        foo: 'number'
+      });
+    });
   });
 
   describe('assembleTransforms', () => {

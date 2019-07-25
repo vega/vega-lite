@@ -11,7 +11,7 @@
         "scale": {"domain": {"selection": "brush"}},
         "axis": {"title": ""}
       },
-      "y": {"field": "price","type": "quantitative"}
+      "y": {"field": "price", "type": "quantitative"}
     }
   }, {
     "width": 480,

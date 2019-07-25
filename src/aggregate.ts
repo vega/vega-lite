@@ -1,6 +1,6 @@
 import {AggregateOp} from 'vega';
 import {isString, toSet} from 'vega-util';
-import {contains, Flag, flagKeys} from './util';
+import {contains, Flag, keys} from './util';
 
 const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   argmax: 1,
@@ -45,7 +45,7 @@ export function isArgmaxDef(a: Aggregate | string): a is ArgmaxDef {
   return !!a && !!a['argmax'];
 }
 
-export const AGGREGATE_OPS = flagKeys(AGGREGATE_OP_INDEX);
+export const AGGREGATE_OPS = keys(AGGREGATE_OP_INDEX);
 
 export function isAggregateOp(a: string | ArgminDef | ArgmaxDef): a is AggregateOp {
   return isString(a) && !!AGGREGATE_OP_INDEX[a];

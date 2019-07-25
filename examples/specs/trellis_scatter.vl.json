@@ -4,8 +4,8 @@
   "mark": "point",
   "columns": 2,
   "encoding": {
-    "facet": {"field": "MPAA_Rating","type": "ordinal"},
-    "x": {"field": "Worldwide_Gross","type": "quantitative"},
-    "y": {"field": "US_DVD_Sales","type": "quantitative"}
+    "facet": {"field": "MPAA_Rating", "type": "ordinal"},
+    "x": {"field": "Worldwide_Gross", "type": "quantitative"},
+    "y": {"field": "US_DVD_Sales", "type": "quantitative"}
   }
 }

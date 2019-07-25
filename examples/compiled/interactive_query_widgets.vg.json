@@ -7,7 +7,19 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "CylYr_store"},
+    {
+      "name": "CylYr_store",
+      "values": [
+        {
+          "unit": "\"layer_0\"",
+          "fields": [
+            {"type": "E", "field": "Cylinders"},
+            {"type": "E", "field": "Year"}
+          ],
+          "values": [4, 1977]
+        }
+      ]
+    },
     {
       "name": "source_0",
       "url": "data/cars.json",
@@ -77,10 +89,6 @@
     {
       "name": "CylYr_tuple",
       "update": "CylYr_Cylinders !== null && CylYr_Year !== null ? {fields: CylYr_tuple_fields, values: [CylYr_Cylinders, CylYr_Year]} : null"
-    },
-    {
-      "name": "CylYr_init",
-      "init": "modify(\"CylYr_store\", [{unit: \"layer_0\", fields: CylYr_tuple_fields, values: [4, 1977]}])"
     },
     {
       "name": "CylYr_tuple_fields",
@@ -233,11 +241,7 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
       "title": "Origin",
-      "encode": {
-        "symbols": {
-          "update": {"shape": {"value": "circle"}, "opacity": {"value": 0.7}}
-        }
-      }
+      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
     }
   ]
 }

@@ -1,5 +1,5 @@
 import {vgField} from '../../src/channeldef';
-import {mergeTitle, numberFormat, timeFormatExpression} from '../../src/compile/common';
+import {mergeTitle, numberFormat, timeFormatExpression, formatSignalRef} from '../../src/compile/common';
 import {defaultConfig} from '../../src/config';
 import {TimeUnit} from '../../src/timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
@@ -127,6 +127,14 @@ describe('Common', () => {
 
     it('should join 2 titles with comma when both titles are not falsy and difference', () => {
       expect(mergeTitle('title1', 'title2')).toBe('title1, title2');
+    });
+  });
+
+  describe('formatSignalRef()', () => {
+    it('should format ordinal field defs if format is present', () => {
+      expect(formatSignalRef({field: 'foo', type: 'ordinal'}, '.2f', 'parent', {})).toEqual({
+        signal: 'format(parent["foo"], ".2f")'
+      });
     });
   });
 });

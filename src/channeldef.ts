@@ -51,16 +51,22 @@ export type ChannelDefWithCondition<F extends FieldDef<any>, V extends Value> =
   | ValueDefWithCondition<F, V>;
 
 /**
- * A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.
+ * A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.
  * {
  *   condition: {field: ...} | {value: ...},
  *   value: ...,
  * }
  */
 
-export type ValueDefWithCondition<F extends FieldDef<any>, V extends Value = Value> =
-  | ValueDefWithOptionalCondition<F, V>
-  | ConditionOnlyDef<F>;
+/**
+ * @minProperties 1
+ */
+export type ValueDefWithCondition<F extends FieldDef<any>, V extends Value = Value> = Partial<ValueDef<V>> & {
+  /**
+   * A field definition or one or more value definition(s) with a selection predicate.
+   */
+  condition?: Conditional<F> | Conditional<ValueDef<V>> | Conditional<ValueDef<V>>[];
+};
 
 export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
   MarkPropFieldDef<F, T>,
@@ -141,26 +147,6 @@ export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<T
  * }
  */
 
-export interface ValueDefWithOptionalCondition<FD extends FieldDef<any>, V extends Value> extends ValueDef<V> {
-  /**
-   * A field definition or one or more value definition(s) with a selection predicate.
-   */
-  condition?: Conditional<FD> | Conditional<ValueDef<V>> | Conditional<ValueDef<V>>[];
-}
-
-/**
- * A Condition<ValueDef | FieldDef> only definition.
- * {
- *   condition: {field: ...} | {value: ...}
- * }
- */
-export interface ConditionOnlyDef<F extends FieldDef<any>, V extends Value = Value> {
-  /**
-   * A field definition or one or more value definition(s) with a selection predicate.
-   */
-  condition: Conditional<F> | Conditional<ValueDef<V>> | Conditional<ValueDef<V>>[];
-}
-
 /**
  * Reference to a repeated value.
  */
@@ -183,11 +169,13 @@ export interface FieldDefBase<F, B extends Bin = Bin> {
    * __Required.__ A string defining the name of the field from which to pull a data value
    * or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.
    *
-   * __Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `"field": "foo.bar"` and `"field": "foo['bar']"`).
+   * __See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.
+   *
+   * __Notes:__
+   * 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `"field": "foo.bar"` and `"field": "foo['bar']"`).
    * If field names contain dots or brackets but are not nested, you can use `\\` to escape dots and brackets (e.g., `"a\\.b"` and `"a\\[0\\]"`).
    * See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).
-   *
-   * __Note:__ `field` is not required if `aggregate` is `count`.
+   * 2) `field` is not required if `aggregate` is `count`.
    */
   field?: F;
 
@@ -198,6 +186,8 @@ export interface FieldDefBase<F, B extends Bin = Bin> {
    * or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).
    *
    * __Default value:__ `undefined` (None)
+   *
+   * __See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation.
    */
   timeUnit?: TimeUnit;
 
@@ -206,6 +196,8 @@ export interface FieldDefBase<F, B extends Bin = Bin> {
    * (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
    *
    * __Default value:__ `undefined` (None)
+   *
+   * __See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation.
    */
   aggregate?: Aggregate | HiddenCompositeAggregate;
 
@@ -217,6 +209,8 @@ export interface FieldDefBase<F, B extends Bin = Bin> {
    * - If `"binned"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
    *
    * __Default value:__ `false`
+   *
+   * __See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation.
    */
   bin?: B;
 }
@@ -245,6 +239,8 @@ export interface TypeMixins<T extends Type> {
    * - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `"temporal"` (for using a temporal scale) or [`"ordinal"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).
    * - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `"cat"` using `{"aggregate": "distinct", "field": "cat", "type": "quantitative"}`. The `"type"` of the aggregate output is `"quantitative"`.
    * - Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).
+   *
+   * __See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation.
    */
   type: T;
 }
@@ -278,6 +274,8 @@ export interface SortableFieldDef<
    * __Default value:__ `"ascending"`
    *
    * __Note:__ `null` is not supported for `row` and `column`.
+   *
+   * __See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation.
    */
   sort?: Sort<F>;
 }
@@ -297,6 +295,8 @@ export interface ScaleFieldDef<
    * If `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).
    *
    * __Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.
+   *
+   * __See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation.
    */
   scale?: Scale | null;
 }
@@ -326,6 +326,8 @@ export interface PositionFieldDef<F extends Field>
    * If `null`, the axis for the encoding channel will be removed.
    *
    * __Default value:__ If undefined, default [axis properties](https://vega.github.io/vega-lite/docs/axis.html) are applied.
+   *
+   * __See also:__ [`axis`](https://vega.github.io/vega-lite/docs/axis.html) documentation.
    */
   axis?: Axis | null;
 
@@ -344,6 +346,8 @@ export interface PositionFieldDef<F extends Field>
    * (1) the mark is `bar` or `area`;
    * (2) the stacked measure channel (x or y) has a linear scale;
    * (3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, `null` by default.
+   *
+   * __See also:__ [`stack`](https://vega.github.io/vega-lite/docs/stack.html) documentation.
    */
   stack?: StackOffset | null | boolean;
 
@@ -351,6 +355,8 @@ export interface PositionFieldDef<F extends Field>
    * An object defining the properties of the Impute Operation to be applied.
    * The field value of the other positional channel is taken as `key` of the `Impute` Operation.
    * The field of the `color` channel if specified is used as `groupby` of the `Impute` Operation.
+   *
+   * __See also:__ [`impute`](https://vega.github.io/vega-lite/docs/impute.html) documentation.
    */
   impute?: ImputeParams;
 }
@@ -368,6 +374,8 @@ export type MarkPropFieldDef<F extends Field, T extends Type = Type> = ScaleFiel
    * If `null`, the legend for the encoding channel will be removed.
    *
    * __Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.
+   *
+   * __See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation.
    */
   legend?: Legend | null;
 };
@@ -403,7 +411,7 @@ export function isConditionalDef<F extends Field, V extends Value>(
 
 export function hasConditionalFieldDef<F extends Field, V extends Value>(
   channelDef: ChannelDef<FieldDef<F>, V>
-): channelDef is ValueDef<V> & {condition: Conditional<TypedFieldDef<F>>} {
+): channelDef is Partial<ValueDef<V>> & {condition: Conditional<TypedFieldDef<F>>} {
   return !!channelDef && !!channelDef.condition && !isArray(channelDef.condition) && isFieldDef(channelDef.condition);
 }
 
@@ -802,7 +810,10 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
       log.warn(warning);
     }
   }
-  return fieldDef;
+  return {
+    ...fieldDef,
+    ...(fieldDef.field !== undefined ? {field: `${fieldDef.field}`} : {})
+  };
 }
 
 export function normalizeBin(bin: BinParams | boolean | 'binned', channel: Channel) {
@@ -905,18 +916,13 @@ export function channelCompatibility(
   throw new Error('channelCompatability not implemented for channel ' + channel);
 }
 
-export function isNumberFieldDef(fieldDef: TypedFieldDef<any>) {
-  return fieldDef.type === 'quantitative' || isBinning(fieldDef.bin);
-}
-
 /**
- * Check if the field def uses a time format or does not use any format but is temporal (this does not cover field defs that are temporal but use a number format).
+ * Check if the field def uses a time format or does not use any format but is temporal
+ * (this does not cover field defs that are temporal but use a number format).
  */
 export function isTimeFormatFieldDef(fieldDef: TypedFieldDef<string>): boolean {
-  const formatType =
-    (isPositionFieldDef(fieldDef) && fieldDef.axis && fieldDef.axis.formatType) ||
-    (isMarkPropFieldDef(fieldDef) && fieldDef.legend && fieldDef.legend.formatType) ||
-    (isTextFieldDef(fieldDef) && fieldDef.formatType);
+  const guide = getGuide(fieldDef);
+  const formatType = (guide && guide.formatType) || (isTextFieldDef(fieldDef) && fieldDef.formatType);
   return formatType === 'time' || (!formatType && isTimeFieldDef(fieldDef));
 }
 

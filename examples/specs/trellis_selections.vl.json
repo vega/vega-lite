@@ -22,7 +22,7 @@
     }
   },
   "encoding": {
-    "column": {"field": "Series","type": "nominal"},
+    "column": {"field": "Series", "type": "nominal"},
     "x": {
       "field": "X",
       "type": "quantitative",
@@ -35,7 +35,7 @@
     },
     "size": {
       "value": 100,
-      "condition": {"selection": "brush","value": 250}
+      "condition": {"selection": "brush", "value": 250}
     },
     "color": {
       "value": "steelblue",

@@ -22,11 +22,11 @@
           "type": "aggregate",
           "groupby": ["month_date"],
           "ops": ["average", "average", "average"],
-          "fields": ["precipitation", "temp_max", "temp_min"],
+          "fields": ["temp_max", "temp_min", "precipitation"],
           "as": [
-            "average_precipitation",
             "average_temp_max",
-            "average_temp_min"
+            "average_temp_min",
+            "average_precipitation"
           ]
         }
       ]
@@ -37,7 +37,7 @@
       "name": "layer_0_marks",
       "type": "area",
       "style": ["area"],
-      "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
+      "sort": {"field": "datum[\"month_date\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -60,7 +60,7 @@
       "name": "layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
+      "sort": {"field": "datum[\"month_date\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

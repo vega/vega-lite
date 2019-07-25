@@ -118,9 +118,8 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
-      "title": "site",
-      "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
+      "symbolType": "square",
+      "title": "site"
     }
   ]
 }

@@ -8,51 +8,24 @@
       "start": 0,
       "stop": 12.7,
       "step": 0.1,
-      "as": "u"
+      "as": "x"
     }
   },
   "transform": [
     {
-      "calculate": "sin(datum.u)",
-      "as": "v"
-    },
-    {
-      "calculate": "cos(datum.u)",
-      "as": "w"
+      "calculate": "sin(datum.x)",
+      "as": "sin(x)"
     }
   ],
-  "layer": [
-    {
-      "mark": "line",
-      "encoding": {
-        "x": {
-          "field": "u",
-          "type": "quantitative",
-          "title": "x"
-        },
-        "y": {
-          "field": "v",
-          "type": "quantitative",
-          "title": "sin(x)"
-        }
-      }
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "x",
+      "type": "quantitative"
     },
-    {
-      "mark": {
-        "type": "line",
-        "stroke": "firebrick"
-      },
-      "encoding": {
-        "x": {
-          "field": "u",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "w",
-          "type": "quantitative",
-          "title": "cos(x)"
-        }
-      }
+    "y": {
+      "field": "sin(x)",
+      "type": "quantitative"
     }
-  ]
+  }
 }

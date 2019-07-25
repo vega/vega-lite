@@ -1,6 +1,7 @@
 import {
   Align,
   BaseLegend,
+  Color,
   FontStyle,
   FontWeight,
   LabelOverlap,
@@ -15,8 +16,8 @@ import {
 } from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {Flag, flagKeys} from './util';
-import {Color, LayoutAlign} from './vega.schema';
+import {Flag, keys} from './util';
+import {LayoutAlign} from './vega.schema';
 
 export type LegendConfig = LegendMixins &
   VlOnlyGuideConfig &
@@ -134,7 +135,7 @@ export interface Legend
   type?: 'symbol' | 'gradient';
 
   /**
-   * A non-positive integer indicating z-index of the legend.
+   * A non-negative integer indicating the z-index of the legend.
    * If zindex is 0, legend should be drawn behind all chart elements.
    * To put them in front, use zindex = 1.
    *
@@ -154,7 +155,7 @@ export interface Legend
   direction?: Orientation;
 
   /**
-   * The orientation of the legend, which determines how the legend is positioned within the scene. One of `"left"`, `"right"`, `"top-left"`, `"top-right"`, `"bottom-left"`, `"bottom-right"`, `"none"`.
+   * The orientation of the legend, which determines how the legend is positioned within the scene. One of `"left"`, `"right"`, `"top"`, `"bottom"`, `"top-left"`, `"top-right"`, `"bottom-left"`, `"bottom-right"`, `"none"`.
    *
    * __Default value:__ `"right"`
    */
@@ -283,6 +284,6 @@ const VG_LEGEND_PROPERTY_INDEX: Flag<Exclude<keyof VgLegend, 'strokeDash'>> = {
   encode: 1
 };
 
-export const LEGEND_PROPERTIES = flagKeys(COMMON_LEGEND_PROPERTY_INDEX);
+export const LEGEND_PROPERTIES = keys(COMMON_LEGEND_PROPERTY_INDEX);
 
-export const VG_LEGEND_PROPERTIES = flagKeys(VG_LEGEND_PROPERTY_INDEX);
+export const VG_LEGEND_PROPERTIES = keys(VG_LEGEND_PROPERTY_INDEX);

@@ -3,7 +3,6 @@
  */
 import {SignalRef} from 'vega';
 import {isFunction, isString, stringValue} from 'vega-util';
-import {FieldName} from '../../channeldef';
 import {isCountingAggregateOp} from '../../aggregate';
 import {isBinned, isBinning} from '../../bin';
 import {Channel, getMainRangeChannel, PositionChannel, X, X2, Y, Y2} from '../../channel';
@@ -13,8 +12,10 @@ import {
   ChannelDefWithCondition,
   FieldDef,
   FieldDefBase,
+  FieldName,
   FieldRefOption,
   format,
+  getFieldDef,
   hasConditionalFieldDef,
   isFieldDef,
   isTypedFieldDef,
@@ -22,6 +23,7 @@ import {
   SecondaryFieldDef,
   title,
   TypedFieldDef,
+  Value,
   vgField
 } from '../../channeldef';
 import {Config} from '../../config';
@@ -33,7 +35,7 @@ import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
 import {contains, getFirstDefined} from '../../util';
 import {VgValueRef} from '../../vega.schema';
-import {formatSignalRef, getMarkConfig} from '../common';
+import {binFormatExpression, formatSignalRef, getMarkConfig} from '../common';
 import {ScaleComponent} from '../scale/component';
 
 function midPointWithPositionInvalidTest(
@@ -235,13 +237,17 @@ function binMidSignal({
   scaleName,
   fieldDef,
   fieldDef2,
-  offset
+  offset,
+  band
 }: {
   scaleName: string;
   fieldDef: TypedFieldDef<string>;
   fieldDef2?: SecondaryFieldDef<string>;
   offset: number;
+  band?: number;
 }) {
+  band = getFirstDefined(band, 0.5);
+
   const start = vgField(fieldDef, {expr: 'datum'});
   const end =
     fieldDef2 !== undefined
@@ -249,7 +255,7 @@ function binMidSignal({
       : vgField(fieldDef, {binSuffix: 'end', expr: 'datum'});
 
   return {
-    signal: `scale("${scaleName}", (${start} + ${end}) / 2)`,
+    signal: `scale("${scaleName}", ${band} * ${start} + ${1 - band} * ${end})`,
     ...(offset ? {offset} : {})
   };
 }
@@ -323,13 +329,7 @@ export function midPoint({
       const value = channelDef.value;
       const offsetMixins = offset ? {offset} : {};
 
-      if (contains(['x', 'x2'], channel) && value === 'width') {
-        return {field: {group: 'width'}, ...offsetMixins};
-      } else if (contains(['y', 'y2'], channel) && value === 'height') {
-        return {field: {group: 'height'}, ...offsetMixins};
-      }
-
-      return {value, ...offsetMixins};
+      return {...vgValueRef(channel, value), ...offsetMixins};
     }
 
     // If channelDef is neither field def or value def, it's a condition-only def.
@@ -339,30 +339,56 @@ export function midPoint({
   return isFunction(defaultRef) ? defaultRef() : defaultRef;
 }
 
+/**
+ * Convert special "width" and "height" values in Vega-Lite into Vega value ref.
+ */
+export function vgValueRef(channel: Channel, value: Value) {
+  if (contains(['x', 'x2'], channel) && value === 'width') {
+    return {field: {group: 'width'}};
+  } else if (contains(['y', 'y2'], channel) && value === 'height') {
+    return {field: {group: 'height'}};
+  }
+  return {value};
+}
+
 export function tooltipForEncoding(
   encoding: Encoding<string>,
   config: Config,
-  {reactiveGeom}: {reactiveGeom?: boolean}
+  {reactiveGeom}: {reactiveGeom?: boolean} = {}
 ) {
   const keyValues: string[] = [];
   const usedKey = {};
+  const toSkip = {};
+  const expr = reactiveGeom ? 'datum.datum' : 'datum';
+  const tooltipTuples: {channel: Channel; key: string; value: string}[] = [];
 
-  function add(fieldDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: Channel) {
+  function add(fDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: Channel) {
     const mainChannel = getMainRangeChannel(channel);
-    if (channel !== mainChannel) {
-      fieldDef = {
-        ...fieldDef,
-        type: encoding[mainChannel].type
-      };
-    }
+
+    const fieldDef: TypedFieldDef<string> = isTypedFieldDef(fDef)
+      ? fDef
+      : {
+          ...fDef,
+          type: encoding[mainChannel].type // for secondary field def, copy type from main channel
+        };
 
     const key = title(fieldDef, config, {allowDisabling: false});
-    const value = text(fieldDef, config, reactiveGeom ? 'datum.datum' : 'datum').signal;
 
-    if (!usedKey[key]) {
-      keyValues.push(`${stringValue(key)}: ${value}`);
+    let value = text(fieldDef, config, expr).signal;
+
+    if (channel === 'x' || channel === 'y') {
+      const channel2 = channel === 'x' ? 'x2' : 'y2';
+      const fieldDef2 = getFieldDef(encoding[channel2]);
+
+      if (isBinned(fieldDef.bin) && fieldDef2) {
+        const startField = vgField(fieldDef, {expr});
+        const endField = vgField(fieldDef2, {expr});
+        value = binFormatExpression(startField, endField, format(fieldDef), config);
+        toSkip[channel2] = true;
+      }
     }
-    usedKey[key] = true;
+
+    tooltipTuples.push({channel, key, value});
   }
 
   forEach(encoding, (channelDef, channel) => {
@@ -372,6 +398,14 @@ export function tooltipForEncoding(
       add(channelDef.condition, channel);
     }
   });
+
+  for (const {channel, key, value} of tooltipTuples) {
+    if (!toSkip[channel] && !usedKey[key]) {
+      keyValues.push(`${stringValue(key)}: ${value}`);
+      usedKey[key] = true;
+    }
+  }
+
   return keyValues.length ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
 
@@ -420,7 +454,7 @@ export function positionDefault({
 
     const definedValueOrConfig = getFirstDefined(markDef[channel], getMarkConfig(channel, markDef, config));
     if (definedValueOrConfig !== undefined) {
-      return {value: definedValueOrConfig};
+      return vgValueRef(channel, definedValueOrConfig);
     }
 
     if (isString(defaultRef)) {
@@ -435,7 +469,7 @@ export function positionDefault({
             log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, mainChannel, {scaleType}));
           }
         } else {
-          if (scale.domainDefinitelyIncludesZero) {
+          if (scale.domainDefinitelyIncludesZero()) {
             return {
               scale: scaleName,
               value: 0

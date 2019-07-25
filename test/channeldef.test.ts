@@ -68,6 +68,11 @@ describe('fieldDef', () => {
       expect(normalize(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
     });
 
+    it('should normalize non-string field to string', () => {
+      const fieldDef: TypedFieldDef<string> = {field: 1 as any, type: 'q' as any};
+      expect(normalize(fieldDef, 'x')).toEqual({field: '1', type: 'quantitative'});
+    });
+
     it(
       'normalizes yearmonthday to become yearmonthdate.',
       log.wrap(localLogger => {
@@ -99,7 +104,7 @@ describe('fieldDef', () => {
     it(
       'should return fieldDef with default type and throw warning if type is missing.',
       log.wrap(localLogger => {
-        const fieldDef = {field: 'a'} as TypedFieldDef<string>;
+        const fieldDef = {field: 'a'};
         expect(normalize(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
         expect(localLogger.warns[0]).toEqual(log.message.missingFieldType('x', 'quantitative'));
       })

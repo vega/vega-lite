@@ -1,5 +1,5 @@
-import {MAIN} from '../../data';
-import {Dict, fieldIntersection, flatten, hash, hasIntersection, keys} from '../../util';
+import {MAIN, Parse} from '../../data';
+import {Dict, fieldIntersection, flatten, hash, hasIntersection, keys, some} from '../../util';
 import {Model} from '../model';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
@@ -9,45 +9,21 @@ import {FilterNode} from './filter';
 import {ParseNode} from './formatparse';
 import {JoinAggregateTransformNode} from './joinaggregate';
 import {FACET_SCALE_PREFIX} from './optimize';
-import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
+import {BottomUpOptimizer, isDataSourceNode, TopDownOptimizer} from './optimizer';
 import * as optimizers from './optimizers';
-import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
 
 export interface OptimizerFlags {
   /**
-   * If true, iteration continues
+   * If true, iteration continues.
    */
   continueFlag: boolean;
   /**
-   * If true, the tree has been mutated by the function
+   * If true, the tree has been mutated by the function.
    */
   mutatedFlag: boolean;
-}
-
-/**
- * Start optimization path at the leaves. Useful for merging up or removing things.
- *
- * If the callback returns true, the recursion continues.
- */
-export function iterateFromLeaves(f: (node: DataFlowNode) => OptimizerFlags) {
-  function optimizeNextFromLeaves(node: DataFlowNode): boolean {
-    if (node instanceof SourceNode) {
-      return false;
-    }
-
-    const next = node.parent;
-    const {continueFlag, mutatedFlag} = f(node);
-    let childFlag = false;
-    if (continueFlag) {
-      childFlag = optimizeNextFromLeaves(next);
-    }
-    return mutatedFlag || childFlag;
-  }
-
-  return optimizeNextFromLeaves;
 }
 
 /**
@@ -56,14 +32,14 @@ export function iterateFromLeaves(f: (node: DataFlowNode) => OptimizerFlags) {
 export class MoveParseUp extends BottomUpOptimizer {
   public run(node: DataFlowNode): OptimizerFlags {
     const parent = node.parent;
-    // move parse up by merging or swapping
+    // Move parse up by merging or swapping.
     if (node instanceof ParseNode) {
-      if (parent instanceof SourceNode) {
+      if (isDataSourceNode(parent)) {
         return this.flags;
       }
 
       if (parent.numChildren() > 1) {
-        // don't move parse further up but continue with parent.
+        // Don't move parse further up but continue with parent.
         this.setContinue();
         return this.flags;
       }
@@ -72,7 +48,7 @@ export class MoveParseUp extends BottomUpOptimizer {
         this.setMutated();
         parent.merge(node);
       } else {
-        // don't swap with nodes that produce something that the parse node depends on (e.g. lookup)
+        // Don't swap with nodes that produce something that the parse node depends on (e.g. lookup).
         if (fieldIntersection(parent.producedFields(), node.dependentFields())) {
           this.setContinue();
           return this.flags;
@@ -168,6 +144,23 @@ export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
 
   public reset(): void {
     this.fields.clear();
+  }
+}
+
+/**
+ * Merge adjacent time unit nodes.
+ */
+export class MergeTimeUnits extends BottomUpOptimizer {
+  public run(node: DataFlowNode): OptimizerFlags {
+    this.setContinue();
+    const parent = node.parent;
+    const timeUnitChildren = parent.children.filter(x => x instanceof TimeUnitNode) as TimeUnitNode[];
+    const combination = timeUnitChildren.pop();
+    for (const timeUnit of timeUnitChildren) {
+      this.setMutated();
+      combination.merge(timeUnit);
+    }
+    return this.flags;
   }
 }
 
@@ -272,49 +265,64 @@ export class RemoveUnnecessaryNodes extends TopDownOptimizer {
 }
 
 /**
- * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
+ * Inserts an intermediate ParseNode containing all non-conflicting parse fields and removes the empty ParseNodes.
+ *
+ * We assume that dependent paths that do not have a parse node can be just merged.
  */
 export class MergeParse extends BottomUpOptimizer {
   public run(node: DataFlowNode): optimizers.OptimizerFlags {
     const parent = node.parent;
-    const parseChildren = parent.children.filter((x): x is ParseNode => x instanceof ParseNode);
+    const originalChildren = [...parent.children];
+    const parseChildren = parent.children.filter((child): child is ParseNode => child instanceof ParseNode);
 
-    if (parseChildren.length > 1) {
-      const commonParse = {};
+    if (parent.numChildren() > 1 && parseChildren.length >= 1) {
+      const commonParse: Parse = {};
+      const conflictingParse = new Set<string>();
       for (const parseNode of parseChildren) {
         const parse = parseNode.parse;
         for (const k of keys(parse)) {
-          if (commonParse[k] === undefined) {
+          if (!(k in commonParse)) {
             commonParse[k] = parse[k];
           } else if (commonParse[k] !== parse[k]) {
-            delete commonParse[k];
+            conflictingParse.add(k);
           }
         }
       }
+
+      for (const field of conflictingParse) {
+        delete commonParse[field];
+      }
+
       if (keys(commonParse).length !== 0) {
         this.setMutated();
         const mergedParseNode = new ParseNode(parent, commonParse);
-        for (const parseNode of parseChildren) {
-          for (const key of keys(commonParse)) {
-            delete parseNode.parse[key];
+        for (const childNode of originalChildren) {
+          if (childNode instanceof ParseNode) {
+            for (const key of keys(commonParse)) {
+              delete childNode.parse[key];
+            }
           }
-          parent.removeChild(parseNode);
-          parseNode.parent = mergedParseNode;
-          if (keys(parseNode.parse).length === 0) {
-            parseNode.remove();
+
+          parent.removeChild(childNode);
+          childNode.parent = mergedParseNode;
+
+          // remove empty parse nodes
+          if (childNode instanceof ParseNode && keys(childNode.parse).length === 0) {
+            childNode.remove();
           }
         }
       }
     }
+
     this.setContinue();
     return this.flags;
   }
 }
 
-export class MergeAggregateNodes extends BottomUpOptimizer {
+export class MergeAggregates extends BottomUpOptimizer {
   public run(node: DataFlowNode): optimizers.OptimizerFlags {
     const parent = node.parent;
-    const aggChildren = parent.children.filter((x): x is AggregateNode => x instanceof AggregateNode);
+    const aggChildren = parent.children.filter((child): child is AggregateNode => child instanceof AggregateNode);
 
     // Object which we'll use to map the fields which an aggregate is grouped by to
     // the set of aggregates with that grouping. This is useful as only aggregates
@@ -323,7 +331,7 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
 
     // Build groupedAggregates
     for (const agg of aggChildren) {
-      const groupBys = hash(keys(agg.groupBy).sort());
+      const groupBys = hash(agg.groupBy);
       if (!(groupBys in groupedAggregates)) {
         groupedAggregates[groupBys] = [];
       }
@@ -346,13 +354,14 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
         }
       }
     }
+
     this.setContinue();
     return this.flags;
   }
 }
 
 /**
- * Merge bin nodes and move bin nodes up through forks but stop at filters and parse as we want them to stay before the bin node.
+ * Merge bin nodes and move them up through forks. Stop at filters and parse as we want them to stay before the bin node.
  */
 export class MergeBins extends BottomUpOptimizer {
   constructor(private model: Model) {
@@ -360,7 +369,7 @@ export class MergeBins extends BottomUpOptimizer {
   }
   public run(node: DataFlowNode): OptimizerFlags {
     const parent = node.parent;
-    const moveBinsUp = !(parent instanceof SourceNode || parent instanceof FilterNode || parent instanceof ParseNode);
+    const moveBinsUp = !(isDataSourceNode(parent) || parent instanceof FilterNode || parent instanceof ParseNode);
 
     const promotableBins: BinNode[] = [];
     const remainingBins: BinNode[] = [];
@@ -394,6 +403,79 @@ export class MergeBins extends BottomUpOptimizer {
       }
       this.setMutated();
     }
+    this.setContinue();
+    return this.flags;
+  }
+}
+
+/**
+ * This optimizer takes output nodes that are at a fork and moves them before the fork.
+ *
+ * The algorithm iterates over the children and tries to find the last output node in a cahin of output nodes.
+ * It then moves all output nodes before that main output node. All other children (and the children of the output nodes)
+ * are inserted after the main output node.
+ */
+export class MergeOutputs extends BottomUpOptimizer {
+  public run(node: DataFlowNode) {
+    const parent = node.parent;
+    const children = [...parent.children];
+    const hasOutputChild = some(children, child => child instanceof OutputNode);
+
+    if (!hasOutputChild || parent.numChildren() <= 1) {
+      this.setContinue();
+      return this.flags;
+    }
+
+    const otherChildren: DataFlowNode[] = [];
+
+    // The output node we will connect all other nodes to
+    // output nodes will be added before, other nodes after
+    let mainOutput: OutputNode;
+
+    for (const child of children) {
+      if (child instanceof OutputNode) {
+        let lastOutput = child;
+
+        while (lastOutput.numChildren() === 1) {
+          const theChild = lastOutput.children[0];
+          if (theChild instanceof OutputNode) {
+            lastOutput = theChild;
+          } else {
+            break;
+          }
+        }
+
+        otherChildren.push(...lastOutput.children);
+
+        if (mainOutput) {
+          // Move the output nodes before the mainOutput. We do this by setting
+          // the parent of the first not to the parent of the main output and
+          // the main output's parent to the last output.
+
+          // note: the child is the first output
+          parent.removeChild(child);
+          child.parent = mainOutput.parent;
+
+          mainOutput.parent.removeChild(mainOutput);
+          mainOutput.parent = lastOutput;
+
+          this.setMutated();
+        } else {
+          mainOutput = lastOutput;
+        }
+      } else {
+        otherChildren.push(child);
+      }
+    }
+
+    if (otherChildren.length) {
+      this.setMutated();
+      for (const child of otherChildren) {
+        child.parent.removeChild(child);
+        child.parent = mainOutput;
+      }
+    }
+
     this.setContinue();
     return this.flags;
   }

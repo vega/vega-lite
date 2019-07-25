@@ -185,6 +185,9 @@ ConditionalStringValueDef:
 
 FieldDef:
   link: "encoding.html#field"
+FieldDefWithoutScale:
+  name: FieldDef
+  link: "encoding.html#field"
 LatLongFieldDef:
   name: FieldDef
   link: "encoding.html#field"
@@ -220,6 +223,8 @@ Axis:
   link: "axis.html"
 Bin:
   link: "bin.html"
+Field:
+  link: "field.html"
 RepeatRef:
   link: "field.html#repeat-ref"
 Legend:
@@ -264,6 +269,8 @@ MultiSelectionConfig:
 IntervalSelectionConfig:
   name: Selection
   link: "selection.html#definition"
+Binding:
+  link: "bind.html"
 BrushConfig:
   name: Mark
   link: "selection.html#interval-mark"
@@ -272,6 +279,9 @@ EventStream:
   link: "https://vega.github.io/vega/docs/event-streams/"
 SelectionResolution:
   link: "selection.html#resolve"
+SelectionInitArrayMapping:
+  name: "Object | Array"
+  link: "selection.html#init"
 
 # Types
 DateTime:

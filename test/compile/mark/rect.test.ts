@@ -5,6 +5,44 @@ import * as log from '../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Rect', () => {
+  describe('simple with width and height', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'rect', width: 50, height: 49},
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {type: 'quantitative', field: 'y'}
+      }
+    });
+    const props = rect.encodeEntry(model);
+
+    it('should draw centered rect ', () => {
+      expect(props.x).toEqual({scale: 'x', field: 'x'});
+      expect(props.width).toEqual({value: 50});
+      expect(props.y).toEqual({scale: 'y', field: 'y'});
+      expect(props.height).toEqual({value: 49});
+    });
+  });
+
+  describe('simple with fixed x2 and y2', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'rect', x2: -1, y2: -2},
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {type: 'quantitative', field: 'y'}
+      }
+    });
+    const props = rect.encodeEntry(model);
+
+    it('should draw centered rect ', () => {
+      expect(props.x).toEqual({scale: 'x', field: 'x'});
+      expect(props.x2).toEqual({value: -1});
+      expect(props.y).toEqual({scale: 'y', field: 'y'});
+      expect(props.y2).toEqual({value: -2});
+    });
+  });
+
   describe('simple vertical', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
@@ -22,6 +60,26 @@ describe('Mark: Rect', () => {
       expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
       expect(props.y2).toEqual({scale: 'y', value: 0});
       expect(props.height).toBeUndefined();
+    });
+  });
+
+  describe('simple vertical 1D', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: 'rect',
+      encoding: {
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
+      }
+    });
+    const props = rect.encodeEntry(model);
+
+    it('should draw bar, with y from zero to field value and x band', () => {
+      expect(props).toMatchObject({
+        x: {field: {group: 'width'}},
+        x2: {value: 0},
+        y: {scale: 'y', field: 'mean_Acceleration'},
+        y2: {scale: 'y', value: 0}
+      });
     });
   });
 
@@ -115,19 +173,19 @@ describe('Mark: Rect', () => {
       data: {url: 'data/cars.json'},
       mark: 'rect',
       encoding: {
-        y: {aggregate: 'min', field: 'Horsepower', type: 'quantitative'},
-        y2: {aggregate: 'max', field: 'Horsepower', type: 'quantitative'},
-        x: {aggregate: 'min', field: 'Acceleration', type: 'quantitative'},
-        x2: {aggregate: 'max', field: 'Acceleration', type: 'quantitative'}
+        y: {field: 'hp1', type: 'quantitative'},
+        y2: {field: 'hp2'},
+        x: {field: 'origin1', type: 'ordinal'},
+        x2: {field: 'origin2'}
       }
     });
     const props = rect.encodeEntry(model);
 
     it('should draw rectangle with x, x2, y, y2', () => {
-      expect(props.x).toEqual({scale: 'x', field: 'min_Acceleration'});
-      expect(props.x2).toEqual({scale: 'x', field: 'max_Acceleration'});
-      expect(props.y).toEqual({scale: 'y', field: 'min_Horsepower'});
-      expect(props.y2).toEqual({scale: 'y', field: 'max_Horsepower'});
+      expect(props.x).toEqual({scale: 'x', field: 'origin1', band: 0.5});
+      expect(props.x2).toEqual({scale: 'x', field: 'origin2', band: 0.5});
+      expect(props.y).toEqual({scale: 'y', field: 'hp1'});
+      expect(props.y2).toEqual({scale: 'y', field: 'hp2'});
     });
   });
 

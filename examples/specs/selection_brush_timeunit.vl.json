@@ -2,11 +2,11 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "data": {
     "values": [
-      {"date": "Sun, 01 Jan 2012 23:00:01","price": 150},
-      {"date": "Sun, 02 Jan 2012 00:10:02","price": 100},
-      {"date": "Sun, 02 Jan 2012 01:20:03","price": 170},
-      {"date": "Sun, 02 Jan 2012 02:30:04","price": 165},
-      {"date": "Sun, 02 Jan 2012 03:40:05","price": 200}
+      {"date": "Sun, 01 Jan 2012 23:00:01", "price": 150},
+      {"date": "Sun, 02 Jan 2012 00:10:02", "price": 100},
+      {"date": "Sun, 02 Jan 2012 01:20:03", "price": 170},
+      {"date": "Sun, 02 Jan 2012 02:30:04", "price": 165},
+      {"date": "Sun, 02 Jan 2012 03:40:05", "price": 200}
     ]
   },
   "hconcat": [{
@@ -20,7 +20,7 @@
         "type": "temporal",
         "timeUnit": "seconds"
       },
-      "y": {"field": "price","type": "quantitative"},
+      "y": {"field": "price", "type": "quantitative"},
       "color": {
         "condition": {"selection": "brush", "value": "goldenrod"},
         "value": "steelblue"
@@ -35,7 +35,7 @@
         "type": "temporal",
         "timeUnit": "minutes"
       },
-      "y": {"field": "price","type": "quantitative"},
+      "y": {"field": "price", "type": "quantitative"},
       "color": {
         "value": "goldenrod"
       }

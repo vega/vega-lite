@@ -2,7 +2,6 @@ import Ajv from 'ajv';
 import {inspect} from 'util';
 
 const specSchema = require('../build/vega-lite-schema.json');
-const metaSchema = require('ajv/lib/refs/json-schema-draft-06.json');
 
 describe('Schema', () => {
   it('should be valid', () => {
@@ -12,7 +11,7 @@ describe('Schema', () => {
       extendRefs: 'fail'
     });
 
-    ajv.addMetaSchema(metaSchema);
+    ajv.addFormat('color-hex', () => true);
 
     // now validate our data against the schema
     const valid = ajv.validateSchema(specSchema);

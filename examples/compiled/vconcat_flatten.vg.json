@@ -32,7 +32,19 @@
     {
       "name": "data_0",
       "source": "source_0",
-      "transform": [{"type": "flatten", "fields": ["lc"], "as": ["lc"]}]
+      "transform": [
+        {"type": "flatten", "fields": ["lc"], "as": ["lc"]},
+        {
+          "type": "formula",
+          "expr": "datum[\"lc\"] && datum[\"lc\"][\"time\"]",
+          "as": "lc.time"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"lc\"] && datum[\"lc\"][\"mag\"]",
+          "as": "lc.mag"
+        }
+      ]
     },
     {
       "name": "data_1",
@@ -55,16 +67,6 @@
       "name": "data_2",
       "source": "data_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "datum[\"lc\"] && datum[\"lc\"][\"time\"]",
-          "as": "lc.time"
-        },
-        {
-          "type": "formula",
-          "expr": "datum[\"lc\"] && datum[\"lc\"][\"mag\"]",
-          "as": "lc.mag"
-        },
         {
           "type": "filter",
           "expr": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))"
@@ -246,7 +248,7 @@
               "name": "concat_1_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"lc.time\"]", "order": "descending"},
+              "sort": {"field": "datum[\"lc.time\"]"},
               "from": {"data": "faceted_path_concat_1_main"},
               "encode": {
                 "update": {

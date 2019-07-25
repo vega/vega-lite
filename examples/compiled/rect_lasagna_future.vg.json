@@ -94,7 +94,7 @@
                 "test": "time(datetime(0, month(datum[\"value\"]), date(datum[\"value\"]), 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))",
                 "value": "black"
               },
-              {"value": "none"}
+              {"value": null}
             ]
           }
         },
@@ -105,7 +105,7 @@
                 "test": "time(datetime(0, month(datum[\"value\"]), date(datum[\"value\"]), 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))",
                 "value": "black"
               },
-              {"value": "none"}
+              {"value": null}
             ]
           }
         }
@@ -121,7 +121,7 @@
       "title": "Price",
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle"
+      "symbolType": "square"
     }
   ]
 }

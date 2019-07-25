@@ -34,7 +34,7 @@
       "name": "marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"wavelength\"]", "order": "descending"},
+      "sort": {"field": "datum[\"wavelength\"]"},
       "from": {"data": "data_0"},
       "encode": {
         "update": {

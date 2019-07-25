@@ -141,7 +141,7 @@ export abstract class Model {
   public readonly title: TitleParams;
   public readonly description: string;
 
-  public readonly data: Data;
+  public readonly data: Data | null;
   public readonly transforms: Transform[];
   public readonly layout: GenericCompositionLayoutWithColumns;
 
@@ -192,8 +192,8 @@ export abstract class Model {
         sources: parent ? parent.component.data.sources : [],
         outputNodes: parent ? parent.component.data.outputNodes : {},
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
-        // data is faceted if the spec is a facet spec or the parent has faceted data and no data is defined
-        isFaceted: isFacetSpec(spec) || (parent && parent.component.data.isFaceted && !spec.data)
+        // data is faceted if the spec is a facet spec or the parent has faceted data and data is undefined
+        isFaceted: isFacetSpec(spec) || (parent && parent.component.data.isFaceted && spec.data === undefined)
       },
       layoutSize: new Split<LayoutSizeIndex>(),
       layoutHeaders: {row: {}, column: {}, facet: {}},
@@ -286,7 +286,7 @@ export abstract class Model {
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
 
-  public assembleGroupStyle(): string {
+  public assembleGroupStyle(): string | string[] {
     if (this.type === 'unit' || this.type === 'layer') {
       return (this.view && this.view.style) || 'cell';
     }
@@ -470,7 +470,9 @@ export abstract class Model {
   }
 
   /**
-   * Request a data source name for the given data source type and mark that data source as required. This method should be called in parse, so that all used data source can be correctly instantiated in assembleData().
+   * Request a data source name for the given data source type and mark that data source as required.
+   * This method should be called in parse, so that all used data source can be correctly instantiated in assembleData().
+   * You can lookup the correct dataset name in assemble with `lookupDataSource`.
    */
   public requestDataName(name: DataSourceType) {
     const fullName = this.getName(name);

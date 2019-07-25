@@ -4,7 +4,7 @@
   "data": {"url": "data/cars.json"},
   "mark": "bar",
   "encoding": {
-    "x": {"field": "Cylinders","type": "nominal", "sort": {"op": "count", "order": "descending"}},
-    "y": {"aggregate": "count","type": "quantitative"}
+    "x": {"field": "Cylinders", "type": "nominal", "sort": {"op": "count", "order": "descending"}},
+    "y": {"aggregate": "count", "type": "quantitative"}
   }
 }

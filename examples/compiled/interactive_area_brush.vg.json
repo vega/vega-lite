@@ -261,7 +261,7 @@
       "name": "layer_0_marks",
       "type": "area",
       "style": ["area"],
-      "sort": {"field": "datum[\"yearmonth_date\"]", "order": "descending"},
+      "sort": {"field": "datum[\"yearmonth_date\"]"},
       "from": {"data": "data_0"},
       "encode": {
         "update": {
@@ -283,7 +283,7 @@
       "name": "layer_1_marks",
       "type": "area",
       "style": ["area"],
-      "sort": {"field": "datum[\"yearmonth_date\"]", "order": "descending"},
+      "sort": {"field": "datum[\"yearmonth_date\"]"},
       "from": {"data": "data_1"},
       "encode": {
         "update": {

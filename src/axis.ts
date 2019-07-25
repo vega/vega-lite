@@ -3,6 +3,7 @@ import {
   Axis as VgAxis,
   AxisOrient,
   BaseAxis,
+  Color,
   FontStyle,
   FontWeight,
   LabelOverlap,
@@ -11,8 +12,8 @@ import {
 } from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {Flag, flagKeys} from './util';
-import {Color, LayoutAlign} from './vega.schema';
+import {Flag, keys} from './util';
+import {LayoutAlign} from './vega.schema';
 
 type BaseAxisNoSignals = AxisMixins &
   BaseAxis<
@@ -106,7 +107,7 @@ export interface Axis extends AxisOrientMixins, BaseAxisNoSignals, Guide {
   values?: number[] | string[] | boolean[] | DateTime[];
 
   /**
-   * A non-positive integer indicating z-index of the axis.
+   * A non-negative integer indicating the z-index of the axis.
    * If zindex is 0, axes should be drawn behind all chart elements.
    * To put them in front, use `"zindex = 1"`.
    *
@@ -134,7 +135,7 @@ export const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'tit
  */
 export const AXIS_PROPERTY_TYPE: {
   // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-  [k in keyof VgAxis]: 'main' | 'grid' | 'both'
+  [k in keyof VgAxis]: 'main' | 'grid' | 'both';
 } = {
   grid: 'grid',
   gridColor: 'grid',
@@ -317,10 +318,10 @@ export function isAxisProperty(prop: string): prop is keyof Axis {
   return !!AXIS_PROPERTIES_INDEX[prop];
 }
 
-export const VG_AXIS_PROPERTIES = flagKeys(VG_AXIS_PROPERTIES_INDEX);
+export const VG_AXIS_PROPERTIES = keys(VG_AXIS_PROPERTIES_INDEX);
 
 // Export for dependent projects
-export const AXIS_PROPERTIES = flagKeys(AXIS_PROPERTIES_INDEX);
+export const AXIS_PROPERTIES = keys(AXIS_PROPERTIES_INDEX);
 
 export interface AxisConfigMixins {
   /**

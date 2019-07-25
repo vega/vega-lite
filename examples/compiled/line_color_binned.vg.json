@@ -64,7 +64,7 @@
           "name": "marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"Year\"]", "order": "descending"},
+          "sort": {"field": "datum[\"Year\"]"},
           "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {

@@ -1,10 +1,11 @@
+import {Color} from 'vega';
 import {isArray, isNumber} from 'vega-util';
 import {Config} from '../config';
 import {Data} from '../data';
 import {Resolve} from '../resolve';
 import {TitleParams} from '../title';
 import {Transform} from '../transform';
-import {Flag, flagKeys} from '../util';
+import {Flag, keys} from '../util';
 import {BaseMarkConfig, LayoutAlign, RowCol} from '../vega.schema';
 import {isConcatSpec} from './concat';
 import {isFacetMapping, isFacetSpec} from './facet';
@@ -16,7 +17,7 @@ export {TopLevel} from './toplevel';
 /**
  * Common properties for all types of specification
  */
-export type BaseSpec = Partial<DataMixins> & {
+export interface BaseSpec {
   /**
    * Title for the plot.
    */
@@ -33,19 +34,19 @@ export type BaseSpec = Partial<DataMixins> & {
   description?: string;
 
   /**
-   * An object describing the data source
+   * An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent.
    */
-  data?: Data;
+  data?: Data | null;
 
   /**
    * An array of data transformations such as filter and new field calculation.
    */
   transform?: Transform[];
-};
+}
 
 export interface DataMixins {
   /**
-   * An object describing the data source
+   * An object describing the data source.
    */
   data: Data;
 }
@@ -123,14 +124,14 @@ export interface BaseViewBackground
    *
    * __Default value:__ `undefined`
    */
-  fill?: string | null;
+  fill?: Color | null;
 
   /**
    * The stroke color.
    *
    * __Default value:__ `"#ddd"`
    */
-  stroke?: string | null;
+  stroke?: Color | null;
 }
 
 export interface ViewBackground extends BaseViewBackground {
@@ -140,7 +141,7 @@ export interface ViewBackground extends BaseViewBackground {
    * __Default value:__ `"cell"`
    * __Note:__ Any specified view background properties will augment the default style.
    */
-  style?: string;
+  style?: string | string[];
 }
 
 export interface BoundsMixins {
@@ -245,7 +246,7 @@ const COMPOSITION_LAYOUT_INDEX: Flag<keyof GenericCompositionLayoutWithColumns> 
   spacing: 1
 };
 
-const COMPOSITION_LAYOUT_PROPERTIES = flagKeys(COMPOSITION_LAYOUT_INDEX);
+const COMPOSITION_LAYOUT_PROPERTIES = keys(COMPOSITION_LAYOUT_INDEX);
 
 export type SpecType = 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
 

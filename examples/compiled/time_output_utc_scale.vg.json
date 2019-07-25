@@ -35,10 +35,7 @@
       "name": "marks",
       "type": "line",
       "style": ["line"],
-      "sort": {
-        "field": "datum[\"yearmonthdatehoursminutes_date\"]",
-        "order": "descending"
-      },
+      "sort": {"field": "datum[\"yearmonthdatehoursminutes_date\"]"},
       "from": {"data": "data_0"},
       "encode": {
         "update": {

@@ -1,9 +1,10 @@
 import {isArray, isString} from 'vega-util';
 import {FieldName, getTypedFieldDef, isFieldDef, TypedFieldDef, vgField} from '../../channeldef';
+import {SortFields, SortOrder} from '../../sort';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate, getFirstDefined, hash} from '../../util';
-import {VgComparatorOrder, VgCompare, VgTransform} from '../../vega.schema';
+import {VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
@@ -46,7 +47,7 @@ export interface StackComponent {
    * Field that determines order of levels in the stacked charts.
    * Used in both but optional in transform.
    */
-  sort: VgCompare;
+  sort: SortFields;
 
   /** Mode for stacking marks.
    */
@@ -88,14 +89,14 @@ export class StackNode extends DataFlowNode {
     const {stack, groupby, as, offset = 'zero'} = stackTransform;
 
     const sortFields: string[] = [];
-    const sortOrder: VgComparatorOrder[] = [];
+    const sortOrder: SortOrder[] = [];
     if (stackTransform.sort !== undefined) {
       for (const sortField of stackTransform.sort) {
         sortFields.push(sortField.field);
         sortOrder.push(getFirstDefined(sortField.order, 'ascending'));
       }
     }
-    const sort: VgCompare = {
+    const sort: SortFields = {
       field: sortFields,
       order: sortOrder
     };
@@ -135,7 +136,7 @@ export class StackNode extends DataFlowNode {
     const stackby = getStackByFields(model);
     const orderDef = model.encoding.order;
 
-    let sort: VgCompare;
+    let sort: SortFields;
     if (isArray(orderDef) || isFieldDef(orderDef)) {
       sort = sortParams(orderDef);
     } else {
@@ -179,10 +180,9 @@ export class StackNode extends DataFlowNode {
 
     out.add(this._stack.stackField);
 
-    this.getGroupbyFields().forEach(out.add);
-    this._stack.facetby.forEach(out.add);
-    const field = this._stack.sort.field as string;
-    isArray(field) ? field.forEach(out.add) : out.add(field);
+    this.getGroupbyFields().forEach(f => out.add(f));
+    this._stack.facetby.forEach(f => out.add(f));
+    this._stack.sort.field.forEach(f => out.add(f));
 
     return out;
   }
@@ -227,11 +227,10 @@ export class StackNode extends DataFlowNode {
         transform.push({
           type: 'formula',
           expr:
-            '(' +
+            '0.5*' +
             vgField(dimensionFieldDef, {expr: 'datum'}) +
-            '+' +
-            vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
-            ')/2',
+            '+0.5*' +
+            vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}),
           as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true})
         });
       }

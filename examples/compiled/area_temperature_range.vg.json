@@ -35,7 +35,7 @@
       "name": "marks",
       "type": "area",
       "style": ["area"],
-      "sort": {"field": "datum[\"monthdate_date\"]", "order": "descending"},
+      "sort": {"field": "datum[\"monthdate_date\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

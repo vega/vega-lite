@@ -87,8 +87,15 @@ export function findSource(data: Data, sources: SourceNode[]) {
 }
 
 function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
-  if (model.data || !model.parent) {
+  if (model.data !== undefined || !model.parent) {
     // if the model defines a data source or is the root, create a source node
+
+    if (model.data === null) {
+      // data: null means we should ignore the parent's data so we just create a new data source
+      const source = new SourceNode([]);
+      sources.push(source);
+      return source;
+    }
 
     const existingSource = findSource(model.data, sources);
 
@@ -137,15 +144,14 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       transformNode = head = BinNode.makeFromTransform(head, t, model);
       derivedType = 'number';
     } else if (isTimeUnit(t)) {
-      transformNode = head = TimeUnitNode.makeFromTransform(head, t);
       derivedType = 'date';
-
-      // Create parse node because the input to time unit is always date.
       const parsedAs = ancestorParse.getWithExplicit(t.field);
+      // Create parse node because the input to time unit is always date.
       if (parsedAs.value === undefined) {
         head = new ParseNode(head, {[t.field]: derivedType});
         ancestorParse.set(t.field, derivedType, false);
       }
+      transformNode = head = TimeUnitNode.makeFromTransform(head, t);
     } else if (isAggregate(t)) {
       transformNode = head = AggregateNode.makeFromTransform(head, t);
       derivedType = 'number';

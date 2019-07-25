@@ -99,6 +99,10 @@ export function getCompositeMarkTooltip(
   encodingWithoutContinuousAxis: Encoding<string>,
   withFieldName: boolean = true
 ): Encoding<string> {
+  if ('tooltip' in encodingWithoutContinuousAxis) {
+    return {tooltip: encodingWithoutContinuousAxis.tooltip};
+  }
+
   const fiveSummaryTooltip: TextFieldDef<string>[] = tooltipSummary.map(
     ({fieldPrefix, titlePrefix}): TextFieldDef<string> => ({
       field: fieldPrefix + continuousAxisChannelDef.field,

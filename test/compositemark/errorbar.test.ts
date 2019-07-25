@@ -426,8 +426,7 @@ describe('normalizeErrorBar with raw data input', () => {
       {
         data: {url: 'data/population.json'},
         mark: {
-          type: 'errorbar',
-          point: false
+          type: 'errorbar'
         },
         encoding: {
           x: {
@@ -756,7 +755,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
           encoding: {
             x: {field: 'age', type: 'ordinal'},
             y: {field: 'people', type: 'quantitative'},
-            y2: {field: 'people2', type: 'quantitative'}
+            y2: {field: 'people2'}
           }
         },
         defaultConfig
@@ -797,7 +796,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
         encoding: {
           y: {field: 'age', type: 'ordinal'},
           x: {field: 'people', type: 'quantitative'},
-          x2: {field: 'people2', type: 'quantitative'}
+          x2: {field: 'people2'}
         }
       },
       defaultConfig
@@ -854,7 +853,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
           encoding: {
             x: {field: 'age', type: 'ordinal'},
             y: {field: 'people', type: 'quantitative'},
-            y2: {field: 'people2', type: 'quantitative'}
+            y2: {field: 'people2'}
           }
         },
         defaultConfig
@@ -872,9 +871,9 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
           mark,
           encoding: {
             x: {field: 'age', type: 'quantitative'},
-            x2: {field: 'age2', type: 'quantitative'},
+            x2: {field: 'age2'},
             y: {field: 'people', type: 'quantitative'},
-            y2: {field: 'people2', type: 'quantitative'}
+            y2: {field: 'people2'}
           }
         },
         defaultConfig
@@ -894,7 +893,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
           encoding: {
             x: {field: 'age', type: 'ordinal'},
             y: {field: 'people', type: 'quantitative'},
-            y2: {field: 'people2', type: 'quantitative', aggregate}
+            y2: {field: 'people2', aggregate}
           }
         },
         defaultConfig
@@ -912,7 +911,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
         encoding: {
           x: {field: 'age', type: 'ordinal'},
           y: {field: 'people', type: 'quantitative'},
-          y2: {field: 'people2', type: 'quantitative'}
+          y2: {field: 'people2'}
         }
       },
       defaultConfig
@@ -947,7 +946,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
           encoding: {
             x: {field: 'age', type: 'ordinal'},
             y: {field: 'people', type: 'quantitative'},
-            yError: {field: 'people_error', type: 'quantitative'}
+            yError: {field: 'people_error'}
           }
         },
         defaultConfig
@@ -989,7 +988,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
         encoding: {
           y: {field: 'age', type: 'ordinal'},
           x: {field: 'people', type: 'quantitative'},
-          xError: {field: 'people_error', type: 'quantitative'}
+          xError: {field: 'people_error'}
         }
       },
       defaultConfig
@@ -1037,8 +1036,8 @@ describe('normalizeErrorBar with aggregated error input', () => {
         encoding: {
           y: {field: 'age', type: 'ordinal'},
           x: {field: 'people', type: 'quantitative'},
-          xError: {field: 'people_error', type: 'quantitative'},
-          xError2: {field: 'people_error2', type: 'quantitative'}
+          xError: {field: 'people_error'},
+          xError2: {field: 'people_error2'}
         }
       },
       defaultConfig
@@ -1088,7 +1087,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
           encoding: {
             x: {field: 'age', type: 'ordinal'},
             y: {field: 'people', type: 'quantitative'},
-            yError: {field: 'people_error', type: 'quantitative'}
+            yError: {field: 'people_error'}
           }
         },
         defaultConfig
@@ -1106,9 +1105,9 @@ describe('normalizeErrorBar with aggregated error input', () => {
           mark,
           encoding: {
             x: {field: 'age', type: 'quantitative'},
-            xError: {field: 'age', type: 'quantitative'},
+            xError: {field: 'age'},
             y: {field: 'people', type: 'quantitative'},
-            yError: {field: 'people_errpr', type: 'quantitative'}
+            yError: {field: 'people_errpr'}
           }
         },
         defaultConfig
@@ -1124,7 +1123,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
           mark,
           encoding: {
             x: {field: 'age', type: 'quantitative'},
-            xError2: {field: 'age', type: 'quantitative'},
+            xError2: {field: 'age'},
             y: {field: 'people', type: 'quantitative'}
           }
         },
@@ -1141,7 +1140,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
           mark,
           encoding: {
             x: {field: 'age', type: 'quantitative'},
-            yError2: {field: 'people_error2', type: 'quantitative'},
+            yError2: {field: 'people_error2'},
             y: {field: 'people', type: 'quantitative'}
           }
         },
@@ -1162,7 +1161,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
           encoding: {
             x: {field: 'age', type: 'ordinal'},
             y: {field: 'people', type: 'quantitative'},
-            yError: {field: 'people_error', type: 'quantitative', aggregate}
+            yError: {field: 'people_error', aggregate}
           }
         },
         defaultConfig
@@ -1180,8 +1179,8 @@ describe('normalizeErrorBar with aggregated error input', () => {
           mark,
           encoding: {
             x: {field: 'age', type: 'quantitative'},
-            xError: {field: 'people_error', type: 'ordinal'},
-            x2: {field: 'people_error2', type: 'quantitative'},
+            xError: {field: 'people_error'},
+            x2: {field: 'people_error2'},
             y: {field: 'people', type: 'quantitative'}
           }
         },
@@ -1198,7 +1197,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
         encoding: {
           x: {field: 'age', type: 'ordinal'},
           y: {field: 'people', type: 'quantitative'},
-          yError: {field: 'people_error', type: 'quantitative'}
+          yError: {field: 'people_error'}
         }
       },
       defaultConfig
@@ -1227,8 +1226,8 @@ describe('normalizeErrorBar with aggregated error input', () => {
         encoding: {
           x: {field: 'age', type: 'ordinal'},
           y: {field: 'people', type: 'quantitative'},
-          yError: {field: 'people_error', type: 'quantitative'},
-          yError2: {field: 'people_error2', type: 'quantitative'}
+          yError: {field: 'people_error'},
+          yError2: {field: 'people_error2'}
         }
       },
       defaultConfig

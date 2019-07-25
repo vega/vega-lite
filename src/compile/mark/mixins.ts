@@ -1,6 +1,6 @@
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
-import {Channel, NonPositionScaleChannel, SCALE_CHANNELS, ScaleChannel, X, X2, Y2} from '../../channel';
+import {Channel, NonPositionScaleChannel, ScaleChannel, SCALE_CHANNELS, X, X2, Y2} from '../../channel';
 import {
   ChannelDef,
   getTypedFieldDef,
@@ -12,11 +12,11 @@ import {
   ValueDef
 } from '../../channeldef';
 import * as log from '../../log';
-import {isPathMark, Mark, MarkDef} from '../../mark';
+import {isPathMark, Mark, MarkConfig, MarkDef} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
 import {contains, Dict, getFirstDefined, keys} from '../../util';
-import {VG_MARK_CONFIGS, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../../vega.schema';
-import {getMarkConfig} from '../common';
+import {VgEncodeChannel, VgEncodeEntry, VgValueRef, VG_MARK_CONFIGS} from '../../vega.schema';
+import {getMarkConfig, getStyleConfig} from '../common';
 import {expression} from '../predicate';
 import {assembleSelectionPredicate} from '../selection/assemble';
 import {UnitModel} from '../unit';
@@ -243,7 +243,7 @@ export function nonPosition(
 }
 
 /**
- * Return a mixin that include a Vega production rule for a Vega-Lite conditional channel definition.
+ * Return a mixin that includes a Vega production rule for a Vega-Lite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
 export function wrapCondition(
@@ -489,36 +489,69 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
   const {encoding, mark, markDef, stack, config} = model;
 
   const baseChannel = channel === 'x2' ? 'x' : 'y';
+  const sizeChannel = channel === 'x2' ? 'width' : 'height';
+
   const channelDef = encoding[baseChannel];
   const scaleName = model.scaleName(baseChannel);
   const scale = model.getScaleComponent(baseChannel);
 
   const offset = ref.getOffset(channel, model.markDef);
 
-  const valueRef =
-    !channelDef && (encoding.latitude || encoding.longitude)
-      ? // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
-        {field: model.getName(channel)}
-      : ref.position2({
-          channel,
-          channelDef,
-          channel2Def: encoding[channel],
-          scaleName,
-          scale,
-          stack,
-          mark,
-          offset,
-          defaultRef: ref.positionDefault({
-            markDef,
-            config,
-            defaultRef,
-            channel,
-            scaleName,
-            scale,
-            mark,
-            checkBarAreaWithoutZero: !encoding[channel] // only check for non-ranged marks
-          })
-        });
+  if (!channelDef && (encoding.latitude || encoding.longitude)) {
+    // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
+    return {[channel]: {field: model.getName(channel)}};
+  }
 
-  return {[channel]: valueRef};
+  const valueRef = ref.position2({
+    channel,
+    channelDef,
+    channel2Def: encoding[channel],
+    scaleName,
+    scale,
+    stack,
+    mark,
+    offset,
+    defaultRef: undefined
+  });
+
+  if (valueRef !== undefined) {
+    return {[channel]: valueRef};
+  }
+
+  // TODO: check width/height encoding here once we add them
+
+  // no x2/y2 encoding, then try to read x2/y2 or width/height based on precedence:
+  // markDef > config.style > mark-specific config (config[mark]) > general mark config (config.mark)
+
+  return getFirstDefined<VgEncodeEntry>(
+    position2orSize(channel, markDef),
+    position2orSize(channel, {
+      [channel]: getStyleConfig(channel, markDef, config.style),
+      [sizeChannel]: getStyleConfig(sizeChannel, markDef, config.style)
+    }),
+    position2orSize(channel, config[mark]),
+    position2orSize(channel, config.mark),
+    {
+      [channel]: ref.positionDefault({
+        markDef,
+        config,
+        defaultRef,
+        channel,
+        scaleName,
+        scale,
+        mark,
+        checkBarAreaWithoutZero: !encoding[channel] // only check for non-ranged marks
+      })()
+    }
+  );
+}
+
+function position2orSize(channel: 'x2' | 'y2', markDef: MarkConfig) {
+  const sizeChannel = channel === 'x2' ? 'width' : 'height';
+  if (markDef[channel]) {
+    return {[channel]: ref.vgValueRef(channel, markDef[channel])};
+  } else if (markDef[sizeChannel]) {
+    return {[sizeChannel]: {value: markDef[sizeChannel]}};
+  }
+  return undefined;
 }

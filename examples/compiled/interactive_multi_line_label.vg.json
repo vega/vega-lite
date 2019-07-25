@@ -111,7 +111,7 @@
           "name": "layer_0_layer_0_marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"date\"]", "order": "descending"},
+          "sort": {"field": "datum[\"date\"]"},
           "from": {"data": "faceted_path_layer_0_layer_0_main"},
           "encode": {
             "update": {
@@ -342,13 +342,6 @@
           "update": {"fill": {"value": "transparent"}, "opacity": {"value": 1}}
         }
       }
-    },
-    {
-      "fill": "fill",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
-      "title": "symbol",
-      "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }
   ]
 }

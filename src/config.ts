@@ -206,7 +206,7 @@ export const defaultConfig: Config = {
   geoshape: {},
   line: {},
   point: {},
-  rect: {},
+  rect: mark.defaultRectConfig,
   rule: {color: 'black'}, // Need this to override default color in mark config
   square: {},
   text: {color: 'black'}, // Need this to override default color in mark config

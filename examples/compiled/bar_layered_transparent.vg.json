@@ -118,13 +118,9 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
+      "symbolType": "square",
       "title": "gender",
-      "encode": {
-        "symbols": {
-          "update": {"shape": {"value": "square"}, "opacity": {"value": 0.7}}
-        }
-      }
+      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
     }
   ]
 }

@@ -19,8 +19,8 @@
           "type": "aggregate",
           "groupby": ["month_date", "location"],
           "ops": ["mean", "mean", "mean"],
-          "fields": ["wind", "temp_max", "precipitation"],
-          "as": ["mean_wind", "mean_temp_max", "mean_precipitation"]
+          "fields": ["precipitation", "wind", "temp_max"],
+          "as": ["mean_precipitation", "mean_wind", "mean_temp_max"]
         }
       ]
     }
@@ -56,7 +56,7 @@
               "name": "child__repeat_repeat_temp_max_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
+              "sort": {"field": "datum[\"month_date\"]"},
               "from": {
                 "data": "faceted_path_child__repeat_repeat_temp_max_main"
               },
@@ -163,7 +163,7 @@
               "name": "child__repeat_repeat_precipitation_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
+              "sort": {"field": "datum[\"month_date\"]"},
               "from": {
                 "data": "faceted_path_child__repeat_repeat_precipitation_main"
               },
@@ -270,7 +270,7 @@
               "name": "child__repeat_repeat_wind_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
+              "sort": {"field": "datum[\"month_date\"]"},
               "from": {"data": "faceted_path_child__repeat_repeat_wind_main"},
               "encode": {
                 "update": {

@@ -65,7 +65,7 @@
       "name": "layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"yearmonthdate_date\"]", "order": "descending"},
+      "sort": {"field": "datum[\"yearmonthdate_date\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -85,7 +85,7 @@
       "name": "layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"yearmonthdate_date\"]", "order": "descending"},
+      "sort": {"field": "datum[\"yearmonthdate_date\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

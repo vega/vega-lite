@@ -9,7 +9,7 @@
     {
       "name": "source_0",
       "url": "data/movies.json",
-      "format": {"type": "json"},
+      "format": {"type": "json", "parse": {"IMDB_Rating": "number"}},
       "transform": [
         {
           "type": "window",
@@ -28,7 +28,7 @@
       "name": "marks",
       "type": "area",
       "style": ["area"],
-      "sort": {"field": "datum[\"IMDB_Rating\"]", "order": "descending"},
+      "sort": {"field": "datum[\"IMDB_Rating\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

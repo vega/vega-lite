@@ -155,7 +155,7 @@
                   "value": 0
                 },
                 {
-                  "signal": "scale(\"concat_0_x\", (datum[\"bin_maxbins_10_IMDB_Rating\"] + datum[\"bin_maxbins_10_IMDB_Rating_end\"]) / 2)"
+                  "signal": "scale(\"concat_0_x\", 0.5 * datum[\"bin_maxbins_10_IMDB_Rating\"] + 0.5 * datum[\"bin_maxbins_10_IMDB_Rating_end\"])"
                 }
               ],
               "y": [
@@ -164,7 +164,7 @@
                   "field": {"group": "height"}
                 },
                 {
-                  "signal": "scale(\"concat_0_y\", (datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] + datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"]) / 2)"
+                  "signal": "scale(\"concat_0_y\", 0.5 * datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] + 0.5 * datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"])"
                 }
               ],
               "size": {"scale": "size", "field": "__count"},
@@ -189,7 +189,7 @@
                   "value": 0
                 },
                 {
-                  "signal": "scale(\"concat_0_x\", (datum[\"bin_maxbins_10_IMDB_Rating\"] + datum[\"bin_maxbins_10_IMDB_Rating_end\"]) / 2)"
+                  "signal": "scale(\"concat_0_x\", 0.5 * datum[\"bin_maxbins_10_IMDB_Rating\"] + 0.5 * datum[\"bin_maxbins_10_IMDB_Rating_end\"])"
                 }
               ],
               "y": [
@@ -198,7 +198,7 @@
                   "field": {"group": "height"}
                 },
                 {
-                  "signal": "scale(\"concat_0_y\", (datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] + datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"]) / 2)"
+                  "signal": "scale(\"concat_0_y\", 0.5 * datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] + 0.5 * datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"])"
                 }
               ],
               "size": {"scale": "size", "field": "__count"},
@@ -238,7 +238,6 @@
             "symbols": {
               "update": {
                 "fill": {"value": "#4c78a8"},
-                "shape": {"value": "circle"},
                 "opacity": {"value": 0.4},
                 "stroke": {"value": "transparent"}
               }
@@ -254,7 +253,6 @@
             "symbols": {
               "update": {
                 "fill": {"value": "#4c78a8"},
-                "shape": {"value": "circle"},
                 "stroke": {"value": "transparent"}
               }
             }

@@ -2,17 +2,12 @@ import {isNumber, isString} from 'vega-util';
 import {AncestorParse} from '.';
 import {isMinMaxOp} from '../../aggregate';
 import {getMainRangeChannel, SingleDefChannel} from '../../channel';
-import {
-  isNumberFieldDef,
-  isScaleFieldDef,
-  isTimeFormatFieldDef,
-  isTypedFieldDef,
-  TypedFieldDef
-} from '../../channeldef';
+import {isFieldDef, isScaleFieldDef, isTimeFormatFieldDef, isTypedFieldDef, TypedFieldDef} from '../../channeldef';
 import {isGenerator, Parse} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import * as log from '../../log';
 import {forEachLeaf} from '../../logical';
+import {isPathMark} from '../../mark';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
@@ -147,7 +142,10 @@ export class ParseNode extends DataFlowNode {
     function add(fieldDef: TypedFieldDef<string>) {
       if (isTimeFormatFieldDef(fieldDef)) {
         implicit[fieldDef.field] = 'date';
-      } else if (isNumberFieldDef(fieldDef) && isMinMaxOp(fieldDef.aggregate)) {
+      } else if (
+        fieldDef.type === 'quantitative' &&
+        isMinMaxOp(fieldDef.aggregate) // we need to parse numbers to support correct min and max
+      ) {
         implicit[fieldDef.field] = 'number';
       } else if (accessPathDepth(fieldDef.field) > 1) {
         // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
@@ -170,20 +168,35 @@ export class ParseNode extends DataFlowNode {
           add(fieldDef);
         } else {
           const mainChannel = getMainRangeChannel(channel);
-          if (mainChannel !== channel) {
-            const mainFieldDef = model.fieldDef(mainChannel as SingleDefChannel) as TypedFieldDef<string>;
-            add({
-              ...fieldDef,
-              type: mainFieldDef.type
-            });
-          } else {
-            throw new Error(
-              `Non-secondary channel ${channel} must have type in its field definition ${JSON.stringify(fieldDef)}`
-            );
-          }
+          const mainFieldDef = model.fieldDef(mainChannel as SingleDefChannel) as TypedFieldDef<string>;
+          add({
+            ...fieldDef,
+            type: mainFieldDef.type
+          });
         }
       });
     }
+
+    // Parse quantitative dimension fields of path marks as numbers so that we sort them correctly.
+    if (isUnitModel(model)) {
+      const {mark, markDef, encoding} = model;
+      if (
+        isPathMark(mark) &&
+        // No need to sort by dimension if we have a connected scatterplot (order channel is present)
+        !model.encoding.order
+      ) {
+        const dimensionChannel = markDef.orient === 'horizontal' ? 'y' : 'x';
+        const dimensionChannelDef = encoding[dimensionChannel];
+        if (
+          isFieldDef(dimensionChannelDef) &&
+          dimensionChannelDef.type === 'quantitative' &&
+          !(dimensionChannelDef.field in implicit)
+        ) {
+          implicit[dimensionChannelDef.field] = 'number';
+        }
+      }
+    }
+
     return this.makeWithAncestors(parent, {}, implicit, ancestorParse);
   }
 

@@ -176,7 +176,7 @@ describe('compile/data/stack', () => {
       expect(assemble(model)).toEqual([
         {
           type: 'formula',
-          expr: '(datum["bin_maxbins_10_b"]+datum["bin_maxbins_10_b_end"])/2',
+          expr: '0.5*datum["bin_maxbins_10_b"]+0.5*datum["bin_maxbins_10_b_end"]',
           as: 'bin_maxbins_10_b_mid'
         },
         {
@@ -285,6 +285,7 @@ describe('compile/data/stack', () => {
       ]);
     });
   });
+
   describe('StackNode.producedFields', () => {
     it('should give producedfields correctly', () => {
       const transform: Transform = {
@@ -328,6 +329,31 @@ describe('compile/data/stack', () => {
       const parent = new DataFlowNode(null);
       const stack = new StackNode(parent, null);
       expect(stack.clone().parent).toBeNull();
+    });
+  });
+
+  describe('StackNode.dependentFields', () => {
+    it('should give dependentFields correctly', () => {
+      const transform: Transform = {
+        stack: 'foo',
+        groupby: ['bar', 'baz'],
+        as: 'qux'
+      };
+      const stack = StackNode.makeFromTransform(null, transform);
+      expect(stack.dependentFields()).toEqual(new Set(['foo', 'bar', 'baz']));
+    });
+
+    it('should give dependentFields correctly when derived from encoding channel', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'bar',
+        encoding: {
+          x: {aggregate: 'sum', field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'nominal'},
+          color: {field: 'c', type: 'ordinal'}
+        }
+      });
+      const stack = StackNode.makeFromEncoding(null, model);
+      expect(stack.dependentFields()).toEqual(new Set(['sum_a', 'b', 'c']));
     });
   });
 });

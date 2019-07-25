@@ -60,24 +60,11 @@
                 },
                 "y2": {"field": "lower_box_people", "type": "quantitative"},
                 "x": {"field": "age", "type": "ordinal"},
-                "tooltip": [
-                  {
-                    "field": "upper_whisker_people",
-                    "type": "quantitative",
-                    "title": "Upper Whisker of people"
-                  },
-                  {
-                    "field": "lower_whisker_people",
-                    "type": "quantitative",
-                    "title": "Lower Whisker of people"
-                  },
-                  {"field": "age", "type": "ordinal"},
-                  {
-                    "title": "Mean of people",
-                    "type": "quantitative",
-                    "field": "mean_people"
-                  }
-                ]
+                "tooltip": {
+                  "title": "Mean of people",
+                  "type": "quantitative",
+                  "field": "mean_people"
+                }
               }
             },
             {
@@ -90,24 +77,11 @@
                 },
                 "y2": {"field": "upper_whisker_people", "type": "quantitative"},
                 "x": {"field": "age", "type": "ordinal"},
-                "tooltip": [
-                  {
-                    "field": "upper_whisker_people",
-                    "type": "quantitative",
-                    "title": "Upper Whisker of people"
-                  },
-                  {
-                    "field": "lower_whisker_people",
-                    "type": "quantitative",
-                    "title": "Lower Whisker of people"
-                  },
-                  {"field": "age", "type": "ordinal"},
-                  {
-                    "title": "Mean of people",
-                    "type": "quantitative",
-                    "field": "mean_people"
-                  }
-                ]
+                "tooltip": {
+                  "title": "Mean of people",
+                  "type": "quantitative",
+                  "field": "mean_people"
+                }
               }
             }
           ]
@@ -139,39 +113,11 @@
             },
             "y2": {"field": "upper_box_people", "type": "quantitative"},
             "x": {"field": "age", "type": "ordinal"},
-            "tooltip": [
-              {
-                "field": "max_people",
-                "type": "quantitative",
-                "title": "Max of people"
-              },
-              {
-                "field": "upper_box_people",
-                "type": "quantitative",
-                "title": "Q3 of people"
-              },
-              {
-                "field": "mid_box_people",
-                "type": "quantitative",
-                "title": "Median of people"
-              },
-              {
-                "field": "lower_box_people",
-                "type": "quantitative",
-                "title": "Q1 of people"
-              },
-              {
-                "field": "min_people",
-                "type": "quantitative",
-                "title": "Min of people"
-              },
-              {"field": "age", "type": "ordinal"},
-              {
-                "title": "Mean of people",
-                "type": "quantitative",
-                "field": "mean_people"
-              }
-            ]
+            "tooltip": {
+              "title": "Mean of people",
+              "type": "quantitative",
+              "field": "mean_people"
+            }
           }
         },
         {
@@ -189,39 +135,11 @@
               "title": "people"
             },
             "x": {"field": "age", "type": "ordinal"},
-            "tooltip": [
-              {
-                "field": "max_people",
-                "type": "quantitative",
-                "title": "Max of people"
-              },
-              {
-                "field": "upper_box_people",
-                "type": "quantitative",
-                "title": "Q3 of people"
-              },
-              {
-                "field": "mid_box_people",
-                "type": "quantitative",
-                "title": "Median of people"
-              },
-              {
-                "field": "lower_box_people",
-                "type": "quantitative",
-                "title": "Q1 of people"
-              },
-              {
-                "field": "min_people",
-                "type": "quantitative",
-                "title": "Min of people"
-              },
-              {"field": "age", "type": "ordinal"},
-              {
-                "title": "Mean of people",
-                "type": "quantitative",
-                "field": "mean_people"
-              }
-            ]
+            "tooltip": {
+              "title": "Mean of people",
+              "type": "quantitative",
+              "field": "mean_people"
+            }
           }
         }
       ]

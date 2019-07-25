@@ -1,36 +1,10 @@
-import {DataFlowNode, OutputNode} from '../../../src/compile/data/dataflow';
+import {OutputNode} from '../../../src/compile/data/dataflow';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
-import {MergeParse} from '../../../src/compile/data/optimizers';
 import {SourceNode} from '../../../src/compile/data/source';
+import {parseLayerModel} from '../../util';
 
 describe('compile/data/optimize', () => {
-  describe('mergeParse', () => {
-    it('should merge non-conflicting ParseNodes', () => {
-      const root = new DataFlowNode(null, 'root');
-      const parse1 = new ParseNode(root, {a: 'number', b: 'string'});
-      new ParseNode(root, {b: 'string', c: 'boolean'});
-      const optimizer = new MergeParse();
-      optimizer.run(parse1);
-      expect(root.children.length).toEqual(1);
-      const mergedParseNode = root.children[0] as ParseNode;
-      expect(mergedParseNode.parse).toEqual({a: 'number', b: 'string', c: 'boolean'});
-    });
-
-    it('should not merge conflicting ParseNodes', () => {
-      const root = new DataFlowNode(null, 'root');
-      const parse1 = new ParseNode(root, {a: 'number', b: 'string'});
-      new ParseNode(root, {a: 'boolean', d: 'date'});
-      const optimizer = new MergeParse();
-      optimizer.run(parse1);
-      expect(root.children.length).toEqual(1);
-      const mergedParseNode = root.children[0] as ParseNode;
-      expect(mergedParseNode.parse).toEqual({b: 'string', d: 'date'});
-      const children = mergedParseNode.children as [ParseNode, ParseNode];
-      expect(children[0].parse).toEqual({a: 'number'});
-      expect(children[1].parse).toEqual({a: 'boolean'});
-    });
-  });
   describe('optimizeDataFlow', () => {
     it('should move up common parse', () => {
       const source = new SourceNode(null);
@@ -54,6 +28,7 @@ describe('compile/data/optimize', () => {
       expect(commonParse.children[1]).toBeInstanceOf(ParseNode);
       expect(commonParse.children[1]).toEqual(parseTwo);
     });
+
     it('should push parse up from lowest level first to avoid conflicting common parse', () => {
       const source = new SourceNode(null);
       const parseOne = new ParseNode(source, {a: 'time'});
@@ -79,6 +54,33 @@ describe('compile/data/optimize', () => {
 
       expect(p1.parse).toEqual({a: 'time'});
       expect(p2.parse).toEqual({a: 'number'});
+    });
+
+    it('should rename signals when merging BinNodes', () => {
+      const transform = {
+        bin: {extent: [0, 100], anchor: 6},
+        field: 'Acceleration',
+        as: ['binned_acceleration_start', 'binned_acceleration_stop']
+      };
+      const model = parseLayerModel({
+        layer: [
+          {
+            transform: [transform],
+            mark: 'rect',
+            encoding: {}
+          },
+          {
+            transform: [transform],
+            mark: 'rect',
+            encoding: {}
+          }
+        ]
+      });
+      model.parse();
+      optimizeDataflow(model.component.data, model);
+      expect(model.getSignalName('layer_0_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins')).toEqual(
+        'layer_1_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
+      );
     });
   });
 });

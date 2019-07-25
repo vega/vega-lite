@@ -52,23 +52,6 @@ describe('compile/legend', () => {
       expect(symbol.fillOpacity).toEqual({value: 0.3});
     });
 
-    it('should return specific symbols.shape.value if user has specified', () => {
-      const symbol = encode.symbols(
-        {field: 'a', type: 'nominal'},
-        {},
-        parseUnitModelWithScale({
-          mark: 'point',
-          encoding: {
-            color: {field: 'a', type: 'nominal'},
-            shape: {value: 'square'}
-          }
-        }),
-        COLOR,
-        symbolLegend
-      );
-      expect(symbol.shape['value']).toBe('square');
-    });
-
     it('should have default opacity', () => {
       const symbol = encode.symbols(
         {field: 'a', type: 'nominal'},

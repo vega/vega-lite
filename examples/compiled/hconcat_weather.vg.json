@@ -8,14 +8,13 @@
     {
       "name": "source_0",
       "url": "data/weather.csv",
-      "format": {"type": "csv"},
+      "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [{"type": "filter", "expr": "datum.location === 'Seattle'"}]
     },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
           "type": "formula",
           "as": "month_date",
@@ -189,7 +188,7 @@
                   "value": 0
                 },
                 {
-                  "signal": "scale(\"concat_1_x\", (datum[\"bin_maxbins_10_temp_min\"] + datum[\"bin_maxbins_10_temp_min_end\"]) / 2)"
+                  "signal": "scale(\"concat_1_x\", 0.5 * datum[\"bin_maxbins_10_temp_min\"] + 0.5 * datum[\"bin_maxbins_10_temp_min_end\"])"
                 }
               ],
               "y": [
@@ -198,7 +197,7 @@
                   "field": {"group": "height"}
                 },
                 {
-                  "signal": "scale(\"concat_1_y\", (datum[\"bin_maxbins_10_temp_max\"] + datum[\"bin_maxbins_10_temp_max_end\"]) / 2)"
+                  "signal": "scale(\"concat_1_y\", 0.5 * datum[\"bin_maxbins_10_temp_max\"] + 0.5 * datum[\"bin_maxbins_10_temp_max_end\"])"
                 }
               ],
               "size": {"scale": "size", "field": "__count"}

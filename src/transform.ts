@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
 import {BinParams} from './bin';
-import {Data} from './data';
 import {FieldName} from './channeldef';
+import {Data} from './data';
 import {ImputeParams} from './impute';
 import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {normalizePredicate, Predicate} from './predicate';
@@ -256,7 +256,7 @@ export interface ImputeSequence {
 }
 
 export function isImputeSequence(t: ImputeSequence | any[] | undefined): t is ImputeSequence {
-  return t && t['start'] !== undefined && t['stop'] !== undefined;
+  return t && t['stop'] !== undefined;
 }
 
 export interface ImputeTransform extends ImputeParams {

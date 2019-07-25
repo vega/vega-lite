@@ -21,7 +21,7 @@
       "type": "quantitative",
       "scale": {"type": "log"}
     },
-    "size": {"field": "population","type": "quantitative"},
+    "size": {"field": "population", "type": "quantitative"},
     "color": {"value": "#000"}
   }
 }

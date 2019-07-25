@@ -20,7 +20,7 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
         {
@@ -42,7 +42,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -60,7 +60,7 @@
       "name": "layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"b\"]", "order": "descending"},
+      "sort": {"field": "datum[\"b\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -81,7 +81,7 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "a"},
+          {"data": "data_0", "field": "a"},
           {"data": "source_0", "field": "b"}
         ],
         "sort": true
@@ -95,7 +95,7 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "c"},
+          {"data": "data_0", "field": "c"},
           {"data": "source_0", "field": "c"}
         ]
       },

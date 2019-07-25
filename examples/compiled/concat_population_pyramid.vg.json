@@ -18,10 +18,16 @@
       ]
     },
     {
-      "name": "data_0",
+      "name": "data_1",
       "source": "source_0",
       "transform": [
-        {"type": "filter", "expr": "datum[\"gender\"]===\"Female\""},
+        {"type": "filter", "expr": "datum[\"gender\"]===\"Female\""}
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_1",
+      "transform": [
         {
           "type": "aggregate",
           "groupby": ["age", "gender"],
@@ -40,10 +46,14 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_3",
       "source": "source_0",
+      "transform": [{"type": "filter", "expr": "datum[\"gender\"]===\"Male\""}]
+    },
+    {
+      "name": "data_4",
+      "source": "data_3",
       "transform": [
-        {"type": "filter", "expr": "datum[\"gender\"]===\"Male\""},
         {
           "type": "aggregate",
           "groupby": ["age", "gender"],
@@ -82,7 +92,7 @@
       "update": "bandspace(domain('concat_2_y').length, 0.1, 0.05) * concat_2_y_step"
     }
   ],
-  "layout": {"padding": 10, "bounds": "full", "align": "each"},
+  "layout": {"padding": 0, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
@@ -100,12 +110,12 @@
           "name": "concat_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
               "tooltip": {
-                "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+                "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"s\"), \"gender\": ''+datum[\"gender\"]}"
               },
               "x": {"scale": "concat_0_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_0_x", "field": "sum_people_start"},
@@ -121,23 +131,11 @@
           "orient": "bottom",
           "grid": false,
           "title": "population",
+          "format": "s",
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_0_width/40)"},
           "zindex": 1
-        },
-        {
-          "scale": "concat_0_x",
-          "orient": "bottom",
-          "gridScale": "concat_0_y",
-          "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
-          "domain": false,
-          "labels": false,
-          "maxExtent": 0,
-          "minExtent": 0,
-          "ticks": false,
-          "zindex": 0
         }
       ]
     },
@@ -188,12 +186,12 @@
           "name": "concat_2_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
               "tooltip": {
-                "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+                "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"s\"), \"gender\": ''+datum[\"gender\"]}"
               },
               "x": {"scale": "concat_2_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_2_x", "field": "sum_people_start"},
@@ -209,23 +207,11 @@
           "orient": "bottom",
           "grid": false,
           "title": "population",
+          "format": "s",
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_2_width/40)"},
           "zindex": 1
-        },
-        {
-          "scale": "concat_2_x",
-          "orient": "bottom",
-          "gridScale": "concat_2_y",
-          "grid": true,
-          "tickCount": {"signal": "ceil(concat_2_width/40)"},
-          "domain": false,
-          "labels": false,
-          "maxExtent": 0,
-          "minExtent": 0,
-          "ticks": false,
-          "zindex": 0
         }
       ]
     }
@@ -236,8 +222,8 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "gender"},
-          {"data": "data_1", "field": "gender"}
+          {"data": "data_2", "field": "gender"},
+          {"data": "data_4", "field": "gender"}
         ],
         "sort": true
       },
@@ -247,7 +233,7 @@
       "name": "concat_0_x",
       "type": "linear",
       "domain": {
-        "data": "data_0",
+        "data": "data_2",
         "fields": ["sum_people_start", "sum_people_end"]
       },
       "range": [0, {"signal": "concat_0_width"}],
@@ -258,7 +244,11 @@
     {
       "name": "concat_0_y",
       "type": "band",
-      "domain": {"data": "data_0", "field": "age", "sort": true},
+      "domain": {
+        "data": "data_1",
+        "field": "age",
+        "sort": {"op": "min", "field": "age", "order": "descending"}
+      },
       "range": {"step": {"signal": "concat_0_y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -266,7 +256,11 @@
     {
       "name": "concat_1_y",
       "type": "point",
-      "domain": {"data": "source_0", "field": "age", "sort": true},
+      "domain": {
+        "data": "source_0",
+        "field": "age",
+        "sort": {"op": "min", "field": "age", "order": "descending"}
+      },
       "range": {"step": {"signal": "concat_1_y_step"}},
       "padding": 0.5
     },
@@ -274,7 +268,7 @@
       "name": "concat_2_x",
       "type": "linear",
       "domain": {
-        "data": "data_1",
+        "data": "data_4",
         "fields": ["sum_people_start", "sum_people_end"]
       },
       "range": [0, {"signal": "concat_2_width"}],
@@ -284,10 +278,15 @@
     {
       "name": "concat_2_y",
       "type": "band",
-      "domain": {"data": "data_1", "field": "age", "sort": true},
+      "domain": {
+        "data": "data_3",
+        "field": "age",
+        "sort": {"op": "min", "field": "age", "order": "descending"}
+      },
       "range": {"step": {"signal": "concat_2_y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
     }
-  ]
+  ],
+  "config": {"axis": {"grid": false}, "style": {"cell": {"stroke": null}}}
 }

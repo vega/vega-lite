@@ -7,7 +7,7 @@ import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {Mark} from './mark';
 import {EncodingFacetMapping, EncodingFacetMapping as ExtendedFacetMapping} from './spec/facet';
-import {Flag, flagKeys} from './util';
+import {Flag, keys} from './util';
 
 export type Channel = keyof Encoding<any> | keyof ExtendedFacetMapping<any>;
 
@@ -22,6 +22,7 @@ export const X: 'x' = 'x';
 export const Y: 'y' = 'y';
 export const X2: 'x2' = 'x2';
 export const Y2: 'y2' = 'y2';
+
 // Geo Position
 export const LATITUDE: 'latitude' = 'latitude';
 export const LONGITUDE: 'longitude' = 'longitude';
@@ -55,18 +56,17 @@ export const HREF: 'href' = 'href';
 
 export type PositionChannel = 'x' | 'y' | 'x2' | 'y2';
 
-export type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
-
-export function isGeoPositionChannel(c: Channel): c is GeoPositionChannel {
-  switch (c) {
-    case LATITUDE:
-    case LATITUDE2:
-    case LONGITUDE:
-    case LONGITUDE2:
-      return true;
-  }
-  return false;
+const POSITION_CHANNEL_INDEX: Flag<PositionChannel> = {
+  x: 1,
+  y: 1,
+  x2: 1,
+  y2: 1
+};
+export function isPositionChannel(c: Channel): c is PositionChannel {
+  return c in POSITION_CHANNEL_INDEX;
 }
+
+export type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
 
 export function getPositionChannelFromLatLong(channel: GeoPositionChannel): PositionChannel {
   switch (channel) {
@@ -81,21 +81,21 @@ export function getPositionChannelFromLatLong(channel: GeoPositionChannel): Posi
   }
 }
 
-export const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel> = {
+const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel> = {
   longitude: 1,
   longitude2: 1,
   latitude: 1,
   latitude2: 1
 };
 
-export const GEOPOSITION_CHANNELS = flagKeys(GEOPOSITION_CHANNEL_INDEX);
+export function isGeoPositionChannel(c: Channel): c is GeoPositionChannel {
+  return c in GEOPOSITION_CHANNEL_INDEX;
+}
+
+export const GEOPOSITION_CHANNELS = keys(GEOPOSITION_CHANNEL_INDEX);
 
 const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
-  // position
-  x: 1,
-  y: 1,
-  x2: 1,
-  y2: 1,
+  ...POSITION_CHANNEL_INDEX,
 
   ...GEOPOSITION_CHANNEL_INDEX,
 
@@ -136,14 +136,14 @@ const FACET_CHANNEL_INDEX: Flag<keyof EncodingFacetMapping<any>> = {
   facet: 1
 };
 
-export const FACET_CHANNELS = flagKeys(FACET_CHANNEL_INDEX);
+export const FACET_CHANNELS = keys(FACET_CHANNEL_INDEX);
 
 const CHANNEL_INDEX = {
   ...UNIT_CHANNEL_INDEX,
   ...FACET_CHANNEL_INDEX
 };
 
-export const CHANNELS = flagKeys(CHANNEL_INDEX);
+export const CHANNELS = keys(CHANNEL_INDEX);
 
 const {order: _o, detail: _d, ...SINGLE_DEF_CHANNEL_INDEX} = CHANNEL_INDEX;
 const {order: _o1, detail: _d1, row: _r, column: _c, facet: _f, ...SINGLE_DEF_UNIT_CHANNEL_INDEX} = CHANNEL_INDEX;
@@ -156,38 +156,15 @@ const {order: _o1, detail: _d1, row: _r, column: _c, facet: _f, ...SINGLE_DEF_UN
  * are not applicable for them.  Similarly, selection projection won't work with "detail" and "order".)
  */
 
-export const SINGLE_DEF_CHANNELS: SingleDefChannel[] = flagKeys(SINGLE_DEF_CHANNEL_INDEX);
+export const SINGLE_DEF_CHANNELS = keys(SINGLE_DEF_CHANNEL_INDEX);
 
-export const SINGLE_DEF_UNIT_CHANNELS: SingleDefUnitChannel[] = flagKeys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
+export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[number];
 
-// Using the following line leads to TypeError: Cannot read property 'elementTypes' of undefined
-// when running the schema generator
-// export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
+export const SINGLE_DEF_UNIT_CHANNELS = keys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
 
-export type SingleDefUnitChannel =
-  | 'x'
-  | 'y'
-  | 'x2'
-  | 'y2'
-  | 'longitude'
-  | 'latitude'
-  | 'longitude2'
-  | 'latitude2'
-  | 'color'
-  | 'fill'
-  | 'stroke'
-  | 'strokeWidth'
-  | 'size'
-  | 'shape'
-  | 'fillOpacity'
-  | 'strokeOpacity'
-  | 'opacity'
-  | 'text'
-  | 'tooltip'
-  | 'href'
-  | 'key';
+export type SingleDefUnitChannel = typeof SINGLE_DEF_UNIT_CHANNELS[number];
 
-export type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column' | 'facet';
+// export type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column' | 'facet';
 
 export function isSingleDefUnitChannel(str: string): str is SingleDefUnitChannel {
   return !!SINGLE_DEF_UNIT_CHANNEL_INDEX[str];
@@ -206,6 +183,9 @@ export function isSecondaryRangeChannel(c: Channel): c is SecondaryRangeChannel 
   return main !== c;
 }
 
+/**
+ * Get the main channel for a range channel. E.g. `x` for `x2`.
+ */
 export function getMainRangeChannel(channel: Channel): Channel {
   switch (channel) {
     case 'x2':
@@ -221,7 +201,7 @@ export function getMainRangeChannel(channel: Channel): Channel {
 }
 
 // CHANNELS without COLUMN, ROW
-export const UNIT_CHANNELS = flagKeys(UNIT_CHANNEL_INDEX);
+export const UNIT_CHANNELS = keys(UNIT_CHANNEL_INDEX);
 
 // NONPOSITION_CHANNELS = UNIT_CHANNELS without X, Y, X2, Y2;
 const {
@@ -238,12 +218,12 @@ const {
   ...NONPOSITION_CHANNEL_INDEX
 } = UNIT_CHANNEL_INDEX;
 
-export const NONPOSITION_CHANNELS = flagKeys(NONPOSITION_CHANNEL_INDEX);
+export const NONPOSITION_CHANNELS = keys(NONPOSITION_CHANNEL_INDEX);
 export type NonPositionChannel = typeof NONPOSITION_CHANNELS[0];
 
 // POSITION_SCALE_CHANNELS = X and Y;
 const POSITION_SCALE_CHANNEL_INDEX: {x: 1; y: 1} = {x: 1, y: 1};
-export const POSITION_SCALE_CHANNELS = flagKeys(POSITION_SCALE_CHANNEL_INDEX);
+export const POSITION_SCALE_CHANNELS = keys(POSITION_SCALE_CHANNEL_INDEX);
 export type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
 
 // NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without X, Y
@@ -260,7 +240,7 @@ const {
   order: _oo,
   ...NONPOSITION_SCALE_CHANNEL_INDEX
 } = NONPOSITION_CHANNEL_INDEX;
-export const NONPOSITION_SCALE_CHANNELS = flagKeys(NONPOSITION_SCALE_CHANNEL_INDEX);
+export const NONPOSITION_SCALE_CHANNELS = keys(NONPOSITION_SCALE_CHANNEL_INDEX);
 export type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
 
 export function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel {
@@ -278,11 +258,10 @@ export function supportLegend(channel: NonPositionScaleChannel) {
     case SIZE:
     case SHAPE:
     case OPACITY:
+    case STROKEWIDTH:
       return true;
-
     case FILLOPACITY:
     case STROKEOPACITY:
-    case STROKEWIDTH:
       return false;
   }
 }
@@ -294,7 +273,7 @@ const SCALE_CHANNEL_INDEX = {
 };
 
 /** List of channels with scales */
-export const SCALE_CHANNELS = flagKeys(SCALE_CHANNEL_INDEX);
+export const SCALE_CHANNELS = keys(SCALE_CHANNEL_INDEX);
 export type ScaleChannel = typeof SCALE_CHANNELS[0];
 
 export function isScaleChannel(channel: Channel): channel is ScaleChannel {
@@ -312,6 +291,24 @@ export type SupportedMark = {[mark in Mark]?: 'always' | 'binned'};
 export function supportMark(channel: Channel, mark: Mark) {
   return getSupportedMark(channel)[mark];
 }
+
+const ALL_MARKS: {[m in Mark]: 'always'} = {
+  // all marks
+  area: 'always',
+  bar: 'always',
+  circle: 'always',
+  geoshape: 'always',
+  line: 'always',
+  rule: 'always',
+  point: 'always',
+  rect: 'always',
+  square: 'always',
+  trail: 'always',
+  text: 'always',
+  tick: 'always'
+};
+
+const {geoshape: _g, ...ALL_MARKS_EXCEPT_GEOSHAPE} = ALL_MARKS;
 
 /**
  * Return a dictionary showing whether a channel supports mark type.
@@ -339,39 +336,13 @@ function getSupportedMark(channel: Channel): SupportedMark {
     case FACET:
     case ROW: // falls through
     case COLUMN:
-      return {
-        // all marks
-        point: 'always',
-        tick: 'always',
-        rule: 'always',
-        circle: 'always',
-        square: 'always',
-        bar: 'always',
-        rect: 'always',
-        line: 'always',
-        trail: 'always',
-        area: 'always',
-        text: 'always',
-        geoshape: 'always'
-      };
+      return ALL_MARKS;
     case X:
     case Y:
     case LATITUDE:
     case LONGITUDE:
-      return {
-        // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
-        point: 'always',
-        tick: 'always',
-        rule: 'always',
-        circle: 'always',
-        square: 'always',
-        bar: 'always',
-        rect: 'always',
-        line: 'always',
-        trail: 'always',
-        area: 'always',
-        text: 'always'
-      };
+      // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
+      return ALL_MARKS_EXCEPT_GEOSHAPE;
     case X2:
     case Y2:
     case LATITUDE2:
@@ -384,7 +355,9 @@ function getSupportedMark(channel: Channel): SupportedMark {
         circle: 'binned',
         point: 'binned',
         square: 'binned',
-        tick: 'binned'
+        tick: 'binned',
+        line: 'binned',
+        trail: 'binned'
       };
     case SIZE:
       return {

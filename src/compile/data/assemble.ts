@@ -108,7 +108,7 @@ function makeWalkTree(data: VgData[]) {
       node instanceof ImputeNode ||
       node instanceof StackNode
     ) {
-      dataSource.transform = dataSource.transform.concat(node.assemble());
+      dataSource.transform.push(...node.assemble());
     }
 
     if (node instanceof OutputNode) {

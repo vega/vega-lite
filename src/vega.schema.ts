@@ -16,18 +16,18 @@ import {
   SortField as VgSortField,
   TextBaseline as VgTextBaseline,
   Title as VgTitle,
-  UnionSortField as VgUnionSortField
+  UnionSortField as VgUnionSortField,
+  Color
 } from 'vega';
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
+import {SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
-import {Flag, flagKeys} from './util';
+import {Flag, keys} from './util';
 
 export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
-
-export type Color = string;
 
 export interface VgData {
   name: string;
@@ -149,7 +149,7 @@ export interface VgProjection {
   /*
    * The desired precision of the projection.
    */
-  precision?: string;
+  precision?: number;
   /*
    * GeoJSON data to which the projection should attempt to automatically fit the translate and scale parameters..
    */
@@ -187,6 +187,7 @@ export interface VgProjection {
 export interface VgScale {
   name: string;
   type: ScaleType;
+  align?: number;
   domain?: VgDomain;
   domainRaw?: SignalRef;
   bins?: number[] | SignalRef;
@@ -521,24 +522,42 @@ export type Dir = 'ltr' | 'rtl';
 
 export interface BaseMarkConfig {
   /**
-   * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without `x2`.
+   * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without specified `x2` or `width`.
+   *
+   * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
    */
-  x?: number;
+  x?: number | 'width';
 
   /**
-   * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without `y2`
+   * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without specified `y2` or `height`.
+   *
+   * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y?: number;
+  y?: number | 'height';
 
   /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   *
+   * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
    */
-  x2?: number;
+  x2?: number | 'width';
 
   /**
    * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   *
+   * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y2?: number;
+  y2?: number | 'width';
+
+  /**
+   * Width of the marks.
+   */
+  width?: number;
+
+  /**
+   * Height of the marks.
+   */
+  height?: number;
 
   /**
    * Default Fill Color.  This has higher precedence than `config.color`
@@ -842,7 +861,9 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
   x: 1,
   y: 1,
   x2: 1,
-  y2: 1
+  y2: 1,
+  width: 1,
+  height: 1
 
   // commented below are vg channel that do not have mark config.
   // xc'|'width'|'yc'|'height'
@@ -855,13 +876,11 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
   // url: 1,
 };
 
-export const VG_MARK_CONFIGS = flagKeys(VG_MARK_CONFIG_INDEX);
-
-export type VgComparatorOrder = 'ascending' | 'descending';
+export const VG_MARK_CONFIGS = keys(VG_MARK_CONFIG_INDEX);
 
 export interface VgComparator {
   field?: string | string[];
-  order?: VgComparatorOrder | VgComparatorOrder[];
+  order?: SortOrder | SortOrder[];
 }
 
 export interface VgWindowTransform {

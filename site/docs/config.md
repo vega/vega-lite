@@ -78,6 +78,16 @@ Additional property blocks can target more specific axis types based on the orie
 
 {:#mark-config}
 
+### Built-in Guide Styles
+
+In addition to axis, header, and legend styles, Vega-Lite also includes the following built-in styles that are shared across different kinds of guides:
+
+- `"guide-label"`: style for axis, legend, and header labels
+- `"guide-title"`: style for axis, legend, and header titles
+- `"group-title"`: styles for chart titles
+
+See [the documentation about the style configuration](mark.html#style-config) for more information.
+
 ## Mark and Mark Style Configurations
 
 The `mark` property of the [`config`](config.html) object sets the default properties for all marks. In addition, the `config` object also provides mark-specific config using its mark type as the property name (e.g., `config.area`) for defining default properties for each mark.
@@ -85,6 +95,8 @@ The `mark` property of the [`config`](config.html) object sets the default prope
 {% include table.html props="mark,area,bar,circle,line,point,rect,geoshape,rule,square,text,tick" source="Config" %}
 
 In addition to the default mark properties above, default values can be further customized using named _styles_ defined under the `style` block. Styles can then be invoked by including a `style` property within a [mark definition object](mark.html#mark-def).
+
+See [the documentation about the style configuration](mark.html#style-config) for more information.
 
 {% include table.html props="style" source="Config" %}
 

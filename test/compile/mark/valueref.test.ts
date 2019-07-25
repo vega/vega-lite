@@ -1,5 +1,6 @@
 import {SecondaryFieldDef, TypedFieldDef} from '../../../src/channeldef';
-import {getOffset, midPoint} from '../../../src/compile/mark/valueref';
+import {getOffset, midPoint, tooltipForEncoding} from '../../../src/compile/mark/valueref';
+import {defaultConfig} from '../../../src/config';
 import {MarkDef} from '../../../src/mark';
 
 describe('compile/mark/valueref', () => {
@@ -49,7 +50,49 @@ describe('compile/mark/valueref', () => {
         scale: undefined,
         defaultRef
       });
-      expect(ref).toEqual({signal: 'scale("x", (datum["bin_start"] + datum["bin_end"]) / 2)'});
+      expect(ref).toEqual({signal: 'scale("x", 0.5 * datum["bin_start"] + 0.5 * datum["bin_end"])'});
+    });
+  });
+
+  describe('tooltipForEncoding', () => {
+    it('returns correct tooltip signal for binning field', () => {
+      expect(
+        tooltipForEncoding(
+          {
+            x: {
+              bin: true,
+              field: 'IMDB_Rating',
+              type: 'quantitative'
+            }
+          },
+          defaultConfig
+        )
+      ).toEqual({
+        signal:
+          '{"IMDB_Rating (binned)": datum["bin_maxbins_10_IMDB_Rating"] === null || isNaN(datum["bin_maxbins_10_IMDB_Rating"]) ? "null" : format(datum["bin_maxbins_10_IMDB_Rating"], "") + " - " + format(datum["bin_maxbins_10_IMDB_Rating_end"], "")}'
+      });
+    });
+
+    it('returns correct tooltip signal for binning field', () => {
+      expect(
+        tooltipForEncoding(
+          {
+            x: {
+              bin: 'binned',
+              field: 'bin_IMDB_rating',
+              type: 'quantitative',
+              title: 'IMDB_Rating (binned)'
+            },
+            x2: {
+              field: 'bin_IMDB_rating_end'
+            }
+          },
+          defaultConfig
+        )
+      ).toEqual({
+        signal:
+          '{"IMDB_Rating (binned)": datum["bin_IMDB_rating"] === null || isNaN(datum["bin_IMDB_rating"]) ? "null" : format(datum["bin_IMDB_rating"], "") + " - " + format(datum["bin_IMDB_rating_end"], "")}'
+      });
     });
   });
 });

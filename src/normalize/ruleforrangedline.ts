@@ -1,3 +1,4 @@
+import {isBinned} from '../bin';
 import {getMainRangeChannel, SECONDARY_RANGE_CHANNEL} from '../channel';
 import {Field, isFieldDef} from '../channeldef';
 import {Encoding} from '../encoding';
@@ -27,7 +28,7 @@ export class RuleForRangedLineNormalizer implements NonFacetUnitNormalizer<Range
           const mainChannel = getMainRangeChannel(channel);
           const mainChannelDef = encoding[mainChannel];
 
-          if (!!encoding[channel] && isFieldDef(mainChannelDef) && mainChannelDef.bin !== 'binned') {
+          if (!!encoding[channel] && isFieldDef(mainChannelDef) && !isBinned(mainChannelDef.bin)) {
             return true;
           }
         }

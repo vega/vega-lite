@@ -137,7 +137,7 @@
       "name": "layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"year_year\"]", "order": "descending"},
+      "sort": {"field": "datum[\"year_year\"]"},
       "from": {"data": "data_0"},
       "encode": {
         "update": {
@@ -262,7 +262,7 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
+      "symbolType": "square",
       "title": "event"
     }
   ]

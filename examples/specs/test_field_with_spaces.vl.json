@@ -18,8 +18,8 @@
     ]
   },
   "encoding": {
-    "x": {"field": "a b","type": "quantitative"},
-    "y": {"field": "c d","type": "quantitative"}
+    "x": {"field": "a b", "type": "quantitative"},
+    "y": {"field": "c d", "type": "quantitative"}
   },
   "mark": "point"
 }

@@ -9,11 +9,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json", "parse": {"Year": "date"}}
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
+      "format": {"type": "json", "parse": {"Year": "date"}},
       "transform": [
         {
           "type": "formula",
@@ -23,26 +19,9 @@
         {
           "type": "aggregate",
           "groupby": ["year_Year"],
-          "ops": ["mean"],
-          "fields": ["Miles_per_Gallon"],
-          "as": ["mean_Miles_per_Gallon"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "as": "year_Year",
-          "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["year_Year"],
-          "ops": ["ci0", "ci1", "mean"],
+          "ops": ["ci0", "ci1", "mean", "mean"],
           "fields": [
+            "Miles_per_Gallon",
             "Miles_per_Gallon",
             "Miles_per_Gallon",
             "Miles_per_Gallon"
@@ -50,7 +29,8 @@
           "as": [
             "lower_Miles_per_Gallon",
             "upper_Miles_per_Gallon",
-            "center_Miles_per_Gallon"
+            "center_Miles_per_Gallon",
+            "mean_Miles_per_Gallon"
           ]
         }
       ]
@@ -61,8 +41,8 @@
       "name": "layer_0_layer_0_marks",
       "type": "area",
       "style": ["area", "errorband-band"],
-      "sort": {"field": "datum[\"year_Year\"]", "order": "descending"},
-      "from": {"data": "data_1"},
+      "sort": {"field": "datum[\"year_Year\"]"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.3},
@@ -84,8 +64,8 @@
       "name": "layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"year_Year\"]", "order": "descending"},
-      "from": {"data": "data_0"},
+      "sort": {"field": "datum[\"year_Year\"]"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -105,22 +85,18 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "year_Year"},
-          {"data": "data_0", "field": "year_Year"}
-        ]
-      },
+      "domain": {"data": "source_0", "field": "year_Year"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
+        "data": "source_0",
         "fields": [
-          {"data": "data_1", "field": "lower_Miles_per_Gallon"},
-          {"data": "data_1", "field": "upper_Miles_per_Gallon"},
-          {"data": "data_0", "field": "mean_Miles_per_Gallon"}
+          "lower_Miles_per_Gallon",
+          "upper_Miles_per_Gallon",
+          "mean_Miles_per_Gallon"
         ]
       },
       "range": [{"signal": "height"}, 0],

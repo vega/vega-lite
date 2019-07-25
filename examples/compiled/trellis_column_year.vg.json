@@ -149,10 +149,7 @@
               "name": "child_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {
-                "field": "datum[\"quarter_date\"]",
-                "order": "descending"
-              },
+              "sort": {"field": "datum[\"quarter_date\"]"},
               "from": {"data": "faceted_path_child_main"},
               "encode": {
                 "update": {

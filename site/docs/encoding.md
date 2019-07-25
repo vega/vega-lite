@@ -18,11 +18,14 @@ An integral part of the data visualization process is encoding data with visual 
     "y": ...,
     "x2": ...,
     "y2": ...,
+    "xError": ...,
+    "yError": ...,
+    "xError2": ...,
+    "yError2": ...,
 
     // Geographic Position Channels
     "longtitude": ...,
     "latitude": ...,
-    ...
 
     // Mark Properties Channels
     "color": ...,
@@ -102,7 +105,7 @@ To encode a particular field in the data set with an encoding channel, the chann
 
 All field definitions support the following properties:
 
-{% include table.html props="field,type,bin,timeUnit,aggregate,title" source="FieldDef" %}
+{% include table.html props="field,type,bin,timeUnit,aggregate,title" source="TypedFieldDef" %}
 
 In addition, field definitions for different encoding channels may support the following properties:
 
@@ -223,7 +226,7 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 <!-- {% include table.html props="format,formatType,condition" source="TextFieldDefWithCondition" %} -->
 
-{% include table.html props="format,formatType,condition" source="FieldDefWithCondition<TextFieldDef,(string|number|boolean)>" %}
+{% include table.html props="format,formatType,condition" source="FieldDefWithCondition<TextFieldDef,Value>" %}
 
 {:#text-value-def}
 
@@ -233,7 +236,7 @@ In addition to the constant `value`, [value definitions](#value-def) of `text` a
 
 <!-- {% include table.html props="condition" source="TextValueDefWithCondition" %} -->
 
-{% include table.html props="condition" source="ValueDefWithOptionalCondition<TextFieldDef,(string|number|boolean)>" %}
+{% include table.html props="condition" source="ValueDefWithCondition<TextFieldDef,Value>" %}
 
 ### Multiple Field Definitions for Tooltips
 
@@ -255,7 +258,7 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 <!-- {% include table.html props="condition" source="StringFieldDefWithCondition" %} -->
 
-{% include table.html props="condition" source="FieldDefWithCondition<MarkPropFieldDef<\"nominal\">,string>" %}
+{% include table.html props="condition" source="FieldDefWithCondition<MarkPropFieldDef,(string|null)>" %}
 
 The example below show how the href channel can be used to provide links to external resources with more details.
 
@@ -269,7 +272,7 @@ In addition to the constant `value`, [value definitions](#value-def) of the `hre
 
 <!-- {% include table.html props="condition" source="StringValueDefWithCondition" %} -->
 
-{% include table.html props="condition" source="ValueDefWithOptionalCondition<MarkPropFieldDef<\"nominal\">,string>" %}
+{% include table.html props="condition" source="ValueDefWithCondition<MarkPropFieldDef,(string|null)>" %}
 
 {:#detail}
 

@@ -1,8 +1,9 @@
 import {AggregateOp} from 'vega';
-import {CompositeMark} from '../compositemark';
 import {Aggregate} from '../aggregate';
 import {Channel, FacetChannel, GeoPositionChannel} from '../channel';
 import {TypedFieldDef} from '../channeldef';
+import {SplitParentProperty} from '../compile/split';
+import {CompositeMark} from '../compositemark';
 import {ErrorBarCenter, ErrorBarExtent} from '../compositemark/errorbar';
 import {DateTime, DateTimeExpr} from '../datetime';
 import {Mark} from '../mark';
@@ -228,13 +229,19 @@ export function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType) {
 
 export function mergeConflictingProperty<T>(
   property: string | number | symbol,
-  propertyOf: string | number | symbol,
+  propertyOf: SplitParentProperty,
   v1: T,
   v2: T
 ) {
   return `Conflicting ${propertyOf.toString()} property "${property.toString()}" (${stringify(v1)} and ${stringify(
     v2
   )}).  Using ${stringify(v1)}.`;
+}
+
+export function mergeConflictingDomainProperty<T>(property: 'domains', propertyOf: SplitParentProperty, v1: T, v2: T) {
+  return `Conflicting ${propertyOf.toString()} property "${property.toString()}" (${stringify(v1)} and ${stringify(
+    v2
+  )}).  Using the union of the two domains.`;
 }
 
 export function independentScaleMeansIndependentGuide(channel: Channel) {

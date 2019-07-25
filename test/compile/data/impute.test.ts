@@ -135,6 +135,42 @@ describe('compile/data/impute', () => {
       ]);
     });
 
+    it('should handle sequence keyvals without start', () => {
+      const transform: Transform = {
+        impute: 'y',
+        key: 'x',
+        keyvals: {stop: 5},
+        method: 'max',
+        groupby: ['a', 'b']
+      };
+      const impute = new ImputeNode(null, transform);
+      expect(impute.assemble()).toEqual([
+        {
+          type: 'impute',
+          field: 'y',
+          key: 'x',
+          keyvals: {signal: 'sequence(0,5)'},
+          method: 'value',
+          groupby: ['a', 'b'],
+          value: null
+        },
+        {
+          type: 'window',
+          as: ['imputed_y_value'],
+          ops: ['max'],
+          fields: ['y'],
+          frame: [null, null],
+          ignorePeers: false,
+          groupby: ['a', 'b']
+        },
+        {
+          type: 'formula',
+          expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
+          as: 'y'
+        }
+      ]);
+    });
+
     it('should handle window correctly', () => {
       const transform: Transform = {
         impute: 'y',

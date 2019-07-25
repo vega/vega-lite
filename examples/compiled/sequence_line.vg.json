@@ -10,49 +10,28 @@
     {
       "name": "source_0",
       "transform": [
-        {"type": "sequence", "start": 0, "stop": 12.7, "step": 0.1, "as": "u"},
-        {"type": "formula", "expr": "sin(datum.u)", "as": "v"},
-        {"type": "formula", "expr": "cos(datum.u)", "as": "w"}
+        {"type": "sequence", "start": 0, "stop": 12.7, "step": 0.1, "as": "x"},
+        {"type": "formula", "expr": "sin(datum.x)", "as": "sin(x)"}
       ]
     }
   ],
   "marks": [
     {
-      "name": "layer_0_marks",
+      "name": "marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"u\"]", "order": "descending"},
+      "sort": {"field": "datum[\"x\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"x\": format(datum[\"u\"], \"\"), \"sin(x)\": format(datum[\"v\"], \"\")}"
+            "signal": "{\"x\": format(datum[\"x\"], \"\"), \"sin(x)\": format(datum[\"sin(x)\"], \"\")}"
           },
-          "x": {"scale": "x", "field": "u"},
-          "y": {"scale": "y", "field": "v"},
+          "x": {"scale": "x", "field": "x"},
+          "y": {"scale": "y", "field": "sin(x)"},
           "defined": {
-            "signal": "datum[\"u\"] !== null && !isNaN(datum[\"u\"]) && datum[\"v\"] !== null && !isNaN(datum[\"v\"])"
-          }
-        }
-      }
-    },
-    {
-      "name": "layer_1_marks",
-      "type": "line",
-      "style": ["line"],
-      "sort": {"field": "datum[\"u\"]", "order": "descending"},
-      "from": {"data": "source_0"},
-      "encode": {
-        "update": {
-          "stroke": {"value": "firebrick"},
-          "tooltip": {
-            "signal": "{\"u\": format(datum[\"u\"], \"\"), \"cos(x)\": format(datum[\"w\"], \"\")}"
-          },
-          "x": {"scale": "x", "field": "u"},
-          "y": {"scale": "y", "field": "w"},
-          "defined": {
-            "signal": "datum[\"u\"] !== null && !isNaN(datum[\"u\"]) && datum[\"w\"] !== null && !isNaN(datum[\"w\"])"
+            "signal": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"sin(x)\"] !== null && !isNaN(datum[\"sin(x)\"])"
           }
         }
       }
@@ -62,7 +41,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "u"},
+      "domain": {"data": "source_0", "field": "x"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": false
@@ -70,7 +49,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "fields": ["v", "w"]},
+      "domain": {"data": "source_0", "field": "sin(x)"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -104,7 +83,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "sin(x), cos(x)",
+      "title": "sin(x)",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1

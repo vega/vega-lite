@@ -94,7 +94,7 @@ describe('compile/legend', () => {
       expect(def.title).toBe('foo');
     });
 
-    [SIZE, SHAPE, OPACITY].forEach(channel => {
+    [SIZE, SHAPE, OPACITY, STROKEWIDTH].forEach(channel => {
       it(`should produce a Vega legend object with correct type and scale for ${channel}`, () => {
         const spec: NormalizedUnitSpec = {
           mark: 'point',
@@ -123,7 +123,7 @@ describe('compile/legend', () => {
       });
     });
 
-    [STROKEWIDTH, FILLOPACITY, STROKEOPACITY].forEach(channel => {
+    [FILLOPACITY, STROKEOPACITY].forEach(channel => {
       it(`should have no legend initialized`, () => {
         const spec: NormalizedUnitSpec = {
           mark: 'point',

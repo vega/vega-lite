@@ -6,7 +6,7 @@ import {DateTime} from './datetime';
 import * as log from './log';
 import * as TYPE from './type';
 import {Type, TYPE_INDEX} from './type';
-import {contains, Flag, flagKeys, keys} from './util';
+import {contains, Flag, keys} from './util';
 import {ScaleInterpolate, ScaleInterpolateParams} from './vega.schema';
 
 export namespace ScaleType {
@@ -54,7 +54,7 @@ export type ScaleType =
  */
 const SCALE_CATEGORY_INDEX: {
   // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-  [k in ScaleType]: ScaleType | 'numeric' | 'ordinal-position' | 'discretizing'
+  [k in ScaleType]: ScaleType | 'numeric' | 'ordinal-position' | 'discretizing';
 } = {
   linear: 'numeric',
   log: 'numeric',
@@ -92,7 +92,7 @@ export function scaleCompatible(scaleType1: ScaleType, scaleType2: ScaleType) {
  */
 const SCALE_PRECEDENCE_INDEX: {
   // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-  [k in ScaleType]: number
+  [k in ScaleType]: number;
 } = {
   // numeric
   linear: 0,
@@ -207,7 +207,8 @@ export interface ScaleConfig {
   /**
    * Default outer padding for `x` and `y` band-ordinal scales.
    *
-   * If not specified, by default, band scale's paddingOuter is paddingInner/2.
+   * __Default value:__ `paddingInner/2` (which makes _width/height = number of unique values * step_)
+   *
    * @minimum 0
    * @maximum 1
    */
@@ -261,7 +262,7 @@ export interface ScaleConfig {
   /**
    * Default outer padding for `x` and `y` point-ordinal scales.
    *
-   * __Default value:__ `0.5`
+   * __Default value:__ `0.5` (which makes _width/height = number of unique values * step_)
    *
    * @minimum 0
    * @maximum 1
@@ -548,6 +549,15 @@ export interface Scale {
   scheme?: string | SchemeParams;
 
   /**
+   * The alignment of the steps within the scale range.
+   *
+   * This value must lie in the range `[0,1]`. A value of `0.5` indicates that the steps should be centered within the range. A value of `0` or `1` may be used to shift the bands to one side, say to position them adjacent to an axis.
+   *
+   * __Default value:__ `0.5`
+   */
+  align?: number;
+
+  /**
    * An array of bin boundaries over the scale domain. If provided, axes and legends will use the bin boundaries to inform the choice of tick marks and text labels.
    */
   bins?: number[];
@@ -567,7 +577,7 @@ export interface Scale {
    * For _[point](https://vega.github.io/vega-lite/docs/scale.html#point)_ scales, alias for `paddingOuter`.
    *
    * __Default value:__ For _continuous_ scales, derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `continuousPadding`.
-   * For _band and point_ scales, see `paddingInner` and `paddingOuter`.
+   * For _band and point_ scales, see `paddingInner` and `paddingOuter`.  By default, Vega-Lite sets padding such that _width/height = number of unique values * step_.
    *
    * @minimum 0
    */
@@ -590,6 +600,7 @@ export interface Scale {
    * as a fraction of the step size. This value must lie in the range [0,1].
    *
    * __Default value:__ derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `bandPaddingOuter` for band scales and `pointPadding` for point scales.
+   * By default, Vega-Lite sets outer padding such that _width/height = number of unique values * step_.
    *
    * @minimum 0
    * @maximum 1
@@ -653,6 +664,7 @@ export interface Scale {
 const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {
   type: 1,
   domain: 1,
+  align: 1,
   range: 1,
   rangeStep: 1,
   scheme: 1,
@@ -675,7 +687,7 @@ const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {
   paddingOuter: 1
 };
 
-export const SCALE_PROPERTIES = flagKeys(SCALE_PROPERTY_INDEX);
+export const SCALE_PROPERTIES = keys(SCALE_PROPERTY_INDEX);
 
 const {
   type,
@@ -686,11 +698,11 @@ const {
   ...NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX
 } = SCALE_PROPERTY_INDEX;
 
-export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = flagKeys(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
+export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = keys(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
 
 export const SCALE_TYPE_INDEX = generateScaleTypeIndex();
 
-export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale) {
+export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale): boolean {
   switch (propName) {
     case 'type':
     case 'domain':
@@ -708,6 +720,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
       return isContinuousToContinuous(scaleType) || contains(['point', 'band'], scaleType);
     case 'paddingOuter':
     case 'rangeStep':
+    case 'align':
       return contains(['point', 'band'], scaleType);
     case 'paddingInner':
       return scaleType === 'band';
@@ -736,8 +749,6 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
         )
       );
   }
-  /* istanbul ignore next: should never reach here*/
-  throw new Error(`Invalid scale property ${propName}.`);
 }
 
 /**
@@ -751,6 +762,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
         return log.message.cannotUseScalePropertyWithNonColor(channel);
       }
       return undefined;
+    case 'align':
     case 'type':
     case 'bins':
     case 'domain':
@@ -769,8 +781,6 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
     case 'zero':
       return undefined; // GOOD!
   }
-  /* istanbul ignore next: it should never reach here */
-  throw new Error(`Invalid scale property "${propName}".`);
 }
 
 export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type): boolean {
