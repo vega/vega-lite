@@ -24,8 +24,8 @@
   "projection": {"type": "albersUsa"},
   "mark": "geoshape",
   "encoding": {
-    "shape": {"field": "geo","type": "geojson"},
-    "color": {"field": "pct","type": "quantitative"},
-    "row": {"field": "group","type": "nominal"}
+    "shape": {"field": "geo", "type": "geojson"},
+    "color": {"field": "pct", "type": "quantitative"},
+    "row": {"field": "group", "type": "nominal"}
   }
 }

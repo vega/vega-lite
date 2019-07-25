@@ -3,11 +3,11 @@
   "description": "A bar graph showing what activites consume what percentage of the day.",
   "data": {
     "values": [
-      {"Activity": "Sleeping","Time": 8},
-      {"Activity": "Eating","Time": 2},
-      {"Activity": "TV","Time": 4},
-      {"Activity": "Work","Time": 8},
-      {"Activity": "Exercise","Time": 2}
+      {"Activity": "Sleeping", "Time": 8},
+      {"Activity": "Eating", "Time": 2},
+      {"Activity": "TV", "Time": 4},
+      {"Activity": "Work", "Time": 8},
+      {"Activity": "Exercise", "Time": 2}
     ]
   },
   "transform": [{
