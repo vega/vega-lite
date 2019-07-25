@@ -14,7 +14,7 @@ If a field is specified, the channel definition **must** describe the encoded da
 
 Quantitative data expresses some kind of quantity. Typically this is numerical data. For example `7.3`, `42.0`, `12.1`.
 
-Quantitative data can represent either the ratio or interval [level of measurement](https://en.wikipedia.org/wiki/Level_of_measurement). By default, Vega-Lite includes zero values in the x, y, and size scales for quantitative fields, which is more appropriate for ratio data. However, you can manually set the [scale's `zero` property](https://vega.github.io/vega-lite/docs/scale.html#continuous) to `false` if you have interval data.
+Quantitative data can represent either the ratio or interval [level of measurement](https://en.wikipedia.org/wiki/Level_of_measurement). By default, Vega-Lite includes zero values in the x, y, and size scales for quantitative fields, which is more appropriate for ratio data. However, you can manually set the [scale's `zero` property](scale.html#continuous) to `false` if you have interval data.
 
 {:#temporal}
 
