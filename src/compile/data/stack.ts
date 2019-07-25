@@ -1,5 +1,5 @@
 import {isArray, isString} from 'vega-util';
-import {FieldName, getTypedFieldDef, isFieldDef, TypedFieldDef, vgField} from '../../channeldef';
+import {FieldName, getTypedFieldDef, isFieldDef, PositionFieldDef, vgField} from '../../channeldef';
 import {SortFields, SortOrder} from '../../sort';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
@@ -30,7 +30,7 @@ export interface StackComponent {
    */
   facetby: string[];
 
-  dimensionFieldDef?: TypedFieldDef<string>;
+  dimensionFieldDef?: PositionFieldDef<string>;
 
   /**
    * Stack measure's field. Used in makeFromEncoding.
@@ -127,10 +127,10 @@ export class StackNode extends DataFlowNode {
       return null;
     }
 
-    let dimensionFieldDef: TypedFieldDef<string>;
+    let dimensionFieldDef: PositionFieldDef<string>;
     if (stackProperties.groupbyChannel) {
       const cDef = encoding[stackProperties.groupbyChannel];
-      dimensionFieldDef = getTypedFieldDef(cDef);
+      dimensionFieldDef = getTypedFieldDef(cDef) as PositionFieldDef<string>; // Fair to cast as groupByChannel is always either x or y
     }
 
     const stackby = getStackByFields(model);
@@ -221,15 +221,16 @@ export class StackNode extends DataFlowNode {
 
     // Impute
     if (impute && dimensionFieldDef) {
-      if (dimensionFieldDef.bin) {
+      const {band = 0.5, bin} = dimensionFieldDef;
+      if (bin) {
         // As we can only impute one field at a time, we need to calculate
         // mid point for a binned field
         transform.push({
           type: 'formula',
           expr:
-            '0.5*' +
+            `${band}*` +
             vgField(dimensionFieldDef, {expr: 'datum'}) +
-            '+0.5*' +
+            `+${1 - band}*` +
             vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}),
           as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true})
         });

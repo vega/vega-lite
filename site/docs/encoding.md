@@ -163,7 +163,7 @@ By default, Vega-Lite automatically generates a [scale](scale.html) and an [axis
 
 In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html), [field definitions](#field-def) for `x` and `y` channels may also include these properties:
 
-{% include table.html props="scale,axis,sort,stack" source="PositionFieldDef" %}
+{% include table.html props="scale,axis,sort,band,impute,stack" source="PositionFieldDef" %}
 
 **Note:** `x2` and `y2` do not have their own definitions for `scale`, `axis`, `sort`, and `stack` since they share the same scales and axes with `x` and `y` respectively.
 
