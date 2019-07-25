@@ -47,7 +47,8 @@ describe('compile/compile', () => {
     expect(spec.marks.length).toEqual(1); // just the root group
   });
 
-  it('should drop fit in top-level properties for discrete x discrete chart', () => {
+  it(
+    'should drop fit in top-level properties for discrete x discrete chart',
     log.wrap(localLogger => {
       const spec = compile({
         data: {
@@ -63,10 +64,11 @@ describe('compile/compile', () => {
 
       expect(localLogger.warns[0]).toEqual(log.message.droppingFit());
       expect(spec.autosize).toBe('pad');
-    });
-  });
+    })
+  );
 
-  it('should drop fit-y in top-level properties for quantitative x discrete chart', () => {
+  it(
+    'should drop fit-y in top-level properties for quantitative x discrete chart',
     log.wrap(localLogger => {
       const spec = compile({
         data: {
@@ -82,10 +84,11 @@ describe('compile/compile', () => {
 
       expect(localLogger.warns[0]).toEqual(log.message.droppingFit('y'));
       expect(spec.autosize).toBe('fit-x');
-    });
-  });
+    })
+  );
 
-  it('should drop fit-x in top-level properties for discrete x quantitative chart', () => {
+  it(
+    'should drop fit-x in top-level properties for discrete x quantitative chart',
     log.wrap(localLogger => {
       const spec = compile({
         data: {
@@ -101,10 +104,11 @@ describe('compile/compile', () => {
 
       expect(localLogger.warns[0]).toEqual(log.message.droppingFit('x'));
       expect(spec.autosize).toBe('fit-y');
-    });
-  });
+    })
+  );
 
-  it('should NOT drop fit in top-level properties for specified width/height chart', () => {
+  it(
+    'should NOT drop fit in top-level properties for specified width/height chart',
     log.wrap(localLogger => {
       const spec = compile({
         data: {
@@ -122,10 +126,11 @@ describe('compile/compile', () => {
 
       expect(localLogger.warns.length).toEqual(0);
       expect(spec.autosize).toBe('fit');
-    });
-  });
+    })
+  );
 
-  it('should NOT drop fit-y in top-level properties for specified height chart', () => {
+  it(
+    'should NOT drop fit-y in top-level properties for specified height chart',
     log.wrap(localLogger => {
       const spec = compile({
         data: {
@@ -142,10 +147,11 @@ describe('compile/compile', () => {
 
       expect(localLogger.warns.length).toEqual(0);
       expect(spec.autosize).toBe('fit');
-    });
-  });
+    })
+  );
 
-  it('should NOT drop fit-x in top-level properties for specified width chart', () => {
+  it(
+    'should NOT drop fit-x in top-level properties for specified width chart',
     log.wrap(localLogger => {
       const spec = compile({
         data: {
@@ -162,8 +168,8 @@ describe('compile/compile', () => {
 
       expect(localLogger.warns.length).toEqual(0);
       expect(spec.autosize).toBe('fit');
-    });
-  });
+    })
+  );
 
   it('should use size signal for bar chart width', () => {
     const spec = compile({
