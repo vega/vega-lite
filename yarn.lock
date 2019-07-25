@@ -5852,10 +5852,10 @@ vega-tooltip@^0.17.0:
   dependencies:
     vega-util "^1.10.0"
 
-vega-tooltip@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.18.0.tgz#53b7e287caf49f2d6d2208f775e3fb48aad6606b"
-  integrity sha512-tyYwwlkj3yKSff0Fa+ahDX38+eBmd2indrgZTLDtmqC2tVkYWoYs/JhjbeQHLVujs0feigqbGvNNgklRF34i8Q==
+vega-tooltip@^0.18.1:
+  version "0.18.1"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.18.1.tgz#2599b99c8faec8eaae13c55f540e3cbdf8e19432"
+  integrity sha512-g/i69QLTVhGeHNT8k646Qr8SFss9kbnt6XmU9ujjqgaW5B/p1FPUrMzFh/88rMF704EHYyBH7Aj3t0ds1cCHbQ==
   dependencies:
     vega-util "^1.10.0"
 
