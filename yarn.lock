@@ -5858,10 +5858,10 @@ vega-transforms@^4.1.0:
     vega-statistics "^1.4.0"
     vega-util "^1.10.0"
 
-vega-typings@0.7.1, vega-typings@^0.7.0:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.7.1.tgz#c4e5f65eeee4fb64b1a2b14dee426d1b26a02a40"
-  integrity sha512-YRjmcszidnncThmv3UnectLTw6oN/Wg9crx62JC0bA/NhLl4aWuaWTQvikr87l7cGWfKR3Qh9fQgRRhgJ22CPw==
+vega-typings@0.7.2, vega-typings@^0.7.0:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.7.2.tgz#cb02da5bdd0237971ba2bea6d47d1cbdbc45c52a"
+  integrity sha512-BReB2qRERA/Ke+QoxKDQ7fES25A9Q3qKRm1CJxwvpLGhAl4k5cGDORx6yW+J3rFHMzpJlmdRM+kb489EuphxZQ==
   dependencies:
     vega-util "^1.10.0"
 
@@ -6174,6 +6174,14 @@ yargs-parser@^13.1.0:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
+yargs-parser@^13.1.1:
+  version "13.1.1"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-13.1.1.tgz#d26058532aa06d365fe091f6a1fc06b2f7e5eca0"
+  integrity sha512-oVAVsHz6uFrg3XQheFII8ESO2ssAf9luWuAd6Wexsu4F3OtIW0o8IribPXYrD4WC24LWtPrJlGy87y5udK+dxQ==
+  dependencies:
+    camelcase "^5.0.0"
+    decamelize "^1.2.0"
+
 yargs-parser@^2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-2.4.1.tgz#85568de3cf150ff49fa51825f03a8c880ddcc5c4"
@@ -6182,7 +6190,7 @@ yargs-parser@^2.4.1:
     camelcase "^3.0.0"
     lodash.assign "^4.0.6"
 
-yargs@13, yargs@~13.2.4:
+yargs@13:
   version "13.2.4"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.2.4.tgz#0b562b794016eb9651b98bd37acf364aa5d6dc83"
   integrity sha512-HG/DWAJa1PAnHT9JAhNa8AbAv3FPaiLzioSjCcmuXXhP8MlpHO5vwls4g4j6n30Z74GVQj8Xa62dWVx1QCGklg==
@@ -6236,6 +6244,22 @@ yargs@^4.6.0:
     window-size "^0.2.0"
     y18n "^3.2.1"
     yargs-parser "^2.4.1"
+
+yargs@~13.3.0:
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.3.0.tgz#4c657a55e07e5f2cf947f8a366567c04a0dedc83"
+  integrity sha512-2eehun/8ALW8TLoIl7MVaRUrg+yCnenu8B4kBlRxj3GJGDKU1Og7sMXPNm1BYyM1DOJmTZ4YeN/Nwxv+8XJsUA==
+  dependencies:
+    cliui "^5.0.0"
+    find-up "^3.0.0"
+    get-caller-file "^2.0.1"
+    require-directory "^2.1.1"
+    require-main-filename "^2.0.0"
+    set-blocking "^2.0.0"
+    string-width "^3.0.0"
+    which-module "^2.0.0"
+    y18n "^4.0.0"
+    yargs-parser "^13.1.1"
 
 yauzl@2.4.1:
   version "2.4.1"
