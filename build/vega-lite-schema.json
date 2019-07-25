@@ -4142,8 +4142,15 @@
           "type": "number"
         },
         "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -4998,8 +5005,15 @@
           "type": "array"
         },
         "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -5087,8 +5101,15 @@
           "type": "number"
         },
         "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -5177,8 +5198,15 @@
           "type": "boolean"
         },
         "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -5266,8 +5294,15 @@
           "type": "number"
         },
         "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -5366,8 +5401,15 @@
       "description": "Base interface for a unit (single-view) specification.",
       "properties": {
         "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -5449,8 +5491,15 @@
           "type": "boolean"
         },
         "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -6356,8 +6405,15 @@
       "description": "A full layered plot specification, which may contains `encoding` and `projection` properties that will be applied to underlying unit (single-view) specifications.",
       "properties": {
         "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -11693,8 +11749,15 @@
           "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
         },
         "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
@@ -11795,8 +11858,15 @@
           "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
         },
         "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
@@ -11919,8 +11989,15 @@
           "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
         },
         "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
@@ -12040,8 +12117,15 @@
           "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
         },
         "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
@@ -12130,8 +12214,15 @@
           "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
         },
         "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
@@ -12278,7 +12369,15 @@
         },
         "data": {
           "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
@@ -12452,7 +12551,15 @@
         },
         "data": {
           "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
