@@ -87,8 +87,15 @@ export function findSource(data: Data, sources: SourceNode[]) {
 }
 
 function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
-  if (model.data || !model.parent) {
+  if (model.data !== undefined || !model.parent) {
     // if the model defines a data source or is the root, create a source node
+
+    if (model.data === null) {
+      // data: null means we should ignore the parent's data so we just create a new data source
+      const source = new SourceNode([]);
+      sources.push(source);
+      return source;
+    }
 
     const existingSource = findSource(model.data, sources);
 

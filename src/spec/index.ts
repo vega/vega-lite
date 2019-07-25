@@ -13,7 +13,7 @@ import {GenericRepeatSpec} from './repeat';
 import {TopLevel} from './toplevel';
 import {FacetedUnitSpec, GenericUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec} from './unit';
 
-export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
+export {BaseSpec, LayoutSizeMixins} from './base';
 export {
   GenericHConcatSpec,
   GenericVConcatSpec,

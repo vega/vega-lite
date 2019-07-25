@@ -141,7 +141,7 @@ export abstract class Model {
   public readonly title: TitleParams;
   public readonly description: string;
 
-  public readonly data: Data;
+  public readonly data: Data | null;
   public readonly transforms: Transform[];
   public readonly layout: GenericCompositionLayoutWithColumns;
 
@@ -192,8 +192,8 @@ export abstract class Model {
         sources: parent ? parent.component.data.sources : [],
         outputNodes: parent ? parent.component.data.outputNodes : {},
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
-        // data is faceted if the spec is a facet spec or the parent has faceted data and no data is defined
-        isFaceted: isFacetSpec(spec) || (parent && parent.component.data.isFaceted && !spec.data)
+        // data is faceted if the spec is a facet spec or the parent has faceted data and data is undefined
+        isFaceted: isFacetSpec(spec) || (parent && parent.component.data.isFaceted && spec.data === undefined)
       },
       layoutSize: new Split<LayoutSizeIndex>(),
       layoutHeaders: {row: {}, column: {}, facet: {}},
