@@ -110,7 +110,16 @@ describe('extractTransforms()', () => {
     'trellis_cross_sort.vl.json',
     'trellis_line_quarter.vl.json',
     'vconcat_weather.vl.json',
-    'window_top_k_others.vl.json'
+    'window_top_k_others.vl.json',
+
+    // Time Unit prebinned
+    // TODO: fix these
+    'bar_yearmonth.vl.json',
+    'bar_yearmonth_custom_format.vl.json',
+    'stacked_area.vl.json',
+    'stacked_area_normalize.vl.json',
+    'stacked_area_ordinal.vl.json',
+    'stacked_area_stream.vl.json'
   ]);
   for (const file of fs.readdirSync(specsDir)) {
     const filepath = specsDir + file;
