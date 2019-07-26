@@ -1,6 +1,5 @@
-import {AggregateOp} from 'vega';
 import {isObject, isString} from 'vega-util';
-import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
+import {isAggregateOp, isArgmaxDef, isArgminDef, NonArgAggregateOp, SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {isBinning} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
@@ -29,9 +28,9 @@ import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection';
 import {SignalRefWrapper} from '../signal';
+import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
-import {Explicit, mergeValuesWithExplicit, makeExplicit, makeImplicit} from '../split';
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {
@@ -372,13 +371,27 @@ export function domainSort(
     return normalizeSortField(sort, isStacked);
   } else if (isSortByEncoding(sort)) {
     const {encoding, order} = sort;
-    const {aggregate, field} = model.fieldDef(encoding);
-    const sortField: EncodingSortField<string> = {
-      op: aggregate as AggregateOp, // Once we decouple aggregate from aggregate op we won't have to cast here
-      field,
-      order
-    };
-    return normalizeSortField(sortField, isStacked);
+    const fieldDefToSortBy = model.fieldDef(encoding);
+    const {aggregate, field} = fieldDefToSortBy;
+
+    if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
+      return normalizeSortField(
+        {
+          field: vgField(fieldDefToSortBy),
+          order
+        },
+        isStacked
+      );
+    } else if (isAggregateOp(aggregate) || !aggregate) {
+      return normalizeSortField(
+        {
+          op: aggregate as NonArgAggregateOp, // can't be argmin/argmax since we don't support them in encoding field def
+          field,
+          order
+        },
+        isStacked
+      );
+    }
   } else if (sort === 'descending') {
     return {
       op: 'min',

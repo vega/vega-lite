@@ -1,5 +1,5 @@
-import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
+import {NonArgAggregateOp} from './aggregate';
 import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
 import {Flag} from './util';
@@ -48,7 +48,7 @@ export interface EncodingSortField<F> {
    *
    * __Default value:__ `"sum"` for stacked plots. Otherwise, `"mean"`.
    */
-  op?: AggregateOp;
+  op?: NonArgAggregateOp;
 
   /**
    * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).

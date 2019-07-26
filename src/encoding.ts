@@ -284,11 +284,11 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
 
           if (isArgmaxDef(aggOp)) {
             op = 'argmax';
-            newField = vgField({aggregate: 'argmax', field: aggOp.argmax}, {forAs: true});
+            newField = vgField({op: 'argmax', field: aggOp.argmax}, {forAs: true});
             newFieldDef.field = `${newField}.${field}`;
           } else if (isArgminDef(aggOp)) {
             op = 'argmin';
-            newField = vgField({aggregate: 'argmin', field: aggOp.argmin}, {forAs: true});
+            newField = vgField({op: 'argmin', field: aggOp.argmin}, {forAs: true});
             newFieldDef.field = `${newField}.${field}`;
           } else if (aggOp !== 'boxplot' && aggOp !== 'errorbar' && aggOp !== 'errorband') {
             op = aggOp;

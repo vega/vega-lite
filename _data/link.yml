@@ -36,6 +36,9 @@ Transform:
 
 AggregateOp:
   link: "aggregate.html#ops"
+NonArgAggregateOp:
+  name: AggregateOp
+  link: "aggregate.html#ops"
 Bin:
   link: "bin.html"
 BinParams:

@@ -5,7 +5,7 @@
     "Aggregate": {
       "anyOf": [
         {
-          "$ref": "#/definitions/AggregateOp"
+          "$ref": "#/definitions/NonArgAggregateOp"
         },
         {
           "$ref": "#/definitions/ArgmaxDef"
@@ -3585,7 +3585,7 @@
           "description": "The data [field](https://vega.github.io/vega-lite/docs/field.html) to sort by.\n\n__Default value:__ If unspecified, defaults to the field specified in the outer data reference."
         },
         "op": {
-          "$ref": "#/definitions/AggregateOp",
+          "$ref": "#/definitions/NonArgAggregateOp",
           "description": "An [aggregate operation](https://vega.github.io/vega-lite/docs/aggregate.html#ops) to perform on the field prior to sorting (e.g., `\"count\"`, `\"mean\"` and `\"median\"`).\nAn aggregation is required when there are multiple values of the sort field for each encoded data field.\nThe input data objects will be aggregated, grouped by the encoded data field.\n\nFor a full list of operations, please see the documentation for [aggregate](https://vega.github.io/vega-lite/docs/aggregate.html#ops).\n\n__Default value:__ `\"sum\"` for stacked plots. Otherwise, `\"mean\"`."
         },
         "order": {
@@ -8824,6 +8824,31 @@
         "week",
         "month",
         "year"
+      ],
+      "type": "string"
+    },
+    "NonArgAggregateOp": {
+      "enum": [
+        "average",
+        "count",
+        "distinct",
+        "max",
+        "mean",
+        "median",
+        "min",
+        "missing",
+        "q1",
+        "q3",
+        "ci0",
+        "ci1",
+        "stderr",
+        "stdev",
+        "stdevp",
+        "sum",
+        "valid",
+        "values",
+        "variance",
+        "variancep"
       ],
       "type": "string"
     },
