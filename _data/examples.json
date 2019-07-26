@@ -323,6 +323,14 @@
       {
         "name": "bar_argmax",
         "title": "Bar Chart Showing Argmax Value"
+      },
+      {
+        "name": "layer_line_mean_point_raw",
+        "title": "Layering Averages over Raw Values"
+      },
+      {
+        "name": "layer_line_rolling_mean_point_raw",
+        "title": "Layering Rolling Averages over Raw Values"
       }
     ]
   },
@@ -393,17 +401,17 @@
         "style": "background-size: auto 90%; background-position-y: center !important;"
       },
       {
+        "name": "layer_likert",
+        "title": "Distributions and Medians of Likert Scale Ratings",
+        "description": "Distributions and Medians of Likert Scale Ratings. (Figure 9. from @jhoffswell and @zcliu's 'Interactive Repair of Tables Extracted from PDF Documents on Mobile Devices' -- http://idl.cs.washington.edu/files/2019-InteractiveTableRepair-CHI.pdf)"
+      },
+      {
         "name": "layer_line_mean_point_raw",
         "title": "Layering Averages over Raw Values"
       },
       {
         "name": "layer_line_rolling_mean_point_raw",
         "title": "Layering Rolling Averages over Raw Values"
-      },
-      {
-        "name": "layer_likert",
-        "title": "Likert Scale Ratings Distributions and Medians",
-        "description": "Likert Scale Ratings Distributions and Medians. (Figure 9. from @jhoffswell and @zcliu's 'Interactive Repair of Tables Extracted from PDF Documents on Mobile Devices' -- http://idl.cs.washington.edu/files/2019-InteractiveTableRepair-CHI.pdf)"
       }
     ],
     "Other Layered Plots": [
