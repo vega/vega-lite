@@ -2,7 +2,7 @@ import {Axis as VgAxis, AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 
 import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
-import {FieldDefBase, isTimeFormatFieldDef, toFieldDefBase} from '../../channeldef';
+import {FieldDefBase, isTimeFormatFieldDef, PositionFieldDef, toFieldDefBase} from '../../channeldef';
 import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
@@ -284,7 +284,7 @@ function getProperty<K extends keyof AxisComponentProps>(
   channel: PositionScaleChannel,
   model: UnitModel
 ): AxisComponentProps[K] {
-  const fieldDef = model.fieldDef(channel);
+  const fieldDef = model.fieldDef(channel) as PositionFieldDef<string>;
 
   // Some properties depend on labelAngle so we have to declare it here.
   // Also, we don't use `getFirstDefined` for labelAngle
@@ -320,11 +320,14 @@ function getProperty<K extends keyof AxisComponentProps>(
       }
     }
     case 'labelAlign':
-      return getFirstDefined(specifiedAxis.labelAlign, properties.defaultLabelAlign(labelAngle, orient));
+      return getFirstDefined(specifiedAxis.labelAlign, properties.defaultLabelAlign(labelAngle, orient, fieldDef));
     case 'labelAngle':
       return labelAngle;
     case 'labelBaseline':
-      return getFirstDefined(specifiedAxis.labelBaseline, properties.defaultLabelBaseline(labelAngle, orient));
+      return getFirstDefined(
+        specifiedAxis.labelBaseline,
+        properties.defaultLabelBaseline(labelAngle, orient, fieldDef)
+      );
     case 'labelFlush':
       return getFirstDefined(specifiedAxis.labelFlush, properties.defaultLabelFlush(fieldDef, channel));
     case 'labelOverlap': {

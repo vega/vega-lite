@@ -2,7 +2,7 @@ import {Align, AxisOrient, SignalRef} from 'vega';
 import {Axis} from '../../axis';
 import {isBinning} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
-import {isDiscrete, TypedFieldDef, valueArray} from '../../channeldef';
+import {isDiscrete, PositionFieldDef, TypedFieldDef, valueArray} from '../../channeldef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
@@ -59,7 +59,11 @@ export function labelAngle(
   }
 }
 
-export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient) {
+export function defaultLabelBaseline(
+  angle: number,
+  axisOrient: AxisOrient,
+  fieldDef: PositionFieldDef<string> = undefined
+) {
   if (angle !== undefined) {
     angle = normalizeAngle(angle);
     if (axisOrient === 'top' || axisOrient === 'bottom') {
@@ -72,6 +76,10 @@ export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient) {
       }
     } else {
       if (angle <= 45 || 315 <= angle || (135 <= angle && angle <= 225)) {
+        const {type = undefined, band = undefined} = fieldDef || {};
+        if (type === 'temporal' && band !== 0) {
+          return 'bottom'; // FIXME scale reverse / sort
+        }
         return 'middle';
       } else if (45 <= angle && angle <= 135) {
         return axisOrient === 'left' ? 'top' : 'bottom';
@@ -83,11 +91,19 @@ export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient) {
   return undefined;
 }
 
-export function defaultLabelAlign(angle: number, axisOrient: AxisOrient): Align {
+export function defaultLabelAlign(
+  angle: number,
+  axisOrient: AxisOrient,
+  fieldDef: PositionFieldDef<string> = undefined
+): Align {
   if (angle !== undefined) {
     angle = normalizeAngle(angle);
     if (axisOrient === 'top' || axisOrient === 'bottom') {
       if (angle % 180 === 0) {
+        const {type = undefined, band = undefined} = fieldDef || {};
+        if (type === 'temporal' && band !== 0) {
+          return 'left'; // FIXME scale reverse / sort
+        }
         return 'center';
       } else if (0 < angle && angle < 180) {
         return axisOrient === 'top' ? 'right' : 'left';
