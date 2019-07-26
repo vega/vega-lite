@@ -221,8 +221,8 @@ export class StackNode extends DataFlowNode {
 
     // Impute
     if (impute && dimensionFieldDef) {
-      const {band = 0.5, bin} = dimensionFieldDef;
-      if (bin) {
+      const {band = 0.5, bin, timeUnit} = dimensionFieldDef;
+      if (bin || timeUnit) {
         // As we can only impute one field at a time, we need to calculate
         // mid point for a binned field
         transform.push({

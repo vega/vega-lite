@@ -1,9 +1,9 @@
-import {vgField} from '../../channeldef';
+import {isTimeBandFieldDef, vgField} from '../../channeldef';
 import {fieldExpr} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
-import {contains, Dict, duplicate, hash, keys, vals} from '../../util';
+import {Dict, duplicate, hash, keys, vals} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
-import {isUnitModel, ModelWithField} from '../model';
+import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
 export type TimeUnitComponent = TimeUnitTransform & {
@@ -26,13 +26,13 @@ export class TimeUnitNode extends DataFlowNode {
         const {timeUnit, field} = fieldDef;
         if (timeUnit) {
           const as = vgField(fieldDef, {forAs: true});
-          const component = {
-            as,
-            timeUnit,
-            field,
-            band: isUnitModel(model) && contains(['x', 'y'], channel)
-          };
-          timeUnitComponent[hash(component)] = component;
+          const band = isTimeBandFieldDef(fieldDef, channel);
+          const component = {as, timeUnit, field};
+          const key = hash(component);
+
+          // init the component and merge band if the same timeUnit field occurs across multiple encodings
+          timeUnitComponent[key] = timeUnitComponent[key] || component;
+          timeUnitComponent[key].band = timeUnitComponent[key].band || band;
         }
         return timeUnitComponent;
       },
@@ -59,7 +59,13 @@ export class TimeUnitNode extends DataFlowNode {
    * and removing `other`.
    */
   public merge(other: TimeUnitNode) {
-    this.formula = {...this.formula, ...other.formula};
+    for (const key in other.formula) {
+      if (!this.formula[key] || other.formula[key].band) {
+        // copy if it's not a duplicate or if we need to include copy band over
+        this.formula[key] = other.formula[key];
+      }
+    }
+
     for (const child of other.children) {
       other.removeChild(child);
       child.parent = this;
@@ -68,7 +74,15 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   public producedFields() {
-    return new Set(vals(this.formula).map(f => f.as));
+    const fields = [];
+    for (const formula of vals(this.formula)) {
+      fields.push(formula.as);
+      if (formula.band) {
+        fields.push(formula.as + '_end');
+      }
+    }
+
+    return new Set(fields);
   }
 
   public dependentFields() {

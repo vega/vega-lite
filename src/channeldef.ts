@@ -952,6 +952,12 @@ export function isTimeFieldDef(fieldDef: TypedFieldDef<any>) {
   return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
 }
 
+export function isTimeBandFieldDef(fieldDef: FieldDef<any>, channel: Channel) {
+  return (
+    fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal' && contains(['x', 'y'], channel)
+  );
+}
+
 /**
  * Getting a value associated with a fielddef.
  * Convert the value to Vega expression if applicable (for datetime object, or string if the field def is temporal or has timeUnit)

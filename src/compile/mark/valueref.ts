@@ -316,7 +316,7 @@ export function midPoint({
             offset
           });
         } else if (isBinned(channelDef.bin)) {
-          if (isFieldDef(channel2Def)) {
+          if (isFieldDef(channel2Def) && contains([QUANTITATIVE, TEMPORAL], channelDef.type)) {
             return interpolatedPositionSignal({scaleName, fieldDef: channelDef, fieldDef2: channel2Def, band, offset});
           } else {
             const channel2 = channel === X ? X2 : Y2;
@@ -393,10 +393,16 @@ export function tooltipForEncoding(
       const fieldDef2 = getFieldDef(encoding[channel2]);
 
       if (isBinned(fieldDef.bin) && fieldDef2) {
-        const startField = vgField(fieldDef, {expr});
-        const endField = vgField(fieldDef2, {expr});
-        value = binFormatExpression(startField, endField, format(fieldDef), config);
         toSkip[channel2] = true;
+        if (fieldDef.type === 'quantitative') {
+          // For binned quantative, we want the range in the tooltip
+          const startField = vgField(fieldDef, {expr});
+          const endField = vgField(fieldDef2, {expr});
+          value = binFormatExpression(startField, endField, format(fieldDef), config);
+        } else {
+          // For binned temporal, there is no need to show the range in the tooltip.
+          // For example, beginning of January to end of January is simply January
+        }
       }
     }
 

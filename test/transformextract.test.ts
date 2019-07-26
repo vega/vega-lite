@@ -156,10 +156,10 @@ describe('extractTransforms()', () => {
         const extractSpec = extractTransforms(normalize(spec, config), config) as TopLevelSpec;
 
         // convert to JSON to resolve `SignalRefWrapper`s that are lazily evaluated
-        const originalCompiled = compile(spec, {config});
-        const transformCompiled = compile(extractSpec, {config});
+        const originalVega = compile(spec, {config});
+        const extractedVega = compile(extractSpec, {config});
 
-        expect(transformCompiled).toEqual(originalCompiled);
+        expect(extractedVega).toEqual(originalVega);
       });
     }
   }
@@ -268,7 +268,7 @@ describe('extractTransforms()', () => {
                   {timeUnit: 'month', field: 'date', as: 'month_date'},
                   {
                     aggregate: [{op: 'mean', field: 'precipitation', as: 'mean_precipitation'}],
-                    groupby: ['month_date']
+                    groupby: ['month_date', 'month_date_end']
                   }
                 ],
                 mark: 'bar',
@@ -298,7 +298,7 @@ describe('extractTransforms()', () => {
                   {timeUnit: 'month', field: 'date', as: 'month_date'},
                   {
                     aggregate: [{op: 'mean', field: 'temp_max', as: 'mean_temp_max'}],
-                    groupby: ['month_date']
+                    groupby: ['month_date', 'month_date_end']
                   }
                 ],
                 encoding: {

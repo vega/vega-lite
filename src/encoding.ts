@@ -15,6 +15,7 @@ import {
   hasConditionalFieldDef,
   isConditionalDef,
   isFieldDef,
+  isTimeBandFieldDef,
   isTypedFieldDef,
   isValueDef,
   LatLongFieldDef,
@@ -44,7 +45,7 @@ import {EncodingFacetMapping} from './spec/facet';
 import {getDateTimeComponents} from './timeunit';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {TEMPORAL} from './type';
-import {keys, some} from './util';
+import {keys, some, vals} from './util';
 
 export interface Encoding<F extends Field> {
   /**
@@ -258,7 +259,7 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
 export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, config: Config) {
   const groupby: string[] = [];
   const bins: BinTransform[] = [];
-  const timeUnits: TimeUnitTransform[] = [];
+  const timeUnits: {[as: string]: TimeUnitTransform} = {};
   const aggregate: AggregatedFieldDef[] = [];
   const encoding: Encoding<string> = {};
 
@@ -306,6 +307,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
           }
         } else {
           groupby.push(newField);
+
           if (isTypedFieldDef(channelDef) && isBinning(bin)) {
             bins.push({bin, field, as: newField});
             // Add additional groupbys for range and end of bins
@@ -325,7 +327,22 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
               newFieldDef['type'] = 'quantitative';
             }
           } else if (timeUnit) {
-            timeUnits.push({timeUnit, field, as: newField});
+            if (isTypedFieldDef(newFieldDef) && isTimeBandFieldDef(newFieldDef, channel)) {
+              timeUnits[newField] = {timeUnit, field, band: true, as: newField};
+              const channel2 = channel === 'x' ? 'x2' : 'y2';
+              const {type: _t, bin: _b, title: _tt, ...newFieldDefWithoutType} = newFieldDef;
+              encoding[channel2] = {
+                ...newFieldDefWithoutType,
+                field: newFieldDefWithoutType.field + '_end'
+              };
+
+              newFieldDef.bin = 'binned';
+            } else {
+              // Use existing one so we preserve "band"
+              timeUnits[newField] = timeUnits[newField] || {timeUnit, field, as: newField};
+            }
+
+            groupby.push(vgField(channelDef, {binSuffix: 'end'}));
 
             // Add formatting to appropriate property based on the type of channel we're processing
             const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
@@ -356,7 +373,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
 
   return {
     bins,
-    timeUnits,
+    timeUnits: vals(timeUnits),
     aggregate,
     groupby,
     encoding

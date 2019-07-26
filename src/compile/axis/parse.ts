@@ -313,7 +313,7 @@ function getProperty<K extends keyof AxisComponentProps>(
       }
       return specifiedAxis.formatType;
     case 'grid': {
-      if (isBinned(model.fieldDef(channel).bin)) {
+      if (isBinned(fieldDef.bin) && fieldDef.type === 'quantitative') {
         return false;
       } else {
         const scaleType = model.getScaleComponent(channel).get('type');
