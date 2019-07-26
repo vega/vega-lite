@@ -17,8 +17,13 @@
           "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
         },
         {
+          "type": "formula",
+          "as": "month_date_end",
+          "expr": "datetime(0, month(datum[\"date\"])+1, 1, 0, 0, 0, 0)"
+        },
+        {
           "type": "aggregate",
-          "groupby": ["month_date"],
+          "groupby": ["month_date", "month_date_end"],
           "ops": ["mean"],
           "fields": ["precipitation"],
           "as": ["mean_precipitation"]
@@ -39,8 +44,20 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "xc": {"scale": "x", "field": "month_date"},
-          "width": {"value": 5},
+          "x2": [
+            {
+              "test": "datum[\"month_date\"] === null || isNaN(datum[\"month_date\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "month_date", "offset": 1}
+          ],
+          "x": [
+            {
+              "test": "datum[\"month_date\"] === null || isNaN(datum[\"month_date\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "month_date_end"}
+          ],
           "y": {"scale": "y", "field": "mean_precipitation"},
           "y2": {"scale": "y", "value": 0}
         }
@@ -51,7 +68,10 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "month_date"},
+      "domain": {
+        "data": "source_0",
+        "fields": ["month_date", "month_date_end"]
+      },
       "range": [0, {"signal": "width"}],
       "padding": 5
     },

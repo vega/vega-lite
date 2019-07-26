@@ -104,6 +104,11 @@
         },
         {
           "type": "formula",
+          "as": "year_start_end",
+          "expr": "datetime(year(datum[\"start\"])+1, 0, 1, 0, 0, 0, 0)"
+        },
+        {
+          "type": "formula",
           "as": "year_end",
           "expr": "datetime(year(datum[\"end\"]), 0, 1, 0, 0, 0, 0)"
         },
@@ -123,8 +128,20 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "event"},
-          "x": {"scale": "x", "field": "year_start"},
-          "x2": {"scale": "x", "field": "year_end"},
+          "x2": [
+            {
+              "test": "datum[\"year_start\"] === null || isNaN(datum[\"year_start\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "year_start"}
+          ],
+          "x": [
+            {
+              "test": "datum[\"year_start\"] === null || isNaN(datum[\"year_start\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "year_start_end"}
+          ],
           "y": {"value": 0},
           "y2": {"field": {"group": "height"}}
         }
@@ -170,6 +187,7 @@
       "domain": {
         "fields": [
           {"data": "data_2", "field": "year_start"},
+          {"data": "data_2", "field": "year_start_end"},
           {"data": "data_2", "field": "year_end"},
           {"data": "data_0", "field": "year_year"},
           {"data": "data_1", "field": "year_year"}

@@ -27,7 +27,7 @@
           "type": "impute",
           "field": "sum_count",
           "groupby": ["series"],
-          "key": "yearmonth_date",
+          "key": "yearmonth_date_mid",
           "method": "value",
           "value": 0
         },
@@ -64,7 +64,7 @@
           "name": "marks",
           "type": "area",
           "style": ["area"],
-          "sort": {"field": "datum[\"yearmonth_date\"]"},
+          "sort": {"field": "datum[\"yearmonth_date_mid\"]"},
           "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {

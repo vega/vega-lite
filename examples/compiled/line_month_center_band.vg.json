@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Temperature in Seattle as a bar chart with yearmonth time unit.",
+  "description": "Line with center band for timeUnit",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -14,24 +14,20 @@
       "transform": [
         {
           "type": "formula",
-          "as": "yearmonth_date",
-          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+          "as": "month_date",
+          "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
         },
         {
           "type": "formula",
-          "as": "yearmonth_date_end",
-          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"])+1, 1, 0, 0, 0, 0)"
+          "as": "month_date_end",
+          "expr": "datetime(0, month(datum[\"date\"])+1, 1, 0, 0, 0, 0)"
         },
         {
           "type": "aggregate",
-          "groupby": ["yearmonth_date", "yearmonth_date_end"],
+          "groupby": ["month_date", "month_date_end"],
           "ops": ["mean"],
           "fields": ["temp"],
           "as": ["mean_temp"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"])"
         }
       ]
     }
@@ -39,28 +35,21 @@
   "marks": [
     {
       "name": "marks",
-      "type": "rect",
-      "style": ["bar"],
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"month_date\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
-          "x2": [
-            {
-              "test": "datum[\"yearmonth_date\"] === null || isNaN(datum[\"yearmonth_date\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "yearmonth_date", "offset": 1}
-          ],
-          "x": [
-            {
-              "test": "datum[\"yearmonth_date\"] === null || isNaN(datum[\"yearmonth_date\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "yearmonth_date_end"}
-          ],
+          "interpolate": {"value": "monotone"},
+          "stroke": {"value": "#4c78a8"},
+          "x": {
+            "signal": "scale(\"x\", 0.5 * datum[\"month_date\"] + 0.5 * datum[\"month_date_end\"])"
+          },
           "y": {"scale": "y", "field": "mean_temp"},
-          "y2": {"scale": "y", "value": 0}
+          "defined": {
+            "signal": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"]) && datum[\"mean_temp\"] !== null && !isNaN(datum[\"mean_temp\"])"
+          }
         }
       }
     }
@@ -71,10 +60,9 @@
       "type": "time",
       "domain": {
         "data": "source_0",
-        "fields": ["yearmonth_date", "yearmonth_date_end"]
+        "fields": ["month_date", "month_date_end"]
       },
-      "range": [0, {"signal": "width"}],
-      "padding": 5
+      "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
@@ -91,7 +79,6 @@
       "orient": "bottom",
       "gridScale": "y",
       "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
       "maxExtent": 0,
@@ -116,13 +103,12 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "date (year-month)",
+      "title": "date (month)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
       "encode": {
         "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%b %Y')"}}
+          "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
         }
       },
       "zindex": 0
