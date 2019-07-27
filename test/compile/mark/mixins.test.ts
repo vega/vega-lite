@@ -373,6 +373,7 @@ describe('compile/mark/mixins', () => {
         const props = binPosition({
           fieldDef,
           channel: 'x',
+          band: 1,
           scaleName: undefined,
           reverse: false,
           markDef: {type: 'bar'}
@@ -389,6 +390,7 @@ describe('compile/mark/mixins', () => {
         const props = binPosition({
           fieldDef,
           channel: 'y',
+          band: 1,
           scaleName: undefined,
           reverse: false,
           markDef: {type: 'bar'}

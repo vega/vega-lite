@@ -190,18 +190,22 @@ export function bin({
   fieldDef,
   scaleName,
   markDef,
-  side,
+  band,
   offset
 }: {
   channel: PositionChannel;
   fieldDef: TypedFieldDef<string>;
   scaleName: string;
   markDef: MarkDef<Mark>;
-  side: 'start' | 'end';
+  band: number;
   offset?: number;
 }) {
-  const binSuffix = side === 'start' ? undefined : 'end';
-  const ref = fieldRef(fieldDef, scaleName, {binSuffix}, offset ? {offset} : {});
+  const ref = interpolatedPositionSignal({
+    scaleName,
+    fieldDef,
+    band,
+    offset
+  });
 
   return wrapPositionInvalidTest({
     fieldDef,
@@ -258,16 +262,30 @@ function interpolatedPositionSignal({
   offset: number;
   band: number;
 }) {
-  const start = vgField(fieldDef, {expr: 'datum', suffix: startSuffix});
-  const end =
-    fieldDef2 !== undefined ? vgField(fieldDef2, {expr: 'datum'}) : vgField(fieldDef, {suffix: 'end', expr: 'datum'});
+  const expr = 0 < band && band < 1 ? 'datum' : undefined;
+  const start = vgField(fieldDef, {expr, suffix: startSuffix});
+  const end = fieldDef2 !== undefined ? vgField(fieldDef2, {expr}) : vgField(fieldDef, {suffix: 'end', expr});
 
-  const datum = band === 0 ? start : band === 1 ? end : `${band} * ${start} + ${1 - band} * ${end}`;
+  if (band === 0) {
+    return {
+      scale: scaleName,
+      field: start,
+      ...(offset ? {offset} : {})
+    };
+  } else if (band === 1) {
+    return {
+      scale: scaleName,
+      field: end,
+      ...(offset ? {offset} : {})
+    };
+  } else {
+    const datum = `${band} * ${start} + ${1 - band} * ${end}`;
 
-  return {
-    signal: `scale("${scaleName}", ${datum})`,
-    ...(offset ? {offset} : {})
-  };
+    return {
+      signal: `scale("${scaleName}", ${datum})`,
+      ...(offset ? {offset} : {})
+    };
+  }
 }
 
 export interface MidPointParams {

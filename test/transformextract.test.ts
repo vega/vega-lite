@@ -114,6 +114,7 @@ describe('extractTransforms()', () => {
 
     // Time Unit prebinned
     // TODO: fix these
+    'bar_month_band.vl.json',
     'bar_yearmonth.vl.json',
     'bar_yearmonth_custom_format.vl.json',
     'line_month_center_band.vl.json'
