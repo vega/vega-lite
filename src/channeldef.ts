@@ -4,6 +4,7 @@ import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateO
 import {Axis} from './axis';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin';
 import {Channel, isScaleChannel, isSecondaryRangeChannel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
+import {getMarkConfig} from './compile/common';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
@@ -12,6 +13,7 @@ import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalOperand} from './logical';
+import {isRectBasedMark, MarkDef} from './mark';
 import {Predicate} from './predicate';
 import {Scale} from './scale';
 import {isSortByChannel, Sort, SortOrder} from './sort';
@@ -371,6 +373,27 @@ export interface PositionFieldDef<F extends Field>
   band?: number;
 }
 
+export function getBand(fieldDef: FieldDef<string>, mark: MarkDef, config: Config) {
+  const {timeUnit, bin} = fieldDef;
+  if (isPositionFieldDef(fieldDef) && fieldDef.band !== undefined) {
+    return fieldDef.band;
+  } else if (timeUnit) {
+    return getMarkConfig('timeUnitBand', mark, config);
+  } else if (bin) {
+    return isRectBasedMark(mark.type) ? 1 : 0.5;
+  }
+  return undefined;
+}
+
+export function hasBand(channel: Channel, fieldDef: FieldDef<string>, mark: MarkDef, config: Config) {
+  if (contains(['x', 'y'], channel)) {
+    if (isBinning(fieldDef.bin) || (fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal')) {
+      return !!getBand(fieldDef, mark, config);
+    }
+  }
+  return false;
+}
+
 /**
  * Field definition of a mark property, which can contain a legend.
  */
@@ -543,7 +566,7 @@ export function vgField(
           }
         } else if (timeUnit) {
           fn = String(timeUnit);
-          suffix = (opt.binSuffix || '') + (opt.suffix || '');
+          suffix = ((opt.binSuffix !== 'range' && opt.binSuffix) || '') + (opt.suffix || '');
         }
       }
     }

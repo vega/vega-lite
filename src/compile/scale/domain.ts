@@ -2,7 +2,7 @@ import {isObject, isString} from 'vega-util';
 import {isAggregateOp, isArgmaxDef, isArgminDef, NonArgAggregateOp, SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {isBinning} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
-import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
+import {binRequiresRange, hasBand, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
 import * as log from '../../log';
@@ -311,7 +311,11 @@ function parseSingleChannelDomain(
         ]);
       }
     }
-  } else if (fieldDef.timeUnit && util.contains(['time', 'utc'], scaleType)) {
+  } else if (
+    fieldDef.timeUnit &&
+    util.contains(['time', 'utc'], scaleType) &&
+    hasBand(channel, fieldDef, model.markDef, model.config)
+  ) {
     const data = model.requestDataName(MAIN);
     return makeImplicit([
       {

@@ -269,7 +269,7 @@ describe('compile/scale', () => {
           }
         });
         const _domain = testParseDomainForChannel(model, 'y');
-        expect(_domain).toEqual([{data: 'main', field: 'month_origin'}, {data: 'main', field: 'month_origin_end'}]);
+        expect(_domain).toEqual([{data: 'main', field: 'month_origin'}]);
       });
 
       it('should return the correct domain for month O', () => {
@@ -287,9 +287,25 @@ describe('compile/scale', () => {
         expect(_domain).toEqual([{data: 'main', field: 'month_origin', sort: true}]);
       });
 
-      it('should return the correct domain for yearmonth T', () => {
+      it('should return the correct domain for yearmonth T with point marks', () => {
         const model = parseUnitModel({
           mark: 'point',
+          encoding: {
+            y: {
+              field: 'origin',
+              type: 'temporal',
+              timeUnit: 'yearmonth'
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'y');
+
+        expect(_domain).toEqual([{data: 'main', field: 'yearmonth_origin'}]);
+      });
+
+      it('should return the correct domain for yearmonth T with bar marks', () => {
+        const model = parseUnitModel({
+          mark: 'bar',
           encoding: {
             y: {
               field: 'origin',

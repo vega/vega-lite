@@ -1,7 +1,7 @@
-import {isTypedFieldDef, vgField} from '../../channeldef';
+import {hasBand, vgField} from '../../channeldef';
 import {fieldExpr} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
-import {contains, Dict, duplicate, hash, keys, vals} from '../../util';
+import {Dict, duplicate, hash, keys, vals} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isUnitModel, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -24,16 +24,16 @@ export class TimeUnitNode extends DataFlowNode {
     const formula = model.reduceFieldDef(
       (timeUnitComponent: TimeUnitComponent, fieldDef, channel) => {
         const {timeUnit, field} = fieldDef;
+
+        const band = isUnitModel(model) && hasBand(channel, fieldDef, model.markDef, model.config);
+
         if (timeUnit) {
           const as = vgField(fieldDef, {forAs: true});
           timeUnitComponent[hash({as, timeUnit, field})] = {
             as,
             timeUnit,
             field,
-            band:
-              isUnitModel(model) &&
-              contains(['x', 'y'], channel) &&
-              (isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal')
+            ...(band ? {band: true} : {})
           };
         }
         return timeUnitComponent;
