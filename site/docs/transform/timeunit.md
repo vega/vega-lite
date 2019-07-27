@@ -55,13 +55,21 @@ A field definition can include a `timeUnit` property. For example, the chart bel
 
 <span class="vl-example" data-name="line_month"></span>
 
-Note that temporal fields use continuous scales by default for all mark types including `"bar"`.
+Using `timeUnit` with rect-based marks (including `bar`, `rect`, and `image`) will treat time units as intervals.
 
 <span class="vl-example" data-name="bar_month_temporal"></span>
 
+### Time Unit's Band
+
+By default, Vega-Lite encodes fields with timeUnit using the initial position of a time unit (which is equivalent to having `band` = 0). However, one can set the `band` property to be `0.5` to use place each data point in the middle of each time unit band.
+
+<span class="vl-example" data-name="line_month_center_band"></span>
+
+### Time Unit with Ordinal Fields
+
 {:#ordinal}
 
-If you want to use a discrete scale instead, you can cast the field to have an `"ordinal"` type. This casting strategy can be useful for time units with low cardinality such as `"month"`.
+Time units can be also used with a discrete scale instead. For example, you can cast the field to have an `"ordinal"` type.
 
 <span class="vl-example" data-name="bar_month"></span>
 

@@ -363,9 +363,9 @@ export interface PositionFieldDef<F extends Field>
   impute?: ImputeParams;
 
   /**
-   * For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band). If set to `1`, the mark size is set to the bandwidth. If set to `0.5`, the mark size is half of the bandwidth.
+   * For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.
    *
-   * For other marks, position on a band of a stacked, binned, or band scale.
+   * For other marks, position on a band of a stacked, binned, time unit or band scale.
    *
    * @minimum 0
    * @maximum 1
