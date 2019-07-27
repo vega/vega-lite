@@ -249,8 +249,7 @@ export interface RectConfig extends RectBinSpacingMixins, MarkConfig {
   continuousBandSize?: number;
 
   /**
-   * The default size of the bars with discrete dimensions.  If unspecified, the default size is  `bandSize-1`,
-   * which provides 1 pixel offset between bars.
+   * The default size of the bars with discrete dimensions.  If unspecified, the default size is  `step-2`, which provides 2 pixel offset between bars.
    * @minimum 0
    */
   discreteBandSize?: number;
