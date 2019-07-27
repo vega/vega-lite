@@ -63,7 +63,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
       fieldDef,
       fieldDef2,
       channel,
-      mark,
+      markDef,
       scaleName,
       spacing: getFirstDefined(markDef.binSpacing, config[mark].binSpacing),
       reverse: scale.get('reverse')

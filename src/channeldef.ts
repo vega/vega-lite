@@ -373,23 +373,29 @@ export interface PositionFieldDef<F extends Field>
   band?: number;
 }
 
-export function getBand(fieldDef: FieldDef<string>, mark: MarkDef, config: Config) {
+export function getBand(
+  channel: Channel,
+  fieldDef: FieldDef<string>,
+  mark: MarkDef,
+  config: Config,
+  {isMidPoint}: {isMidPoint?: boolean} = {}
+) {
   const {timeUnit, bin} = fieldDef;
-  if (isPositionFieldDef(fieldDef) && fieldDef.band !== undefined) {
-    return fieldDef.band;
-  } else if (timeUnit) {
-    return getMarkConfig('timeUnitBand', mark, config);
-  } else if (bin) {
-    return isRectBasedMark(mark.type) ? 1 : 0.5;
+  if (contains(['x', 'y'], channel)) {
+    if (isPositionFieldDef(fieldDef) && fieldDef.band !== undefined) {
+      return fieldDef.band;
+    } else if (timeUnit) {
+      return getMarkConfig('timeUnitBand', mark, config);
+    } else if (isBinning(bin)) {
+      return isRectBasedMark(mark.type) && !isMidPoint ? 1 : 0.5;
+    }
   }
   return undefined;
 }
 
 export function hasBand(channel: Channel, fieldDef: FieldDef<string>, mark: MarkDef, config: Config) {
-  if (contains(['x', 'y'], channel)) {
-    if (isBinning(fieldDef.bin) || (fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal')) {
-      return !!getBand(fieldDef, mark, config);
-    }
+  if (isBinning(fieldDef.bin) || (fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal')) {
+    return !!getBand(channel, fieldDef, mark, config);
   }
   return false;
 }
