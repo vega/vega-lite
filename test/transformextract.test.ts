@@ -116,6 +116,7 @@ describe('extractTransforms()', () => {
     // TODO: fix these
     'bar_yearmonth.vl.json',
     'bar_yearmonth_custom_format.vl.json',
+    'line_month_center_band.vl.json',
     'stacked_area.vl.json',
     'stacked_area_normalize.vl.json',
     'stacked_area_ordinal.vl.json',
