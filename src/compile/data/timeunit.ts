@@ -26,7 +26,7 @@ export class TimeUnitNode extends DataFlowNode {
         const {timeUnit, field} = fieldDef;
         if (timeUnit) {
           const as = vgField(fieldDef, {forAs: true});
-          const component = {
+          timeUnitComponent[hash({as, timeUnit, field})] = {
             as,
             timeUnit,
             field,
@@ -35,7 +35,6 @@ export class TimeUnitNode extends DataFlowNode {
               contains(['x', 'y'], channel) &&
               (isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal')
           };
-          timeUnitComponent[hash(component)] = component;
         }
         return timeUnitComponent;
       },
@@ -62,11 +61,21 @@ export class TimeUnitNode extends DataFlowNode {
    * and removing `other`.
    */
   public merge(other: TimeUnitNode) {
-    this.formula = {...this.formula, ...other.formula};
+    this.formula = {...this.formula};
+
+    // if the same hash happen twice, merge "band"
+    for (const key in other.formula) {
+      if (!this.formula[key] || other.formula[key].band) {
+        // copy if it's not a duplicate or if we need to include copy band over
+        this.formula[key] = other.formula[key];
+      }
+    }
+
     for (const child of other.children) {
       other.removeChild(child);
       child.parent = this;
     }
+
     other.remove();
   }
 
