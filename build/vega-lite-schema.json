@@ -9812,7 +9812,7 @@
           "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "discreteBandSize": {
-          "description": "The default size of the bars with discrete dimensions.  If unspecified, the default size is  `bandSize-1`,\nwhich provides 1 pixel offset between bars.",
+          "description": "The default size of the bars with discrete dimensions.  If unspecified, the default size is  `step-2`, which provides 2 pixel offset between bars.",
           "minimum": 0,
           "type": "number"
         },
