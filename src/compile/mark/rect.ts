@@ -55,6 +55,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
   // x, x2, and width -- we must specify two of these in all conditions
   if (
     isFieldDef(fieldDef) &&
+    // FIXME
     (isBinning(fieldDef.bin) || isBinned(fieldDef.bin) || fieldDef.timeUnit) &&
     !hasSizeDef &&
     !hasDiscreteDomain(scaleType)
