@@ -359,6 +359,40 @@ export interface FoldTransform {
   as?: [FieldName, FieldName];
 }
 
+export interface PivotTransform {
+  /**
+   * The data field to pivot on. The unique values of this field become new field names in the output stream.
+   */
+  pivot: string;
+
+  /**
+   * The data field to populate pivoted fields. The aggregate values of this field become the values of the new pivoted fields.
+   */
+  value: string;
+
+  /**
+   * The optional data fields to group by. If not specified, a single group containing all data objects will be used.
+   */
+  groupby?: string[];
+
+  /**
+   * An optional parameter indicating the maximum number of pivoted fields to generate.
+   * The default (`0`) applies no limit. The pivoted `pivot` names are sorted in ascending order prior to enforcing the limit.
+   * __Default value:__ `0`
+   */
+  limit?: number;
+
+  /**
+   * The aggregation operation to apply to grouped `value` field values.
+   * __Default value:__ `sum`
+   */
+  op?: string;
+}
+
+export function isPivot(t: Transform): t is PivotTransform {
+  return t['pivot'] !== undefined;
+}
+
 export interface DensityTransform {
   /**
    * The data field for which to perform density estimation.
@@ -579,7 +613,8 @@ export type Transform =
   | TimeUnitTransform
   | SampleTransform
   | StackTransform
-  | WindowTransform;
+  | WindowTransform
+  | PivotTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {

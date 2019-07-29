@@ -9405,6 +9405,39 @@
       },
       "type": "object"
     },
+    "PivotTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "groupby": {
+          "description": "The optional data fields to group by. If not specified, a single group containing all data objects will be used.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "limit": {
+          "description": "An optional parameter indicating the maximum number of pivoted fields to generate.\nThe default (`0`) applies no limit. The pivoted `pivot` names are sorted in ascending order prior to enforcing the limit.\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "op": {
+          "description": "The aggregation operation to apply to grouped `value` field values.\n__Default value:__ `sum`",
+          "type": "string"
+        },
+        "pivot": {
+          "description": "The data field to pivot on. The unique values of this field become new field names in the output stream.",
+          "type": "string"
+        },
+        "value": {
+          "description": "The data field to populate pivoted fields. The aggregate values of this field become the values of the new pivoted fields.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pivot",
+        "value"
+      ],
+      "type": "object"
+    },
     "PositionFieldDef": {
       "additionalProperties": false,
       "properties": {
@@ -13303,6 +13336,9 @@
         },
         {
           "$ref": "#/definitions/WindowTransform"
+        },
+        {
+          "$ref": "#/definitions/PivotTransform"
         }
       ]
     },

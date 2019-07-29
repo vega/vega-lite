@@ -1,7 +1,13 @@
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {ImputeNode} from '../../../src/compile/data/impute';
-import {MergeIdenticalNodes, MergeParse, MergeTimeUnits} from '../../../src/compile/data/optimizers';
+import {
+  MergeIdenticalNodes,
+  MergeParse,
+  MergeTimeUnits,
+  nodeFieldIntersection
+} from '../../../src/compile/data/optimizers';
+import {PivotTransformNode} from '../../../src/compile/data/pivot';
 import {TimeUnitComponent, TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {Transform} from '../../../src/transform';
 import {hash} from '../../../src/util';
@@ -169,6 +175,19 @@ describe('compile/data/optimizer', () => {
       expect(children).toHaveLength(2);
       expect(children[0]).toEqual(otherChild);
       expect(children[1]).toEqual(parseChild);
+    });
+  });
+
+  describe('nodeFieldIntersection', () => {
+    it('should return the correct value for 2 nodes', () => {
+      const filterNode = new FilterNode(null, null, 'datum.foo > 1');
+      const pivotNode = new PivotTransformNode(null, {
+        pivot: 'a',
+        value: 'b'
+      });
+      expect(nodeFieldIntersection(filterNode, filterNode)).toBe(false);
+      expect(nodeFieldIntersection(pivotNode, filterNode)).toBe(true);
+      expect(nodeFieldIntersection(filterNode, pivotNode)).toBe(false);
     });
   });
 });

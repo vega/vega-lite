@@ -9,6 +9,7 @@ import {FoldTransformNode} from '../../../src/compile/data/fold';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {ImputeNode} from '../../../src/compile/data/impute';
 import {findSource, parseTransformArray} from '../../../src/compile/data/parse';
+import {PivotTransformNode} from '../../../src/compile/data/pivot';
 import {SampleTransformNode} from '../../../src/compile/data/sample';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {WindowTransformNode} from '../../../src/compile/data/window';
@@ -256,6 +257,26 @@ describe('compile/data/parse', () => {
       const result = parseTransformArray(root, model, new AncestorParse());
       expect(root.children[0] instanceof FoldTransformNode).toBe(true);
       expect(result instanceof FoldTransformNode).toBe(true);
+    });
+
+    it('should return a PivotTransformNode', () => {
+      const transform: Transform = {
+        pivot: 'a',
+        value: 'b'
+      };
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [transform],
+        encoding: {
+          x: {field: 'a', type: 'temporal'},
+          y: {field: 'b', type: 'quantitative'}
+        }
+      });
+      const root = new DataFlowNode(null);
+      const result = parseTransformArray(root, model, new AncestorParse());
+      expect(root.children[0] instanceof PivotTransformNode).toBe(true);
+      expect(result instanceof PivotTransformNode).toBe(true);
     });
 
     it('should return a FlattenTransformNode', () => {
