@@ -1,5 +1,5 @@
 import {MAIN, Parse} from '../../data';
-import {Dict, fieldIntersection, flatten, hash, hasIntersection, keys, some} from '../../util';
+import {Dict, fieldIntersection, hash, hasIntersection, keys, some} from '../../util';
 import {Model} from '../model';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
@@ -185,12 +185,12 @@ function cloneSubtree(facet: FacetNode) {
       ) {
         copy.addDimensions(facet.fields);
       }
-      flatten(node.children.map(clone)).forEach((n: DataFlowNode) => (n.parent = copy));
+      node.children.flatMap(clone).forEach((n: DataFlowNode) => (n.parent = copy));
 
       return [copy];
     }
 
-    return flatten(node.children.map(clone));
+    return node.children.flatMap(clone);
   }
   return clone;
 }
@@ -224,7 +224,7 @@ export function moveFacetDown(node: DataFlowNode) {
 
       // replicate the subtree and place it before the facet's main node
       const cloner = cloneSubtree(node);
-      const copy: DataFlowNode[] = flatten(node.children.map(cloner));
+      const copy: DataFlowNode[] = node.children.map(cloner).flat();
       for (const c of copy) {
         c.parent = facetMain;
       }

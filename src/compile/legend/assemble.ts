@@ -1,5 +1,5 @@
 import {Legend as VgLegend} from 'vega';
-import {flatten, keys, stringify, vals} from '../../util';
+import {keys, stringify, vals} from '../../util';
 import {Model} from '../model';
 import {LegendComponent} from './component';
 import {mergeLegendComponent} from './parse';
@@ -24,21 +24,23 @@ export function assembleLegends(model: Model): VgLegend[] {
     }
   }
 
-  return flatten(vals(legendByDomain)).map((legendCmpt: LegendComponent) => {
-    const legend = legendCmpt.combine();
+  return vals(legendByDomain)
+    .flat()
+    .map((legendCmpt: LegendComponent) => {
+      const legend = legendCmpt.combine();
 
-    if (legend.encode && legend.encode.symbols) {
-      const out = legend.encode.symbols.update;
-      if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
-        // For non color channel's legend, we need to override symbol stroke config from Vega config if stroke channel is not used.
-        out.stroke = {value: 'transparent'};
-      }
+      if (legend.encode && legend.encode.symbols) {
+        const out = legend.encode.symbols.update;
+        if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
+          // For non color channel's legend, we need to override symbol stroke config from Vega config if stroke channel is not used.
+          out.stroke = {value: 'transparent'};
+        }
 
-      if (legend.fill) {
-        // If top-level fill is defined, for non color channel's legend, we need remove fill.
-        delete out.fill;
+        if (legend.fill) {
+          // If top-level fill is defined, for non color channel's legend, we need remove fill.
+          delete out.fill;
+        }
       }
-    }
-    return legend;
-  });
+      return legend;
+    });
 }
