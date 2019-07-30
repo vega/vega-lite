@@ -342,6 +342,10 @@
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
         },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band.  If set to `0.5`, the marks will be positioned in the middle of the time unit band.",
+          "type": "number"
+        },
         "tooltip": {
           "anyOf": [
             {
@@ -7667,6 +7671,10 @@
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
         },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band.  If set to `0.5`, the marks will be positioned in the middle of the time unit band.",
+          "type": "number"
+        },
         "tooltip": {
           "anyOf": [
             {
@@ -8206,6 +8214,10 @@
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
         },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band.  If set to `0.5`, the marks will be positioned in the middle of the time unit band.",
+          "type": "number"
+        },
         "tooltip": {
           "anyOf": [
             {
@@ -8527,6 +8539,10 @@
         "thickness": {
           "description": "Thickness of the tick mark.\n\n__Default value:__  `1`",
           "minimum": 0,
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band.  If set to `0.5`, the marks will be positioned in the middle of the time unit band.",
           "type": "number"
         },
         "tooltip": {
@@ -9138,6 +9154,10 @@
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
         },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band.  If set to `0.5`, the marks will be positioned in the middle of the time unit band.",
+          "type": "number"
+        },
         "tooltip": {
           "anyOf": [
             {
@@ -9424,7 +9444,7 @@
           "description": "An object defining properties of axis's gridlines, ticks and labels.\nIf `null`, the axis for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [axis properties](https://vega.github.io/vega-lite/docs/axis.html) are applied.\n\n__See also:__ [`axis`](https://vega.github.io/vega-lite/docs/axis.html) documentation."
         },
         "band": {
-          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band). If set to `1`, the mark size is set to the bandwidth. If set to `0.5`, the mark size is half of the bandwidth.\n\nFor other marks, position on a band of a stacked, binned, or band scale.",
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, position on a band of a stacked, binned, time unit or band scale.  If set to `0`, the marks will be positioned at the beginning of the band.  If set to `0.5`, the marks will be positioned in the middle of the band.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
@@ -9967,6 +9987,10 @@
         },
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band.  If set to `0.5`, the marks will be positioned in the middle of the time unit band.",
           "type": "number"
         },
         "tooltip": {
@@ -11671,6 +11695,10 @@
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
         },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band.  If set to `0.5`, the marks will be positioned in the middle of the time unit band.",
+          "type": "number"
+        },
         "tooltip": {
           "anyOf": [
             {
@@ -12016,6 +12044,10 @@
         "thickness": {
           "description": "Thickness of the tick mark.\n\n__Default value:__  `1`",
           "minimum": 0,
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band.  If set to `0.5`, the marks will be positioned in the middle of the time unit band.",
           "type": "number"
         },
         "tooltip": {

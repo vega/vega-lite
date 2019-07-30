@@ -1,22 +1,33 @@
 import {AggregateOp} from 'vega';
 import {isArgmaxDef, isArgminDef} from '../../aggregate';
-import {isBinning} from '../../bin';
-import {Channel, getPositionChannelFromLatLong, isGeoPositionChannel, isScaleChannel} from '../../channel';
-import {binRequiresRange, FieldDef, isTypedFieldDef, vgField} from '../../channeldef';
+import {
+  Channel,
+  getPositionChannelFromLatLong,
+  getSecondaryRangeChannel,
+  isGeoPositionChannel,
+  isScaleChannel
+} from '../../channel';
+import {binRequiresRange, FieldDef, hasBand, isTypedFieldDef, vgField} from '../../channeldef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
-import {ModelWithField} from '../model';
+import {isUnitModel, ModelWithField} from '../model';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
 type Measures = Dict<{[key in AggregateOp]?: Set<string>}>;
 
 function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<string>, model: ModelWithField) {
-  if (isTypedFieldDef(fieldDef) && isBinning(fieldDef.bin)) {
+  const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;
+
+  if (
+    isTypedFieldDef(fieldDef) &&
+    isUnitModel(model) &&
+    hasBand(channel, fieldDef, channelDef2, model.markDef, model.config)
+  ) {
     dims.add(vgField(fieldDef, {}));
-    dims.add(vgField(fieldDef, {binSuffix: 'end'}));
+    dims.add(vgField(fieldDef, {suffix: 'end'}));
 
     if (binRequiresRange(fieldDef, channel)) {
       dims.add(vgField(fieldDef, {binSuffix: 'range'}));

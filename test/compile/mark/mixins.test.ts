@@ -375,7 +375,7 @@ describe('compile/mark/mixins', () => {
           channel: 'x',
           scaleName: undefined,
           reverse: false,
-          mark: 'bar'
+          markDef: {type: 'bar'}
         });
         expect(props).not.toBeDefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('x2'));
@@ -391,7 +391,7 @@ describe('compile/mark/mixins', () => {
           channel: 'y',
           scaleName: undefined,
           reverse: false,
-          mark: 'bar'
+          markDef: {type: 'bar'}
         });
         expect(props).not.toBeDefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('y2'));
