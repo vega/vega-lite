@@ -47,6 +47,130 @@ describe('compile/compile', () => {
     expect(spec.marks.length).toEqual(1); // just the root group
   });
 
+  it(
+    'should drop fit in top-level properties for discrete x discrete chart',
+    log.wrap(localLogger => {
+      const spec = compile({
+        data: {
+          values: [{x: 'foo', y: 'bar'}]
+        },
+        autosize: 'fit',
+        mark: 'point',
+        encoding: {
+          x: {field: 'x', type: 'nominal'},
+          y: {field: 'y', type: 'nominal'}
+        }
+      }).spec;
+
+      expect(localLogger.warns[0]).toEqual(log.message.droppingFit());
+      expect(spec.autosize).toBe('pad');
+    })
+  );
+
+  it(
+    'should drop fit-y in top-level properties for quantitative x discrete chart',
+    log.wrap(localLogger => {
+      const spec = compile({
+        data: {
+          values: [{x: 1, y: 'bar'}]
+        },
+        autosize: 'fit',
+        mark: 'point',
+        encoding: {
+          x: {field: 'x', type: 'quantitative'},
+          y: {field: 'y', type: 'nominal'}
+        }
+      }).spec;
+
+      expect(localLogger.warns[0]).toEqual(log.message.droppingFit('y'));
+      expect(spec.autosize).toBe('fit-x');
+    })
+  );
+
+  it(
+    'should drop fit-x in top-level properties for discrete x quantitative chart',
+    log.wrap(localLogger => {
+      const spec = compile({
+        data: {
+          values: [{x: 'foo', y: 1}]
+        },
+        autosize: 'fit',
+        mark: 'point',
+        encoding: {
+          x: {field: 'x', type: 'nominal'},
+          y: {field: 'y', type: 'quantitative'}
+        }
+      }).spec;
+
+      expect(localLogger.warns[0]).toEqual(log.message.droppingFit('x'));
+      expect(spec.autosize).toBe('fit-y');
+    })
+  );
+
+  it(
+    'should NOT drop fit in top-level properties for specified width/height chart',
+    log.wrap(localLogger => {
+      const spec = compile({
+        data: {
+          values: [{x: 'foo', y: 'bar'}]
+        },
+        autosize: 'fit',
+        width: 400,
+        height: 400,
+        mark: 'point',
+        encoding: {
+          x: {field: 'x', type: 'nominal'},
+          y: {field: 'y', type: 'nominal'}
+        }
+      }).spec;
+
+      expect(localLogger.warns.length).toEqual(0);
+      expect(spec.autosize).toBe('fit');
+    })
+  );
+
+  it(
+    'should NOT drop fit-y in top-level properties for specified height chart',
+    log.wrap(localLogger => {
+      const spec = compile({
+        data: {
+          values: [{x: 1, y: 'bar'}]
+        },
+        height: 400,
+        autosize: 'fit',
+        mark: 'point',
+        encoding: {
+          x: {field: 'x', type: 'quantitative'},
+          y: {field: 'y', type: 'nominal'}
+        }
+      }).spec;
+
+      expect(localLogger.warns.length).toEqual(0);
+      expect(spec.autosize).toBe('fit');
+    })
+  );
+
+  it(
+    'should NOT drop fit-x in top-level properties for specified width chart',
+    log.wrap(localLogger => {
+      const spec = compile({
+        data: {
+          values: [{x: 'foo', y: 1}]
+        },
+        width: 400,
+        autosize: 'fit',
+        mark: 'point',
+        encoding: {
+          x: {field: 'x', type: 'nominal'},
+          y: {field: 'y', type: 'quantitative'}
+        }
+      }).spec;
+
+      expect(localLogger.warns.length).toEqual(0);
+      expect(spec.autosize).toBe('fit');
+    })
+  );
+
   it('should use size signal for bar chart width', () => {
     const spec = compile({
       data: {values: [{a: 'A', b: 28}]},
@@ -107,39 +231,6 @@ describe('compile/compile', () => {
 
     expect(spec.autosize).toBe('fit');
   });
-
-  it('warn if size is data driven and autosize is fit', () => {
-    const spec = compile({
-      data: {values: [{a: 'A', b: 28}]},
-      mark: 'bar',
-      autosize: 'fit',
-      encoding: {
-        x: {field: 'a', type: 'ordinal'},
-        y: {field: 'b', type: 'quantitative'}
-      }
-    }).spec;
-    expect(spec.width).toEqual(200);
-    expect(spec.height).toEqual(200);
-  });
-
-  it(
-    'warn if size is data driven and autosize is fit',
-    log.wrap(localLogger => {
-      const spec = compile({
-        data: {values: [{a: 'A', b: 28}]},
-        height: {step: 20},
-        mark: 'bar',
-        autosize: 'fit',
-        encoding: {
-          y: {field: 'a', type: 'ordinal'},
-          x: {field: 'b', type: 'quantitative'}
-        }
-      }).spec;
-      expect(localLogger.warns[0]).toEqual(log.message.stepDropped('height', 'fit'));
-      expect(spec.width).toEqual(200);
-      expect(spec.height).toEqual(200);
-    })
-  );
 
   it(
     'warn if trying to fit composed spec',

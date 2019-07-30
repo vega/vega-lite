@@ -1,12 +1,16 @@
-import {vgField} from '../../channeldef';
+import {getSecondaryRangeChannel} from '../../channel';
+import {hasBand, vgField} from '../../channeldef';
 import {fieldExpr} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, vals} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
-import {ModelWithField} from '../model';
+import {isUnitModel, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
-export type TimeUnitComponent = TimeUnitTransform;
+export type TimeUnitComponent = TimeUnitTransform & {
+  /** whether to output time unit as a band (generate two formula including start and end) */
+  band?: boolean;
+};
 
 export class TimeUnitNode extends DataFlowNode {
   public clone() {
@@ -19,12 +23,21 @@ export class TimeUnitNode extends DataFlowNode {
 
   public static makeFromEncoding(parent: DataFlowNode, model: ModelWithField) {
     const formula = model.reduceFieldDef(
-      (timeUnitComponent: TimeUnitComponent, fieldDef) => {
+      (timeUnitComponent: TimeUnitComponent, fieldDef, channel) => {
         const {timeUnit, field} = fieldDef;
+
+        const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;
+
+        const band = isUnitModel(model) && hasBand(channel, fieldDef, channelDef2, model.markDef, model.config);
+
         if (timeUnit) {
           const as = vgField(fieldDef, {forAs: true});
-          const component = {as, timeUnit, field};
-          timeUnitComponent[hash(component)] = component;
+          timeUnitComponent[hash({as, timeUnit, field})] = {
+            as,
+            timeUnit,
+            field,
+            ...(band ? {band: true} : {})
+          };
         }
         return timeUnitComponent;
       },
@@ -51,11 +64,21 @@ export class TimeUnitNode extends DataFlowNode {
    * and removing `other`.
    */
   public merge(other: TimeUnitNode) {
-    this.formula = {...this.formula, ...other.formula};
+    this.formula = {...this.formula};
+
+    // if the same hash happen twice, merge "band"
+    for (const key in other.formula) {
+      if (!this.formula[key] || other.formula[key].band) {
+        // copy if it's not a duplicate or if we need to include copy band over
+        this.formula[key] = other.formula[key];
+      }
+    }
+
     for (const child of other.children) {
       other.removeChild(child);
       child.parent = this;
     }
+
     other.remove();
   }
 
@@ -72,12 +95,25 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   public assemble() {
-    return vals(this.formula).map(c => {
-      return {
+    const transforms: VgFormulaTransform[] = [];
+
+    for (const f of vals(this.formula)) {
+      const {timeUnit, field, as, band} = f;
+      transforms.push({
         type: 'formula',
-        as: c.as,
-        expr: fieldExpr(c.timeUnit, c.field)
-      } as VgFormulaTransform;
-    });
+        as,
+        expr: fieldExpr(timeUnit, field)
+      });
+
+      if (band) {
+        transforms.push({
+          type: 'formula',
+          as: as + '_end',
+          expr: fieldExpr(timeUnit, field, {end: true})
+        });
+      }
+    }
+
+    return transforms;
   }
 }

@@ -201,6 +201,23 @@ export function getMainRangeChannel(channel: Channel): Channel {
   return channel;
 }
 
+/**
+ * Get the main channel for a range channel. E.g. `x` for `x2`.
+ */
+export function getSecondaryRangeChannel(channel: Channel): SecondaryRangeChannel {
+  switch (channel) {
+    case 'x':
+      return 'x2';
+    case 'y':
+      return 'y2';
+    case 'latitude':
+      return 'latitude2';
+    case 'longitude':
+      return 'longitude2';
+  }
+  return undefined;
+}
+
 // CHANNELS without COLUMN, ROW
 export const UNIT_CHANNELS = keys(UNIT_CHANNEL_INDEX);
 
@@ -227,8 +244,12 @@ const POSITION_SCALE_CHANNEL_INDEX: {x: 1; y: 1} = {x: 1, y: 1};
 export const POSITION_SCALE_CHANNELS = keys(POSITION_SCALE_CHANNEL_INDEX);
 export type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[number];
 
-export function getSizeType(channel: PositionScaleChannel) {
+export function getSizeType(channel: PositionScaleChannel): 'width' | 'height' {
   return channel === 'x' ? 'width' : 'height';
+}
+
+export function getPositionScaleChannel(sizeType: 'width' | 'height'): PositionScaleChannel {
+  return sizeType === 'width' ? 'x' : 'y';
 }
 
 // NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without X, Y

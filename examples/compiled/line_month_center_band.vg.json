@@ -1,5 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Line with center band for timeUnit",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -8,7 +9,7 @@
   "data": [
     {
       "name": "source_0",
-      "url": "data/seattle-weather.csv",
+      "url": "data/seattle-temps.csv",
       "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [
         {
@@ -25,12 +26,8 @@
           "type": "aggregate",
           "groupby": ["month_date", "month_date_end"],
           "ops": ["mean"],
-          "fields": ["precipitation"],
-          "as": ["mean_precipitation"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"])"
+          "fields": ["temp"],
+          "as": ["mean_temp"]
         }
       ]
     }
@@ -38,28 +35,21 @@
   "marks": [
     {
       "name": "marks",
-      "type": "rect",
-      "style": ["bar"],
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"month_date\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
-          "x2": [
-            {
-              "test": "datum[\"month_date\"] === null || isNaN(datum[\"month_date\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "month_date", "offset": 1}
-          ],
-          "x": [
-            {
-              "test": "datum[\"month_date\"] === null || isNaN(datum[\"month_date\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "month_date_end"}
-          ],
-          "y": {"scale": "y", "field": "mean_precipitation"},
-          "y2": {"scale": "y", "value": 0}
+          "interpolate": {"value": "monotone"},
+          "stroke": {"value": "#4c78a8"},
+          "x": {
+            "signal": "scale(\"x\", 0.5 * datum[\"month_date\"] + 0.5 * datum[\"month_date_end\"])"
+          },
+          "y": {"scale": "y", "field": "mean_temp"},
+          "defined": {
+            "signal": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"]) && datum[\"mean_temp\"] !== null && !isNaN(datum[\"mean_temp\"])"
+          }
         }
       }
     }
@@ -77,7 +67,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "mean_precipitation"},
+      "domain": {"data": "source_0", "field": "mean_temp"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -127,7 +117,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Mean of precipitation",
+      "title": "Mean of temp",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0

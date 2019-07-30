@@ -5,6 +5,7 @@ import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateO
 import {Axis} from './axis';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin';
 import {Channel, isScaleChannel, isSecondaryRangeChannel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
+import {getMarkConfig} from './compile/common';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
@@ -13,6 +14,7 @@ import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalOperand} from './logical';
+import {isRectBasedMark, MarkDef} from './mark';
 import {Predicate} from './predicate';
 import {Scale} from './scale';
 import {isSortByChannel, Sort, SortOrder} from './sort';
@@ -371,6 +373,54 @@ export interface PositionFieldDef<F extends Field>
    * __See also:__ [`impute`](https://vega.github.io/vega-lite/docs/impute.html) documentation.
    */
   impute?: ImputeParams;
+
+  /**
+   * For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.
+   *
+   * For other marks, position on a band of a stacked, binned, time unit or band scale.  If set to `0`, the marks will be positioned at the beginning of the band.  If set to `0.5`, the marks will be positioned in the middle of the band.
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  band?: number;
+}
+
+export function getBand(
+  channel: Channel,
+  fieldDef: FieldDef<string>,
+  fieldDef2: ChannelDef<SecondaryFieldDef<string>>,
+  mark: MarkDef,
+  config: Config,
+  {isMidPoint}: {isMidPoint?: boolean} = {}
+) {
+  const {timeUnit, bin} = fieldDef;
+  if (contains(['x', 'y'], channel)) {
+    if (isPositionFieldDef(fieldDef) && fieldDef.band !== undefined) {
+      return fieldDef.band;
+    } else if (timeUnit && !fieldDef2) {
+      if (isMidPoint) {
+        return getMarkConfig('timeUnitBandPosition', mark, config);
+      } else {
+        return isRectBasedMark(mark.type) ? 1 : 0; // TODO: read timeUnitBandSize
+      }
+    } else if (isBinning(bin)) {
+      return isRectBasedMark(mark.type) && !isMidPoint ? 1 : 0.5;
+    }
+  }
+  return undefined;
+}
+
+export function hasBand(
+  channel: Channel,
+  fieldDef: FieldDef<string>,
+  fieldDef2: ChannelDef<SecondaryFieldDef<string>>,
+  mark: MarkDef,
+  config: Config
+) {
+  if (isBinning(fieldDef.bin) || (fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal')) {
+    return !!getBand(channel, fieldDef, fieldDef2, mark, config);
+  }
+  return false;
 }
 
 /**
@@ -466,7 +516,10 @@ export function isScaleFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef
 export function isPositionFieldDef<F extends Field>(
   channelDef: ChannelDef<FieldDef<F>>
 ): channelDef is PositionFieldDef<F> {
-  return !!channelDef && (!!channelDef['axis'] || !!channelDef['stack'] || !!channelDef['impute']);
+  return (
+    !!channelDef &&
+    (!!channelDef['axis'] || !!channelDef['stack'] || !!channelDef['impute'] || channelDef['band'] !== undefined)
+  );
 }
 
 export function isMarkPropFieldDef<F extends Field>(
@@ -541,6 +594,7 @@ export function vgField(
           }
         } else if (timeUnit) {
           fn = String(timeUnit);
+          suffix = ((!contains(['range', 'mid'], opt.binSuffix) && opt.binSuffix) || '') + (opt.suffix || '');
         }
       }
     }

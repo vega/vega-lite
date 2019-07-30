@@ -61,6 +61,58 @@ describe('Mark: Point', () => {
     });
   });
 
+  it('interpolate stacked x with band = 0.5', () => {
+    // This is a simplified example for stacked point.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'point',
+      encoding: {
+        x: {field: 'a', type: 'quantitative', band: 0.5, stack: 'zero'},
+        color: {field: 'b', type: 'ordinal'}
+      },
+      data: {url: 'data/barley.json'}
+    });
+
+    const props = point.encodeEntry(model);
+
+    expect(props.x).toEqual({signal: 'scale("x", 0.5 * datum["a_start"] + 0.5 * datum["a_end"])'});
+  });
+
+  it('interpolates binned x with band = 0.6', () => {
+    // This is a simplified example for stacked point.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'point',
+      encoding: {
+        x: {bin: true, field: 'a', type: 'quantitative', band: 0.6}
+      },
+      data: {url: 'data/barley.json'}
+    });
+
+    const props = point.encodeEntry(model);
+
+    expect(props.x).toEqual([
+      {test: 'datum["bin_maxbins_10_a"] === null || isNaN(datum["bin_maxbins_10_a"])', value: 0},
+      {signal: 'scale("x", 0.6 * datum["bin_maxbins_10_a"] + 0.4 * datum["bin_maxbins_10_a_end"])'}
+    ]);
+  });
+
+  it('interpolates nominal x on a band scale with band = 0.6', () => {
+    // This is a simplified example for stacked point.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'point',
+      encoding: {
+        x: {field: 'a', type: 'nominal', band: 0.6, scale: {type: 'band'}}
+      },
+      data: {url: 'data/barley.json'}
+    });
+
+    const props = point.encodeEntry(model);
+
+    expect(props.x).toEqual({scale: 'x', field: 'a', band: 0.6});
+  });
+
   describe('with y', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'point',

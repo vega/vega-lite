@@ -83,20 +83,6 @@ describe('compile/scale', () => {
         }
       });
 
-      it('should drop rangeStep if model is fit', () => {
-        const model = parseUnitModelWithScaleExceptRange({
-          autosize: 'fit',
-          mark: 'point',
-          encoding: {
-            x: {field: 'x', type: 'nominal'},
-            y: {field: 'y', type: 'nominal'}
-          }
-        });
-
-        expect(parseRangeForChannel('x', model)).toEqual(makeImplicit([0, {signal: 'width'}]));
-        expect(parseRangeForChannel('y', model)).toEqual(makeImplicit([0, {signal: 'height'}]));
-      });
-
       it('should return specified step for band/point scales', () => {
         for (const scaleType of [ScaleType.BAND, ScaleType.POINT]) {
           const model = parseUnitModelWithScaleExceptRange({
@@ -127,7 +113,7 @@ describe('compile/scale', () => {
             });
 
             expect(parseRangeForChannel('x', model)).toEqual(makeImplicit([0, {signal: 'width'}]));
-            expect(localLogger.warns[0]).toEqual(log.message.stepDropped('width', 'continuous'));
+            expect(localLogger.warns[0]).toEqual(log.message.stepDropped('width'));
           })();
         }
       });

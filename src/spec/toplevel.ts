@@ -3,7 +3,10 @@ import {Config} from '../config';
 import {InlineDataset} from '../data';
 import * as log from '../log';
 import {Dict} from '../util';
-import {BaseSpec} from './index';
+import {BaseSpec, TopLevelSpec} from './index';
+import {isLayerSpec} from './layer';
+import {isUnitSpec} from './unit';
+import {getPositionScaleChannel} from '../channel';
 
 /**
  * @minimum 0
@@ -63,11 +66,21 @@ export interface TopLevelProperties {
   autosize?: AutosizeType | AutoSizeParams;
 }
 
-export type AutosizeType = 'pad' | 'fit' | 'none';
+export type FitType = 'fit' | 'fit-x' | 'fit-y';
+
+export function isFitType(autoSizeType: AutosizeType): autoSizeType is FitType {
+  return autoSizeType === 'fit' || autoSizeType === 'fit-x' || autoSizeType === 'fit-y';
+}
+
+export function getFitType(sizeType?: 'width' | 'height'): FitType {
+  return sizeType ? (`fit-${getPositionScaleChannel(sizeType)}` as FitType) : 'fit';
+}
+
+export type AutosizeType = 'pad' | 'none' | FitType;
 
 export interface AutoSizeParams {
   /**
-   * The sizing format type. One of `"pad"`, `"fit"` or `"none"`. See the [autosize type](https://vega.github.io/vega-lite/docs/size.html#autosize) documentation for descriptions of each.
+   * The sizing format type. One of `"pad"`, `"fit"`, `"fit-x"`, `"fit-y"`,  or `"none"`. See the [autosize type](https://vega.github.io/vega-lite/docs/size.html#autosize) documentation for descriptions of each.
    *
    * __Default value__: `"pad"`
    */
@@ -92,19 +105,15 @@ function _normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {
   return isString(autosize) ? {type: autosize} : autosize || {};
 }
 
-export function normalizeAutoSize(
-  topLevelAutosize: AutosizeType | AutoSizeParams,
-  configAutosize: AutosizeType | AutoSizeParams,
-  isUnitOrLayer: boolean = true
-): AutoSizeParams {
+export function normalizeAutoSize(spec: TopLevelSpec, config?: Config): AutoSizeParams {
   const autosize: AutoSizeParams = {
     type: 'pad',
-    ..._normalizeAutoSize(configAutosize),
-    ..._normalizeAutoSize(topLevelAutosize)
+    ...(config ? _normalizeAutoSize(config.autosize) : {}),
+    ..._normalizeAutoSize(spec.autosize)
   };
 
   if (autosize.type === 'fit') {
-    if (!isUnitOrLayer) {
+    if (!(isLayerSpec(spec) || isUnitSpec(spec))) {
       log.warn(log.message.FIT_NON_SINGLE);
       autosize.type = 'pad';
     }

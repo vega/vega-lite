@@ -10,6 +10,7 @@ import {
   isConditionalSelection,
   isFieldDef,
   isValueDef,
+  PositionFieldDef,
   SecondaryFieldDef,
   TypedFieldDef,
   Value,
@@ -217,6 +218,8 @@ export function nonPosition(
     return ref.midPoint({
       channel,
       channelDef: cDef,
+      markDef,
+      config,
       scaleName: model.scaleName(channel),
       scale: model.getScaleComponent(channel),
       stack: null, // No need to provide stack for non-position as it does not affect mid point
@@ -304,7 +307,7 @@ export function text(model: UnitModel, channel: 'text' | 'href' | 'url' = 'text'
 }
 
 export function bandPosition(
-  fieldDef: TypedFieldDef<string>,
+  fieldDef: PositionFieldDef<string>,
   channel: 'x' | 'y',
   model: UnitModel,
   defaultSizeRef?: VgValueRef
@@ -351,10 +354,12 @@ export function bandPosition(
     }
   }
 
+  const {band = 1} = fieldDef;
+
   return {
-    // FIXME: make offset works correctly here when we support group bar (https://github.com/vega/vega-lite/issues/396)
-    [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, {}),
-    [sizeChannel]: defaultSizeRef || ref.bandRef(scaleName)
+    // FIXME: make offset work correctly here when we support group bar (https://github.com/vega/vega-lite/issues/396)
+    [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, {band: (1 - band) / 2}),
+    [sizeChannel]: defaultSizeRef || ref.bandRef(scaleName, band)
   };
 }
 
@@ -377,7 +382,7 @@ export function binPosition({
   fieldDef2,
   channel,
   scaleName,
-  mark,
+  markDef,
   spacing = 0,
   reverse
 }: {
@@ -385,7 +390,7 @@ export function binPosition({
   fieldDef2?: ValueDef | SecondaryFieldDef<string>;
   channel: 'x' | 'y';
   scaleName: string;
-  mark: Mark;
+  markDef: MarkDef<Mark>;
   spacing?: number;
   reverse: boolean;
 }) {
@@ -396,17 +401,17 @@ export function binPosition({
     y2: reverse ? spacing : 0
   };
   const channel2 = channel === X ? X2 : Y2;
-  if (isBinning(fieldDef.bin)) {
+  if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {
       [channel2]: ref.bin({
         channel,
         fieldDef,
         scaleName,
-        mark,
+        markDef,
         side: 'start',
         offset: binSpacing[`${channel}2`]
       }),
-      [channel]: ref.bin({channel, fieldDef, scaleName, mark, side: 'end', offset: binSpacing[channel]})
+      [channel]: ref.bin({channel, fieldDef, scaleName, markDef, side: 'end', offset: binSpacing[channel]})
     };
   } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
     return {
@@ -447,10 +452,11 @@ export function pointPosition(
           channel,
           channelDef,
           channel2Def,
+          markDef,
+          config,
           scaleName,
           scale,
           stack,
-          mark,
           offset,
           defaultRef: ref.positionDefault({
             markDef,
@@ -560,10 +566,11 @@ function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax',
     channel,
     channelDef,
     channel2Def: encoding[channel],
+    markDef,
+    config,
     scaleName,
     scale,
     stack,
-    mark,
     offset,
     defaultRef: undefined
   });

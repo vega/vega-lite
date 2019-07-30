@@ -1,6 +1,6 @@
 import {isNumber} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
-import {isFieldDef} from '../../channeldef';
+import {isFieldDef, isPositionFieldDef} from '../../channeldef';
 import {Config, DEFAULT_STEP, getViewConfigDiscreteStep} from '../../config';
 import {MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
@@ -55,7 +55,8 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
   // x, x2, and width -- we must specify two of these in all conditions
   if (
     isFieldDef(fieldDef) &&
-    (isBinning(fieldDef.bin) || isBinned(fieldDef.bin)) &&
+    // FIXME use band to determine condition here
+    (isBinning(fieldDef.bin) || isBinned(fieldDef.bin) || (fieldDef.timeUnit && !fieldDef2)) &&
     !hasSizeDef &&
     !hasDiscreteDomain(scaleType)
   ) {
@@ -63,7 +64,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
       fieldDef,
       fieldDef2,
       channel,
-      mark,
+      markDef,
       scaleName,
       spacing: getFirstDefined(markDef.binSpacing, config[mark].binSpacing),
       reverse: scale.get('reverse')
@@ -71,11 +72,12 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
   } else if (((isFieldDef(fieldDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !fieldDef2) {
     // vertical
     if (isFieldDef(fieldDef) && scaleType === ScaleType.BAND) {
+      const band = isPositionFieldDef(fieldDef) ? fieldDef.band : undefined;
       return mixins.bandPosition(
         fieldDef,
         channel,
         model,
-        defaultSizeRef(mark, markDef, sizeChannel, scaleName, scale, config)
+        defaultSizeRef(mark, markDef, sizeChannel, scaleName, scale, config, band)
       );
     }
 
@@ -97,7 +99,8 @@ function defaultSizeRef(
   sizeChannel: 'width' | 'height',
   scaleName: string,
   scale: ScaleComponent,
-  config: Config
+  config: Config,
+  band?: number
 ): VgValueRef {
   const markPropOrConfig = getFirstDefined(
     markDef[sizeChannel],
@@ -124,7 +127,7 @@ function defaultSizeRef(
         return {value: DEFAULT_STEP - 2};
       } else {
         // BAND
-        return ref.bandRef(scaleName);
+        return ref.bandRef(scaleName, band);
       }
     } else {
       // continuous scale

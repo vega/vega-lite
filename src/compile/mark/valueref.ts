@@ -15,9 +15,11 @@ import {
   FieldName,
   FieldRefOption,
   format,
+  getBand,
   getFieldDef,
   hasConditionalFieldDef,
   isFieldDef,
+  isPositionFieldDef,
   isTypedFieldDef,
   isValueDef,
   SecondaryFieldDef,
@@ -33,7 +35,7 @@ import * as log from '../../log';
 import {isPathMark, Mark, MarkDef} from '../../mark';
 import {hasDiscreteDomain, isContinuousToContinuous, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
-import {QUANTITATIVE} from '../../type';
+import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, getFirstDefined} from '../../util';
 import {VgValueRef} from '../../vega.schema';
 import {binFormatExpression, formatSignalRef, getMarkConfig} from '../common';
@@ -42,10 +44,9 @@ import {ScaleComponent} from '../scale/component';
 function midPointWithPositionInvalidTest(
   params: MidPointParams & {
     channel: PositionChannel;
-    mark: Mark;
   }
 ) {
-  const {channel, channelDef, mark, scale} = params;
+  const {channel, channelDef, markDef, scale} = params;
   const ref = midPoint(params);
 
   // Wrap to check if the positional value is invalid, if so, plot the point on the min value
@@ -61,7 +62,7 @@ function midPointWithPositionInvalidTest(
     return wrapPositionInvalidTest({
       fieldDef: channelDef,
       channel,
-      mark,
+      markDef,
       ref
     });
   }
@@ -71,15 +72,15 @@ function midPointWithPositionInvalidTest(
 function wrapPositionInvalidTest({
   fieldDef,
   channel,
-  mark,
+  markDef,
   ref
 }: {
   fieldDef: FieldDef<string>;
   channel: PositionChannel;
-  mark: Mark;
+  markDef: MarkDef<Mark>;
   ref: VgValueRef;
 }): VgValueRef | VgValueRef[] {
-  if (!isPathMark(mark)) {
+  if (!isPathMark(markDef.type)) {
     // Only do this for non-path mark (as path marks will already use "defined" to skip points)
 
     return [fieldInvalidTestValueRef(fieldDef, channel), ref];
@@ -111,12 +112,20 @@ export function fieldInvalidPredicate(field: FieldName | FieldDef<string>, inval
 export function position(
   params: MidPointParams & {
     channel: 'x' | 'y';
-    mark: Mark;
   }
 ): VgValueRef | VgValueRef[] {
   const {channel, channelDef, scaleName, stack, offset} = params;
 
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
+    if (isPositionFieldDef(channelDef) && channelDef.band !== undefined) {
+      return interpolatedPositionSignal({
+        scaleName,
+        fieldDef: channelDef,
+        startSuffix: 'start',
+        band: channelDef.band,
+        offset: 0
+      });
+    }
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return fieldRef(channelDef, scaleName, {suffix: 'end'}, {offset});
   }
@@ -131,15 +140,15 @@ export function position2({
   channel,
   channelDef,
   channel2Def,
+  markDef,
+  config,
   scaleName,
   scale,
   stack,
-  mark,
   offset,
   defaultRef
 }: MidPointParams & {
   channel: 'x2' | 'y2';
-  mark: Mark;
 }): VgValueRef | VgValueRef[] {
   if (
     isFieldDef(channelDef) &&
@@ -155,7 +164,8 @@ export function position2({
     scaleName,
     scale,
     stack,
-    mark,
+    markDef,
+    config,
     offset,
     defaultRef
   });
@@ -180,14 +190,14 @@ export function bin({
   channel,
   fieldDef,
   scaleName,
-  mark,
+  markDef,
   side,
   offset
 }: {
   channel: PositionChannel;
   fieldDef: TypedFieldDef<string>;
   scaleName: string;
-  mark: Mark;
+  markDef: MarkDef<Mark>;
   side: 'start' | 'end';
   offset?: number;
 }) {
@@ -197,7 +207,7 @@ export function bin({
   return wrapPositionInvalidTest({
     fieldDef,
     channel,
-    mark,
+    markDef,
     ref
   });
 }
@@ -234,29 +244,29 @@ export function bandRef(scaleName: string, band: number | boolean = true): VgVal
 /**
  * Signal that returns the middle of a bin from start and end field. Should only be used with x and y.
  */
-function binMidSignal({
+function interpolatedPositionSignal({
   scaleName,
   fieldDef,
   fieldDef2,
   offset,
-  band
+  startSuffix,
+  band = 0.5
 }: {
   scaleName: string;
   fieldDef: TypedFieldDef<string>;
   fieldDef2?: SecondaryFieldDef<string>;
+  startSuffix?: string;
   offset: number;
-  band?: number;
+  band: number;
 }) {
-  band = getFirstDefined(band, 0.5);
-
-  const start = vgField(fieldDef, {expr: 'datum'});
+  const start = vgField(fieldDef, {expr: 'datum', suffix: startSuffix});
   const end =
-    fieldDef2 !== undefined
-      ? vgField(fieldDef2, {expr: 'datum'})
-      : vgField(fieldDef, {binSuffix: 'end', expr: 'datum'});
+    fieldDef2 !== undefined ? vgField(fieldDef2, {expr: 'datum'}) : vgField(fieldDef, {suffix: 'end', expr: 'datum'});
+
+  const datum = band === 0 ? start : band === 1 ? end : `${band} * ${start} + ${1 - band} * ${end}`;
 
   return {
-    signal: `scale("${scaleName}", ${band} * ${start} + ${1 - band} * ${end})`,
+    signal: `scale("${scaleName}", ${datum})`,
     ...(offset ? {offset} : {})
   };
 }
@@ -265,6 +275,10 @@ export interface MidPointParams {
   channel: Channel;
   channelDef: ChannelDef;
   channel2Def?: ChannelDef<SecondaryFieldDef<string>>;
+
+  markDef: MarkDef<Mark>;
+  config: Config;
+
   scaleName: string;
   scale: ScaleComponent;
   stack?: StackProperties;
@@ -279,6 +293,8 @@ export function midPoint({
   channel,
   channelDef,
   channel2Def,
+  markDef,
+  config,
   scaleName,
   scale,
   stack,
@@ -291,23 +307,25 @@ export function midPoint({
 
     if (isFieldDef(channelDef)) {
       if (isTypedFieldDef(channelDef)) {
-        if (isBinning(channelDef.bin)) {
+        const band = getBand(channel, channelDef, channel2Def, markDef, config, {isMidPoint: true});
+
+        if (isBinning(channelDef.bin) || (band && channelDef.timeUnit)) {
           // Use middle only for x an y to place marks in the center between start and end of the bin range.
           // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
-          if (contains([X, Y], channel) && channelDef.type === QUANTITATIVE) {
+          if (contains([X, Y], channel) && contains([QUANTITATIVE, TEMPORAL], channelDef.type)) {
             if (stack && stack.impute) {
               // For stack, we computed bin_mid so we can impute.
               return fieldRef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
             }
             // For non-stack, we can just calculate bin mid on the fly using signal.
-            return binMidSignal({scaleName, fieldDef: channelDef, offset});
+            return interpolatedPositionSignal({scaleName, fieldDef: channelDef, band, offset});
           }
           return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {}, {
             offset
           });
         } else if (isBinned(channelDef.bin)) {
           if (isFieldDef(channel2Def)) {
-            return binMidSignal({scaleName, fieldDef: channelDef, fieldDef2: channel2Def, offset});
+            return interpolatedPositionSignal({scaleName, fieldDef: channelDef, fieldDef2: channel2Def, band, offset});
           } else {
             const channel2 = channel === X ? X2 : Y2;
             log.warn(log.message.channelRequiredForBinned(channel2));
@@ -320,7 +338,8 @@ export function midPoint({
         if (hasDiscreteDomain(scaleType)) {
           if (scaleType === 'band') {
             // For band, to get mid point, need to offset by half of the band
-            return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {band: 0.5, offset});
+            const band = getFirstDefined(isPositionFieldDef(channelDef) ? channelDef.band : undefined, 0.5);
+            return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {band, offset});
           }
           return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {offset});
         }

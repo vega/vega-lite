@@ -1,6 +1,14 @@
 import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
 import {isString} from 'vega-util';
-import {Channel, FACET_CHANNELS, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
+import {
+  Channel,
+  FACET_CHANNELS,
+  isChannel,
+  isScaleChannel,
+  ScaleChannel,
+  SingleDefChannel,
+  getPositionScaleChannel
+} from '../channel';
 import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
@@ -484,7 +492,7 @@ export abstract class Model {
 
   public getSizeSignalRef(sizeType: 'width' | 'height'): SignalRef {
     if (isFacetModel(this.parent)) {
-      const channel = sizeType === 'width' ? 'x' : 'y';
+      const channel = getPositionScaleChannel(sizeType);
       const scaleComponent = this.component.scales[channel];
 
       if (scaleComponent && !scaleComponent.merged) {

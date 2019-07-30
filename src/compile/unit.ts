@@ -72,8 +72,7 @@ export class UnitModel extends ModelWithField {
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins = {},
     repeater: RepeaterValue,
-    config: Config,
-    public fit: boolean
+    config: Config
   ) {
     super(spec, 'unit', parent, parentGivenName, config, repeater, undefined, spec.view);
 
@@ -88,7 +87,6 @@ export class UnitModel extends ModelWithField {
 
     this.size = initLayoutSize({
       encoding,
-      fit,
       size: {
         ...parentGivenSize,
         ...(spec.width ? {width: spec.width} : {}),

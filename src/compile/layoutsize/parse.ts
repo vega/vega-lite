@@ -110,20 +110,12 @@ function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height'): Layout
     const range = scaleComponent.get('range');
 
     if (hasDiscreteDomain(scaleType)) {
-      if (isVgRangeStep(range)) {
+      const size = getViewConfigDiscreteSize(config.view, sizeType);
+      if (isVgRangeStep(range) || isStep(size)) {
         // For discrete domain with range.step, use dynamic width/height
         return 'step';
       } else {
-        const size = getViewConfigDiscreteSize(config.view, sizeType);
-        if (isStep(size)) {
-          if (model.fit) {
-            return getViewConfigContinuousSize(config.view, sizeType);
-          } else {
-            return 'step';
-          }
-        } else {
-          return size;
-        }
+        return size;
       }
     } else {
       return getViewConfigContinuousSize(config.view, sizeType);
