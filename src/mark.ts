@@ -141,9 +141,9 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
   invalid?: 'filter' | Hide | null;
 
   /**
-   * Default band position for a time unit.
+   * Default band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band.  If set to `0.5`, the marks will be positioned in the middle of the time unit band.
    */
-  timeUnitBandPosition?: 0 | 0.5;
+  timeUnitBandPosition?: number;
 }
 
 export interface RectBinSpacingMixins {
