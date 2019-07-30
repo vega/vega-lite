@@ -141,9 +141,15 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
   invalid?: 'filter' | Hide | null;
 
   /**
-   * Default band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band.  If set to `0.5`, the marks will be positioned in the middle of the time unit band.
+   * Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.
    */
   timeUnitBandPosition?: number;
+
+  /**
+   * Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.
+   * If set to `0.5`, bandwidth of the marks will be half of the time unit band step.
+   */
+  timeUnitBand?: number;
 }
 
 export interface RectBinSpacingMixins {
@@ -189,7 +195,8 @@ export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = [
   'color',
   'tooltip',
   'invalid',
-  'timeUnitBandPosition'
+  'timeUnitBandPosition',
+  'timeUnitBand'
 ];
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
@@ -205,7 +212,8 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
 
 export const defaultMarkConfig: MarkConfig = {
   color: '#4c78a8',
-  invalid: 'filter'
+  invalid: 'filter',
+  timeUnitBand: 1
 };
 
 export interface MarkConfigMixins {
