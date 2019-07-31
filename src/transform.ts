@@ -124,7 +124,9 @@ export interface StackTransform {
    */
   groupby: FieldName[];
   /**
-   * Mode for stacking marks.
+   * Mode for stacking marks. One of `"zero"` (default), `"center"`, or `"normalize"`.
+   * The `"zero"` offset will stack starting at `0`. The `"center"` offset will center the stacks. The `"normalize"` offset will compute percentage values for each stack point, with output values in the range `[0,1]`.
+   *
    * __Default value:__ `"zero"`
    */
   offset?: 'zero' | 'center' | 'normalize';
@@ -204,7 +206,7 @@ export interface WindowTransform {
   groupby?: FieldName[];
 
   /**
-   * A sort field definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).
+   * A sort field definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered "peer" values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).
    */
   sort?: SortField[];
 }
