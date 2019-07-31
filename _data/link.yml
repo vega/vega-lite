@@ -86,6 +86,8 @@ SymbolShape:
   name: String
 LabelOverlap:
   name: String
+ConditionalAxisProperty:
+  link: "axis.html#conditional"
 
 # Config
 Config:

@@ -192,10 +192,13 @@
         {
           "scale": "concat_0_x",
           "orient": "bottom",
+          "gridDash": [3, 3],
+          "gridScale": "concat_0_y",
+          "grid": true,
+          "tickCount": {"signal": "ceil(width/40)"},
           "encode": {
             "grid": {
               "update": {
-                "strokeDash": {"value": [3, 3]},
                 "stroke": [
                   {"test": "datum.value === 0", "value": "#666"},
                   {"value": "#CCC"}
@@ -203,9 +206,6 @@
               }
             }
           },
-          "gridScale": "concat_0_y",
-          "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -217,17 +217,6 @@
           "scale": "concat_0_x",
           "orient": "bottom",
           "grid": false,
-          "encode": {
-            "grid": {
-              "update": {
-                "strokeDash": {"value": [3, 3]},
-                "stroke": [
-                  {"test": "datum.value === 0", "value": "#666"},
-                  {"value": "#CCC"}
-                ]
-              }
-            }
-          },
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(width/40)"},
