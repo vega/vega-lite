@@ -345,7 +345,7 @@ export interface AxisEncoding {
   title?: GuideEncodingEntry;
 }
 
-const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
+export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   orient: 1, // other things can depend on orient
 
   bandPosition: 1,
@@ -420,18 +420,9 @@ const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
   encoding: 1
 };
 
-const VG_AXIS_PROPERTIES_INDEX: Flag<keyof VgAxis> = {
-  gridScale: 1,
-  scale: 1,
-  ...COMMON_AXIS_PROPERTIES_INDEX,
-  encode: 1
-};
-
 export function isAxisProperty(prop: string): prop is keyof Axis {
   return !!AXIS_PROPERTIES_INDEX[prop];
 }
-
-export const VG_AXIS_PROPERTIES = keys(VG_AXIS_PROPERTIES_INDEX);
 
 // Export for dependent projects
 export const AXIS_PROPERTIES = keys(AXIS_PROPERTIES_INDEX);

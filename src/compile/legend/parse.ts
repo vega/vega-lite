@@ -18,7 +18,7 @@ import {
   title as fieldDefTitle,
   TypedFieldDef
 } from '../../channeldef';
-import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
+import {Legend, LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
 import {mergeTitleComponent, numberFormat} from '../common';
@@ -27,7 +27,7 @@ import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
-import {LegendComponent, LegendComponentIndex} from './component';
+import {LegendComponent, LegendComponentIndex, LEGEND_COMPONENT_PROPERTIES} from './component';
 import * as encode from './encode';
 import * as properties from './properties';
 import {direction, type} from './properties';
@@ -253,7 +253,7 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
 
   let typeMerged = false;
   // Otherwise, let's merge
-  for (const prop of VG_LEGEND_PROPERTIES) {
+  for (const prop of LEGEND_COMPONENT_PROPERTIES) {
     const mergedValueWithExplicit = mergeValuesWithExplicit<VgLegend, any>(
       mergedLegend.getWithExplicit(prop),
       childLegend.getWithExplicit(prop),
