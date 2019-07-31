@@ -107,6 +107,11 @@ For example, the following plot has a customized x-axis title.
 
 We can set axis properties (whose type include "ConditionalAxisProperty") to a [conditional value definition](condition.html#value).
 
+Note that each axis tick, grid line, and label instance is backed by a data object with the following fields, which may be accessed as part of the test condition in a condition axis property.
+
+- `label` - the string label
+- `value` - the data value
+
 For example, we can adjust the grid dash in a line chart based on whether a particular grid line falls on a year boundary:
 
 <div class="vl-example" data-name="line_conditional_grid_dash"></div>
