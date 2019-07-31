@@ -1,7 +1,7 @@
-import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {GeoJSONNode} from '../../../src/compile/data/geojson';
 import {contains, every} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/geojson', () => {
   it('should make transform and assemble correctly', () => {
@@ -25,7 +25,7 @@ describe('compile/data/geojson', () => {
       }
     });
 
-    const root = new DataFlowNode(null);
+    const root = new PlaceholderDataFlowNode(null);
     GeoJSONNode.parseAll(root, model);
 
     let node = root.children[0];
@@ -67,7 +67,7 @@ describe('compile/data/geojson', () => {
     });
     model.parse();
 
-    const root = new DataFlowNode(null);
+    const root = new PlaceholderDataFlowNode(null);
     const retval = GeoJSONNode.parseAll(root, model);
 
     expect(retval).toBe(root);

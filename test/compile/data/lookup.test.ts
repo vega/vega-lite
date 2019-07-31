@@ -3,7 +3,7 @@ import {LookupNode} from '../../../src/compile/data/lookup';
 import {parseTransformArray} from '../../../src/compile/data/parse';
 import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/lookup', () => {
   it('should parse lookup from array', () => {
@@ -118,7 +118,7 @@ describe('compile/data/lookup', () => {
   });
 
   it('should never clone parent', () => {
-    const parent = new DataFlowNode(null);
+    const parent = new PlaceholderDataFlowNode(null);
     const lookup = new LookupNode(
       parent,
       {

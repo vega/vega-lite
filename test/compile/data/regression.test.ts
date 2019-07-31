@@ -1,8 +1,6 @@
-/* tslint:disable:quotemark */
-
 import {RegressionTransformNode} from '../../../src/compile/data/regression';
 import {Transform} from '../../../src/transform';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/fold', () => {
   it('should return a proper vg transform', () => {
@@ -91,7 +89,7 @@ describe('compile/data/fold', () => {
 
   describe('clone', () => {
     it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const regression = new RegressionTransformNode(parent, {regression: 'y', on: 'x'});
       expect(regression.clone().parent).toBeNull();
     });

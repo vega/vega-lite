@@ -2,7 +2,7 @@ import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {AggregateTransform} from '../../../src/transform';
 import {internalField} from '../../../src/util';
 import {parseUnitModel} from '../../util';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/aggregate', () => {
   describe('clone', () => {
@@ -22,7 +22,7 @@ describe('compile/data/aggregate', () => {
     });
 
     it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const aggregate = new AggregateNode(parent, new Set(), {});
       expect(aggregate.clone().parent).toBeNull();
     });
@@ -271,14 +271,14 @@ describe('compile/data/aggregate', () => {
 
   describe('merge', () => {
     it('should not merge AggregateNodes with different dimensions', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const agg1 = new AggregateNode(parent, new Set(['a', 'b']), {});
       const agg2 = new AggregateNode(parent, new Set(['a']), {});
 
       expect(agg1.merge(agg2)).toBe(false);
     });
     it('should merge AggregateNodes with same dimensions', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const agg1 = new AggregateNode(parent, new Set(['a', 'b']), {a: {mean: new Set(['a_mean'])}});
       const agg2 = new AggregateNode(parent, new Set(['a', 'b']), {b: {mean: new Set(['b_mean'])}});
 

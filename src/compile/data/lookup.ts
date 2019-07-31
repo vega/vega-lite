@@ -1,4 +1,4 @@
-import {isString} from 'vega-util';
+import {isString, array} from 'vega-util';
 import * as log from '../../log';
 import {LookupTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
@@ -40,10 +40,12 @@ export class LookupNode extends DataFlowNode {
     return new LookupNode(parent, transform, fromOutputNode.getSource());
   }
 
+  public dependentFields() {
+    return new Set(this.transform.lookup);
+  }
+
   public producedFields() {
-    return new Set(
-      this.transform.from.fields || (this.transform.as instanceof Array ? this.transform.as : [this.transform.as])
-    );
+    return new Set(this.transform.from.fields || array(this.transform.as));
   }
 
   public hash() {
@@ -57,7 +59,7 @@ export class LookupNode extends DataFlowNode {
       // lookup a few fields and add create a flat output
       foreign = {
         values: this.transform.from.fields,
-        ...(this.transform.as ? {as: this.transform.as instanceof Array ? this.transform.as : [this.transform.as]} : {})
+        ...(this.transform.as ? {as: array(this.transform.as)} : {})
       };
     } else {
       // lookup full record and nest it

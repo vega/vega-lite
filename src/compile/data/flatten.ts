@@ -18,6 +18,10 @@ export class FlattenTransformNode extends DataFlowNode {
     this.transform.as = flatten.map((f, i) => as[i] || f);
   }
 
+  public dependentFields() {
+    return new Set(this.transform.flatten);
+  }
+
   public producedFields() {
     return new Set(this.transform.as);
   }

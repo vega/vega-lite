@@ -1,7 +1,7 @@
 import {ImputeNode} from '../../../src/compile/data/impute';
 import {Transform} from '../../../src/transform';
 import {parseUnitModelWithScale} from '../../util';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/impute', () => {
   describe('Impute Transform', () => {
@@ -414,7 +414,7 @@ describe('compile/data/impute', () => {
 
   describe('clone', () => {
     it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const transform: Transform = {
         impute: 'y',
         key: 'x',

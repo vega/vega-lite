@@ -1,14 +1,14 @@
-import {DataFlowNode} from '../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/dataflow', () => {
   describe('swap', () => {
     it('should correctly swap two nodes in a simple chain', () => {
-      const a = new DataFlowNode(null, 'a');
-      const b = new DataFlowNode(a, 'b');
+      const a = new PlaceholderDataFlowNode(null, 'a');
+      const b = new PlaceholderDataFlowNode(a, 'b');
 
-      const c = new DataFlowNode(b, 'c');
+      const c = new PlaceholderDataFlowNode(b, 'c');
 
-      const d = new DataFlowNode(c, 'd');
+      const d = new PlaceholderDataFlowNode(c, 'd');
 
       c.swapWithParent();
 
@@ -25,16 +25,16 @@ describe('compile/data/dataflow', () => {
     });
 
     it('should correctly swap two nodes', () => {
-      const root = new DataFlowNode(null, 'root');
-      const parent = new DataFlowNode(root, 'parent');
+      const root = new PlaceholderDataFlowNode(null, 'root');
+      const parent = new PlaceholderDataFlowNode(root, 'parent');
 
-      const node = new DataFlowNode(parent, 'node');
+      const node = new PlaceholderDataFlowNode(parent, 'node');
 
-      const child1 = new DataFlowNode(node, 'child1');
-      const child2 = new DataFlowNode(node, 'child2');
+      const child1 = new PlaceholderDataFlowNode(node, 'child1');
+      const child2 = new PlaceholderDataFlowNode(node, 'child2');
 
-      const parentChild1 = new DataFlowNode(parent, 'parentChild1');
-      const parentChild2 = new DataFlowNode(parent, 'parentChild2');
+      const parentChild1 = new PlaceholderDataFlowNode(parent, 'parentChild1');
+      const parentChild2 = new PlaceholderDataFlowNode(parent, 'parentChild2');
 
       node.swapWithParent();
 
@@ -61,10 +61,10 @@ describe('compile/data/dataflow', () => {
 
   describe('remove', () => {
     it('should remove node from dataflow', () => {
-      const a = new DataFlowNode(null, 'a');
-      const b = new DataFlowNode(a, 'b');
+      const a = new PlaceholderDataFlowNode(null, 'a');
+      const b = new PlaceholderDataFlowNode(a, 'b');
 
-      const c = new DataFlowNode(b, 'c');
+      const c = new PlaceholderDataFlowNode(b, 'c');
 
       expect(a.children).toEqual([b]);
       expect(b.parent).toBe(a);
@@ -77,14 +77,14 @@ describe('compile/data/dataflow', () => {
     });
 
     it('should maintain order', () => {
-      const root = new DataFlowNode(null, 'root');
+      const root = new PlaceholderDataFlowNode(null, 'root');
 
-      const rootChild1 = new DataFlowNode(root, 'rootChild1');
-      const node = new DataFlowNode(root, 'node');
-      const rootChild2 = new DataFlowNode(root, 'rootChild2');
+      const rootChild1 = new PlaceholderDataFlowNode(root, 'rootChild1');
+      const node = new PlaceholderDataFlowNode(root, 'node');
+      const rootChild2 = new PlaceholderDataFlowNode(root, 'rootChild2');
 
-      const child1 = new DataFlowNode(node, 'child1');
-      const child2 = new DataFlowNode(node, 'child2');
+      const child1 = new PlaceholderDataFlowNode(node, 'child1');
+      const child2 = new PlaceholderDataFlowNode(node, 'child2');
 
       expect(root.children).toEqual([rootChild1, node, rootChild2]);
       expect(rootChild1.parent).toBe(root);
@@ -105,10 +105,10 @@ describe('compile/data/dataflow', () => {
 
   describe('insertAsParentOf', () => {
     it('should insert node into dataflow', () => {
-      const a = new DataFlowNode(null, 'a');
-      const anotherChild = new DataFlowNode(a, 'a');
-      const b = new DataFlowNode(null, 'b');
-      const c = new DataFlowNode(a, 'c');
+      const a = new PlaceholderDataFlowNode(null, 'a');
+      const anotherChild = new PlaceholderDataFlowNode(a, 'a');
+      const b = new PlaceholderDataFlowNode(null, 'b');
+      const c = new PlaceholderDataFlowNode(a, 'c');
 
       b.insertAsParentOf(c);
 
@@ -121,8 +121,8 @@ describe('compile/data/dataflow', () => {
 
   describe('addChild', () => {
     it('should add child to node', () => {
-      const a = new DataFlowNode(null, 'a');
-      const b = new DataFlowNode(null, 'b');
+      const a = new PlaceholderDataFlowNode(null, 'a');
+      const b = new PlaceholderDataFlowNode(null, 'b');
 
       a.addChild(b);
 
@@ -131,8 +131,8 @@ describe('compile/data/dataflow', () => {
     });
 
     it('should not add the same child twice', () => {
-      const a = new DataFlowNode(null, 'a');
-      const b = new DataFlowNode(null, 'b');
+      const a = new PlaceholderDataFlowNode(null, 'a');
+      const b = new PlaceholderDataFlowNode(null, 'b');
 
       a.addChild(b);
       a.addChild(b);
@@ -144,7 +144,7 @@ describe('compile/data/dataflow', () => {
 
   describe('clone', () => {
     it('should not work', () => {
-      const a = new DataFlowNode(null, 'a');
+      const a = new PlaceholderDataFlowNode(null, 'a');
 
       expect(a.clone).toThrowError();
     });

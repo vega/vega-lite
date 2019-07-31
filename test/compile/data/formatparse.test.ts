@@ -1,5 +1,5 @@
 import {AncestorParse} from '../../../src/compile/data';
-import {DataFlowNode} from '../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {parseTransformArray} from '../../../src/compile/data/parse';
 import {ModelWithField} from '../../../src/compile/model';
@@ -57,7 +57,7 @@ describe('compile/data/formatparse', () => {
       });
 
       const ancestorParse = new AncestorParse();
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       parseTransformArray(parent, model, ancestorParse);
       expect(ancestorParse.combine()).toEqual({b2: 'derived'});
       expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse).parse).toEqual({
@@ -315,7 +315,7 @@ describe('compile/data/formatparse', () => {
 
   describe('clone', () => {
     it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const parse = new ParseNode(parent, {});
       expect(parse.clone().parent).toBeNull();
     });

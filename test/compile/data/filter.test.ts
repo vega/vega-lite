@@ -1,5 +1,5 @@
 import {AncestorParse} from '../../../src/compile/data';
-import {DataFlowNode} from '../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 import {FilterNode} from '../../../src/compile/data/filter';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {parseTransformArray} from '../../../src/compile/data/parse';
@@ -23,7 +23,7 @@ describe('compile/data/filter', () => {
     let parse: Dict<string> = {};
 
     // extract the parse from the parse nodes that were generated along with the filter nodes
-    const root = new DataFlowNode(null);
+    const root = new PlaceholderDataFlowNode(null);
     parseTransformArray(root, model, new AncestorParse());
     let node = root.children[0];
 
@@ -61,7 +61,7 @@ describe('compile/data/filter', () => {
 
   describe('clone', () => {
     it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const filter = new FilterNode(parent, null, 'false');
       expect(filter.clone().parent).toBeNull();
     });

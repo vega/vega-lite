@@ -15,9 +15,18 @@ export class SampleTransformNode extends DataFlowNode {
     super(parent);
   }
 
+  public dependentFields() {
+    return new Set();
+  }
+
+  public producedFields() {
+    return new Set();
+  }
+
   public hash() {
     return `SampleTransform ${hash(this.transform)}`;
   }
+
   public assemble(): VgSampleTransform {
     return {
       type: 'sample',
