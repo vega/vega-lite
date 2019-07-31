@@ -17,7 +17,8 @@ import {
   extractTransformsFromEncoding,
   markChannelCompatible,
   normalizeEncoding,
-  pathGroupingFields
+  pathGroupingFields,
+  fieldDefs
 } from '../src/encoding';
 import * as log from '../src/log';
 import {CIRCLE, Mark, POINT, SQUARE, TICK} from '../src/mark';
@@ -455,6 +456,24 @@ describe('encoding', () => {
 
     it('should not include fields from tooltip', () => {
       expect(pathGroupingFields('line', {tooltip: {field: 'a', type: 'nominal'}})).toEqual([]);
+    });
+  });
+
+  describe('fieldDefs', () => {
+    it('should return field defs', () => {
+      expect(
+        fieldDefs<string>({
+          x: {field: 'foo', type: 'quantitative'},
+          color: {
+            condition: {
+              test: 'datum.val > 12',
+              field: 'bar',
+              type: 'quantitative'
+            },
+            value: 'red'
+          }
+        })
+      ).toEqual([{field: 'foo', type: 'quantitative'}, {field: 'bar', test: 'datum.val > 12', type: 'quantitative'}]);
     });
   });
 });

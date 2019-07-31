@@ -26,7 +26,8 @@ import {
   title,
   TypedFieldDef,
   Value,
-  vgField
+  vgField,
+  ValueOrGradient
 } from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding, forEach} from '../../encoding';
@@ -361,7 +362,7 @@ export function midPoint({
 /**
  * Convert special "width" and "height" values in Vega-Lite into Vega value ref.
  */
-export function vgValueRef(channel: Channel, value: Value) {
+export function vgValueRef(channel: Channel, value: ValueOrGradient) {
   if (contains(['x', 'x2'], channel) && value === 'width') {
     return {field: {group: 'width'}};
   } else if (contains(['y', 'y2'], channel) && value === 'height') {
@@ -429,7 +430,7 @@ export function tooltipForEncoding(
 }
 
 export function text(
-  channelDef: ChannelDefWithCondition<FieldDef<string>, string | number | boolean>,
+  channelDef: ChannelDefWithCondition<FieldDef<string>, Value>,
   config: Config,
   expr: 'datum' | 'datum.datum' = 'datum'
 ): VgValueRef {

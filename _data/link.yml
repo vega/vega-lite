@@ -156,6 +156,13 @@ ShapeValueDefWithCondition:
   name: MarkPropValueDef
   link: "encoding.html#mark-prop-value-def"
 
+ColorGradientFieldDefWithCondition:
+  name: MarkPropFieldDef
+  link: "encoding.html#mark-prop-field-def"
+ColorGradientValueDefWithCondition:
+  name: MarkPropValueDef
+  link: "encoding.html#mark-prop-value-def"
+
 TextFieldDefWithCondition:
   name: TextFieldDef
   link: "encoding.html#text-field-def"
@@ -293,6 +300,9 @@ DateTime:
   link: "types.html#datetime"
 Color:
   link: "types.html#color"
+GradientStop:
+  name: Stop
+  link: "types.html#gradient-stop"
 
 # Others
 FontWeight:

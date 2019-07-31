@@ -146,7 +146,14 @@
           "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -174,7 +181,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -291,7 +305,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -1208,7 +1229,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -1275,7 +1303,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -1782,7 +1817,14 @@
           "type": "boolean"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "extent": {
@@ -1928,6 +1970,12 @@
           "type": "string"
         }
       ]
+    },
+    "ColorGradientFieldDefWithCondition": {
+      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>"
+    },
+    "ColorGradientValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>"
     },
     "ColorName": {
       "enum": [
@@ -2088,10 +2136,10 @@
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -2113,10 +2161,10 @@
         "fill": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -2244,10 +2292,10 @@
         "stroke": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -2474,6 +2522,16 @@
         },
         {
           "$ref": "#/definitions/ConditionalSelection<TextFieldDef>"
+        }
+      ]
+    },
+    "ConditionalValueDef<(Gradient|string|null)>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Gradient|string|null)>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<(Gradient|string|null)>>"
         }
       ]
     },
@@ -2730,6 +2788,34 @@
       ],
       "type": "object"
     },
+    "ConditionalPredicate<ValueDef<(Gradient|string|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
     "ConditionalPredicate<StringValueDef>": {
       "additionalProperties": false,
       "properties": {
@@ -2738,7 +2824,7 @@
           "description": "Predicate for triggering the condition"
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": [
             "string",
             "null"
@@ -2760,7 +2846,7 @@
         },
         "value": {
           "$ref": "#/definitions/Value",
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -2777,7 +2863,7 @@
           "description": "Predicate for triggering the condition"
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": "number"
         }
       },
@@ -3010,6 +3096,34 @@
       ],
       "type": "object"
     },
+    "ConditionalSelection<ValueDef<(Gradient|string|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "selection": {
+          "$ref": "#/definitions/SelectionOperand",
+          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "selection",
+        "value"
+      ],
+      "type": "object"
+    },
     "ConditionalSelection<StringValueDef>": {
       "additionalProperties": false,
       "properties": {
@@ -3018,7 +3132,7 @@
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": [
             "string",
             "null"
@@ -3040,7 +3154,7 @@
         },
         "value": {
           "$ref": "#/definitions/Value",
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -3057,7 +3171,7 @@
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": "number"
         }
       },
@@ -3680,7 +3794,14 @@
           "type": "boolean"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "extent": {
@@ -3759,7 +3880,14 @@
           "type": "boolean"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "extent": {
@@ -4014,10 +4142,10 @@
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -4047,10 +4175,10 @@
         "fill": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -4182,10 +4310,10 @@
         "stroke": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -4451,7 +4579,7 @@
         }
       ]
     },
-    "FieldDefWithCondition<MarkPropFieldDef,(string|null)>": {
+    "FieldDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -4476,11 +4604,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalStringValueDef"
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalStringValueDef"
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
               },
               "type": "array"
             }
@@ -5778,6 +5906,34 @@
       },
       "required": [
         "vconcat"
+      ],
+      "type": "object"
+    },
+    "Gradient": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/LinearGradient"
+        },
+        {
+          "$ref": "#/definitions/RadialGradient"
+        }
+      ]
+    },
+    "GradientStop": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "$ref": "#/definitions/Color",
+          "description": "The color value at this point in the gradient."
+        },
+        "offset": {
+          "description": "The offset fraction for the color stop, indicating its position within the gradient.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "offset",
+        "color"
       ],
       "type": "object"
     },
@@ -7486,7 +7642,14 @@
           "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -7514,7 +7677,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -7620,7 +7790,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -7750,6 +7927,49 @@
           "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         }
       },
+      "type": "object"
+    },
+    "LinearGradient": {
+      "additionalProperties": false,
+      "properties": {
+        "gradient": {
+          "description": "The type of gradient. Use `\"linear\"` for a linear gradient.",
+          "enum": [
+            "linear"
+          ],
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "stops": {
+          "description": "An array of gradient stops defining the gradient color sequence.",
+          "items": {
+            "$ref": "#/definitions/GradientStop"
+          },
+          "type": "array"
+        },
+        "x1": {
+          "description": "The starting x-coordinate, in normalized [0, 1] coordinates, of the linear gradient.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "x2": {
+          "description": "The ending x-coordinate, in normalized [0, 1] coordinates, of the linear gradient.\n\n__Default value:__ `1`",
+          "type": "number"
+        },
+        "y1": {
+          "description": "The starting y-coordinate, in normalized [0, 1] coordinates, of the linear gradient.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "y2": {
+          "description": "The ending y-coordinate, in normalized [0, 1] coordinates, of the linear gradient.\n\n__Default value:__ `0`",
+          "type": "number"
+        }
+      },
+      "required": [
+        "gradient",
+        "stops"
+      ],
       "type": "object"
     },
     "LocalMultiTimeUnit": {
@@ -8046,7 +8266,14 @@
           "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -8074,7 +8301,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -8163,7 +8397,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -8326,7 +8567,14 @@
           "type": "boolean"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -8354,7 +8602,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -8471,7 +8726,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -8972,7 +9234,14 @@
           "type": "boolean"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -9000,7 +9269,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -9089,7 +9365,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -9671,6 +9954,57 @@
       ],
       "type": "string"
     },
+    "RadialGradient": {
+      "additionalProperties": false,
+      "properties": {
+        "gradient": {
+          "description": "The type of gradient. Use `\"radial\"` for a radial gradient.",
+          "enum": [
+            "radial"
+          ],
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "r1": {
+          "description": "The radius length, in normalized [0, 1] coordinates, of the inner circle for the gradient.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "r2": {
+          "description": "The radius length, in normalized [0, 1] coordinates, of the outer circle for the gradient.\n\n__Default value:__ `0.5`",
+          "type": "number"
+        },
+        "stops": {
+          "description": "An array of gradient stops defining the gradient color sequence.",
+          "items": {
+            "$ref": "#/definitions/GradientStop"
+          },
+          "type": "array"
+        },
+        "x1": {
+          "description": "The x-coordinate, in normalized [0, 1] coordinates, for the center of the inner circle for the gradient.\n\n__Default value:__ `0.5`",
+          "type": "number"
+        },
+        "x2": {
+          "description": "The x-coordinate, in normalized [0, 1] coordinates, for the center of the outer circle for the gradient.\n\n__Default value:__ `0.5`",
+          "type": "number"
+        },
+        "y1": {
+          "description": "The y-coordinate, in normalized [0, 1] coordinates, for the center of the inner circle for the gradient.\n\n__Default value:__ `0.5`",
+          "type": "number"
+        },
+        "y2": {
+          "description": "The y-coordinate, in normalized [0, 1] coordinates, for the center of the outer circle for the gradient.\n\n__Default value:__ `0.5`",
+          "type": "number"
+        }
+      },
+      "required": [
+        "gradient",
+        "stops"
+      ],
+      "type": "object"
+    },
     "RangeConfig": {
       "additionalProperties": {
         "$ref": "#/definitions/RangeConfigValue"
@@ -9811,7 +10145,14 @@
           "type": "number"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "continuousBandSize": {
@@ -9849,7 +10190,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -9938,7 +10286,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -11003,7 +11358,7 @@
       "type": "object"
     },
     "ShapeFieldDefWithCondition": {
-      "$ref": "#/definitions/StringFieldDefWithCondition<TypeForShape>"
+      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
     },
     "ShapeValueDefWithCondition": {
       "$ref": "#/definitions/StringValueDefWithCondition<TypeForShape>"
@@ -11451,17 +11806,8 @@
       ],
       "type": "object"
     },
-    "StringFieldDefWithCondition<TypeForShape>": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
-    },
-    "StringFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,(string|null)>"
-    },
     "StringValueDefWithCondition<TypeForShape>": {
       "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
-    },
-    "StringValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(string|null)>"
     },
     "StrokeCap": {
       "enum": [
@@ -11523,7 +11869,14 @@
           "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -11551,7 +11904,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -11644,7 +12004,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -11873,7 +12240,14 @@
           "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -11901,7 +12275,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -11990,7 +12371,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -13467,7 +13855,7 @@
     },
     "YValueDef": {
       "additionalProperties": false,
-      "description": "Definition object for a constant value of an encoding channel.",
+      "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
         "value": {
           "anyOf": [
@@ -13481,7 +13869,7 @@
               "type": "string"
             }
           ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -13491,7 +13879,7 @@
     },
     "XValueDef": {
       "additionalProperties": false,
-      "description": "Definition object for a constant value of an encoding channel.",
+      "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
         "value": {
           "anyOf": [
@@ -13505,7 +13893,7 @@
               "type": "string"
             }
           ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -13515,10 +13903,10 @@
     },
     "NumberValueDef": {
       "additionalProperties": false,
-      "description": "Definition object for a constant value of an encoding channel.",
+      "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": "number"
         }
       },
@@ -13527,7 +13915,7 @@
       ],
       "type": "object"
     },
-    "ValueDefWithCondition<MarkPropFieldDef,(string|null)>": {
+    "ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>": {
       "additionalProperties": false,
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "minProperties": 1,
@@ -13538,11 +13926,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionalStringValueDef"
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalStringValueDef"
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
               },
               "type": "array"
             }
@@ -13550,11 +13938,18 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "null"
-          ]
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "type": "object"
@@ -13582,7 +13977,7 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": "number"
         }
       },
@@ -13611,7 +14006,7 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": [
             "string",
             "null"
@@ -13644,7 +14039,7 @@
         },
         "value": {
           "$ref": "#/definitions/Value",
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "type": "object"

@@ -211,6 +211,10 @@
         "title": "Area Chart"
       },
       {
+        "name": "area_gradient",
+        "title": "Area Chart with Gradient"
+      },
+      {
         "name": "area_overlay",
         "title": "Area Chart with Overlaying Lines and Point Markers"
       },

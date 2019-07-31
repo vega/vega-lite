@@ -1,9 +1,10 @@
-import {SymbolEncodeEntry} from 'vega';
+import {ColorValueRef, SymbolEncodeEntry} from 'vega';
 import {isArray} from 'vega-util';
 import {COLOR, NonPositionScaleChannel, OPACITY} from '../../channel';
 import {
   Conditional,
   FieldDefWithCondition,
+  Gradient,
   hasConditionalValueDef,
   isTimeFormatFieldDef,
   isValueDef,
@@ -64,11 +65,9 @@ export function symbols(
         }
       } else if (isArray(out.fill)) {
         const fill =
-          (getFirstConditionValue(encoding.fill || encoding.color) as string) ||
-          markDef.fill ||
-          (filled && markDef.color);
+          getFirstConditionValue(encoding.fill || encoding.color) || markDef.fill || (filled && markDef.color);
         if (fill) {
-          out.fill = {value: fill};
+          out.fill = {value: fill} as ColorValueRef;
         }
       }
     }
@@ -83,12 +82,12 @@ export function symbols(
         delete out.stroke;
       } else if (isArray(out.stroke)) {
         const stroke = getFirstDefined(
-          getFirstConditionValue(encoding.stroke || encoding.color) as string,
+          getFirstConditionValue(encoding.stroke || encoding.color),
           markDef.stroke,
           filled ? markDef.color : undefined
         );
         if (stroke) {
-          out.stroke = {value: stroke};
+          out.stroke = {value: stroke} as ColorValueRef;
         }
       }
     }
@@ -169,7 +168,7 @@ function getMaxValue(
   return getConditionValue<number>(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
 }
 
-export function getFirstConditionValue<V extends Value>(
+export function getFirstConditionValue<V extends Value | Gradient>(
   channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, V> | ValueDefWithCondition<MarkPropFieldDef<string>, V>
 ): V {
   return getConditionValue(channelDef, (v: V, conditionalDef: Conditional<ValueDef<V>>) => {
@@ -177,9 +176,9 @@ export function getFirstConditionValue<V extends Value>(
   });
 }
 
-function getConditionValue<V extends Value>(
+function getConditionValue<V extends Value | Gradient>(
   channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, V> | ValueDefWithCondition<MarkPropFieldDef<string>, V>,
-  reducer: (val: V, conditionalDef: Conditional<ValueDef>) => V
+  reducer: (val: V, conditionalDef: Conditional<ValueDef<V>>) => V
 ): V {
   if (hasConditionalValueDef(channelDef)) {
     return (isArray(channelDef.condition) ? channelDef.condition : [channelDef.condition]).reduce(
