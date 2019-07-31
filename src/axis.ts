@@ -143,7 +143,7 @@ export function isConditionalAxisValue<V extends Value | number[]>(v: any): v is
   return v['condition'];
 }
 
-// Vega axis config is the same as vega axis base. If this is not the case, add specific type.
+// Vega axis config is the same as Vega axis base. If this is not the case, add specific type.
 export type VgAxisConfigNoSignals = Omit<BaseAxisNoSignals, ConditionalAxisProp> &
   {
     [k in ConditionalAxisProp]?: BaseAxisNoSignals[k] | ConditionalAxisProperty<BaseAxisNoSignals[k] | null>;
