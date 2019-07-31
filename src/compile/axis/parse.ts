@@ -1,5 +1,5 @@
-import {Axis as VgAxis, AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 'vega';
-import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
+import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 'vega';
+import {Axis, AXIS_PARTS, isAxisProperty} from '../../axis';
 import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
 import {FieldDefBase, isTimeFormatFieldDef, toFieldDefBase} from '../../channeldef';
@@ -10,7 +10,7 @@ import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
-import {AxisComponent, AxisComponentIndex, AxisComponentProps} from './component';
+import {AxisComponent, AxisComponentIndex, AxisComponentProps, AXIS_COMPONENT_PROPERTIES} from './component';
 import {getAxisConfig} from './config';
 import * as encode from './encode';
 import * as properties from './properties';
@@ -140,8 +140,8 @@ function mergeAxisComponents(mergedAxisCmpts: AxisComponent[], childAxisCmpts: A
 }
 
 function mergeAxisComponent(merged: AxisComponent, child: AxisComponent): AxisComponent {
-  for (const prop of VG_AXIS_PROPERTIES) {
-    const mergedValueWithExplicit = mergeValuesWithExplicit<VgAxis, any>(
+  for (const prop of AXIS_COMPONENT_PROPERTIES) {
+    const mergedValueWithExplicit = mergeValuesWithExplicit<AxisComponentProps, any>(
       merged.getWithExplicit(prop),
       child.getWithExplicit(prop),
       prop,
@@ -158,7 +158,7 @@ function mergeAxisComponent(merged: AxisComponent, child: AxisComponent): AxisCo
               value: getFirstDefined(v1.value, v2.value)
             };
         }
-        return defaultTieBreaker<VgAxis, any>(v1, v2, prop, 'axis');
+        return defaultTieBreaker<AxisComponentProps, any>(v1, v2, prop, 'axis');
       }
     );
     merged.setWithExplicit(prop, mergedValueWithExplicit);
@@ -193,7 +193,7 @@ function getFieldDefTitle(model: UnitModel, channel: 'x' | 'y') {
 
 function isExplicit<T extends string | number | boolean | object>(
   value: T,
-  property: keyof VgAxis,
+  property: keyof AxisComponentProps,
   axis: Axis,
   model: UnitModel,
   channel: PositionScaleChannel
@@ -224,7 +224,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   const axisComponent = new AxisComponent();
 
   // 1.2. Add properties
-  VG_AXIS_PROPERTIES.forEach(property => {
+  AXIS_COMPONENT_PROPERTIES.forEach(property => {
     const value = getProperty(property, axis, channel, model);
     if (value !== undefined) {
       const explicit = isExplicit(value, property, axis, model, channel);
