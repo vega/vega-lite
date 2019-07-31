@@ -237,7 +237,14 @@ export function prefixGenerator(a: Set<string>): Set<string> {
   return prefixes;
 }
 
+/**
+ * Returns true if a and b have an intersection. Also return true if a or b are undefined
+ * since this means we don't know what fields a node produces or depends on.
+ */
 export function fieldIntersection(a: Set<string>, b: Set<string>): boolean {
+  if (a === undefined || b === undefined) {
+    return true;
+  }
   return hasIntersection(prefixGenerator(a), prefixGenerator(b));
 }
 

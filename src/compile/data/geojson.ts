@@ -1,10 +1,11 @@
 import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {isValueDef, ValueDef} from '../../channeldef';
 import {GEOJSON} from '../../type';
-import {duplicate} from '../../util';
+import {duplicate, hash} from '../../util';
 import {VgExprRef, VgGeoJSONTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
+import {isString} from 'vega-util';
 
 export class GeoJSONNode extends DataFlowNode {
   public clone() {
@@ -49,6 +50,18 @@ export class GeoJSONNode extends DataFlowNode {
     private signal?: string
   ) {
     super(parent);
+  }
+
+  public dependentFields() {
+    return new Set(this.fields.filter(isString));
+  }
+
+  public producedFields() {
+    return new Set();
+  }
+
+  public hash() {
+    return `GeoJSON ${this.geojson} ${this.signal} ${hash(this.fields)}`;
   }
 
   public assemble(): VgGeoJSONTransform {

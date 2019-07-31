@@ -28,6 +28,10 @@ export class FilterNode extends DataFlowNode {
     return this._dependentFields;
   }
 
+  public producedFields() {
+    return new Set(); // filter does not produce any new fields
+  }
+
   public assemble(): VgFilterTransform {
     return {
       type: 'filter',

@@ -1,8 +1,6 @@
-/* tslint:disable:quotemark */
-
 import {DensityTransformNode} from '../../../src/compile/data/density';
 import {Transform} from '../../../src/transform';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/fold', () => {
   it('should return a proper vg transform', () => {
@@ -86,7 +84,7 @@ describe('compile/data/fold', () => {
 
   describe('clone', () => {
     it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const density = new DensityTransformNode(parent, {density: 'v'});
       expect(density.clone().parent).toBeNull();
     });

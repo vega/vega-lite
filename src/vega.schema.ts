@@ -1,6 +1,7 @@
 import {
   AggregateOp,
   Align,
+  Color,
   Compare as VgCompare,
   ExprRef as VgExprRef,
   Field as VgField,
@@ -19,8 +20,7 @@ import {
   SortField as VgSortField,
   TextBaseline as VgTextBaseline,
   Title as VgTitle,
-  UnionSortField as VgUnionSortField,
-  Color
+  UnionSortField as VgUnionSortField
 } from 'vega';
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
@@ -448,7 +448,7 @@ export interface VgGeoPointTransform {
   type: 'geopoint';
   projection: string; // projection name
   fields: (VgField | VgExprRef)[];
-  as?: string[];
+  as?: [string, string];
 }
 
 export interface VgGeoShapeTransform {

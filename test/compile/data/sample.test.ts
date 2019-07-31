@@ -1,6 +1,6 @@
 import {SampleTransformNode} from '../../../src/compile/data/sample';
 import {Transform} from '../../../src/transform';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/sample', () => {
   describe('SampleTransformNode', () => {
@@ -23,7 +23,7 @@ describe('compile/data/sample', () => {
     });
 
     it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const sample = new SampleTransformNode(parent, {
         sample: 500
       });

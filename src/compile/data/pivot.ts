@@ -19,6 +19,10 @@ export class PivotTransformNode extends DataFlowNode {
     this.transform.groupby = unique((this.transform.groupby || []).concat(fields), d => d);
   }
 
+  public producedFields(): undefined {
+    return undefined; // return undefined so that potentially everything can depend on the pivot
+  }
+
   public dependentFields() {
     return new Set([this.transform.pivot, this.transform.value, ...(this.transform.groupby || [])]);
   }

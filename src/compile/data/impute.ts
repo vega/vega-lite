@@ -16,6 +16,10 @@ export class ImputeNode extends DataFlowNode {
     super(parent);
   }
 
+  public dependentFields() {
+    return new Set([this.transform.impute, this.transform.key, ...(this.transform.groupby || [])]);
+  }
+
   public producedFields() {
     return new Set([this.transform.impute]);
   }

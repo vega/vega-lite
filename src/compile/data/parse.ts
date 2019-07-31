@@ -207,7 +207,7 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
     }
 
     if (transformNode && derivedType !== undefined) {
-      for (const field of transformNode.producedFields()) {
+      for (const field of transformNode.producedFields() || []) {
         ancestorParse.set(field, derivedType, false);
       }
     }

@@ -2,7 +2,7 @@ import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {ModelWithField} from '../../../src/compile/model';
 import {TimeUnitTransform} from '../../../src/transform';
 import {parseUnitModel} from '../../util';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 function assembleFromEncoding(model: ModelWithField) {
   return TimeUnitNode.makeFromEncoding(null, model).assemble();
@@ -63,7 +63,7 @@ describe('compile/data/timeunit', () => {
 
   describe('clone', () => {
     it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const timeUnit = new TimeUnitNode(parent, {});
       expect(timeUnit.clone().parent).toBeNull();
     });

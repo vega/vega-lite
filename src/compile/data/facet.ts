@@ -94,6 +94,27 @@ export class FacetNode extends DataFlowNode {
     return f;
   }
 
+  public dependentFields() {
+    const depFields = new Set<string>(this.fields);
+
+    for (const channel of FACET_CHANNELS) {
+      if (this[channel]) {
+        if (this[channel].sortField) {
+          depFields.add(this[channel].sortField.field);
+        }
+        if (this[channel].sortIndexField) {
+          depFields.add(this[channel].sortIndexField);
+        }
+      }
+    }
+
+    return depFields;
+  }
+
+  public producedFields() {
+    return new Set(); // facet does not produce any new fields
+  }
+
   /**
    * The name to reference this source is its name.
    */

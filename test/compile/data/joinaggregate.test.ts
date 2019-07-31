@@ -1,7 +1,7 @@
-import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {JoinAggregateTransformNode} from '../../../src/compile/data/joinaggregate';
 import {makeJoinAggregateFromFacet} from '../../../src/compile/data/joinaggregatefacet';
 import {Transform} from '../../../src/transform';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/joinaggregate', () => {
   it('creates correct joinaggregate nodes for calculating sort field of crossed facet', () => {
@@ -128,7 +128,7 @@ describe('compile/data/joinaggregate', () => {
   });
 
   it('should never clone parent', () => {
-    const parent = new DataFlowNode(null);
+    const parent = new PlaceholderDataFlowNode(null);
     const joinaggregate = new JoinAggregateTransformNode(parent, null);
     expect(joinaggregate.clone().parent).toBeNull();
   });

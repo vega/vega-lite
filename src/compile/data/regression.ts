@@ -18,6 +18,10 @@ export class RegressionTransformNode extends DataFlowNode {
     this.transform.as = [specifiedAs[0] || transform.on, specifiedAs[1] || transform.regression];
   }
 
+  public dependentFields() {
+    return new Set([this.transform.regression, this.transform.on, ...(this.transform.groupby || [])]);
+  }
+
   public producedFields() {
     return new Set(this.transform.as);
   }

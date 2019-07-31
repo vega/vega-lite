@@ -1,6 +1,6 @@
 import {WindowTransformNode} from '../../../src/compile/data/window';
 import {Transform} from '../../../src/transform';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/window', () => {
   it('should return a proper vg transform', () => {
@@ -164,7 +164,7 @@ describe('compile/data/window', () => {
   });
 
   it('should never clone parent', () => {
-    const parent = new DataFlowNode(null);
+    const parent = new PlaceholderDataFlowNode(null);
     const window = new WindowTransformNode(parent, null);
     expect(window.clone().parent).toBeNull();
   });

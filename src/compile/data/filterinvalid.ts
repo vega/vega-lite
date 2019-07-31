@@ -2,7 +2,7 @@ import {isScaleChannel} from '../../channel';
 import {FieldDef, vgField as fieldRef} from '../../channeldef';
 import {isPathMark} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
-import {Dict, keys} from '../../util';
+import {Dict, keys, hash} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {getMarkPropOrConfig} from '../common';
 import {UnitModel} from '../unit';
@@ -54,7 +54,17 @@ export class FilterInvalidNode extends DataFlowNode {
     return new Set(keys(this.filter));
   }
 
-  // create the VgTransforms for each of the filtered fields
+  public producedFields() {
+    return new Set(); // filter does not produce any new fields
+  }
+
+  public hash() {
+    return `FilterInvalid ${hash(this.filter)}`;
+  }
+
+  /**
+   * Create the VgTransforms for each of the filtered fields.
+   */
   public assemble(): VgFilterTransform {
     const filters = keys(this.filter).reduce((vegaFilters, field) => {
       const fieldDef = this.filter[field];

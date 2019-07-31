@@ -1,4 +1,5 @@
 import {SequenceParams} from '../../data';
+import {hash} from '../../util';
 import {VgSequenceTransform} from '../../vega.schema';
 import {DataFlowNode} from './dataflow';
 
@@ -11,8 +12,16 @@ export class SequenceNode extends DataFlowNode {
     super(parent);
   }
 
+  public dependentFields(): undefined {
+    return undefined; // there should never be a node before a sequence
+  }
+
   public producedFields() {
     return new Set([this.params.as || 'data']);
+  }
+
+  public hash() {
+    return `Hash ${hash(this.params)}`;
   }
 
   public assemble(): VgSequenceTransform {

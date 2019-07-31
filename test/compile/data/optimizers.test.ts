@@ -1,17 +1,12 @@
-import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {ImputeNode} from '../../../src/compile/data/impute';
-import {
-  MergeIdenticalNodes,
-  MergeParse,
-  MergeTimeUnits,
-  nodeFieldIntersection
-} from '../../../src/compile/data/optimizers';
+import {MergeIdenticalNodes, MergeParse, MergeTimeUnits} from '../../../src/compile/data/optimizers';
 import {PivotTransformNode} from '../../../src/compile/data/pivot';
 import {TimeUnitComponent, TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {Transform} from '../../../src/transform';
-import {hash} from '../../../src/util';
+import {hash, fieldIntersection} from '../../../src/util';
 import {FilterNode} from './../../../src/compile/data/filter';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/optimizer', () => {
   describe('mergeIdenticalNodes', () => {
@@ -22,7 +17,7 @@ describe('compile/data/optimizer', () => {
         method: 'value',
         value: 200
       };
-      const root = new DataFlowNode(null, 'root');
+      const root = new PlaceholderDataFlowNode(null, 'root');
       const transform1 = new ImputeNode(root, transform);
       new ImputeNode(root, transform);
 
@@ -41,7 +36,7 @@ describe('compile/data/optimizer', () => {
         method: 'value',
         value: 200
       };
-      const root = new DataFlowNode(null, 'root');
+      const root = new PlaceholderDataFlowNode(null, 'root');
       const transform1 = new ImputeNode(root, transform);
 
       new ImputeNode(root, transform);
@@ -59,16 +54,16 @@ describe('compile/data/optimizer', () => {
 
   describe('mergeNodes', () => {
     it('should merge nodes correctly', () => {
-      const parent = new DataFlowNode(null, 'root');
+      const parent = new PlaceholderDataFlowNode(null, 'root');
 
-      const a = new DataFlowNode(parent, 'a');
-      const b = new DataFlowNode(parent, 'b');
+      const a = new PlaceholderDataFlowNode(parent, 'a');
+      const b = new PlaceholderDataFlowNode(parent, 'b');
 
-      const a1 = new DataFlowNode(a, 'a1');
-      const a2 = new DataFlowNode(a, 'a2');
+      const a1 = new PlaceholderDataFlowNode(a, 'a1');
+      const a2 = new PlaceholderDataFlowNode(a, 'a2');
 
-      const b1 = new DataFlowNode(b, 'b1');
-      const b2 = new DataFlowNode(b, 'b2');
+      const b1 = new PlaceholderDataFlowNode(b, 'b1');
+      const b2 = new PlaceholderDataFlowNode(b, 'b2');
 
       expect(parent.children).toHaveLength(2);
       expect(a.children).toHaveLength(2);
@@ -90,7 +85,7 @@ describe('compile/data/optimizer', () => {
 
   describe('MergeTimeUnits', () => {
     it('should merge adjacent time unit nodes', () => {
-      const parent = new DataFlowNode(null, 'root');
+      const parent = new PlaceholderDataFlowNode(null, 'root');
 
       const c1: TimeUnitComponent = {
         as: 'a_yr',
@@ -130,7 +125,7 @@ describe('compile/data/optimizer', () => {
 
   describe('MergeParse', () => {
     it('should merge non-conflicting ParseNodes', () => {
-      const root = new DataFlowNode(null, 'root');
+      const root = new PlaceholderDataFlowNode(null, 'root');
       const parse1 = new ParseNode(root, {a: 'number', b: 'string'});
       new ParseNode(root, {b: 'string', c: 'boolean'});
 
@@ -143,7 +138,7 @@ describe('compile/data/optimizer', () => {
     });
 
     it('should not merge conflicting ParseNodes', () => {
-      const root = new DataFlowNode(null, 'root');
+      const root = new PlaceholderDataFlowNode(null, 'root');
       const parse1 = new ParseNode(root, {a: 'number', b: 'string'});
       new ParseNode(root, {a: 'boolean', d: 'date'});
       new ParseNode(root, {a: 'boolean', b: 'string'});
@@ -160,10 +155,10 @@ describe('compile/data/optimizer', () => {
     });
 
     it('should merge when there is no parse node', () => {
-      const root = new DataFlowNode(null, 'root');
+      const root = new PlaceholderDataFlowNode(null, 'root');
       const parse = new ParseNode(root, {a: 'number', b: 'string'});
-      const parseChild = new DataFlowNode(parse);
-      const otherChild = new DataFlowNode(root);
+      const parseChild = new PlaceholderDataFlowNode(parse);
+      const otherChild = new PlaceholderDataFlowNode(root);
 
       const optimizer = new MergeParse();
       optimizer.run(parse);
@@ -185,9 +180,9 @@ describe('compile/data/optimizer', () => {
         pivot: 'a',
         value: 'b'
       });
-      expect(nodeFieldIntersection(filterNode, filterNode)).toBe(false);
-      expect(nodeFieldIntersection(pivotNode, filterNode)).toBe(true);
-      expect(nodeFieldIntersection(filterNode, pivotNode)).toBe(false);
+      expect(fieldIntersection(filterNode.producedFields(), filterNode.dependentFields())).toBe(false);
+      expect(fieldIntersection(pivotNode.producedFields(), filterNode.dependentFields())).toBe(true);
+      expect(fieldIntersection(filterNode.producedFields(), pivotNode.dependentFields())).toBe(false);
     });
   });
 });

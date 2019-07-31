@@ -1,8 +1,6 @@
-/* tslint:disable:quotemark */
-
 import {LoessTransformNode} from '../../../src/compile/data/loess';
 import {Transform} from '../../../src/transform';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/fold', () => {
   it('should return a proper vg transform', () => {
@@ -85,7 +83,7 @@ describe('compile/data/fold', () => {
 
   describe('clone', () => {
     it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const loess = new LoessTransformNode(parent, {loess: 'y', on: 'x'});
       expect(loess.clone().parent).toBeNull();
     });

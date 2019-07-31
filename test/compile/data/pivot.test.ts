@@ -1,6 +1,6 @@
 import {PivotTransformNode} from '../../../src/compile/data/pivot';
 import {Transform} from '../../../src/transform';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/pivot', () => {
   it('should return a proper vg transform', () => {
@@ -46,13 +46,13 @@ describe('compile/data/pivot', () => {
     expect(pivot.assemble().groupby).toEqual(['c', 'd']);
   });
 
-  it('should return empty produced fields', () => {
+  it('should return undefined for produced fields', () => {
     const transform: Transform = {
       pivot: 'a',
       value: 'b'
     };
     const pivot = new PivotTransformNode(null, transform);
-    expect(pivot.producedFields()).toEqual(new Set());
+    expect(pivot.producedFields()).toEqual(undefined);
   });
 
   it('should return relevant dependent fields', () => {
@@ -75,7 +75,7 @@ describe('compile/data/pivot', () => {
 
   describe('clone', () => {
     it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const pivot = new PivotTransformNode(parent, {pivot: 'a', value: 'b'});
       expect(pivot.clone().parent).toBeNull();
     });

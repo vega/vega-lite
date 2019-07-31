@@ -11,7 +11,6 @@ import {JoinAggregateTransformNode} from './joinaggregate';
 import {FACET_SCALE_PREFIX} from './optimize';
 import {BottomUpOptimizer, isDataSourceNode, TopDownOptimizer} from './optimizer';
 import * as optimizers from './optimizers';
-import {PivotTransformNode} from './pivot';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
@@ -50,7 +49,7 @@ export class MoveParseUp extends BottomUpOptimizer {
         parent.merge(node);
       } else {
         // Don't swap with nodes that produce something that the parse node depends on (e.g. lookup)
-        if (nodeFieldIntersection(parent, node)) {
+        if (fieldIntersection(parent.producedFields(), node.dependentFields())) {
           this.setContinue();
           return this.flags;
         }
@@ -377,7 +376,7 @@ export class MergeBins extends BottomUpOptimizer {
 
     for (const child of parent.children) {
       if (child instanceof BinNode) {
-        if (moveBinsUp && !nodeFieldIntersection(parent, child)) {
+        if (moveBinsUp && !fieldIntersection(parent.producedFields(), child.dependentFields())) {
           promotableBins.push(child);
         } else {
           remainingBins.push(child);
@@ -480,12 +479,4 @@ export class MergeOutputs extends BottomUpOptimizer {
     this.setContinue();
     return this.flags;
   }
-}
-
-/**
- * Wraps fieldIntersection so that it can be called with parent and child nodes directly
- * and check whether or not the parent node is a pivot transform
- */
-export function nodeFieldIntersection(parent: DataFlowNode, child: DataFlowNode): boolean {
-  return parent instanceof PivotTransformNode || fieldIntersection(parent.producedFields(), child.producedFields());
 }
