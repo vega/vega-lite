@@ -25,7 +25,7 @@ import {contains, Dict, getFirstDefined, keys} from '../../util';
 import {VgEncodeChannel, VgEncodeEntry, VgValueRef, VG_MARK_CONFIGS} from '../../vega.schema';
 import {getMarkConfig, getMarkPropOrConfig, getStyleConfig} from '../common';
 import {expression} from '../predicate';
-import {assembleSelectionPredicate} from '../selection/assemble';
+import {parseSelectionPredicate} from '../selection/parse';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
 import {fieldInvalidPredicate} from './valueref';
@@ -244,9 +244,7 @@ export function wrapCondition<FD extends FieldDef<any>, V extends ValueOrGradien
     const conditions = isArray(condition) ? condition : [condition];
     const vgConditions = conditions.map(c => {
       const conditionValueRef = refFn(c);
-      const test = isConditionalSelection(c)
-        ? assembleSelectionPredicate(model, c.selection)
-        : expression(model, c.test);
+      const test = isConditionalSelection(c) ? parseSelectionPredicate(model, c.selection) : expression(model, c.test);
       return {
         test,
         ...conditionValueRef
