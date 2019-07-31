@@ -566,7 +566,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
             }
           ]
         },
@@ -580,7 +580,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number[]|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number[]|undefined|null)>"
             }
           ]
         },
@@ -591,7 +591,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -604,7 +604,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -616,7 +616,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -627,7 +627,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -644,7 +644,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -662,7 +662,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
             }
           ]
         },
@@ -684,7 +684,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(string|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(string|undefined|null)>"
             }
           ]
         },
@@ -696,7 +696,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -707,7 +707,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -718,7 +718,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -733,7 +733,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -780,7 +780,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
             }
           ]
         },
@@ -798,7 +798,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number[]|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number[]|undefined|null)>"
             }
           ]
         },
@@ -809,7 +809,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -832,7 +832,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -853,7 +853,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -1008,7 +1008,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1022,7 +1022,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number[]|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number[]|undefined|null)>"
             }
           ]
         },
@@ -1033,7 +1033,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -1046,7 +1046,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -1058,7 +1058,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -1069,7 +1069,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1086,7 +1086,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1104,7 +1104,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1126,7 +1126,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(string|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(string|undefined|null)>"
             }
           ]
         },
@@ -1138,7 +1138,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -1149,7 +1149,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1160,7 +1160,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1175,7 +1175,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -1218,7 +1218,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1232,7 +1232,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number[]|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number[]|undefined|null)>"
             }
           ]
         },
@@ -1243,7 +1243,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -1262,7 +1262,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -1283,7 +1283,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
             }
           ]
         },
@@ -2817,7 +2817,7 @@
         }
       ]
     },
-    "ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
@@ -2850,7 +2850,7 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisValue<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
@@ -2883,7 +2883,7 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisValue<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
@@ -2916,7 +2916,7 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisValue<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
@@ -2949,7 +2949,7 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisValue<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
@@ -2982,7 +2982,7 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisValue<(number[]|undefined|null)>": {
+    "ConditionalAxisProperty<(number[]|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
@@ -3018,7 +3018,7 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisValue<(number|undefined|null)>": {
+    "ConditionalAxisProperty<(number|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
@@ -3052,7 +3052,7 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisValue<(string|undefined|null)>": {
+    "ConditionalAxisProperty<(string|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {

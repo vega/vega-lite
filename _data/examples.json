@@ -177,6 +177,11 @@
         "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
+        "name": "line_conditonal_grid_dash",
+        "title": "Line Chart with Conditional Grid Dash",
+        "style": "background-size: auto 105%; background-position: center center !important;"
+      },
+      {
         "name": "connected_scatterplot",
         "title": "Connected Scatterplot (Lines with Custom Paths)",
         "description": "A connected scatterplot can be created by customizing line `order` and adding `point` overlay in the line mark definition.",

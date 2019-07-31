@@ -135,18 +135,18 @@ export const CONDITIONAL_AXIS_PROP_INDEX: {
   }
 };
 
-export type ConditionalAxisValue<V extends Value | number[]> = ValueDef<V> & {
+export type ConditionalAxisProperty<V extends Value | number[]> = ValueDef<V> & {
   condition: ConditionalPredicate<ValueDef<V>> | ConditionalPredicate<ValueDef<V>>[];
 };
 
-export function isConditionalAxisValue<V extends Value | number[]>(v: any): v is ConditionalAxisValue<V> {
+export function isConditionalAxisValue<V extends Value | number[]>(v: any): v is ConditionalAxisProperty<V> {
   return v['condition'];
 }
 
 // Vega axis config is the same as vega axis base. If this is not the case, add specific type.
 export type VgAxisConfigNoSignals = Omit<BaseAxisNoSignals, ConditionalAxisProp> &
   {
-    [k in ConditionalAxisProp]?: BaseAxisNoSignals[k] | ConditionalAxisValue<BaseAxisNoSignals[k] | null>;
+    [k in ConditionalAxisProp]?: BaseAxisNoSignals[k] | ConditionalAxisProperty<BaseAxisNoSignals[k] | null>;
   };
 
 // Change comments to be Vega-Lite specific

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "description": "Line chart with conditional grid dash.",
+  "data": {"url": "data/stocks.csv"},
+  "transform": [{"filter": "datum.symbol==='GOOG'"}, {"filter": {"field": "date", "timeUnit": "year", "range": [2006, 2008]}}],
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "date", "type": "temporal",
+      "axis": {
+        "tickCount": 20,
+        "gridDash": {
+          "condition": {"test": {"field": "value", "timeUnit": "monthdate", "equal": {"month": 1, "date": 1}}, "value": null},
+          "value": [2,2]
+        }
+      }
+    },
+    "y": {"field": "price", "type": "quantitative"}
+  }
+}
