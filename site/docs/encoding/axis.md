@@ -105,7 +105,7 @@ For example, the following plot has a customized x-axis title.
 
 ### Conditional Axis Properties
 
-We can set axis properties (whose type include "ConditionalAxisProperty") to a [conditional value definition](condition.html#value).
+We can set axis properties (which can be of type "ConditionalAxisProperty") to a [conditional value definition](condition.html#value).
 
 Note that each axis tick, grid line, and label instance is backed by a data object with the following fields, which may be accessed as part of the test condition in a condition axis property.
 
