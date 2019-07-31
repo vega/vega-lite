@@ -22,6 +22,6 @@
     "resolveJsonModule": true,
     "suppressImplicitAnyIndexErrors": true,
     "typeRoots": ["node_modules/@types", "typings"],
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    "lib": ["esnext.array", "dom", "dom.iterable"]
   }
 }

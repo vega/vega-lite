@@ -4,6 +4,8 @@ import stableStringify from 'fast-json-stable-stringify';
 import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
 
+import 'array-flat-polyfill';
+
 export const deepEqual = deepEqual_;
 export const duplicate = clone_;
 
