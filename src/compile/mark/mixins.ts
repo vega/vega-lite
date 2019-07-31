@@ -379,6 +379,7 @@ export function binPosition({
   fieldDef,
   fieldDef2,
   channel,
+  band,
   scaleName,
   markDef,
   spacing = 0,
@@ -387,6 +388,7 @@ export function binPosition({
   fieldDef: TypedFieldDef<string>;
   fieldDef2?: ValueDef | SecondaryFieldDef<string>;
   channel: 'x' | 'y';
+  band: number;
   scaleName: string;
   markDef: MarkDef<Mark>;
   spacing?: number;
@@ -406,10 +408,17 @@ export function binPosition({
         fieldDef,
         scaleName,
         markDef,
-        side: 'start',
+        band: (1 - band) / 2,
         offset: binSpacing[`${channel}2`]
       }),
-      [channel]: ref.bin({channel, fieldDef, scaleName, markDef, side: 'end', offset: binSpacing[channel]})
+      [channel]: ref.bin({
+        channel,
+        fieldDef,
+        scaleName,
+        markDef,
+        band: 1 - (1 - band) / 2,
+        offset: binSpacing[channel]
+      })
     };
   } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
     return {
