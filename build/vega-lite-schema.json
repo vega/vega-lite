@@ -560,34 +560,76 @@
           "type": "boolean"
         },
         "gridColor": {
-          "$ref": "#/definitions/Color",
-          "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+            }
+          ]
         },
         "gridDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number[]|undefined|null)>"
+            }
+          ]
         },
         "gridDashOffset": {
-          "description": "The pixel offset at which to start drawing with the grid dash array.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the grid dash array.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "gridOpacity": {
-          "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "gridWidth": {
-          "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "labelAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelAngle": {
           "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
@@ -596,8 +638,15 @@
           "type": "number"
         },
         "labelBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelBound": {
           "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
@@ -607,8 +656,15 @@
           ]
         },
         "labelColor": {
-          "$ref": "#/definitions/Color",
-          "description": "The color of the tick label, can be in hex color code or regular color name."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+            }
+          ]
         },
         "labelFlush": {
           "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.",
@@ -622,29 +678,64 @@
           "type": "number"
         },
         "labelFont": {
-          "description": "The font of the tick label.",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "The font of the tick label.",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(string|undefined|null)>"
+            }
+          ]
         },
         "labelFontSize": {
-          "description": "The font size of the label, in pixels.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The font size of the label, in pixels.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "labelFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "Font style of the title."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "Font style of the title."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "Font weight of axis tick labels."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "Font weight of axis tick labels."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelLimit": {
           "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
           "type": "number"
         },
         "labelOpacity": {
-          "description": "The opacity of the labels.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The opacity of the labels.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "labelOverlap": {
           "$ref": "#/definitions/LabelOverlap",
@@ -683,23 +774,44 @@
           "type": "number"
         },
         "tickColor": {
-          "$ref": "#/definitions/Color",
-          "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+            }
+          ]
         },
         "tickCount": {
           "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
           "type": "number"
         },
         "tickDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number[]|undefined|null)>"
+            }
+          ]
         },
         "tickDashOffset": {
-          "description": "The pixel offset at which to start drawing with the tick mark dash array.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the tick mark dash array.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "tickExtra": {
           "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
@@ -714,8 +826,15 @@
           "type": "number"
         },
         "tickOpacity": {
-          "description": "Opacity of the ticks.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the ticks.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "tickRound": {
           "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
@@ -727,9 +846,16 @@
           "type": "number"
         },
         "tickWidth": {
-          "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "ticks": {
           "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
@@ -876,34 +1002,76 @@
           "type": "boolean"
         },
         "gridColor": {
-          "$ref": "#/definitions/Color",
-          "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+            }
+          ]
         },
         "gridDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number[]|undefined|null)>"
+            }
+          ]
         },
         "gridDashOffset": {
-          "description": "The pixel offset at which to start drawing with the grid dash array.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the grid dash array.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "gridOpacity": {
-          "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "gridWidth": {
-          "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "labelAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelAngle": {
           "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
@@ -912,8 +1080,15 @@
           "type": "number"
         },
         "labelBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelBound": {
           "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
@@ -923,8 +1098,15 @@
           ]
         },
         "labelColor": {
-          "$ref": "#/definitions/Color",
-          "description": "The color of the tick label, can be in hex color code or regular color name."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+            }
+          ]
         },
         "labelFlush": {
           "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.",
@@ -938,29 +1120,64 @@
           "type": "number"
         },
         "labelFont": {
-          "description": "The font of the tick label.",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "The font of the tick label.",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(string|undefined|null)>"
+            }
+          ]
         },
         "labelFontSize": {
-          "description": "The font size of the label, in pixels.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The font size of the label, in pixels.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "labelFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "Font style of the title."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "Font style of the title."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "Font weight of axis tick labels."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "Font weight of axis tick labels."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelLimit": {
           "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
           "type": "number"
         },
         "labelOpacity": {
-          "description": "The opacity of the labels.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The opacity of the labels.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "labelOverlap": {
           "$ref": "#/definitions/LabelOverlap",
@@ -995,19 +1212,40 @@
           "type": "boolean"
         },
         "tickColor": {
-          "$ref": "#/definitions/Color",
-          "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+            }
+          ]
         },
         "tickDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number[]|undefined|null)>"
+            }
+          ]
         },
         "tickDashOffset": {
-          "description": "The pixel offset at which to start drawing with the tick mark dash array.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the tick mark dash array.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "tickExtra": {
           "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
@@ -1018,8 +1256,15 @@
           "type": "number"
         },
         "tickOpacity": {
-          "description": "Opacity of the ticks.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the ticks.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "tickRound": {
           "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
@@ -1031,9 +1276,16 @@
           "type": "number"
         },
         "tickWidth": {
-          "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisValue<(number|undefined|null)>"
+            }
+          ]
         },
         "ticks": {
           "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
@@ -2565,6 +2817,274 @@
         }
       ]
     },
+    "ConditionalAxisValue<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisValue<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisValue<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisValue<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "Font weight of axis tick labels."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisValue<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "Font style of the title."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisValue<(number[]|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisValue<(number|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The font size of the label, in pixels.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisValue<(string|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The font of the tick label.",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
     "ConditionalPredicate<MarkPropFieldDef>": {
       "additionalProperties": false,
       "properties": {
@@ -2816,6 +3336,178 @@
       ],
       "type": "object"
     },
+    "ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "Font weight of axis tick labels."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "Font style of the title."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(number[]|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(number|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The font size of the label, in pixels.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
     "ConditionalPredicate<StringValueDef>": {
       "additionalProperties": false,
       "properties": {
@@ -2834,6 +3526,30 @@
       "required": [
         "test",
         "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(string|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The font of the tick label.",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
       ],
       "type": "object"
     },

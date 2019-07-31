@@ -39,7 +39,7 @@ export type ValueOrGradient = Value | Gradient;
 /**
  * Definition object for a constant value (primitive value or gradient definition) of an encoding channel.
  */
-export interface ValueDef<V extends ValueOrGradient = Value> {
+export interface ValueDef<V extends ValueOrGradient | number[] = Value> {
   /**
    * A constant value in visual domain (e.g., `"red"` / `"#0099ff"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).
    */
