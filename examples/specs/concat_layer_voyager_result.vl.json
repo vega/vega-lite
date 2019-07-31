@@ -59,30 +59,20 @@
             "x": {
               "field": "lo",
               "type": "quantitative",
-              "scale": {
-                "domain": [-3, 3]
-              },
+              "scale": {"domain": [-3, 3]},
               "axis": {
                 "title": "",
-                "encoding": {
-                  "grid": {
-                    "strokeDash": {
-                      "value": [3, 3]
-                    },
-                    "stroke": {
-                      "condition": {
-                        "test": "datum.value === 0",
-                        "value": "#666"
-                      },
-                      "value": "#CCC"
-                    }
-                  }
+                "gridDash": [3, 3],
+                "gridColor": {
+                  "condition": {
+                    "test": "datum.value === 0",
+                    "value": "#666"
+                  },
+                  "value": "#CCC"
                 }
               }
             },
-            "x2": {
-              "field": "hi"
-            }
+            "x2": {"field": "hi"}
           }
         },
         {
@@ -135,9 +125,7 @@
               },
               "axis": null
             },
-            "x2": {
-              "field": "to"
-            }
+            "x2": {"field": "to"}
           }
         },
         {
@@ -213,9 +201,7 @@
               "type": "quantitative",
               "axis": null
             },
-            "text": {
-              "value": "more valuable"
-            }
+            "text": {"value": "more valuable"}
           }
         },
         {
@@ -231,30 +217,18 @@
               "type": "quantitative",
               "axis": null
             },
-            "text": {
-              "value": "more valuable"
-            }
+            "text": {"value": "more valuable"}
           }
         }
       ]
     }
   ],
   "config": {
-    "view": {
-      "stroke": "transparent"
-    },
+    "view": {"stroke": "transparent"},
     "style": {
-      "arrow-label": {
-        "dy": 12,
-        "fontSize": 9.5
-      },
-      "arrow-label2": {
-        "dy": 24,
-        "fontSize": 9.5
-      }
+      "arrow-label": {"dy": 12, "fontSize": 9.5},
+      "arrow-label2": {"dy": 24, "fontSize": 9.5}
     },
-    "title": {
-      "fontSize": 12
-    }
+    "title": {"fontSize": 12}
   }
 }
