@@ -3655,6 +3655,18 @@
       },
       "type": "object"
     },
+    "Dict<SelectionInit>": {
+      "additionalProperties": {
+        "$ref": "#/definitions/SelectionInit"
+      },
+      "type": "object"
+    },
+    "Dict<SelectionInitInterval>": {
+      "additionalProperties": {
+        "$ref": "#/definitions/SelectionInitInterval"
+      },
+      "type": "object"
+    },
     "Dir": {
       "enum": [
         "ltr",
@@ -11236,13 +11248,7 @@
     "SelectionInit": {
       "anyOf": [
         {
-          "type": "boolean"
-        },
-        {
-          "type": "number"
-        },
-        {
-          "type": "string"
+          "$ref": "#/definitions/Value"
         },
         {
           "$ref": "#/definitions/DateTime"
@@ -11252,70 +11258,24 @@
     "SelectionInitInterval": {
       "anyOf": [
         {
-          "items": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "boolean"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "$ref": "#/definitions/Vector2<boolean>"
         },
         {
-          "items": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "number"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "$ref": "#/definitions/Vector2<number>"
         },
         {
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "$ref": "#/definitions/Vector2<string>"
         },
         {
-          "items": [
-            {
-              "$ref": "#/definitions/DateTime"
-            },
-            {
-              "$ref": "#/definitions/DateTime"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "$ref": "#/definitions/Vector2<DateTime>"
         }
       ]
     },
     "SelectionInitIntervalMapping": {
-      "additionalProperties": {
-        "$ref": "#/definitions/SelectionInitInterval"
-      },
-      "type": "object"
+      "$ref": "#/definitions/Dict<SelectionInitInterval>"
     },
     "SelectionInitMapping": {
-      "additionalProperties": {
-        "$ref": "#/definitions/SelectionInit"
-      },
-      "type": "object"
+      "$ref": "#/definitions/Dict<SelectionInit>"
     },
     "SelectionPredicate": {
       "additionalProperties": false,
@@ -14075,6 +14035,58 @@
         }
       },
       "type": "object"
+    },
+    "Vector2<DateTime>": {
+      "items": [
+        {
+          "$ref": "#/definitions/DateTime"
+        },
+        {
+          "$ref": "#/definitions/DateTime"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "Vector2<boolean>": {
+      "items": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "boolean"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "Vector2<number>": {
+      "items": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "Vector2<string>": {
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
     },
     "ViewBackground": {
       "additionalProperties": false,
