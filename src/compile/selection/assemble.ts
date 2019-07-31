@@ -4,11 +4,9 @@ import {identity, isArray, stringValue} from 'vega-util';
 import {forEachSelection, MODIFY, SELECTION_DOMAIN, STORE, unitName, VL_SELECTION_RESOLVE} from '.';
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
-import {LogicalOperand} from '../../logical';
 import {SelectionInit, SelectionInitInterval} from '../../selection';
-import {accessPathWithDatum, keys, logicalExpr, varName} from '../../util';
+import {accessPathWithDatum, keys, varName} from '../../util';
 import {VgData} from '../../vega.schema';
-import {DataFlowNode} from '../data/dataflow';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {isUnitModel, Model} from '../model';
@@ -167,42 +165,6 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
   }
 
   return marks;
-}
-
-export function assembleSelectionPredicate(
-  model: Model,
-  selections: LogicalOperand<string>,
-  dfnode?: DataFlowNode
-): string {
-  const stores: string[] = [];
-  function expr(name: string): string {
-    const vname = varName(name);
-    const selCmpt = model.getSelectionComponent(vname, name);
-    const store = stringValue(vname + STORE);
-
-    if (selCmpt.project.timeUnit) {
-      const child = dfnode || model.component.data.raw;
-      const tunode = selCmpt.project.timeUnit.clone();
-      if (child.parent) {
-        tunode.insertAsParentOf(child);
-      } else {
-        child.parent = tunode;
-      }
-    }
-
-    if (selCmpt.empty !== 'none') {
-      stores.push(store);
-    }
-
-    return (
-      `vlSelectionTest(${store}, datum` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
-    );
-  }
-
-  const predicateStr = logicalExpr(selections, expr);
-  return (
-    (stores.length ? '!(' + stores.map(s => `length(data(${s}))`).join(' || ') + ') || ' : '') + `(${predicateStr})`
-  );
 }
 
 // Selections are parsed _after_ scales. If a scale domain is set to
