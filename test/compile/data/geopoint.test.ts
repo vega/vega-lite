@@ -46,4 +46,20 @@ describe('compile/data/geopoint', () => {
       }
     });
   });
+
+  describe('GeoPointNode', () => {
+    describe('dependentFields', () => {
+      it('should return empty set', () => {
+        const gp = new GeoPointNode(null, 'mercator', ['foo', 'bar'], ['f1', 'f2']);
+        expect(gp.dependentFields()).toEqual(new Set(['foo', 'bar']));
+      });
+    });
+
+    describe('producedFields', () => {
+      it('should return empty set', () => {
+        const gp = new GeoPointNode(null, 'mercator', ['foo', 'bar'], ['f1', 'f2']);
+        expect(gp.producedFields()).toEqual(new Set(['f1', 'f2']));
+      });
+    });
+  });
 });

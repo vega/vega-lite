@@ -57,8 +57,8 @@ export class SourceNode extends DataFlowNode {
     }
   }
 
-  public dependentFields(): undefined {
-    return undefined; // there should never be a node before a source
+  public dependentFields() {
+    return new Set();
   }
 
   public producedFields(): undefined {

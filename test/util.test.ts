@@ -215,6 +215,12 @@ describe('util', () => {
     it('should return the correct value for 2 nested but different string sets', () => {
       expect(fieldIntersection(new Set(['a.b.c']), new Set(['z.b.c']))).toBe(false);
     });
+
+    it('should return true if one input is undefined', () => {
+      expect(fieldIntersection(undefined, new Set(['a']))).toBe(true);
+      expect(fieldIntersection(new Set(['a']), undefined)).toBe(true);
+      expect(fieldIntersection(undefined, undefined)).toBe(true);
+    });
   });
 
   describe('unique', () => {

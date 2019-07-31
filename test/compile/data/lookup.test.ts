@@ -98,38 +98,110 @@ describe('compile/data/lookup', () => {
       expect(localLogger.warns[0]).toEqual(log.message.NO_FIELDS_NEEDS_AS);
     })
   );
-  it('should generate the correct hash', () => {
-    const lookup = new LookupNode(
-      null,
-      {
-        lookup: 'person',
-        from: {
-          data: {url: 'data/lookup_people.csv'},
-          key: 'name'
-        }
-      },
-      'lookup_0'
-    );
-    lookup.assemble();
 
-    expect(lookup.hash()).toEqual(
-      'Lookup {"secondary":"lookup_0","transform":{"from":{"data":{"url":"data/lookup_people.csv"},"key":"name"},"lookup":"person"}}'
-    );
+  describe('dependentFields', () => {
+    it('should return proper dependent fields', () => {
+      const lookup = new LookupNode(
+        null,
+        {
+          lookup: 'person',
+          from: {
+            data: {url: 'data/lookup_people.csv'},
+            key: 'name'
+          }
+        },
+        'lookup_0'
+      );
+      expect(lookup.dependentFields()).toEqual(new Set(['person']));
+    });
   });
 
-  it('should never clone parent', () => {
-    const parent = new PlaceholderDataFlowNode(null);
-    const lookup = new LookupNode(
-      parent,
-      {
-        lookup: 'person',
-        from: {
-          data: {url: 'data/lookup_people.csv'},
-          key: 'name'
-        }
-      },
-      null
-    );
-    expect(lookup.clone().parent).toBeNull();
+  describe('producedFields', () => {
+    it('should return proper produced fields', () => {
+      const lookup = new LookupNode(
+        null,
+        {
+          lookup: 'person',
+          from: {
+            data: {url: 'data/lookup_people.csv'},
+            key: 'name'
+          }
+        },
+        'lookup_0'
+      );
+      expect(lookup.producedFields()).toEqual(new Set([]));
+    });
+
+    it('should return proper produced fields with fields', () => {
+      const lookup = new LookupNode(
+        null,
+        {
+          lookup: 'person',
+          from: {
+            data: {url: 'data/lookup_people.csv'},
+            key: 'name',
+            fields: ['foo', 'bar']
+          }
+        },
+        'lookup_0'
+      );
+      expect(lookup.producedFields()).toEqual(new Set(['foo', 'bar']));
+    });
+
+    it('should return proper produced fields with fields and as', () => {
+      const lookup = new LookupNode(
+        null,
+        {
+          lookup: 'person',
+          from: {
+            data: {url: 'data/lookup_people.csv'},
+            key: 'name',
+            fields: ['foo', 'bar']
+          },
+          as: ['f1', 'f2']
+        },
+        'lookup_0'
+      );
+      expect(lookup.producedFields()).toEqual(new Set(['f1', 'f2']));
+    });
+  });
+
+  describe('hash', () => {
+    it('should generate the correct hash', () => {
+      const lookup = new LookupNode(
+        null,
+        {
+          lookup: 'person',
+          from: {
+            data: {url: 'data/lookup_people.csv'},
+            key: 'name'
+          }
+        },
+        'lookup_0'
+      );
+      lookup.assemble();
+
+      expect(lookup.hash()).toEqual(
+        'Lookup {"secondary":"lookup_0","transform":{"from":{"data":{"url":"data/lookup_people.csv"},"key":"name"},"lookup":"person"}}'
+      );
+    });
+  });
+
+  describe('clone', () => {
+    it('should never clone parent', () => {
+      const parent = new PlaceholderDataFlowNode(null);
+      const lookup = new LookupNode(
+        parent,
+        {
+          lookup: 'person',
+          from: {
+            data: {url: 'data/lookup_people.csv'},
+            key: 'name'
+          }
+        },
+        null
+      );
+      expect(lookup.clone().parent).toBeNull();
+    });
   });
 });

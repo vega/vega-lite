@@ -53,7 +53,7 @@ export class GeoJSONNode extends DataFlowNode {
   }
 
   public dependentFields() {
-    return new Set(this.fields.filter(isString));
+    return new Set([...(this.geojson ? [this.geojson] : []), ...(this.fields || []).filter(isString)]);
   }
 
   public producedFields() {
