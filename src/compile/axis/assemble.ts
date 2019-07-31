@@ -6,8 +6,8 @@ import {defaultTitle, FieldDefBase} from '../../channeldef';
 import {Config} from '../../config';
 import {getFirstDefined, keys} from '../../util';
 import {Model} from '../model';
-import {AxisComponent, AxisComponentIndex} from './component';
 import {expression} from '../predicate';
+import {AxisComponent, AxisComponentIndex} from './component';
 
 function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {
   if (isArray(title)) {
@@ -38,10 +38,10 @@ export function assembleAxis(
 
       const vgRef = [
         ...(isArray(condition) ? condition : [condition]).map(c => {
-          const {value, test} = c;
+          const {value: v, test} = c;
           return {
             test: expression(null, test),
-            value
+            value: v
           };
         }),
         {value}
