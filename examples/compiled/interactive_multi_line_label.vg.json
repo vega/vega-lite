@@ -48,16 +48,6 @@
           "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
         }
       ]
-    },
-    {
-      "name": "data_4",
-      "source": "data_1",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-        }
-      ]
     }
   ],
   "signals": [
@@ -203,7 +193,7 @@
       "name": "layer_1_layer_1_layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_4"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "align": {"value": "left"},
@@ -227,8 +217,7 @@
           {"data": "source_0", "field": "date"},
           {"data": "data_0", "field": "date"},
           {"data": "data_2", "field": "date"},
-          {"data": "data_3", "field": "date"},
-          {"data": "data_4", "field": "date"}
+          {"data": "data_3", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -240,8 +229,7 @@
         "fields": [
           {"data": "source_0", "field": "price"},
           {"data": "data_0", "field": "price"},
-          {"data": "data_3", "field": "price"},
-          {"data": "data_4", "field": "price"}
+          {"data": "data_3", "field": "price"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -263,7 +251,7 @@
     {
       "name": "fill",
       "type": "ordinal",
-      "domain": {"data": "data_4", "field": "symbol", "sort": true},
+      "domain": {"data": "data_3", "field": "symbol", "sort": true},
       "range": "category"
     }
   ],

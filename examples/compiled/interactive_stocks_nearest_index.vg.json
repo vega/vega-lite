@@ -29,23 +29,7 @@
         {
           "type": "filter",
           "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSelectionTest(\"index_store\", datum)))"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_1",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "data_1",
-      "transform": [
+        },
         {
           "type": "filter",
           "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
@@ -159,7 +143,7 @@
       "name": "layer_2_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -173,7 +157,7 @@
       "name": "layer_3_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
@@ -193,8 +177,7 @@
         "fields": [
           {"data": "source_0", "field": "date"},
           {"data": "data_0", "field": "date"},
-          {"data": "data_2", "field": "date"},
-          {"data": "data_3", "field": "date"}
+          {"data": "data_1", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]

@@ -52,16 +52,6 @@
           "expr": "datum[\"upper_Miles_per_Gallon\"] !== null && !isNaN(datum[\"upper_Miles_per_Gallon\"]) && datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
         }
       ]
-    },
-    {
-      "name": "data_2",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"lower_Miles_per_Gallon\"] !== null && !isNaN(datum[\"lower_Miles_per_Gallon\"]) && datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
-        }
-      ]
     }
   ],
   "marks": [
@@ -119,7 +109,7 @@
       "name": "layer_2_marks",
       "type": "rule",
       "style": ["rule", "errorbar-rule"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -152,8 +142,7 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "year_Year"},
-          {"data": "data_1", "field": "year_Year"},
-          {"data": "data_2", "field": "year_Year"}
+          {"data": "data_1", "field": "year_Year"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -165,8 +154,7 @@
         "fields": [
           {"data": "data_0", "field": "lower_Miles_per_Gallon"},
           {"data": "data_1", "field": "upper_Miles_per_Gallon"},
-          {"data": "data_2", "field": "lower_Miles_per_Gallon"},
-          {"data": "data_2", "field": "upper_Miles_per_Gallon"}
+          {"data": "data_0", "field": "upper_Miles_per_Gallon"}
         ]
       },
       "range": [{"signal": "height"}, 0],
