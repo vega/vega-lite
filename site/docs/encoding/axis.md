@@ -69,9 +69,13 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 ### Labels
 
-{% include table.html props="format,formatType,labels,labelAlign,labelAngle,labelBaseline,labelBound,labelColor,labelFlush,labelFlushOffset,labelFont,labelFontSize,labelFontStyle,labelFontWeight,labelLimit,labelOpacity,labelOverlap,labelPadding" source= "Axis" %}
+{% include table.html props="format,formatType,labels,labelAlign,labelAngle,labelBaseline,labelBound,labelColor,labelExpr,labelFlush,labelFlushOffset,labelFont,labelFontSize,labelFontStyle,labelFontWeight,labelLimit,labelOpacity,labelOverlap,labelPadding" source= "Axis" %}
 
 **See also:** [`guide-label` style config](mark.html#style-config) (common styles for axis, [legend](legend.html), and [header](facet.html#header) labels).
+
+#### Example: Using Axis `labelExpr` to Display Initial Letters of Month Name
+
+<div class="vl-example" data-name="bar_month_temporal_initial"></div>
 
 {:#ticks}
 

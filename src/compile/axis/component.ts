@@ -17,6 +17,7 @@ function isFalseOrNull(v: any) {
 
 export type AxisComponentProps = Omit<VgAxis, 'title' | ConditionalAxisProp> & {
   title: string | FieldDefBase<string>[];
+  labelExpr: string;
 } & {
     [k in ConditionalAxisProp]?: BaseAxisNoSignals[k] | ConditionalAxisProperty<BaseAxisNoSignals[k]>;
   };
@@ -25,6 +26,7 @@ const AXIS_COMPONENT_PROPERTIES_INDEX: Flag<keyof AxisComponentProps> = {
   gridScale: 1,
   scale: 1,
   ...COMMON_AXIS_PROPERTIES_INDEX,
+  labelExpr: 1,
   encode: 1
 };
 
