@@ -1,10 +1,9 @@
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {ImputeNode} from '../../../src/compile/data/impute';
 import {MergeIdenticalNodes, MergeParse, MergeTimeUnits} from '../../../src/compile/data/optimizers';
-import {PivotTransformNode} from '../../../src/compile/data/pivot';
 import {TimeUnitComponent, TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {Transform} from '../../../src/transform';
-import {hash, fieldIntersection} from '../../../src/util';
+import {hash} from '../../../src/util';
 import {FilterNode} from './../../../src/compile/data/filter';
 import {PlaceholderDataFlowNode} from './util';
 
@@ -170,19 +169,6 @@ describe('compile/data/optimizer', () => {
       expect(children).toHaveLength(2);
       expect(children[0]).toEqual(otherChild);
       expect(children[1]).toEqual(parseChild);
-    });
-  });
-
-  describe('nodeFieldIntersection', () => {
-    it('should return the correct value for 2 nodes', () => {
-      const filterNode = new FilterNode(null, null, 'datum.foo > 1');
-      const pivotNode = new PivotTransformNode(null, {
-        pivot: 'a',
-        value: 'b'
-      });
-      expect(fieldIntersection(filterNode.producedFields(), filterNode.dependentFields())).toBe(false);
-      expect(fieldIntersection(pivotNode.producedFields(), filterNode.dependentFields())).toBe(true);
-      expect(fieldIntersection(filterNode.producedFields(), pivotNode.dependentFields())).toBe(false);
     });
   });
 });
