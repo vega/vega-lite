@@ -48,7 +48,7 @@ export class MoveParseUp extends BottomUpOptimizer {
         this.setMutated();
         parent.merge(node);
       } else {
-        // Don't swap with nodes that produce something that the parse node depends on (e.g. lookup)
+        // Don't swap with nodes that produce something that the parse node depends on (e.g. lookup).
         if (fieldIntersection(parent.producedFields(), node.dependentFields())) {
           this.setContinue();
           return this.flags;
