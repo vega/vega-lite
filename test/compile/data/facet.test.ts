@@ -232,6 +232,32 @@ describe('compile/data/facet', () => {
     });
   });
 
+  describe('dependentFields', () => {
+    it('should return proper dependent fields', () => {
+      const model = parseFacetModelWithScale({
+        $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+        data: {
+          name: 'a'
+        },
+        facet: {
+          row: {field: 'r', type: 'nominal', sort: {op: 'median', field: 'b'}},
+          column: {field: 'c', type: 'nominal', sort: [1, 2, 3]}
+        },
+        spec: {
+          mark: 'rect',
+          encoding: {
+            y: {field: 'b', type: 'quantitative'},
+            x: {field: 'a', type: 'quantitative'}
+          }
+        }
+      });
+
+      const facet = new FacetNode(null, model, 'facetName', 'dataName');
+
+      expect(facet.dependentFields()).toEqual(new Set(['r', 'c', 'b', 'column_c_sort_index']));
+    });
+  });
+
   describe('hash', () => {
     it('should generate the correct hash', () => {
       const model = parseFacetModelWithScale({

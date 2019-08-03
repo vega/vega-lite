@@ -1,6 +1,7 @@
 import {
   Align,
   Axis as VgAxis,
+  AxisEncode,
   AxisOrient,
   BaseAxis,
   Color,
@@ -10,12 +11,13 @@ import {
   TextBaseline,
   TitleAnchor
 } from 'vega';
+import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {Flag, keys} from './util';
-import {LayoutAlign} from './vega.schema';
+import {Flag, keys, Omit} from './util';
+import {LayoutAlign, VgEncodeChannel} from './vega.schema';
 
-type BaseAxisNoSignals = AxisMixins &
+export type BaseAxisNoSignals = AxisMixins &
   BaseAxis<
     number,
     number,
@@ -33,8 +35,119 @@ type BaseAxisNoSignals = AxisMixins &
     TitleAnchor
   >;
 
-// Vega axis config is the same as vega axis base. If this is not the case, add specific type.
-type VgAxisConfigNoSignals = BaseAxisNoSignals;
+export type ConditionalAxisProp =
+  | 'labelAlign'
+  | 'labelBaseline'
+  | 'labelColor'
+  | 'labelFont'
+  | 'labelFontSize'
+  | 'labelFontStyle'
+  | 'labelFontWeight'
+  | 'labelOpacity'
+  | 'gridColor'
+  | 'gridDash'
+  | 'gridDashOffset'
+  | 'gridOpacity'
+  | 'gridWidth'
+  | 'tickColor'
+  | 'tickDash'
+  | 'tickDashOffset'
+  | 'tickOpacity'
+  | 'tickWidth';
+
+export const CONDITIONAL_AXIS_PROP_INDEX: {
+  [prop in keyof BaseAxisNoSignals | ConditionalAxisProp]?: {
+    part: keyof AxisEncode;
+    vgProp: VgEncodeChannel;
+  };
+} = {
+  labelAlign: {
+    part: 'labels',
+    vgProp: 'align'
+  },
+  labelBaseline: {
+    part: 'labels',
+    vgProp: 'align'
+  },
+  labelColor: {
+    part: 'labels',
+    vgProp: 'fill'
+  },
+  labelFont: {
+    part: 'labels',
+    vgProp: 'font'
+  },
+  labelFontSize: {
+    part: 'labels',
+    vgProp: 'fontSize'
+  },
+  labelFontStyle: {
+    part: 'labels',
+    vgProp: 'fontStyle'
+  },
+  labelFontWeight: {
+    part: 'labels',
+    vgProp: 'fontWeight'
+  },
+  labelOpacity: {
+    part: 'labels',
+    vgProp: 'opacity'
+  },
+  gridColor: {
+    part: 'grid',
+    vgProp: 'stroke'
+  },
+  gridDash: {
+    part: 'grid',
+    vgProp: 'strokeDash'
+  },
+  gridDashOffset: {
+    part: 'grid',
+    vgProp: 'strokeDash'
+  },
+  gridOpacity: {
+    part: 'grid',
+    vgProp: 'opacity'
+  },
+  gridWidth: {
+    part: 'grid',
+    vgProp: 'strokeWidth'
+  },
+  tickColor: {
+    part: 'ticks',
+    vgProp: 'stroke'
+  },
+  tickDash: {
+    part: 'ticks',
+    vgProp: 'strokeDash'
+  },
+  tickDashOffset: {
+    part: 'ticks',
+    vgProp: 'strokeDash'
+  },
+  tickOpacity: {
+    part: 'ticks',
+    vgProp: 'opacity'
+  },
+  tickWidth: {
+    part: 'ticks',
+    vgProp: 'strokeWidth'
+  }
+};
+
+export type ConditionalAxisProperty<V extends Value | number[]> = ValueDef<V> & {
+  condition: ConditionalPredicate<ValueDef<V>> | ConditionalPredicate<ValueDef<V>>[];
+};
+
+export function isConditionalAxisValue<V extends Value | number[]>(v: any): v is ConditionalAxisProperty<V> {
+  return v['condition'];
+}
+
+// Vega axis config is the same as Vega axis base. If this is not the case, add specific type.
+export type VgAxisConfigNoSignals = Omit<BaseAxisNoSignals, ConditionalAxisProp> &
+  {
+    [k in ConditionalAxisProp]?: BaseAxisNoSignals[k] | ConditionalAxisProperty<BaseAxisNoSignals[k] | null>;
+  };
 
 // Change comments to be Vega-Lite specific
 interface AxisMixins {
@@ -69,9 +182,9 @@ export interface AxisOrientMixins {
   orient?: AxisOrient;
 }
 
-export type AxisConfig = VgAxisConfigNoSignals & VlOnlyGuideConfig & AxisOrientMixins;
+export type AxisConfig = VlOnlyGuideConfig & AxisOrientMixins & VgAxisConfigNoSignals;
 
-export interface Axis extends AxisOrientMixins, BaseAxisNoSignals, Guide {
+export interface Axis extends AxisOrientMixins, VgAxisConfigNoSignals, Guide {
   /**
    * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
    *

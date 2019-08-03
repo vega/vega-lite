@@ -86,6 +86,8 @@ SymbolShape:
   name: String
 LabelOverlap:
   name: String
+ConditionalAxisProperty:
+  link: "axis.html#conditional"
 
 # Config
 Config:
@@ -153,6 +155,13 @@ ShapeFieldDefWithCondition:
   name: MarkPropFieldDef
   link: "encoding.html#mark-prop-field-def"
 ShapeValueDefWithCondition:
+  name: MarkPropValueDef
+  link: "encoding.html#mark-prop-value-def"
+
+ColorGradientFieldDefWithCondition:
+  name: MarkPropFieldDef
+  link: "encoding.html#mark-prop-field-def"
+ColorGradientValueDefWithCondition:
   name: MarkPropValueDef
   link: "encoding.html#mark-prop-value-def"
 
@@ -284,15 +293,21 @@ EventStream:
   link: "https://vega.github.io/vega/docs/event-streams/"
 SelectionResolution:
   link: "selection.html#resolve"
-SelectionInitArrayMapping:
-  name: "Object | Array"
-  link: "selection.html#init"
+SelectionInitMapping:
+  name: "Object"
+  link: "init.html"
+SelectionInitIntervalMapping:
+  name: "Object"
+  link: "init.html"
 
 # Types
 DateTime:
   link: "types.html#datetime"
 Color:
   link: "types.html#color"
+GradientStop:
+  name: Stop
+  link: "types.html#gradient-stop"
 
 # Others
 FontWeight:

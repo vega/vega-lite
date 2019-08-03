@@ -12,8 +12,8 @@ export class SequenceNode extends DataFlowNode {
     super(parent);
   }
 
-  public dependentFields(): undefined {
-    return undefined; // there should never be a node before a sequence
+  public dependentFields() {
+    return new Set();
   }
 
   public producedFields() {

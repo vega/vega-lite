@@ -41,6 +41,7 @@ describe('compile/data/geojson', () => {
       node = node.children[0];
     }
   });
+
   it('should skip geojson if custom projection', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {
@@ -72,5 +73,26 @@ describe('compile/data/geojson', () => {
 
     expect(retval).toBe(root);
     expect(root.children.length).toBe(0);
+  });
+
+  describe('GeoJSONNode', () => {
+    describe('dependentFields', () => {
+      it('should return fields', () => {
+        const flatten = new GeoJSONNode(null, ['foo', 'bar', {expr: 's'}], null);
+        expect(flatten.dependentFields()).toEqual(new Set(['foo', 'bar']));
+      });
+
+      it('should return geojson', () => {
+        const flatten = new GeoJSONNode(null, null, 'geo');
+        expect(flatten.dependentFields()).toEqual(new Set(['geo']));
+      });
+    });
+
+    describe('producedFields', () => {
+      it('should return empty set', () => {
+        const flatten = new GeoJSONNode(null);
+        expect(flatten.producedFields()).toEqual(new Set());
+      });
+    });
   });
 });

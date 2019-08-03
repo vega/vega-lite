@@ -60,6 +60,10 @@ By setting the `line` and `point` properties of the mark definition to `true` or
 
 <span class="vl-example" data-name="area_overlay"></span>
 
+Instead of using a single color as the fill color of the area, we can set it to a [gradient](/docs/types.html#gradient). In this example, we are also customizing the overlay.
+
+<span class="vl-example" data-name="area_gradient"></span>
+
 ### Stacked Area Chart
 
 Adding a color field to area chart creates stacked area chart by default. For example, here we split the area chart by industry.

@@ -39,16 +39,12 @@ const loader = vega.loader({
 
 const editorURL = 'https://vega.github.io/editor/';
 
-function trim(str: string) {
-  return str.replace(/^\s+|\s+$/g, '');
-}
-
 /* Anchors */
 selectAll('h2, h3, h4, h5, h6').each(function(this: d3.BaseType) {
   const sel = select(this);
   const name = sel.attr('id');
   const title = sel.text();
-  sel.html(`<a href="#${name}" class="anchor"><span class="octicon octicon-link"></span></a>${trim(title)}`);
+  sel.html(`<a href="#${name}" class="anchor"><span class="octicon octicon-link"></span></a>${title.trim()}`);
 });
 
 /* Documentation */

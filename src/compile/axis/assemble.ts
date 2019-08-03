@@ -1,11 +1,12 @@
 import {Axis as VgAxis, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
-import {AXIS_PARTS, AXIS_PROPERTY_TYPE} from '../../axis';
+import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isConditionalAxisValue} from '../../axis';
 import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';
 import {Config} from '../../config';
 import {getFirstDefined, keys} from '../../util';
 import {Model} from '../model';
+import {expression} from '../predicate';
 import {AxisComponent, AxisComponentIndex} from './component';
 
 function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {
@@ -26,10 +27,32 @@ export function assembleAxis(
   const {orient, scale, title, zindex, ...axis} = axisCmpt.combine();
 
   // Remove properties that are not valid for this kind of axis
-  keys(axis).forEach(key => {
-    const propType = AXIS_PROPERTY_TYPE[key];
+  keys(axis).forEach(prop => {
+    const propType = AXIS_PROPERTY_TYPE[prop];
+    const propValue = axis[prop];
     if (propType && propType !== kind && propType !== 'both') {
-      delete axis[key];
+      delete axis[prop];
+    } else if (isConditionalAxisValue(propValue)) {
+      const {vgProp, part} = CONDITIONAL_AXIS_PROP_INDEX[prop];
+      const {condition, value} = propValue;
+
+      const vgRef = [
+        ...(isArray(condition) ? condition : [condition]).map(c => {
+          const {value: v, test} = c;
+          return {
+            test: expression(null, test),
+            value: v
+          };
+        }),
+        {value}
+      ];
+
+      axis.encode = axis.encode || {};
+      axis.encode[part] = axis.encode[part] || {};
+      axis.encode[part].update = axis.encode[part].update || {};
+      axis.encode[part].update[vgProp] = vgRef;
+
+      delete axis[prop];
     }
   });
 

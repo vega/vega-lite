@@ -4,6 +4,8 @@ import stableStringify from 'fast-json-stable-stringify';
 import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
 
+import 'array-flat-polyfill';
+
 export const deepEqual = deepEqual_;
 export const duplicate = clone_;
 
@@ -115,10 +117,6 @@ export function every<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
     }
   }
   return true;
-}
-
-export function flatten<T>(arrays: T[][]): T[] {
-  return ([] as T[]).concat(...arrays);
 }
 
 export function fill<T>(val: T, len: number) {

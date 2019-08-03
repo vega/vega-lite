@@ -20,6 +20,18 @@ describe('compile/data/sequence', () => {
     });
   });
 
+  describe('dependentFields', () => {
+    it('should return empty set', () => {
+      const params = {
+        start: 1,
+        stop: 10,
+        step: 2
+      };
+      const sequence = new SequenceNode(null, params);
+      expect(sequence.dependentFields()).toEqual(new Set());
+    });
+  });
+
   describe('producedFields', () => {
     it('should return correct default', () => {
       const params = {

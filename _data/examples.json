@@ -177,6 +177,11 @@
         "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
+        "name": "line_conditonal_grid_dash",
+        "title": "Line Chart with Conditional Grid Dash",
+        "style": "background-size: auto 105%; background-position: center center !important;"
+      },
+      {
         "name": "connected_scatterplot",
         "title": "Connected Scatterplot (Lines with Custom Paths)",
         "description": "A connected scatterplot can be created by customizing line `order` and adding `point` overlay in the line mark definition.",
@@ -209,6 +214,10 @@
       {
         "name": "area",
         "title": "Area Chart"
+      },
+      {
+        "name": "area_gradient",
+        "title": "Area Chart with Gradient"
       },
       {
         "name": "area_overlay",
@@ -258,6 +267,10 @@
         "name": "layer_text_heatmap",
         "title": "Heatmap with Labels",
         "style": "background-size: auto 55%; background-position-y: center !important;"
+      },
+      {
+        "name": "rect_lasagna",
+        "title": "Lasagna Plot (Dense Time-Series Heatmap)"
       }
     ],
     "Advanced Calculations": [
@@ -401,17 +414,22 @@
         "style": "background-size: auto 90%; background-position-y: center !important;"
       },
       {
-        "name": "layer_likert",
-        "title": "Distributions and Medians of Likert Scale Ratings",
-        "description": "Distributions and Medians of Likert Scale Ratings. (Figure 9. from @jhoffswell and @zcliu's 'Interactive Repair of Tables Extracted from PDF Documents on Mobile Devices' -- http://idl.cs.washington.edu/files/2019-InteractiveTableRepair-CHI.pdf)"
-      },
-      {
         "name": "layer_line_mean_point_raw",
         "title": "Layering Averages over Raw Values"
       },
       {
         "name": "layer_line_rolling_mean_point_raw",
         "title": "Layering Rolling Averages over Raw Values"
+      },
+      {
+        "name": "layer_likert",
+        "title": "Distributions and Medians of Likert Scale Ratings",
+        "description": "Distributions and Medians of Likert Scale Ratings. (Figure 9. from @jhoffswell and @zcliu's 'Interactive Repair of Tables Extracted from PDF Documents on Mobile Devices' -- http://idl.cs.washington.edu/files/2019-InteractiveTableRepair-CHI.pdf)"
+      },
+      {
+        "name": "concat_layer_voyager_result",
+        "title": "Comparative Likert Scale Ratings",
+        "description": "Comparing Likert scale ratings between two conditions. (Figure 10. from @kanitw et al.'s 'Voyager 2: Augmenting Visual Analysis with Partial View Specifications' -- http://idl.cs.washington.edu/files/2017-Voyager2-CHI.pdf)"
       }
     ],
     "Other Layered Plots": [

@@ -201,6 +201,23 @@ export function getMainRangeChannel(channel: Channel): Channel {
   return channel;
 }
 
+/**
+ * Get the main channel for a range channel. E.g. `x` for `x2`.
+ */
+export function getSecondaryRangeChannel(channel: Channel): SecondaryRangeChannel {
+  switch (channel) {
+    case 'x':
+      return 'x2';
+    case 'y':
+      return 'y2';
+    case 'latitude':
+      return 'latitude2';
+    case 'longitude':
+      return 'longitude2';
+  }
+  return undefined;
+}
+
 // CHANNELS without COLUMN, ROW
 export const UNIT_CHANNELS = keys(UNIT_CHANNEL_INDEX);
 
@@ -220,12 +237,12 @@ const {
 } = UNIT_CHANNEL_INDEX;
 
 export const NONPOSITION_CHANNELS = keys(NONPOSITION_CHANNEL_INDEX);
-export type NonPositionChannel = typeof NONPOSITION_CHANNELS[0];
+export type NonPositionChannel = typeof NONPOSITION_CHANNELS[number];
 
 // POSITION_SCALE_CHANNELS = X and Y;
 const POSITION_SCALE_CHANNEL_INDEX: {x: 1; y: 1} = {x: 1, y: 1};
 export const POSITION_SCALE_CHANNELS = keys(POSITION_SCALE_CHANNEL_INDEX);
-export type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
+export type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[number];
 
 export function getSizeType(channel: PositionScaleChannel): 'width' | 'height' {
   return channel === 'x' ? 'width' : 'height';
@@ -251,7 +268,7 @@ const {
   ...NONPOSITION_SCALE_CHANNEL_INDEX
 } = NONPOSITION_CHANNEL_INDEX;
 export const NONPOSITION_SCALE_CHANNELS = keys(NONPOSITION_SCALE_CHANNEL_INDEX);
-export type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
+export type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[number];
 
 export function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel {
   return !!NONPOSITION_CHANNEL_INDEX[channel];
@@ -284,7 +301,7 @@ const SCALE_CHANNEL_INDEX = {
 
 /** List of channels with scales */
 export const SCALE_CHANNELS = keys(SCALE_CHANNEL_INDEX);
-export type ScaleChannel = typeof SCALE_CHANNELS[0];
+export type ScaleChannel = typeof SCALE_CHANNELS[number];
 
 export function isScaleChannel(channel: Channel): channel is ScaleChannel {
   return !!SCALE_CHANNEL_INDEX[channel];

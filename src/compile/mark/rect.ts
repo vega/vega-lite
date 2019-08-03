@@ -1,6 +1,6 @@
 import {isNumber} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
-import {isFieldDef, isPositionFieldDef} from '../../channeldef';
+import {getBand, isFieldDef, isPositionFieldDef} from '../../channeldef';
 import {Config, DEFAULT_STEP, getViewConfigDiscreteStep} from '../../config';
 import {MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
@@ -55,16 +55,19 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
   // x, x2, and width -- we must specify two of these in all conditions
   if (
     isFieldDef(fieldDef) &&
-    (isBinning(fieldDef.bin) || isBinned(fieldDef.bin)) &&
+    (isBinning(fieldDef.bin) || isBinned(fieldDef.bin) || (fieldDef.timeUnit && !fieldDef2)) &&
     !hasSizeDef &&
     !hasDiscreteDomain(scaleType)
   ) {
+    const band = getBand(channel, fieldDef, undefined, markDef, config);
+
     return mixins.binPosition({
       fieldDef,
       fieldDef2,
       channel,
-      mark,
+      markDef,
       scaleName,
+      band,
       spacing: getFirstDefined(markDef.binSpacing, config[mark].binSpacing),
       reverse: scale.get('reverse')
     });

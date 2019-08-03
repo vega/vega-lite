@@ -21,6 +21,7 @@
     "removeComments": false,
     "resolveJsonModule": true,
     "suppressImplicitAnyIndexErrors": true,
-    "typeRoots": ["node_modules/@types", "typings"]
+    "typeRoots": ["node_modules/@types", "typings"],
+    "lib": ["esnext.array", "dom", "dom.iterable"]
   }
 }

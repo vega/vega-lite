@@ -19,7 +19,7 @@ export class DensityTransformNode extends DataFlowNode {
   }
 
   public dependentFields() {
-    return new Set([...this.transform.groupby]);
+    return new Set([this.transform.density, ...(this.transform.groupby || [])]);
   }
 
   public producedFields() {

@@ -10,17 +10,7 @@
       "values": [{"a": "A", "b": 28}, {"a": "B", "b": 55}, {"a": "C", "b": 43}]
     },
     {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
         {
@@ -42,7 +32,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -57,7 +47,7 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "align": {"value": "left"},
@@ -75,12 +65,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "b"},
-          {"data": "data_2", "field": "b"}
-        ]
-      },
+      "domain": {"data": "data_0", "field": "b"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -88,13 +73,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "a"},
-          {"data": "data_2", "field": "a"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_0", "field": "a", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

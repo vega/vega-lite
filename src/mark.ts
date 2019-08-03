@@ -1,6 +1,6 @@
 import {Color} from 'vega';
 import {toSet} from 'vega-util';
-import {Value} from './channeldef';
+import {Gradient, Value} from './channeldef';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
 import {contains, keys} from './util';
 import {BaseMarkConfig} from './vega.schema';
@@ -62,6 +62,10 @@ export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'tra
   return contains(['line', 'area', 'trail'], m);
 }
 
+export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 'image' {
+  return contains(['rect', 'bar', 'image'], m);
+}
+
 export const PRIMITIVE_MARKS = keys(MARK_INDEX);
 
 export interface ColorMixins {
@@ -74,7 +78,7 @@ export interface ColorMixins {
    * - This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
    * - The `fill` and `stroke` properties have higher precedence than `color` and will override `color`.
    */
-  color?: Color;
+  color?: Color | Gradient;
 }
 
 export interface TooltipContent {
@@ -135,6 +139,17 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
    */
   invalid?: 'filter' | Hide | null;
+
+  /**
+   * Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.
+   */
+  timeUnitBandPosition?: number;
+
+  /**
+   * Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.
+   * If set to `0.5`, bandwidth of the marks will be half of the time unit band step.
+   */
+  timeUnitBand?: number;
 }
 
 export interface RectBinSpacingMixins {
@@ -175,7 +190,14 @@ export const FILL_CONFIG = ['fill', 'fillOpacity'];
 
 export const FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
 
-export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = ['filled', 'color', 'tooltip', 'invalid'];
+export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = [
+  'filled',
+  'color',
+  'tooltip',
+  'invalid',
+  'timeUnitBandPosition',
+  'timeUnitBand'
+];
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   [k in typeof PRIMITIVE_MARKS[0]]?: (keyof MarkConfigMixins[k])[];
@@ -190,7 +212,8 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
 
 export const defaultMarkConfig: MarkConfig = {
   color: '#4c78a8',
-  invalid: 'filter'
+  invalid: 'filter',
+  timeUnitBand: 1
 };
 
 export interface MarkConfigMixins {
@@ -363,12 +386,14 @@ const DEFAULT_RECT_BAND_SIZE = 5;
 
 export const defaultBarConfig: RectConfig = {
   binSpacing: 1,
-  continuousBandSize: DEFAULT_RECT_BAND_SIZE
+  continuousBandSize: DEFAULT_RECT_BAND_SIZE,
+  timeUnitBandPosition: 0.5
 };
 
 export const defaultRectConfig: RectConfig = {
   binSpacing: 0,
-  continuousBandSize: DEFAULT_RECT_BAND_SIZE
+  continuousBandSize: DEFAULT_RECT_BAND_SIZE,
+  timeUnitBandPosition: 0.5
 };
 
 export interface TextConfig extends MarkConfig {

@@ -4,6 +4,8 @@ import {isBinned, isBinning} from '../../bin';
 import {Channel, NonPositionScaleChannel, ScaleChannel, SCALE_CHANNELS, X, X2, Y2} from '../../channel';
 import {
   ChannelDef,
+  Conditional,
+  FieldDef,
   getTypedFieldDef,
   isConditionalSelection,
   isFieldDef,
@@ -11,7 +13,9 @@ import {
   PositionFieldDef,
   SecondaryFieldDef,
   TypedFieldDef,
-  ValueDef
+  Value,
+  ValueDef,
+  ValueOrGradient
 } from '../../channeldef';
 import {Config} from '../../config';
 import * as log from '../../log';
@@ -21,7 +25,7 @@ import {contains, Dict, getFirstDefined, keys} from '../../util';
 import {VgEncodeChannel, VgEncodeEntry, VgValueRef, VG_MARK_CONFIGS} from '../../vega.schema';
 import {getMarkConfig, getMarkPropOrConfig, getStyleConfig} from '../common';
 import {expression} from '../predicate';
-import {assembleSelectionPredicate} from '../selection/assemble';
+import {parseSelectionPredicate} from '../selection/parse';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
 import {fieldInvalidPredicate} from './valueref';
@@ -134,7 +138,7 @@ function markDefProperties(mark: MarkDef, ignore: Ignore) {
   }, {});
 }
 
-export function valueIfDefined(prop: string, value: string | number | boolean): VgEncodeEntry {
+export function valueIfDefined(prop: string, value: Value): VgEncodeEntry {
   if (value !== undefined) {
     return {[prop]: {value: value}};
   }
@@ -187,7 +191,7 @@ export function nonPosition(
   channel: NonPositionScaleChannel,
   model: UnitModel,
   opt: {
-    defaultValue?: number | string | boolean;
+    defaultValue?: ValueOrGradient;
     vgChannel?: VgEncodeChannel;
     defaultRef?: VgValueRef;
   } = {}
@@ -210,10 +214,12 @@ export function nonPosition(
 
   const channelDef = encoding[channel];
 
-  return wrapCondition(model, channelDef, vgChannel, cDef => {
+  return wrapCondition<FieldDef<string>, ValueOrGradient>(model, channelDef, vgChannel, cDef => {
     return ref.midPoint({
       channel,
       channelDef: cDef,
+      markDef,
+      config,
       scaleName: model.scaleName(channel),
       scale: model.getScaleComponent(channel),
       stack: null, // No need to provide stack for non-position as it does not affect mid point
@@ -226,11 +232,11 @@ export function nonPosition(
  * Return a mixin that includes a Vega production rule for a Vega-Lite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
-export function wrapCondition(
+export function wrapCondition<FD extends FieldDef<any>, V extends ValueOrGradient>(
   model: UnitModel,
-  channelDef: ChannelDef,
+  channelDef: ChannelDef<FD, V>,
   vgChannel: string,
-  refFn: (cDef: ChannelDef) => VgValueRef
+  refFn: (cDef: ChannelDef<FD, V> | Conditional<ValueDef<V> | FD>) => VgValueRef
 ): VgEncodeEntry {
   const condition = channelDef && channelDef.condition;
   const valueRef = refFn(channelDef);
@@ -238,9 +244,7 @@ export function wrapCondition(
     const conditions = isArray(condition) ? condition : [condition];
     const vgConditions = conditions.map(c => {
       const conditionValueRef = refFn(c);
-      const test = isConditionalSelection(c)
-        ? assembleSelectionPredicate(model, c.selection)
-        : expression(model, c.test);
+      const test = isConditionalSelection(c) ? parseSelectionPredicate(model, c.selection) : expression(model, c.test);
       return {
         test,
         ...conditionValueRef
@@ -375,16 +379,18 @@ export function binPosition({
   fieldDef,
   fieldDef2,
   channel,
+  band,
   scaleName,
-  mark,
+  markDef,
   spacing = 0,
   reverse
 }: {
   fieldDef: TypedFieldDef<string>;
   fieldDef2?: ValueDef | SecondaryFieldDef<string>;
   channel: 'x' | 'y';
+  band: number;
   scaleName: string;
-  mark: Mark;
+  markDef: MarkDef<Mark>;
   spacing?: number;
   reverse: boolean;
 }) {
@@ -395,17 +401,24 @@ export function binPosition({
     y2: reverse ? spacing : 0
   };
   const channel2 = channel === X ? X2 : Y2;
-  if (isBinning(fieldDef.bin)) {
+  if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {
       [channel2]: ref.bin({
         channel,
         fieldDef,
         scaleName,
-        mark,
-        side: 'start',
+        markDef,
+        band: (1 - band) / 2,
         offset: binSpacing[`${channel}2`]
       }),
-      [channel]: ref.bin({channel, fieldDef, scaleName, mark, side: 'end', offset: binSpacing[channel]})
+      [channel]: ref.bin({
+        channel,
+        fieldDef,
+        scaleName,
+        markDef,
+        band: 1 - (1 - band) / 2,
+        offset: binSpacing[channel]
+      })
     };
   } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
     return {
@@ -446,10 +459,11 @@ export function pointPosition(
           channel,
           channelDef,
           channel2Def,
+          markDef,
+          config,
           scaleName,
           scale,
           stack,
-          mark,
           offset,
           defaultRef: ref.positionDefault({
             markDef,
@@ -559,10 +573,11 @@ function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax',
     channel,
     channelDef,
     channel2Def: encoding[channel],
+    markDef,
+    config,
     scaleName,
     scale,
     stack,
-    mark,
     offset,
     defaultRef: undefined
   });

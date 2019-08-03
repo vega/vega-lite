@@ -87,47 +87,19 @@
     {
       "name": "data_6",
       "source": "source_1",
-      "transform": [{"type": "filter", "expr": "datum.label === 'PoleStar'"}]
+      "transform": [
+        {"type": "filter", "expr": "datum.label === 'PoleStar'"},
+        {
+          "type": "filter",
+          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
+        }
+      ]
     },
     {
       "name": "data_7",
-      "source": "data_6",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_8",
-      "source": "data_6",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_9",
       "source": "source_1",
-      "transform": [{"type": "filter", "expr": "datum.label !== 'PoleStar'"}]
-    },
-    {
-      "name": "data_10",
-      "source": "data_9",
       "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_11",
-      "source": "data_9",
-      "transform": [
+        {"type": "filter", "expr": "datum.label !== 'PoleStar'"},
         {
           "type": "filter",
           "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
@@ -192,10 +164,13 @@
         {
           "scale": "concat_0_x",
           "orient": "bottom",
+          "gridDash": [3, 3],
+          "gridScale": "concat_0_y",
+          "grid": true,
+          "tickCount": {"signal": "ceil(width/40)"},
           "encode": {
             "grid": {
               "update": {
-                "strokeDash": {"value": [3, 3]},
                 "stroke": [
                   {"test": "datum.value === 0", "value": "#666"},
                   {"value": "#CCC"}
@@ -203,9 +178,6 @@
               }
             }
           },
-          "gridScale": "concat_0_y",
-          "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -217,17 +189,6 @@
           "scale": "concat_0_x",
           "orient": "bottom",
           "grid": false,
-          "encode": {
-            "grid": {
-              "update": {
-                "strokeDash": {"value": [3, 3]},
-                "stroke": [
-                  {"test": "datum.value === 0", "value": "#666"},
-                  {"value": "#CCC"}
-                ]
-              }
-            }
-          },
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -310,7 +271,7 @@
           "name": "concat_1_layer_2_marks",
           "type": "text",
           "style": ["text", "arrow-label"],
-          "from": {"data": "data_7"},
+          "from": {"data": "data_6"},
           "encode": {
             "update": {
               "align": {"value": "right"},
@@ -332,7 +293,7 @@
           "name": "concat_1_layer_3_marks",
           "type": "text",
           "style": ["text", "arrow-label"],
-          "from": {"data": "data_10"},
+          "from": {"data": "data_7"},
           "encode": {
             "update": {
               "align": {"value": "left"},
@@ -354,7 +315,7 @@
           "name": "concat_1_layer_4_marks",
           "type": "text",
           "style": ["text", "arrow-label2"],
-          "from": {"data": "data_8"},
+          "from": {"data": "data_6"},
           "encode": {
             "update": {
               "align": {"value": "right"},
@@ -376,7 +337,7 @@
           "name": "concat_1_layer_5_marks",
           "type": "text",
           "style": ["text", "arrow-label2"],
-          "from": {"data": "data_11"},
+          "from": {"data": "data_7"},
           "encode": {
             "update": {
               "align": {"value": "left"},
@@ -434,10 +395,8 @@
           {"data": "data_4", "field": "from"},
           {"data": "data_4", "field": "to"},
           {"data": "data_5", "field": "to"},
-          {"data": "data_7", "field": "from"},
-          {"data": "data_10", "field": "from"},
-          {"data": "data_8", "field": "from"},
-          {"data": "data_11", "field": "from"}
+          {"data": "data_6", "field": "from"},
+          {"data": "data_7", "field": "from"}
         ]
       },
       "range": [0, {"signal": "width"}],

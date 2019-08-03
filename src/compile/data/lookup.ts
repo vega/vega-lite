@@ -41,11 +41,11 @@ export class LookupNode extends DataFlowNode {
   }
 
   public dependentFields() {
-    return new Set(this.transform.lookup);
+    return new Set([this.transform.lookup]);
   }
 
   public producedFields() {
-    return new Set(this.transform.from.fields || array(this.transform.as));
+    return new Set(this.transform.as ? array(this.transform.as) : this.transform.from.fields);
   }
 
   public hash() {

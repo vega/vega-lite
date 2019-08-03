@@ -373,9 +373,10 @@ describe('compile/mark/mixins', () => {
         const props = binPosition({
           fieldDef,
           channel: 'x',
+          band: 1,
           scaleName: undefined,
           reverse: false,
-          mark: 'bar'
+          markDef: {type: 'bar'}
         });
         expect(props).not.toBeDefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('x2'));
@@ -389,9 +390,10 @@ describe('compile/mark/mixins', () => {
         const props = binPosition({
           fieldDef,
           channel: 'y',
+          band: 1,
           scaleName: undefined,
           reverse: false,
-          mark: 'bar'
+          markDef: {type: 'bar'}
         });
         expect(props).not.toBeDefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('y2'));

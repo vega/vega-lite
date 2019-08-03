@@ -2,7 +2,7 @@ import {Legend as VgLegend, NewSignal, Title as VgTitle} from 'vega';
 import {Config} from '../config';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec';
-import {flatten, keys} from '../util';
+import {keys} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
 import {parseLayerAxes} from './axis/parse';
@@ -126,11 +126,9 @@ export class LayerModel extends Model {
   public assembleMarks(): any[] {
     return assembleLayerSelectionMarks(
       this,
-      flatten(
-        this.children.map(child => {
-          return child.assembleMarks();
-        })
-      )
+      this.children.flatMap(child => {
+        return child.assembleMarks();
+      })
     );
   }
 

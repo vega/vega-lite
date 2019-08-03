@@ -146,7 +146,14 @@
           "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -174,7 +181,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -291,7 +305,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -340,6 +361,14 @@
         },
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "timeUnitBand": {
+          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -535,34 +564,76 @@
           "type": "boolean"
         },
         "gridColor": {
-          "$ref": "#/definitions/Color",
-          "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+            }
+          ]
         },
         "gridDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number[]|undefined|null)>"
+            }
+          ]
         },
         "gridDashOffset": {
-          "description": "The pixel offset at which to start drawing with the grid dash array.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the grid dash array.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "gridOpacity": {
-          "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "gridWidth": {
-          "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "labelAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelAngle": {
           "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
@@ -571,8 +642,15 @@
           "type": "number"
         },
         "labelBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelBound": {
           "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
@@ -582,8 +660,15 @@
           ]
         },
         "labelColor": {
-          "$ref": "#/definitions/Color",
-          "description": "The color of the tick label, can be in hex color code or regular color name."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+            }
+          ]
         },
         "labelFlush": {
           "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.",
@@ -597,29 +682,64 @@
           "type": "number"
         },
         "labelFont": {
-          "description": "The font of the tick label.",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "The font of the tick label.",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(string|undefined|null)>"
+            }
+          ]
         },
         "labelFontSize": {
-          "description": "The font size of the label, in pixels.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The font size of the label, in pixels.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "labelFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "Font style of the title."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "Font style of the title."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "Font weight of axis tick labels."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "Font weight of axis tick labels."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelLimit": {
           "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
           "type": "number"
         },
         "labelOpacity": {
-          "description": "The opacity of the labels.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The opacity of the labels.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "labelOverlap": {
           "$ref": "#/definitions/LabelOverlap",
@@ -658,23 +778,44 @@
           "type": "number"
         },
         "tickColor": {
-          "$ref": "#/definitions/Color",
-          "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+            }
+          ]
         },
         "tickCount": {
           "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
           "type": "number"
         },
         "tickDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number[]|undefined|null)>"
+            }
+          ]
         },
         "tickDashOffset": {
-          "description": "The pixel offset at which to start drawing with the tick mark dash array.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the tick mark dash array.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "tickExtra": {
           "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
@@ -689,8 +830,15 @@
           "type": "number"
         },
         "tickOpacity": {
-          "description": "Opacity of the ticks.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the ticks.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "tickRound": {
           "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
@@ -702,9 +850,16 @@
           "type": "number"
         },
         "tickWidth": {
-          "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "ticks": {
           "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
@@ -851,34 +1006,76 @@
           "type": "boolean"
         },
         "gridColor": {
-          "$ref": "#/definitions/Color",
-          "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+            }
+          ]
         },
         "gridDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number[]|undefined|null)>"
+            }
+          ]
         },
         "gridDashOffset": {
-          "description": "The pixel offset at which to start drawing with the grid dash array.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the grid dash array.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "gridOpacity": {
-          "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "gridWidth": {
-          "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "labelAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelAngle": {
           "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
@@ -887,8 +1084,15 @@
           "type": "number"
         },
         "labelBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelBound": {
           "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
@@ -898,8 +1102,15 @@
           ]
         },
         "labelColor": {
-          "$ref": "#/definitions/Color",
-          "description": "The color of the tick label, can be in hex color code or regular color name."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+            }
+          ]
         },
         "labelFlush": {
           "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.",
@@ -913,29 +1124,64 @@
           "type": "number"
         },
         "labelFont": {
-          "description": "The font of the tick label.",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "The font of the tick label.",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(string|undefined|null)>"
+            }
+          ]
         },
         "labelFontSize": {
-          "description": "The font size of the label, in pixels.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The font size of the label, in pixels.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "labelFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "Font style of the title."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "Font style of the title."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "Font weight of axis tick labels."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "Font weight of axis tick labels."
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
+            }
+          ]
         },
         "labelLimit": {
           "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
           "type": "number"
         },
         "labelOpacity": {
-          "description": "The opacity of the labels.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The opacity of the labels.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "labelOverlap": {
           "$ref": "#/definitions/LabelOverlap",
@@ -970,19 +1216,40 @@
           "type": "boolean"
         },
         "tickColor": {
-          "$ref": "#/definitions/Color",
-          "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+            }
+          ]
         },
         "tickDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number[]|undefined|null)>"
+            }
+          ]
         },
         "tickDashOffset": {
-          "description": "The pixel offset at which to start drawing with the tick mark dash array.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the tick mark dash array.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "tickExtra": {
           "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
@@ -993,8 +1260,15 @@
           "type": "number"
         },
         "tickOpacity": {
-          "description": "Opacity of the ticks.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the ticks.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "tickRound": {
           "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
@@ -1006,9 +1280,16 @@
           "type": "number"
         },
         "tickWidth": {
-          "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+            }
+          ]
         },
         "ticks": {
           "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
@@ -1204,7 +1485,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -1271,7 +1559,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -1778,7 +2073,14 @@
           "type": "boolean"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "extent": {
@@ -1924,6 +2226,12 @@
           "type": "string"
         }
       ]
+    },
+    "ColorGradientFieldDefWithCondition": {
+      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>"
+    },
+    "ColorGradientValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>"
     },
     "ColorName": {
       "enum": [
@@ -2084,10 +2392,10 @@
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -2109,10 +2417,10 @@
         "fill": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -2240,10 +2548,10 @@
         "stroke": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -2473,6 +2781,16 @@
         }
       ]
     },
+    "ConditionalValueDef<(Gradient|string|null)>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Gradient|string|null)>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<(Gradient|string|null)>>"
+        }
+      ]
+    },
     "ConditionalStringValueDef": {
       "anyOf": [
         {
@@ -2502,6 +2820,274 @@
           "$ref": "#/definitions/ConditionalSelection<NumberValueDef>"
         }
       ]
+    },
+    "ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "Font weight of axis tick labels."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "Font style of the title."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<(number[]|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<(number|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The font size of the label, in pixels.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<(string|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The font of the tick label.",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
     },
     "ConditionalPredicate<MarkPropFieldDef>": {
       "additionalProperties": false,
@@ -2726,6 +3312,206 @@
       ],
       "type": "object"
     },
+    "ConditionalPredicate<ValueDef<(Gradient|string|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "Font weight of axis tick labels."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "Font style of the title."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(number[]|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(number|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The font size of the label, in pixels.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
     "ConditionalPredicate<StringValueDef>": {
       "additionalProperties": false,
       "properties": {
@@ -2734,7 +3520,7 @@
           "description": "Predicate for triggering the condition"
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": [
             "string",
             "null"
@@ -2747,6 +3533,30 @@
       ],
       "type": "object"
     },
+    "ConditionalPredicate<ValueDef<(string|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The font of the tick label.",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
     "ConditionalPredicate<ValueDef>": {
       "additionalProperties": false,
       "properties": {
@@ -2756,7 +3566,7 @@
         },
         "value": {
           "$ref": "#/definitions/Value",
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -2773,7 +3583,7 @@
           "description": "Predicate for triggering the condition"
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": "number"
         }
       },
@@ -3006,6 +3816,34 @@
       ],
       "type": "object"
     },
+    "ConditionalSelection<ValueDef<(Gradient|string|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "selection": {
+          "$ref": "#/definitions/SelectionOperand",
+          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "selection",
+        "value"
+      ],
+      "type": "object"
+    },
     "ConditionalSelection<StringValueDef>": {
       "additionalProperties": false,
       "properties": {
@@ -3014,7 +3852,7 @@
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": [
             "string",
             "null"
@@ -3036,7 +3874,7 @@
         },
         "value": {
           "$ref": "#/definitions/Value",
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -3053,7 +3891,7 @@
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": "number"
         }
       },
@@ -3533,6 +4371,18 @@
       },
       "type": "object"
     },
+    "Dict<SelectionInit>": {
+      "additionalProperties": {
+        "$ref": "#/definitions/SelectionInit"
+      },
+      "type": "object"
+    },
+    "Dict<SelectionInitInterval>": {
+      "additionalProperties": {
+        "$ref": "#/definitions/SelectionInitInterval"
+      },
+      "type": "object"
+    },
     "Dir": {
       "enum": [
         "ltr",
@@ -3676,7 +4526,14 @@
           "type": "boolean"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "extent": {
@@ -3755,7 +4612,14 @@
           "type": "boolean"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "extent": {
@@ -4010,10 +4874,10 @@
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -4043,10 +4907,10 @@
         "fill": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -4178,10 +5042,10 @@
         "stroke": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -4447,7 +5311,7 @@
         }
       ]
     },
-    "FieldDefWithCondition<MarkPropFieldDef,(string|null)>": {
+    "FieldDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -4472,11 +5336,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalStringValueDef"
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalStringValueDef"
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
               },
               "type": "array"
             }
@@ -5774,6 +6638,34 @@
       },
       "required": [
         "vconcat"
+      ],
+      "type": "object"
+    },
+    "Gradient": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/LinearGradient"
+        },
+        {
+          "$ref": "#/definitions/RadialGradient"
+        }
+      ]
+    },
+    "GradientStop": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "$ref": "#/definitions/Color",
+          "description": "The color value at this point in the gradient."
+        },
+        "offset": {
+          "description": "The offset fraction for the color stop, indicating its position within the gradient.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "offset",
+        "color"
       ],
       "type": "object"
     },
@@ -7482,7 +8374,14 @@
           "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -7510,7 +8409,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -7616,7 +8522,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -7665,6 +8578,14 @@
         },
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "timeUnitBand": {
+          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -7742,6 +8663,49 @@
           "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         }
       },
+      "type": "object"
+    },
+    "LinearGradient": {
+      "additionalProperties": false,
+      "properties": {
+        "gradient": {
+          "description": "The type of gradient. Use `\"linear\"` for a linear gradient.",
+          "enum": [
+            "linear"
+          ],
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "stops": {
+          "description": "An array of gradient stops defining the gradient color sequence.",
+          "items": {
+            "$ref": "#/definitions/GradientStop"
+          },
+          "type": "array"
+        },
+        "x1": {
+          "description": "The starting x-coordinate, in normalized [0, 1] coordinates, of the linear gradient.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "x2": {
+          "description": "The ending x-coordinate, in normalized [0, 1] coordinates, of the linear gradient.\n\n__Default value:__ `1`",
+          "type": "number"
+        },
+        "y1": {
+          "description": "The starting y-coordinate, in normalized [0, 1] coordinates, of the linear gradient.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "y2": {
+          "description": "The ending y-coordinate, in normalized [0, 1] coordinates, of the linear gradient.\n\n__Default value:__ `0`",
+          "type": "number"
+        }
+      },
+      "required": [
+        "gradient",
+        "stops"
+      ],
       "type": "object"
     },
     "LocalMultiTimeUnit": {
@@ -8038,7 +9002,14 @@
           "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -8066,7 +9037,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -8155,7 +9133,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -8204,6 +9189,14 @@
         },
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "timeUnitBand": {
+          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -8314,7 +9307,14 @@
           "type": "boolean"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -8342,7 +9342,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -8459,7 +9466,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -8527,6 +9541,14 @@
         "thickness": {
           "description": "Thickness of the tick mark.\n\n__Default value:__  `1`",
           "minimum": 0,
+          "type": "number"
+        },
+        "timeUnitBand": {
+          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -8956,7 +9978,14 @@
           "type": "boolean"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -8984,7 +10013,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -9073,7 +10109,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -9136,6 +10179,14 @@
         },
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "timeUnitBand": {
+          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -9457,7 +10508,7 @@
           "description": "An object defining properties of axis's gridlines, ticks and labels.\nIf `null`, the axis for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [axis properties](https://vega.github.io/vega-lite/docs/axis.html) are applied.\n\n__See also:__ [`axis`](https://vega.github.io/vega-lite/docs/axis.html) documentation."
         },
         "band": {
-          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band). If set to `1`, the mark size is set to the bandwidth. If set to `0.5`, the mark size is half of the bandwidth.\n\nFor other marks, position on a band of a stacked, binned, or band scale.",
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale.  If set to `0`, the marks will be positioned at the beginning of the band.  If set to `0.5`, the marks will be positioned in the middle of the band.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
@@ -9684,6 +10735,57 @@
       ],
       "type": "string"
     },
+    "RadialGradient": {
+      "additionalProperties": false,
+      "properties": {
+        "gradient": {
+          "description": "The type of gradient. Use `\"radial\"` for a radial gradient.",
+          "enum": [
+            "radial"
+          ],
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "r1": {
+          "description": "The radius length, in normalized [0, 1] coordinates, of the inner circle for the gradient.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "r2": {
+          "description": "The radius length, in normalized [0, 1] coordinates, of the outer circle for the gradient.\n\n__Default value:__ `0.5`",
+          "type": "number"
+        },
+        "stops": {
+          "description": "An array of gradient stops defining the gradient color sequence.",
+          "items": {
+            "$ref": "#/definitions/GradientStop"
+          },
+          "type": "array"
+        },
+        "x1": {
+          "description": "The x-coordinate, in normalized [0, 1] coordinates, for the center of the inner circle for the gradient.\n\n__Default value:__ `0.5`",
+          "type": "number"
+        },
+        "x2": {
+          "description": "The x-coordinate, in normalized [0, 1] coordinates, for the center of the outer circle for the gradient.\n\n__Default value:__ `0.5`",
+          "type": "number"
+        },
+        "y1": {
+          "description": "The y-coordinate, in normalized [0, 1] coordinates, for the center of the inner circle for the gradient.\n\n__Default value:__ `0.5`",
+          "type": "number"
+        },
+        "y2": {
+          "description": "The y-coordinate, in normalized [0, 1] coordinates, for the center of the outer circle for the gradient.\n\n__Default value:__ `0.5`",
+          "type": "number"
+        }
+      },
+      "required": [
+        "gradient",
+        "stops"
+      ],
+      "type": "object"
+    },
     "RangeConfig": {
       "additionalProperties": {
         "$ref": "#/definitions/RangeConfigValue"
@@ -9824,7 +10926,14 @@
           "type": "number"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "continuousBandSize": {
@@ -9862,7 +10971,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -9951,7 +11067,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -10000,6 +11123,14 @@
         },
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "timeUnitBand": {
+          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -10866,13 +11997,7 @@
     "SelectionInit": {
       "anyOf": [
         {
-          "type": "boolean"
-        },
-        {
-          "type": "number"
-        },
-        {
-          "type": "string"
+          "$ref": "#/definitions/Value"
         },
         {
           "$ref": "#/definitions/DateTime"
@@ -10882,70 +12007,24 @@
     "SelectionInitInterval": {
       "anyOf": [
         {
-          "items": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "boolean"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "$ref": "#/definitions/Vector2<boolean>"
         },
         {
-          "items": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "number"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "$ref": "#/definitions/Vector2<number>"
         },
         {
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "$ref": "#/definitions/Vector2<string>"
         },
         {
-          "items": [
-            {
-              "$ref": "#/definitions/DateTime"
-            },
-            {
-              "$ref": "#/definitions/DateTime"
-            }
-          ],
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "$ref": "#/definitions/Vector2<DateTime>"
         }
       ]
     },
     "SelectionInitIntervalMapping": {
-      "additionalProperties": {
-        "$ref": "#/definitions/SelectionInitInterval"
-      },
-      "type": "object"
+      "$ref": "#/definitions/Dict<SelectionInitInterval>"
     },
     "SelectionInitMapping": {
-      "additionalProperties": {
-        "$ref": "#/definitions/SelectionInit"
-      },
-      "type": "object"
+      "$ref": "#/definitions/Dict<SelectionInit>"
     },
     "SelectionPredicate": {
       "additionalProperties": false,
@@ -11012,7 +12091,7 @@
       "type": "object"
     },
     "ShapeFieldDefWithCondition": {
-      "$ref": "#/definitions/StringFieldDefWithCondition<TypeForShape>"
+      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
     },
     "ShapeValueDefWithCondition": {
       "$ref": "#/definitions/StringValueDefWithCondition<TypeForShape>"
@@ -11411,7 +12490,7 @@
           "type": "array"
         },
         "offset": {
-          "description": "Mode for stacking marks.\n__Default value:__ `\"zero\"`",
+          "description": "Mode for stacking marks. One of `\"zero\"` (default), `\"center\"`, or `\"normalize\"`.\nThe `\"zero\"` offset will stack starting at `0`. The `\"center\"` offset will center the stacks. The `\"normalize\"` offset will compute percentage values for each stack point, with output values in the range `[0,1]`.\n\n__Default value:__ `\"zero\"`",
           "enum": [
             "zero",
             "center",
@@ -11460,17 +12539,8 @@
       ],
       "type": "object"
     },
-    "StringFieldDefWithCondition<TypeForShape>": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
-    },
-    "StringFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,(string|null)>"
-    },
     "StringValueDefWithCondition<TypeForShape>": {
       "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
-    },
-    "StringValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(string|null)>"
     },
     "StrokeCap": {
       "enum": [
@@ -11532,7 +12602,14 @@
           "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -11560,7 +12637,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -11653,7 +12737,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -11702,6 +12793,14 @@
         },
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "timeUnitBand": {
+          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -11878,7 +12977,14 @@
           "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
@@ -11906,7 +13012,14 @@
           "type": "string"
         },
         "fill": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
@@ -11995,7 +13108,14 @@
           "type": "number"
         },
         "stroke": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
@@ -12049,6 +13169,14 @@
         "thickness": {
           "description": "Thickness of the tick mark.\n\n__Default value:__  `1`",
           "minimum": 0,
+          "type": "number"
+        },
+        "timeUnitBand": {
+          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -13471,7 +14599,7 @@
     },
     "YValueDef": {
       "additionalProperties": false,
-      "description": "Definition object for a constant value of an encoding channel.",
+      "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
         "value": {
           "anyOf": [
@@ -13485,7 +14613,7 @@
               "type": "string"
             }
           ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -13495,7 +14623,7 @@
     },
     "XValueDef": {
       "additionalProperties": false,
-      "description": "Definition object for a constant value of an encoding channel.",
+      "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
         "value": {
           "anyOf": [
@@ -13509,7 +14637,7 @@
               "type": "string"
             }
           ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -13519,10 +14647,10 @@
     },
     "NumberValueDef": {
       "additionalProperties": false,
-      "description": "Definition object for a constant value of an encoding channel.",
+      "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": "number"
         }
       },
@@ -13531,7 +14659,7 @@
       ],
       "type": "object"
     },
-    "ValueDefWithCondition<MarkPropFieldDef,(string|null)>": {
+    "ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>": {
       "additionalProperties": false,
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "minProperties": 1,
@@ -13542,11 +14670,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionalStringValueDef"
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalStringValueDef"
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
               },
               "type": "array"
             }
@@ -13554,11 +14682,18 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "null"
-          ]
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "type": "object"
@@ -13586,7 +14721,7 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": "number"
         }
       },
@@ -13615,7 +14750,7 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": [
             "string",
             "null"
@@ -13648,10 +14783,62 @@
         },
         "value": {
           "$ref": "#/definitions/Value",
-          "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "type": "object"
+    },
+    "Vector2<DateTime>": {
+      "items": [
+        {
+          "$ref": "#/definitions/DateTime"
+        },
+        {
+          "$ref": "#/definitions/DateTime"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "Vector2<boolean>": {
+      "items": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "boolean"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "Vector2<number>": {
+      "items": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "Vector2<string>": {
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
     },
     "ViewBackground": {
       "additionalProperties": false,
@@ -13953,7 +15140,7 @@
           "type": "boolean"
         },
         "sort": {
-          "description": "A sort field definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).",
+          "description": "A sort field definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered \"peer\" values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).",
           "items": {
             "$ref": "#/definitions/SortField"
           },

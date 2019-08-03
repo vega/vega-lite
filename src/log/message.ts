@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
 import {Aggregate} from '../aggregate';
-import {Channel, FacetChannel, GeoPositionChannel, PositionScaleChannel, getSizeType} from '../channel';
-import {TypedFieldDef} from '../channeldef';
+import {Channel, FacetChannel, GeoPositionChannel, getSizeType, PositionScaleChannel} from '../channel';
+import {TypedFieldDef, Value} from '../channeldef';
 import {SplitParentProperty} from '../compile/split';
 import {CompositeMark} from '../compositemark';
 import {ErrorBarCenter, ErrorBarExtent} from '../compositemark/errorbar';
@@ -99,7 +99,7 @@ export function projectionOverridden(opt: {parentProjection: Projection; project
 export function primitiveChannelDef(
   channel: Channel,
   type: 'string' | 'number' | 'boolean',
-  value: string | number | boolean
+  value: Exclude<Value, null>
 ) {
   return `Channel ${channel} is a ${type}. Converted to {value: ${stringify(value)}}.`;
 }

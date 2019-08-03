@@ -24,6 +24,7 @@ import {
 } from 'vega';
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
+import {Gradient, ValueOrGradient} from './channeldef';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';
@@ -59,9 +60,9 @@ export function isSignalRef(o: any): o is SignalRef {
 
 export type EventStream = any;
 
-// TODO: add type of value (Make it VgValueRef<T> {value?:T ...})
+// TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
 export interface VgValueRef {
-  value?: number | string | boolean;
+  value?: ValueOrGradient;
   field?:
     | string
     | {
@@ -586,7 +587,7 @@ export interface BaseMarkConfig {
    * __Default value:__ (None)
    *
    */
-  fill?: Color;
+  fill?: Color | Gradient;
 
   /**
    * Default Stroke Color.  This has higher precedence than `config.color`.
@@ -594,7 +595,7 @@ export interface BaseMarkConfig {
    * __Default value:__ (None)
    *
    */
-  stroke?: Color;
+  stroke?: Color | Gradient;
 
   // ---------- Opacity ----------
   /**
