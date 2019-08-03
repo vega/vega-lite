@@ -1,7 +1,7 @@
-import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {GeoJSONNode} from '../../../src/compile/data/geojson';
 import {contains, every} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/geojson', () => {
   it('should make transform and assemble correctly', () => {
@@ -25,7 +25,7 @@ describe('compile/data/geojson', () => {
       }
     });
 
-    const root = new DataFlowNode(null);
+    const root = new PlaceholderDataFlowNode(null);
     GeoJSONNode.parseAll(root, model);
 
     let node = root.children[0];
@@ -41,6 +41,7 @@ describe('compile/data/geojson', () => {
       node = node.children[0];
     }
   });
+
   it('should skip geojson if custom projection', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {
@@ -67,10 +68,31 @@ describe('compile/data/geojson', () => {
     });
     model.parse();
 
-    const root = new DataFlowNode(null);
+    const root = new PlaceholderDataFlowNode(null);
     const retval = GeoJSONNode.parseAll(root, model);
 
     expect(retval).toBe(root);
     expect(root.children.length).toBe(0);
+  });
+
+  describe('GeoJSONNode', () => {
+    describe('dependentFields', () => {
+      it('should return fields', () => {
+        const flatten = new GeoJSONNode(null, ['foo', 'bar', {expr: 's'}], null);
+        expect(flatten.dependentFields()).toEqual(new Set(['foo', 'bar']));
+      });
+
+      it('should return geojson', () => {
+        const flatten = new GeoJSONNode(null, null, 'geo');
+        expect(flatten.dependentFields()).toEqual(new Set(['geo']));
+      });
+    });
+
+    describe('producedFields', () => {
+      it('should return empty set', () => {
+        const flatten = new GeoJSONNode(null);
+        expect(flatten.producedFields()).toEqual(new Set());
+      });
+    });
   });
 });

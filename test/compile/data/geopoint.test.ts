@@ -1,8 +1,8 @@
-import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {GeoPointNode} from '../../../src/compile/data/geopoint';
 import {contains, every} from '../../../src/util';
 import {VgGeoPointTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/geopoint', () => {
   describe('geojson', () => {
@@ -28,7 +28,7 @@ describe('compile/data/geopoint', () => {
       });
       model.parse();
 
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       GeoPointNode.parseAll(root, model);
 
       let node = root.children[0];
@@ -44,6 +44,22 @@ describe('compile/data/geopoint', () => {
         expect(node.children.length).toBeLessThanOrEqual(1);
         node = node.children[0];
       }
+    });
+  });
+
+  describe('GeoPointNode', () => {
+    describe('dependentFields', () => {
+      it('should return empty set', () => {
+        const gp = new GeoPointNode(null, 'mercator', ['foo', 'bar'], ['f1', 'f2']);
+        expect(gp.dependentFields()).toEqual(new Set(['foo', 'bar']));
+      });
+    });
+
+    describe('producedFields', () => {
+      it('should return empty set', () => {
+        const gp = new GeoPointNode(null, 'mercator', ['foo', 'bar'], ['f1', 'f2']);
+        expect(gp.producedFields()).toEqual(new Set(['f1', 'f2']));
+      });
     });
   });
 });

@@ -4,7 +4,7 @@ import {Dict, uniqueId} from '../../util';
 /**
  * A node in the dataflow tree.
  */
-export class DataFlowNode {
+export abstract class DataFlowNode {
   private _children: DataFlowNode[] = [];
 
   private _parent: DataFlowNode = null;
@@ -27,24 +27,17 @@ export class DataFlowNode {
   /**
    * Return a hash of the node.
    */
-  public hash(): string | number {
-    if (this._hash === undefined) {
-      this._hash = uniqueId();
-    }
+  public abstract hash(): string | number;
 
-    return this._hash;
-  }
+  /**
+   * Set of fields that this node depends on.
+   */
+  public abstract dependentFields(): Set<string>;
 
   /**
    * Set of fields that are being created by this node.
    */
-  public producedFields(): Set<string> {
-    return new Set();
-  }
-
-  public dependentFields(): Set<string> {
-    return new Set();
-  }
+  public abstract producedFields(): Set<string>;
 
   get parent() {
     return this._parent;
@@ -164,6 +157,21 @@ export class OutputNode extends DataFlowNode {
     if (this.refCounts && !(this._name in this.refCounts)) {
       this.refCounts[this._name] = 0;
     }
+  }
+
+  public dependentFields() {
+    return new Set();
+  }
+
+  public producedFields() {
+    return new Set();
+  }
+
+  public hash() {
+    if (this._hash === undefined) {
+      this._hash = `Output ${uniqueId()}`;
+    }
+    return this._hash;
   }
 
   /**

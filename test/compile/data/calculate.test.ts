@@ -1,7 +1,7 @@
 import {CalculateNode} from '../../../src/compile/data/calculate';
 import {ModelWithField} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 function assembleFromSortArray(model: ModelWithField) {
   const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
@@ -63,7 +63,7 @@ describe('compile/data/calculate', () => {
 
   describe('clone', () => {
     it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const calculate = new CalculateNode(parent, {calculate: 'foo', as: 'bar'});
       expect(calculate.clone().parent).toBeNull();
     });

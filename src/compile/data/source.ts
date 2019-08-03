@@ -57,6 +57,14 @@ export class SourceNode extends DataFlowNode {
     }
   }
 
+  public dependentFields() {
+    return new Set();
+  }
+
+  public producedFields(): undefined {
+    return undefined; // we don't know what this source produces
+  }
+
   get data() {
     return this._data;
   }

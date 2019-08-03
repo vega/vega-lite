@@ -1,6 +1,7 @@
+import {isString} from 'vega-util';
 import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2} from '../../channel';
 import {isValueDef, ValueDef} from '../../channeldef';
-import {duplicate} from '../../util';
+import {duplicate, hash} from '../../util';
 import {VgExprRef, VgGeoPointTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
@@ -14,7 +15,7 @@ export class GeoPointNode extends DataFlowNode {
     parent: DataFlowNode,
     private projection: string,
     private fields: (string | VgExprRef)[],
-    private as: string[]
+    private as: [string, string]
   ) {
     super(parent);
   }
@@ -44,6 +45,18 @@ export class GeoPointNode extends DataFlowNode {
     });
 
     return parent;
+  }
+
+  public dependentFields() {
+    return new Set(this.fields.filter(isString));
+  }
+
+  public producedFields() {
+    return new Set(this.as);
+  }
+
+  public hash() {
+    return `Geopoint ${this.projection} ${hash(this.fields)} ${hash(this.as)}`;
   }
 
   public assemble(): VgGeoPointTransform {

@@ -11,6 +11,10 @@ export class IdentifierNode extends DataFlowNode {
     super(parent);
   }
 
+  public dependentFields() {
+    return new Set();
+  }
+
   public producedFields() {
     return new Set([SELECTION_ID]);
   }

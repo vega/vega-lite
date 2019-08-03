@@ -65,47 +65,56 @@ describe('compile/data/filterinvalid', () => {
     });
   });
 
-  describe('dependentFields', () => {
-    it('should return the fields it filters', () => {
-      const node = new FilterInvalidNode(null, {foo: {field: 'foo', type: 'quantitative'}});
-      expect(node.dependentFields()).toEqual(new Set(['foo']));
-    });
-  });
-
-  describe('clone', () => {
-    it('should copy filters', () => {
-      const node = new FilterInvalidNode(null, {foo: {field: 'foo', type: 'quantitative'}});
-      const copy = node.clone();
-      expect(copy.filter).toEqual(node.filter);
-    });
-  });
-
-  describe('assemble', () => {
-    it('should assemble simple filter', () => {
-      const model = parseUnitModelWithScale({
-        mark: 'point',
-        encoding: {
-          y: {field: 'foo', type: 'quantitative'}
-        }
-      });
-
-      expect(parse(model).assemble()).toEqual({
-        type: 'filter',
-        expr: 'datum["foo"] !== null && !isNaN(datum["foo"])'
+  describe('FilterInvalidNode', () => {
+    describe('dependentFields', () => {
+      it('should return the fields it filters', () => {
+        const node = new FilterInvalidNode(null, {foo: {field: 'foo', type: 'quantitative'}});
+        expect(node.dependentFields()).toEqual(new Set(['foo']));
       });
     });
 
-    it('should assemble filter for nested data', () => {
-      const model = parseUnitModelWithScale({
-        mark: 'point',
-        encoding: {
-          y: {field: 'foo.bar', type: 'quantitative'}
-        }
+    describe('producedFields', () => {
+      it('should return empty set', () => {
+        const node = new FilterInvalidNode(null, {foo: {field: 'foo', type: 'quantitative'}});
+        expect(node.producedFields()).toEqual(new Set());
+      });
+    });
+
+    describe('clone', () => {
+      it('should copy filters', () => {
+        const node = new FilterInvalidNode(null, {foo: {field: 'foo', type: 'quantitative'}});
+        const copy = node.clone();
+        expect(copy.filter).toEqual(node.filter);
+      });
+    });
+
+    describe('assemble', () => {
+      it('should assemble simple filter', () => {
+        const model = parseUnitModelWithScale({
+          mark: 'point',
+          encoding: {
+            y: {field: 'foo', type: 'quantitative'}
+          }
+        });
+
+        expect(parse(model).assemble()).toEqual({
+          type: 'filter',
+          expr: 'datum["foo"] !== null && !isNaN(datum["foo"])'
+        });
       });
 
-      expect(parse(model).assemble()).toEqual({
-        type: 'filter',
-        expr: 'datum["foo.bar"] !== null && !isNaN(datum["foo.bar"])'
+      it('should assemble filter for nested data', () => {
+        const model = parseUnitModelWithScale({
+          mark: 'point',
+          encoding: {
+            y: {field: 'foo.bar', type: 'quantitative'}
+          }
+        });
+
+        expect(parse(model).assemble()).toEqual({
+          type: 'filter',
+          expr: 'datum["foo.bar"] !== null && !isNaN(datum["foo.bar"])'
+        });
       });
     });
   });
