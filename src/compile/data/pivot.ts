@@ -4,7 +4,7 @@ import {VgPivotTransform} from '../../vega.schema';
 import {DataFlowNode} from './dataflow';
 
 /**
- * A class for pivot transform nodes
+ * A class for pivot transform nodes.
  */
 export class PivotTransformNode extends DataFlowNode {
   public clone() {
