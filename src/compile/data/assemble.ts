@@ -22,6 +22,7 @@ import {JoinAggregateTransformNode} from './joinaggregate';
 import {LoessTransformNode} from './loess';
 import {LookupNode} from './lookup';
 import {RegressionTransformNode} from './regression';
+import {PivotTransformNode} from './pivot';
 import {SampleTransformNode} from './sample';
 import {SequenceNode} from './sequence';
 import {SourceNode} from './source';
@@ -103,7 +104,8 @@ function makeWalkTree(data: VgData[]) {
       node instanceof LoessTransformNode ||
       node instanceof RegressionTransformNode ||
       node instanceof IdentifierNode ||
-      node instanceof SampleTransformNode
+      node instanceof SampleTransformNode ||
+      node instanceof PivotTransformNode
     ) {
       dataSource.transform.push(node.assemble());
     }
