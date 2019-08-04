@@ -111,6 +111,12 @@ export interface Legend
   encoding?: LegendEncoding;
 
   /**
+   * Vega expression for customizing labels text.
+   * Note that the string label and value can be assessed via the `label` and `value` of the backing `datum` object.
+   */
+  labelExpr?: string;
+
+  /**
    * The desired number of tick values for quantitative legends.
    */
   tickCount?: number;

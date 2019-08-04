@@ -7730,6 +7730,10 @@
           "$ref": "#/definitions/Color",
           "description": "The color of the legend label, can be in hex color code or regular color name."
         },
+        "labelExpr": {
+          "description": "Vega expression for customizing labels text.\nNote that the string label and value can be assessed via the `label` and `value` of the backing `datum` object.",
+          "type": "string"
+        },
         "labelFont": {
           "description": "The font of the legend label.",
           "type": "string"

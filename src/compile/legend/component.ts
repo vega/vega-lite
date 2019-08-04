@@ -4,10 +4,13 @@ import {COMMON_LEGEND_PROPERTY_INDEX, Legend} from '../../legend';
 import {Flag, keys} from '../../util';
 import {Split} from '../split';
 
-export type LegendComponentProps = VgLegend;
+export type LegendComponentProps = VgLegend & {
+  labelExpr?: string;
+};
 
-const LEGEND_COMPONENT_PROPERTY_INDEX: Flag<keyof VgLegend> = {
+const LEGEND_COMPONENT_PROPERTY_INDEX: Flag<keyof LegendComponentProps> = {
   ...COMMON_LEGEND_PROPERTY_INDEX,
+  labelExpr: 1,
   // channel scales
   opacity: 1,
   shape: 1,
