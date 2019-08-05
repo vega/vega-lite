@@ -3,7 +3,6 @@ import {parseUnitModelWithScale} from '../../util';
 describe('legend/assemble', () => {
   it('correctly applies labelExpr.', () => {
     const model = parseUnitModelWithScale({
-      description: 'A scatterplot showing horsepower and miles per gallons.',
       data: {url: 'data/cars.json'},
       mark: 'point',
       encoding: {
