@@ -560,7 +560,7 @@ describe('src/compile', () => {
           expect(model.children[1].component.scales.y.get('domains')).toEqual([[2, 3, 4]]);
 
           expect(localLogger.warns).toEqual([
-            'Conflicting scale property "domains" ([[1,2,3]] and [[2,3,4]]).  Using the union of the two domains.'
+            'Conflicting scale property "domains" ([[1,2,3]] and [[2,3,4]]). Using the union of the two domains.'
           ]);
         })
       );
