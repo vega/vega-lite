@@ -671,7 +671,7 @@
           ]
         },
         "labelExpr": {
-          "description": "Vega expression for customizing labels text.\nNote that the string label and value can be assessed via the `label` and `value` of the backing `datum` object.",
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
           "type": "string"
         },
         "labelFlush": {
@@ -7731,7 +7731,7 @@
           "description": "The color of the legend label, can be in hex color code or regular color name."
         },
         "labelExpr": {
-          "description": "Vega expression for customizing labels text.\nNote that the string label and value can be assessed via the `label` and `value` of the backing `datum` object.",
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the legend's backing `datum` object.",
           "type": "string"
         },
         "labelFont": {
