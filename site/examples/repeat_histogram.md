@@ -1,7 +1,7 @@
 ---
 layout: page
 description: Horizontally repeated charts that show the histograms of different parameters of cars in different countries
-title: Horizontally repeated charts
+title: Horizontally Repeated Charts
 menu: examples
 permalink: /examples/repeat_histogram.html
 image: /examples/compiled/repeat_histogram.png

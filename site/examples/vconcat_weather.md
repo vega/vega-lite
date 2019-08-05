@@ -1,7 +1,7 @@
 ---
 layout: page
 description: Two vertically concatenated charts
-title: Vertically concatenated charts that show precipitation in Seattle
+title: Vertical Concatenation
 menu: examples
 permalink: /examples/vconcat_weather.html
 image: /examples/compiled/vconcat_weather.png

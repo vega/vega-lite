@@ -1,7 +1,7 @@
 ---
 layout: page
 
-title: Error Bars showing Standard Deviation
+title: Error Bars Showing Standard Deviation
 menu: examples
 permalink: /examples/layer_point_errorbar_stdev.html
 image: /examples/compiled/layer_point_errorbar_stdev.png

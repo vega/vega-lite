@@ -1,7 +1,7 @@
 ---
 layout: page
 description: The production budget of the movie that has the highest US Gross in each major genre.
-title: Bar Chart showing Argmax Value
+title: Bar Chart Showing Argmax Value
 menu: examples
 permalink: /examples/bar_argmax.html
 image: /examples/compiled/bar_argmax.png

@@ -1,7 +1,7 @@
 ---
 layout: page
 
-title: Bar chart with a minimap
+title: Bar Chart with a Minimap
 menu: examples
 permalink: /examples/bar_count_minimap.html
 image: /examples/compiled/bar_count_minimap.png

@@ -1,7 +1,7 @@
 ---
 layout: page
 
-title: Income in the U.S. by state, faceted over income brackets
+title: Income in the U.S. by State, Faceted over Income Brackets
 menu: examples
 permalink: /examples/geo_trellis.html
 image: /examples/compiled/geo_trellis.png

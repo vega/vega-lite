@@ -167,9 +167,6 @@
       "gridOpacity": 0.25,
       "domain": false
     },
-    "mark": {
-      "tooltip": null
-    },
     "view": { "stroke": "transparent" }
   }
 }

@@ -1,7 +1,7 @@
 ---
 layout: page
 
-title: Error Bars showing Confidence Interval
+title: Error Bars Showing Confidence Interval
 menu: examples
 permalink: /examples/layer_point_errorbar_ci.html
 image: /examples/compiled/layer_point_errorbar_ci.png

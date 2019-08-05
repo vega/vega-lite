@@ -1,7 +1,7 @@
 ---
 layout: page
 
-title: Choropleth of unemployment rate per county
+title: Choropleth of Unemployment Rate per County
 menu: examples
 permalink: /examples/geo_choropleth.html
 image: /examples/compiled/geo_choropleth.png

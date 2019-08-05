@@ -1,7 +1,7 @@
 ---
 layout: page
 
-title: Dot Plot
+title: 1D Strip Plot
 menu: examples
 permalink: /examples/tick_dot.html
 image: /examples/compiled/tick_dot.png

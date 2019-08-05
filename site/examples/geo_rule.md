@@ -1,7 +1,7 @@
 ---
 layout: page
 
-title: Rules (line segments) connecting SEA to every airport reachable via direct flight
+title: Rules (line segments) Connecting SEA to every Airport Reachable via Direct Flights
 menu: examples
 permalink: /examples/geo_rule.html
 image: /examples/compiled/geo_rule.png

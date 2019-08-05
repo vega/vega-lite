@@ -6,16 +6,14 @@
     {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
   ],
   "mark": "bar",
+  "width": {"step": 17},
   "encoding": {
     "y": {
       "aggregate": "sum", "field": "people", "type": "quantitative",
       "axis": {"title": "population"},
       "stack":  "normalize"
     },
-    "x": {
-      "field": "age", "type": "ordinal",
-      "scale": {"rangeStep": 17}
-    },
+    "x": {"field": "age", "type": "ordinal"},
     "color": {
       "field": "gender", "type": "nominal",
       "scale": {"range": ["#EA98D2", "#659CCA"]}
