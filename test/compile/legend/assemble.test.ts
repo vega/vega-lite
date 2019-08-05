@@ -3,7 +3,6 @@ import {parseUnitModelWithScale} from '../../util';
 describe('legend/assemble', () => {
   it('correctly applies labelExpr.', () => {
     const model = parseUnitModelWithScale({
-      $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
       description: 'A scatterplot showing horsepower and miles per gallons.',
       data: {url: 'data/cars.json'},
       mark: 'point',
