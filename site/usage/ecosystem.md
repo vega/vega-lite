@@ -47,6 +47,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [nteract](https://github.com/nteract/nteract), interactive notebook application with Vega and Vega-Lite renderer.
 - <span class="octicon octicon-star"></span> [Observable](https://beta.observablehq.com/), an interactive JavaScript notebook. [Embed example](https://beta.observablehq.com/@domoritz/hello-vega-embed) and [exploration example](https://beta.observablehq.com/@mbostock/exploring-data-with-vega-lite).
 - [data.world](https://data.world), upload `.vg.json` and `.vl.json` files along side your raw data, or [embed Vega](https://docs.data.world/tutorials/markdown/#vega-and-vega-lite) directly into comments and summary markdown.
+- [nextjournal](https://nextjournal.com/), scientific computing environment with support for data visualizations including [Vega-Lite](https://nextjournal.com/blog/plotting-with-vega-lite-in-nextjournal)
 
 ## Tools that use Vega-Lite
 
