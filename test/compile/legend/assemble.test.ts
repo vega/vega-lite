@@ -27,7 +27,6 @@ describe('legend/assemble', () => {
 
   it('correctly applies labelExpr for timeUnit.', () => {
     const model = parseUnitModelWithScale({
-      description: 'A scatterplot showing horsepower and miles per gallons.',
       data: {url: 'data/cars.json'},
       mark: 'point',
       encoding: {
