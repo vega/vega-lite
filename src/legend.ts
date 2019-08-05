@@ -111,8 +111,9 @@ export interface Legend
   encoding?: LegendEncoding;
 
   /**
-   * Vega expression for customizing labels text.
-   * Note that the string label and value can be assessed via the `label` and `value` of the backing `datum` object.
+   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.
+   * 
+   * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the legend's backing `datum` object.
    */
   labelExpr?: string;
 
