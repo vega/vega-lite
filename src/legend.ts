@@ -111,6 +111,13 @@ export interface Legend
   encoding?: LegendEncoding;
 
   /**
+   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.
+   *
+   * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the legend's backing `datum` object.
+   */
+  labelExpr?: string;
+
+  /**
    * The desired number of tick values for quantitative legends.
    */
   tickCount?: number;
@@ -207,7 +214,7 @@ export const defaultLegendConfig: LegendConfig = {
   gradientVerticalMinLength: 64 // This is the Vega's minimum.
 };
 
-const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
+export const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   clipHeight: 1,
   columnPadding: 1,
   columns: 1,
@@ -271,19 +278,4 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   zindex: 1
 };
 
-const VG_LEGEND_PROPERTY_INDEX: Flag<Exclude<keyof VgLegend, 'strokeDash'>> = {
-  ...COMMON_LEGEND_PROPERTY_INDEX,
-  // channel scales
-  opacity: 1,
-  shape: 1,
-  stroke: 1,
-  fill: 1,
-  size: 1,
-  strokeWidth: 1,
-  // encode
-  encode: 1
-};
-
 export const LEGEND_PROPERTIES = keys(COMMON_LEGEND_PROPERTY_INDEX);
-
-export const VG_LEGEND_PROPERTIES = keys(VG_LEGEND_PROPERTY_INDEX);

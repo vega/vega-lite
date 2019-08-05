@@ -62,7 +62,7 @@ export type EventStream = any;
 
 // TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
 export interface VgValueRef {
-  value?: ValueOrGradient;
+  value?: ValueOrGradient | number[];
   field?:
     | string
     | {

@@ -670,6 +670,10 @@
             }
           ]
         },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
+          "type": "string"
+        },
         "labelFlush": {
           "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.",
           "type": [
@@ -7725,6 +7729,10 @@
         "labelColor": {
           "$ref": "#/definitions/Color",
           "description": "The color of the legend label, can be in hex color code or regular color name."
+        },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the legend's backing `datum` object.",
+          "type": "string"
         },
         "labelFont": {
           "description": "The font of the legend label.",

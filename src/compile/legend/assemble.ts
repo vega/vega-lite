@@ -1,8 +1,21 @@
-import {Legend as VgLegend} from 'vega';
+import {Legend as VgLegend, LegendEncode} from 'vega';
 import {keys, stringify, vals} from '../../util';
+import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {Model} from '../model';
 import {LegendComponent} from './component';
 import {mergeLegendComponent} from './parse';
+
+function setLegendEncode(
+  legend: VgLegend,
+  part: keyof LegendEncode,
+  vgProp: VgEncodeChannel,
+  vgRef: VgValueRef | VgValueRef[]
+) {
+  legend.encode = legend.encode || {};
+  legend.encode[part] = legend.encode[part] || {};
+  legend.encode[part].update = legend.encode[part].update || {};
+  legend.encode[part].update[vgProp] = vgRef;
+}
 
 export function assembleLegends(model: Model): VgLegend[] {
   const legendComponentIndex = model.component.legends;
@@ -27,7 +40,7 @@ export function assembleLegends(model: Model): VgLegend[] {
   return vals(legendByDomain)
     .flat()
     .map((legendCmpt: LegendComponent) => {
-      const legend = legendCmpt.combine();
+      const {labelExpr, ...legend} = legendCmpt.combine();
 
       if (legend.encode && legend.encode.symbols) {
         const out = legend.encode.symbols.update;
@@ -41,6 +54,21 @@ export function assembleLegends(model: Model): VgLegend[] {
           delete out.fill;
         }
       }
+
+      if (labelExpr !== undefined) {
+        let expr = labelExpr;
+        if (
+          legend.encode &&
+          legend.encode.labels &&
+          legend.encode.labels.update &&
+          isSignalRef(legend.encode.labels.update.text)
+        ) {
+          expr = labelExpr.replace('datum.label', legend.encode.labels.update.text.signal);
+        }
+
+        setLegendEncode(legend, 'labels', 'text', {signal: expr});
+      }
+
       return legend;
     });
 }

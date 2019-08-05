@@ -47,5 +47,22 @@ describe('compile/axis/assemble', () => {
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
       expect(axis.title).toBe('Max of a, Min of b');
     });
+
+    it('correctly applies labelExpr', () => {
+      const axisCmpt = new AxisComponent({
+        labelExpr: 'datum.label[0]',
+        encode: {
+          labels: {
+            update: {
+              text: {
+                signal: 'test'
+              }
+            }
+          }
+        }
+      });
+      const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
+      expect(axis.encode.labels.update.text).toEqual({signal: 'test[0]'});
+    });
   });
 });

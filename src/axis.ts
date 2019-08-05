@@ -186,6 +186,13 @@ export type AxisConfig = VlOnlyGuideConfig & AxisOrientMixins & VgAxisConfigNoSi
 
 export interface Axis extends AxisOrientMixins, VgAxisConfigNoSignals, Guide {
   /**
+   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.
+   *
+   * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
+   */
+  labelExpr?: string;
+
+  /**
    * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
    *
    * __Default value:__ derived from the [axis config](https://vega.github.io/vega-lite/docs/config.html#facet-scale-config)'s `offset` (`0` by default)
@@ -345,7 +352,7 @@ export interface AxisEncoding {
   title?: GuideEncodingEntry;
 }
 
-const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
+export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   orient: 1, // other things can depend on orient
 
   bandPosition: 1,
@@ -417,21 +424,13 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
 
 const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
   ...COMMON_AXIS_PROPERTIES_INDEX,
+  labelExpr: 1,
   encoding: 1
-};
-
-const VG_AXIS_PROPERTIES_INDEX: Flag<keyof VgAxis> = {
-  gridScale: 1,
-  scale: 1,
-  ...COMMON_AXIS_PROPERTIES_INDEX,
-  encode: 1
 };
 
 export function isAxisProperty(prop: string): prop is keyof Axis {
   return !!AXIS_PROPERTIES_INDEX[prop];
 }
-
-export const VG_AXIS_PROPERTIES = keys(VG_AXIS_PROPERTIES_INDEX);
 
 // Export for dependent projects
 export const AXIS_PROPERTIES = keys(AXIS_PROPERTIES_INDEX);
