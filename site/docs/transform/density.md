@@ -42,7 +42,7 @@ Performs density estimation for the `"measure"` field, with separate estimations
 
 Density estimates of measurements for each iris flower feature:
 
-<div class="vl-example" data-name="area_density"></div>
+<div class="vl-example" data-name="area_density_facet"></div>
 
 ### Example: Stacked Density Estimates
 
