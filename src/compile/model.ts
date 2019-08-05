@@ -1,6 +1,14 @@
 import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
 import {isString} from 'vega-util';
-import {Channel, FACET_CHANNELS, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
+import {
+  Channel,
+  FACET_CHANNELS,
+  isChannel,
+  isScaleChannel,
+  ScaleChannel,
+  SingleDefChannel,
+  getPositionScaleChannel
+} from '../channel';
 import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
@@ -9,7 +17,13 @@ import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
 import {isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
-import {extractCompositionLayout, GenericCompositionLayoutWithColumns, SpecType, ViewBackground} from '../spec/base';
+import {
+  extractCompositionLayout,
+  GenericCompositionLayoutWithColumns,
+  LayoutSizeMixins,
+  SpecType,
+  ViewBackground
+} from '../spec/base';
 import {NormalizedSpec} from '../spec/index';
 import {extractTitleConfig, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
@@ -138,6 +152,8 @@ export function isLayerModel(model: Model): model is LayerModel {
 export abstract class Model {
   public readonly name: string;
 
+  public size: LayoutSizeMixins;
+
   public readonly title: TitleParams;
   public readonly description: string;
 
@@ -218,17 +234,6 @@ export abstract class Model {
 
   public get height(): SignalRef {
     return this.getSizeSignalRef('height');
-  }
-
-  protected initSize(size: LayoutSizeIndex) {
-    const {width, height} = size;
-    if (width) {
-      this.component.layoutSize.set('width', width, true);
-    }
-
-    if (height) {
-      this.component.layoutSize.set('height', height, true);
-    }
   }
 
   public parse() {
@@ -487,7 +492,7 @@ export abstract class Model {
 
   public getSizeSignalRef(sizeType: 'width' | 'height'): SignalRef {
     if (isFacetModel(this.parent)) {
-      const channel = sizeType === 'width' ? 'x' : 'y';
+      const channel = getPositionScaleChannel(sizeType);
       const scaleComponent = this.component.scales[channel];
 
       if (scaleComponent && !scaleComponent.merged) {

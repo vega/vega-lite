@@ -146,9 +146,6 @@
             "update": {
               "fill": {"value": "#4c78a8"},
               "opacity": {"value": 0.4},
-              "tooltip": {
-                "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"All Movies\": format(datum[\"__count\"], \"\")}"
-              },
               "x": [
                 {
                   "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"])",
@@ -180,9 +177,6 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"In Selected Category\": format(datum[\"__count\"], \"\")}"
-              },
               "x": [
                 {
                   "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"])",
@@ -216,7 +210,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_0_width/10)"},
-          "zindex": 1
+          "zindex": 0
         },
         {
           "scale": "concat_0_y",
@@ -225,7 +219,7 @@
           "title": "Rotten_Tomatoes_Rating (binned)",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_0_height/10)"},
-          "zindex": 1
+          "zindex": 0
         }
       ],
       "legends": [
@@ -309,9 +303,6 @@
                 },
                 {"value": "grey"}
               ],
-              "tooltip": {
-                "signal": "{\"Major_Genre\": ''+datum[\"Major_Genre\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
-              },
               "x": {"scale": "concat_1_x", "field": "Major_Genre"},
               "width": {"scale": "concat_1_x", "band": true},
               "y": {"scale": "concat_1_y", "field": "__count"},
@@ -321,25 +312,6 @@
         }
       ],
       "axes": [
-        {
-          "scale": "concat_1_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "Major_Genre",
-          "labelAngle": 320,
-          "labelAlign": "right",
-          "labelBaseline": "top",
-          "zindex": 1
-        },
-        {
-          "scale": "concat_1_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
-          "zindex": 1
-        },
         {
           "scale": "concat_1_y",
           "orient": "left",
@@ -351,6 +323,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_1_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Major_Genre",
+          "labelAngle": 320,
+          "labelAlign": "right",
+          "labelBaseline": "top",
+          "zindex": 0
+        },
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
           "zindex": 0
         }
       ]

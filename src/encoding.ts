@@ -6,6 +6,8 @@ import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRang
 import {
   binRequiresRange,
   ChannelDef,
+  ColorGradientFieldDefWithCondition,
+  ColorGradientValueDefWithCondition,
   Field,
   FieldDef,
   FieldDefWithoutScale,
@@ -27,19 +29,18 @@ import {
   SecondaryFieldDef,
   ShapeFieldDefWithCondition,
   ShapeValueDefWithCondition,
-  StringFieldDefWithCondition,
-  StringValueDefWithCondition,
   TextFieldDef,
   TextFieldDefWithCondition,
   TextValueDefWithCondition,
   title,
   TypedFieldDef,
   ValueDef,
+  ValueOrGradient,
   vgField
 } from './channeldef';
 import {Config} from './config';
 import * as log from './log';
-import {Mark} from './mark';
+import {Mark, MarkDef} from './mark';
 import {EncodingFacetMapping} from './spec/facet';
 import {getDateTimeComponents} from './timeunit';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
@@ -109,27 +110,27 @@ export interface Encoding<F extends Field> {
    * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
    *
    * _Note:_
-   * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.
+   * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    * 2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme).
    */
-  color?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  color?: ColorGradientFieldDefWithCondition<F> | ColorGradientValueDefWithCondition<F>;
 
   /**
    * Fill color of the marks.
    * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
    *
-   * _Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`).
+   * _Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    */
-  fill?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  fill?: ColorGradientFieldDefWithCondition<F> | ColorGradientValueDefWithCondition<F>;
 
   /**
    * Stroke color of the marks.
    * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
    *
-   * _Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`).
+   * _Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    */
 
-  stroke?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  stroke?: ColorGradientFieldDefWithCondition<F> | ColorGradientValueDefWithCondition<F>;
 
   /**
    * Opacity of the marks.
@@ -199,7 +200,9 @@ export interface Encoding<F extends Field> {
   text?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
 
   /**
-   * The tooltip text to show upon mouse hover.
+   * The tooltip text to show upon mouse hover. Specifying `tooltip` encoding overrides [the `tooltip` property in the mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
+   *
+   * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite.
    */
   tooltip?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F> | TextFieldDef<F>[] | null;
 
@@ -207,6 +210,11 @@ export interface Encoding<F extends Field> {
    * A URL to load upon mouse click.
    */
   href?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
+
+  /**
+   * The URL of an image mark.
+   */
+  url?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
 
   /**
    * Order of the marks.
@@ -227,7 +235,7 @@ export function channelHasField<F extends Field>(encoding: EncodingWithFacet<F>,
     if (isArray(channelDef)) {
       return some(channelDef, fieldDef => !!fieldDef.field);
     } else {
-      return isFieldDef(channelDef) || hasConditionalFieldDef(channelDef);
+      return isFieldDef(channelDef) || hasConditionalFieldDef<Field, ValueOrGradient>(channelDef);
     }
   }
   return false;
@@ -277,11 +285,11 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
 
           if (isArgmaxDef(aggOp)) {
             op = 'argmax';
-            newField = vgField({aggregate: 'argmax', field: aggOp.argmax}, {forAs: true});
+            newField = vgField({op: 'argmax', field: aggOp.argmax}, {forAs: true});
             newFieldDef.field = `${newField}.${field}`;
           } else if (isArgminDef(aggOp)) {
             op = 'argmin';
-            newField = vgField({aggregate: 'argmin', field: aggOp.argmin}, {forAs: true});
+            newField = vgField({op: 'argmin', field: aggOp.argmin}, {forAs: true});
             newFieldDef.field = `${newField}.${field}`;
           } else if (aggOp !== 'boxplot' && aggOp !== 'errorbar' && aggOp !== 'errorband') {
             op = aggOp;
@@ -374,7 +382,9 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
   return true;
 }
 
-export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encoding<string> {
+export function normalizeEncoding(encoding: Encoding<string>, markDef: MarkDef): Encoding<string> {
+  const mark = markDef.type;
+
   return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel | string) => {
     if (!isChannel(channel)) {
       // Drop invalid channel
@@ -398,7 +408,8 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
     }
 
     // Drop color if either fill or stroke is specified
-    if (channel === 'color' && ('fill' in encoding || 'stroke' in encoding)) {
+
+    if (channel === 'color' && (markDef.filled ? 'fill' in encoding : 'stroke' in encoding)) {
       log.warn(log.message.droppingColor('encoding', {fill: 'fill' in encoding, stroke: 'stroke' in encoding}));
       return normalizedEncoding;
     }
@@ -442,13 +453,14 @@ export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): Fiel
   for (const channel of keys(encoding)) {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
-      (isArray(channelDef) ? channelDef : [channelDef]).forEach(def => {
+      const channelDefArray = isArray(channelDef) ? channelDef : [channelDef];
+      for (const def of channelDefArray) {
         if (isFieldDef(def)) {
           arr.push(def);
-        } else if (hasConditionalFieldDef(def)) {
+        } else if (hasConditionalFieldDef<F, ValueOrGradient>(def)) {
           arr.push(def.condition);
         }
-      });
+      }
     }
   }
   return arr;
@@ -507,6 +519,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'x':
       case 'y':
       case 'href':
+      case 'url':
       case 'x2':
       case 'y2':
       // falls through

@@ -18,6 +18,10 @@ export class FoldTransformNode extends DataFlowNode {
     this.transform.as = [specifiedAs[0] || 'key', specifiedAs[1] || 'value'];
   }
 
+  public dependentFields() {
+    return new Set(this.transform.fold);
+  }
+
   public producedFields() {
     return new Set(this.transform.as);
   }

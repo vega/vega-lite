@@ -39,9 +39,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"bin_start\": datum[\"bin_start\"] === null || isNaN(datum[\"bin_start\"]) ? \"null\" : format(datum[\"bin_start\"], \"\") + \" - \" + format(datum[\"bin_end\"], \"\"), \"count\": format(datum[\"count\"], \"\")}"
-          },
           "x2": {"scale": "x", "field": "bin_start", "offset": 1},
           "x": {"scale": "x", "field": "bin_end"},
           "y": {"scale": "y", "field": "count"},
@@ -70,25 +67,6 @@
   ],
   "axes": [
     {
-      "scale": "x",
-      "orient": "bottom",
-      "grid": false,
-      "title": "bin_start, bin_end",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
-      "grid": false,
-      "title": "count",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
       "scale": "y",
       "orient": "left",
       "gridScale": "x",
@@ -99,6 +77,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "bin_start, bin_end",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "count",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

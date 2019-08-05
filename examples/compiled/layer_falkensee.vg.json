@@ -123,9 +123,6 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "event"},
-          "tooltip": {
-            "signal": "{\"start (year)\": timeFormat(datum[\"year_start\"], '%Y'), \"end (year)\": timeFormat(datum[\"year_end\"], '%Y'), \"event\": ''+datum[\"event\"]}"
-          },
           "x": {"scale": "x", "field": "year_start"},
           "x2": {"scale": "x", "field": "year_end"},
           "y": {"value": 0},
@@ -142,9 +139,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "#333"},
-          "tooltip": {
-            "signal": "{\"year (year)\": timeFormat(datum[\"year_year\"], '%Y'), \"population\": format(datum[\"population\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "year_year"},
           "y": {"scale": "y", "field": "population"},
           "defined": {
@@ -163,9 +157,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#333"},
-          "tooltip": {
-            "signal": "{\"year (year)\": timeFormat(datum[\"year_year\"], '%Y'), \"population\": format(datum[\"population\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "year_year"},
           "y": {"scale": "y", "field": "population"}
         }
@@ -210,21 +201,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "year (year)",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
-        }
-      },
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -238,15 +214,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "population",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -255,6 +222,30 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "year (year)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
+        }
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "population",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],

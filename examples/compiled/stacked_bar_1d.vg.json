@@ -39,13 +39,10 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "Origin"},
-          "tooltip": {
-            "signal": "{\"Sum of Acceleration\": format(datum[\"sum_Acceleration\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
-          },
           "x": {"scale": "x", "field": "sum_Acceleration_end"},
           "x2": {"scale": "x", "field": "sum_Acceleration_start"},
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 19}
+          "height": {"value": 18}
         }
       }
     }
@@ -73,16 +70,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Sum of Acceleration",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
@@ -90,6 +77,16 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Sum of Acceleration",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 0
     }
   ],

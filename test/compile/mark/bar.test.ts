@@ -1,9 +1,9 @@
 import {PositionFieldDef, SecondaryFieldDef} from '../../../src/channeldef';
 import {bar} from '../../../src/compile/mark/bar';
 import {fieldInvalidPredicate, fieldInvalidTestValueRef} from '../../../src/compile/mark/valueref';
+import {DEFAULT_STEP} from '../../../src/config';
 import * as log from '../../../src/log';
 import {defaultBarConfig} from '../../../src/mark';
-import {defaultScaleConfig} from '../../../src/scale';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Bar', () => {
@@ -163,6 +163,26 @@ describe('Mark: Bar', () => {
     });
   });
 
+  describe('simple horizontal with band', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: 'bar',
+      encoding: {
+        y: {field: 'Origin', type: 'nominal', band: 0.6},
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should draw bar from zero to field value and with band value for x/width', () => {
+      expect(props.y).toEqual({scale: 'y', field: 'Origin', band: 0.2});
+      expect(props.height).toEqual({scale: 'y', band: 0.6});
+      expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
+      expect(props.x2).toEqual({scale: 'x', value: 0});
+      expect(props.width).toBeUndefined();
+    });
+  });
+
   it('should draw horizontal bar, with y from zero to field value and bar with quantitative x, x2, and y', () => {
     const y: PositionFieldDef<string> = {field: 'bin_start', type: 'quantitative'};
     const y2: SecondaryFieldDef<string> = {field: 'bin_end'};
@@ -200,9 +220,9 @@ describe('Mark: Bar', () => {
     });
     const props = bar.encodeEntry(model);
 
-    it('should draw bar from zero to field value and y with center position and height = rangeStep - 1', () => {
+    it('should draw bar from zero to field value and y with center position and height = discreteHeight - 2', () => {
       expect(props.yc).toEqual({scale: 'y', field: 'Origin'});
-      expect(props.height).toEqual({value: defaultScaleConfig.rangeStep - 1});
+      expect(props.height).toEqual({value: DEFAULT_STEP - 2});
       expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
       expect(props.x2).toEqual({scale: 'x', value: 0});
       expect(props.width).toBeUndefined();
@@ -704,7 +724,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should not use config.mark.size', () => {
-      expect(props.width).toEqual({value: 19});
+      expect(props.width).toEqual({value: 18});
     });
   });
 

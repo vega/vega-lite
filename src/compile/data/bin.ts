@@ -4,7 +4,7 @@ import {Channel} from '../../channel';
 import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
-import {Dict, duplicate, flatten, hash, keys, replacePathInField, unique, vals} from '../../util';
+import {Dict, duplicate, hash, keys, replacePathInField, unique, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {binFormatExpression} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
@@ -150,7 +150,11 @@ export class BinNode extends DataFlowNode {
   }
 
   public producedFields() {
-    return new Set(flatten(flatten(vals(this.bins).map(c => c.as))));
+    return new Set(
+      vals(this.bins)
+        .map(c => c.as)
+        .flat(2)
+    );
   }
 
   public dependentFields() {
@@ -162,49 +166,47 @@ export class BinNode extends DataFlowNode {
   }
 
   public assemble(): VgTransform[] {
-    return flatten(
-      vals(this.bins).map(bin => {
-        const transform: VgTransform[] = [];
+    return vals(this.bins).flatMap(bin => {
+      const transform: VgTransform[] = [];
 
-        const [binAs, ...remainingAs] = bin.as;
-        const binTrans: VgBinTransform = {
-          type: 'bin',
+      const [binAs, ...remainingAs] = bin.as;
+      const binTrans: VgBinTransform = {
+        type: 'bin',
+        field: replacePathInField(bin.field),
+        as: binAs,
+        signal: bin.signal,
+        ...bin.bin
+      };
+
+      if (!bin.bin.extent && bin.extentSignal) {
+        transform.push({
+          type: 'extent',
           field: replacePathInField(bin.field),
-          as: binAs,
-          signal: bin.signal,
-          ...bin.bin
-        };
+          signal: bin.extentSignal
+        });
+        binTrans.extent = {signal: bin.extentSignal};
+      }
 
-        if (!bin.bin.extent && bin.extentSignal) {
-          transform.push({
-            type: 'extent',
-            field: replacePathInField(bin.field),
-            signal: bin.extentSignal
-          });
-          binTrans.extent = {signal: bin.extentSignal};
-        }
+      transform.push(binTrans);
 
-        transform.push(binTrans);
-
-        for (const as of remainingAs) {
-          for (let i = 0; i < 2; i++) {
-            transform.push({
-              type: 'formula',
-              expr: vgField({field: binAs[i]}, {expr: 'datum'}),
-              as: as[i]
-            });
-          }
-        }
-
-        if (bin.formula) {
+      for (const as of remainingAs) {
+        for (let i = 0; i < 2; i++) {
           transform.push({
             type: 'formula',
-            expr: bin.formula,
-            as: bin.formulaAs
+            expr: vgField({field: binAs[i]}, {expr: 'datum'}),
+            as: as[i]
           });
         }
-        return transform;
-      })
-    );
+      }
+
+      if (bin.formula) {
+        transform.push({
+          type: 'formula',
+          expr: bin.formula,
+          as: bin.formulaAs
+        });
+      }
+      return transform;
+    });
   }
 }

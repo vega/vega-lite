@@ -81,9 +81,6 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "properties\\.site"},
-          "tooltip": {
-            "signal": "{\"properties.variety\": ''+datum[\"properties.variety\"], \"Sum of properties.yield\": format(datum[\"sum_properties.yield\"], \"\"), \"site\": ''+datum[\"properties.site\"]}"
-          },
           "x": {"scale": "x", "field": "sum_properties\\.yield_end"},
           "x2": {"scale": "x", "field": "sum_properties\\.yield_start"},
           "y": {"scale": "y", "field": "properties\\.variety"},
@@ -127,16 +124,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Sum of properties.yield",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -148,11 +135,21 @@
       "zindex": 0
     },
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Sum of properties.yield",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "grid": false,
       "title": "properties.variety",
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "legends": [

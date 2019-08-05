@@ -30,7 +30,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {"signal": "{\"a\": format(datum[\"a\"], \"\")}"},
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "a"}
         }
@@ -51,15 +50,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "a",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
@@ -67,6 +57,15 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "a",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

@@ -35,9 +35,6 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
-          },
           "xc": {"scale": "x", "field": "Horsepower"},
           "yc": {"scale": "y", "field": "Cylinders"},
           "height": {"value": 15},
@@ -67,16 +64,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Horsepower",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -88,12 +75,22 @@
       "zindex": 0
     },
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Horsepower",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "grid": false,
       "title": "Cylinders",
       "labelOverlap": true,
-      "zindex": 1
+      "zindex": 0
     }
   ]
 }

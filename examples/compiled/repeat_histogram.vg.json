@@ -228,9 +228,6 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "Origin"},
-              "tooltip": {
-                "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
-              },
               "x2": [
                 {
                   "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"])",
@@ -266,25 +263,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_Horsepower_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "Horsepower (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_Horsepower_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_repeat_Horsepower_y",
           "orient": "left",
           "gridScale": "child__repeat_repeat_Horsepower_x",
@@ -295,6 +273,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Horsepower_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Horsepower (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Horsepower_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -315,9 +312,6 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "Origin"},
-              "tooltip": {
-                "signal": "{\"Miles_per_Gallon (binned)\": datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Miles_per_Gallon\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Miles_per_Gallon_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
-              },
               "x2": [
                 {
                   "test": "datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"])",
@@ -353,25 +347,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_Miles_per_Gallon_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "Miles_per_Gallon (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_Miles_per_Gallon_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_repeat_Miles_per_Gallon_y",
           "orient": "left",
           "gridScale": "child__repeat_repeat_Miles_per_Gallon_x",
@@ -382,6 +357,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Miles_per_Gallon_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Miles_per_Gallon (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Miles_per_Gallon_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -402,9 +396,6 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "Origin"},
-              "tooltip": {
-                "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
-              },
               "x2": [
                 {
                   "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"])",
@@ -440,25 +431,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_Acceleration_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "Acceleration (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_Acceleration_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_repeat_Acceleration_y",
           "orient": "left",
           "gridScale": "child__repeat_repeat_Acceleration_x",
@@ -469,6 +441,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Acceleration_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Acceleration (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Acceleration_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -489,9 +480,6 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "Origin"},
-              "tooltip": {
-                "signal": "{\"Displacement (binned)\": datum[\"bin_maxbins_10_Displacement\"] === null || isNaN(datum[\"bin_maxbins_10_Displacement\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Displacement\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Displacement_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
-              },
               "x2": [
                 {
                   "test": "datum[\"bin_maxbins_10_Displacement\"] === null || isNaN(datum[\"bin_maxbins_10_Displacement\"])",
@@ -527,25 +515,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_Displacement_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "Displacement (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_Displacement_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_repeat_Displacement_y",
           "orient": "left",
           "gridScale": "child__repeat_repeat_Displacement_x",
@@ -556,6 +525,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Displacement_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Displacement (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_Displacement_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]

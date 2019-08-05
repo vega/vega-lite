@@ -71,9 +71,6 @@
               "interpolate": {"value": "monotone"},
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "Cylinders"},
-              "tooltip": {
-                "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Sum of Weight_in_lbs\": format(datum[\"sum_Weight_in_lbs\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
-              },
               "x": {"scale": "x", "field": "year_Year"},
               "y": {"scale": "y", "field": "sum_Weight_in_lbs_end"},
               "y2": {"scale": "y", "field": "sum_Weight_in_lbs_start"},
@@ -116,21 +113,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Year (year)",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
-        }
-      },
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -144,15 +126,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "Sum of Weight_in_lbs",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -161,6 +134,30 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Year (year)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
+        }
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Sum of Weight_in_lbs",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],

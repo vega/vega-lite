@@ -58,9 +58,6 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "opacity": {"value": 0.6},
-          "tooltip": {
-            "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "y"},
           "y2": {"scale": "y", "value": 0},
@@ -82,9 +79,6 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "opacity": {"value": 0.3},
-          "tooltip": {
-            "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"ny\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "ny"},
           "y2": {"scale": "y", "value": 0},
@@ -122,16 +116,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "x",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -145,15 +129,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "y",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -162,6 +137,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "x",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "y",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],

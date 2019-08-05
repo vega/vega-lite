@@ -29,23 +29,7 @@
         {
           "type": "filter",
           "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSelectionTest(\"index_store\", datum)))"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_1",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "data_1",
-      "transform": [
+        },
         {
           "type": "filter",
           "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
@@ -109,9 +93,6 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
-              "tooltip": {
-                "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
-              },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
               "defined": {
@@ -132,9 +113,6 @@
           "opacity": {"value": 0},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
         }
@@ -149,10 +127,7 @@
           "fill": {"value": "transparent"},
           "strokeWidth": {"value": 0.35},
           "stroke": {"value": "transparent"},
-          "isVoronoi": {"value": true},
-          "tooltip": {
-            "signal": "{\"date\": timeFormat(datum.datum[\"date\"], '%b %d, %Y'), \"price\": format(datum.datum[\"price\"], \"\")}"
-          }
+          "isVoronoi": {"value": true}
         }
       },
       "transform": [
@@ -168,13 +143,10 @@
       "name": "layer_2_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y')}"
-          },
           "x": {"scale": "x", "field": "date"},
           "y": {"field": {"group": "height"}},
           "y2": {"value": 0}
@@ -185,13 +157,10 @@
       "name": "layer_3_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y')}"
-          },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 10},
           "text": {"signal": "timeFormat(datum[\"date\"], '%b %d, %Y')"},
@@ -208,8 +177,7 @@
         "fields": [
           {"data": "source_0", "field": "date"},
           {"data": "data_0", "field": "date"},
-          {"data": "data_2", "field": "date"},
-          {"data": "data_3", "field": "date"}
+          {"data": "data_1", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -238,16 +206,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "date",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -261,15 +219,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "price",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -278,6 +227,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],

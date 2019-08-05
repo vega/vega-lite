@@ -53,9 +53,6 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
-              "tooltip": {
-                "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
-              },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
               "defined": {
@@ -74,12 +71,9 @@
       "encode": {
         "update": {
           "stroke": {"scale": "color", "field": "symbol"},
-          "tooltip": {
-            "signal": "{\"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
-          },
           "x": {"value": 0},
-          "y": {"scale": "y", "field": "mean_price"},
           "x2": {"field": {"group": "width"}},
+          "y": {"scale": "y", "field": "mean_price"},
           "strokeWidth": {"value": 2}
         }
       }
@@ -122,16 +116,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "date",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -145,15 +129,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "price, Mean of price",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -162,6 +137,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "price, Mean of price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],

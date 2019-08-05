@@ -2,19 +2,20 @@ import {AncestorParse} from '../../../src/compile/data';
 import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {BinNode} from '../../../src/compile/data/bin';
 import {CalculateNode} from '../../../src/compile/data/calculate';
-import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {FilterNode} from '../../../src/compile/data/filter';
 import {FlattenTransformNode} from '../../../src/compile/data/flatten';
 import {FoldTransformNode} from '../../../src/compile/data/fold';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {ImputeNode} from '../../../src/compile/data/impute';
 import {findSource, parseTransformArray} from '../../../src/compile/data/parse';
+import {PivotTransformNode} from '../../../src/compile/data/pivot';
 import {SampleTransformNode} from '../../../src/compile/data/sample';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {WindowTransformNode} from '../../../src/compile/data/window';
 import {Transform} from '../../../src/transform';
 import {parseUnitModel} from '../../util';
 import {SourceNode} from './../../../src/compile/data/source';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/parse', () => {
   describe('parseTransformArray()', () => {
@@ -28,7 +29,7 @@ describe('compile/data/parse', () => {
         }
       });
 
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
       expect(root.children[0] instanceof CalculateNode).toBe(true);
       expect(result instanceof FilterNode).toBe(true);
@@ -66,7 +67,7 @@ describe('compile/data/parse', () => {
         }
       });
 
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       const parse = new AncestorParse();
       const result = parseTransformArray(root, model, parse);
 
@@ -88,7 +89,7 @@ describe('compile/data/parse', () => {
         }
       });
 
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       const parse = new AncestorParse();
       const result = parseTransformArray(root, model, parse);
       expect(root.children[0] instanceof BinNode);
@@ -115,7 +116,7 @@ describe('compile/data/parse', () => {
         }
       });
 
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
       expect(root.children[0] instanceof BinNode).toBe(true);
       expect(result instanceof AggregateNode).toBe(true);
@@ -131,7 +132,7 @@ describe('compile/data/parse', () => {
           y: {field: 'b', type: 'quantitative'}
         }
       });
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
       expect(root.children[0] instanceof ImputeNode).toBe(true);
       expect(result instanceof ImputeNode).toBe(true);
@@ -154,7 +155,7 @@ describe('compile/data/parse', () => {
           x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         }
       });
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       parseTransformArray(root, model, new AncestorParse());
       expect(root.children[0] instanceof WindowTransformNode).toBe(true);
     });
@@ -182,7 +183,7 @@ describe('compile/data/parse', () => {
           x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         }
       });
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       parseTransformArray(root, model, new AncestorParse());
       expect(root.children[0] instanceof WindowTransformNode).toBe(true);
     });
@@ -205,7 +206,7 @@ describe('compile/data/parse', () => {
           x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         }
       });
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       parseTransformArray(root, model, new AncestorParse());
       expect(root.children[0] instanceof WindowTransformNode).toBe(true);
     });
@@ -233,7 +234,7 @@ describe('compile/data/parse', () => {
           x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         }
       });
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       parseTransformArray(root, model, new AncestorParse());
       expect(root.children[0] instanceof WindowTransformNode).toBe(true);
     });
@@ -252,10 +253,30 @@ describe('compile/data/parse', () => {
           y: {field: 'B', type: 'quantitative'}
         }
       });
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
       expect(root.children[0] instanceof FoldTransformNode).toBe(true);
       expect(result instanceof FoldTransformNode).toBe(true);
+    });
+
+    it('should return a PivotTransformNode', () => {
+      const transform: Transform = {
+        pivot: 'a',
+        value: 'b'
+      };
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [transform],
+        encoding: {
+          x: {field: 'a', type: 'temporal'},
+          y: {field: 'b', type: 'quantitative'}
+        }
+      });
+      const root = new PlaceholderDataFlowNode(null);
+      const result = parseTransformArray(root, model, new AncestorParse());
+      expect(root.children[0] instanceof PivotTransformNode).toBe(true);
+      expect(result instanceof PivotTransformNode).toBe(true);
     });
 
     it('should return a FlattenTransformNode', () => {
@@ -271,7 +292,7 @@ describe('compile/data/parse', () => {
           y: {field: 'b', type: 'quantitative'}
         }
       });
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
       expect(root.children[0] instanceof FlattenTransformNode).toBe(true);
       expect(result instanceof FlattenTransformNode).toBe(true);
@@ -290,7 +311,7 @@ describe('compile/data/parse', () => {
           y: {field: 'B', type: 'quantitative'}
         }
       });
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
       expect(root.children[0] instanceof SampleTransformNode).toBe(true);
       expect(result instanceof SampleTransformNode).toBe(true);
@@ -315,7 +336,7 @@ describe('compile/data/parse', () => {
           color: {field: 'c', type: 'nominal'}
         }
       });
-      const root = new DataFlowNode(null);
+      const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
       expect(root.children[0] instanceof ImputeNode).toBe(true);
       expect(result instanceof ImputeNode).toBe(true);

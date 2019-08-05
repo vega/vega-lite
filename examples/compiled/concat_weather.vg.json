@@ -114,9 +114,6 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\")}"
-              },
               "x": {"scale": "concat_0_x", "field": "month_date"},
               "width": {"scale": "concat_0_x", "band": true},
               "y": {"scale": "concat_0_y", "field": "mean_precipitation"},
@@ -126,6 +123,19 @@
         }
       ],
       "axes": [
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "gridScale": "concat_0_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
         {
           "scale": "concat_0_x",
           "orient": "bottom",
@@ -140,7 +150,7 @@
               "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
             }
           },
-          "zindex": 1
+          "zindex": 0
         },
         {
           "scale": "concat_0_y",
@@ -149,19 +159,6 @@
           "title": "Mean of precipitation",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_0_height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "concat_0_y",
-          "orient": "left",
-          "gridScale": "concat_0_x",
-          "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
-          "domain": false,
-          "labels": false,
-          "maxExtent": 0,
-          "minExtent": 0,
-          "ticks": false,
           "zindex": 0
         }
       ]
@@ -185,9 +182,6 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Median of precipitation\": format(datum[\"median_precipitation\"], \"\")}"
-              },
               "x": {"scale": "concat_1_x", "field": "month_date"},
               "width": {"scale": "concat_1_x", "band": true},
               "y": {"scale": "concat_1_y", "field": "median_precipitation"},
@@ -197,6 +191,19 @@
         }
       ],
       "axes": [
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "gridScale": "concat_1_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
         {
           "scale": "concat_1_x",
           "orient": "bottom",
@@ -211,7 +218,7 @@
               "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
             }
           },
-          "zindex": 1
+          "zindex": 0
         },
         {
           "scale": "concat_1_y",
@@ -220,19 +227,6 @@
           "title": "Median of precipitation",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_1_height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "concat_1_y",
-          "orient": "left",
-          "gridScale": "concat_1_x",
-          "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
-          "domain": false,
-          "labels": false,
-          "maxExtent": 0,
-          "minExtent": 0,
-          "ticks": false,
           "zindex": 0
         }
       ]
@@ -257,9 +251,6 @@
             "update": {
               "fill": {"value": "transparent"},
               "stroke": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"temp_min (binned)\": datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_min\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_min_end\"], \"\"), \"temp_max (binned)\": datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_max\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_max_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-              },
               "x": [
                 {
                   "test": "datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"])",
@@ -292,7 +283,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_2_width/10)"},
-          "zindex": 1
+          "zindex": 0
         },
         {
           "scale": "concat_2_y",
@@ -301,7 +292,7 @@
           "title": "temp_max (binned)",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_2_height/10)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     }

@@ -303,9 +303,6 @@
                 },
                 {"value": "lightgray"}
               ],
-              "tooltip": {
-                "signal": "{\"Weather\": ''+datum[\"weather\"], \"Precipitation\": format(datum[\"precipitation\"], \"\"), \"Date\": timeFormat(datum[\"monthdate_date\"], '%b'), \"Maximum Daily Temperature (C)\": format(datum[\"temp_max\"], \"\")}"
-              },
               "x": {"scale": "concat_0_x", "field": "monthdate_date"},
               "y": {"scale": "concat_0_y", "field": "temp_max"},
               "size": {"scale": "size", "field": "precipitation"}
@@ -359,21 +356,6 @@
         {
           "scale": "concat_0_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "Date",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "encode": {
-            "labels": {
-              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
-            }
-          },
-          "zindex": 1
-        },
-        {
-          "scale": "concat_0_x",
-          "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -387,15 +369,6 @@
         {
           "scale": "concat_0_y",
           "orient": "left",
-          "grid": false,
-          "title": "Maximum Daily Temperature (C)",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "concat_0_y",
-          "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
           "tickCount": {"signal": "ceil(concat_0_height/40)"},
@@ -404,6 +377,30 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Date",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "encode": {
+            "labels": {
+              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+            }
+          },
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Maximum Daily Temperature (C)",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
           "zindex": 0
         }
       ]
@@ -472,9 +469,6 @@
                 },
                 {"value": "lightgray"}
               ],
-              "tooltip": {
-                "signal": "{\"weather\": ''+datum[\"weather\"], \"Count of Records\": format(datum[\"__count\"], \"\"), \"Weather\": ''+datum[\"weather\"]}"
-              },
               "x": {"scale": "concat_1_x", "field": "__count"},
               "x2": {"scale": "concat_1_x", "value": 0},
               "y": {"scale": "concat_1_y", "field": "weather"},
@@ -484,16 +478,6 @@
         }
       ],
       "axes": [
-        {
-          "scale": "concat_1_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "Count of Records",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
         {
           "scale": "concat_1_x",
           "orient": "bottom",
@@ -508,11 +492,21 @@
           "zindex": 0
         },
         {
+          "scale": "concat_1_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Count of Records",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
           "scale": "concat_1_y",
           "orient": "left",
           "grid": false,
           "title": "Weather",
-          "zindex": 1
+          "zindex": 0
         }
       ]
     }

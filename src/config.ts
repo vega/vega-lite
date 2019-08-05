@@ -15,29 +15,48 @@ import {
 import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
-import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING} from './spec/base';
+import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} from './spec/base';
 import {TopLevelProperties} from './spec/toplevel';
-import {StackOffset} from './stack';
 import {extractTitleConfig, TitleConfig} from './title';
-import {duplicate, keys, mergeDeep} from './util';
+import {duplicate, getFirstDefined, keys, mergeDeep} from './util';
 import {BaseMarkConfig, SchemeConfig} from './vega.schema';
 
 export interface ViewConfig extends BaseViewBackground {
   /**
-   * The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.
+   * The default width when the plot has a continuous x-field.
    *
    * __Default value:__ `200`
    *
    */
-  width?: number;
+  continuousWidth?: number;
 
   /**
-   * The default height of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) y-scale with `rangeStep` = `null`.
+   * The default width when the plot has either a discrete x-field or no x-field.
+   *
+   * __Default value:__ a step size based on `config.view.step`.
+   *
+   */
+  discreteWidth?: number | {step: number};
+  /**
+   * The default height when the plot has a continuous y-field.
    *
    * __Default value:__ `200`
    *
    */
-  height?: number;
+  continuousHeight?: number;
+
+  /**
+   * The default height when the plot has either a discrete y-field or no y-field.
+   *
+   * __Default value:__ a step size based on `config.view.step`.
+   *
+   */
+  discreteHeight?: number | {step: number};
+
+  /**
+   * Default step size for x-/y- discrete fields.
+   */
+  step?: number;
 
   /**
    * Whether the view should be clipped.
@@ -45,9 +64,26 @@ export interface ViewConfig extends BaseViewBackground {
   clip?: boolean;
 }
 
+export function getViewConfigContinuousSize(viewConfig: ViewConfig, channel: 'width' | 'height') {
+  return viewConfig[channel === 'width' ? 'continuousWidth' : 'continuousHeight'];
+}
+
+export function getViewConfigDiscreteStep(viewConfig: ViewConfig, channel: 'width' | 'height') {
+  const size = getViewConfigDiscreteSize(viewConfig, channel);
+  return isStep(size) ? size.step : DEFAULT_STEP;
+}
+
+export function getViewConfigDiscreteSize(viewConfig: ViewConfig, channel: 'width' | 'height') {
+  const size = viewConfig[channel === 'width' ? 'discreteWidth' : 'discreteHeight'];
+  return getFirstDefined(size, {step: viewConfig.step});
+}
+
+export const DEFAULT_STEP = 20;
+
 export const defaultViewConfig: ViewConfig = {
-  width: 200,
-  height: 200
+  continuousWidth: 200,
+  continuousHeight: 200,
+  step: DEFAULT_STEP
 };
 
 export type RangeConfigValue = (number | string)[] | SchemeConfig | {step: number};
@@ -90,9 +126,6 @@ export function isVgScheme(rangeConfig: string[] | SchemeConfig): rangeConfig is
   return rangeConfig && !!rangeConfig['scheme'];
 }
 
-/** @hide */
-export type Hide = 'hide';
-
 export interface VLOnlyConfig {
   /**
    * Default axis and legend title for count fields.
@@ -102,13 +135,6 @@ export interface VLOnlyConfig {
    * @type {string}
    */
   countTitle?: string;
-
-  /**
-   * Defines how Vega-Lite should handle invalid values (`null` and `NaN`).
-   * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
-   * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
-   */
-  invalidValues?: 'filter' | Hide | null;
 
   /**
    * Defines how Vega-Lite generates title for fields.  There are three possible styles:
@@ -141,9 +167,6 @@ export interface VLOnlyConfig {
 
   /** An object hash for defining default properties for each type of selections. */
   selection?: SelectionConfig;
-
-  /** Default stack offset for stackable mark. */
-  stack?: StackOffset;
 }
 
 export interface StyleConfigIndex {
@@ -195,8 +218,6 @@ export const defaultConfig: Config = {
   timeFormat: '%b %d, %Y',
   countTitle: 'Count of Records',
 
-  invalidValues: 'filter',
-
   view: defaultViewConfig,
 
   mark: mark.defaultMarkConfig,
@@ -204,6 +225,7 @@ export const defaultConfig: Config = {
   bar: mark.defaultBarConfig,
   circle: {},
   geoshape: {},
+  image: {},
   line: {},
   point: {},
   rect: mark.defaultRectConfig,
@@ -279,15 +301,13 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'timeFormat',
   'countTitle',
   'header',
-  'stack',
   'scale',
   'selection',
-  'invalidValues',
   'overlay' as keyof Config // FIXME: Redesign and unhide this
 ];
 
 const VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
-  view: ['width', 'height'],
+  view: ['continuousWidth', 'continuousHeight', 'discreteWidth', 'discreteHeight', 'step'],
   ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
 };
 

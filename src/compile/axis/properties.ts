@@ -2,8 +2,9 @@ import {Align, AxisOrient, SignalRef} from 'vega';
 import {Axis} from '../../axis';
 import {isBinning} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
-import {TypedFieldDef, valueArray} from '../../channeldef';
+import {isDiscrete, TypedFieldDef, valueArray} from '../../channeldef';
 import * as log from '../../log';
+import {Mark} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL} from '../../type';
 import {contains, normalizeAngle} from '../../util';
@@ -167,4 +168,11 @@ export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: TypedFie
   }
 
   return undefined;
+}
+
+export function defaultZindex(mark: Mark, fieldDef: TypedFieldDef<string>) {
+  if (mark === 'rect' && isDiscrete(fieldDef)) {
+    return 1;
+  }
+  return 0;
 }

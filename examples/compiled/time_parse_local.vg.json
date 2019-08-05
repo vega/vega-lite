@@ -45,9 +45,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"time\": timeFormat(datum[\"hours_date\"], '%H')}"
-          },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "hours_date"}
         }
@@ -75,7 +72,7 @@
           "update": {"text": {"signal": "timeFormat(datum.value, '%H')"}}
         }
       },
-      "zindex": 1
+      "zindex": 0
     }
   ]
 }

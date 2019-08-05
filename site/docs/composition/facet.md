@@ -48,7 +48,7 @@ A facet [field definition](encoding.html#field-def) has the following properties
 
 **Note**
 
-1. Unlike a [positional field definition](https://vega.github.io/vega-lite/docs/encoding.html#position-field-def), a facet field definition has the `header` property instead of `scale` and `axis`.
+1. Unlike a [positional field definition](encoding.html#position-field-def), a facet field definition has the `header` property instead of `scale` and `axis`.
 2. Since `facet`, `row` and `column` represent actual data fields that are used to partition the data, they cannot encode a constant `value`. In addition, you should not facet by quantitative fields unless they are [binned](bin.html), or temporal fields unless you use [`timeUnit`](timeunit.html).
 
 {:#mapping}
@@ -90,6 +90,16 @@ This is the same example as [below](#row-encoding) but the facet operator is mor
 ## Facet, Row, and Column Encoding Channels
 
 The [facet channels](encoding.html#facet) (`facet`, `row`, and `column`) are [encoding channels](encoding.html#channels) that serves as macros for a facet specification. Vega-Lite automatically translates this shortcut to use the facet operator.
+
+### Facet Field Definition
+
+In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), and [`timeUnit`](timeunit.html), [field definitions](#field-def) for `row`, `column` and `facet` channels may also include these properties:
+
+{% include table.html props="align,center,spacing" source="RowColumnEncodingFieldDef" %}
+
+In addition, the `facet` channel should include the `columns` property:
+
+{% include table.html props="columns" source="FacetEncodingFieldDef" %}
 
 ### Examples
 

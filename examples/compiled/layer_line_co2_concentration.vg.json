@@ -85,9 +85,6 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "decade"},
-              "tooltip": {
-                "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"decade\": ''+datum[\"decade\"]}"
-              },
               "x": {"scale": "x", "field": "scaled_date"},
               "y": {"scale": "y", "field": "CO2"},
               "defined": {
@@ -107,9 +104,6 @@
         "update": {
           "baseline": {"value": "top"},
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": ''+datum[\"year\"]}"
-          },
           "x": [
             {
               "test": "datum[\"scaled_date\"] === null || isNaN(datum[\"scaled_date\"])",
@@ -137,9 +131,6 @@
         "update": {
           "baseline": {"value": "bottom"},
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"Year into Decade\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": ''+datum[\"year\"]}"
-          },
           "x": [
             {
               "test": "datum[\"scaled_date\"] === null || isNaN(datum[\"scaled_date\"])",
@@ -200,16 +191,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Year into Decade",
-      "tickCount": 11,
-      "labelFlush": true,
-      "labelOverlap": true,
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "tickCount": 11,
       "gridScale": "y",
       "grid": true,
@@ -223,15 +204,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "CO2 concentration in ppm",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -240,6 +212,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Year into Decade",
+      "tickCount": 11,
+      "labelFlush": true,
+      "labelOverlap": true,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "CO2 concentration in ppm",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],

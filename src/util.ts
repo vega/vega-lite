@@ -4,6 +4,8 @@ import stableStringify from 'fast-json-stable-stringify';
 import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
 
+import 'array-flat-polyfill';
+
 export const deepEqual = deepEqual_;
 export const duplicate = clone_;
 
@@ -115,10 +117,6 @@ export function every<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
     }
   }
   return true;
-}
-
-export function flatten<T>(arrays: T[][]): T[] {
-  return ([] as T[]).concat(...arrays);
 }
 
 export function fill<T>(val: T, len: number) {
@@ -237,7 +235,14 @@ export function prefixGenerator(a: Set<string>): Set<string> {
   return prefixes;
 }
 
+/**
+ * Returns true if a and b have an intersection. Also return true if a or b are undefined
+ * since this means we don't know what fields a node produces or depends on.
+ */
 export function fieldIntersection(a: Set<string>, b: Set<string>): boolean {
+  if (a === undefined || b === undefined) {
+    return true;
+  }
   return hasIntersection(prefixGenerator(a), prefixGenerator(b));
 }
 

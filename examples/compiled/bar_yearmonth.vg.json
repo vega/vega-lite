@@ -18,8 +18,13 @@
           "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
         },
         {
+          "type": "formula",
+          "as": "yearmonth_date_end",
+          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"])+1, 1, 0, 0, 0, 0)"
+        },
+        {
           "type": "aggregate",
-          "groupby": ["yearmonth_date"],
+          "groupby": ["yearmonth_date", "yearmonth_date_end"],
           "ops": ["mean"],
           "fields": ["temp"],
           "as": ["mean_temp"]
@@ -40,11 +45,20 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], '%b %Y'), \"Mean of temp\": format(datum[\"mean_temp\"], \"\")}"
-          },
-          "xc": {"scale": "x", "field": "yearmonth_date"},
-          "width": {"value": 5},
+          "x2": [
+            {
+              "test": "datum[\"yearmonth_date\"] === null || isNaN(datum[\"yearmonth_date\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "yearmonth_date", "offset": 1}
+          ],
+          "x": [
+            {
+              "test": "datum[\"yearmonth_date\"] === null || isNaN(datum[\"yearmonth_date\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "yearmonth_date_end"}
+          ],
           "y": {"scale": "y", "field": "mean_temp"},
           "y2": {"scale": "y", "value": 0}
         }
@@ -55,9 +69,11 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "yearmonth_date"},
-      "range": [0, {"signal": "width"}],
-      "padding": 5
+      "domain": {
+        "data": "source_0",
+        "fields": ["yearmonth_date", "yearmonth_date_end"]
+      },
+      "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
@@ -69,21 +85,6 @@
     }
   ],
   "axes": [
-    {
-      "scale": "x",
-      "orient": "bottom",
-      "grid": false,
-      "title": "date (year-month)",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%b %Y')"}}
-        }
-      },
-      "zindex": 1
-    },
     {
       "scale": "x",
       "orient": "bottom",
@@ -100,15 +101,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "Mean of temp",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -117,6 +109,30 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date (year-month)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%b %Y')"}}
+        }
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Mean of temp",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

@@ -10,17 +10,7 @@
       "values": [{"a": "A", "b": 28}, {"a": "B", "b": 55}, {"a": "C", "b": 43}]
     },
     {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
         {
@@ -42,13 +32,10 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "b"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "a"},
@@ -60,16 +47,13 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "align": {"value": "left"},
           "baseline": {"value": "middle"},
           "dx": {"value": 3},
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "b"},
           "y": {"scale": "y", "field": "a", "band": 0.5},
           "text": {"signal": "format(datum[\"b\"], \"\")"}
@@ -81,12 +65,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "b"},
-          {"data": "data_2", "field": "b"}
-        ]
-      },
+      "domain": {"data": "data_0", "field": "b"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -94,29 +73,13 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "a"},
-          {"data": "data_2", "field": "a"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_0", "field": "a", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
     }
   ],
   "axes": [
-    {
-      "scale": "x",
-      "orient": "bottom",
-      "grid": false,
-      "title": "b",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
     {
       "scale": "x",
       "orient": "bottom",
@@ -131,12 +94,22 @@
       "zindex": 0
     },
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "b",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "grid": false,
       "title": "a",
       "labelOverlap": true,
-      "zindex": 1
+      "zindex": 0
     }
   ]
 }

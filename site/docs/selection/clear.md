@@ -5,7 +5,7 @@ title: Clearing a selection
 permalink: /docs/clear.html
 ---
 
-The `clear` property identifies which events must fire to empty a selection of all selected values (the [`empty`](https://vega.github.io/vega-lite/docs/selection.html#selection-properties) can be used to further determine the behavior of empty selections).
+The `clear` property identifies which events must fire to empty a selection of all selected values (the [`empty`](selection.html#selection-properties) can be used to further determine the behavior of empty selections).
 
 It can take one of the following values:
 
@@ -24,6 +24,6 @@ The following example clears the brush when the mouse button is released.
 
 <div class="vl-example" data-name="selection_clear_brush"></div>
 
-Note, in the above example, clearing out the selection does _not_ reset it to its initial value. Instead, when the mouse button is released, the selection is emptied of all values. This behavior is subtly different to when the selection is [bound to scales](https://vega.github.io/vega-lite/docs/bind.html#scale-binding) -- clearing the selection out now resets the view to use the initial scale domains. Try it out below: pan and zoom the plot, and then double click.
+Note, in the above example, clearing out the selection does _not_ reset it to its initial value. Instead, when the mouse button is released, the selection is emptied of all values. This behavior is subtly different to when the selection is [bound to scales](bind.html#scale-binding) -- clearing the selection out now resets the view to use the initial scale domains. Try it out below: pan and zoom the plot, and then double click.
 
 <div class="vl-example" data-name="selection_translate_scatterplot_drag"></div>

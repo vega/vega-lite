@@ -64,9 +64,6 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
-              "tooltip": {
-                "signal": "{\"date (year)\": timeFormat(datum[\"year_date\"], '%Y'), \"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
-              },
               "x": {"scale": "x", "field": "year_date"},
               "y": {"scale": "y", "field": "mean_price"},
               "defined": {
@@ -87,9 +84,6 @@
           "opacity": {"value": 1},
           "fill": {"value": "white"},
           "stroke": {"scale": "color", "field": "symbol"},
-          "tooltip": {
-            "signal": "{\"date (year)\": timeFormat(datum[\"year_date\"], '%Y'), \"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
-          },
           "x": {"scale": "x", "field": "year_date"},
           "y": {"scale": "y", "field": "mean_price"}
         }
@@ -138,21 +132,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "date (year)",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
-        }
-      },
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -166,15 +145,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "Mean of price",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -183,6 +153,30 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date (year)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
+        }
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Mean of price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],

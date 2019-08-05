@@ -124,7 +124,9 @@ export interface StackTransform {
    */
   groupby: FieldName[];
   /**
-   * Mode for stacking marks.
+   * Mode for stacking marks. One of `"zero"` (default), `"center"`, or `"normalize"`.
+   * The `"zero"` offset will stack starting at `0`. The `"center"` offset will center the stacks. The `"normalize"` offset will compute percentage values for each stack point, with output values in the range `[0,1]`.
+   *
    * __Default value:__ `"zero"`
    */
   offset?: 'zero' | 'center' | 'normalize';
@@ -156,7 +158,7 @@ export type WindowOnlyOp =
 
 export interface WindowFieldDef {
   /**
-   * The window or aggregation operation to apply within a window (e.g.,`rank`, `lead`, `sum`, `average` or `count`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops).
+   * The window or aggregation operation to apply within a window (e.g., `rank`, `lead`, `sum`, `average` or `count`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops).
    */
   op: AggregateOp | WindowOnlyOp;
 
@@ -204,7 +206,7 @@ export interface WindowTransform {
   groupby?: FieldName[];
 
   /**
-   * A sort field definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).
+   * A sort field definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered "peer" values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).
    */
   sort?: SortField[];
 }
@@ -359,6 +361,197 @@ export interface FoldTransform {
   as?: [FieldName, FieldName];
 }
 
+export interface PivotTransform {
+  /**
+   * The data field to pivot on. The unique values of this field become new field names in the output stream.
+   */
+  pivot: string;
+
+  /**
+   * The data field to populate pivoted fields. The aggregate values of this field become the values of the new pivoted fields.
+   */
+  value: string;
+
+  /**
+   * The optional data fields to group by. If not specified, a single group containing all data objects will be used.
+   */
+  groupby?: string[];
+
+  /**
+   * An optional parameter indicating the maximum number of pivoted fields to generate.
+   * The default (`0`) applies no limit. The pivoted `pivot` names are sorted in ascending order prior to enforcing the limit.
+   * __Default value:__ `0`
+   */
+  limit?: number;
+
+  /**
+   * The aggregation operation to apply to grouped `value` field values.
+   * __Default value:__ `sum`
+   */
+  op?: string;
+}
+
+export function isPivot(t: Transform): t is PivotTransform {
+  return t['pivot'] !== undefined;
+}
+
+export interface DensityTransform {
+  /**
+   * The data field for which to perform density estimation.
+   */
+  density: string;
+
+  /**
+   * The data fields to group by. If not specified, a single group containing all data objects will be used.
+   */
+  groupby?: string[];
+
+  /**
+   * A boolean flag indicating whether to produce density estimates (false) or cumulative density estimates (true).
+   *
+   * __Default value:__ `false`
+   */
+  cumulative?: boolean;
+
+  /**
+   * A boolean flag indicating if the output values should be probability estimates (false) or smoothed counts (true).
+   *
+   * __Default value:__ `false`
+   */
+  counts?: boolean;
+
+  /**
+   * The bandwidth (standard deviation) of the Gaussian kernel. If unspecified or set to zero, the bandwidth value is automatically estimated from the input data using Scott’s rule.
+   */
+  bandwidth?: number;
+
+  /**
+   * A [min, max] domain from which to sample the distribution. If unspecified, the extent will be determined by the observed minimum and maximum values of the density value field.
+   */
+  extent?: [number, number];
+
+  /**
+   * The minimum number of samples to take along the extent domain for plotting the density.
+   *
+   * __Default value:__ `25`
+   */
+  minsteps?: number;
+
+  /**
+   * The maximum number of samples to take along the extent domain for plotting the density.
+   *
+   * __Default value:__ `200`
+   */
+  maxsteps?: number;
+
+  /**
+   * The exact number of samples to take along the extent domain for plotting the density. If specified, overrides both minsteps and maxsteps to set an exact number of uniform samples. Potentially useful in conjunction with a fixed extent to ensure consistent sample points for stacked densities.
+   */
+  steps?: number;
+
+  /**
+   * The output fields for the sample value and corresponding density estimate.
+   *
+   * __Default value:__ `["value", "density"]`
+   */
+  as?: [string, string];
+}
+
+export function isDensity(t: Transform): t is DensityTransform {
+  return t['density'] !== undefined;
+}
+
+export interface RegressionTransform {
+  /**
+   * The data field of the dependent variable to predict.
+   */
+  regression: string;
+
+  /**
+   * The data field of the independent variable to use a predictor.
+   */
+  on: string;
+
+  /**
+   * The data fields to group by. If not specified, a single group containing all data objects will be used.
+   */
+  groupby?: string[];
+
+  /**
+   * The functional form of the regression model. One of "linear", "log", "exp", "pow", "quad", or "poly".
+   *
+   * __Default value:__ `"linear"`
+   */
+  method?: 'linear' | 'log' | 'exp' | 'pow' | 'quad' | 'poly';
+
+  /**
+   * The polynomial order (number of coefficients) for the 'poly' method.
+   *
+   * __Default value:__ `3`
+   */
+  order?: number;
+
+  /**
+   * A [min, max] domain over the independent (x) field for the starting and ending points of the generated trend line.
+   */
+  extent?: [number, number];
+
+  /**
+   * A boolean flag indicating if the transform should return the regression model parameters (one object per group), rather than trend line points.
+   * The resulting objects include a `coef` array of fitted coefficient values (starting with the intercept term and then including terms of increasing order)
+   * and an `rSquared` value (indicating the total variance explained by the model).
+   *
+   * __Default value:__ `false`
+   */
+  params?: boolean;
+
+  /**
+   * The output field names for the smoothed points generated by the regression transform.
+   *
+   * __Default value:__ The field names of the input x and y values.
+   */
+  as?: [string, string];
+}
+
+export function isRegression(t: Transform): t is RegressionTransform {
+  return t['regression'] !== undefined;
+}
+
+export interface LoessTransform {
+  /**
+   * The data field of the dependent variable to smooth.
+   */
+  loess: string;
+
+  /**
+   * The data field of the independent variable to use a predictor.
+   */
+  on: string;
+
+  /**
+   * The data fields to group by. If not specified, a single group containing all data objects will be used.
+   */
+  groupby?: string[];
+
+  /**
+   * A bandwidth parameter in the range [0, 1] that determines the amount of smoothing.
+   *
+   * __Default value:__ `0.3`
+   */
+  bandwidth?: number;
+
+  /**
+   * The output field names for the smoothed points generated by the loess transform.
+   *
+   * __Default value:__ The field names of the input x and y values.
+   */
+  as?: [string, string];
+}
+
+export function isLoess(t: Transform): t is LoessTransform {
+  return t['loess'] !== undefined;
+}
+
 export function isLookup(t: Transform): t is LookupTransform {
   return t['lookup'] !== undefined;
 }
@@ -410,16 +603,20 @@ export type Transform =
   | AggregateTransform
   | BinTransform
   | CalculateTransform
+  | DensityTransform
   | FilterTransform
   | FlattenTransform
   | FoldTransform
   | ImputeTransform
   | JoinAggregateTransform
+  | LoessTransform
   | LookupTransform
+  | RegressionTransform
   | TimeUnitTransform
   | SampleTransform
   | StackTransform
-  | WindowTransform;
+  | WindowTransform
+  | PivotTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {

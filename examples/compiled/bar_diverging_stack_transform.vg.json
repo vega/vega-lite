@@ -305,9 +305,6 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "type"},
-          "tooltip": {
-            "signal": "{\"Percentage\": format(datum[\"nx\"], \"\"), \"nx2\": format(datum[\"nx2\"], \"\"), \"Question\": ''+datum[\"question\"], \"Response\": ''+datum[\"type\"]}"
-          },
           "x": {"scale": "x", "field": "nx"},
           "x2": {"scale": "x", "field": "nx2"},
           "y": {"scale": "y", "field": "question"},
@@ -350,16 +347,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Percentage",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -371,6 +358,16 @@
       "zindex": 0
     },
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Percentage",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "grid": false,
@@ -379,7 +376,7 @@
       "minExtent": 60,
       "offset": 5,
       "ticks": false,
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "legends": [

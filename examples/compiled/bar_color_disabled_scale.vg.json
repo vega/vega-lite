@@ -41,9 +41,6 @@
       "encode": {
         "update": {
           "fill": {"field": "color"},
-          "tooltip": {
-            "signal": "{\"color\": ''+datum[\"color\"], \"b\": format(datum[\"b\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "color"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "b"},
@@ -72,25 +69,6 @@
   ],
   "axes": [
     {
-      "scale": "x",
-      "orient": "bottom",
-      "grid": false,
-      "title": "color",
-      "labelAlign": "right",
-      "labelAngle": 270,
-      "labelBaseline": "middle",
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
-      "grid": false,
-      "title": "b",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
       "scale": "y",
       "orient": "left",
       "gridScale": "x",
@@ -101,6 +79,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "color",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "b",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

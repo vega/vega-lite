@@ -48,16 +48,6 @@
           "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
         }
       ]
-    },
-    {
-      "name": "data_4",
-      "source": "data_1",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-        }
-      ]
     }
   ],
   "signals": [
@@ -116,9 +106,6 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
-              "tooltip": {
-                "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
-              },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
               "defined": {
@@ -142,9 +129,6 @@
           ],
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "symbol"},
-          "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
-          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
         }
@@ -159,10 +143,7 @@
           "fill": {"value": "transparent"},
           "strokeWidth": {"value": 0.35},
           "stroke": {"value": "transparent"},
-          "isVoronoi": {"value": true},
-          "tooltip": {
-            "signal": "{\"date\": timeFormat(datum.datum[\"date\"], '%b %d, %Y'), \"price\": format(datum.datum[\"price\"], \"\"), \"symbol\": ''+datum.datum[\"symbol\"]}"
-          }
+          "isVoronoi": {"value": true}
         }
       },
       "transform": [
@@ -182,9 +163,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "gray"},
-          "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y')}"
-          },
           "x": {"scale": "x", "field": "date"},
           "y": {"field": {"group": "height"}},
           "y2": {"value": 0}
@@ -203,9 +181,7 @@
           "align": {"value": "left"},
           "dx": {"value": 5},
           "dy": {"value": -5},
-          "tooltip": {
-            "signal": "{\"price\": format(datum[\"price\"], \"\"), \"date\": timeFormat(datum[\"date\"], '%b %d, %Y')}"
-          },
+          "fill": {"value": "black"},
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "text": {"signal": "format(datum[\"price\"], \"\")"},
@@ -217,16 +193,13 @@
       "name": "layer_1_layer_1_layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_4"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "align": {"value": "left"},
           "dx": {"value": 5},
           "dy": {"value": -5},
-          "fill": {"scale": "fill", "field": "symbol"},
-          "tooltip": {
-            "signal": "{\"price\": format(datum[\"price\"], \"\"), \"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"symbol\": ''+datum[\"symbol\"]}"
-          },
+          "fill": {"scale": "color", "field": "symbol"},
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "text": {"signal": "format(datum[\"price\"], \"\")"},
@@ -244,8 +217,7 @@
           {"data": "source_0", "field": "date"},
           {"data": "data_0", "field": "date"},
           {"data": "data_2", "field": "date"},
-          {"data": "data_3", "field": "date"},
-          {"data": "data_4", "field": "date"}
+          {"data": "data_3", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -257,8 +229,7 @@
         "fields": [
           {"data": "source_0", "field": "price"},
           {"data": "data_0", "field": "price"},
-          {"data": "data_3", "field": "price"},
-          {"data": "data_4", "field": "price"}
+          {"data": "data_3", "field": "price"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -271,30 +242,15 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "symbol"},
-          {"data": "data_0", "field": "symbol"}
+          {"data": "data_0", "field": "symbol"},
+          {"data": "data_3", "field": "symbol"}
         ],
         "sort": true
       },
       "range": "category"
-    },
-    {
-      "name": "fill",
-      "type": "ordinal",
-      "domain": {"data": "data_4", "field": "symbol", "sort": true},
-      "range": "category"
     }
   ],
   "axes": [
-    {
-      "scale": "x",
-      "orient": "bottom",
-      "grid": false,
-      "title": "date",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
     {
       "scale": "x",
       "orient": "bottom",
@@ -311,15 +267,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "price",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -328,6 +275,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],

@@ -82,7 +82,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"]) && datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"])"
+          "expr": "datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"]) && datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
         }
       ]
     },
@@ -92,7 +92,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"]) && datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
+          "expr": "datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
         }
       ]
     },
@@ -102,67 +102,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_10",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"]) && datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_11",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"]) && datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_12",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
           "expr": "datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_13",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"]) && datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_14",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"]) && datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_15",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"]) && datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"])"
         }
       ]
     }
@@ -187,9 +127,6 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"])",
@@ -218,16 +155,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_sepalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_sepalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_sepalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -241,15 +168,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_sepalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_sepalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_sepalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -258,6 +176,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_sepalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_sepalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -280,9 +217,6 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"])",
@@ -311,16 +245,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -334,15 +258,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -351,6 +266,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -373,9 +307,6 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"])",
@@ -404,16 +335,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_petalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_petalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_petalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -427,15 +348,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_petalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_petalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_petalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -444,6 +356,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_petalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_petalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -466,9 +397,6 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"])",
@@ -497,16 +425,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_petalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_petalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_petalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -520,15 +438,6 @@
         {
           "scale": "child__repeat_row_petalWidth__repeat_column_petalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalWidth__repeat_column_petalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_petalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -537,6 +446,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_petalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalWidth__repeat_column_petalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -559,9 +487,6 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"petalLength\": format(datum[\"petalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"])",
@@ -590,16 +515,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_sepalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_sepalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalLength__repeat_column_sepalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -613,15 +528,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_sepalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_sepalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalLength__repeat_column_sepalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -630,6 +536,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_sepalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_sepalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -652,9 +577,6 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"petalLength\": format(datum[\"petalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"])",
@@ -683,16 +605,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_sepalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_sepalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalLength__repeat_column_sepalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -706,15 +618,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_sepalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_sepalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalLength__repeat_column_sepalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -723,6 +626,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_sepalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_sepalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -745,9 +667,6 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"])",
@@ -776,16 +695,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_petalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_petalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalLength__repeat_column_petalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -799,15 +708,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_petalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_petalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalLength__repeat_column_petalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -816,6 +716,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_petalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_petalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -832,15 +751,12 @@
           "name": "child__repeat_row_petalLength__repeat_column_petalWidth_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_7"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"petalLength\": format(datum[\"petalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"])",
@@ -869,16 +785,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_petalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_petalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_petalLength__repeat_column_petalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -892,15 +798,6 @@
         {
           "scale": "child__repeat_row_petalLength__repeat_column_petalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "petalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_petalLength__repeat_column_petalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_petalLength__repeat_column_petalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -909,6 +806,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_petalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_petalLength__repeat_column_petalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "petalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -925,15 +841,12 @@
           "name": "child__repeat_row_sepalWidth__repeat_column_sepalLength_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_8"},
+          "from": {"data": "data_7"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"])",
@@ -962,16 +875,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -985,15 +888,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1002,6 +896,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1018,15 +931,12 @@
           "name": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_9"},
+          "from": {"data": "data_8"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"])",
@@ -1055,16 +965,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1078,15 +978,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1095,6 +986,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1111,15 +1021,12 @@
           "name": "child__repeat_row_sepalWidth__repeat_column_petalLength_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_10"},
+          "from": {"data": "data_5"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"])",
@@ -1148,16 +1055,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_petalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_petalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_petalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1171,15 +1068,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_petalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_petalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_petalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1188,6 +1076,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_petalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_petalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1204,15 +1111,12 @@
           "name": "child__repeat_row_sepalWidth__repeat_column_petalWidth_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_11"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"])",
@@ -1241,16 +1145,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1264,15 +1158,6 @@
         {
           "scale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1281,6 +1166,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1297,15 +1201,12 @@
           "name": "child__repeat_row_sepalLength__repeat_column_sepalLength_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_12"},
+          "from": {"data": "data_9"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"])",
@@ -1334,16 +1235,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_sepalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_sepalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_sepalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1357,15 +1248,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_sepalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_sepalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_sepalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1374,6 +1256,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_sepalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_sepalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1390,15 +1291,12 @@
           "name": "child__repeat_row_sepalLength__repeat_column_sepalWidth_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_13"},
+          "from": {"data": "data_7"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"])",
@@ -1427,16 +1325,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "sepalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1450,15 +1338,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1467,6 +1346,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "sepalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1483,15 +1381,12 @@
           "name": "child__repeat_row_sepalLength__repeat_column_petalLength_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_14"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"])",
@@ -1520,16 +1415,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_petalLength_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalLength",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_petalLength_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_petalLength_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1543,15 +1428,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_petalLength_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_petalLength_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_petalLength_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1560,6 +1436,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_petalLength_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalLength",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_petalLength_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1576,15 +1471,12 @@
           "name": "child__repeat_row_sepalLength__repeat_column_petalWidth_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_15"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
-              "tooltip": {
-                "signal": "{\"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
-              },
               "x": [
                 {
                   "test": "datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"])",
@@ -1613,16 +1505,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_petalWidth_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "petalWidth",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_petalWidth_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_petalWidth_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -1636,15 +1518,6 @@
         {
           "scale": "child__repeat_row_sepalLength__repeat_column_petalWidth_y",
           "orient": "left",
-          "grid": false,
-          "title": "sepalLength",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_row_sepalLength__repeat_column_petalWidth_y",
-          "orient": "left",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_petalWidth_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -1653,6 +1526,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_petalWidth_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "petalWidth",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_row_sepalLength__repeat_column_petalWidth_y",
+          "orient": "left",
+          "grid": false,
+          "title": "sepalLength",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1673,13 +1565,7 @@
           {"data": "data_6", "field": "species"},
           {"data": "data_7", "field": "species"},
           {"data": "data_8", "field": "species"},
-          {"data": "data_9", "field": "species"},
-          {"data": "data_10", "field": "species"},
-          {"data": "data_11", "field": "species"},
-          {"data": "data_12", "field": "species"},
-          {"data": "data_13", "field": "species"},
-          {"data": "data_14", "field": "species"},
-          {"data": "data_15", "field": "species"}
+          {"data": "data_9", "field": "species"}
         ],
         "sort": true
       },
@@ -1800,7 +1686,7 @@
     {
       "name": "child__repeat_row_petalLength__repeat_column_petalWidth_x",
       "type": "linear",
-      "domain": {"data": "data_7", "field": "petalWidth"},
+      "domain": {"data": "data_2", "field": "petalWidth"},
       "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
@@ -1808,7 +1694,7 @@
     {
       "name": "child__repeat_row_petalLength__repeat_column_petalWidth_y",
       "type": "linear",
-      "domain": {"data": "data_7", "field": "petalLength"},
+      "domain": {"data": "data_2", "field": "petalLength"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
@@ -1816,7 +1702,7 @@
     {
       "name": "child__repeat_row_sepalWidth__repeat_column_sepalLength_x",
       "type": "linear",
-      "domain": {"data": "data_8", "field": "sepalLength"},
+      "domain": {"data": "data_7", "field": "sepalLength"},
       "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
@@ -1824,7 +1710,7 @@
     {
       "name": "child__repeat_row_sepalWidth__repeat_column_sepalLength_y",
       "type": "linear",
-      "domain": {"data": "data_8", "field": "sepalWidth"},
+      "domain": {"data": "data_7", "field": "sepalWidth"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
@@ -1832,7 +1718,7 @@
     {
       "name": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_x",
       "type": "linear",
-      "domain": {"data": "data_9", "field": "sepalWidth"},
+      "domain": {"data": "data_8", "field": "sepalWidth"},
       "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
@@ -1840,7 +1726,7 @@
     {
       "name": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_y",
       "type": "linear",
-      "domain": {"data": "data_9", "field": "sepalWidth"},
+      "domain": {"data": "data_8", "field": "sepalWidth"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
@@ -1848,7 +1734,7 @@
     {
       "name": "child__repeat_row_sepalWidth__repeat_column_petalLength_x",
       "type": "linear",
-      "domain": {"data": "data_10", "field": "petalLength"},
+      "domain": {"data": "data_5", "field": "petalLength"},
       "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
@@ -1856,7 +1742,7 @@
     {
       "name": "child__repeat_row_sepalWidth__repeat_column_petalLength_y",
       "type": "linear",
-      "domain": {"data": "data_10", "field": "sepalWidth"},
+      "domain": {"data": "data_5", "field": "sepalWidth"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
@@ -1864,7 +1750,7 @@
     {
       "name": "child__repeat_row_sepalWidth__repeat_column_petalWidth_x",
       "type": "linear",
-      "domain": {"data": "data_11", "field": "petalWidth"},
+      "domain": {"data": "data_1", "field": "petalWidth"},
       "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
@@ -1872,7 +1758,7 @@
     {
       "name": "child__repeat_row_sepalWidth__repeat_column_petalWidth_y",
       "type": "linear",
-      "domain": {"data": "data_11", "field": "sepalWidth"},
+      "domain": {"data": "data_1", "field": "sepalWidth"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
@@ -1880,7 +1766,7 @@
     {
       "name": "child__repeat_row_sepalLength__repeat_column_sepalLength_x",
       "type": "linear",
-      "domain": {"data": "data_12", "field": "sepalLength"},
+      "domain": {"data": "data_9", "field": "sepalLength"},
       "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
@@ -1888,7 +1774,7 @@
     {
       "name": "child__repeat_row_sepalLength__repeat_column_sepalLength_y",
       "type": "linear",
-      "domain": {"data": "data_12", "field": "sepalLength"},
+      "domain": {"data": "data_9", "field": "sepalLength"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
@@ -1896,7 +1782,7 @@
     {
       "name": "child__repeat_row_sepalLength__repeat_column_sepalWidth_x",
       "type": "linear",
-      "domain": {"data": "data_13", "field": "sepalWidth"},
+      "domain": {"data": "data_7", "field": "sepalWidth"},
       "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
@@ -1904,7 +1790,7 @@
     {
       "name": "child__repeat_row_sepalLength__repeat_column_sepalWidth_y",
       "type": "linear",
-      "domain": {"data": "data_13", "field": "sepalLength"},
+      "domain": {"data": "data_7", "field": "sepalLength"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
@@ -1912,7 +1798,7 @@
     {
       "name": "child__repeat_row_sepalLength__repeat_column_petalLength_x",
       "type": "linear",
-      "domain": {"data": "data_14", "field": "petalLength"},
+      "domain": {"data": "data_4", "field": "petalLength"},
       "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
@@ -1920,7 +1806,7 @@
     {
       "name": "child__repeat_row_sepalLength__repeat_column_petalLength_y",
       "type": "linear",
-      "domain": {"data": "data_14", "field": "sepalLength"},
+      "domain": {"data": "data_4", "field": "sepalLength"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
@@ -1928,7 +1814,7 @@
     {
       "name": "child__repeat_row_sepalLength__repeat_column_petalWidth_x",
       "type": "linear",
-      "domain": {"data": "data_15", "field": "petalWidth"},
+      "domain": {"data": "data_0", "field": "petalWidth"},
       "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
@@ -1936,7 +1822,7 @@
     {
       "name": "child__repeat_row_sepalLength__repeat_column_petalWidth_y",
       "type": "linear",
-      "domain": {"data": "data_15", "field": "sepalLength"},
+      "domain": {"data": "data_0", "field": "sepalLength"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true

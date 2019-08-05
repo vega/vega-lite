@@ -142,9 +142,6 @@
               "align": {"value": "center"},
               "baseline": {"value": "middle"},
               "fill": {"scale": "color", "field": "Origin"},
-              "tooltip": {
-                "signal": "{\"Origin\": format(datum[\"min_xc\"], \"\")}"
-              },
               "x": {"scale": "x", "field": "min_xc"},
               "y": {"signal": "concat_0_height", "mult": 0.5},
               "text": {"signal": "''+datum[\"Origin\"]"}
@@ -161,7 +158,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(width/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -204,9 +201,6 @@
             "update": {
               "baseline": {"value": "middle"},
               "fill": {"value": "black"},
-              "tooltip": {
-                "signal": "{\"xc\": format(datum[\"xc\"], \"\"), \"Cylinders\": format(datum[\"yc\"], \"\")}"
-              },
               "x": {"scale": "x", "field": "xc"},
               "y": {"scale": "concat_1_y", "field": "yc"},
               "text": {"signal": "''+datum[\"Cylinders\"]"},
@@ -223,7 +217,7 @@
           "title": "Cylinders",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_1_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     }

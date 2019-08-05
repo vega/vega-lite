@@ -40,9 +40,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date (year-month-date-hours-minutes)\": timeFormat(datum[\"utcyearmonthdatehoursminutes_date\"], '%b %d, %Y %H:%M'), \"price\": format(datum[\"price\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "utcyearmonthdatehoursminutes_date"},
           "y": {"scale": "y", "field": "price"},
           "defined": {
@@ -75,23 +72,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "date (year-month-date-hours-minutes)",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "encode": {
-        "labels": {
-          "update": {
-            "text": {"signal": "timeFormat(datum.value, '%b %d, %Y %H:%M')"}
-          }
-        }
-      },
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -105,15 +85,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "price",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -122,6 +93,32 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date (year-month-date-hours-minutes)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "labels": {
+          "update": {
+            "text": {"signal": "timeFormat(datum.value, '%b %d, %Y %H:%M')"}
+          }
+        }
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

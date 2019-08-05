@@ -310,4 +310,10 @@ describe('compile/axis', () => {
       expect(defaultLabelBaseline(undefined, 'left')).toEqual(undefined);
     });
   });
+
+  describe('defaultZindex', () => {
+    it('returns 1 for discrete axes of rect marks', () => {
+      expect(properties.defaultZindex('rect', {field: 'a', type: 'nominal'})).toBe(1);
+    });
+  });
 });

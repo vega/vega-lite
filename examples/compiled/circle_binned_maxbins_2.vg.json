@@ -68,9 +68,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_2_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_2_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_2_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_2_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_2_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_2_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_2_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_2_Rotten_Tomatoes_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-          },
           "x": [
             {
               "test": "datum[\"bin_maxbins_2_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_2_IMDB_Rating\"])",
@@ -138,7 +135,7 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/10)"},
-      "zindex": 1
+      "zindex": 0
     },
     {
       "scale": "y",
@@ -147,7 +144,7 @@
       "title": "Rotten_Tomatoes_Rating (binned)",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/10)"},
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "legends": [

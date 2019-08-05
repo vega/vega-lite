@@ -41,9 +41,6 @@
         "update": {
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "yearmonth_date"},
-          "tooltip": {
-            "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], '%b %Y'), \"Mean of temp\": format(datum[\"mean_temp\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "mean_temp"},
           "y": {"signal": "height", "mult": 0.5}
         }
@@ -71,16 +68,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Mean of temp",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
@@ -88,6 +75,16 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Mean of temp",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 0
     }
   ],

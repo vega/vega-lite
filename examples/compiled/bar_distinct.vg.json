@@ -36,9 +36,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Distinct of Name\": format(datum[\"distinct_Name\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Origin"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "distinct_Name"},
@@ -67,25 +64,6 @@
   ],
   "axes": [
     {
-      "scale": "x",
-      "orient": "bottom",
-      "grid": false,
-      "title": "Origin",
-      "labelAlign": "right",
-      "labelAngle": 270,
-      "labelBaseline": "middle",
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
-      "grid": false,
-      "title": "Distinct of Name",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
       "scale": "y",
       "orient": "left",
       "gridScale": "x",
@@ -96,6 +74,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Origin",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Distinct of Name",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

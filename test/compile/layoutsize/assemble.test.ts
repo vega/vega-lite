@@ -1,6 +1,4 @@
-import {X} from '../../../src/channel';
 import {sizeSignals} from '../../../src/compile/layoutsize/assemble';
-import * as log from '../../../src/log';
 import {parseFacetModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/layout', () => {
@@ -95,31 +93,7 @@ describe('compile/layout', () => {
       ]);
     });
 
-    it('should return static view size for ordinal x-scale with null', () => {
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: 'point',
-        encoding: {
-          x: {field: 'a', type: 'ordinal', scale: {rangeStep: null}}
-        }
-      });
-
-      const size = sizeSignals(model, 'width');
-      expect(size).toEqual([{name: 'width', value: 200}]);
-    });
-
-    it('should return static view size for ordinal y-scale with null', () => {
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: 'point',
-        encoding: {
-          y: {field: 'a', type: 'ordinal', scale: {rangeStep: null}}
-        }
-      });
-
-      const size = sizeSignals(model, 'height');
-      expect(size).toEqual([{name: 'height', value: 200}]);
-    });
-
-    it('should return static view size for ordinal scale with top-level width', () => {
+    it('should return static view size for ordinal scale with top-level numeric width', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         width: 205,
         mark: 'point',
@@ -132,24 +106,7 @@ describe('compile/layout', () => {
       expect(size).toEqual([{name: 'width', value: 205}]);
     });
 
-    it(
-      'should return static view size for ordinal scale with top-level width even if there is numeric rangeStep',
-      log.wrap(localLogger => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          width: 205,
-          mark: 'point',
-          encoding: {
-            x: {field: 'a', type: 'ordinal', scale: {rangeStep: 20}}
-          }
-        });
-
-        const size = sizeSignals(model, 'width');
-        expect(size).toEqual([{name: 'width', value: 205}]);
-        expect(localLogger.warns[0]).toEqual(log.message.rangeStepDropped(X));
-      })
-    );
-
-    it('should return static view width for non-ordinal x-scale', () => {
+    it('should return static view width for continuous x-scale', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
         encoding: {
@@ -161,7 +118,7 @@ describe('compile/layout', () => {
       expect(size).toEqual([{name: 'width', value: 200}]);
     });
 
-    it('should return static view size for non-ordinal y-scale', () => {
+    it('should return static view size for continuous y-scale', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
         encoding: {
@@ -173,24 +130,18 @@ describe('compile/layout', () => {
       expect(size).toEqual([{name: 'height', value: 200}]);
     });
 
-    it('should return default rangeStep if axis is not mapped', () => {
+    it('should return default discreteWidth/Height if axis is not mapped', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
         encoding: {},
-        config: {scale: {rangeStep: 17}}
+        config: {view: {discreteWidth: 17, discreteHeight: 18}}
       });
-      const size = sizeSignals(model, 'width');
-      expect(size).toEqual([{name: 'width', value: 17}]);
-    });
 
-    it('should return textXRangeStep if axis is not mapped for X of text mark', () => {
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: 'text',
-        encoding: {},
-        config: {scale: {textXRangeStep: 91}}
-      });
-      const size = sizeSignals(model, 'width');
-      expect(size).toEqual([{name: 'width', value: 91}]);
+      const width = sizeSignals(model, 'width');
+      expect(width).toEqual([{name: 'width', value: 17}]);
+
+      const height = sizeSignals(model, 'height');
+      expect(height).toEqual([{name: 'height', value: 18}]);
     });
   });
 });

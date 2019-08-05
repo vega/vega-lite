@@ -300,9 +300,6 @@
                 },
                 {"value": "steelblue"}
               ],
-              "tooltip": {
-                "signal": "{\"date (seconds)\": timeFormat(datum[\"seconds_date\"], '%S'), \"price\": format(datum[\"price\"], \"\")}"
-              },
               "x": {"scale": "concat_0_x", "field": "seconds_date"},
               "y": {"scale": "concat_0_y", "field": "price"}
             }
@@ -355,21 +352,6 @@
         {
           "scale": "concat_0_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "date (seconds)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
-          "encode": {
-            "labels": {
-              "update": {"text": {"signal": "timeFormat(datum.value, '%S')"}}
-            }
-          },
-          "zindex": 1
-        },
-        {
-          "scale": "concat_0_x",
-          "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
           "tickCount": {"signal": "ceil(concat_0_width/40)"},
@@ -383,15 +365,6 @@
         {
           "scale": "concat_0_y",
           "orient": "left",
-          "grid": false,
-          "title": "price",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "concat_0_y",
-          "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -400,6 +373,30 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "date (seconds)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "encode": {
+            "labels": {
+              "update": {"text": {"signal": "timeFormat(datum.value, '%S')"}}
+            }
+          },
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "grid": false,
+          "title": "price",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -425,9 +422,6 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"value": "goldenrod"},
-              "tooltip": {
-                "signal": "{\"date (minutes)\": timeFormat(datum[\"minutes_date\"], '%M'), \"price\": format(datum[\"price\"], \"\")}"
-              },
               "x": {"scale": "concat_1_x", "field": "minutes_date"},
               "y": {"scale": "concat_1_y", "field": "price"}
             }
@@ -435,21 +429,6 @@
         }
       ],
       "axes": [
-        {
-          "scale": "concat_1_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "date (minutes)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_width/40)"},
-          "encode": {
-            "labels": {
-              "update": {"text": {"signal": "timeFormat(datum.value, '%M')"}}
-            }
-          },
-          "zindex": 1
-        },
         {
           "scale": "concat_1_x",
           "orient": "bottom",
@@ -466,15 +445,6 @@
         {
           "scale": "concat_1_y",
           "orient": "left",
-          "grid": false,
-          "title": "price",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "concat_1_y",
-          "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -483,6 +453,30 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_1_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "date (minutes)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "encode": {
+            "labels": {
+              "update": {"text": {"signal": "timeFormat(datum.value, '%M')"}}
+            }
+          },
+          "zindex": 0
+        },
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "grid": false,
+          "title": "price",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]

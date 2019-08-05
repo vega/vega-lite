@@ -1,6 +1,7 @@
 import {
   AggregateOp,
   Align,
+  Color,
   Compare as VgCompare,
   ExprRef as VgExprRef,
   Field as VgField,
@@ -8,19 +9,22 @@ import {
   FoldTransform as VgFoldTransform,
   FontStyle as VgFontStyle,
   FontWeight as VgFontWeight,
+  KDETransform as VgKDETransform,
   LayoutAlign,
+  LoessTransform as VgLoessTransform,
   Orientation,
   ProjectionType,
+  RegressionTransform as VgRegressionTransform,
   SampleTransform as VgSampleTransform,
   SignalRef,
   SortField as VgSortField,
   TextBaseline as VgTextBaseline,
   Title as VgTitle,
-  UnionSortField as VgUnionSortField,
-  Color
+  UnionSortField as VgUnionSortField
 } from 'vega';
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
+import {Gradient, ValueOrGradient} from './channeldef';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';
@@ -56,9 +60,9 @@ export function isSignalRef(o: any): o is SignalRef {
 
 export type EventStream = any;
 
-// TODO: add type of value (Make it VgValueRef<T> {value?:T ...})
+// TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
 export interface VgValueRef {
-  value?: number | string | boolean;
+  value?: ValueOrGradient | number[];
   field?:
     | string
     | {
@@ -388,6 +392,15 @@ export interface VgIdentifierTransform {
   as: string;
 }
 
+export interface VgPivotTransform {
+  type: 'pivot';
+  field: string;
+  value: string;
+  groupby?: string[];
+  limit?: number;
+  op?: string;
+}
+
 export type VgTransform =
   | VgBinTransform
   | VgExtentTransform
@@ -407,7 +420,11 @@ export type VgTransform =
   | VgJoinAggregateTransform
   | VgFoldTransform
   | VgSampleTransform
-  | VgSequenceTransform;
+  | VgSequenceTransform
+  | VgKDETransform
+  | VgLoessTransform
+  | VgRegressionTransform
+  | VgPivotTransform;
 
 export interface VgGraticuleTransform {
   type: 'graticule';
@@ -432,7 +449,7 @@ export interface VgGeoPointTransform {
   type: 'geopoint';
   projection: string; // projection name
   fields: (VgField | VgExprRef)[];
-  as?: string[];
+  as?: [string, string];
 }
 
 export interface VgGeoShapeTransform {
@@ -536,6 +553,16 @@ export interface BaseMarkConfig {
   y?: number | 'height';
 
   /**
+   * Width of the marks.
+   */
+  width?: number;
+
+  /**
+   * Height of the marks.
+   */
+  height?: number;
+
+  /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    *
    * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
@@ -550,30 +577,25 @@ export interface BaseMarkConfig {
   y2?: number | 'width';
 
   /**
-   * Width of the marks.
+   * Whether to keep aspect ratio of image marks.
    */
-  width?: number;
+  aspect?: boolean;
 
   /**
-   * Height of the marks.
-   */
-  height?: number;
-
-  /**
-   * Default Fill Color.  This has higher precedence than `config.color`
+   * Default Fill Color.  This has higher precedence than `config.color`.
    *
    * __Default value:__ (None)
    *
    */
-  fill?: Color;
+  fill?: Color | Gradient;
 
   /**
-   * Default Stroke Color.  This has higher precedence than `config.color`
+   * Default Stroke Color.  This has higher precedence than `config.color`.
    *
    * __Default value:__ (None)
    *
    */
-  stroke?: Color;
+  stroke?: Color | Gradient;
 
   // ---------- Opacity ----------
   /**
@@ -706,7 +728,7 @@ export interface BaseMarkConfig {
   // Text / Label Mark Config
 
   /**
-   * The horizontal alignment of the text. One of `"left"`, `"right"`, `"center"`.
+   * The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `"left"`, `"right"`, `"center"`.
    */
   align?: Align;
 
@@ -718,10 +740,9 @@ export interface BaseMarkConfig {
   angle?: number;
 
   /**
-   * The vertical alignment of the text. One of `"top"`, `"middle"`, `"bottom"`.
+   * The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `"top"`, `"middle"`, `"bottom"`.
    *
    * __Default value:__ `"middle"`
-   *
    */
   baseline?: VgTextBaseline;
 
@@ -863,10 +884,11 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
   x2: 1,
   y2: 1,
   width: 1,
-  height: 1
+  height: 1,
+  aspect: 1
 
   // commented below are vg channel that do not have mark config.
-  // xc'|'width'|'yc'|'height'
+  // xc'|'yc'
   // clip: 1,
   // endAngle: 1,
   // innerRadius: 1,

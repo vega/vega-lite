@@ -1,4 +1,4 @@
-import {isArray} from 'vega-util';
+import {array, isArray} from 'vega-util';
 import {isBinning} from '../bin';
 import {
   FieldDefBase,
@@ -33,6 +33,10 @@ export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (
 
 export function getStyles(mark: MarkDef): string[] {
   return [].concat(mark.type, mark.style || []);
+}
+
+export function getMarkPropOrConfig<P extends keyof MarkConfig>(channel: P, mark: MarkDef, config: Config) {
+  return getFirstDefined(mark[channel], getMarkConfig(channel, mark, config));
 }
 
 /**
@@ -178,7 +182,7 @@ export function sortParams(
   orderDef: OrderFieldDef<string> | OrderFieldDef<string>[],
   fieldRefOption?: FieldRefOption
 ): SortFields {
-  return (isArray(orderDef) ? orderDef : [orderDef]).reduce(
+  return array(orderDef).reduce(
     (s, orderChannelDef) => {
       s.field.push(vgField(orderChannelDef, fieldRefOption));
       s.order.push(orderChannelDef.sort || 'ascending');

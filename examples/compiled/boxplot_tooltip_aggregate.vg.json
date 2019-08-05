@@ -149,9 +149,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"people\": format(datum[\"people\"], \"\"), \"age\": ''+datum[\"age\"]}"
-          },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "people"}
         }
@@ -261,26 +258,6 @@
   ],
   "axes": [
     {
-      "scale": "x",
-      "orient": "bottom",
-      "grid": false,
-      "title": "age",
-      "labelAlign": "right",
-      "labelAngle": 270,
-      "labelBaseline": "middle",
-      "labelOverlap": true,
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
-      "grid": false,
-      "title": "people",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
       "scale": "y",
       "orient": "left",
       "gridScale": "x",
@@ -291,6 +268,26 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "age",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "labelOverlap": true,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "people",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

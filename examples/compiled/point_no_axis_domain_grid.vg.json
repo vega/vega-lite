@@ -30,9 +30,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"}
         }
@@ -66,7 +63,7 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
+      "zindex": 0
     },
     {
       "scale": "y",
@@ -75,7 +72,7 @@
       "title": "Miles_per_Gallon",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "config": {"axis": {"domain": false, "grid": false}}

@@ -1,9 +1,8 @@
-import {AggregateOp} from 'vega';
 import {isObject, isString} from 'vega-util';
-import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
+import {isAggregateOp, isArgmaxDef, isArgminDef, NonArgAggregateOp, SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {isBinning} from '../../bin';
-import {isScaleChannel, ScaleChannel} from '../../channel';
-import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
+import {getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
+import {binRequiresRange, hasBand, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
 import * as log from '../../log';
@@ -29,9 +28,9 @@ import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {SELECTION_DOMAIN} from '../selection';
 import {SignalRefWrapper} from '../signal';
+import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
-import {Explicit, mergeValuesWithExplicit, makeExplicit, makeImplicit} from '../split';
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {
@@ -312,6 +311,28 @@ function parseSingleChannelDomain(
         ]);
       }
     }
+  } else if (
+    fieldDef.timeUnit &&
+    util.contains(['time', 'utc'], scaleType) &&
+    hasBand(
+      channel,
+      fieldDef,
+      isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined,
+      model.markDef,
+      model.config
+    )
+  ) {
+    const data = model.requestDataName(MAIN);
+    return makeImplicit([
+      {
+        data,
+        field: model.vgField(channel)
+      },
+      {
+        data,
+        field: model.vgField(channel, {suffix: 'end'})
+      }
+    ]);
   } else if (sort) {
     return makeImplicit([
       {
@@ -372,13 +393,27 @@ export function domainSort(
     return normalizeSortField(sort, isStacked);
   } else if (isSortByEncoding(sort)) {
     const {encoding, order} = sort;
-    const {aggregate, field} = model.fieldDef(encoding);
-    const sortField: EncodingSortField<string> = {
-      op: aggregate as AggregateOp, // Once we decouple aggregate from aggregate op we won't have to cast here
-      field,
-      order
-    };
-    return normalizeSortField(sortField, isStacked);
+    const fieldDefToSortBy = model.fieldDef(encoding);
+    const {aggregate, field} = fieldDefToSortBy;
+
+    if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
+      return normalizeSortField(
+        {
+          field: vgField(fieldDefToSortBy),
+          order
+        },
+        isStacked
+      );
+    } else if (isAggregateOp(aggregate) || !aggregate) {
+      return normalizeSortField(
+        {
+          op: aggregate as NonArgAggregateOp, // can't be argmin/argmax since we don't support them in encoding field def
+          field,
+          order
+        },
+        isStacked
+      );
+    }
   } else if (sort === 'descending') {
     return {
       op: 'min',

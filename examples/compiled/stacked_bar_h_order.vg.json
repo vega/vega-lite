@@ -44,9 +44,6 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "site"},
-          "tooltip": {
-            "signal": "{\"Sum of yield\": format(datum[\"sum_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"site\": ''+datum[\"site\"]}"
-          },
           "x": {"scale": "x", "field": "sum_yield_end"},
           "x2": {"scale": "x", "field": "sum_yield_start"},
           "y": {"scale": "y", "field": "variety"},
@@ -86,16 +83,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Sum of yield",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -107,11 +94,21 @@
       "zindex": 0
     },
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Sum of yield",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "grid": false,
       "title": "variety",
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "legends": [

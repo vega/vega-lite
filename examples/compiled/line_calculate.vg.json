@@ -41,9 +41,6 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of temp_range\": format(datum[\"mean_temp_range\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "month_date"},
           "y": {"scale": "y", "field": "mean_temp_range"},
           "defined": {
@@ -73,20 +70,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "date (month)",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
-        }
-      },
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "domain": false,
@@ -99,15 +82,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "Mean of temp_range",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -116,6 +90,29 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date (month)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+        }
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Mean of temp_range",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

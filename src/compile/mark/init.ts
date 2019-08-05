@@ -4,12 +4,32 @@ import {isContinuous, isFieldDef, TypedFieldDef} from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
 import * as log from '../../log';
-import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
+import {
+  AREA,
+  BAR,
+  CIRCLE,
+  IMAGE,
+  isMarkDef,
+  LINE,
+  Mark,
+  MarkDef,
+  POINT,
+  RECT,
+  RULE,
+  SQUARE,
+  TEXT,
+  TICK
+} from '../../mark';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, getFirstDefined} from '../../util';
 import {getMarkConfig} from '../common';
 
-export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, config: Config) {
+export function normalizeMarkDef(
+  mark: Mark | MarkDef,
+  encoding: Encoding<string>,
+  config: Config,
+  {graticule}: {graticule: boolean}
+) {
   const markDef: MarkDef = isMarkDef(mark) ? {...mark} : {type: mark};
 
   // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
@@ -27,7 +47,7 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
 
   const specifiedFilled = markDef.filled;
   if (specifiedFilled === undefined) {
-    markDef.filled = filled(markDef, config);
+    markDef.filled = graticule ? false : filled(markDef, config);
   }
 
   // set cursor, which should be pointer if href channel is present unless otherwise specified
@@ -69,6 +89,7 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
     case SQUARE:
     case TEXT:
     case RECT:
+    case IMAGE:
       // orient is meaningless for these marks.
       return undefined;
   }

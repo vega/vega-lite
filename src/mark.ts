@@ -1,12 +1,13 @@
 import {Color} from 'vega';
 import {toSet} from 'vega-util';
-import {Value} from './channeldef';
+import {Gradient, Value} from './channeldef';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
 import {contains, keys} from './util';
 import {BaseMarkConfig} from './vega.schema';
 
 export const AREA: 'area' = 'area';
 export const BAR: 'bar' = 'bar';
+export const IMAGE: 'image' = 'image';
 export const LINE: 'line' = 'line';
 export const POINT: 'point' = 'point';
 export const RECT: 'rect' = 'rect';
@@ -25,6 +26,7 @@ export type Mark =
   | typeof AREA
   | typeof BAR
   | typeof LINE
+  | typeof IMAGE
   | typeof TRAIL
   | typeof POINT
   | typeof TEXT
@@ -39,6 +41,7 @@ export type Mark =
 const MARK_INDEX: {[M in Mark]: 1} = {
   area: 1,
   bar: 1,
+  image: 1,
   line: 1,
   point: 1,
   text: 1,
@@ -59,22 +62,31 @@ export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'tra
   return contains(['line', 'area', 'trail'], m);
 }
 
+export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 'image' {
+  return contains(['rect', 'bar', 'image'], m);
+}
+
 export const PRIMITIVE_MARKS = keys(MARK_INDEX);
 
 export interface ColorMixins {
   /**
-   * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
+   * Default color.
    *
    * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
    *
-   * __Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
+   * __Note:__
+   * - This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
+   * - The `fill` and `stroke` properties have higher precedence than `color` and will override `color`.
    */
-  color?: Color;
+  color?: Color | Gradient;
 }
 
 export interface TooltipContent {
   content: 'encoding' | 'data';
 }
+
+/** @hide */
+export type Hide = 'hide';
 
 export interface MarkConfig extends ColorMixins, BaseMarkConfig {
   // ========== VL-Specific ==========
@@ -82,7 +94,7 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
   /**
    * Whether the mark's color should be used as fill color instead of stroke color.
    *
-   * __Default value:__ `false` for `point`, `line` and `rule`; otherwise, `true`.
+   * __Default value:__ `false` for all `point`, `line`, and `rule` marks as well as `geoshape` marks for [`graticule`](https://vega.github.io/vega-lite/docs/data.html#graticule) data sources; otherwise, `true`.
    *
    * __Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
    *
@@ -94,9 +106,13 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
   /**
    * The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.
    *
-   * - If `tooltip` is `{"content": "encoding"}`, then all fields from `encoding` will be used.
+   * - If `tooltip` is `true` or `{"content": "encoding"}`, then all fields from `encoding` will be used.
    * - If `tooltip` is `{"content": "data"}`, then all fields that appear in the highlighted data point will be used.
-   * - If set to `null`, then no tooltip will be used.
+   * - If set to `null` or `false`, then no tooltip will be used.
+   *
+   * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.
+   *
+   * __Default value:__ `null`
    */
   tooltip?: Value | TooltipContent | null;
 
@@ -106,7 +122,7 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    * - For `bar`, this represents the band size of the bar, in pixels.
    * - For `text`, this represents the font size, in pixels.
    *
-   * __Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.
+   * __Default value:__ `30` for point, circle, square marks; width/height's `step` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.
    *
    * @minimum 0
    */
@@ -116,6 +132,24 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    * For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.
    */
   order?: null | boolean;
+
+  /**
+   * Defines how Vega-Lite should handle marks for invalid values (`null` and `NaN`).
+   * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
+   * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
+   */
+  invalid?: 'filter' | Hide | null;
+
+  /**
+   * Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.
+   */
+  timeUnitBandPosition?: number;
+
+  /**
+   * Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.
+   * If set to `0.5`, bandwidth of the marks will be half of the time unit band step.
+   */
+  timeUnitBand?: number;
 }
 
 export interface RectBinSpacingMixins {
@@ -156,7 +190,14 @@ export const FILL_CONFIG = ['fill', 'fillOpacity'];
 
 export const FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
 
-export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = ['filled', 'color', 'tooltip'];
+export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = [
+  'filled',
+  'color',
+  'tooltip',
+  'invalid',
+  'timeUnitBandPosition',
+  'timeUnitBand'
+];
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   [k in typeof PRIMITIVE_MARKS[0]]?: (keyof MarkConfigMixins[k])[];
@@ -171,7 +212,8 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
 
 export const defaultMarkConfig: MarkConfig = {
   color: '#4c78a8',
-  tooltip: {content: 'encoding'}
+  invalid: 'filter',
+  timeUnitBand: 1
 };
 
 export interface MarkConfigMixins {
@@ -187,6 +229,9 @@ export interface MarkConfigMixins {
 
   /** Circle-Specific Config */
   circle?: MarkConfig;
+
+  /** Image-specific Config */
+  image?: RectConfig;
 
   /** Line-Specific Config */
   line?: LineConfig;
@@ -227,8 +272,7 @@ export interface RectConfig extends RectBinSpacingMixins, MarkConfig {
   continuousBandSize?: number;
 
   /**
-   * The default size of the bars with discrete dimensions.  If unspecified, the default size is  `bandSize-1`,
-   * which provides 1 pixel offset between bars.
+   * The default size of the bars with discrete dimensions.  If unspecified, the default size is  `step-2`, which provides 2 pixel offset between bars.
    * @minimum 0
    */
   discreteBandSize?: number;
@@ -342,12 +386,14 @@ const DEFAULT_RECT_BAND_SIZE = 5;
 
 export const defaultBarConfig: RectConfig = {
   binSpacing: 1,
-  continuousBandSize: DEFAULT_RECT_BAND_SIZE
+  continuousBandSize: DEFAULT_RECT_BAND_SIZE,
+  timeUnitBandPosition: 0.5
 };
 
 export const defaultRectConfig: RectConfig = {
   binSpacing: 0,
-  continuousBandSize: DEFAULT_RECT_BAND_SIZE
+  continuousBandSize: DEFAULT_RECT_BAND_SIZE,
+  timeUnitBandPosition: 0.5
 };
 
 export interface TextConfig extends MarkConfig {
@@ -361,7 +407,7 @@ export interface TickConfig extends MarkConfig, TickThicknessMixins {
   /**
    * The width of the ticks.
    *
-   * __Default value:__  3/4 of rangeStep.
+   * __Default value:__  3/4 of step (width step for horizontal ticks and height step for vertical ticks).
    * @minimum 0
    */
   bandSize?: number;

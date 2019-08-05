@@ -32,13 +32,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"population\": format(datum[\"sum_people\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "sum_people"},
           "x2": {"scale": "x", "value": 0},
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 19}
+          "height": {"value": 18}
         }
       }
     }
@@ -57,16 +54,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "population",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
@@ -74,6 +61,16 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "population",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 0
     }
   ]

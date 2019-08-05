@@ -67,9 +67,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"Mean of aggregate_gross\": format(datum[\"mean_aggregate_gross\"], \"\"), \"ranked_director\": ''+datum[\"ranked_director\"]}"
-          },
           "x": {"scale": "x", "field": "mean_aggregate_gross"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "ranked_director"},
@@ -108,15 +105,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -128,11 +116,20 @@
       "zindex": 0
     },
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "grid": false,
       "labelOverlap": true,
-      "zindex": 1
+      "zindex": 0
     }
   ]
 }

@@ -39,12 +39,9 @@
           "interpolate": {"value": "monotone"},
           "orient": {"value": "horizontal"},
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"Sum of Weight_in_lbs\": format(datum[\"sum_Weight_in_lbs\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
-          },
           "x": {"scale": "x", "field": "sum_Weight_in_lbs"},
-          "y": {"scale": "y", "field": "year_Year"},
           "x2": {"scale": "x", "value": 0},
+          "y": {"scale": "y", "field": "year_Year"},
           "defined": {
             "signal": "datum[\"sum_Weight_in_lbs\"] !== null && !isNaN(datum[\"sum_Weight_in_lbs\"]) && datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
           }
@@ -72,16 +69,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Sum of Weight_in_lbs",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -90,6 +77,29 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Sum of Weight_in_lbs",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 0
     },
     {
@@ -104,19 +114,6 @@
           "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
         }
       },
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
-      "gridScale": "x",
-      "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "domain": false,
-      "labels": false,
-      "maxExtent": 0,
-      "minExtent": 0,
-      "ticks": false,
       "zindex": 0
     }
   ]

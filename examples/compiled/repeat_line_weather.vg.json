@@ -63,9 +63,6 @@
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
-                  "tooltip": {
-                    "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of temp_max\": format(datum[\"mean_temp_max\"], \"\"), \"location\": ''+datum[\"location\"]}"
-                  },
                   "x": {
                     "scale": "child__repeat_repeat_temp_max_x",
                     "field": "month_date"
@@ -87,20 +84,6 @@
         {
           "scale": "child__repeat_repeat_temp_max_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "date (month)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "encode": {
-            "labels": {
-              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
-            }
-          },
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_temp_max_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_repeat_temp_max_y",
           "grid": true,
           "domain": false,
@@ -113,15 +96,6 @@
         {
           "scale": "child__repeat_repeat_temp_max_y",
           "orient": "left",
-          "grid": false,
-          "title": "Mean of temp_max",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_temp_max_y",
-          "orient": "left",
           "gridScale": "child__repeat_repeat_temp_max_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -130,6 +104,29 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_temp_max_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "date (month)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "encode": {
+            "labels": {
+              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+            }
+          },
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_temp_max_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Mean of temp_max",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -170,9 +167,6 @@
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
-                  "tooltip": {
-                    "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\"), \"location\": ''+datum[\"location\"]}"
-                  },
                   "x": {
                     "scale": "child__repeat_repeat_precipitation_x",
                     "field": "month_date"
@@ -194,20 +188,6 @@
         {
           "scale": "child__repeat_repeat_precipitation_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "date (month)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "encode": {
-            "labels": {
-              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
-            }
-          },
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_precipitation_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_repeat_precipitation_y",
           "grid": true,
           "domain": false,
@@ -220,15 +200,6 @@
         {
           "scale": "child__repeat_repeat_precipitation_y",
           "orient": "left",
-          "grid": false,
-          "title": "Mean of precipitation",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_precipitation_y",
-          "orient": "left",
           "gridScale": "child__repeat_repeat_precipitation_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -237,6 +208,29 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_precipitation_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "date (month)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "encode": {
+            "labels": {
+              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+            }
+          },
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_precipitation_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Mean of precipitation",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -275,9 +269,6 @@
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
-                  "tooltip": {
-                    "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of wind\": format(datum[\"mean_wind\"], \"\"), \"location\": ''+datum[\"location\"]}"
-                  },
                   "x": {
                     "scale": "child__repeat_repeat_wind_x",
                     "field": "month_date"
@@ -299,20 +290,6 @@
         {
           "scale": "child__repeat_repeat_wind_x",
           "orient": "bottom",
-          "grid": false,
-          "title": "date (month)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "encode": {
-            "labels": {
-              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
-            }
-          },
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_wind_x",
-          "orient": "bottom",
           "gridScale": "child__repeat_repeat_wind_y",
           "grid": true,
           "domain": false,
@@ -325,15 +302,6 @@
         {
           "scale": "child__repeat_repeat_wind_y",
           "orient": "left",
-          "grid": false,
-          "title": "Mean of wind",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_repeat_wind_y",
-          "orient": "left",
           "gridScale": "child__repeat_repeat_wind_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
@@ -342,6 +310,29 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_wind_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "date (month)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "encode": {
+            "labels": {
+              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+            }
+          },
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_repeat_wind_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Mean of wind",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]

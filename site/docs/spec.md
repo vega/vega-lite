@@ -25,9 +25,13 @@ All view specifications in Vega-Lite can contain the following properties:
 
 {% include table.html props="name,description,title,data,transform" source="TopLevelUnitSpec" %}
 
-In addition, all view composition specifications ([`layer`](layer.html), [`facet`](facet.html), [`concat`](concat.html), and [`repeat`](repeat.html)) and unit specifications with [facet channels](https://vega.github.io/vega-lite/docs/encoding.html#facet) can have the following composition layout and [resolution](https://vega.github.io/vega-lite/docs/resolve.html) properties:
+In addition, all view composition specifications ([`layer`](layer.html), [`facet`](facet.html), [`concat`](concat.html), and [`repeat`](repeat.html)) can have the [`resolve` property for scale, axes, and legend resolution](resolve.html):
 
-{% include table.html props="bounds,center,spacing,resolve" source="TopLevelUnitSpec" %}
+{% include table.html props="resolve" source="TopLevelFacetSpec" %}
+
+Finally, all view layout composition ([`facet`](facet.html), [`concat`](concat.html), and [`repeat`](repeat.html)) can have the following layout properties:
+
+{% include table.html props="align,bounds,center,spacing" source="TopLevelFacetSpec" %}
 
 {:#top-level}
 
@@ -119,8 +123,10 @@ To create layered and multi-view graphics, please refer to the following pages:
     "view": { // - View Configuration
 
       // View Size
-      "width": ...,
-      "height": ...,
+      "continuousWidth": ...,
+      "continuousHeight": ...,
+      "discreteWidth": ...,
+      "discreteHeight": ...,
       // View Background Properties
       "fill": ...,
       "stroke": ...,
@@ -133,8 +139,12 @@ To create layered and multi-view graphics, please refer to the following pages:
 
 The style of a single view visualization can be customized by specifying the `view` property of the `config` object. The view config support all [view background properties](#view-background) except `"style"`.
 
-In addition, the `width` and `height` properties of the `view` configuration determine the width of a single view with a continuous x-scale and the height of a single view with a continuous y-scale respectively.
+In addition, the following properties of the `view` configuration determine the default width and height of single and layered views.
 
-{% include table.html props="width,height" source="ViewConfig" %}
+{% include table.html props="continuousWidth,continuousHeight,discreteWidth,discreteHeight,step" source="ViewConfig" %}
+
+For example, setting the `step` property in the view config can adjust default discrete step in the plot.
+
+<span class="vl-example" data-name="bar_1d_step_config"></span>
 
 **For more information about view size, please see the [size](size.html) documentation.**

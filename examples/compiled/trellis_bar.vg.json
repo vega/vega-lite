@@ -87,7 +87,7 @@
           "title": "population",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -106,7 +106,7 @@
           "labelAngle": 270,
           "labelBaseline": "middle",
           "labelOverlap": true,
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -133,9 +133,6 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
-              "tooltip": {
-                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
-              },
               "x": {"scale": "x", "field": "age"},
               "width": {"scale": "x", "band": true},
               "y": {"scale": "y", "field": "sum_people_end"},

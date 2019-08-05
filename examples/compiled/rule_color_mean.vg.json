@@ -32,12 +32,9 @@
       "encode": {
         "update": {
           "stroke": {"scale": "color", "field": "symbol"},
-          "tooltip": {
-            "signal": "{\"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
-          },
           "x": {"value": 0},
-          "y": {"scale": "y", "field": "mean_price"},
           "x2": {"field": {"group": "width"}},
+          "y": {"scale": "y", "field": "mean_price"},
           "strokeWidth": {"value": 2}
         }
       }
@@ -63,15 +60,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "Mean of price",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
@@ -79,6 +67,15 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Mean of price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],

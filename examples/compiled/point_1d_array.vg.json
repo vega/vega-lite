@@ -39,7 +39,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {"signal": "{\"a\": ''+datum[\"a\"]}"},
           "x": {"scale": "x", "field": "a"},
           "y": {"signal": "height", "mult": 0.5}
         }
@@ -64,7 +63,7 @@
       "labelAlign": "right",
       "labelAngle": 270,
       "labelBaseline": "middle",
-      "zindex": 1
+      "zindex": 0
     }
   ]
 }

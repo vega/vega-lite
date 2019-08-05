@@ -69,7 +69,7 @@
           "title": "Mean of price",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -109,7 +109,7 @@
               "update": {"text": {"signal": "'Q' + quarter(datum.value)"}}
             }
           },
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -137,9 +137,6 @@
             "update": {
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "symbol"},
-              "tooltip": {
-                "signal": "{\"date (quarter)\": 'Q' + quarter(datum[\"quarter_date\"]), \"Mean of price\": format(datum[\"mean_price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
-              },
               "x": {"scale": "x", "field": "quarter_date"},
               "y": {"scale": "y", "field": "mean_price"}
             }

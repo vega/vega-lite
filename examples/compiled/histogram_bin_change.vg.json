@@ -53,9 +53,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_30_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_30_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_30_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_30_IMDB_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-          },
           "x2": [
             {
               "test": "datum[\"bin_maxbins_30_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_30_IMDB_Rating\"])",
@@ -98,25 +95,6 @@
   ],
   "axes": [
     {
-      "scale": "x",
-      "orient": "bottom",
-      "grid": false,
-      "title": "IMDB_Rating (binned)",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/10)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
-      "grid": false,
-      "title": "Count of Records",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
       "scale": "y",
       "orient": "left",
       "gridScale": "x",
@@ -127,6 +105,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "IMDB_Rating (binned)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/10)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Count of Records",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

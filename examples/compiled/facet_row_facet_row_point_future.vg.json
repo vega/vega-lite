@@ -96,7 +96,7 @@
               "title": "Acceleration",
               "labelOverlap": true,
               "tickCount": {"signal": "ceil(child_child_height/40)"},
-              "zindex": 1
+              "zindex": 0
             }
           ]
         },
@@ -114,7 +114,7 @@
               "labelFlush": true,
               "labelOverlap": true,
               "tickCount": {"signal": "ceil(child_child_width/40)"},
-              "zindex": 1
+              "zindex": 0
             }
           ]
         },
@@ -159,9 +159,6 @@
                   "opacity": {"value": 0.7},
                   "fill": {"value": "transparent"},
                   "stroke": {"value": "#4c78a8"},
-                  "tooltip": {
-                    "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\")}"
-                  },
                   "x": {"scale": "x", "field": "Horsepower"},
                   "y": {"scale": "y", "field": "Acceleration"}
                 }

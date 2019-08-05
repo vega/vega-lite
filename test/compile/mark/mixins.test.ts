@@ -13,7 +13,6 @@ describe('compile/mark/mixins', () => {
           x: {
             field: 'gender',
             type: 'nominal',
-            scale: {rangeStep: 6},
             axis: null
           },
           color: {
@@ -36,7 +35,6 @@ describe('compile/mark/mixins', () => {
           x: {
             field: 'gender',
             type: 'nominal',
-            scale: {rangeStep: 6},
             axis: null
           },
           color: {
@@ -60,7 +58,6 @@ describe('compile/mark/mixins', () => {
           x: {
             field: 'gender',
             type: 'nominal',
-            scale: {rangeStep: 6},
             axis: null
           },
           stroke: {
@@ -77,66 +74,56 @@ describe('compile/mark/mixins', () => {
       expect(colorMixins.fill['value']).toBe('transparent');
     });
 
-    it(
-      'ignores color if fill is specified',
-      log.wrap(logger => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          mark: 'point',
-          encoding: {
-            x: {
-              field: 'gender',
-              type: 'nominal',
-              scale: {rangeStep: 6},
-              axis: null
-            },
-            fill: {
-              field: 'gender',
-              type: 'nominal',
-              scale: {range: ['#EA98D2', '#659CCA']}
-            },
-            color: {
-              field: 'gender',
-              type: 'nominal',
-              scale: {range: ['#EA98D2', '#659CCA']}
-            }
+    it('combines color with fill when filled=false', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'point',
+        encoding: {
+          x: {
+            field: 'gender',
+            type: 'nominal',
+            axis: null
           },
-          data: {url: 'data/population.json'}
-        });
-
-        const colorMixins = color(model);
-        expect(colorMixins.stroke).not.toBeDefined();
-        expect(colorMixins.fill).toEqual({field: 'gender', scale: 'fill'});
-        expect(logger.warns[0]).toEqual(log.message.droppingColor('encoding', {fill: true}));
-      })
-    );
-
-    it(
-      'ignores color property if fill is specified',
-      log.wrap(logger => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          mark: {type: 'point', color: 'red'},
-          encoding: {
-            x: {
-              field: 'gender',
-              type: 'nominal',
-              scale: {rangeStep: 6},
-              axis: null
-            },
-            fill: {
-              field: 'gender',
-              type: 'nominal',
-              scale: {range: ['#EA98D2', '#659CCA']}
-            }
+          fill: {
+            field: 'gender',
+            type: 'nominal',
+            scale: {range: ['#EA98D2', '#659CCA']}
           },
-          data: {url: 'data/population.json'}
-        });
+          color: {
+            field: 'gender',
+            type: 'nominal',
+            scale: {range: ['#EA98D2', '#659CCA']}
+          }
+        },
+        data: {url: 'data/population.json'}
+      });
 
-        const colorMixins = color(model);
-        expect(colorMixins.stroke).not.toBeDefined();
-        expect(colorMixins.fill).toEqual({field: 'gender', scale: 'fill'});
-        expect(logger.warns[0]).toEqual(log.message.droppingColor('property', {fill: true}));
-      })
-    );
+      const colorMixins = color(model);
+      expect(colorMixins.stroke).toEqual({field: 'gender', scale: 'color'});
+      expect(colorMixins.fill).toEqual({field: 'gender', scale: 'fill'});
+    });
+
+    it('ignores color property if fill is specified', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', color: 'red'},
+        encoding: {
+          x: {
+            field: 'gender',
+            type: 'nominal',
+            axis: null
+          },
+          fill: {
+            field: 'gender',
+            type: 'nominal',
+            scale: {range: ['#EA98D2', '#659CCA']}
+          }
+        },
+        data: {url: 'data/population.json'}
+      });
+
+      const colorMixins = color(model);
+      expect(colorMixins.stroke).toEqual({value: 'red'});
+      expect(colorMixins.fill).toEqual({field: 'gender', scale: 'fill'});
+    });
 
     it(
       'should apply stroke property over color property',
@@ -154,21 +141,17 @@ describe('compile/mark/mixins', () => {
       })
     );
 
-    it(
-      'should apply ignore color property when fill is specified',
-      log.wrap(logger => {
-        const model = parseUnitModelWithScaleAndLayoutSize({
-          mark: {type: 'point', color: 'red', fill: 'blue'},
-          encoding: {
-            x: {field: 'Horsepower', type: 'quantitative'},
-            y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-          }
-        });
-        const props = color(model);
-        expect(props.stroke).not.toBeDefined();
-        expect(logger.warns[0]).toEqual(log.message.droppingColor('property', {fill: true}));
-      })
-    );
+    it('combines color with fill', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', color: 'red', fill: 'blue'},
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'}
+        }
+      });
+      const props = color(model);
+      expect(props.stroke).toEqual({value: 'red'});
+    });
 
     it('should apply color property', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
@@ -238,7 +221,7 @@ describe('compile/mark/mixins', () => {
 
     it('generates tooltip object signal for all encoding fields', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: 'point',
+        mark: {type: 'point', tooltip: true},
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
           y: {field: 'Acceleration', type: 'quantitative'}
@@ -305,7 +288,7 @@ describe('compile/mark/mixins', () => {
 
     it('generates correct keys and values for channels with axis', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: {type: 'point'},
+        mark: {type: 'point', tooltip: true},
         encoding: {
           x: {field: 'Date', type: 'quantitative', axis: {title: 'foo', format: '%y'}},
           y: {field: 'Displacement', type: 'quantitative', axis: {title: 'bar'}}
@@ -319,7 +302,7 @@ describe('compile/mark/mixins', () => {
 
     it('generates correct keys and values for channels with legends', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: {type: 'point'},
+        mark: {type: 'point', tooltip: true},
         encoding: {
           color: {field: 'Foobar', type: 'nominal', legend: {title: 'baz'}}
         }
@@ -390,9 +373,10 @@ describe('compile/mark/mixins', () => {
         const props = binPosition({
           fieldDef,
           channel: 'x',
+          band: 1,
           scaleName: undefined,
           reverse: false,
-          mark: 'bar'
+          markDef: {type: 'bar'}
         });
         expect(props).not.toBeDefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('x2'));
@@ -406,9 +390,10 @@ describe('compile/mark/mixins', () => {
         const props = binPosition({
           fieldDef,
           channel: 'y',
+          band: 1,
           scaleName: undefined,
           reverse: false,
-          mark: 'bar'
+          markDef: {type: 'bar'}
         });
         expect(props).not.toBeDefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('y2'));

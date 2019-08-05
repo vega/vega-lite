@@ -76,7 +76,7 @@
           "title": "Miles_per_Gallon",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -110,7 +110,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_width/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -147,9 +147,6 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Cylinders"},
-              "tooltip": {
-                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"]}"
-              },
               "x": {"scale": "x", "field": "Horsepower"},
               "y": {"scale": "y", "field": "Miles_per_Gallon"},
               "shape": {"scale": "shape", "field": "Origin"}

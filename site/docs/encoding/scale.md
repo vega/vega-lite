@@ -64,8 +64,8 @@ By default, Vega-Lite use the following scale types for the following [data type
 <sup>1</sup> Quantitative fields with the [`bin`](bin.html) transform.
 </span>
 <span class="note-line">
-<sup>2</sup> For positional (x and y) ordinal and ordinal fields, `"point"` is the default scale type for all marks except
-bar and rect marks, which use `"band"` scales.
+<sup>2</sup> For positional (x and y) ordinal and ordinal fields, `"band"` scale is the default scale type for
+bar, image, rect, and rule marks while `"point"` is the default scales for all other marks.
 </span>
 
 {:#domain}
@@ -103,14 +103,14 @@ The range of the scale represents the set of output visual values. Vega-Lite aut
 
 | Channels | Default Range |
 | :-- | :-- |
-| `x` | The range is _always_ `[0, width]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`width`](size.html) property or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales. |
-| `y` | The range is _always_ `[0, height]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`height`](size.html) property or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales. |
+| `x` | The range is _always_ `[0, width]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`width`](size.html) property. |
+| `y` | The range is _always_ `[0, height]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`height`](size.html) property. |
 | `opacity` | Derived from the [scale config](#config)'s `min/maxOpacity`. |
 | `color` | Derived from the following [named ranges](scale.html#range-config) based on the field's [`type`](type.html): <br/> • `"category"` for _nominal_ fields. <br/> • `"ordinal"` for _ordinal_ fields. <br/> • `"heatmap"` for _quantitative_ and _temporal_ fields with `"rect"` marks and `"ramp'` for other marks. <br/><br/> See the [color scheme](#scheme) section for examples. |
 | `size` | Derived from the following [named ranges](#config) based on the `mark` type: <br/> • `min/maxBandSize` for bar and tick. <br/> • `min/maxStrokeWidth` for line and rule. <br/> • `min/maxSize` for point, square, and circle <br/> • `min/maxFontSize` for text |
 | `shape` | Derived from the [pre-defined named range](#range-config) `"symbol"`. |
 
-To customize range values, users can directly specify `range`, or the special range properties: [`rangeStep`](#range-step) and [`padding`](#padding) for [band](#band) and [point](#point) scales and [`scheme`](#scheme) for [ordinal](#ordinal) and [continuous](#continuous) color scales.
+To customize range values, users can directly specify `range` or specify the special [`scheme`](#scheme) property for [ordinal](#ordinal) and [continuous](#continuous) color scales.
 
 {% include table.html props="range" source="Scale" %}
 
@@ -287,13 +287,19 @@ For example, the following bar chart has uses a band scale for its x-position.
 <a name="padding"/>
 {:#range-step}
 
+To customize the step size of band scales for x/y-fields, we can set the step property of the view's `width`/`height`.
+
+For example, we can either make a bar chart have a fixed width:
+
+<span class="vl-example" data-name="bar_size_fit"></span>
+
+or set the width per discrete step:
+
+<span class="vl-example" data-name="bar_size_step_small"></span>
+
 To customize the range of band and point scales, users can provide the following properties:
 
-{% include table.html props="align,padding,paddingInner,paddingOuter,rangeStep,round" source="Scale" %}
-
-For example, we can set the `rangeStep` property to make the bands of the bars smaller.
-
-<span class="vl-example" data-name="bar_size_rangestep_small"></span>
+{% include table.html props="align,padding,paddingInner,paddingOuter,round" source="Scale" %}
 
 {:#discretizing}
 
@@ -329,7 +335,7 @@ Similar to [ordinal](#ordinal) color scales, a custom [`range`](#range) or [`sch
 
 Quantile scales (`"quantile"`) map a sample of input domain values to a discrete range based on computed [quantile](https://en.wikipedia.org/wiki/Quantile) boundaries. The domain is considered continuous and thus the scale will accept any reasonable input value; however, the domain is specified as a discrete set of sample values. The number of values in (i.e., the cardinality of) the output range determines the number of quantiles that will be computed from the domain. To compute the quantiles, the domain is sorted, and treated as a population of discrete values. The resulting quantile boundaries segment the domain into groups with roughly equals numbers of sample points per group. If the `range` is not specified, the domain will be segmented into 4 quantiles (quartiles) by default.
 
-Quantile scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range. For related functionality see [quantize scales](https://vega.github.io/vega-lite/docs/scale.html#quantize), which partition the domain into uniform domain extents, rather than groups with equal element counts. Quantile scales have the benefit of evenly distributing data points to encoded values. In contrast, quantize scales uniformly segment the input domain and provide no guarantee on how data points will be distributed among the output visual values.
+Quantile scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range. For related functionality see [quantize scales](scale.html#quantize), which partition the domain into uniform domain extents, rather than groups with equal element counts. Quantile scales have the benefit of evenly distributing data points to encoded values. In contrast, quantize scales uniformly segment the input domain and provide no guarantee on how data points will be distributed among the output visual values.
 
 <span class="vl-example" data-name="circle_scale_quantile"></span>
 
@@ -337,9 +343,9 @@ Quantile scales are particularly useful for creating color or size encodings wit
 
 ### Quantize Scales
 
-Quantize scales (`"quantize"`) are similar to [linear scales](https://vega.github.io/vega-lite/docs/scale.html#linear), except they use a discrete rather than continuous range. The `quantize` scale maps continuous value to a discrete range by dividing the domain into uniform segments based on the number of values in (i.e., the cardinality of) the output range. Each range value _y_ can be expressed as a quantized linear function of the domain value _x_: _y = m round(x) + b_. If the `range` property is not specified, the domain will be divided into 4 uniform segments by default.
+Quantize scales (`"quantize"`) are similar to [linear scales](scale.html#linear), except they use a discrete rather than continuous range. The `quantize` scale maps continuous value to a discrete range by dividing the domain into uniform segments based on the number of values in (i.e., the cardinality of) the output range. Each range value _y_ can be expressed as a quantized linear function of the domain value _x_: _y = m round(x) + b_. If the `range` property is not specified, the domain will be divided into 4 uniform segments by default.
 
-Quantize scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range. For related functionality see [quantile scales](https://vega.github.io/vega-lite/docs/scale.html#quantile), which partition the domain into groups with equal element counts, rather than uniform domain extents.
+Quantize scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range. For related functionality see [quantile scales](scale.html#quantile), which partition the domain into groups with equal element counts, rather than uniform domain extents.
 
 {% include table.html props="nice,zero" source="Scale" %}
 
@@ -349,7 +355,7 @@ Quantize scales are particularly useful for creating color or size encodings wit
 
 ### Threshold Scales
 
-Threshold scales (`"threshold"`) are similar to [quantize scales](https://vega.github.io/vega-lite/docs/scale.html#quantize), except they allow mapping of arbitrary subsets of the domain (not uniform segments) to discrete values in the range. The input domain is still continuous, and divided into slices based on a set of threshold values provided to the _required_ `domain` property. The `range` property must have N+1 elements, where N is the number of threshold boundaries provided in the domain.
+Threshold scales (`"threshold"`) are similar to [quantize scales](scale.html#quantize), except they allow mapping of arbitrary subsets of the domain (not uniform segments) to discrete values in the range. The input domain is still continuous, and divided into slices based on a set of threshold values provided to the _required_ `domain` property. The `range` property must have N+1 elements, where N is the number of threshold boundaries provided in the domain.
 
 <span class="vl-example" data-name="circle_scale_threshold"></span>
 
@@ -390,11 +396,11 @@ To provide themes for all scales, the scale config (`config: {scale: {...}}`) ca
 
 #### Padding
 
-{% include table.html props="bandPaddingInner,bandPaddingOuter,barBandPaddingInner,barBandPaddingOuter,continuousPadding,pointPadding,rectBandPaddingInner,rectBandPaddingOuter," source="ScaleConfig" %}
+{% include table.html props="bandPaddingInner,barBandPaddingInner,rectBandPaddingInner,bandPaddingOuter,continuousPadding,pointPadding" source="ScaleConfig" %}
 
 #### Range
 
-{% include table.html props="maxBandSize,minBandSize,maxFontSize,minFontSize,maxOpacity,minOpacity,maxSize,minSize,maxStrokeWidth,minStrokeWidth,rangeStep,textXRangeStep" source="ScaleConfig" %}
+{% include table.html props="maxBandSize,minBandSize,maxFontSize,minFontSize,maxOpacity,minOpacity,maxSize,minSize,maxStrokeWidth,minStrokeWidth" source="ScaleConfig" %}
 
 #### Other
 

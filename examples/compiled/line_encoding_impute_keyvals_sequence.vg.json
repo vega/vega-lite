@@ -67,9 +67,6 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "c"},
-              "tooltip": {
-                "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\"), \"c\": ''+datum[\"c\"]}"
-              },
               "x": {"scale": "x", "field": "a"},
               "y": {"scale": "y", "field": "b"},
               "defined": {
@@ -109,16 +106,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "a",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -132,15 +119,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "b",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -149,6 +127,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "a",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "b",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],

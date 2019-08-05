@@ -38,7 +38,7 @@
     }
   ],
   "layout": {
-    "padding": 10,
+    "padding": {"row": 10, "column": 20},
     "offset": {"rowTitle": 10},
     "columns": 1,
     "bounds": "full",
@@ -85,7 +85,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_width/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -112,9 +112,6 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
-              "tooltip": {
-                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
-              },
               "x": {"scale": "x", "field": "sum_people"},
               "x2": {"scale": "x", "value": 0},
               "y": {"scale": "y", "field": "gender"},

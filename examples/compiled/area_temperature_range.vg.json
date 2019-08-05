@@ -42,9 +42,6 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "opacity": {"value": 0.7},
-          "tooltip": {
-            "signal": "{\"Date\": timeFormat(datum[\"monthdate_date\"], '%b'), \"Daily Temperature Range (C)\": format(datum[\"max_temp_max\"], \"\"), \"Min of temp_min\": format(datum[\"min_temp_min\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "monthdate_date"},
           "y": {"scale": "y", "field": "max_temp_max"},
           "y2": {"scale": "y", "field": "min_temp_min"},
@@ -78,21 +75,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Date",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
-        }
-      },
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -106,15 +88,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "Daily Temperature Range (C)",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -123,6 +96,30 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Date",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+        }
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Daily Temperature Range (C)",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

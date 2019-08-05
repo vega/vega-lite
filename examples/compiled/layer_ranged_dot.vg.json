@@ -69,9 +69,6 @@
           "encode": {
             "update": {
               "stroke": {"value": "#db646f"},
-              "tooltip": {
-                "signal": "{\"Life Expectancy (years)\": format(datum[\"life_expect\"], \"\"), \"Country\": ''+datum[\"country\"], \"country\": ''+datum[\"country\"]}"
-              },
               "x": {"scale": "x", "field": "life_expect"},
               "y": {"scale": "y", "field": "country"},
               "defined": {
@@ -91,9 +88,6 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"scale": "color", "field": "year"},
-          "tooltip": {
-            "signal": "{\"Life Expectancy (years)\": format(datum[\"life_expect\"], \"\"), \"Country\": ''+datum[\"country\"], \"Year\": ''+datum[\"year\"]}"
-          },
           "x": {"scale": "x", "field": "life_expect"},
           "y": {"scale": "y", "field": "country"},
           "size": {"value": 100}
@@ -140,16 +134,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Life Expectancy (years)",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -161,6 +145,16 @@
       "zindex": 0
     },
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Life Expectancy (years)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "grid": false,
@@ -169,7 +163,7 @@
       "minExtent": 70,
       "offset": 5,
       "ticks": false,
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "legends": [

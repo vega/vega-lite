@@ -100,7 +100,7 @@
           "title": "Price",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -123,7 +123,7 @@
               "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
             }
           },
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -181,9 +181,6 @@
                 "update": {
                   "orient": {"value": "vertical"},
                   "fill": {"scale": "color", "field": "symbol"},
-                  "tooltip": {
-                    "signal": "{\"Time\": timeFormat(datum[\"date\"], '%Y'), \"Price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
-                  },
                   "x": {"scale": "x", "field": "date"},
                   "y": {"scale": "y", "field": "price_end"},
                   "y2": {"scale": "y", "field": "price_start"},

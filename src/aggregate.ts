@@ -35,7 +35,9 @@ export interface ArgmaxDef {
   argmax: string;
 }
 
-export type Aggregate = AggregateOp | ArgmaxDef | ArgminDef;
+export type NonArgAggregateOp = Exclude<AggregateOp, 'argmin' | 'argmax'>;
+
+export type Aggregate = NonArgAggregateOp | ArgmaxDef | ArgminDef;
 
 export function isArgminDef(a: Aggregate | string): a is ArgminDef {
   return !!a && !!a['argmin'];
@@ -51,7 +53,7 @@ export function isAggregateOp(a: string | ArgminDef | ArgmaxDef): a is Aggregate
   return isString(a) && !!AGGREGATE_OP_INDEX[a];
 }
 
-export const COUNTING_OPS: AggregateOp[] = ['count', 'valid', 'missing', 'distinct'];
+export const COUNTING_OPS: NonArgAggregateOp[] = ['count', 'valid', 'missing', 'distinct'];
 
 export function isCountingAggregateOp(aggregate: string | Aggregate): boolean {
   return aggregate && isString(aggregate) && contains(COUNTING_OPS, aggregate);
@@ -62,7 +64,7 @@ export function isMinMaxOp(aggregate: Aggregate | string): boolean {
 }
 
 /** Additive-based aggregation operations.  These can be applied to stack. */
-export const SUM_OPS: AggregateOp[] = ['count', 'sum', 'distinct', 'valid', 'missing'];
+export const SUM_OPS: NonArgAggregateOp[] = ['count', 'sum', 'distinct', 'valid', 'missing'];
 
 /**
  * Aggregation operators that always produce values within the range [domainMin, domainMax].

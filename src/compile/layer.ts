@@ -2,7 +2,7 @@ import {Legend as VgLegend, NewSignal, Title as VgTitle} from 'vega';
 import {Config} from '../config';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec';
-import {flatten, keys} from '../util';
+import {keys} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
 import {parseLayerAxes} from './axis/parse';
@@ -26,8 +26,7 @@ export class LayerModel extends Model {
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins,
     repeater: RepeaterValue,
-    config: Config,
-    fit: boolean
+    config: Config
   ) {
     super(spec, 'layer', parent, parentGivenName, config, repeater, spec.resolve, spec.view);
 
@@ -37,15 +36,13 @@ export class LayerModel extends Model {
       ...(spec.height ? {height: spec.height} : {})
     };
 
-    this.initSize(layoutSize);
-
     this.children = spec.layer.map((layer, i) => {
       if (isLayerSpec(layer)) {
-        return new LayerModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config, fit);
+        return new LayerModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config);
       }
 
       if (isUnitSpec(layer)) {
-        return new UnitModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config, fit);
+        return new UnitModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config);
       }
 
       throw new Error(log.message.INVALID_SPEC);
@@ -129,11 +126,9 @@ export class LayerModel extends Model {
   public assembleMarks(): any[] {
     return assembleLayerSelectionMarks(
       this,
-      flatten(
-        this.children.map(child => {
-          return child.assembleMarks();
-        })
-      )
+      this.children.flatMap(child => {
+        return child.assembleMarks();
+      })
     );
   }
 

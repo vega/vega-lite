@@ -248,9 +248,6 @@
           "encode": {
             "update": {
               "fill": {"value": "#ddd"},
-              "tooltip": {
-                "signal": "{\"distance (binned)\": datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_20_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_distance_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-              },
               "x2": [
                 {
                   "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"])",
@@ -288,9 +285,6 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"distance (binned)\": datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_20_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_distance_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-              },
               "x2": [
                 {
                   "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"])",
@@ -323,25 +317,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_column_distance_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "distance (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_column_distance_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_column_distance_y",
           "orient": "left",
           "gridScale": "child__repeat_column_distance_x",
@@ -352,6 +327,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_distance_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "distance (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_distance_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -410,9 +404,6 @@
           "encode": {
             "update": {
               "fill": {"value": "#ddd"},
-              "tooltip": {
-                "signal": "{\"delay (binned)\": datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_20_delay\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_delay_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-              },
               "x2": [
                 {
                   "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"])",
@@ -450,9 +441,6 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"delay (binned)\": datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_20_delay\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_delay_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-              },
               "x2": [
                 {
                   "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"])",
@@ -485,25 +473,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_column_delay_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "delay (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_column_delay_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_column_delay_y",
           "orient": "left",
           "gridScale": "child__repeat_column_delay_x",
@@ -514,6 +483,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_delay_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "delay (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_delay_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -572,9 +560,6 @@
           "encode": {
             "update": {
               "fill": {"value": "#ddd"},
-              "tooltip": {
-                "signal": "{\"time (binned)\": datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) ? \"null\" : format(datum[\"bin_maxbins_20_time\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_time_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-              },
               "x2": [
                 {
                   "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"])",
@@ -609,9 +594,6 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"time (binned)\": datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) ? \"null\" : format(datum[\"bin_maxbins_20_time\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_time_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-              },
               "x2": [
                 {
                   "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"])",
@@ -641,25 +623,6 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_column_time_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "time (binned)",
-          "labelFlush": true,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
-          "zindex": 1
-        },
-        {
-          "scale": "child__repeat_column_time_y",
-          "orient": "left",
-          "grid": false,
-          "title": "Count of Records",
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
-          "zindex": 1
-        },
-        {
           "scale": "child__repeat_column_time_y",
           "orient": "left",
           "gridScale": "child__repeat_column_time_x",
@@ -670,6 +633,25 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_time_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "time (binned)",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/10)"},
+          "zindex": 0
+        },
+        {
+          "scale": "child__repeat_column_time_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]

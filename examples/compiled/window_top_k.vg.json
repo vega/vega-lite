@@ -75,9 +75,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"score\": format(datum[\"score\"], \"\"), \"student\": ''+datum[\"student\"]}"
-          },
           "x": {"scale": "x", "field": "score"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "student"},
@@ -112,16 +109,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "score",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -133,11 +120,21 @@
       "zindex": 0
     },
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "score",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "grid": false,
       "title": "student",
-      "zindex": 1
+      "zindex": 0
     }
   ]
 }

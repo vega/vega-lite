@@ -21,6 +21,6 @@
     }
   },
   "config": {
-    "invalidValues": null
+    "mark": {"invalid": null}
   }
 }

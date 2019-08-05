@@ -1,33 +1,54 @@
 import {SampleTransformNode} from '../../../src/compile/data/sample';
 import {Transform} from '../../../src/transform';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
+
+const transform: Transform = {
+  sample: 500
+};
 
 describe('compile/data/sample', () => {
   describe('SampleTransformNode', () => {
     it('should return a proper vg transform', () => {
-      const transform: Transform = {
-        sample: 500
-      };
       const sample = new SampleTransformNode(null, transform);
       expect(sample.assemble()).toEqual({
         type: 'sample',
         size: 500
       });
     });
-    it('should generate the correct hash', () => {
-      const transform: Transform = {
-        sample: 500
-      };
-      const sample = new SampleTransformNode(null, transform);
-      expect(sample.hash()).toBe('SampleTransform {"sample":500}');
+
+    describe('producedFields', () => {
+      it('should generate the correct hash', () => {
+        const sample = new SampleTransformNode(null, transform);
+        expect(sample.hash()).toBe('SampleTransform {"sample":500}');
+      });
+
+      it('should produce different hashes for different samples', () => {
+        const sample1 = new SampleTransformNode(null, {sample: 42});
+        const sample2 = new SampleTransformNode(null, {sample: 123});
+        expect(sample1.hash()).not.toBe(sample2.hash());
+      });
     });
 
-    it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
-      const sample = new SampleTransformNode(parent, {
-        sample: 500
+    describe('producedFields', () => {
+      it('should never clone parent', () => {
+        const parent = new PlaceholderDataFlowNode(null);
+        const sample = new SampleTransformNode(parent, transform);
+        expect(sample.clone().parent).toBeNull();
       });
-      expect(sample.clone().parent).toBeNull();
+    });
+
+    describe('producedFields', () => {
+      it('should return empty set', () => {
+        const sample = new SampleTransformNode(null, transform);
+        expect(sample.dependentFields()).toEqual(new Set());
+      });
+    });
+
+    describe('producedFields', () => {
+      it('should return empty set', () => {
+        const sample = new SampleTransformNode(null, transform);
+        expect(sample.producedFields()).toEqual(new Set());
+      });
     });
   });
 });

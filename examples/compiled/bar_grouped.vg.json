@@ -38,7 +38,7 @@
     {"name": "child_height", "value": 200}
   ],
   "layout": {
-    "padding": 10,
+    "padding": {"row": 20, "column": 10},
     "offset": {"columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -64,7 +64,7 @@
           "title": "population",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -97,7 +97,7 @@
           "labelAlign": "right",
           "labelAngle": 270,
           "labelBaseline": "middle",
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -124,9 +124,6 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
-              "tooltip": {
-                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
-              },
               "x": {"scale": "x", "field": "gender"},
               "width": {"scale": "x", "band": true},
               "y": {"scale": "y", "field": "sum_people"},

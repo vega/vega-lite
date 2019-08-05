@@ -92,7 +92,7 @@
           "title": "Count of Records",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -110,7 +110,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_width/10)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -137,9 +137,6 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_15_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_15_Horsepower_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-              },
               "x2": [
                 {
                   "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"])",

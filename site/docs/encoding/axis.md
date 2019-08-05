@@ -69,9 +69,13 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 ### Labels
 
-{% include table.html props="format,formatType,labels,labelAlign,labelAngle,labelBaseline,labelBound,labelColor,labelFlush,labelFlushOffset,labelFont,labelFontSize,labelFontStyle,labelFontWeight,labelLimit,labelOpacity,labelOverlap,labelPadding" source= "Axis" %}
+{% include table.html props="format,formatType,labels,labelAlign,labelAngle,labelBaseline,labelBound,labelColor,labelExpr,labelFlush,labelFlushOffset,labelFont,labelFontSize,labelFontStyle,labelFontWeight,labelLimit,labelOpacity,labelOverlap,labelPadding" source= "Axis" %}
 
 **See also:** [`guide-label` style config](mark.html#style-config) (common styles for axis, [legend](legend.html), and [header](facet.html#header) labels).
+
+#### Example: Using Axis `labelExpr` to Display Initial Letters of Month Name
+
+<div class="vl-example" data-name="bar_month_temporal_initial"></div>
 
 {:#ticks}
 
@@ -100,6 +104,25 @@ For example, the following plot has a customized x-axis title.
 
 **TODO** (We have `encoding` property akin to [Vega's axis `encode`](https://vega.github.io/vega/docs/axes/#custom-axis-encodings), but within each element's block, we do not have `enter/update/exit`.)
 -->
+
+{:#conditional}
+
+### Conditional Axis Properties
+
+We can set axis properties (which can be of type "ConditionalAxisProperty") to a [conditional value definition](condition.html#value).
+
+Note that each axis tick, grid line, and label instance is backed by a data object with the following fields, which may be accessed as part of the test condition in a condition axis property.
+
+- `label` - the string label
+- `value` - the data value
+
+For example, we can adjust the grid dash in a line chart based on whether a particular grid line falls on a year boundary:
+
+<div class="vl-example" data-name="line_conditional_grid_dash"></div>
+
+We can also conditionally hide some labels and ticks in the following Lasagna plot using conditional `labelColor` and `tickColor`:
+
+<div class="vl-example" data-name="rect_lasagna"></div>
 
 {:#config}
 

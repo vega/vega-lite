@@ -56,9 +56,6 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "gender"},
-          "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_signed_people\"], \"s\"), \"gender\": ''+datum[\"gender\"]}"
-          },
           "x": {"scale": "x", "field": "sum_signed_people_end"},
           "x2": {"scale": "x", "field": "sum_signed_people_start"},
           "y": {"scale": "y", "field": "age"},
@@ -108,7 +105,7 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
+      "zindex": 0
     }
   ],
   "legends": [

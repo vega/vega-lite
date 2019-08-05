@@ -2,7 +2,7 @@ import {array, isArray} from 'vega-util';
 import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
-import {isIntervalSelection, SelectionInitIntervalMapping, SelectionInitMapping} from '../../../selection';
+import {SelectionInit, SelectionInitInterval} from '../../../selection';
 import {Dict, hash, keys, varName} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
 import scales from './scales';
@@ -68,7 +68,7 @@ const project: TransformCompiler = {
             if (isSingleDefUnitChannel(key)) {
               (selDef.encodings || (selDef.encodings = [])).push(key as SingleDefUnitChannel);
             } else {
-              if (isIntervalSelection(selDef)) {
+              if (selDef.type === 'interval') {
                 log.warn('Interval selections should be initialized using "x" and/or "y" keys.');
                 selDef.encodings = cfg.encodings;
               } else {
@@ -139,11 +139,11 @@ const project: TransformCompiler = {
       if (scales.has(selCmpt)) {
         log.warn(log.message.NO_INIT_SCALE_BINDINGS);
       } else {
-        const parseInit = <T extends SelectionInitMapping | SelectionInitIntervalMapping>(i: T): T['a'][] => {
+        const parseInit = <T extends SelectionInit | SelectionInitInterval>(i: Dict<T>): T[] => {
           return proj.items.map(p => (i[p.channel] !== undefined ? i[p.channel] : i[p.field]));
         };
 
-        if (isIntervalSelection(selDef)) {
+        if (selDef.type === 'interval') {
           selCmpt.init = parseInit(selDef.init);
         } else {
           const init = isArray(selDef.init) ? selDef.init : [selDef.init];

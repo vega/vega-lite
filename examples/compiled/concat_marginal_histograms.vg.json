@@ -135,9 +135,6 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-              },
               "x2": [
                 {
                   "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"])",
@@ -169,14 +166,6 @@
         {
           "scale": "concat_0_y",
           "orient": "left",
-          "grid": false,
-          "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
-          "zindex": 1
-        },
-        {
-          "scale": "concat_0_y",
-          "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
           "tickCount": {"signal": "ceil(concat_0_height/40)"},
@@ -185,6 +174,14 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "grid": false,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
           "zindex": 0
         }
       ]
@@ -213,9 +210,6 @@
               "encode": {
                 "update": {
                   "fill": {"scale": "color", "field": "__count"},
-                  "tooltip": {
-                    "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-                  },
                   "x2": [
                     {
                       "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"])",
@@ -301,9 +295,6 @@
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
-                  "tooltip": {
-                    "signal": "{\"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
-                  },
                   "x": {"scale": "concat_1_concat_1_x", "field": "__count"},
                   "x2": {"scale": "concat_1_concat_1_x", "value": 0},
                   "y2": [
@@ -335,15 +326,6 @@
             {
               "scale": "concat_1_concat_1_x",
               "orient": "bottom",
-              "grid": false,
-              "labelFlush": true,
-              "labelOverlap": true,
-              "tickCount": {"signal": "ceil(concat_1_concat_1_width/40)"},
-              "zindex": 1
-            },
-            {
-              "scale": "concat_1_concat_1_x",
-              "orient": "bottom",
               "gridScale": "concat_1_concat_1_y",
               "grid": true,
               "tickCount": {"signal": "ceil(concat_1_concat_1_width/40)"},
@@ -352,6 +334,15 @@
               "maxExtent": 0,
               "minExtent": 0,
               "ticks": false,
+              "zindex": 0
+            },
+            {
+              "scale": "concat_1_concat_1_x",
+              "orient": "bottom",
+              "grid": false,
+              "labelFlush": true,
+              "labelOverlap": true,
+              "tickCount": {"signal": "ceil(concat_1_concat_1_width/40)"},
               "zindex": 0
             }
           ]

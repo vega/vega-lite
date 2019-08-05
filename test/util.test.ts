@@ -1,25 +1,24 @@
+import {FilterNode} from '../src/compile/data/filter';
+import {PivotTransformNode} from '../src/compile/data/pivot';
 import {
+  accessPathDepth,
+  accessPathWithDatum,
+  deleteNestedProperty,
   differArray,
   entries,
   fieldIntersection,
   fill,
   flatAccessWithDatum,
+  hash,
   hasIntersection,
   isEqual,
   isNumeric,
   prefixGenerator,
-  setEqual,
-  unique,
-  uniqueId
-} from '../src/util';
-
-import {
-  accessPathDepth,
-  accessPathWithDatum,
-  deleteNestedProperty,
-  hash,
   replacePathInField,
+  setEqual,
   stringify,
+  unique,
+  uniqueId,
   varName
 } from '../src/util';
 
@@ -214,6 +213,23 @@ describe('util', () => {
 
     it('should return the correct value for 2 nested but different string sets', () => {
       expect(fieldIntersection(new Set(['a.b.c']), new Set(['z.b.c']))).toBe(false);
+    });
+
+    it('should return true if one input is undefined', () => {
+      expect(fieldIntersection(undefined, new Set(['a']))).toBe(true);
+      expect(fieldIntersection(new Set(['a']), undefined)).toBe(true);
+      expect(fieldIntersection(undefined, undefined)).toBe(true);
+    });
+
+    it('should return the correct value for 2 nodes', () => {
+      const filterNode = new FilterNode(null, null, 'datum.foo > 1');
+      const pivotNode = new PivotTransformNode(null, {
+        pivot: 'a',
+        value: 'b'
+      });
+      expect(fieldIntersection(filterNode.producedFields(), filterNode.dependentFields())).toBe(false);
+      expect(fieldIntersection(pivotNode.producedFields(), filterNode.dependentFields())).toBe(true);
+      expect(fieldIntersection(filterNode.producedFields(), pivotNode.dependentFields())).toBe(false);
     });
   });
 

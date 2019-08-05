@@ -238,9 +238,6 @@
             },
             {"value": "grey"}
           ],
-          "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "Origin"},

@@ -14,7 +14,7 @@ import {channelHasField, Encoding} from './encoding';
 import * as log from './log';
 import {AREA, BAR, CIRCLE, isMarkDef, isPathMark, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
-import {contains, Flag, getFirstDefined} from './util';
+import {contains, Flag} from './util';
 
 export type StackOffset = 'zero' | 'center' | 'normalize';
 
@@ -88,7 +88,6 @@ function potentialStackedChannel(encoding: Encoding<Field>): 'x' | 'y' | undefin
 export function stack(
   m: Mark | MarkDef,
   encoding: Encoding<Field>,
-  stackConfig: StackOffset,
   opt: {
     disallowNonLinearStack?: boolean; // This option is for CompassQL
   } = {}
@@ -145,13 +144,9 @@ export function stack(
     } else {
       offset = stackedFieldDef.stack;
     }
-  } else if (stackBy.length > 0) {
-    if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
-      // Bar and Area with sum ops are automatically stacked by default
-      offset = getFirstDefined(stackConfig, 'zero');
-    } else {
-      offset = stackConfig;
-    }
+  } else if (stackBy.length > 0 && contains(STACK_BY_DEFAULT_MARKS, mark)) {
+    // Bar and Area with sum ops are automatically stacked by default
+    offset = 'zero';
   }
 
   if (!offset || !isStackOffset(offset)) {

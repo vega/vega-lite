@@ -1,7 +1,7 @@
 import {ImputeNode} from '../../../src/compile/data/impute';
 import {Transform} from '../../../src/transform';
 import {parseUnitModelWithScale} from '../../util';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/impute', () => {
   describe('Impute Transform', () => {
@@ -412,18 +412,41 @@ describe('compile/data/impute', () => {
     });
   });
 
-  describe('clone', () => {
-    it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
-      const transform: Transform = {
-        impute: 'y',
-        key: 'x',
-        method: 'max',
-        groupby: ['a', 'b'],
-        frame: [-2, 2]
-      };
-      const impute = new ImputeNode(parent, transform);
-      expect(impute.clone().parent).toBeNull();
+  describe('ImputeNode', () => {
+    describe('dependentFields', () => {
+      it('should return proper dependent fields with groupby', () => {
+        const transform: Transform = {
+          impute: 'y',
+          key: 'x',
+          groupby: ['f', 'g']
+        };
+        const impute = new ImputeNode(null, transform);
+        expect(impute.dependentFields()).toEqual(new Set(['x', 'y', 'f', 'g']));
+      });
+
+      it('should return proper dependent fields without groupby', () => {
+        const transform: Transform = {
+          impute: 'y',
+          key: 'x'
+        };
+        const impute = new ImputeNode(null, transform);
+        expect(impute.dependentFields()).toEqual(new Set(['x', 'y']));
+      });
+    });
+
+    describe('clone', () => {
+      it('should never clone parent', () => {
+        const parent = new PlaceholderDataFlowNode(null);
+        const transform: Transform = {
+          impute: 'y',
+          key: 'x',
+          method: 'max',
+          groupby: ['a', 'b'],
+          frame: [-2, 2]
+        };
+        const impute = new ImputeNode(parent, transform);
+        expect(impute.clone().parent).toBeNull();
+      });
     });
   });
 });

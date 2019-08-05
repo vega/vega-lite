@@ -70,9 +70,6 @@
             "update": {
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "series"},
-              "tooltip": {
-                "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], '%Y'), \"Sum of count\": format(datum[\"sum_count\"], \"\"), \"series\": ''+datum[\"series\"]}"
-              },
               "x": {"scale": "x", "field": "yearmonth_date"},
               "y": {"scale": "y", "field": "sum_count_end"},
               "y2": {"scale": "y", "field": "sum_count_start"},
@@ -114,6 +111,19 @@
     {
       "scale": "x",
       "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
       "grid": false,
       "title": "date (year-month)",
       "domain": false,
@@ -126,19 +136,6 @@
           "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
         }
       },
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
-      "gridScale": "y",
-      "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "domain": false,
-      "labels": false,
-      "maxExtent": 0,
-      "minExtent": 0,
-      "ticks": false,
       "zindex": 0
     }
   ],

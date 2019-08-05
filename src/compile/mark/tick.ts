@@ -1,3 +1,5 @@
+import {isNumber} from 'vega-util';
+import {getViewConfigDiscreteStep} from '../../config';
 import {getFirstDefined} from '../../util';
 import {isVgRangeStep} from '../../vega.schema';
 import {getMarkConfig} from '../common';
@@ -17,10 +19,16 @@ export const tick: MarkCompiler = {
     const vgThicknessChannel = orient === 'horizontal' ? 'height' : 'width';
 
     return {
-      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
+      ...mixins.baseEncodeEntry(model, {
+        align: 'ignore',
+        baseline: 'ignore',
+        color: 'include',
+        orient: 'ignore',
+        size: 'ignore'
+      }),
 
-      ...mixins.pointPosition('x', model, ref.mid(width), 'xc'),
-      ...mixins.pointPosition('y', model, ref.mid(height), 'yc'),
+      ...mixins.pointPosition('x', model, ref.mid(width), {vgChannel: 'xc'}),
+      ...mixins.pointPosition('y', model, ref.mid(height), {vgChannel: 'yc'}),
 
       // size / thickness => width / height
       ...mixins.nonPosition('size', model, {
@@ -50,11 +58,12 @@ function defaultSize(model: UnitModel): number {
     return markPropOrConfig;
   } else {
     const scaleRange = scale ? scale.get('range') : undefined;
-    const rangeStep = scaleRange && isVgRangeStep(scaleRange) ? scaleRange.step : config.scale.rangeStep;
-    if (typeof rangeStep !== 'number') {
-      // FIXME consolidate this log
-      throw new Error('Function does not handle non-numeric rangeStep');
+    if (scaleRange && isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
+      return (scaleRange.step * 3) / 4;
     }
-    return (rangeStep * 3) / 4;
+
+    const defaultViewStep = getViewConfigDiscreteStep(config.view, vgSizeChannel);
+
+    return (defaultViewStep * 3) / 4;
   }
 }

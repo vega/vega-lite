@@ -1,9 +1,11 @@
 // Declaration and utility for variants of a field definition object
+import {LinearGradient, RadialGradient} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin';
 import {Channel, isScaleChannel, isSecondaryRangeChannel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
+import {getMarkConfig} from './compile/common';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
@@ -12,9 +14,10 @@ import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalOperand} from './logical';
+import {isRectBasedMark, MarkDef} from './mark';
 import {Predicate} from './predicate';
 import {Scale} from './scale';
-import {Sort, SortOrder} from './sort';
+import {isSortByChannel, Sort, SortOrder} from './sort';
 import {isFacetFieldDef} from './spec/facet';
 import {StackOffset} from './stack';
 import {
@@ -30,13 +33,15 @@ import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
 import {contains, flatAccessWithDatum, getFirstDefined, internalField, replacePathInField, titlecase} from './util';
 
 export type Value = number | string | boolean | null;
+export type Gradient = LinearGradient | RadialGradient;
+export type ValueOrGradient = Value | Gradient;
 
 /**
- * Definition object for a constant value of an encoding channel.
+ * Definition object for a constant value (primitive value or gradient definition) of an encoding channel.
  */
-export interface ValueDef<V extends Value = Value> {
+export interface ValueDef<V extends ValueOrGradient | number[] = Value> {
   /**
-   * A constant value in visual domain (e.g., `"red"` / "#0099ff" for color, values between `0` to `1` for opacity).
+   * A constant value in visual domain (e.g., `"red"` / `"#0099ff"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).
    */
   value: V;
 }
@@ -46,7 +51,7 @@ export interface ValueDef<V extends Value = Value> {
  * F defines the underlying FieldDef type.
  */
 
-export type ChannelDefWithCondition<F extends FieldDef<any>, V extends Value> =
+export type ChannelDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradient = Value> =
   | FieldDefWithCondition<F, V>
   | ValueDefWithCondition<F, V>;
 
@@ -61,7 +66,7 @@ export type ChannelDefWithCondition<F extends FieldDef<any>, V extends Value> =
 /**
  * @minProperties 1
  */
-export type ValueDefWithCondition<F extends FieldDef<any>, V extends Value = Value> = Partial<ValueDef<V>> & {
+export type ValueDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradient = Value> = Partial<ValueDef<V>> & {
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
@@ -71,6 +76,11 @@ export type ValueDefWithCondition<F extends FieldDef<any>, V extends Value = Val
 export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
   MarkPropFieldDef<F, T>,
   string | null
+>;
+
+export type ColorGradientValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
+  MarkPropFieldDef<F, T>,
+  Gradient | string | null
 >;
 
 export type NumericValueDefWithCondition<F extends Field> = ValueDefWithCondition<
@@ -104,7 +114,7 @@ export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSe
   return c['selection'];
 }
 
-export interface ConditionValueDefMixins<V extends Value = Value> {
+export interface ConditionValueDefMixins<V extends ValueOrGradient = Value> {
   /**
    * One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).
    *
@@ -123,11 +133,12 @@ export interface ConditionValueDefMixins<V extends Value = Value> {
  * }
  */
 
-export type FieldDefWithCondition<F extends FieldDef<any>, V extends Value = Value> = F & ConditionValueDefMixins<V>;
+export type FieldDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradient = Value> = F &
+  ConditionValueDefMixins<V>;
 
-export type StringFieldDefWithCondition<F extends Field, T extends Type = StandardType> = FieldDefWithCondition<
+export type ColorGradientFieldDefWithCondition<F extends Field, T extends Type = StandardType> = FieldDefWithCondition<
   MarkPropFieldDef<F, T>,
-  string | null
+  Gradient | string | null
 >;
 
 export type NumericFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
@@ -135,7 +146,10 @@ export type NumericFieldDefWithCondition<F extends Field> = FieldDefWithConditio
   number
 >;
 
-export type ShapeFieldDefWithCondition<F extends Field> = StringFieldDefWithCondition<F, TypeForShape>;
+export type ShapeFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
+  MarkPropFieldDef<F, TypeForShape>,
+  string | null
+>;
 
 export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<TextFieldDef<F>, Value>;
 
@@ -266,14 +280,14 @@ export interface SortableFieldDef<
    *
    * For discrete fields, `sort` can be one of the following:
    * - `"ascending"` or `"descending"` -- for sorting by the values' natural order in Javascript.
-   * - [A sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) for sorting by another encoding channel. (This type of sort definition is not available for `row` and `column` channels.)
+   * - [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `"x"` or `"y"`) with an optional minus prefix for descending sort (e.g., `"-x"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `"sort": "-x"` is equivalent to `"sort": {"encoding": "x", "order": "descending"}`.
    * - [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.
    * - [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `"month"` and `"day"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `"Mon"`, `"Tue"`).
    * - `null` indicating no sort.
    *
    * __Default value:__ `"ascending"`
    *
-   * __Note:__ `null` is not supported for `row` and `column`.
+   * __Note:__ `null` and sorting by another channel is not supported for `row` and `column`.
    *
    * __See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation.
    */
@@ -359,6 +373,54 @@ export interface PositionFieldDef<F extends Field>
    * __See also:__ [`impute`](https://vega.github.io/vega-lite/docs/impute.html) documentation.
    */
   impute?: ImputeParams;
+
+  /**
+   * For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.
+   *
+   * For other marks, relative position on a band of a stacked, binned, time unit or band scale.  If set to `0`, the marks will be positioned at the beginning of the band.  If set to `0.5`, the marks will be positioned in the middle of the band.
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  band?: number;
+}
+
+export function getBand(
+  channel: Channel,
+  fieldDef: FieldDef<string>,
+  fieldDef2: ChannelDef<SecondaryFieldDef<string>>,
+  mark: MarkDef,
+  config: Config,
+  {isMidPoint}: {isMidPoint?: boolean} = {}
+) {
+  const {timeUnit, bin} = fieldDef;
+  if (contains(['x', 'y'], channel)) {
+    if (isPositionFieldDef(fieldDef) && fieldDef.band !== undefined) {
+      return fieldDef.band;
+    } else if (timeUnit && !fieldDef2) {
+      if (isMidPoint) {
+        return getMarkConfig('timeUnitBandPosition', mark, config);
+      } else {
+        return isRectBasedMark(mark.type) ? getMarkConfig('timeUnitBand', mark, config) : 0;
+      }
+    } else if (isBinning(bin)) {
+      return isRectBasedMark(mark.type) && !isMidPoint ? 1 : 0.5;
+    }
+  }
+  return undefined;
+}
+
+export function hasBand(
+  channel: Channel,
+  fieldDef: FieldDef<string>,
+  fieldDef2: ChannelDef<SecondaryFieldDef<string>>,
+  mark: MarkDef,
+  config: Config
+) {
+  if (isBinning(fieldDef.bin) || (fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal')) {
+    return !!getBand(channel, fieldDef, fieldDef2, mark, config);
+  }
+  return false;
 }
 
 /**
@@ -394,12 +456,12 @@ export interface OrderFieldDef<F extends Field> extends FieldDefWithoutScale<F> 
 export interface TextFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
 
 export type FieldDef<F extends Field> = SecondaryFieldDef<F> | TypedFieldDef<F>;
-export type ChannelDef<FD extends FieldDef<any> = FieldDef<string>, V extends Value = Value> = ChannelDefWithCondition<
-  FD,
-  V
->;
+export type ChannelDef<
+  FD extends FieldDef<any> = FieldDef<string>,
+  V extends ValueOrGradient = ValueOrGradient
+> = ChannelDefWithCondition<FD, V>;
 
-export function isConditionalDef<F extends Field, V extends Value>(
+export function isConditionalDef<F extends Field, V extends ValueOrGradient>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is ChannelDefWithCondition<FieldDef<F>, V> {
   return !!channelDef && !!channelDef.condition;
@@ -408,14 +470,13 @@ export function isConditionalDef<F extends Field, V extends Value>(
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-
-export function hasConditionalFieldDef<F extends Field, V extends Value>(
+export function hasConditionalFieldDef<F extends Field, V extends ValueOrGradient>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is Partial<ValueDef<V>> & {condition: Conditional<TypedFieldDef<F>>} {
   return !!channelDef && !!channelDef.condition && !isArray(channelDef.condition) && isFieldDef(channelDef.condition);
 }
 
-export function hasConditionalValueDef<F extends Field, V extends Value>(
+export function hasConditionalValueDef<F extends Field, V extends ValueOrGradient>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is ValueDef<V> & {condition: Conditional<ValueDef<V>> | Conditional<ValueDef<V>>[]} {
   return !!channelDef && !!channelDef.condition && (isArray(channelDef.condition) || isValueDef(channelDef.condition));
@@ -442,7 +503,7 @@ export function isStringFieldDef(channelDef: ChannelDef<FieldDef<Field>>): chann
   return isFieldDef(channelDef) && isString(channelDef.field);
 }
 
-export function isValueDef<F extends Field, V extends Value>(
+export function isValueDef<F extends Field, V extends ValueOrGradient>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is ValueDef<V> {
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
@@ -455,7 +516,10 @@ export function isScaleFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef
 export function isPositionFieldDef<F extends Field>(
   channelDef: ChannelDef<FieldDef<F>>
 ): channelDef is PositionFieldDef<F> {
-  return !!channelDef && (!!channelDef['axis'] || !!channelDef['stack'] || !!channelDef['impute']);
+  return (
+    !!channelDef &&
+    (!!channelDef['axis'] || !!channelDef['stack'] || !!channelDef['impute'] || channelDef['band'] !== undefined)
+  );
 }
 
 export function isMarkPropFieldDef<F extends Field>(
@@ -530,6 +594,7 @@ export function vgField(
           }
         } else if (timeUnit) {
           fn = String(timeUnit);
+          suffix = ((!contains(['range', 'mid'], opt.binSuffix) && opt.binSuffix) || '') + (opt.suffix || '');
         }
       }
     }
@@ -744,29 +809,28 @@ export function normalize(channelDef: ChannelDef, channel: Channel): ChannelDef<
   }
   return channelDef;
 }
-export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
-  const {aggregate, timeUnit, bin} = fieldDef;
+export function normalizeFieldDef(fd: FieldDef<string>, channel: Channel) {
+  const {aggregate, timeUnit, bin, field} = fd;
+  const fieldDef = {...fd};
+
   // Drop invalid aggregate
   if (aggregate && !isAggregateOp(aggregate) && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
-    const {aggregate: _, ...fieldDefWithoutAggregate} = fieldDef;
     log.warn(log.message.invalidAggregate(aggregate));
-    fieldDef = fieldDefWithoutAggregate;
+    delete fieldDef.aggregate;
   }
 
   // Normalize Time Unit
   if (timeUnit) {
-    fieldDef = {
-      ...fieldDef,
-      timeUnit: normalizeTimeUnit(timeUnit)
-    };
+    fieldDef.timeUnit = normalizeTimeUnit(timeUnit);
+  }
+
+  if (field) {
+    fieldDef.field = `${field}`;
   }
 
   // Normalize bin
   if (isBinning(bin)) {
-    fieldDef = {
-      ...fieldDef,
-      bin: normalizeBin(bin, channel)
-    } as FieldDef<string>;
+    fieldDef.bin = normalizeBin(bin, channel);
   }
 
   if (isBinned(bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {
@@ -779,18 +843,12 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
     const fullType = getFullName(type);
     if (type !== fullType) {
       // convert short type to full type
-      fieldDef = {
-        ...fieldDef,
-        type: fullType
-      };
+      fieldDef.type = fullType;
     }
     if (type !== 'quantitative') {
       if (isCountingAggregateOp(aggregate)) {
         log.warn(log.message.invalidFieldTypeForCountAggregate(type, aggregate));
-        fieldDef = {
-          ...fieldDef,
-          type: 'quantitative'
-        };
+        fieldDef.type = 'quantitative';
       }
     }
   } else if (!isSecondaryRangeChannel(channel)) {
@@ -798,10 +856,7 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
     const newType = defaultType(fieldDef as TypedFieldDef<any>, channel);
     log.warn(log.message.missingFieldType(channel, newType));
 
-    fieldDef = {
-      ...fieldDef,
-      type: newType
-    };
+    fieldDef['type'] = newType;
   }
 
   if (isTypedFieldDef(fieldDef)) {
@@ -810,10 +865,25 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
       log.warn(warning);
     }
   }
-  return {
-    ...fieldDef,
-    ...(fieldDef.field !== undefined ? {field: `${fieldDef.field}`} : {})
-  };
+
+  if (isSortableFieldDef(fieldDef) && isString(fieldDef.sort)) {
+    const {sort} = fieldDef;
+    if (isSortByChannel(sort)) {
+      return {
+        ...fieldDef,
+        sort: {encoding: sort}
+      };
+    }
+    const sub = sort.substr(1);
+    if (sort.charAt(0) === '-' && isSortByChannel(sub)) {
+      return {
+        ...fieldDef,
+        sort: {encoding: sub, order: 'descending'}
+      };
+    }
+  }
+
+  return fieldDef;
 }
 
 export function normalizeBin(bin: BinParams | boolean | 'binned', channel: Channel) {
@@ -866,6 +936,7 @@ export function channelCompatibility(
     case 'key':
     case 'tooltip':
     case 'href':
+    case 'url':
       return COMPATIBLE;
 
     case 'longitude':

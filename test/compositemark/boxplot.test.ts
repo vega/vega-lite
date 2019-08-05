@@ -1,8 +1,8 @@
+import {array} from 'vega-util';
 import * as log from '../../src/log';
 import {normalize} from '../../src/normalize/index';
 import {Transform} from '../../src/transform';
 import {defaultConfig} from '.././../src/config';
-import {isArray} from 'vega-util';
 
 describe('normalizeBoxMinMax', () => {
   it('should produce an error if both axes have aggregate boxplot', () => {
@@ -968,7 +968,7 @@ describe('normalizeBoxIQR', () => {
     const whiskerLayer = normalizedSpecWithTooltip['layer'][0]['layer'][1];
     for (const whisker of whiskerLayer['layer']) {
       const {tooltip} = whisker['encoding'];
-      expect(isArray(tooltip) ? tooltip : [tooltip]).toEqual([
+      expect(array(tooltip)).toEqual([
         {
           title: 'Mean of people',
           type: 'quantitative',
@@ -988,7 +988,7 @@ describe('normalizeBoxIQR', () => {
     const boxLayer = normalizedSpecWithTooltip['layer'][1];
     for (const box of boxLayer['layer']) {
       const {tooltip} = box['encoding'];
-      expect(isArray(tooltip) ? tooltip : [tooltip]).toEqual([
+      expect(array(tooltip)).toEqual([
         {
           title: 'Mean of people',
           type: 'quantitative',
@@ -1033,7 +1033,7 @@ describe('normalizeBoxIQR', () => {
     const whiskerLayer = normalizedSpecWithTooltip['layer'][0]['layer'][1];
     for (const whisker of whiskerLayer['layer']) {
       const {tooltip} = whisker['encoding'];
-      expect(isArray(tooltip) ? tooltip : [tooltip]).toEqual([
+      expect(array(tooltip)).toEqual([
         {
           title: 'Mean of people',
           type: 'quantitative',
@@ -1053,7 +1053,7 @@ describe('normalizeBoxIQR', () => {
     const boxLayer = normalizedSpecWithTooltip['layer'][1];
     for (const box of boxLayer['layer']) {
       const {tooltip} = box['encoding'];
-      expect(isArray(tooltip) ? tooltip : [tooltip]).toEqual([
+      expect(array(tooltip)).toEqual([
         {
           title: 'Mean of people',
           type: 'quantitative',

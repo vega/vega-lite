@@ -162,7 +162,7 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
           tieBreakByComparing<VgScale, any>((v1, v2) => {
             switch (property) {
               case 'range':
-                // For range step, prefer larger step
+                // For step, prefer larger step
                 if (v1.step && v2.step) {
                   return v1.step - v2.step;
                 }
@@ -223,7 +223,7 @@ export function padding(
       }
 
       const {type, orient} = markDef;
-      if (type === 'bar' && !fieldDef.bin) {
+      if (type === 'bar' && !fieldDef.bin && !fieldDef.timeUnit) {
         if ((orient === 'vertical' && channel === 'x') || (orient === 'horizontal' && channel === 'y')) {
           return barConfig.continuousBandSize;
         }
@@ -273,11 +273,10 @@ export function paddingOuter(
     // Padding is only set for X and Y by default.
     // Basically it doesn't make sense to add padding for color and size.
     if (scaleType === ScaleType.BAND) {
-      const {bandPaddingOuter, barBandPaddingOuter, rectBandPaddingOuter} = scaleConfig;
+      const {bandPaddingOuter} = scaleConfig;
 
       return getFirstDefined(
         bandPaddingOuter,
-        mark === 'bar' ? barBandPaddingOuter : rectBandPaddingOuter,
         /* By default, paddingOuter is paddingInner / 2. The reason is that
           size (width/height) = step * (cardinality - paddingInner + 2 * paddingOuter).
           and we want the width/height to be integer by default.

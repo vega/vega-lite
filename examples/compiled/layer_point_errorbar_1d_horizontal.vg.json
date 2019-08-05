@@ -61,14 +61,14 @@
             },
             {"scale": "x", "field": "lower_yield"}
           ],
-          "y": {"signal": "height", "mult": 0.5},
           "x2": [
             {
               "test": "datum[\"upper_yield\"] === null || isNaN(datum[\"upper_yield\"])",
               "value": 0
             },
             {"scale": "x", "field": "upper_yield"}
-          ]
+          ],
+          "y": {"signal": "height", "mult": 0.5}
         }
       }
     },
@@ -80,9 +80,6 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"Mean of yield\": format(datum[\"mean_yield\"], \"\")}"
-          },
           "x": [
             {
               "test": "datum[\"mean_yield\"] === null || isNaN(datum[\"mean_yield\"])",
@@ -115,16 +112,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "yield",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
@@ -132,6 +119,16 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "yield",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 0
     }
   ]

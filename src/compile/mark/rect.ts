@@ -1,8 +1,7 @@
 import {isNumber} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
-import {isFieldDef} from '../../channeldef';
-import {Config} from '../../config';
-import * as log from '../../log';
+import {getBand, isFieldDef, isPositionFieldDef} from '../../channeldef';
+import {Config, DEFAULT_STEP, getViewConfigDiscreteStep} from '../../config';
 import {MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {getFirstDefined} from '../../util';
@@ -18,14 +17,20 @@ export const rect: MarkCompiler = {
   vgMark: 'rect',
   encodeEntry: (model: UnitModel) => {
     return {
-      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
+      ...mixins.baseEncodeEntry(model, {
+        align: 'ignore',
+        baseline: 'ignore',
+        color: 'include',
+        orient: 'ignore',
+        size: 'ignore'
+      }),
       ...rectPosition(model, 'x', 'rect'),
       ...rectPosition(model, 'y', 'rect')
     };
   }
 };
 
-export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' | 'rect'): VgEncodeEntry {
+export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' | 'rect' | 'image'): VgEncodeEntry {
   const {config, encoding, markDef} = model;
 
   const channel2 = channel === 'x' ? 'x2' : 'y2';
@@ -50,27 +55,31 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
   // x, x2, and width -- we must specify two of these in all conditions
   if (
     isFieldDef(fieldDef) &&
-    (isBinning(fieldDef.bin) || isBinned(fieldDef.bin)) &&
+    (isBinning(fieldDef.bin) || isBinned(fieldDef.bin) || (fieldDef.timeUnit && !fieldDef2)) &&
     !hasSizeDef &&
     !hasDiscreteDomain(scaleType)
   ) {
+    const band = getBand(channel, fieldDef, undefined, markDef, config);
+
     return mixins.binPosition({
       fieldDef,
       fieldDef2,
       channel,
-      mark,
+      markDef,
       scaleName,
+      band,
       spacing: getFirstDefined(markDef.binSpacing, config[mark].binSpacing),
       reverse: scale.get('reverse')
     });
   } else if (((isFieldDef(fieldDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !fieldDef2) {
     // vertical
     if (isFieldDef(fieldDef) && scaleType === ScaleType.BAND) {
+      const band = isPositionFieldDef(fieldDef) ? fieldDef.band : undefined;
       return mixins.bandPosition(
         fieldDef,
         channel,
         model,
-        defaultSizeRef(mark, markDef, sizeChannel, scaleName, scale, config)
+        defaultSizeRef(mark, markDef, sizeChannel, scaleName, scale, config, band)
       );
     }
 
@@ -82,20 +91,18 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
       defaultSizeRef(mark, markDef, sizeChannel, scaleName, scale, config)
     );
   } else {
-    return {
-      ...mixins.pointPosition(channel, model, 'zeroOrMax'),
-      ...mixins.pointPosition2(model, 'zeroOrMin', channel2)
-    };
+    return mixins.rangePosition(channel, model, {defaultRef: 'zeroOrMax', defaultRef2: 'zeroOrMin'});
   }
 }
 
 function defaultSizeRef(
-  mark: 'bar' | 'rect',
+  mark: 'bar' | 'rect' | 'image',
   markDef: MarkDef,
   sizeChannel: 'width' | 'height',
   scaleName: string,
   scale: ScaleComponent,
-  config: Config
+  config: Config,
+  band?: number
 ): VgValueRef {
   const markPropOrConfig = getFirstDefined(
     markDef[sizeChannel],
@@ -117,12 +124,12 @@ function defaultSizeRef(
       if (scaleType === ScaleType.POINT) {
         const scaleRange = scale.get('range');
         if (isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
-          return {value: scaleRange.step - 1};
+          return {value: scaleRange.step - 2};
         }
-        log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL);
+        return {value: DEFAULT_STEP - 2};
       } else {
         // BAND
-        return ref.bandRef(scaleName);
+        return ref.bandRef(scaleName, band);
       }
     } else {
       // continuous scale
@@ -130,12 +137,13 @@ function defaultSizeRef(
     }
   }
   // No Scale
+
+  const step = getViewConfigDiscreteStep(config.view, sizeChannel);
+
   const value = getFirstDefined(
     // No scale is like discrete bar (with one item)
     config[mark].discreteBandSize,
-    config.scale.rangeStep ? config.scale.rangeStep - 1 : undefined,
-    // If somehow default rangeStep is set to null or undefined, use 20 as back up
-    20
+    step - 2
   );
   return {value};
 }

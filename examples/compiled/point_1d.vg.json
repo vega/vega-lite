@@ -30,9 +30,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"IMDB_Rating\": format(datum[\"IMDB_Rating\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "IMDB_Rating"},
           "y": {"signal": "height", "mult": 0.5}
         }
@@ -53,16 +50,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "IMDB_Rating",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
@@ -70,6 +57,16 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "IMDB_Rating",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 0
     }
   ]

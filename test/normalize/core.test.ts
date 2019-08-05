@@ -41,16 +41,16 @@ describe('normalize()', () => {
     for (const channel of FACET_CHANNELS) {
       it(`should convert single extended spec with ${channel} into a composite spec`, () => {
         const fieldDef = {field: 'MPAA_Rating', type: 'ordinal'};
+        const layoutMixins = {spacing: 13};
         const spec: any = {
           name: 'faceted',
           width: 123,
           height: 234,
           description: 'faceted spec',
           data: {url: 'data/movies.json'},
-          spacing: 20,
           mark: 'point',
           encoding: {
-            [channel]: fieldDef,
+            [channel]: {...fieldDef, ...layoutMixins},
             x: {field: 'Worldwide_Gross', type: 'quantitative'},
             y: {field: 'US_DVD_Sales', type: 'quantitative'}
           }
@@ -68,7 +68,7 @@ describe('normalize()', () => {
           name: 'faceted',
           description: 'faceted spec',
           data: {url: 'data/movies.json'},
-          spacing: 20,
+          spacing: channel === 'facet' ? 13 : {[channel]: 13},
           facet: expectedFacet,
           spec: {
             mark: 'point',

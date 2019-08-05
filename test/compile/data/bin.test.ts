@@ -1,9 +1,9 @@
 import {BinNode, getBinSignalName} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';
+import {VgBinTransform} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
-import {VgBinTransform} from './../../../src/vega.schema';
+import {PlaceholderDataFlowNode} from './util';
 
 function assembleFromEncoding(model: ModelWithField) {
   return BinNode.makeFromEncoding(null, model).assemble();
@@ -238,13 +238,13 @@ describe('compile/data/bin', () => {
     });
 
     it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const bin = new BinNode(parent, {});
       expect(bin.clone().parent).toBeNull();
     });
 
     it('should preserve "as" when merging with other node', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
       const binNodeB = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['bar', 'bar_end']]}});
 
@@ -255,7 +255,7 @@ describe('compile/data/bin', () => {
     });
 
     it('should not have duplicate members of "as" after merging with other node', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
       const binNodeB = new BinNode(parent, {
         foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}
@@ -268,7 +268,7 @@ describe('compile/data/bin', () => {
     });
 
     it('should create formulas for members of "as" when assembled', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const binNode = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}});
       const transforms = binNode.assemble();
 
@@ -277,11 +277,11 @@ describe('compile/data/bin', () => {
     });
 
     it('should resassign children of BinNode when merging', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
       const binNodeB = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['bar', 'bar_end']]}});
-      const childA = new DataFlowNode(binNodeA);
-      const childB = new DataFlowNode(binNodeB);
+      const childA = new PlaceholderDataFlowNode(binNodeA);
+      const childB = new PlaceholderDataFlowNode(binNodeB);
 
       binNodeA.merge(binNodeB, () => {});
 
@@ -292,7 +292,7 @@ describe('compile/data/bin', () => {
     });
 
     it('should keep non-conflicting bins of BinNodes when merging', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
       const binNodeB = new BinNode(parent, {bar: {bin: {}, field: 'bar', as: [['bar', 'bar_end']]}});
 

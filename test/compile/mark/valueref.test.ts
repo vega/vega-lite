@@ -23,6 +23,8 @@ describe('compile/mark/valueref', () => {
       const ref = midPoint({
         channel: 'x',
         channelDef: {value: 'width'},
+        markDef: {type: 'point'},
+        config: defaultConfig,
         scaleName: undefined,
         scale: undefined,
         defaultRef
@@ -33,6 +35,8 @@ describe('compile/mark/valueref', () => {
       const ref = midPoint({
         channel: 'y',
         channelDef: {value: 'height'},
+        markDef: {type: 'point'},
+        config: defaultConfig,
         scaleName: undefined,
         scale: undefined,
         defaultRef
@@ -46,6 +50,8 @@ describe('compile/mark/valueref', () => {
         channel: 'x',
         channelDef: fieldDef,
         channel2Def: fieldDef2,
+        markDef: {type: 'point'},
+        config: defaultConfig,
         scaleName: 'x',
         scale: undefined,
         defaultRef

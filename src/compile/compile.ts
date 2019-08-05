@@ -3,13 +3,14 @@ import * as vlFieldDef from '../channeldef';
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
 import * as log from '../log';
 import {normalize} from '../normalize/index';
-import {isLayerSpec, isUnitSpec, LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec';
+import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec';
 import {
-  AutoSizeParams,
   Datasets,
   extractTopLevelProperties,
+  TopLevelProperties,
+  getFitType,
   normalizeAutoSize,
-  TopLevelProperties
+  AutoSizeParams
 } from '../spec/toplevel';
 import {keys, mergeDeep} from '../util';
 import {buildModel} from './buildmodel';
@@ -17,6 +18,8 @@ import {assembleRootData} from './data/assemble';
 // import {draw} from './data/debug';
 import {optimizeDataflow} from './data/optimize';
 import {Model} from './model';
+import {getPositionScaleChannel} from '../channel';
+import {isFitType} from '../spec/toplevel';
 
 export interface CompileOptions {
   config?: Config;
@@ -73,13 +76,13 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     // - Decompose all extended unit specs into composition of unit spec.  For example, a box plot get expanded into multiple layers of bars, ticks, and rules. The shorthand row/column channel is also expanded to a facet spec.
     const spec = normalize(inputSpec, config);
     // - Normalize autosize to be a autosize properties object.
-    const autosize = normalizeAutoSize(inputSpec.autosize, config.autosize, isLayerSpec(spec) || isUnitSpec(spec));
+    const autosize = normalizeAutoSize(inputSpec, config);
 
     // 3. Build Model: normalized spec -> Model (a tree structure)
 
     // This phases instantiates the models with default config by doing a top-down traversal. This allows us to pass properties that child models derive from their parents via their constructors.
     // See the abstract `Model` class and its children (UnitModel, LayerModel, FacetModel, RepeatModel, ConcatModel) for different types of models.
-    const model: Model = buildModel(spec, null, '', undefined, undefined, config, autosize.type === 'fit');
+    const model: Model = buildModel(spec, null, '', undefined, undefined, config);
 
     // 4 Parse: Model --> Model with components
 
@@ -103,7 +106,7 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     // 6. Assemble: convert model components --> Vega Spec.
     return assembleTopLevelModel(
       model,
-      getTopLevelProperties(inputSpec, config, autosize),
+      getTopLevelProperties(inputSpec, config, autosize, model),
       inputSpec.datasets,
       inputSpec.usermeta
     );
@@ -119,7 +122,27 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
   }
 }
 
-function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config, autosize: AutoSizeParams) {
+function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config, autosize: AutoSizeParams, model: Model) {
+  const width = model.component.layoutSize.get('width');
+  const height = model.component.layoutSize.get('height');
+  if (width && height && isFitType(autosize.type)) {
+    if (width === 'step' && height === 'step') {
+      log.warn(log.message.droppingFit());
+      autosize.type = 'pad';
+    } else if (width === 'step' || height === 'step') {
+      // effectively XOR, because else if
+
+      // get step dimension
+      const sizeType = width === 'step' ? 'width' : 'height';
+      // log that we're dropping fit for respective channel
+      log.warn(log.message.droppingFit(getPositionScaleChannel(sizeType)));
+
+      // setting type to inverse fit (so if we dropped fit-x, type is now fit-y)
+      const inverseSizeType = sizeType === 'width' ? 'height' : 'width';
+      autosize.type = getFitType(inverseSizeType);
+    }
+  }
+
   return {
     autosize: keys(autosize).length === 1 && autosize.type ? autosize.type : autosize,
     ...extractTopLevelProperties(config),

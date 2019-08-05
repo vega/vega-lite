@@ -2,7 +2,7 @@ import {StackNode} from '../../../src/compile/data/stack';
 import {UnitModel} from '../../../src/compile/unit';
 import {Transform} from '../../../src/transform';
 import {parseUnitModelWithScale} from '../../util';
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
+import {PlaceholderDataFlowNode} from './util';
 
 function parse(model: UnitModel) {
   return StackNode.makeFromEncoding(null, model).stack;
@@ -326,7 +326,7 @@ describe('compile/data/stack', () => {
     });
 
     it('should never clone parent', () => {
-      const parent = new DataFlowNode(null);
+      const parent = new PlaceholderDataFlowNode(null);
       const stack = new StackNode(parent, null);
       expect(stack.clone().parent).toBeNull();
     });

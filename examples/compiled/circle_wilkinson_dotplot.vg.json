@@ -43,9 +43,6 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"data\": ''+datum[\"data\"], \"id\": ''+datum[\"id\"]}"
-          },
           "x": {"scale": "x", "field": "data"},
           "y": {"scale": "y", "field": "id"},
           "shape": {"value": "circle"}
@@ -83,7 +80,7 @@
       "labelAngle": 270,
       "labelBaseline": "middle",
       "labelOverlap": true,
-      "zindex": 1
+      "zindex": 0
     }
   ]
 }

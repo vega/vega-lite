@@ -52,7 +52,7 @@
           "title": "Y",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -86,7 +86,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_width/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -114,9 +114,6 @@
             "update": {
               "opacity": {"value": 1},
               "fill": {"value": "#4c78a8"},
-              "tooltip": {
-                "signal": "{\"X\": format(datum[\"X\"], \"\"), \"Y\": format(datum[\"Y\"], \"\")}"
-              },
               "x": [
                 {
                   "test": "datum[\"X\"] === null || isNaN(datum[\"X\"])",

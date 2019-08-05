@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Dominik Moritz, Kanit \"Ham\" Wongsuphasawat, Arvind Satyanarayan, Jeffrey Heer",
-  "version": "3.4.0",
+  "version": "4.0.0-beta.0",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -40,7 +40,7 @@
     "deploy": "scripts/deploy.sh",
     "deploy:gh": "scripts/deploy-gh.sh",
     "deploy:schema": "scripts/deploy-schema.sh",
-    "schema": "mkdir -p build && ts-json-schema-generator -c -f tsconfig.json -t TopLevelSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
+    "schema": "mkdir -p build && ts-json-schema-generator -c -f tsconfig.json -p src/index.ts -t TopLevelSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
     "renameschema": "scripts/rename-schema.sh",
     "presite": "npm run data && npm run build:site && npm run build:toc && npm run build:versions && scripts/create-example-pages",
     "site": "bundle exec jekyll serve --incremental",
@@ -113,6 +113,7 @@
   "dependencies": {
     "@types/clone": "~0.1.30",
     "@types/fast-json-stable-stringify": "^2.0.0",
+    "array-flat-polyfill": "^1.0.1",
     "clone": "~2.1.2",
     "fast-deep-equal": "~2.0.1",
     "fast-json-stable-stringify": "~2.0.0",

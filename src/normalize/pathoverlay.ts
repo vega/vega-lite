@@ -114,7 +114,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     // FIXME: determine rules for applying selections.
 
     // Need to copy stack config to overlayed layer
-    const stackProps = stack(markDef, encoding, config ? config.stack : undefined);
+    const stackProps = stack(markDef, encoding);
 
     let overlayEncoding = encoding;
     if (stackProps) {

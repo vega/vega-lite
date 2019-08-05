@@ -31,9 +31,6 @@
           "stroke": {"value": "black"},
           "strokeWidth": {"value": 1},
           "fill": {"scale": "color", "field": "Entity"},
-          "tooltip": {
-            "signal": "{\"Year\": ''+datum[\"Year\"], \"Entity\": ''+datum[\"Entity\"], \"Annual Global Deaths\": format(datum[\"Deaths\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Year"},
           "y": {"scale": "y", "field": "Entity"},
           "size": {"scale": "size", "field": "Deaths"},
@@ -81,9 +78,9 @@
       "labelAlign": "center",
       "labelBaseline": "top",
       "labelOverlap": true,
-      "zindex": 1
+      "zindex": 0
     },
-    {"scale": "y", "orient": "left", "grid": false, "zindex": 1}
+    {"scale": "y", "orient": "left", "grid": false, "zindex": 0}
   ],
   "legends": [
     {

@@ -1,7 +1,7 @@
 import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
-import {Channel, COLUMN, FACET_CHANNELS, FacetChannel, ROW, ScaleChannel} from '../channel';
+import {Channel, COLUMN, FacetChannel, FACET_CHANNELS, ROW, ScaleChannel} from '../channel';
 import {FieldRefOption, normalize, TypedFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
 import {reduce} from '../encoding';
@@ -10,7 +10,7 @@ import {hasDiscreteDomain} from '../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
 import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
-import {contains, flatten} from '../util';
+import {contains} from '../util';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
@@ -50,7 +50,7 @@ export class FacetModel extends ModelWithField {
   ) {
     super(spec, 'facet', parent, parentGivenName, config, repeater, spec.resolve);
 
-    this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config, false);
+    this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config);
     this.children = [this.child];
 
     const facet = replaceRepeaterInFacet(spec.facet, repeater);
@@ -408,8 +408,8 @@ export class FacetModel extends ModelWithField {
       },
       // TODO: move this to after data
       sort: {
-        field: flatten(FACET_CHANNELS.map(c => this.facetSortFields(c))),
-        order: flatten(FACET_CHANNELS.map(c => this.facetSortOrder(c)))
+        field: FACET_CHANNELS.map(c => this.facetSortFields(c)).flat(),
+        order: FACET_CHANNELS.map(c => this.facetSortOrder(c)).flat()
       },
       ...(data.length > 0 ? {data: data} : {}),
       ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),

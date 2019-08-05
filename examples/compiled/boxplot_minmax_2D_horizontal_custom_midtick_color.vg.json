@@ -84,8 +84,8 @@
             "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "lower_whisker_people"},
-          "y": {"scale": "y", "field": "age", "band": 0.5},
-          "x2": {"scale": "x", "field": "lower_box_people"}
+          "x2": {"scale": "x", "field": "lower_box_people"},
+          "y": {"scale": "y", "field": "age", "band": 0.5}
         }
       }
     },
@@ -101,8 +101,8 @@
             "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "upper_box_people"},
-          "y": {"scale": "y", "field": "age", "band": 0.5},
-          "x2": {"scale": "x", "field": "upper_whisker_people"}
+          "x2": {"scale": "x", "field": "upper_whisker_people"},
+          "y": {"scale": "y", "field": "age", "band": 0.5}
         }
       }
     },
@@ -184,16 +184,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "population",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -205,12 +195,22 @@
       "zindex": 0
     },
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "population",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "grid": false,
       "title": "age",
       "labelOverlap": true,
-      "zindex": 1
+      "zindex": 0
     }
   ]
 }

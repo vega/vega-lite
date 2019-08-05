@@ -77,7 +77,7 @@
           "title": "population",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
-          "zindex": 1
+          "zindex": 0
         }
       ]
     },
@@ -135,9 +135,6 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
-              "tooltip": {
-                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
-              },
               "x": {"scale": "child_x", "field": "age"},
               "width": {"scale": "child_x", "band": true},
               "y": {"scale": "y", "field": "sum_people_end"},
@@ -158,17 +155,6 @@
       ],
       "axes": [
         {
-          "scale": "child_x",
-          "orient": "bottom",
-          "grid": false,
-          "title": "age",
-          "labelAlign": "right",
-          "labelAngle": 270,
-          "labelBaseline": "middle",
-          "labelOverlap": true,
-          "zindex": 1
-        },
-        {
           "scale": "y",
           "orient": "left",
           "gridScale": "child_x",
@@ -179,6 +165,17 @@
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "age",
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "labelOverlap": true,
           "zindex": 0
         }
       ]

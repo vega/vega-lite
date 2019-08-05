@@ -17,23 +17,24 @@ import {
   extractTransformsFromEncoding,
   markChannelCompatible,
   normalizeEncoding,
-  pathGroupingFields
+  pathGroupingFields,
+  fieldDefs
 } from '../src/encoding';
 import * as log from '../src/log';
-import {CIRCLE, POINT, SQUARE, TICK} from '../src/mark';
+import {CIRCLE, Mark, POINT, SQUARE, TICK} from '../src/mark';
 import {internalField} from '../src/util';
 
 describe('encoding', () => {
   describe('normalizeEncoding', () => {
     it(
-      'should drop color channel if fill is specified',
+      'should drop color channel if fill is specified and filled = true',
       log.wrap(logger => {
         const encoding = normalizeEncoding(
           {
             color: {field: 'a', type: 'quantitative'},
             fill: {field: 'b', type: 'quantitative'}
           },
-          'rule'
+          {type: 'bar', filled: true}
         );
 
         expect(encoding).toEqual({
@@ -44,14 +45,14 @@ describe('encoding', () => {
     );
 
     it(
-      'should drop color channel if stroke is specified',
+      'should drop color channel if stroke is specified and filled is false',
       log.wrap(logger => {
         const encoding = normalizeEncoding(
           {
             color: {field: 'a', type: 'quantitative'},
             stroke: {field: 'b', type: 'quantitative'}
           },
-          'rule'
+          {type: 'point', filled: false}
         );
 
         expect(encoding).toEqual({
@@ -63,6 +64,10 @@ describe('encoding', () => {
   });
 
   describe('extractTransformsFromEncoding', () => {
+    function normalizeEncodingWithMark(encoding: Encoding<string>, mark: Mark) {
+      return normalizeEncoding(encoding, {type: mark});
+    }
+
     it('should indlude axis in extracted encoding', () => {
       const encoding = extractTransformsFromEncoding(
         {
@@ -83,7 +88,7 @@ describe('encoding', () => {
     });
     it('should extract time unit from encoding field definition and add axis format', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncoding(
+        normalizeEncodingWithMark(
           {
             x: {timeUnit: 'yearmonthdatehoursminutes', field: 'a', type: 'temporal'},
             y: {field: 'b', type: 'quantitative'}
@@ -112,7 +117,7 @@ describe('encoding', () => {
     });
     it('should produce format and formatType in axis when there is timeUnit', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncoding(
+        normalizeEncodingWithMark(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {timeUnit: 'year', field: 'b', type: 'ordinal'}
@@ -134,7 +139,7 @@ describe('encoding', () => {
     });
     it('should not produce formatType in axis when there is timeUnit with type temporal', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncoding(
+        normalizeEncodingWithMark(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {timeUnit: 'year', field: 'b', type: 'temporal'}
@@ -155,7 +160,7 @@ describe('encoding', () => {
     });
     it('should produce format and formatType in legend when there is timeUnit', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncoding(
+        normalizeEncodingWithMark(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {field: 'b', type: 'ordinal'},
@@ -178,7 +183,7 @@ describe('encoding', () => {
     });
     it('should not produce formatType in legend when there is timeUnit with type temporal', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncoding(
+        normalizeEncodingWithMark(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {field: 'b', type: 'ordinal'},
@@ -200,7 +205,7 @@ describe('encoding', () => {
     });
     it('should produce format and formatType when there is timeUnit in tooltip channel or tooltip channel', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncoding(
+        normalizeEncodingWithMark(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {field: 'b', type: 'ordinal'},
@@ -228,7 +233,7 @@ describe('encoding', () => {
     });
     it('should extract aggregates from encoding', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncoding(
+        normalizeEncodingWithMark(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {
@@ -258,7 +263,7 @@ describe('encoding', () => {
     });
     it('should extract binning from encoding', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncoding(
+        normalizeEncodingWithMark(
           {
             x: {field: 'a', type: 'ordinal', bin: true},
             y: {type: 'quantitative', aggregate: 'count'}
@@ -281,7 +286,7 @@ describe('encoding', () => {
     });
     it('should preserve auxiliary properties (i.e. axis) in encoding', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncoding(
+        normalizeEncodingWithMark(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {
@@ -451,6 +456,24 @@ describe('encoding', () => {
 
     it('should not include fields from tooltip', () => {
       expect(pathGroupingFields('line', {tooltip: {field: 'a', type: 'nominal'}})).toEqual([]);
+    });
+  });
+
+  describe('fieldDefs', () => {
+    it('should return field defs', () => {
+      expect(
+        fieldDefs<string>({
+          x: {field: 'foo', type: 'quantitative'},
+          color: {
+            condition: {
+              test: 'datum.val > 12',
+              field: 'bar',
+              type: 'quantitative'
+            },
+            value: 'red'
+          }
+        })
+      ).toEqual([{field: 'foo', type: 'quantitative'}, {field: 'bar', test: 'datum.val > 12', type: 'quantitative'}]);
     });
   });
 });

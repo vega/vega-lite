@@ -89,9 +89,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"Day\": ''+datum[\"Day\"], \"Value\": format(datum[\"Value\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Day"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "Value"},
@@ -107,9 +104,6 @@
       "encode": {
         "update": {
           "fill": {"value": "#e45755"},
-          "tooltip": {
-            "signal": "{\"Day\": ''+datum[\"Day\"], \"baseline\": format(datum[\"baseline\"], \"\"), \"Value\": format(datum[\"Value\"], \"\")}"
-          },
           "x": {"scale": "x", "field": "Day"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "baseline"},
@@ -125,12 +119,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"ThresholdValue\": format(datum[\"ThresholdValue\"], \"\")}"
-          },
           "x": {"value": 0},
-          "y": {"scale": "y", "field": "ThresholdValue"},
-          "x2": {"field": {"group": "width"}}
+          "x2": {"field": {"group": "width"}},
+          "y": {"scale": "y", "field": "ThresholdValue"}
         }
       }
     },
@@ -146,9 +137,6 @@
           "dx": {"value": -2},
           "dy": {"value": -2},
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"PM2.5 Value\": format(datum[\"ThresholdValue\"], \"\"), \"Threshold\": ''+datum[\"Threshold\"]}"
-          },
           "x": {"field": {"group": "width"}},
           "y": {"scale": "y", "field": "ThresholdValue"},
           "text": {"signal": "''+datum[\"Threshold\"]"}
@@ -190,26 +178,6 @@
   ],
   "axes": [
     {
-      "scale": "x",
-      "orient": "bottom",
-      "grid": false,
-      "title": "Day",
-      "labelAngle": 0,
-      "labelAlign": "center",
-      "labelBaseline": "top",
-      "labelOverlap": true,
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
-      "grid": false,
-      "title": "PM2.5 Value",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
       "scale": "y",
       "orient": "left",
       "gridScale": "x",
@@ -220,6 +188,26 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Day",
+      "labelAngle": 0,
+      "labelAlign": "center",
+      "labelBaseline": "top",
+      "labelOverlap": true,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "PM2.5 Value",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

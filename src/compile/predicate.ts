@@ -4,7 +4,7 @@ import {fieldFilterExpression, isSelectionPredicate, Predicate} from '../predica
 import {logicalExpr} from '../util';
 import {DataFlowNode} from './data/dataflow';
 import {Model} from './model';
-import {assembleSelectionPredicate} from './selection/assemble';
+import {parseSelectionPredicate} from './selection/parse';
 
 /**
  * Converts a predicate into an expression.
@@ -15,7 +15,7 @@ export function expression(model: Model, filterOp: LogicalOperand<Predicate>, no
     if (isString(predicate)) {
       return predicate;
     } else if (isSelectionPredicate(predicate)) {
-      return assembleSelectionPredicate(model, predicate.selection, node);
+      return parseSelectionPredicate(model, predicate.selection, node);
     } else {
       // Filter Object
       return fieldFilterExpression(predicate);

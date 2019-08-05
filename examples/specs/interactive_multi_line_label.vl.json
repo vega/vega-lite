@@ -95,7 +95,7 @@
             "dy": -5
           },
           "encoding": {
-            "fill": {
+            "color": {
               "type": "nominal",
               "field": "symbol",
               "legend": null

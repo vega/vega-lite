@@ -30,11 +30,7 @@
         },
         {
           "type": "aggregate",
-          "groupby": [
-            "Year",
-            "bin_maxbins_6_Acceleration",
-            "bin_maxbins_6_Acceleration_end"
-          ],
+          "groupby": ["Year", "bin_maxbins_6_Acceleration"],
           "ops": ["mean"],
           "fields": ["Horsepower"],
           "as": ["mean_Horsepower"]
@@ -71,9 +67,6 @@
               "stroke": {
                 "scale": "color",
                 "field": "bin_maxbins_6_Acceleration"
-              },
-              "tooltip": {
-                "signal": "{\"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\"), \"Year\": timeFormat(datum[\"Year\"], '%b %d, %Y'), \"Acceleration (binned)\": datum[\"bin_maxbins_6_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\")}"
               },
               "x": {"scale": "x", "field": "Year"},
               "y": {"scale": "y", "field": "mean_Horsepower"},
@@ -113,16 +106,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "Year",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -136,15 +119,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": false,
-      "title": "Mean of Horsepower",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
       "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
@@ -153,6 +127,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Year",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Mean of Horsepower",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],

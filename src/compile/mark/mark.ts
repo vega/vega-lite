@@ -3,7 +3,7 @@ import {isFieldDef, isValueDef, vgField} from '../../channeldef';
 import {MAIN} from '../../data';
 import {isAggregate, pathGroupingFields} from '../../encoding';
 import {AREA, isPathMark, LINE, Mark, TRAIL} from '../../mark';
-import {isSortField} from '../../sort';
+import {isSortByEncoding, isSortField} from '../../sort';
 import {contains, getFirstDefined, isNullOrFalse} from '../../util';
 import {VgCompare} from '../../vega.schema';
 import {getMarkConfig, getStyles, sortParams} from '../common';
@@ -12,6 +12,7 @@ import {area} from './area';
 import {bar} from './bar';
 import {MarkCompiler} from './base';
 import {geoshape} from './geoshape';
+import {image} from './image';
 import {line, trail} from './line';
 import {circle, point, square} from './point';
 import {rect} from './rect';
@@ -24,6 +25,7 @@ const markCompiler: {[m in Mark]: MarkCompiler} = {
   bar,
   circle,
   geoshape,
+  image,
   line,
   point,
   rect,
@@ -114,6 +116,12 @@ export function getSort(model: UnitModel): VgCompare {
             },
             {expr: 'datum'}
           )
+        };
+      } else if (isSortByEncoding(s)) {
+        const fieldDefToSort = model.fieldDef(s.encoding);
+        return {
+          field: vgField(fieldDefToSort, {expr: 'datum'}),
+          order: s.order
         };
       } else {
         return {

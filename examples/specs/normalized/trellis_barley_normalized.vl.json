@@ -11,6 +11,7 @@
   },
   "spec": {
     "mark": "point",
+    "height": {"step": 12},
     "encoding": {
       "x": {
         "aggregate": "median",
@@ -18,12 +19,7 @@
         "type": "quantitative",
         "scale": {"zero": false}
       },
-      "y": {
-        "field": "variety",
-        "type": "ordinal",
-        "sort": {"encoding": "x", "order": "descending"},
-        "scale": {"rangeStep": 12}
-      },
+      "y": {"field": "variety", "type": "ordinal", "sort": "-x"},
       "color": {"field": "year", "type": "nominal"}
     }
   }

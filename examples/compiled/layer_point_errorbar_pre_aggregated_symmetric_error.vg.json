@@ -76,14 +76,14 @@
             },
             {"scale": "x", "field": "lower_yield_center"}
           ],
-          "y": {"scale": "y", "field": "variety", "band": 0.5},
           "x2": [
             {
               "test": "datum[\"upper_yield_center\"] === null || isNaN(datum[\"upper_yield_center\"])",
               "value": 0
             },
             {"scale": "x", "field": "upper_yield_center"}
-          ]
+          ],
+          "y": {"scale": "y", "field": "variety", "band": 0.5}
         }
       }
     },
@@ -96,9 +96,6 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"yield_center\": format(datum[\"yield_center\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
-          },
           "x": [
             {
               "test": "datum[\"yield_center\"] === null || isNaN(datum[\"yield_center\"])",
@@ -145,16 +142,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "grid": false,
-      "title": "yield",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -166,12 +153,22 @@
       "zindex": 0
     },
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "yield",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "grid": false,
       "title": "variety",
       "labelOverlap": true,
-      "zindex": 1
+      "zindex": 0
     }
   ]
 }

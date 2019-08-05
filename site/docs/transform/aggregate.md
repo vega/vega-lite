@@ -116,8 +116,8 @@ The supported **aggregation operations** are:
 | ci1 | The upper boundary of the bootstrapped 95% confidence interval of the mean field value. |
 | min | The minimum field value. |
 | max | The maximum field value. |
-| argmin | An input data object containing the minimum field value. |
-| argmax | An input data object containing the maximum field value. |
+| argmin | An input data object containing the minimum field value. <br/> **Note:** When used inside encoding, `argmin` must be specified as an object. (See below for an example.) |
+| argmax | An input data object containing the maximum field value. <br/> **Note:** When used inside encoding, `argmax` must be specified as an object. (See below for an example.) |
 
 ## Argmin / Argmax
 
@@ -128,5 +128,3 @@ The argmax and argmin operation can be specified in an encoding field definition
 This is equivalent to specifying argmax in an aggregate transform and encode its nested data.
 
 <div class="vl-example" data-name="bar_argmax_transform"></div>
-
-**Note:** When accessing aggregated argmax/argmin fields, the aggregated fields must be flattened, due to the [nested field issue](https://github.com/vega/vega-lite/issues/3361). The aggregated fields can be flattened with the calculate transform as done in the [CO2 example]({{site.baseurl}}/examples/layer_line_co2_concentration.html).

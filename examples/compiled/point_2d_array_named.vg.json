@@ -48,9 +48,6 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
-          },
           "x": {"scale": "plotname_x", "field": "a"},
           "y": {"scale": "plotname_y", "field": "b"}
         }
@@ -76,25 +73,6 @@
   ],
   "axes": [
     {
-      "scale": "plotname_x",
-      "orient": "bottom",
-      "grid": false,
-      "title": "a",
-      "labelAlign": "right",
-      "labelAngle": 270,
-      "labelBaseline": "middle",
-      "zindex": 1
-    },
-    {
-      "scale": "plotname_y",
-      "orient": "left",
-      "grid": false,
-      "title": "b",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 1
-    },
-    {
       "scale": "plotname_y",
       "orient": "left",
       "gridScale": "plotname_x",
@@ -105,6 +83,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "plotname_x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "a",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "zindex": 0
+    },
+    {
+      "scale": "plotname_y",
+      "orient": "left",
+      "grid": false,
+      "title": "b",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]

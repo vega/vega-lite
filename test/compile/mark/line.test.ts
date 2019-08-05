@@ -84,10 +84,9 @@ describe('Mark: Line', () => {
       mark: 'line',
       encoding: {
         x: {field: 'year', type: 'ordinal'},
-        y: {field: 'yield', type: 'quantitative', aggregate: 'sum'},
+        y: {field: 'yield', type: 'quantitative', aggregate: 'sum', stack: 'zero'},
         color: {field: 'a', type: 'nominal'}
-      },
-      config: {stack: 'zero'}
+      }
     });
     const props = line.encodeEntry(model);
 
@@ -102,10 +101,9 @@ describe('Mark: Line', () => {
       mark: 'line',
       encoding: {
         y: {field: 'year', type: 'ordinal'},
-        x: {field: 'yield', type: 'quantitative', aggregate: 'sum'},
+        x: {field: 'yield', type: 'quantitative', aggregate: 'sum', stack: 'zero'},
         color: {field: 'a', type: 'nominal'}
-      },
-      config: {stack: 'zero'}
+      }
     });
     const props = line.encodeEntry(model);
 
