@@ -199,7 +199,7 @@
           "align": {"value": "left"},
           "dx": {"value": 5},
           "dy": {"value": -5},
-          "fill": {"scale": "fill", "field": "symbol"},
+          "fill": {"scale": "color", "field": "symbol"},
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "text": {"signal": "format(datum[\"price\"], \"\")"},
@@ -242,16 +242,11 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "symbol"},
-          {"data": "data_0", "field": "symbol"}
+          {"data": "data_0", "field": "symbol"},
+          {"data": "data_3", "field": "symbol"}
         ],
         "sort": true
       },
-      "range": "category"
-    },
-    {
-      "name": "fill",
-      "type": "ordinal",
-      "domain": {"data": "data_3", "field": "symbol", "sort": true},
       "range": "category"
     }
   ],
