@@ -1,6 +1,6 @@
 {
   "Single-View Plots": {
-    "Bar Charts & Histograms": [
+    "Bar Charts": [
       {
         "name": "bar",
         "title": "Simple Bar Chart",
@@ -14,20 +14,6 @@
       {
         "name": "bar_aggregate_sort_by_encoding",
         "title": "Aggregate Bar Chart (Sorted)"
-      },
-      {
-        "name": "histogram",
-        "title": "Histogram",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "bar_binned_data",
-        "title": "Histogram (from Binned Data)",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "histogram_log",
-        "title": "Log-scaled Histogram"
       },
       {
         "name": "bar_grouped",
@@ -76,17 +62,65 @@
         "title": "Bar Chart with Label Overlays"
       },
       {
+        "name": "bar_month_temporal_initial",
+        "title": "Bar Chart showing Initials of Month Names"
+      }
+    ],
+    "Histograms, Density Plots, and Dot Plots": [
+      {
+        "name": "histogram",
+        "title": "Histogram",
+        "style": "background-size: auto 105%; background-position: center center !important;"
+      },
+      {
+        "name": "bar_binned_data",
+        "title": "Histogram (from Binned Data)",
+        "style": "background-size: auto 105%; background-position: center center !important;"
+      },
+      {
+        "name": "histogram_log",
+        "title": "Log-scaled Histogram"
+      },
+
+      {
+        "name": "area_density",
+        "title": "Density Plot"
+      },
+      {
+        "name": "area_density_stacked",
+        "title": "Stacked Density Estimates"
+      },
+      {
+        "name": "circle_binned",
+        "title": "2D Histogram Scatterplot"
+      },
+      {
+        "name": "rect_binned_heatmap",
+        "title": "2D Histogram Heatmap"
+      },
+      {
+        "name": "area_cumulative_freq",
+        "title": "Cumulative Frequency Distribution",
+        "style": "background-size: auto 105%; background-position: center center !important;",
+        "png": true
+      },
+      {
+        "name": "layer_cumulative_histogram",
+        "title": "Layered Histogram and Cumulative Histogram",
+        "style": "background-size: auto 105%; background-position: center center !important;"
+      },
+      {
         "name": "circle_wilkinson_dotplot",
         "title": "Wilkinson Dot Plot"
       },
       {
         "name": "isotype_bar_chart",
-        "title": "Isotype Bar Chart",
+        "title": "Isotype Dot Plot",
         "description": "Inspired by this [Only An Ocean Between, 1943](http://www.thomwhite.co.uk/?p=1303). Population Live Stock, p.13. This example was created by [@jwoLondon](https://github.com/jwoLondon)."
       },
       {
         "name": "isotype_bar_chart_emoji",
-        "title": "Isotype Bar Chart with Emoji",
+        "title": "Isotype Dot Plot with Emoji",
         "description": "This example was inspired by [@jakevdp](https://github.com/jakevdp) and Isotype Bar Chart by [@jwoLondon](https://github.com/jwoLondon)."
       }
     ],
@@ -112,7 +146,7 @@
       },
       {
         "name": "circle_binned",
-        "title": "Binned Scatterplot"
+        "title": "2D Histogram Scatterplot"
       },
       {
         "name": "point_bubble",
@@ -141,6 +175,10 @@
       {
         "name": "text_scatterplot_colored",
         "title": "Scatter Plot with Text Marks"
+      },
+      {
+        "name": "scatter_image",
+        "title": "Image-based Scatter Plot"
       }
     ],
     "Line Charts": [
@@ -243,10 +281,6 @@
         "name": "area_horizon",
         "title": "Horizon Graph",
         "style": "background-size: auto 70%; background-position-y: center;"
-      },
-      {
-        "name": "rect_mosaic_labelled_with_offset",
-        "title": "Mosaic Chart with Labels"
       }
     ],
     "Table-based Plots": [
@@ -261,7 +295,7 @@
       },
       {
         "name": "rect_binned_heatmap",
-        "title": "Table Binned heatmap"
+        "title": "2D Histogram Heatmap"
       },
       {
         "name": "circle_github_punchcard",
@@ -275,6 +309,10 @@
       {
         "name": "rect_lasagna",
         "title": "Lasagna Plot (Dense Time-Series Heatmap)"
+      },
+      {
+        "name": "rect_mosaic_labelled_with_offset",
+        "title": "Mosaic Chart with Labels"
       }
     ],
     "Advanced Calculations": [
@@ -352,10 +390,6 @@
       {
         "name": "layer_line_window",
         "title": "Line Chart to Show Benchmarking Results"
-      },
-      {
-        "name": "area_density_stacked",
-        "title": "Stacked Density Estimates"
       },
       {
         "name": "point_quantile_quantile",
@@ -526,6 +560,10 @@
       {
         "name": "trellis_area",
         "title": "Trellis Area"
+      },
+      {
+        "name": "area_density_facet",
+        "title": "Faceted Density Plot"
       }
     ],
     "Repeat & Concatenation": [
