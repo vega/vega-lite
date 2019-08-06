@@ -36,13 +36,13 @@ describe('Mark: Bar', () => {
       encoding: {
         x,
         x2,
-        y: {type: 'quantitative', field: 'Acceleration'}
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
       }
     });
     const props = bar.encodeEntry(model);
     expect(props.x).toEqual([{test: fieldInvalidPredicate(x), value: 0}, {scale: 'x', field: 'bin_start'}]);
     expect(props.x2).toEqual([{test: fieldInvalidPredicate(x2), value: 0}, {scale: 'x', field: 'bin_end'}]);
-    expect(props.y).toEqual({scale: 'y', field: 'Acceleration'});
+    expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
     expect(props.y2).toEqual({scale: 'y', value: 0});
     expect(props.height).toBeUndefined();
   });
@@ -192,10 +192,11 @@ describe('Mark: Bar', () => {
       encoding: {
         y,
         y2,
-        x: {type: 'quantitative', field: 'Acceleration'}
+        x: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
       }
     });
     const props = bar.encodeEntry(model);
+    expect(model.markDef.orient).toBe('horizontal');
     expect(props.y).toEqual([
       {test: fieldInvalidPredicate(y), field: {group: 'height'}},
       {scale: 'y', field: 'bin_start'}
@@ -204,7 +205,7 @@ describe('Mark: Bar', () => {
       {test: fieldInvalidPredicate(y2), field: {group: 'height'}},
       {scale: 'y', field: 'bin_end'}
     ]);
-    expect(props.x).toEqual({scale: 'x', field: 'Acceleration'});
+    expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
     expect(props.x2).toEqual({scale: 'x', value: 0});
     expect(props.height).toBeUndefined();
   });
