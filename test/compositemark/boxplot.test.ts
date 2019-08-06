@@ -858,7 +858,8 @@ describe('normalizeBoxIQR', () => {
       mark: {
         type: 'bar',
         style: 'boxplot-box',
-        size: 14
+        size: 14,
+        orient: 'vertical'
       },
       encoding: {
         x: {field: 'age', type: 'quantitative'},
