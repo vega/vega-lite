@@ -96,22 +96,16 @@
         "update": {
           "fill": {"value": "#aaa"},
           "stroke": {"value": "#999"},
-          "x": [
+          "x": {"scale": "x", "field": "year"},
+          "x2": {"scale": "x", "field": "year_end"},
+          "yc": [
             {
-              "test": "datum[\"year\"] === null || isNaN(datum[\"year\"])",
-              "value": 0
+              "test": "datum[\"wheat\"] === null || isNaN(datum[\"wheat\"])",
+              "field": {"group": "height"}
             },
-            {"scale": "x", "field": "year"}
+            {"scale": "y", "field": "wheat"}
           ],
-          "x2": [
-            {
-              "test": "datum[\"year_end\"] === null || isNaN(datum[\"year_end\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "year_end"}
-          ],
-          "y": {"scale": "y", "field": "wheat"},
-          "y2": {"scale": "y", "value": 0}
+          "height": {"value": 5}
         }
       }
     },
@@ -125,13 +119,7 @@
           "opacity": {"value": 0.5},
           "stroke": {"value": "#000"},
           "strokeWidth": {"value": 0.6},
-          "x": [
-            {
-              "test": "datum[\"year\"] === null || isNaN(datum[\"year\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "year"}
-          ],
+          "x": {"scale": "x", "field": "year"},
           "y": {"field": {"group": "height"}},
           "y2": {"value": 0}
         }
@@ -150,7 +138,7 @@
           "fill": {"value": "#a4cedb"},
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages"},
-          "y2": {"scale": "y", "value": 0},
+          "y2": {"field": {"group": "height"}},
           "defined": {
             "signal": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"wages\"] !== null && !isNaN(datum[\"wages\"])"
           }
@@ -201,22 +189,22 @@
         "update": {
           "stroke": {"value": "#000"},
           "fill": {"scale": "fill", "field": "commonwealth"},
-          "x": [
+          "x": {"scale": "x", "field": "start"},
+          "x2": {"scale": "x", "field": "end"},
+          "y": [
             {
-              "test": "datum[\"start\"] === null || isNaN(datum[\"start\"])",
-              "value": 0
+              "test": "datum[\"y\"] === null || isNaN(datum[\"y\"])",
+              "field": {"group": "height"}
             },
-            {"scale": "x", "field": "start"}
+            {"scale": "y", "field": "y"}
           ],
-          "x2": [
+          "y2": [
             {
-              "test": "datum[\"end\"] === null || isNaN(datum[\"end\"])",
-              "value": 0
+              "test": "datum[\"offset\"] === null || isNaN(datum[\"offset\"])",
+              "field": {"group": "height"}
             },
-            {"scale": "x", "field": "end"}
-          ],
-          "y": {"scale": "y", "field": "y"},
-          "y2": {"scale": "y", "field": "offset"}
+            {"scale": "y", "field": "offset"}
+          ]
         }
       }
     },
@@ -231,14 +219,14 @@
           "fontSize": {"value": 9},
           "fontStyle": {"value": "italic"},
           "fill": {"value": "black"},
-          "x": [
+          "x": {"scale": "x", "field": "x"},
+          "y": [
             {
-              "test": "datum[\"x\"] === null || isNaN(datum[\"x\"])",
-              "value": 0
+              "test": "datum[\"off2\"] === null || isNaN(datum[\"off2\"])",
+              "field": {"group": "height"}
             },
-            {"scale": "x", "field": "x"}
+            {"scale": "y", "field": "off2", "offset": 16}
           ],
-          "y": {"scale": "y", "field": "off2", "offset": 16},
           "text": {"signal": "''+datum[\"name\"]"},
           "align": {"value": "center"}
         }
@@ -262,8 +250,7 @@
       },
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": false,
-      "padding": 5
+      "zero": true
     },
     {
       "name": "y",
@@ -279,7 +266,8 @@
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "fill",

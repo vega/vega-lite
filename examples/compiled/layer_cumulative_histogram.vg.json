@@ -87,8 +87,14 @@
             },
             {"scale": "x", "field": "bin_IMDB_Rating_end"}
           ],
-          "y": {"scale": "y", "field": "cumulative_count"},
-          "y2": {"scale": "y", "value": 0}
+          "yc": [
+            {
+              "test": "datum[\"cumulative_count\"] === null || isNaN(datum[\"cumulative_count\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "cumulative_count"}
+          ],
+          "height": {"value": 5}
         }
       }
     },
@@ -115,8 +121,14 @@
             },
             {"scale": "x", "field": "bin_IMDB_Rating_end"}
           ],
-          "y": {"scale": "y", "field": "count"},
-          "y2": {"scale": "y", "value": 0}
+          "yc": [
+            {
+              "test": "datum[\"count\"] === null || isNaN(datum[\"count\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "count"}
+          ],
+          "height": {"value": 5}
         }
       }
     }
@@ -135,8 +147,7 @@
       },
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true,
-      "padding": 5
+      "nice": true
     },
     {
       "name": "y",
@@ -149,7 +160,8 @@
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": false,
+      "padding": 5
     }
   ],
   "axes": [
