@@ -12,10 +12,10 @@ describe('extractTransforms()', () => {
   // various bugs.
   const failsList = new Set([
     'area_temperature_range.vl.json',
-    'bar_argmax.vl.json',
     'bar_aggregate_count.vl.json',
     'bar_aggregate_sort_by_encoding.vl.json',
     'bar_aggregate_sort_mean.vl.json',
+    'bar_argmax.vl.json',
     'bar_binned_data.vl.json',
     'bar_count_minimap.vl.json',
     'bar_diverging_stack_population_pyramid.vl.json',
@@ -38,6 +38,7 @@ describe('extractTransforms()', () => {
     'hconcat_weather.vl.json',
     'histogram_bin_change.vl.json',
     'histogram_bin_transform.vl.json',
+    'histogram_log.vl.json',
     'histogram_no_spacing.vl.json',
     'histogram_ordinal_sort.vl.json',
     'histogram_ordinal.vl.json',
@@ -49,8 +50,8 @@ describe('extractTransforms()', () => {
     'interactive_seattle_weather.vl.json',
     'joinaggregate_mean_difference.vl.json',
     'layer_bar_dual_axis_minmax.vl.json',
-    'layer_dual_axis.vl.json', // tooltip does not use the correct field name
     'layer_circle_independent_color.vl.json',
+    'layer_dual_axis.vl.json', // tooltip does not use the correct field name
     'layer_falkensee.vl.json',
     'layer_histogram_global_mean.vl.json',
     'layer_histogram.vl.json',
@@ -89,8 +90,8 @@ describe('extractTransforms()', () => {
     'point_dot_timeunit_color.vl.json',
     'rect_binned_heatmap.vl.json',
     'rect_heatmap_weather.vl.json',
-    'repeat_histogram.vl.json',
     'repeat_histogram_flights.vl.json',
+    'repeat_histogram.vl.json',
     'repeat_histogram.vl.json',
     'repeat_layer.vl.json',
     'repeat_line_weather.vl.json',
@@ -99,12 +100,12 @@ describe('extractTransforms()', () => {
     'selection_layer_bar_month.vl.json',
     'selection_project_binned_interval.vl.json',
     'test_aggregate_nested.vl.json',
-    'trellis_bar_histogram.vl.json',
     'trellis_bar_histogram_label_rotated.vl.json',
     'trellis_bar_histogram.vl.json',
+    'trellis_bar_histogram.vl.json',
+    'trellis_barley_independent.vl.json',
     'trellis_barley_layer_median.vl.json',
     'trellis_barley.vl.json',
-    'trellis_barley_independent.vl.json',
     'trellis_column_year.vl.json',
     'trellis_cross_sort_array.vl.json',
     'trellis_cross_sort.vl.json',
@@ -114,11 +115,11 @@ describe('extractTransforms()', () => {
 
     // Time Unit prebinned
     // TODO: fix these
-    'bar_month_band.vl.json',
     'bar_month_band_config.vl.json',
+    'bar_month_band.vl.json',
     'bar_month_temporal_initial.vl.json',
-    'bar_yearmonth.vl.json',
     'bar_yearmonth_custom_format.vl.json',
+    'bar_yearmonth.vl.json',
     'line_month_center_band.vl.json'
   ]);
 
