@@ -1,5 +1,5 @@
 import {Orientation} from 'vega';
-import {isBinned, isBinning} from '../../bin';
+import {isBinned} from '../../bin';
 import {isContinuous, isFieldDef, TypedFieldDef} from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
@@ -20,7 +20,7 @@ import {
   TEXT,
   TICK
 } from '../../mark';
-import {QUANTITATIVE, TEMPORAL} from '../../type';
+import {TEMPORAL} from '../../type';
 import {contains, getFirstDefined} from '../../util';
 import {getMarkConfig} from '../common';
 
@@ -98,10 +98,10 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
 
   switch (mark) {
     case BAR:
-      if (isFieldDef(x) && isBinned(x.bin)) {
+      if ((isFieldDef(x) && isBinned(x.bin)) || (isFieldDef(y) && y.aggregate)) {
         return 'vertical';
       }
-      if (isFieldDef(y) && isBinned(y.bin)) {
+      if ((isFieldDef(y) && isBinned(y.bin)) || (isFieldDef(x) && x.aggregate)) {
         return 'horizontal';
       }
       if (y2 || x2) {
@@ -110,13 +110,11 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
           return specifiedOrient;
         }
 
-        // If y is range and x is non-range, non-bin Q, y is likely a prebinned field
-        if (!x2 && isFieldDef(x) && x.type === QUANTITATIVE && !isBinning(x.bin)) {
+        if (!y2 && isFieldDef(x) && isContinuous(x)) {
           return 'horizontal';
         }
 
-        // If x is range and y is non-range, non-bin Q, x is likely a prebinned field
-        if (!y2 && isFieldDef(y) && y.type === QUANTITATIVE && !isBinning(y.bin)) {
+        if (!x2 && isFieldDef(y) && isContinuous(y)) {
           return 'vertical';
         }
       }
@@ -144,9 +142,9 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
           return 'horizontal';
         }
       } else if (mark === RULE) {
-        if (encoding.x && !encoding.y) {
+        if (x && !y) {
           return 'vertical';
-        } else if (encoding.y && !encoding.x) {
+        } else if (y && !x) {
           return 'horizontal';
         }
       }
@@ -155,15 +153,15 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
     case LINE:
     case TICK: {
       // Tick is opposite to bar, line, area and never have ranged mark.
-      const xIsContinuous = isFieldDef(encoding.x) && isContinuous(encoding.x);
-      const yIsContinuous = isFieldDef(encoding.y) && isContinuous(encoding.y);
+      const xIsContinuous = isFieldDef(x) && isContinuous(x);
+      const yIsContinuous = isFieldDef(y) && isContinuous(y);
       if (xIsContinuous && !yIsContinuous) {
         return mark !== 'tick' ? 'horizontal' : 'vertical';
       } else if (!xIsContinuous && yIsContinuous) {
         return mark !== 'tick' ? 'vertical' : 'horizontal';
       } else if (xIsContinuous && yIsContinuous) {
-        const xDef = encoding.x as TypedFieldDef<string>; // we can cast here since they are surely fieldDef
-        const yDef = encoding.y as TypedFieldDef<string>;
+        const xDef = x as TypedFieldDef<string>; // we can cast here since they are surely fieldDef
+        const yDef = y as TypedFieldDef<string>;
 
         const xIsTemporal = xDef.type === TEMPORAL;
         const yIsTemporal = yDef.type === TEMPORAL;

@@ -70,6 +70,18 @@ describe('compile/mark/init', () => {
       expect(model.markDef.orient).toBe('vertical');
     });
 
+    it('should return correct default for QxQ with range', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        encoding: {
+          y: {type: 'quantitative', field: 'foo'},
+          x: {type: 'quantitative', field: 'bar'},
+          x2: {field: 'baz'}
+        }
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
+
     it('should return correct default for empty plot', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'bar',
@@ -128,6 +140,17 @@ describe('compile/mark/init', () => {
         encoding: {
           x: {type: 'quantitative', field: 'foo'},
           y: {type: 'temporal', field: 'bar'}
+        }
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
+
+    it('should return correct orient for vertical with aggregation', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        encoding: {
+          x: {type: 'quantitative', field: 'foo', aggregate: 'mean'},
+          y: {type: 'quantitative', field: 'bar'}
         }
       });
       expect(model.markDef.orient).toBe('horizontal');
