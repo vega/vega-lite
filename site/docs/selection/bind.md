@@ -22,6 +22,8 @@ If multiple projections are specified, customized bindings can be specified by m
 
 <div class="vl-example" data-name="selection_bind_cylyr"></div>
 
+**Note:** When a single selection is bound to input widgets, direct manipulation interaction (e.g., clicking or double clicking the visualization) is disabled by default. It can be re-enabled by explicitly specifying the [`on`](selection.html#selection-props) and [`clear`](clear.html) properties.
+
 ## Scale Binding
 
 With interval selections, the `bind` property can be set to the value `"scales"` to enable a two-way binding between the selection and the scales used within the same view. This binding first populates the interval selection with the scale domains, and then uses the selection to drive the scale domains. As a result, the view now functions like an interval selection and can be [panned](translate.html) and [zoomed](zoom.html).
