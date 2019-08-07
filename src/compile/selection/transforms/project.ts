@@ -39,7 +39,7 @@ const project: TransformCompiler = {
     return true; // This transform handles its own defaults, so always run parse.
   },
 
-  parse: (model, selDef, selCmpt) => {
+  parse: (model, selCmpt, selDef, origDef) => {
     const name = selCmpt.name;
     const proj = selCmpt.project || (selCmpt.project = new SelectionProjectionComponent());
     const parsed: Dict<SelectionProjection> = {};

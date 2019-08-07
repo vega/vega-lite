@@ -8,10 +8,10 @@ import {TransformCompiler} from './transforms';
 
 const clear: TransformCompiler = {
   has: selCmpt => {
-    return selCmpt.clear !== false;
+    return selCmpt.clear !== undefined && selCmpt.clear !== false;
   },
 
-  parse: (model, selDef, selCmpt) => {
+  parse: (model, selCmpt, selDef, origDef) => {
     if (selDef.clear) {
       selCmpt.clear = parseSelector(selDef.clear, 'scope');
     }
