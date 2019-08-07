@@ -11,7 +11,7 @@ const clear: TransformCompiler = {
     return selCmpt.clear !== undefined && selCmpt.clear !== false;
   },
 
-  parse: (model, selCmpt, selDef, origDef) => {
+  parse: (model, selCmpt, selDef) => {
     if (selDef.clear) {
       selCmpt.clear = parseSelector(selDef.clear, 'scope');
     }

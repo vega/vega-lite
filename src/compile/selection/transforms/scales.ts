@@ -13,7 +13,7 @@ const scaleBindings: TransformCompiler = {
     return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
   },
 
-  parse: (model, selCmpt, selDef, origDef) => {
+  parse: (model, selCmpt) => {
     const name = varName(selCmpt.name);
     const bound: SelectionProjection[] = (selCmpt.scales = []);
 
