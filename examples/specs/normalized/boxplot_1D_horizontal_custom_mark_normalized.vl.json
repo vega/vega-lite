@@ -168,7 +168,12 @@
       ],
       "layer": [
         {
-          "mark": {"type": "bar", "size": 14, "style": "boxplot-box"},
+          "mark": {
+            "type": "bar",
+            "size": 14,
+            "orient": "horizontal",
+            "style": "boxplot-box"
+          },
           "encoding": {
             "x": {
               "field": "lower_box_people",

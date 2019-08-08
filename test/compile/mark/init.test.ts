@@ -133,6 +133,17 @@ describe('compile/mark/init', () => {
       expect(model.markDef.orient).toBe('horizontal');
     });
 
+    it('should return correct orient for vertical with aggregation', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        encoding: {
+          x: {type: 'quantitative', field: 'foo', aggregate: 'mean'},
+          y: {type: 'quantitative', field: 'bar'}
+        }
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
+
     it('should return correct orient for vertical tick', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'tick',

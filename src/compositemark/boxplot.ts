@@ -1,6 +1,5 @@
 import {Orientation} from 'vega';
 import {isNumber, isObject} from 'vega-util';
-import {PositionFieldDef, TextFieldDef, TextFieldDefWithCondition, TextValueDefWithCondition} from '../channeldef';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
 import * as log from '../log';
@@ -109,6 +108,7 @@ export function normalizeBoxPlot(
     aggregate,
     encodingWithoutContinuousAxis,
     ticksOrient,
+    boxOrient,
     customTooltipWithoutAggregatedField
   } = boxParams(spec, extent, config);
 
@@ -192,7 +192,7 @@ export function normalizeBoxPlot(
     ...(boxPlotType !== 'tukey' ? whiskerLayers : []),
     ...makeBoxPlotBox({
       partName: 'box',
-      mark: {type: 'bar', ...(sizeValue ? {size: sizeValue} : {})},
+      mark: {type: 'bar', ...(sizeValue ? {size: sizeValue} : {}), orient: boxOrient},
       positionPrefix: 'lower_box',
       endPositionPrefix: 'upper_box',
       extraEncoding: fiveSummaryTooltipEncoding
@@ -334,19 +334,7 @@ function boxParams(
   spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
   extent: 'min-max' | number,
   config: Config
-): {
-  transform: Transform[];
-  groupby: string[];
-  aggregate: AggregatedFieldDef[];
-  continuousAxisChannelDef: PositionFieldDef<string>;
-  continuousAxis: 'x' | 'y';
-  encodingWithoutContinuousAxis: Encoding<string>;
-  ticksOrient: Orientation;
-  customTooltipWithoutAggregatedField:
-    | TextFieldDefWithCondition<string>
-    | TextValueDefWithCondition<string>
-    | TextFieldDef<string>[];
-} {
+) {
   const orient = compositeMarkOrient(spec, BOXPLOT);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, BOXPLOT);
   const continuousFieldName: string = continuousAxisChannelDef.field;
@@ -402,23 +390,27 @@ function boxParams(
   );
 
   const ticksOrient: Orientation = orient === 'vertical' ? 'horizontal' : 'vertical';
+  const boxOrient: Orientation = orient;
+
+  const transform: Transform[] = [
+    ...bins,
+    ...timeUnits,
+    {
+      aggregate: [...aggregate, ...boxplotSpecificAggregate],
+      groupby
+    },
+    ...postAggregateCalculates
+  ];
 
   return {
-    transform: [
-      ...bins,
-      ...timeUnits,
-      {
-        aggregate: [...aggregate, ...boxplotSpecificAggregate],
-        groupby
-      },
-      ...postAggregateCalculates
-    ],
+    transform,
     groupby,
     aggregate,
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis,
     ticksOrient,
+    boxOrient,
     customTooltipWithoutAggregatedField
   };
 }
