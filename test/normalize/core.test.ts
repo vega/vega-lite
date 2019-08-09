@@ -13,7 +13,7 @@ describe('normalize()', () => {
       'should drop columns from repeat with row/column',
       log.wrap((localLogger: LocalLogger) => {
         const spec: TopLevelSpec = {
-          $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+          $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
           repeat: {column: ['Horsepower', 'Miles_per_Gallon', 'Acceleration', 'Displacement']},
           columns: 2,
           spec: {
@@ -123,7 +123,7 @@ describe('normalize()', () => {
       'should drop columns from facet with row/column',
       log.wrap((localLogger: LocalLogger) => {
         const spec: TopLevelSpec = {
-          $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+          $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
           data: {url: 'data/cars.json'},
           facet: {column: {field: 'a', type: 'nominal'}},
           columns: 2,

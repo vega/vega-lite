@@ -43,7 +43,7 @@ Below is the JavaScript code to run this example. Make sure your html contains a
 
 ```js
 var vlSpec = {
-  $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+  $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
   data: {name: 'table'},
   width: 400,
   mark: 'line',
