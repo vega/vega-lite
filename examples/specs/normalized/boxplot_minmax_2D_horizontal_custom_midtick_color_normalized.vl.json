@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "A horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000.",
   "data": {"url": "data/population.json"},
   "config": {"boxplot": {"median": {"color": "orange"}}},
