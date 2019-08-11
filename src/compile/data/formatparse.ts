@@ -94,7 +94,7 @@ export class ParseNode extends DataFlowNode {
     transform: FilterTransform,
     ancestorParse: AncestorParse
   ) {
-    const parse = {};
+    const parse: Dict<string> = {};
     forEachLeaf(transform.filter, filter => {
       if (isFieldPredicate(filter)) {
         // Automatically add a parse node for filters with filter objects
@@ -137,7 +137,7 @@ export class ParseNode extends DataFlowNode {
    * Creates a parse node for implicit parsing from a model and updates ancestorParse.
    */
   public static makeImplicitFromEncoding(parent: DataFlowNode, model: Model, ancestorParse: AncestorParse) {
-    const implicit = {};
+    const implicit: Dict<string> = {};
 
     function add(fieldDef: TypedFieldDef<string>) {
       if (isTimeFormatFieldDef(fieldDef)) {
@@ -245,7 +245,7 @@ export class ParseNode extends DataFlowNode {
     ancestorParse.copyAll(parse);
 
     // copy only non-null parses
-    const p = {};
+    const p: Dict<string> = {};
     for (const key of keys(parse.combine())) {
       const val = parse.get(key);
       if (val !== null) {
@@ -273,7 +273,7 @@ export class ParseNode extends DataFlowNode {
    * Assemble an object for Vega's format.parse property.
    */
   public assembleFormatParse() {
-    const formatParse = {};
+    const formatParse: Dict<string> = {};
     for (const field of keys(this._parse)) {
       const p = this._parse[field];
       if (accessPathDepth(field) === 1) {
