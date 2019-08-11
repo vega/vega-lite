@@ -40,11 +40,11 @@ export function getHeaderProperties(
   config: Config,
   channel: FacetChannel
 ): Header {
-  const props = {};
+  const props: Header = {};
   for (const prop of properties) {
     const value = getHeaderProperty(prop, facetFieldDef, config, channel);
     if (value !== undefined) {
-      props[prop] = value;
+      (props as any)[prop] = value;
     }
   }
   return props;

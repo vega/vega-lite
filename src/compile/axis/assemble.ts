@@ -4,7 +4,7 @@ import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isCondition
 import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';
 import {Config} from '../../config';
-import {getFirstDefined, keys, Omit} from '../../util';
+import {getFirstDefined, keys} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {Model} from '../model';
 import {expression} from '../predicate';
@@ -47,7 +47,7 @@ export function assembleAxis(
     if (propType && propType !== kind && propType !== 'both') {
       delete axis[prop];
     } else if (isConditionalAxisValue(propValue)) {
-      const {vgProp, part} = CONDITIONAL_AXIS_PROP_INDEX[prop];
+      const {vgProp, part} = (CONDITIONAL_AXIS_PROP_INDEX as any)[prop];
       const {condition, value} = propValue;
 
       const vgRef = [

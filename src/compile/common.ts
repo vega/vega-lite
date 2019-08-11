@@ -25,7 +25,7 @@ export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (
   for (const property of propsList) {
     const value = getMarkConfig(property, model.markDef, model.config);
     if (value !== undefined) {
-      e[property] = {value: value};
+      (e as any)[property] = {value: value};
     }
   }
   return e;
@@ -47,18 +47,18 @@ export function getMarkConfig<P extends keyof MarkConfig>(
   channel: P,
   mark: MarkDef,
   config: Config,
-  {vgChannel}: {vgChannel?: any} = {} // Note: Ham: I use `any` here as it's too hard to make TS knows that MarkConfig[vgChannel] would have the same type as MarkConfig[P]
+  {vgChannel}: {vgChannel?: any} = {} // Note: Ham: I use `any` here as it's too hard to make TS know that MarkConfig[vgChannel] would have the same type as MarkConfig[P]
 ): MarkConfig[P] {
   return getFirstDefined(
     // style config has highest precedence
     vgChannel ? getStyleConfig(channel, mark, config.style) : undefined,
     getStyleConfig(channel, mark, config.style),
     // then mark-specific config
-    vgChannel ? config[mark.type][vgChannel] : undefined,
+    vgChannel ? (config as any)[mark.type][vgChannel] : undefined,
     config[mark.type][channel],
     // If there is vgChannel, skip vl channel.
     // For example, vl size for text is vg fontSize, but config.mark.size is only for point size.
-    vgChannel ? config.mark[vgChannel] : config.mark[channel]
+    vgChannel ? (config.mark as any)[vgChannel] : config.mark[channel]
   );
 }
 

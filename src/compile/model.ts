@@ -302,8 +302,8 @@ export abstract class Model {
     // Exclude "style"
     const {style: _, ...baseView} = view;
 
-    const e = {};
-    for (const property in baseView) {
+    const e: VgEncodeEntry = {};
+    for (const property of keys(baseView)) {
       if (baseView.hasOwnProperty(property)) {
         const value = baseView[property];
         if (value !== undefined) {

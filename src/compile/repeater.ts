@@ -15,6 +15,7 @@ import {Encoding} from '../encoding';
 import * as log from '../log';
 import {isSortField} from '../sort';
 import {FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
+import {keys} from '../util';
 
 export interface RepeaterValue {
   row?: string;
@@ -103,11 +104,13 @@ function replaceRepeaterInChannelDef(channelDef: ChannelDef<FieldDef<Field>>, re
   return undefined;
 }
 
-type EncodingOrFacet<F extends Field> = Encoding<F> | FacetMapping<F>;
+// TODO: using this type crashes typescript
+// type EncodingOrFacet<F extends Field> = Encoding<F> & EncodingFacetMapping<F>;
+type EncodingOrFacet<F extends Field> = any;
 
 function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValue): EncodingOrFacet<string> {
   const out: EncodingOrFacet<string> = {};
-  for (const channel in mapping) {
+  for (const channel of keys(mapping)) {
     if (mapping.hasOwnProperty(channel)) {
       const channelDef: ChannelDef<FieldDef<Field>> | ChannelDef<FieldDef<Field>>[] = mapping[channel];
 

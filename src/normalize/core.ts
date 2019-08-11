@@ -163,8 +163,8 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
         log.warn(log.message.facetChannelDropped([...(row ? [ROW] : []), ...(column ? [COLUMN] : [])]));
       }
 
-      const facetMapping = {};
-      const layout = {};
+      const facetMapping: FacetMapping<Field> = {};
+      const layout: GenericCompositionLayoutWithColumns = {};
 
       for (const channel of [ROW, COLUMN]) {
         const def = facets[channel];
@@ -172,10 +172,10 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
           const {align, center, spacing, columns, ...defWithoutLayout} = def;
           facetMapping[channel] = defWithoutLayout;
 
-          for (const prop of ['align', 'center', 'spacing']) {
+          for (const prop of ['align', 'center', 'spacing'] as const) {
             if (def[prop] !== undefined) {
-              layout[prop] = layout[prop] || {};
-              layout[prop][channel] = def[prop];
+              (layout[prop] as any) = layout[prop] || {};
+              (layout[prop] as any)[channel] = def[prop];
             }
           }
         }

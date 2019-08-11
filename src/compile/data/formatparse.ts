@@ -11,7 +11,7 @@ import {isPathMark} from '../../mark';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
-import {accessPathDepth, accessPathWithDatum, duplicate, hash, keys, removePathFromField} from '../../util';
+import {accessPathDepth, accessPathWithDatum, duplicate, hash, keys, removePathFromField, Dict} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
@@ -108,7 +108,7 @@ export class ParseNode extends DataFlowNode {
         } else if (isFieldRangePredicate(filter)) {
           val = filter.range[0];
         } else if (isFieldOneOfPredicate(filter)) {
-          val = (filter.oneOf || filter['in'])[0];
+          val = (filter.oneOf || (filter as any)['in'])[0];
         } // else -- for filter expression, we can't infer anything
         if (val) {
           if (isDateTime(val)) {

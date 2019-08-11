@@ -28,10 +28,10 @@ export function draw(roots: DataFlowNode[]) {
   const edges: [string, string][] = [];
 
   function getId(node: DataFlowNode) {
-    let id = node['__uniqueid'];
+    let id = (node as any)['__uniqueid'];
     if (id === undefined) {
       id = uniqueId();
-      node['__uniqueid'] = id;
+      (node as any)['__uniqueid'] = id;
     }
     return id;
   }

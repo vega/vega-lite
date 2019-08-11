@@ -1,8 +1,8 @@
-import {Color} from 'vega';
+import {Color, isString} from 'vega';
 import {toSet} from 'vega-util';
 import {Gradient, Value} from './channeldef';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
-import {contains, keys} from './util';
+import {contains, keys, Flag} from './util';
 import {BaseMarkConfig} from './vega.schema';
 
 export const AREA: 'area' = 'area';
@@ -38,7 +38,7 @@ export type Mark =
   | typeof GEOSHAPE;
 
 // Using mapped type to declare index, ensuring we always have all marks when we add more.
-const MARK_INDEX: {[M in Mark]: 1} = {
+const MARK_INDEX: Flag<Mark> = {
   area: 1,
   bar: 1,
   image: 1,
@@ -55,7 +55,7 @@ const MARK_INDEX: {[M in Mark]: 1} = {
 };
 
 export function isMark(m: string): m is Mark {
-  return !!MARK_INDEX[m];
+  return m in MARK_INDEX;
 }
 
 export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'trail' {
@@ -166,7 +166,7 @@ export interface RectBinSpacingMixins {
 export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
 
 export function isMarkDef(mark: string | GenericMarkDef<any>): mark is GenericMarkDef<any> {
-  return mark['type'];
+  return !!(mark as any)['type'];
 }
 
 const PRIMITIVE_MARK_INDEX = toSet(PRIMITIVE_MARKS);

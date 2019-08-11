@@ -3,7 +3,7 @@ import {isString, stringValue} from 'vega-util';
 import {SelectionComponent, STORE} from '.';
 import {LogicalOperand} from '../../logical';
 import {SelectionDef} from '../../selection';
-import {Dict, duplicate, logicalExpr, varName} from '../../util';
+import {Dict, duplicate, logicalExpr, varName, keys} from '../../util';
 import {DataFlowNode} from '../data/dataflow';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
@@ -29,7 +29,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
     // or if it is true. E.g., "translate": true should use the default
     // event handlers for translate. However, true may be a valid value for
     // a property (e.g., "nearest": true).
-    for (const key in cfg) {
+    for (const key of keys(cfg)) {
       // A selection should contain either `encodings` or `fields`, only use
       // default values for these two values if neither of them is specified.
       if ((key === 'encodings' && selDef.fields) || (key === 'fields' && selDef.encodings)) {

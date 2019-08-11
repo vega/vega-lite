@@ -9,7 +9,9 @@ import {
   SingleDefChannel,
   supportLegend,
   X,
-  Y
+  Y,
+  PositionScaleChannel,
+  NonPositionScaleChannel
 } from '../channel';
 import {getTypedFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../channeldef';
 import {Config} from '../config';
@@ -122,11 +124,11 @@ export class UnitModel extends ModelWithField {
     return scale ? scale.domain : undefined;
   }
 
-  public axis(channel: Channel): Axis {
+  public axis(channel: PositionScaleChannel): Axis {
     return this.specifiedAxes[channel];
   }
 
-  public legend(channel: Channel): Legend {
+  public legend(channel: NonPositionScaleChannel): Legend {
     return this.specifiedLegends[channel];
   }
 
@@ -144,7 +146,7 @@ export class UnitModel extends ModelWithField {
         } else if (hasConditionalFieldDef<string, any>(channelDef)) {
           // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
           fieldDef = channelDef.condition;
-          specifiedScale = channelDef.condition['scale'];
+          specifiedScale = (channelDef.condition as any)['scale'];
         }
 
         if (fieldDef) {
@@ -157,45 +159,51 @@ export class UnitModel extends ModelWithField {
   }
 
   private initAxes(encoding: Encoding<string>): AxisIndex {
-    return [X, Y].reduce((_axis, channel) => {
-      // Position Axis
+    return [X, Y].reduce(
+      (_axis, channel) => {
+        // Position Axis
 
-      // TODO: handle ConditionFieldDef
-      const channelDef = encoding[channel];
-      if (
-        isFieldDef(channelDef) ||
-        (channel === X && isFieldDef(encoding.x2)) ||
-        (channel === Y && isFieldDef(encoding.y2))
-      ) {
-        const axisSpec = isFieldDef(channelDef) ? channelDef.axis : null;
+        // TODO: handle ConditionFieldDef
+        const channelDef = encoding[channel];
+        if (
+          isFieldDef(channelDef) ||
+          (channel === X && isFieldDef(encoding.x2)) ||
+          (channel === Y && isFieldDef(encoding.y2))
+        ) {
+          const axisSpec = isFieldDef(channelDef) ? channelDef.axis : null;
 
-        if (axisSpec !== null) {
-          _axis[channel] = {
-            ...axisSpec
-          };
+          if (axisSpec !== null) {
+            _axis[channel] = {
+              ...axisSpec
+            };
+          }
         }
-      }
-      return _axis;
-    }, {});
+        return _axis;
+      },
+      {} as AxisIndex
+    );
   }
 
   private initLegend(encoding: Encoding<string>): LegendIndex {
-    return NONPOSITION_SCALE_CHANNELS.reduce((_legend, channel) => {
-      const channelDef = encoding[channel];
-      if (channelDef) {
-        const legend = isFieldDef(channelDef)
-          ? channelDef.legend
-          : hasConditionalFieldDef<string, any>(channelDef) // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
-          ? channelDef.condition['legend']
-          : null;
+    return NONPOSITION_SCALE_CHANNELS.reduce(
+      (_legend, channel) => {
+        const channelDef = encoding[channel];
+        if (channelDef) {
+          const legend = isFieldDef(channelDef)
+            ? channelDef.legend
+            : hasConditionalFieldDef<string, any>(channelDef) // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
+            ? (channelDef.condition as any)['legend']
+            : null;
 
-        if (legend !== null && legend !== false && supportLegend(channel)) {
-          _legend[channel] = {...legend};
+          if (legend !== null && legend !== false && supportLegend(channel)) {
+            _legend[channel] = {...legend};
+          }
         }
-      }
 
-      return _legend;
-    }, {});
+        return _legend;
+      },
+      {} as LegendIndex
+    );
   }
 
   public parseData() {
@@ -264,7 +272,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public fieldDef(channel: SingleDefChannel) {
-    const channelDef = this.encoding[channel];
+    const channelDef = (this.encoding as any)[channel];
     return getTypedFieldDef<string>(channelDef);
   }
 }

@@ -42,7 +42,7 @@ export function omit<T extends object, K extends keyof T>(obj: T, props: K[]): O
 /**
  * Monkey patch Set so that `stringify` produces a string representation of sets.
  */
-Set.prototype['toJSON'] = function() {
+(Set.prototype as any)['toJSON'] = function() {
   return `Set(${[...this].map(x => stableStringify(x)).join(',')})`;
 };
 
@@ -168,7 +168,7 @@ function deepMerge_(dest: any, src: any) {
 
 export function unique<T>(values: T[], f: (item: T) => string | number): T[] {
   const results: T[] = [];
-  const u = {};
+  const u: Dict<1> = {};
   let v: string | number;
   for (const val of values) {
     v = f(val);

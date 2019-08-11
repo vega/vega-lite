@@ -11,7 +11,7 @@ export const TYPE_INDEX: Flag<Type> = {
 };
 
 export function isType(t: any): t is Type {
-  return !!TYPE_INDEX[t];
+  return t in TYPE_INDEX;
 }
 
 export const QUANTITATIVE: 'quantitative' = 'quantitative';

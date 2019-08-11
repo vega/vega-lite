@@ -215,7 +215,8 @@ function isExplicit<T extends string | number | boolean | object>(
       }
   }
   // Otherwise, things are explicit if the returned value matches the specified property
-  return value === axis[property];
+  // TODO: remove as any
+  return value === (axis as any)[property];
 }
 
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {

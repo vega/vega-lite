@@ -3,7 +3,7 @@ import {isFieldDef} from '../channeldef';
 import {Encoding} from '../encoding';
 import * as log from '../log';
 import {Scale} from '../scale';
-import {GenericSpec} from '../spec/index';
+import {GenericSpec, LayoutSizeMixins} from '../spec/index';
 import {GenericUnitSpec, isUnitSpec} from '../spec/unit';
 import {keys} from '../util';
 import {NonFacetUnitNormalizer} from './base';
@@ -18,7 +18,7 @@ export class RangeStepNormalizer implements NonFacetUnitNormalizer<UnitSpecWithR
       for (const channel of POSITION_SCALE_CHANNELS) {
         const def = spec.encoding[channel];
         if (def && isFieldDef(def)) {
-          if (def && def.scale && def.scale['rangeStep']) {
+          if (def && def.scale && (def.scale as any)['rangeStep']) {
             return true;
           }
         }
@@ -28,18 +28,18 @@ export class RangeStepNormalizer implements NonFacetUnitNormalizer<UnitSpecWithR
   }
 
   public run(spec: UnitSpecWithRangeStep) {
-    const sizeMixins = {};
+    const sizeMixins: LayoutSizeMixins = {};
     let encoding = {...spec.encoding};
 
     for (const channel of POSITION_SCALE_CHANNELS) {
       const sizeType = getSizeType(channel);
       const def = encoding[channel];
       if (def && isFieldDef(def)) {
-        if (def && def.scale && def.scale['rangeStep']) {
+        if (def && def.scale && (def.scale as any)['rangeStep']) {
           const {scale, ...defWithoutScale} = def;
 
           const {rangeStep, ...scaleWithoutRangeStep} = scale as Scale & {rangeStep: number};
-          sizeMixins[sizeType] = {step: scale['rangeStep']};
+          sizeMixins[sizeType] = {step: rangeStep};
 
           log.warn(log.message.RANGE_STEP_DEPRECATED);
 

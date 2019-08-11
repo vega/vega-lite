@@ -23,14 +23,15 @@ const inputBindings: TransformCompiler = {
       if (!hasSignal.length) {
         signals.unshift({
           name: sgname,
-          ...(init ? {init: assembleInit(init[i])} : {value: null}),
+          // TODO: remove as any
+          ...(init ? {init: assembleInit((init as any)[i])} : {value: null}),
           on: [
             {
               events: selCmpt.events,
               update: `datum && item().mark.marktype !== 'group' ? ${accessPathWithDatum(p.field, datum)} : null`
             }
           ],
-          bind: bind[p.field] || bind[p.channel] || bind
+          bind: (bind as any)[p.field] || (bind as any)[p.channel] || bind
         });
       }
     });

@@ -20,6 +20,7 @@ import {TopLevelProperties} from './spec/toplevel';
 import {extractTitleConfig, TitleConfig} from './title';
 import {duplicate, getFirstDefined, keys, mergeDeep} from './util';
 import {BaseMarkConfig, SchemeConfig} from './vega.schema';
+import {Color} from 'vega';
 
 export interface ViewConfig extends BaseViewBackground {
   /**
@@ -122,8 +123,8 @@ export interface RangeConfigProps {
   symbol?: string[];
 }
 
-export function isVgScheme(rangeConfig: string[] | SchemeConfig): rangeConfig is SchemeConfig {
-  return rangeConfig && !!rangeConfig['scheme'];
+export function isVgScheme(rangeConfig: Color[] | SchemeConfig): rangeConfig is SchemeConfig {
+  return rangeConfig && !!(rangeConfig as any)['scheme'];
 }
 
 export interface VLOnlyConfig {
@@ -341,17 +342,19 @@ export function stripAndRedirectConfig(config: Config) {
     }
   }
 
-  for (const markType of MARK_STYLES) {
+  for (const markType of PRIMITIVE_MARKS) {
     // Remove Vega-Lite-only mark config
     for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
       delete config[markType][prop];
     }
+  }
 
+  for (const markType of MARK_STYLES) {
     // Remove Vega-Lite only mark-specific config
     const vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[markType];
     if (vlOnlyMarkSpecificConfigs) {
       for (const prop of vlOnlyMarkSpecificConfigs) {
-        delete config[markType][prop];
+        delete (config[markType] as any)[prop];
       }
     }
 
@@ -363,7 +366,7 @@ export function stripAndRedirectConfig(config: Config) {
 
   for (const m of getAllCompositeMarks()) {
     // Clean up the composite mark config as we don't need them in the output specs anymore
-    delete config[m];
+    delete (config as any)[m];
   }
 
   // Redirect config.title -- so that title config do not
@@ -371,7 +374,7 @@ export function stripAndRedirectConfig(config: Config) {
   redirectConfig(config, 'title', 'group-title');
 
   // Remove empty config objects
-  for (const prop in config) {
+  for (const prop of keys(config)) {
     if (isObject(config[prop]) && keys(config[prop]).length === 0) {
       delete config[prop];
     }
@@ -390,8 +393,8 @@ function redirectConfig(
     prop === 'title'
       ? extractTitleConfig(config.title).mark
       : compositeMarkPart
-      ? config[prop][compositeMarkPart]
-      : config[prop];
+      ? (config as any)[prop][compositeMarkPart]
+      : (config as any)[prop];
 
   if (prop === 'view') {
     toProp = 'cell'; // View's default style is "cell"
@@ -408,6 +411,6 @@ function redirectConfig(
 
   if (!compositeMarkPart) {
     // For composite mark, so don't delete the whole config yet as we have to do multiple redirections.
-    delete config[prop];
+    delete (config as any)[prop];
   }
 }

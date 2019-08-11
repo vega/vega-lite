@@ -21,8 +21,9 @@ export const parseRepeatLayoutSize = parseLayerLayoutSize;
 
 const SIZE_TYPE_TO_MERGE = {
   vconcat: 'width',
-  hconcat: 'height'
-};
+  hconcat: 'height',
+  concat: undefined as any
+} as const;
 
 export function parseConcatLayoutSize(model: ConcatModel) {
   parseChildrenLayoutSize(model);

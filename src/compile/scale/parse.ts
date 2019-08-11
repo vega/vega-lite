@@ -63,7 +63,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
     } else if (hasConditionalFieldDef<string, any>(channelDef)) {
       // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
       fieldDef = channelDef.condition;
-      specifiedScale = channelDef.condition['scale']; // We use ['scale'] since we know that channel here has scale for sure
+      specifiedScale = (channelDef.condition as any)['scale']; // We use ['scale'] since we know that channel here has scale for sure
     }
 
     if (fieldDef && specifiedScale !== null && specifiedScale !== false) {

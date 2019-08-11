@@ -23,6 +23,7 @@ import {
   ErrorExtraEncoding,
   normalizeErrorBar
 } from './errorbar';
+import {Mark} from '../mark';
 
 export {BoxPlotConfig} from './boxplot';
 export {ErrorBandConfigMixins} from './errorband';
@@ -37,19 +38,15 @@ export type CompositeMarkNormalizerRun = (
  * Registry index for all composite mark's normalizer
  */
 const compositeMarkRegistry: {
-  [mark: string]: {
+  [mark in string | Mark]?: {
     normalizer: CompositeMarkNormalizer<any>;
     parts: string[];
   };
 } = {};
 
-export function add(mark: string, run: CompositeMarkNormalizerRun, parts: string[]) {
+export function add(mark: string | Mark, run: CompositeMarkNormalizerRun, parts: string[]) {
   const normalizer = new CompositeMarkNormalizer(mark, run);
   compositeMarkRegistry[mark] = {normalizer, parts};
-}
-
-export function remove(mark: string) {
-  delete compositeMarkRegistry[mark];
 }
 
 export type CompositeEncoding = Encoding<Field> & ErrorExtraEncoding<Field>;

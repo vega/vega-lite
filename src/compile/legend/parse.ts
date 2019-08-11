@@ -54,7 +54,7 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
       }
       return legendComponent;
     },
-    {}
+    {} as LegendComponentIndex
   );
 }
 
@@ -83,7 +83,8 @@ function isExplicit<T extends string | number | object | boolean>(
       }
   }
   // Otherwise, things are explicit if the returned value matches the specified property
-  return value === legend[property];
+  // TODO: remove as any
+  return value === (legend as any)[property];
 }
 
 export function parseLegendForChannel(model: UnitModel, channel: NonPositionScaleChannel): LegendComponent {
@@ -96,18 +97,18 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
     const value = getProperty(property, legend, channel, model);
     if (value !== undefined) {
       const explicit = isExplicit(value, property, legend, fieldDef);
-      if (explicit || model.config.legend[property] === undefined) {
+      if (explicit || (model.config.legend as any)[property] === undefined) {
         legendCmpt.set(property, value, explicit);
       }
     }
   }
 
   const legendEncoding = legend.encoding || {};
-  const legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce(
+  const legendEncode = (['labels', 'legend', 'title', 'symbols', 'gradient'] as const).reduce(
     (e: LegendEncode, part) => {
       const legendEncodingPart = guideEncodeEntry(legendEncoding[part] || {}, model);
-      const value = encode[part]
-        ? encode[part](fieldDef, legendEncodingPart, model, channel, legendCmpt) // apply rule
+      const value = (encode as any)[part]
+        ? (encode as any)[part](fieldDef, legendEncodingPart, model, channel, legendCmpt) // apply rule
         : legendEncodingPart; // no rule -- just default values
       if (value !== undefined && keys(value).length > 0) {
         e[part] = {update: value};
@@ -149,7 +150,7 @@ function getProperty<K extends keyof LegendComponentProps>(
         timeUnit,
         channel,
         scaleType
-      }) as LegendComponentProps[K];
+      }) as any;
 
     case 'format':
       // We don't include temporal field here as we apply format in encode block

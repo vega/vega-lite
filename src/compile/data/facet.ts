@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../../bin';
-import {COLUMN, FACET_CHANNELS, ROW, ScaleChannel} from '../../channel';
+import {COLUMN, FACET_CHANNELS, ROW} from '../../channel';
 import {vgField} from '../../channeldef';
 import * as log from '../../log';
 import {hasDiscreteDomain} from '../../scale';
@@ -152,25 +152,27 @@ export class FacetNode extends DataFlowNode {
     crossedDataName: string,
     childIndependentFieldsWithStep: ChildIndependentFieldsWithStep
   ): VgData {
-    const childChannel = {row: 'y', column: 'x'}[channel];
-
     const fields: string[] = [];
     const ops: AggregateOp[] = [];
     const as: string[] = [];
 
-    if (childIndependentFieldsWithStep && childIndependentFieldsWithStep[childChannel]) {
-      if (crossedDataName) {
-        // If there is a crossed data, calculate max
-        fields.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
+    if (channel === 'row' || channel === 'column') {
+      const childChannel: 'x' | 'y' = ({row: 'y', column: 'x'} as const)[channel];
 
-        ops.push('max');
-      } else {
-        // If there is no crossed data, just calculate distinct
-        fields.push(childIndependentFieldsWithStep[childChannel]);
-        ops.push('distinct');
+      if (childIndependentFieldsWithStep && childIndependentFieldsWithStep[childChannel]) {
+        if (crossedDataName) {
+          // If there is a crossed data, calculate max
+          fields.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
+
+          ops.push('max');
+        } else {
+          // If there is no crossed data, just calculate distinct
+          fields.push(childIndependentFieldsWithStep[childChannel]);
+          ops.push('distinct');
+        }
+        // Although it is technically a max, just name it distinct so it's easier to refer to it
+        as.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
       }
-      // Although it is technically a max, just name it distinct so it's easier to refer to it
-      as.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
     }
 
     const {sortField, sortIndexField} = this[channel];

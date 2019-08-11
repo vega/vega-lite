@@ -36,7 +36,8 @@ import {
   TypedFieldDef,
   ValueDef,
   ValueOrGradient,
-  vgField
+  vgField,
+  Value
 } from './channeldef';
 import {Config} from './config';
 import * as log from './log';
@@ -319,11 +320,11 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
               const secondaryChannel: SecondaryFieldDef<string> = {
                 field: newField + '_end'
               };
-              encoding[channel + '2'] = secondaryChannel;
+              (encoding as any)[channel + '2'] = secondaryChannel;
             }
             newFieldDef.bin = 'binned';
             if (!isSecondaryRangeChannel(channel)) {
-              newFieldDef['type'] = 'quantitative';
+              (newFieldDef as any)['type'] = 'quantitative';
             }
           } else if (timeUnit) {
             timeUnits.push({timeUnit, field, as: newField});
@@ -332,26 +333,34 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
             const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
             const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';
             if (channel === 'text' || channel === 'tooltip') {
-              newFieldDef['format'] = newFieldDef['format'] || format;
+              (newFieldDef as any)['format'] = (newFieldDef as any)['format'] || format;
               if (formatType) {
-                newFieldDef['formatType'] = formatType;
+                (newFieldDef as any)['formatType'] = formatType;
               }
             } else if (isNonPositionScaleChannel(channel)) {
-              newFieldDef['legend'] = {format, ...(formatType ? {formatType} : {}), ...newFieldDef['legend']};
+              (newFieldDef as any)['legend'] = {
+                format,
+                ...(formatType ? {formatType} : {}),
+                ...(newFieldDef as any)['legend']
+              };
             } else if (isPositionChannel) {
-              newFieldDef['axis'] = {format, ...(formatType ? {formatType} : {}), ...newFieldDef['axis']};
+              (newFieldDef as any)['axis'] = {
+                format,
+                ...(formatType ? {formatType} : {}),
+                ...(newFieldDef as any)['axis']
+              };
             }
           }
         }
         // now the field should refer to post-transformed field instead
-        encoding[channel] = newFieldDef;
+        (encoding as any)[channel] = newFieldDef;
       } else {
         groupby.push(field);
-        encoding[channel] = oldEncoding[channel];
+        (encoding as any)[channel] = (oldEncoding as any)[channel];
       }
     } else {
       // For value def, just copy
-      encoding[channel] = oldEncoding[channel];
+      (encoding as any)[channel] = (oldEncoding as any)[channel];
     }
   });
 
@@ -373,7 +382,7 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
 
     // circle, point, square and tick only support x2/y2 when their corresponding x/y fieldDef
     // has "binned" data and thus need x2/y2 to specify the bin-end field.
-    if (isFieldDef(primaryFieldDef) && isFieldDef(encoding[channel]) && isBinned(primaryFieldDef.bin)) {
+    if (isFieldDef(primaryFieldDef) && isFieldDef((encoding as any)[channel]) && isBinned(primaryFieldDef.bin)) {
       return true;
     } else {
       return false;
@@ -385,7 +394,7 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
 export function normalizeEncoding(encoding: Encoding<string>, markDef: MarkDef): Encoding<string> {
   const mark = markDef.type;
 
-  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel | string) => {
+  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel) => {
     if (!isChannel(channel)) {
       // Drop invalid channel
       log.warn(log.message.invalidEncodingChannel(channel));

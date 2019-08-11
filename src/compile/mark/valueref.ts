@@ -5,7 +5,17 @@ import {SignalRef} from 'vega';
 import {isFunction, isString, stringValue} from 'vega-util';
 import {isCountingAggregateOp} from '../../aggregate';
 import {isBinned, isBinning} from '../../bin';
-import {Channel, getMainRangeChannel, PositionChannel, X, X2, Y, Y2} from '../../channel';
+import {
+  Channel,
+  getMainRangeChannel,
+  PositionChannel,
+  X,
+  X2,
+  Y,
+  Y2,
+  SingleDefUnitChannel,
+  UnitChannel
+} from '../../channel';
 import {
   binRequiresRange,
   ChannelDef,
@@ -400,7 +410,7 @@ export function tooltipForEncoding(
   const expr = reactiveGeom ? 'datum.datum' : 'datum';
   const tooltipTuples: {channel: Channel; key: string; value: string}[] = [];
 
-  function add(fDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: Channel) {
+  function add(fDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: UnitChannel) {
     const mainChannel = getMainRangeChannel(channel);
 
     const fieldDef: TypedFieldDef<string> = isTypedFieldDef(fDef)

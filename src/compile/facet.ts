@@ -87,11 +87,11 @@ export class FacetModel extends ModelWithField {
   }
 
   public channelHasField(channel: Channel): boolean {
-    return !!this.facet[channel];
+    return !!this.facet[channel as FacetChannel];
   }
 
   public fieldDef(channel: Channel): TypedFieldDef<string> {
-    return this.facet[channel];
+    return this.facet[channel as FacetChannel];
   }
 
   public parseData() {
@@ -149,7 +149,7 @@ export class FacetModel extends ModelWithField {
           if (contains(['right', 'bottom'], titleOrient)) {
             const headerChannel = getHeaderChannel(channel, titleOrient);
             layoutMixins.titleAnchor = layoutMixins.titleAnchor || {};
-            layoutMixins.titleAnchor[headerChannel] = 'end';
+            (layoutMixins.titleAnchor as any)[headerChannel] = 'end';
           }
         }
 
@@ -160,12 +160,12 @@ export class FacetModel extends ModelWithField {
           if (channel !== 'facet' && !this.child.component.layoutSize.get(sizeType)) {
             // If facet child does not have size signal, then apply headerBand
             layoutMixins[bandType] = layoutMixins[bandType] || {};
-            layoutMixins[bandType][channel] = 0.5;
+            (layoutMixins[bandType] as any)[channel] = 0.5;
           }
 
           if (layoutHeaderComponent.title) {
             layoutMixins.offset = layoutMixins.offset || {};
-            layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
+            (layoutMixins.offset as any)[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
           }
         }
       }

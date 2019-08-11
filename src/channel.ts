@@ -56,16 +56,26 @@ export const HREF: 'href' = 'href';
 
 export const URL: 'url' = 'url';
 
-export type PositionChannel = 'x' | 'y' | 'x2' | 'y2';
+export type PrimaryPositionChannel = 'x' | 'y';
+export type PositionChannel = PrimaryPositionChannel | 'x2' | 'y2';
 
+const PRIMARY_POSITION_CHANNEL_INDEX: Flag<PrimaryPositionChannel> = {
+  x: 1,
+  y: 1
+};
 const POSITION_CHANNEL_INDEX: Flag<PositionChannel> = {
   x: 1,
   y: 1,
   x2: 1,
   y2: 1
 };
+
 export function isPositionChannel(c: Channel): c is PositionChannel {
   return c in POSITION_CHANNEL_INDEX;
+}
+
+export function isPrimaryPositionChannel(c: Channel): c is PrimaryPositionChannel {
+  return c in PRIMARY_POSITION_CHANNEL_INDEX;
 }
 
 export type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
@@ -168,13 +178,14 @@ export const SINGLE_DEF_UNIT_CHANNELS = keys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
 export type SingleDefUnitChannel = typeof SINGLE_DEF_UNIT_CHANNELS[number];
 
 export function isSingleDefUnitChannel(str: string): str is SingleDefUnitChannel {
-  return !!SINGLE_DEF_UNIT_CHANNEL_INDEX[str];
+  return str in SINGLE_DEF_UNIT_CHANNEL_INDEX;
 }
 
 export function isChannel(str: string): str is Channel {
-  return !!CHANNEL_INDEX[str];
+  return str in CHANNEL_INDEX;
 }
 
+export type PrimaryRangeChannel = 'x' | 'y' | 'latitude' | 'longitude';
 export type SecondaryRangeChannel = 'x2' | 'y2' | 'latitude2' | 'longitude2';
 
 export const SECONDARY_RANGE_CHANNEL: SecondaryRangeChannel[] = ['x2', 'y2', 'latitude2', 'longitude2'];
@@ -187,7 +198,7 @@ export function isSecondaryRangeChannel(c: Channel): c is SecondaryRangeChannel 
 /**
  * Get the main channel for a range channel. E.g. `x` for `x2`.
  */
-export function getMainRangeChannel(channel: Channel): Channel {
+export function getMainRangeChannel<C extends Channel>(channel: C): PrimaryRangeChannel | C {
   switch (channel) {
     case 'x2':
       return 'x';
@@ -221,6 +232,8 @@ export function getSecondaryRangeChannel(channel: Channel): SecondaryRangeChanne
 // CHANNELS without COLUMN, ROW
 export const UNIT_CHANNELS = keys(UNIT_CHANNEL_INDEX);
 
+export type UnitChannel = typeof UNIT_CHANNELS[0];
+
 // NONPOSITION_CHANNELS = UNIT_CHANNELS without X, Y, X2, Y2;
 const {
   x: _x,
@@ -240,7 +253,7 @@ export const NONPOSITION_CHANNELS = keys(NONPOSITION_CHANNEL_INDEX);
 export type NonPositionChannel = typeof NONPOSITION_CHANNELS[number];
 
 // POSITION_SCALE_CHANNELS = X and Y;
-const POSITION_SCALE_CHANNEL_INDEX: {x: 1; y: 1} = {x: 1, y: 1};
+const POSITION_SCALE_CHANNEL_INDEX = {x: 1, y: 1} as const;
 export const POSITION_SCALE_CHANNELS = keys(POSITION_SCALE_CHANNEL_INDEX);
 export type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[number];
 
@@ -271,7 +284,7 @@ export const NONPOSITION_SCALE_CHANNELS = keys(NONPOSITION_SCALE_CHANNEL_INDEX);
 export type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[number];
 
 export function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel {
-  return !!NONPOSITION_CHANNEL_INDEX[channel];
+  return channel in NONPOSITION_CHANNEL_INDEX;
 }
 
 /**
@@ -304,7 +317,7 @@ export const SCALE_CHANNELS = keys(SCALE_CHANNEL_INDEX);
 export type ScaleChannel = typeof SCALE_CHANNELS[number];
 
 export function isScaleChannel(channel: Channel): channel is ScaleChannel {
-  return !!SCALE_CHANNEL_INDEX[channel];
+  return channel in SCALE_CHANNEL_INDEX;
 }
 
 export type SupportedMark = {[mark in Mark]?: 'always' | 'binned'};

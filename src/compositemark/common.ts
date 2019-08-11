@@ -80,7 +80,7 @@ export function filterTooltipWithAggregatedField<F extends Field>(
       (filteredEncoding as Encoding<F>).tooltip = customTooltipWithAggregatedField;
     }
   } else {
-    if (tooltip['aggregate']) {
+    if ((tooltip as any)['aggregate']) {
       (filteredEncoding as Encoding<F>).tooltip = tooltip;
     } else {
       customTooltipWithoutAggregatedField = tooltip;
@@ -218,9 +218,9 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   const continuousAxis: 'x' | 'y' = orient === 'vertical' ? 'y' : 'x';
 
   const continuousAxisChannelDef = encoding[continuousAxis] as PositionFieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
-  const continuousAxisChannelDef2 = encoding[continuousAxis + '2'] as SecondaryFieldDef<string>;
-  const continuousAxisChannelDefError = encoding[continuousAxis + 'Error'] as SecondaryFieldDef<string>;
-  const continuousAxisChannelDefError2 = encoding[continuousAxis + 'Error2'] as SecondaryFieldDef<string>;
+  const continuousAxisChannelDef2 = (encoding as any)[continuousAxis + '2'] as SecondaryFieldDef<string>;
+  const continuousAxisChannelDefError = (encoding as any)[continuousAxis + 'Error'] as SecondaryFieldDef<string>;
+  const continuousAxisChannelDefError2 = (encoding as any)[continuousAxis + 'Error2'] as SecondaryFieldDef<string>;
 
   return {
     continuousAxisChannelDef: filterAggregateFromChannelDef(continuousAxisChannelDef, compositeMark),

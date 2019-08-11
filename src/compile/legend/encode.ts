@@ -55,7 +55,7 @@ export function symbols(
     if (channel === 'fill' || (filled && channel === COLOR)) {
       delete out.fill;
     } else {
-      if (out.fill['field']) {
+      if ((out.fill as any)['field']) {
         // For others, set fill to some opaque value (or nothing if a color is already set)
         if (legendCmp.get('symbolFillColor')) {
           delete out.fill;
@@ -77,7 +77,7 @@ export function symbols(
     if (channel === 'stroke' || (!filled && channel === COLOR)) {
       delete out.stroke;
     } else {
-      if (out.stroke['field']) {
+      if ((out.stroke as any)['field']) {
         // For others, remove stroke field
         delete out.stroke;
       } else if (isArray(out.stroke)) {

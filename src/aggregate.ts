@@ -40,17 +40,17 @@ export type NonArgAggregateOp = Exclude<AggregateOp, 'argmin' | 'argmax'>;
 export type Aggregate = NonArgAggregateOp | ArgmaxDef | ArgminDef;
 
 export function isArgminDef(a: Aggregate | string): a is ArgminDef {
-  return !!a && !!a['argmin'];
+  return !!a && !isString(a) && !!(a as any)['argmin'];
 }
 
 export function isArgmaxDef(a: Aggregate | string): a is ArgmaxDef {
-  return !!a && !!a['argmax'];
+  return !!a && !isString(a) && !!(a as any)['argmax'];
 }
 
 export const AGGREGATE_OPS = keys(AGGREGATE_OP_INDEX);
 
 export function isAggregateOp(a: string | ArgminDef | ArgmaxDef): a is AggregateOp {
-  return isString(a) && !!AGGREGATE_OP_INDEX[a];
+  return isString(a) && a in AGGREGATE_OP_INDEX;
 }
 
 export const COUNTING_OPS: NonArgAggregateOp[] = ['count', 'valid', 'missing', 'distinct'];

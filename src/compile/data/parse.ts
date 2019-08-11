@@ -73,7 +73,7 @@ export function findSource(data: Data, sources: SourceNode[]) {
     }
 
     // feature and mesh are mutually exclusive
-    if (data['format'] && data['format'].mesh && otherData.format && otherData.format.feature) {
+    if ((data as any)['format'] && (data as any)['format'].mesh && otherData.format && otherData.format.feature) {
       continue;
     }
 

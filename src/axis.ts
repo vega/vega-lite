@@ -14,7 +14,7 @@ import {
 import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {Flag, keys, Omit} from './util';
+import {Flag, keys} from './util';
 import {LayoutAlign, VgEncodeChannel} from './vega.schema';
 
 export type BaseAxisNoSignals = AxisMixins &
@@ -429,7 +429,7 @@ const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
 };
 
 export function isAxisProperty(prop: string): prop is keyof Axis {
-  return !!AXIS_PROPERTIES_INDEX[prop];
+  return prop in AXIS_PROPERTIES_INDEX;
 }
 
 // Export for dependent projects

@@ -44,7 +44,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
 
   const orient = markDef.orient;
   const hasSizeDef =
-    encoding[sizeChannel] ||
+    (encoding as any)[sizeChannel] ||
     encoding.size ||
     markDef[sizeChannel] ||
     markDef.size ||

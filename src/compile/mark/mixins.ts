@@ -131,8 +131,8 @@ function wrapAllFieldsInvalid(model: UnitModel, channel: Channel, valueRef: VgVa
 
 function markDefProperties(mark: MarkDef, ignore: Ignore) {
   return VG_MARK_CONFIGS.reduce((m, prop) => {
-    if (mark[prop] !== undefined && ignore[prop] !== 'ignore') {
-      m[prop] = {value: mark[prop]};
+    if (mark[prop] !== undefined && (ignore as Dict<any>)[prop] !== 'ignore') {
+      (m as any)[prop] = {value: mark[prop]};
     }
     return m;
   }, {});
@@ -207,7 +207,7 @@ export function nonPosition(
         ? // When vl channel is the same as Vega's, no need to read from config as Vega will apply them correctly
         markDef[channel]
         : // However, when they are different (e.g, vl's text size is vg fontSize), need to read "size" from configs
-        getFirstDefined(markDef[channel], markDef[vgChannel], getMarkConfig(channel, markDef, config, {vgChannel})));
+        getFirstDefined(markDef[channel], (markDef as any)[vgChannel], getMarkConfig(channel, markDef, config, {vgChannel})));
 
     defaultRef = defaultValue ? {value: defaultValue} : undefined;
   }
@@ -399,7 +399,7 @@ export function binPosition({
     x2: reverse ? 0 : spacing,
     y: reverse ? 0 : spacing,
     y2: reverse ? spacing : 0
-  };
+  } as const;
   const channel2 = channel === X ? X2 : Y2;
   if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {
@@ -409,7 +409,7 @@ export function binPosition({
         scaleName,
         markDef,
         band: (1 - band) / 2,
-        offset: binSpacing[`${channel}2`]
+        offset: (binSpacing as Dict<number>)[`${channel}2`]
       }),
       [channel]: ref.bin({
         channel,
@@ -422,7 +422,7 @@ export function binPosition({
     };
   } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
     return {
-      [channel2]: ref.fieldRef(fieldDef, scaleName, {}, {offset: binSpacing[`${channel}2`]}),
+      [channel2]: ref.fieldRef(fieldDef, scaleName, {}, {offset: (binSpacing as Dict<number>)[`${channel}2`]}),
       [channel]: ref.fieldRef(fieldDef2, scaleName, {}, {offset: binSpacing[channel]})
     };
   } else {
@@ -486,13 +486,13 @@ const ALIGNED_X_CHANNEL: {[a in Align]: VgEncodeChannel} = {
   left: 'x',
   center: 'xc',
   right: 'x2'
-};
+} as const;
 
 const BASELINED_Y_CHANNEL = {
   top: 'y',
   middle: 'yc',
   bottom: 'y2'
-};
+} as const;
 
 export function pointOrRangePosition(
   channel: 'x' | 'y',
@@ -542,9 +542,9 @@ function alignedChannel(channel: 'x' | 'y', markDef: MarkDef, config: Config) {
   const alignChannel = channel === 'x' ? 'align' : 'baseline';
   const align = getFirstDefined(markDef[alignChannel], getMarkConfig(alignChannel, markDef, config));
   if (channel === 'x') {
-    return ALIGNED_X_CHANNEL[align || 'center'];
+    return (ALIGNED_X_CHANNEL as any)[align || 'center'];
   } else {
-    return BASELINED_Y_CHANNEL[align || 'middle'];
+    return (BASELINED_Y_CHANNEL as any)[align || 'middle'];
   }
 }
 

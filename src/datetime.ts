@@ -253,7 +253,7 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false, toJS
 
   // Note: can't use TimeUnit enum here as importing it will create
   // circular dependency problem!
-  for (const timeUnit of ['hours', 'minutes', 'seconds', 'milliseconds']) {
+  for (const timeUnit of ['hours', 'minutes', 'seconds', 'milliseconds'] as const) {
     if (d[timeUnit] !== undefined) {
       units.push(d[timeUnit]);
     } else {

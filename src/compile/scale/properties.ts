@@ -123,8 +123,10 @@ export function getDefaultValue(
     case 'zero':
       return zero(channel, fieldDef, specifiedDomain, markDef, scaleType);
   }
+
   // Otherwise, use scale config
-  return scaleConfig[property];
+  // TODO: remove as any
+  return (scaleConfig as any)[property];
 }
 
 // This method is here rather than in range.ts to avoid circular dependency.

@@ -26,7 +26,7 @@ export class RuleForRangedLineNormalizer implements NonFacetUnitNormalizer<Range
       if (mark === 'line') {
         for (const channel of SECONDARY_RANGE_CHANNEL) {
           const mainChannel = getMainRangeChannel(channel);
-          const mainChannelDef = encoding[mainChannel];
+          const mainChannelDef = (encoding as any)[mainChannel];
 
           if (!!encoding[channel] && isFieldDef(mainChannelDef) && !isBinned(mainChannelDef.bin)) {
             return true;

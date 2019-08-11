@@ -19,11 +19,11 @@ export function parseGuideResolve(resolve: Resolve, channel: ScaleChannel): Reso
   const guide = contains(POSITION_SCALE_CHANNELS, channel) ? 'axis' : 'legend';
 
   if (channelScaleResolve === 'independent') {
-    if (resolve[guide][channel] === 'shared') {
+    if ((resolve[guide] as any)[channel] === 'shared') {
       log.warn(log.message.independentScaleMeansIndependentGuide(channel));
     }
     return 'independent';
   }
 
-  return resolve[guide][channel] || 'shared';
+  return (resolve[guide] as any)[channel] || 'shared';
 }

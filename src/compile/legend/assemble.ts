@@ -45,7 +45,7 @@ export function assembleLegends(model: Model): VgLegend[] {
 
       if (legend.encode && legend.encode.symbols) {
         const out = legend.encode.symbols.update;
-        if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
+        if (out.fill && (out.fill as any)['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
           // For non color channel's legend, we need to override symbol stroke config from Vega config if stroke channel is not used.
           out.stroke = {value: 'transparent'};
         }

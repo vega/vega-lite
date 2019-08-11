@@ -1,6 +1,6 @@
 import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning} from '../../bin';
-import {Channel} from '../../channel';
+import {Channel, isPrimaryPositionChannel, isNonPositionScaleChannel} from '../../channel';
 import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
@@ -14,7 +14,11 @@ function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, ch
   if (binRequiresRange(fieldDef, channel)) {
     // read format from axis or legend, if there is no format then use config.numberFormat
 
-    const guide = isUnitModel(model) ? model.axis(channel) || model.legend(channel) || {} : {};
+    const guide = isUnitModel(model)
+      ? (isPrimaryPositionChannel(channel) && model.axis(channel)) ||
+        (isNonPositionScaleChannel(channel) && model.legend(channel)) ||
+        {}
+      : {};
 
     const startField = vgField(fieldDef, {expr: 'datum'});
     const endField = vgField(fieldDef, {expr: 'datum', binSuffix: 'end'});

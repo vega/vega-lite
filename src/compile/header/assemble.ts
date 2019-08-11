@@ -200,13 +200,15 @@ export function assembleHeaderGroup(
 const LAYOUT_TITLE_BAND = {
   column: {
     start: 0,
-    end: 1
+    end: 1,
+    middle: -1 // invalid
   },
   row: {
     start: 1,
-    end: 0
+    end: 0,
+    middle: -1 // invalid
   }
-};
+} as const;
 
 export function getLayoutTitleBand(titleAnchor: TitleAnchor, headerChannel: HeaderChannel) {
   return LAYOUT_TITLE_BAND[headerChannel][titleAnchor];
@@ -216,7 +218,7 @@ export function assembleLayoutTitleBand(
   headerComponentIndex: LayoutHeaderComponentIndex,
   config: Config
 ): RowCol<number> {
-  const titleBand = {};
+  const titleBand: RowCol<number> = {};
 
   for (const channel of FACET_CHANNELS) {
     const headerComponent = headerComponentIndex[channel];
@@ -246,7 +248,7 @@ export function assembleHeaderProperties(
   properties: (keyof CoreHeader)[],
   propertiesMap: {[k in keyof CoreHeader]: keyof TitleConfig}
 ): Partial<VgTitle> {
-  const props = {};
+  const props: Partial<VgTitle> = {};
   for (const prop of properties) {
     if (!propertiesMap[prop]) {
       continue;
@@ -254,7 +256,8 @@ export function assembleHeaderProperties(
 
     const value = getHeaderProperty(prop, facetFieldDef, config, channel);
     if (value !== undefined) {
-      props[propertiesMap[prop]] = value;
+      const configKey = propertiesMap[prop];
+      (props as any)[configKey] = value;
     }
   }
   return props;

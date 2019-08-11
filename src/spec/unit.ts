@@ -52,5 +52,5 @@ export type FacetedUnitSpec = GenericUnitSpec<FacetedCompositeEncoding, AnyMark>
 export type TopLevelUnitSpec = TopLevel<FacetedUnitSpec> & DataMixins;
 
 export function isUnitSpec(spec: BaseSpec): spec is FacetedUnitSpec | NormalizedUnitSpec {
-  return !!spec['mark'];
+  return !!(spec as any)['mark'];
 }

@@ -100,7 +100,7 @@ const SORT_BY_CHANNEL_INDEX: Flag<SortByChannel> = {
 };
 
 export function isSortByChannel(c: string): c is SortByChannel {
-  return !!SORT_BY_CHANNEL_INDEX[c];
+  return c in SORT_BY_CHANNEL_INDEX;
 }
 
 export type SortByChannelDesc =
@@ -122,11 +122,11 @@ export type AllSortString = SortOrder | SortByChannel | SortByChannelDesc;
 export type Sort<F> = SortArray | AllSortString | EncodingSortField<F> | SortByEncoding | null;
 
 export function isSortByEncoding<F>(sort: Sort<F>): sort is SortByEncoding {
-  return !!sort && !!sort['encoding'];
+  return !!sort && !!(sort as any)['encoding'];
 }
 
 export function isSortField<F>(sort: Sort<F>): sort is EncodingSortField<F> {
-  return !!sort && (sort['op'] === 'count' || !!sort['field']);
+  return !!sort && ((sort as any)['op'] === 'count' || !!(sort as any)['field']);
 }
 
 export function isSortArray<F>(sort: Sort<F>): sort is SortArray {
