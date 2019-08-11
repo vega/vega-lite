@@ -11,7 +11,7 @@ import {isPathMark} from '../../mark';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
-import {accessPathDepth, accessPathWithDatum, duplicate, hash, keys, removePathFromField} from '../../util';
+import {accessPathDepth, accessPathWithDatum, duplicate, hash, keys, removePathFromField, Dict} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
