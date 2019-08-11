@@ -112,7 +112,7 @@ export class FacetNode extends DataFlowNode {
   }
 
   public producedFields() {
-    return new Set(); // facet does not produce any new fields
+    return new Set<string>(); // facet does not produce any new fields
   }
 
   /**
@@ -125,7 +125,7 @@ export class FacetNode extends DataFlowNode {
   private getChildIndependentFieldsWithStep() {
     const childIndependentFieldsWithStep: ChildIndependentFieldsWithStep = {};
 
-    for (const channel of ['x', 'y'] as ScaleChannel[]) {
+    for (const channel of ['x', 'y'] as const) {
       const childScaleComponent = this.childModel.component.scales[channel];
       if (childScaleComponent && !childScaleComponent.merged) {
         // independent scale

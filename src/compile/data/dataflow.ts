@@ -160,11 +160,11 @@ export class OutputNode extends DataFlowNode {
   }
 
   public dependentFields() {
-    return new Set();
+    return new Set<string>();
   }
 
   public producedFields() {
-    return new Set();
+    return new Set<string>();
   }
 
   public hash() {
