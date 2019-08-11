@@ -26,7 +26,8 @@ function setAxisEncode(
   axis.encode = axis.encode || {};
   axis.encode[part] = axis.encode[part] || {};
   axis.encode[part].update = axis.encode[part].update || {};
-  axis.encode[part].update[vgProp] = vgRef;
+  // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
+  (axis.encode[part].update[vgProp] as any) = vgRef;
 }
 
 export function assembleAxis(

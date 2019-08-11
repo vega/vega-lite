@@ -14,7 +14,8 @@ function setLegendEncode(
   legend.encode = legend.encode || {};
   legend.encode[part] = legend.encode[part] || {};
   legend.encode[part].update = legend.encode[part].update || {};
-  legend.encode[part].update[vgProp] = vgRef;
+  // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
+  (legend.encode[part].update[vgProp] as any) = vgRef;
 }
 
 export function assembleLegends(model: Model): VgLegend[] {
