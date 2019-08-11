@@ -143,21 +143,27 @@ function getProperty<K extends keyof LegendComponentProps>(
     //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(properties.type(...)));
 
     case 'direction':
-      return direction({legend, legendConfig, timeUnit, channel, scaleType});
+      return direction({
+        legend,
+        legendConfig,
+        timeUnit,
+        channel,
+        scaleType
+      }) as LegendComponentProps[K];
 
     case 'format':
       // We don't include temporal field here as we apply format in encode block
       if (isTimeFormatFieldDef(fieldDef)) {
         return undefined;
       }
-      return numberFormat(fieldDef, legend.format, model.config);
+      return numberFormat(fieldDef, legend.format, model.config) as any;
 
     case 'formatType':
       // Same as format, we don't include temporal field here as we apply format in encode block
       if (isTimeFormatFieldDef(fieldDef)) {
         return undefined;
       }
-      return legend.formatType;
+      return legend.formatType as any;
 
     case 'gradientLength':
       return getFirstDefined<number | SignalRef>(
@@ -172,25 +178,25 @@ function getProperty<K extends keyof LegendComponentProps>(
           channel,
           scaleType
         })
-      );
+      ) as any;
 
     case 'labelOverlap':
-      return getFirstDefined(legend.labelOverlap, properties.defaultLabelOverlap(scaleType));
+      return getFirstDefined(legend.labelOverlap, properties.defaultLabelOverlap(scaleType)) as any;
 
     case 'symbolType':
       return getFirstDefined(
         legend.symbolType,
         properties.defaultSymbolType(mark, channel, encoding.shape, model.markDef.shape)
-      );
+      ) as any;
 
     case 'title':
-      return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;
+      return (fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined) as any;
 
     case 'type':
-      return type({legend, channel, timeUnit, scaleType, alwaysReturn: false});
+      return type({legend, channel, timeUnit, scaleType, alwaysReturn: false}) as any;
 
     case 'values':
-      return properties.values(legend, fieldDef);
+      return properties.values(legend, fieldDef) as any;
   }
 
   // Otherwise, return specified property.
