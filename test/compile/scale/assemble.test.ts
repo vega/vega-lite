@@ -85,7 +85,7 @@ describe('compile/scale/assemble', () => {
     it('includes shared scales, but not independent scales (as they are nested) for facet.', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'quantitative', format: 'd'}
+          column: {field: 'a', type: 'quantitative'}
         },
         spec: {
           mark: 'point',

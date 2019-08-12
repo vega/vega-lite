@@ -89,8 +89,8 @@ describe('compile/data/aggregate', () => {
         encoding: {
           latitude: {field: 'latitude', type: 'quantitative'},
           longitude: {field: 'longitude', type: 'quantitative'},
-          latitude2: {field: 'latitude2', type: 'quantitative'},
-          longitude2: {field: 'longitude2', type: 'quantitative'},
+          latitude2: {field: 'latitude2'},
+          longitude2: {field: 'longitude2'},
           color: {
             aggregate: 'count',
             type: 'quantitative'
