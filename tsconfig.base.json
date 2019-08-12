@@ -16,7 +16,6 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "strictBindCallApply": true,
     "noUnusedLocals": true,
     "preserveConstEnums": true,
     "removeComments": false,
