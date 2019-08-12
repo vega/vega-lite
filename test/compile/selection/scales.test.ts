@@ -162,7 +162,7 @@ describe('Selection + Scales', () => {
   });
 
   describe('signals', () => {
-    const model = parseRepeatModel({
+    const repeatModel = parseRepeatModel({
       repeat: {
         row: ['Horsepower', 'Acceleration'],
         column: ['Miles_per_Gallon', 'Acceleration']
@@ -185,11 +185,36 @@ describe('Selection + Scales', () => {
       }
     });
 
-    model.parseScale();
-    model.parseSelections();
+    const concatModel = parseConcatModel({
+      data: {url: 'data/cars.json'},
+      hconcat: [
+        {
+          mark: 'point',
+          encoding: {
+            x: {type: 'quantitative', field: 'Miles_per_Gallon'},
+            y: {type: 'quantitative', field: 'Weight_in_lbs'}
+          },
+          selection: {selector001: {type: 'interval', bind: 'scales'}}
+        },
+        {
+          mark: 'point',
+          encoding: {
+            x: {type: 'quantitative', field: 'Acceleration'},
+            y: {type: 'quantitative', field: 'Horsepower'}
+          },
+          selection: {selector001: {type: 'interval', bind: 'scales'}}
+        }
+      ]
+    });
+
+    repeatModel.parseScale();
+    repeatModel.parseSelections();
+
+    concatModel.parseScale();
+    concatModel.parseSelections();
 
     it('should be marked as push: outer', () => {
-      const signals = assembleUnitSelectionSignals(model.children[0] as UnitModel, []);
+      const signals = assembleUnitSelectionSignals(repeatModel.children[0] as UnitModel, []);
       const hp = signals.filter(s => s.name === 'grid_Horsepower') as PushSignal[];
       const mpg = signals.filter(s => s.name === 'grid_Miles_per_Gallon') as PushSignal[];
 
@@ -205,7 +230,7 @@ describe('Selection + Scales', () => {
     });
 
     it('should be assembled at the top-level', () => {
-      const signals = assembleTopLevelSignals(model.children[0] as UnitModel, []);
+      const signals = assembleTopLevelSignals(repeatModel.children[0] as UnitModel, []);
       const hp = signals.filter(s => s.name === 'grid_Horsepower');
       const mpg = signals.filter(s => s.name === 'grid_Miles_per_Gallon');
       let named = signals.filter(s => s.name === 'grid') as NewSignal[];
@@ -215,7 +240,7 @@ describe('Selection + Scales', () => {
       expect(named.length).toBe(1);
       expect(named[0].update).toBe('{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower}');
 
-      const signals2 = assembleTopLevelSignals(model.children[1] as UnitModel, signals);
+      const signals2 = assembleTopLevelSignals(repeatModel.children[1] as UnitModel, signals);
       const acc = signals2.filter(s => s.name === 'grid_Acceleration');
       named = signals2.filter(s => s.name === 'grid');
 
@@ -223,6 +248,15 @@ describe('Selection + Scales', () => {
       expect(named.length).toBe(1);
       expect(named[0].update).toEqual(
         '{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower, "Acceleration": grid_Acceleration}'
+      );
+
+      const signals3 = assembleTopLevelSignals(
+        concatModel.children[1] as UnitModel,
+        assembleTopLevelSignals(concatModel.children[0] as UnitModel, [])
+      );
+      const namedSelector = signals3.filter(s => s.name === 'selector001') as NewSignal[];
+      expect(namedSelector[0].update).toBe(
+        '{"Miles_per_Gallon": selector001_Miles_per_Gallon, "Weight_in_lbs": selector001_Weight_in_lbs, "Acceleration": selector001_Acceleration, "Horsepower": selector001_Horsepower}'
       );
     });
   });

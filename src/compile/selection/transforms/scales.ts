@@ -59,16 +59,17 @@ const scaleBindings: TransformCompiler = {
     // outer" to from within the units. We need to reassemble this state into
     // the top-level named signal, except no single selCmpt has a global view.
     const namedSg = signals.filter(s => s.name === selCmpt.name)[0];
-    const update = namedSg.update;
+    let update = namedSg.update;
     if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
       namedSg.update = `{${bound.map(proj => `${stringValue(proj.field)}: ${proj.signals.data}`).join(', ')}}`;
     } else {
       for (const proj of bound) {
-        const mapping = `, ${stringValue(proj.field)}: ${proj.signals.data}`;
+        const mapping = `${stringValue(proj.field)}: ${proj.signals.data}`;
         if (update.indexOf(mapping) < 0) {
-          namedSg.update = update.substring(0, update.length - 1) + mapping + '}';
+          update = `${update.substring(0, update.length - 1)}, ${mapping}}`;
         }
       }
+      namedSg.update = update;
     }
 
     return signals.concat(bound.map(proj => ({name: proj.signals.data})));
