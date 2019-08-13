@@ -75,7 +75,7 @@
     "@types/mkdirp": "^0.5.2",
     "@types/node": "^12.6.8",
     "@types/puppeteer": "^1.12.4",
-    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^1.13.0",
     "ajv": "^6.10.2",
     "chai": "^4.2.0",
