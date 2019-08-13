@@ -76,7 +76,7 @@
     "@types/node": "^12.6.8",
     "@types/puppeteer": "^1.12.4",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
-    "@typescript-eslint/parser": "^1.13.0",
+    "@typescript-eslint/parser": "^2.0.0",
     "ajv": "^6.10.2",
     "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.2",
