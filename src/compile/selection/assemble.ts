@@ -15,26 +15,16 @@ import {forEachTransform} from './transforms/transforms';
 
 export function assembleInit(
   init: (SelectionInit | SelectionInit[] | SelectionInitInterval)[] | SelectionInit,
+  isExpr: boolean = true,
   wrap: (str: string) => string = identity
-): string {
-  if (isArray(init)) {
-    const str = init.map(v => assembleInit(v, wrap)).join(', ');
-    return `[${str}]`;
-  } else if (isDateTime(init)) {
-    return wrap(dateTimeExpr(init));
-  }
-  return wrap(JSON.stringify(init));
-}
-
-export function assembleInitData(
-  init: (SelectionInit | SelectionInit[] | SelectionInitInterval)[] | SelectionInit
 ): any {
   if (isArray(init)) {
-    return init.map(v => assembleInitData(v));
+    const assembled = init.map(v => assembleInit(v, isExpr, wrap));
+    return isExpr ? `[${assembled.join(', ')}]` : assembled;
   } else if (isDateTime(init)) {
-    return dateTimeExpr(init, false, true);
+    return wrap(dateTimeExpr(init, false, !isExpr));
   }
-  return init;
+  return isExpr ? wrap(JSON.stringify(init)) : init;
 }
 
 export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]) {
@@ -129,7 +119,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
         const {signals, ...rest} = proj;
         return rest;
       });
-      const insert = selCmpt.init.map((i: SelectionInit | SelectionInit[]) => assembleInitData(i));
+      const insert = selCmpt.init.map((i: SelectionInit | SelectionInit[]) => assembleInit(i, false));
       init.values =
         selCmpt.type === 'interval'
           ? [{unit: unitName(model), fields, values: insert}]
