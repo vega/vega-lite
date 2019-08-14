@@ -87,8 +87,8 @@ function getFacetModel(model: Model): FacetModel {
   return parent as FacetModel;
 }
 
-export function unitName(model: Model) {
-  let name = stringValue(model.name);
+export function unitName(model: Model, escape = true) {
+  let name = escape ? stringValue(model.name) : model.name;
   const facetModel = getFacetModel(model);
   if (facetModel) {
     const {facet} = facetModel;

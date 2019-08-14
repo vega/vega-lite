@@ -119,11 +119,12 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
         const {signals, ...rest} = proj;
         return rest;
       });
-      const insert = selCmpt.init.map((i: SelectionInit | SelectionInit[]) => assembleInit(i, false));
+
+      const insert = selCmpt.init.map(i => assembleInit(i, false));
       init.values =
         selCmpt.type === 'interval'
-          ? [{unit: unitName(model), fields, values: insert}]
-          : insert.map(i => ({unit: unitName(model), fields, values: i}));
+          ? [{unit: unitName(model, false), fields, values: insert}]
+          : insert.map(i => ({unit: unitName(model, false), fields, values: i}));
     }
     const contains = data.filter(d => d.name === selCmpt.name + STORE);
     if (!contains.length) {
