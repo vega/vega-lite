@@ -87,11 +87,11 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
     const store = stringValue(name + STORE);
     const hasSg = signals.filter(s => s.name === name);
     if (!hasSg.length) {
+      const resolve = selCmpt.resolve === 'global' ? 'union' : selCmpt.resolve;
+      const isMulti = selCmpt.type === 'multi' ? ', true)' : ')';
       signals.push({
         name: selCmpt.name,
-        update:
-          `${VL_SELECTION_RESOLVE}(${store}` +
-          (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
+        update: `${VL_SELECTION_RESOLVE}(${store}, ${stringValue(resolve)}${isMulti}`
       });
     }
     hasSelections = true;

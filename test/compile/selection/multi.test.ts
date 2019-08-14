@@ -1,7 +1,8 @@
 import {
   assembleUnitSelectionData,
   assembleUnitSelectionMarks,
-  assembleUnitSelectionSignals
+  assembleUnitSelectionSignals,
+  assembleTopLevelSignals
 } from '../../../src/compile/selection/assemble';
 import multi from '../../../src/compile/selection/multi';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
@@ -25,7 +26,8 @@ describe('Multi Selection', () => {
       clear: false,
       on: 'mouseover',
       toggle: 'event.ctrlKey',
-      encodings: ['y', 'color']
+      encodings: ['y', 'color'],
+      resolve: 'intersect'
     },
     'thr-ee': {
       type: 'multi',
@@ -134,6 +136,27 @@ describe('Multi Selection', () => {
 
     const signals = assembleUnitSelectionSignals(model, []);
     expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg, ...fiveSg]));
+  });
+
+  it('builds top-level signals', () => {
+    const signals = assembleTopLevelSignals(model, []);
+    expect(signals).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'one',
+          update: 'vlSelectionResolve("one_store", "union", true)'
+        },
+        {
+          name: 'two',
+          update: 'vlSelectionResolve("two_store", "intersect", true)'
+        },
+        {
+          name: 'unit',
+          value: {},
+          on: [{events: 'mousemove', update: 'isTuple(group()) ? group() : unit'}]
+        }
+      ])
+    );
   });
 
   it('builds unit datasets', () => {
