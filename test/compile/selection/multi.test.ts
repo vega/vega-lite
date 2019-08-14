@@ -166,12 +166,12 @@ describe('Multi Selection', () => {
           {
             unit: '',
             fields: [{type: 'E', field: 'Year'}, {type: 'E', field: 'Origin'}],
-            values: [new Date(1970, 1, 2, 0, 0, 0, 0).toJSON(), 'Japan']
+            values: [+new Date(1970, 1, 2, 0, 0, 0, 0), 'Japan']
           },
           {
             unit: '',
             fields: [{type: 'E', field: 'Year'}, {type: 'E', field: 'Origin'}],
-            values: [new Date(1980, 1, 2, 0, 0, 0, 0).toJSON(), 'USA']
+            values: [+new Date(1980, 1, 2, 0, 0, 0, 0), 'USA']
           }
         ]
       }

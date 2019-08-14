@@ -159,7 +159,7 @@ describe('datetime', () => {
         day: '1'
       };
       const expr = dateTimeExpr(d, false, true);
-      expect(expr).toBe(new Date(1970, 1, 2, 0, 0, 0, 0).toJSON());
+      expect(expr).toBe(+new Date(1970, 1, 2, 0, 0, 0, 0));
     });
 
     it('should throw error for invalid day', () => {
@@ -177,7 +177,7 @@ describe('datetime', () => {
       const expr = dateTimeExpr(d, true);
       expect(expr).toBe('utc(2007, 0, 1, 0, 0, 0, 0)');
       const exprJSON = dateTimeExpr(d, true, true);
-      expect(exprJSON).toBe(new Date(Date.UTC(2007, 0, 1, 0, 0, 0, 0)).toJSON());
+      expect(exprJSON).toBe(+new Date(Date.UTC(2007, 0, 1, 0, 0, 0, 0)));
     });
 
     // Note: Other part of coverage handled by timeUnit.fieldExpr's test
