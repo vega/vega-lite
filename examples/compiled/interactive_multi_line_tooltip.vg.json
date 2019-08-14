@@ -39,7 +39,10 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "hover", "update": "vlSelectionResolve(\"hover_store\")"},
+    {
+      "name": "hover",
+      "update": "vlSelectionResolve(\"hover_store\", \"union\")"
+    },
     {
       "name": "hover_tuple",
       "on": [

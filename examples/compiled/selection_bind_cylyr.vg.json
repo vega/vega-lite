@@ -52,7 +52,10 @@
       ],
       "bind": {"input": "range", "min": 3, "max": 8, "step": 1}
     },
-    {"name": "CylYr", "update": "vlSelectionResolve(\"CylYr_store\")"},
+    {
+      "name": "CylYr",
+      "update": "vlSelectionResolve(\"CylYr_store\", \"union\")"
+    },
     {
       "name": "CylYr_tuple",
       "update": "CylYr_Cylinders !== null && CylYr_Year !== null ? {fields: CylYr_tuple_fields, values: [CylYr_Cylinders, CylYr_Year]} : null"

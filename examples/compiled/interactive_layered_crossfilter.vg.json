@@ -190,7 +190,10 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
+    {
+      "name": "brush",
+      "update": "vlSelectionResolve(\"brush_store\", \"union\")"
+    }
   ],
   "layout": {"padding": 20, "columns": 3, "bounds": "full", "align": "all"},
   "marks": [

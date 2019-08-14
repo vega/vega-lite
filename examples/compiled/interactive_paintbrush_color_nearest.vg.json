@@ -31,7 +31,7 @@
     },
     {
       "name": "paintbrush",
-      "update": "vlSelectionResolve(\"paintbrush_store\")"
+      "update": "vlSelectionResolve(\"paintbrush_store\", \"union\", true)"
     },
     {
       "name": "paintbrush_tuple",

@@ -28,7 +28,7 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "view", "update": "vlSelectionResolve(\"view_store\")"},
+    {"name": "view", "update": "vlSelectionResolve(\"view_store\", \"union\")"},
     {
       "name": "view_income",
       "on": [

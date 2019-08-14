@@ -84,7 +84,10 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\")"}
+    {
+      "name": "pts",
+      "update": "vlSelectionResolve(\"pts_store\", \"union\", true)"
+    }
   ],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [

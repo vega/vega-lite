@@ -36,8 +36,11 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "alex", "update": "vlSelectionResolve(\"alex_store\")"},
-    {"name": "morgan", "update": "vlSelectionResolve(\"morgan_store\")"},
+    {"name": "alex", "update": "vlSelectionResolve(\"alex_store\", \"union\")"},
+    {
+      "name": "morgan",
+      "update": "vlSelectionResolve(\"morgan_store\", \"union\")"
+    },
     {
       "name": "alex_x",
       "value": [],

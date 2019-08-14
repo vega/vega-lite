@@ -124,7 +124,10 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "single", "update": "vlSelectionResolve(\"single_store\")"},
+    {
+      "name": "single",
+      "update": "vlSelectionResolve(\"single_store\", \"union\")"
+    },
     {
       "name": "single_tuple",
       "on": [

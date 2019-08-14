@@ -30,10 +30,13 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"},
+    {
+      "name": "brush",
+      "update": "vlSelectionResolve(\"brush_store\", \"union\")"
+    },
     {
       "name": "hoverbrush",
-      "update": "vlSelectionResolve(\"hoverbrush_store\")"
+      "update": "vlSelectionResolve(\"hoverbrush_store\", \"union\", true)"
     },
     {
       "name": "brush_x",
