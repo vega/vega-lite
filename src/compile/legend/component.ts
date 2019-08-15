@@ -30,3 +30,9 @@ export class LegendComponent extends Split<LegendComponentProps> {}
 export type LegendComponentIndex = {[P in NonPositionScaleChannel]?: LegendComponent};
 
 export type LegendIndex = {[P in NonPositionScaleChannel]?: Legend};
+
+export interface InteractiveSelections {
+  name: string;
+  store: string;
+  fields: string[];
+}
