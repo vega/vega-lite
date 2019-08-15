@@ -1,15 +1,14 @@
-import {Signal} from 'vega';
-import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from '.';
-import {accessPathWithDatum} from '../../util';
+import {SelectionCompiler, SelectionComponent, TUPLE, unitName, LEGEND} from '.';
+import {accessPathWithDatum, keys} from '../../util';
 import {UnitModel} from '../unit';
 import {TUPLE_FIELDS} from './transforms/project';
 
 export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionComponent<'single' | 'multi'>) {
   const name = selCmpt.name;
   const fieldsSg = name + TUPLE_FIELDS;
-  const proj = selCmpt.project;
+  const project = selCmpt.project;
   const datum = '(item().isVoronoi ? datum.datum : datum)';
-  const values = proj.items
+  const values = project.items
     .map(p => {
       const fieldDef = model.fieldDef(p.channel);
       // Binned fields should capture extents, for a range test against the raw field.
@@ -28,20 +27,27 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
   // whitespace followed by a click in whitespace; the store should only
   // be cleared on the second click).
   const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
-  const signals: Signal[] = [
+  const on = [
     {
-      name: name + TUPLE,
-      on: [
-        {
-          events: selCmpt.events,
-          update: `datum && item().mark.marktype !== 'group' ? {${update}: [${values}]} : null`,
-          force: true
-        }
-      ]
+      events: selCmpt.events,
+      update: `datum && item().mark.marktype !== 'group' ? {${update}: [${values}]} : null`,
+      force: true
     }
   ];
 
-  return signals;
+  if (selCmpt.legends) {
+    for (const field of keys(selCmpt.legends)) {
+      const {signals, ...proj} = selCmpt.legends[field];
+      const prefix = `@${field}${LEGEND}`;
+      on.push({
+        events: `${prefix}Symbol:click, ${prefix}Label:click`,
+        update: `{unit: "${LEGEND}", fields: [${JSON.stringify(proj)}], values: [datum.value]}`,
+        force: true
+      });
+    }
+  }
+
+  return [{name: name + TUPLE, on: on}];
 }
 
 const multi: SelectionCompiler<'multi'> = {

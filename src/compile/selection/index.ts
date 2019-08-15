@@ -25,7 +25,7 @@ export const MODIFY = '_modify';
 export const SELECTION_DOMAIN = '_selection_domain_';
 export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
 export const VL_SELECTION_TEST = 'vlSelectionTest';
-export const LEGEND = '_legend';
+export const LEGEND = 'Legend';
 
 export interface SelectionComponent<T extends SelectionType = SelectionType> {
   name: string;
@@ -48,6 +48,7 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   // Transforms
   project?: SelectionProjectionComponent;
   scales?: SelectionProjection[];
+  legends?: {[k: string]: SelectionProjection};
   toggle?: any;
   translate?: any;
   zoom?: any;

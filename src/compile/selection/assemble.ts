@@ -1,7 +1,7 @@
 import {Signal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
-import {forEachSelection, LEGEND, MODIFY, SELECTION_DOMAIN, STORE, TUPLE, unitName, VL_SELECTION_RESOLVE} from '.';
+import {forEachSelection, MODIFY, SELECTION_DOMAIN, STORE, unitName, VL_SELECTION_RESOLVE} from '.';
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {SelectionInit, SelectionInitInterval} from '../../selection';
@@ -9,7 +9,6 @@ import {accessPathWithDatum, keys, varName} from '../../util';
 import {VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
-import {InteractiveSelections} from '../legend/component';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {forEachTransform} from './transforms/transforms';
@@ -58,76 +57,6 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]
       name: name + MODIFY,
       update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
     });
-  });
-
-  // const selections = interactiveLegendExists(model);
-  // if (selections.length) {
-  //   return assembleInteractiveLegendSignals(model, signals, selections);
-  // }
-
-  return signals;
-}
-
-export function assembleInteractiveLegendSignals(
-  model: UnitModel,
-  signals: any[],
-  selections: InteractiveSelections[]
-): any[] {
-  const datum = '(item().isVoronoi ? datum.datum : datum)';
-  let selectionFields: string[] = [].concat.apply([], selections.map(s => s.fields)); // Flatten array
-  selectionFields = selectionFields.filter((v, i, a) => a.indexOf(v) === i); // Get unique elements
-
-  selections.forEach(selection => {
-    const name = selection.name;
-    const signal = signals.filter(s => s.name === name + TUPLE)[0];
-
-    const ignoreLegendExpression = selectionFields.reduce((exp, field) => {
-      return `item().mark.name !== 'symbols_${field}${LEGEND}' && item().mark.name !== 'labels_${field}${LEGEND}' && ${exp}`;
-    }, '');
-
-    signal.on[0].update = ignoreLegendExpression + signal.on[0].update;
-
-    const eventExpression = selection.fields.reduce((expression, field) => {
-      return `@symbols_${field}${LEGEND}:click, @labels_${field}${LEGEND}:click, ${expression}`;
-    }, '');
-
-    if (selection.fields.length !== 1) {
-      const fieldSignals = selection.fields.map(field => {
-        signals.unshift({
-          name: `${name}_${field}_legend`,
-          on: [
-            {
-              events: [{source: 'scope', type: 'click'}],
-              update: `${ignoreLegendExpression} item().mark.marktype !== 'group' ? ${datum}['${field}'] : (!(${ignoreLegendExpression.slice(
-                0,
-                -4
-              )}) ? ${name}_${field}_legend : null)`
-            },
-            {
-              events: `@symbols_${field}${LEGEND}:click, @labels_${field}${LEGEND}:click`,
-              update: `datum.value`
-            }
-          ]
-        });
-        return `${name}_${field}_legend`;
-      });
-      signal.on.push({
-        events: eventExpression,
-        update: `${fieldSignals.join(' && ')} ? {unit: ${unitName(
-          model
-        )}, fields: ${name}_tuple_fields, values: [ ${fieldSignals.join(',')} ]} : ${signal.name}`
-      });
-
-      const toggleSignal = signals.filter(s => s.name === name + '_toggle');
-      if (toggleSignal.length) {
-        toggleSignal[0].on[0].update = `${ignoreLegendExpression.slice(0, -4)} ? event.shiftKey : false`;
-      }
-    } else {
-      signal.on.push({
-        events: eventExpression,
-        update: `{unit: ${unitName(model)}, fields: ${name}_tuple_fields, values: [datum.value]}`
-      });
-    }
   });
 
   return signals;

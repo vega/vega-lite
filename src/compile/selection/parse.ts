@@ -105,12 +105,13 @@ export function parseInteractiveLegend(
   channel: NonPositionScaleChannel,
   legendCmpt: LegendComponent
 ) {
-  const field = model.fieldDef(channel);
+  const field = model.fieldDef(channel).field;
   forEachSelection(model, selCmpt => {
-    if (selCmpt.project.hasField[field.field] || selCmpt.project.hasChannel[channel]) {
+    const proj = selCmpt.project.hasField[field] || selCmpt.project.hasChannel[channel];
+    if (proj) {
       legendCmpt.set('interactive', true, false);
-      return true;
+      selCmpt.legends = selCmpt.legends || {};
+      selCmpt.legends[field] = proj;
     }
-    return false;
   });
 }
