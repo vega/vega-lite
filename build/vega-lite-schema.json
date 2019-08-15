@@ -9701,18 +9701,11 @@
           "type": "array"
         },
         "init": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SelectionInitMapping"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/SelectionInitMapping"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial\nvalue (or array of values).\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial\nvalue (or array of values).\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.",
+          "items": {
+            "$ref": "#/definitions/SelectionInitMapping"
+          },
+          "type": "array"
         },
         "nearest": {
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
@@ -9783,18 +9776,11 @@
           "type": "array"
         },
         "init": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SelectionInitMapping"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/SelectionInitMapping"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial\nvalue (or array of values).\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial\nvalue (or array of values).\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.",
+          "items": {
+            "$ref": "#/definitions/SelectionInitMapping"
+          },
+          "type": "array"
         },
         "nearest": {
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
