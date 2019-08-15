@@ -78,6 +78,13 @@ export type LegendConfig = LegendMixins &
      * @minimum 0
      */
     gradientLength?: number;
+
+    /**
+     * The opacity of unselected legend entries.
+     *
+     * __Default value:__ 0.35.
+     */
+    unselectedOpacity?: number;
   };
 
 /**
@@ -211,7 +218,8 @@ export const defaultLegendConfig: LegendConfig = {
   gradientHorizontalMaxLength: 200,
   gradientHorizontalMinLength: 100,
   gradientVerticalMaxLength: 200,
-  gradientVerticalMinLength: 64 // This is the Vega's minimum.
+  gradientVerticalMinLength: 64, // This is the Vega's minimum.
+  unselectedOpacity: 0.35
 };
 
 export const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {

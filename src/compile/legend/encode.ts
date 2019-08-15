@@ -99,7 +99,7 @@ export function symbols(
     if (opacity) {
       // only apply opacity if it is neither zero or undefined
       if (condition) {
-        out.opacity = [{test: condition, value: opacity}, {value: 0.2}];
+        out.opacity = [{test: condition, value: opacity}, {value: config.legend.unselectedOpacity}];
       } else {
         out.opacity = {value: opacity};
       }
@@ -164,7 +164,7 @@ export function labels(
   }
 
   if (condition) {
-    labelsSpec.opacity = [{test: condition, value: 1}, {value: 0.2}];
+    labelsSpec.opacity = [{test: condition, value: 1}, {value: config.legend.unselectedOpacity}];
   }
 
   out = {...out, ...labelsSpec};
