@@ -103,7 +103,7 @@ const interval: SelectionCompiler<'interval'> = {
 
   marks: (model, selCmpt, marks) => {
     const name = selCmpt.name;
-    const {x, y} = selCmpt.project.has;
+    const {x, y} = selCmpt.project.hasChannel;
     const xvname = x && x.signals.visual;
     const yvname = y && y.signals.visual;
     const store = `data(${stringValue(selCmpt.name + STORE)})`;

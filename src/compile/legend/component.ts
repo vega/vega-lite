@@ -6,11 +6,13 @@ import {Split} from '../split';
 
 export type LegendComponentProps = VgLegend & {
   labelExpr?: string;
+  interactive?: boolean;
 };
 
 const LEGEND_COMPONENT_PROPERTY_INDEX: Flag<keyof LegendComponentProps> = {
   ...COMMON_LEGEND_PROPERTY_INDEX,
   labelExpr: 1,
+  interactive: 1,
   // channel scales
   opacity: 1,
   shape: 1,

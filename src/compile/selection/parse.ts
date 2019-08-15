@@ -1,6 +1,6 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {isString, stringValue} from 'vega-util';
-import {SelectionComponent, STORE} from '.';
+import {SelectionComponent, STORE, forEachSelection} from '.';
 import {LogicalOperand} from '../../logical';
 import {SelectionDef} from '../../selection';
 import {Dict, duplicate, logicalExpr, varName} from '../../util';
@@ -8,6 +8,8 @@ import {DataFlowNode} from '../data/dataflow';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {forEachTransform} from './transforms/transforms';
+import {LegendComponent} from '../legend/component';
+import {NonPositionScaleChannel} from '../../channel';
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
@@ -96,4 +98,19 @@ export function parseSelectionPredicate(
   return (
     (stores.length ? '!(' + stores.map(s => `length(data(${s}))`).join(' || ') + ') || ' : '') + `(${predicateStr})`
   );
+}
+
+export function parseInteractiveLegend(
+  model: UnitModel,
+  channel: NonPositionScaleChannel,
+  legendCmpt: LegendComponent
+) {
+  const field = model.fieldDef(channel);
+  forEachSelection(model, selCmpt => {
+    if (selCmpt.project.hasField[field.field] || selCmpt.project.hasChannel[channel]) {
+      legendCmpt.set('interactive', true, false);
+      return true;
+    }
+    return false;
+  });
 }

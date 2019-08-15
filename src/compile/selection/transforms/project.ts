@@ -24,13 +24,15 @@ export interface SelectionProjection {
 }
 
 export class SelectionProjectionComponent {
-  public has: {[key in SingleDefUnitChannel]?: SelectionProjection};
+  public hasChannel: {[key in SingleDefUnitChannel]?: SelectionProjection};
+  public hasField: {[k: string]: SelectionProjection};
   public timeUnit?: TimeUnitNode;
   public items: SelectionProjection[];
 
   constructor(...items: SelectionProjection[]) {
     this.items = items;
-    this.has = {};
+    this.hasChannel = {};
+    this.hasField = {};
   }
 }
 
@@ -88,6 +90,7 @@ const project: TransformCompiler = {
       const p: SelectionProjection = {type: 'E', field};
       p.signals = {...signalName(p, 'data')};
       proj.items.push(p);
+      proj.hasField[field] = p;
     }
 
     for (const channel of selDef.encodings || []) {
@@ -128,7 +131,7 @@ const project: TransformCompiler = {
           const p: SelectionProjection = {field, channel, type};
           p.signals = {...signalName(p, 'data'), ...signalName(p, 'visual')};
           proj.items.push((parsed[field] = p));
-          proj.has[channel] = parsed[field];
+          proj.hasField[field] = proj.hasChannel[channel] = parsed[field];
         }
       } else {
         log.warn(log.message.cannotProjectOnChannelWithoutField(channel));

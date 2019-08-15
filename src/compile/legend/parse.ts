@@ -1,5 +1,4 @@
 import {Legend as VgLegend, LegendEncode, SignalRef} from 'vega';
-import {stringValue} from 'vega-util';
 import {
   COLOR,
   FILL,
@@ -26,7 +25,7 @@ import {mergeTitleComponent, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
-import {forEachSelection, LEGEND, STORE, VL_SELECTION_TEST} from '../selection';
+import {LEGEND, VL_SELECTION_TEST} from '../selection';
 import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {
@@ -39,6 +38,7 @@ import {
 import * as encode from './encode';
 import * as properties from './properties';
 import {direction, type} from './properties';
+import {parseInteractiveLegend} from '../selection/parse';
 
 export function parseLegend(model: Model) {
   if (isUnitModel(model)) {
@@ -99,6 +99,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   const legend = model.legend(channel);
 
   const legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
+  parseInteractiveLegend(model, channel, legendCmpt);
 
   for (const property of LEGEND_COMPONENT_PROPERTIES) {
     const value = getProperty(property, legend, channel, model);
@@ -125,55 +126,15 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
     {} as LegendEncode
   );
 
-  const interactiveSelections = interactiveLegendExists(model);
-  if (interactiveSelections.length) {
-    legendEncode = updateInteractiveLegendComponent(model, legendEncode, channel, interactiveSelections);
+  if (legendCmpt.get('interactive') === true) {
+    legendEncode = updateInteractiveLegendComponent(model, legendEncode, channel, []);
   }
+
   if (keys(legendEncode).length > 0) {
     legendCmpt.set('encode', legendEncode, !!legend.encoding);
   }
 
   return legendCmpt;
-}
-
-export function interactiveLegendExists(model: UnitModel) {
-  if (model.parent) {
-    return [];
-  }
-  const selections: InteractiveSelections[] = [];
-  // Look over all selections
-  forEachSelection(model, selCmpt => {
-    if (selCmpt['fields']) {
-      selections.push({name: selCmpt.name, store: stringValue(selCmpt.name + STORE), fields: selCmpt['fields']});
-    }
-  });
-
-  // Quit if no selections have projections
-  if (!selections.length) {
-    return [];
-  }
-
-  // Encoding channels should fully populate selections
-  let selectionFields: string[] = [].concat.apply([], selections.map(s => s.fields)); // Flatten array
-  selectionFields = selectionFields.filter((v, i, a) => a.indexOf(v) === i); // Get unique elements
-
-  let encodingFields: string[] = [];
-  [COLOR, OPACITY, SIZE, SHAPE].forEach(channel => {
-    const fieldDef = model.fieldDef(channel);
-    if (
-      fieldDef &&
-      !(fieldDef.hasOwnProperty('bin') || fieldDef.hasOwnProperty('aggregate') || fieldDef.hasOwnProperty('timeUnit'))
-    ) {
-      encodingFields.push(fieldDef.field);
-    }
-  });
-
-  encodingFields = encodingFields.filter((v, i, a) => a.indexOf(v) === i); // Get unique elements
-  const differenceFields = selectionFields.filter(x => encodingFields.indexOf(x) === -1);
-  if (differenceFields.length) {
-    return [];
-  }
-  return selections;
 }
 
 function updateInteractiveLegendComponent(

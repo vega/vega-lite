@@ -10,7 +10,6 @@ import {VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {InteractiveSelections} from '../legend/component';
-import {interactiveLegendExists} from '../legend/parse';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {forEachTransform} from './transforms/transforms';
@@ -61,10 +60,10 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]
     });
   });
 
-  const selections = interactiveLegendExists(model);
-  if (selections.length) {
-    return assembleInteractiveLegendSignals(model, signals, selections);
-  }
+  // const selections = interactiveLegendExists(model);
+  // if (selections.length) {
+  //   return assembleInteractiveLegendSignals(model, signals, selections);
+  // }
 
   return signals;
 }

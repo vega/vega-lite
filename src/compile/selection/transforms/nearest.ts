@@ -11,7 +11,7 @@ const nearest: TransformCompiler = {
   },
 
   marks: (model, selCmpt, marks) => {
-    const {x, y} = selCmpt.project.has;
+    const {x, y} = selCmpt.project.hasChannel;
     const markType = model.mark;
     if (isPathMark(markType)) {
       log.warn(log.message.nearestNotSupportForContinuous(markType));

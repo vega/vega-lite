@@ -66,13 +66,14 @@ const compilers: Dict<SelectionCompiler> = {single, multi, interval};
 
 export function forEachSelection(
   model: Model,
-  cb: (selCmpt: SelectionComponent, selCompiler: SelectionCompiler) => void
+  cb: (selCmpt: SelectionComponent, selCompiler: SelectionCompiler) => void | boolean
 ) {
   const selections = model.component.selection;
   for (const name in selections) {
     if (selections.hasOwnProperty(name)) {
       const sel = selections[name];
-      cb(sel, compilers[sel.type]);
+      const success = cb(sel, compilers[sel.type]);
+      if (success === true) break;
     }
   }
 }
