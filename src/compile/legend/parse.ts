@@ -115,7 +115,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
       if (value !== undefined && keys(value).length > 0) {
         e[part] = {
           name: `${fieldDef.field}_${LEGEND}_${part}`,
-          interactive: !!legendCmpt.get('selections').length,
+          interactive: !!legendCmpt.get('selections'),
           update: value
         };
       }

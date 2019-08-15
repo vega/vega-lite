@@ -1,3 +1,4 @@
+import {selector as parseSelector} from 'vega-event-selector';
 import {SelectionCompiler, SelectionComponent, TUPLE, unitName, LEGEND} from '.';
 import {accessPathWithDatum, keys} from '../../util';
 import {UnitModel} from '../unit';
@@ -40,7 +41,7 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
       const {signals, ...proj} = selCmpt.legends[field];
       const prefix = `@${field}_${LEGEND}_`;
       on.push({
-        events: `${prefix}symbols:click, ${prefix}labels:click`,
+        events: parseSelector(`${prefix}symbols:click, ${prefix}labels:click`, 'view'),
         update: `{unit: "${LEGEND}", fields: [${JSON.stringify(proj)}], values: [datum.value]}`,
         force: true
       });
