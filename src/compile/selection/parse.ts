@@ -67,7 +67,8 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
 export function parseSelectionPredicate(
   model: Model,
   selections: LogicalOperand<string>,
-  dfnode?: DataFlowNode
+  dfnode?: DataFlowNode,
+  datum: string = 'datum'
 ): string {
   const stores: string[] = [];
   function expr(name: string): string {
@@ -90,7 +91,7 @@ export function parseSelectionPredicate(
     }
 
     return (
-      `vlSelectionTest(${store}, datum` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
+      `vlSelectionTest(${store}, ${datum}` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
     );
   }
 
@@ -109,7 +110,9 @@ export function parseInteractiveLegend(
   forEachSelection(model, selCmpt => {
     const proj = selCmpt.project.hasField[field] || selCmpt.project.hasChannel[channel];
     if (proj) {
-      legendCmpt.set('interactive', true, false);
+      const legendSelections = legendCmpt.get('selections') || [];
+      legendSelections.push(selCmpt);
+      legendCmpt.set('selections', legendSelections, false);
       selCmpt.legends = selCmpt.legends || {};
       selCmpt.legends[field] = proj;
     }

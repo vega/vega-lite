@@ -3,16 +3,17 @@ import {NonPositionScaleChannel} from '../../channel';
 import {COMMON_LEGEND_PROPERTY_INDEX, Legend} from '../../legend';
 import {Flag, keys} from '../../util';
 import {Split} from '../split';
+import {SelectionComponent} from '../selection';
 
 export type LegendComponentProps = VgLegend & {
   labelExpr?: string;
-  interactive?: boolean;
+  selections?: SelectionComponent[];
 };
 
 const LEGEND_COMPONENT_PROPERTY_INDEX: Flag<keyof LegendComponentProps> = {
   ...COMMON_LEGEND_PROPERTY_INDEX,
   labelExpr: 1,
-  interactive: 1,
+  selections: 1,
   // channel scales
   opacity: 1,
   shape: 1,
@@ -32,9 +33,3 @@ export class LegendComponent extends Split<LegendComponentProps> {}
 export type LegendComponentIndex = {[P in NonPositionScaleChannel]?: LegendComponent};
 
 export type LegendIndex = {[P in NonPositionScaleChannel]?: Legend};
-
-export interface InteractiveSelections {
-  name: string;
-  store: string;
-  fields: string[];
-}

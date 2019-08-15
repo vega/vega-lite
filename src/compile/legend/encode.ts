@@ -1,5 +1,5 @@
 import {ColorValueRef, SymbolEncodeEntry} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray, stringValue} from 'vega-util';
 import {COLOR, NonPositionScaleChannel, OPACITY} from '../../channel';
 import {
   Conditional,
@@ -23,6 +23,7 @@ import {UnitModel} from '../unit';
 import {ScaleChannel} from './../../channel';
 import {LegendComponent} from './component';
 import {defaultType} from './properties';
+import {parseSelectionPredicate} from '../selection/parse';
 
 function type(legendCmp: LegendComponent, model: UnitModel, channel: ScaleChannel) {
   const scaleType = model.getScaleComponent(channel).get('type');
@@ -49,6 +50,7 @@ export function symbols(
   const filled = markDef.filled;
 
   const opacity = getMaxValue(encoding.opacity) || markDef.opacity;
+  const condition = selectionCondition(model, legendCmp, fieldDef);
 
   if (out.fill) {
     // for fill legend, we don't want any fill in symbol
@@ -96,7 +98,11 @@ export function symbols(
   if (channel !== OPACITY) {
     if (opacity) {
       // only apply opacity if it is neither zero or undefined
-      out.opacity = {value: opacity};
+      if (condition) {
+        out.opacity = [{test: condition, value: opacity}, {value: 0.2}];
+      } else {
+        out.opacity = {value: opacity};
+      }
     }
   }
 
@@ -132,10 +138,12 @@ export function labels(
   fieldDef: TypedFieldDef<string>,
   labelsSpec: any,
   model: UnitModel,
-  channel: NonPositionScaleChannel
+  channel: NonPositionScaleChannel,
+  legendCmp: LegendComponent
 ) {
   const legend = model.legend(channel);
   const config = model.config;
+  const condition = selectionCondition(model, legendCmp, fieldDef);
 
   let out: SymbolEncodeEntry = {};
 
@@ -153,6 +161,10 @@ export function labels(
       ...(expr ? {text: {signal: expr}} : {}),
       ...labelsSpec
     };
+  }
+
+  if (condition) {
+    labelsSpec.opacity = [{test: condition, value: 1}, {value: 0.2}];
   }
 
   out = {...out, ...labelsSpec};
@@ -189,4 +201,15 @@ function getConditionValue<V extends Value | Gradient>(
     return channelDef.value as any;
   }
   return undefined;
+}
+
+function selectionCondition(model: UnitModel, legendCmp: LegendComponent, fieldDef: TypedFieldDef<string>) {
+  const selections = legendCmp.get('selections');
+  if (!selections || !selections.length) return undefined;
+  return parseSelectionPredicate(
+    model,
+    {or: selections.map(s => s.name)},
+    null,
+    `{${stringValue(fieldDef.field)}: datum.value}`
+  );
 }

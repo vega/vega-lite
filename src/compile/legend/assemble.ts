@@ -40,7 +40,7 @@ export function assembleLegends(model: Model): VgLegend[] {
   return vals(legendByDomain)
     .flat()
     .map((legendCmpt: LegendComponent) => {
-      const {labelExpr, ...legend} = legendCmpt.combine();
+      const {labelExpr, selections, ...legend} = legendCmpt.combine();
 
       if (legend.encode && legend.encode.symbols) {
         const out = legend.encode.symbols.update;
@@ -61,6 +61,7 @@ export function assembleLegends(model: Model): VgLegend[] {
           legend.encode &&
           legend.encode.labels &&
           legend.encode.labels.update &&
+          legend.encode.labels.update.text &&
           isSignalRef(legend.encode.labels.update.text)
         ) {
           expr = labelExpr.replace('datum.label', legend.encode.labels.update.text.signal);

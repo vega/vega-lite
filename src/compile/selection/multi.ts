@@ -38,9 +38,9 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
   if (selCmpt.legends) {
     for (const field of keys(selCmpt.legends)) {
       const {signals, ...proj} = selCmpt.legends[field];
-      const prefix = `@${field}${LEGEND}`;
+      const prefix = `@${field}_${LEGEND}_`;
       on.push({
-        events: `${prefix}Symbol:click, ${prefix}Label:click`,
+        events: `${prefix}symbols:click, ${prefix}labels:click`,
         update: `{unit: "${LEGEND}", fields: [${JSON.stringify(proj)}], values: [datum.value]}`,
         force: true
       });
