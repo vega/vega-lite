@@ -31,7 +31,7 @@ import {LegendComponent, LegendComponentIndex, LegendComponentProps, LEGEND_COMP
 import * as encode from './encode';
 import * as properties from './properties';
 import {direction, type} from './properties';
-import {parseInteractiveLegend} from '../selection/parse';
+import {parseInteractiveLegend} from '../selection/transforms/legends';
 
 export function parseLegend(model: Model) {
   if (isUnitModel(model)) {

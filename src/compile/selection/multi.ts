@@ -1,8 +1,8 @@
-import {selector as parseSelector} from 'vega-event-selector';
 import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from '.';
-import {accessPathWithDatum, keys} from '../../util';
+import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
 import {TUPLE_FIELDS} from './transforms/project';
+import {EventStream} from '../../vega.schema';
 
 export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionComponent<'single' | 'multi'>) {
   const name = selCmpt.name;
@@ -28,27 +28,22 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
   // whitespace followed by a click in whitespace; the store should only
   // be cleared on the second click).
   const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
-  const on = [
+  return [
     {
-      events: selCmpt.events,
-      update: `datum && item().mark.marktype !== 'group' ? {${update}: [${values}]} : null`,
-      force: true
+      name: name + TUPLE,
+      on: [
+        {
+          events: selCmpt.events.map((e: EventStream) => {
+            e.filter = e.filter || [];
+            e.filter.push('event.item && indexof(event.item.mark.role, "legend") < 0');
+            return e;
+          }),
+          update: `datum && item().mark.marktype !== 'group' ? {${update}: [${values}]} : null`,
+          force: true
+        }
+      ]
     }
   ];
-
-  if (selCmpt.legends) {
-    for (const field of keys(selCmpt.legends)) {
-      const {signals, ...proj} = selCmpt.legends[field];
-      const prefix = `@${field}_legend`;
-      on.push({
-        events: parseSelector(`${prefix}_symbols:click, ${prefix}_labels:click`, 'view'),
-        update: `{unit: "${prefix}", fields: [${JSON.stringify(proj)}], values: [datum.value]}`,
-        force: true
-      });
-    }
-  }
-
-  return [{name: name + TUPLE, on: on}];
 }
 
 const multi: SelectionCompiler<'multi'> = {

@@ -46,7 +46,7 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   // Transforms
   project?: SelectionProjectionComponent;
   scales?: SelectionProjection[];
-  legends?: {[k: string]: SelectionProjection};
+  legends?: boolean | {[k: string]: SelectionProjection};
   toggle?: any;
   translate?: any;
   zoom?: any;

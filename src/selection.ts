@@ -92,6 +92,12 @@ export interface SingleSelectionConfig extends BaseSelectionConfig {
    * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
   init?: SelectionInitMapping;
+  /**
+   * When true, any legends that match the encodings/fields this selection operates over are automatically made interactive.
+   *
+   * __Default value:__ `true`.
+   */
+  legends?: boolean;
 }
 
 export interface MultiSelectionConfig extends BaseSelectionConfig {
@@ -122,6 +128,12 @@ export interface MultiSelectionConfig extends BaseSelectionConfig {
    * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
   init?: SelectionInitMapping | SelectionInitMapping[];
+  /**
+   * When true, any legends that match the encodings/fields this selection operates over are automatically made interactive.
+   *
+   * __Default value:__ `true`.
+   */
+  legends?: boolean;
 }
 
 export interface BrushConfig {
@@ -268,7 +280,8 @@ export const defaultConfig: SelectionConfig = {
     fields: [SELECTION_ID],
     resolve: 'global',
     empty: 'all',
-    clear: 'dblclick'
+    clear: 'dblclick',
+    legends: true
   },
   multi: {
     on: 'click',
@@ -276,7 +289,8 @@ export const defaultConfig: SelectionConfig = {
     toggle: 'event.shiftKey',
     resolve: 'global',
     empty: 'all',
-    clear: 'dblclick'
+    clear: 'dblclick',
+    legends: true
   },
   interval: {
     on: '[mousedown, window:mouseup] > window:mousemove!',
