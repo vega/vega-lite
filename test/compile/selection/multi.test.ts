@@ -137,15 +137,14 @@ describe('Multi Selection', () => {
   });
 
   it('builds unit datasets', () => {
-    const data: any[] = [];
-    expect(assembleUnitSelectionData(model, data)).toEqual([
+    expect(assembleUnitSelectionData(model, [])).toEqual([
       {name: 'one_store'},
       {name: 'two_store'},
       {
         name: 'thr_ee_store',
         values: [
           {
-            unit: '""',
+            unit: '',
             fields: [{type: 'E', field: 'Horsepower'}],
             values: [50]
           }
@@ -155,7 +154,7 @@ describe('Multi Selection', () => {
         name: 'four_store',
         values: [
           {
-            unit: '""',
+            unit: '',
             fields: [{field: 'Horsepower', channel: 'x', type: 'E'}, {field: 'Origin', channel: 'color', type: 'E'}],
             values: [50, 'Japan']
           }
@@ -165,14 +164,14 @@ describe('Multi Selection', () => {
         name: 'five_store',
         values: [
           {
-            unit: '""',
+            unit: '',
             fields: [{type: 'E', field: 'Year'}, {type: 'E', field: 'Origin'}],
-            values: [new Date(1970, 1, 2, 0, 0, 0, 0).toJSON(), 'Japan']
+            values: [+new Date(1970, 1, 2, 0, 0, 0, 0), 'Japan']
           },
           {
-            unit: '""',
+            unit: '',
             fields: [{type: 'E', field: 'Year'}, {type: 'E', field: 'Origin'}],
-            values: [new Date(1980, 1, 2, 0, 0, 0, 0).toJSON(), 'USA']
+            values: [+new Date(1980, 1, 2, 0, 0, 0, 0), 'USA']
           }
         ]
       }

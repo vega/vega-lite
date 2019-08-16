@@ -11,7 +11,7 @@
       "name": "CylYr_store",
       "values": [
         {
-          "unit": "\"layer_0\"",
+          "unit": "layer_0",
           "fields": [
             {"type": "E", "field": "Cylinders"},
             {"type": "E", "field": "Year"}
