@@ -39,13 +39,11 @@ export class LayerModel extends Model {
     this.children = spec.layer.map((layer, i) => {
       if (isLayerSpec(layer)) {
         return new LayerModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config);
-      }
-
-      if (isUnitSpec(layer)) {
+      } else if (isUnitSpec(layer)) {
         return new UnitModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config);
       }
 
-      throw new Error(log.message.INVALID_SPEC);
+      throw new Error(log.message.invalidSpec(layer));
     });
   }
 

@@ -27,23 +27,14 @@ export function buildModel(
 ): Model {
   if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName, repeater, config);
-  }
-
-  if (isLayerSpec(spec)) {
+  } else if (isLayerSpec(spec)) {
     return new LayerModel(spec, parent, parentGivenName, unitSize, repeater, config);
-  }
-
-  if (isUnitSpec(spec)) {
+  } else if (isUnitSpec(spec)) {
     return new UnitModel(spec, parent, parentGivenName, unitSize, repeater, config);
-  }
-
-  if (isRepeatSpec(spec)) {
+  } else if (isRepeatSpec(spec)) {
     return new RepeatModel(spec, parent, parentGivenName, repeater, config);
-  }
-
-  if (isAnyConcatSpec(spec)) {
+  } else if (isAnyConcatSpec(spec)) {
     return new ConcatModel(spec, parent, parentGivenName, repeater, config);
   }
-
-  throw new Error(log.message.INVALID_SPEC);
+  throw new Error(log.message.invalidSpec(spec));
 }
