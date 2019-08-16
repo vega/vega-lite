@@ -121,7 +121,7 @@ export interface MultiSelectionConfig extends BaseSelectionConfig {
    *
    * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
-  init?: SelectionInitMapping | SelectionInitMapping[];
+  init?: SelectionInitMapping[];
 }
 
 export interface BrushConfig {

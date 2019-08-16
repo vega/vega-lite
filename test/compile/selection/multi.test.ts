@@ -31,13 +31,13 @@ describe('Multi Selection', () => {
       type: 'multi',
       fields: ['Horsepower'],
       clear: false,
-      init: {Horsepower: 50}
+      init: [{Horsepower: 50}]
     },
     four: {
       type: 'multi',
       encodings: ['x', 'color'],
       clear: false,
-      init: {Horsepower: 50, color: 'Japan'}
+      init: [{Horsepower: 50, color: 'Japan'}]
     },
     five: {
       type: 'multi',
