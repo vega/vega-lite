@@ -25,7 +25,6 @@ import {mergeTitleComponent, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
-import {LEGEND} from '../selection';
 import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex, LegendComponentProps, LEGEND_COMPONENT_PROPERTIES} from './component';
@@ -114,7 +113,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
         : legendEncodingPart; // no rule -- just default values
       if (value !== undefined && keys(value).length > 0) {
         e[part] = {
-          name: `${fieldDef.field}_${LEGEND}_${part}`,
+          name: `${fieldDef.field}_legend_${part}`,
           interactive: !!legendCmpt.get('selections'),
           update: value
         };

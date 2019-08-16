@@ -16,14 +16,14 @@ import {
 } from '../../channeldef';
 import {FILL_STROKE_CONFIG} from '../../mark';
 import {ScaleType} from '../../scale';
-import {getFirstDefined, keys} from '../../util';
+import {getFirstDefined, keys, varName} from '../../util';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
 import {ScaleChannel} from './../../channel';
 import {LegendComponent} from './component';
 import {defaultType} from './properties';
-import {parseSelectionPredicate} from '../selection/parse';
+import {STORE} from '../selection';
 
 function type(legendCmp: LegendComponent, model: UnitModel, channel: ScaleChannel) {
   const scaleType = model.getScaleComponent(channel).get('type');
@@ -50,7 +50,7 @@ export function symbols(
   const filled = markDef.filled;
 
   const opacity = getMaxValue(encoding.opacity) || markDef.opacity;
-  const condition = selectionCondition(model, legendCmp, fieldDef);
+  const condition = selectedCondition(model, legendCmp, fieldDef);
 
   if (out.fill) {
     // for fill legend, we don't want any fill in symbol
@@ -143,7 +143,7 @@ export function labels(
 ) {
   const legend = model.legend(channel);
   const config = model.config;
-  const condition = selectionCondition(model, legendCmp, fieldDef);
+  const condition = selectedCondition(model, legendCmp, fieldDef);
 
   let out: SymbolEncodeEntry = {};
 
@@ -203,13 +203,16 @@ function getConditionValue<V extends Value | Gradient>(
   return undefined;
 }
 
-function selectionCondition(model: UnitModel, legendCmp: LegendComponent, fieldDef: TypedFieldDef<string>) {
+function selectedCondition(model: UnitModel, legendCmp: LegendComponent, fieldDef: TypedFieldDef<string>) {
   const selections = legendCmp.get('selections');
   if (!selections || !selections.length) return undefined;
-  return parseSelectionPredicate(
-    model,
-    {or: selections.map(s => s.name)},
-    null,
-    `{${stringValue(fieldDef.field)}: datum.value}`
-  );
+
+  const field = stringValue(fieldDef.field);
+  return selections
+    .map(selCmpt => {
+      const name = selCmpt.name;
+      const store = stringValue(varName(name) + STORE);
+      return `(!length(data(${store})) || (${name}[${field}] && indexof(${name}[${field}], datum.value) >= 0))`;
+    })
+    .join(' || ');
 }

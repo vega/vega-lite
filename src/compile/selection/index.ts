@@ -24,8 +24,6 @@ export const TUPLE = '_tuple';
 export const MODIFY = '_modify';
 export const SELECTION_DOMAIN = '_selection_domain_';
 export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
-export const VL_SELECTION_TEST = 'vlSelectionTest';
-export const LEGEND = 'Legend';
 
 export interface SelectionComponent<T extends SelectionType = SelectionType> {
   name: string;

@@ -1,5 +1,5 @@
 import {selector as parseSelector} from 'vega-event-selector';
-import {SelectionCompiler, SelectionComponent, TUPLE, unitName, LEGEND} from '.';
+import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from '.';
 import {accessPathWithDatum, keys} from '../../util';
 import {UnitModel} from '../unit';
 import {TUPLE_FIELDS} from './transforms/project';
@@ -39,10 +39,10 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
   if (selCmpt.legends) {
     for (const field of keys(selCmpt.legends)) {
       const {signals, ...proj} = selCmpt.legends[field];
-      const prefix = `@${field}_${LEGEND}_`;
+      const prefix = `@${field}_legend`;
       on.push({
-        events: parseSelector(`${prefix}symbols:click, ${prefix}labels:click`, 'view'),
-        update: `{unit: "${LEGEND}", fields: [${JSON.stringify(proj)}], values: [datum.value]}`,
+        events: parseSelector(`${prefix}_symbols:click, ${prefix}_labels:click`, 'view'),
+        update: `{unit: "${prefix}", fields: [${JSON.stringify(proj)}], values: [datum.value]}`,
         force: true
       });
     }
