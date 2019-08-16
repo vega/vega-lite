@@ -8,6 +8,10 @@ import {TopLevelSpec} from '../../src/spec/index';
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
 describe('normalize()', () => {
+  it('throws errors for invalid spec', () => {
+    expect(() => normalize({} as any)).toThrowError(log.message.invalidSpec({}));
+  });
+
   describe('normalizeRepeat', () => {
     it(
       'should drop columns from repeat with row/column',
