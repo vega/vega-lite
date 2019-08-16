@@ -123,8 +123,8 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
       const insert = selCmpt.init.map(i => assembleInit(i, false));
       init.values =
         selCmpt.type === 'interval'
-          ? [{unit: unitName(model, false), fields, values: insert}]
-          : insert.map(i => ({unit: unitName(model, false), fields, values: i}));
+          ? [{unit: unitName(model, {escape: false}), fields, values: insert}]
+          : insert.map(i => ({unit: unitName(model, {escape: false}), fields, values: i}));
     }
     const contains = data.filter(d => d.name === selCmpt.name + STORE);
     if (!contains.length) {
