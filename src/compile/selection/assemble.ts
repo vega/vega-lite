@@ -49,7 +49,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]
     });
   });
 
-  return signals;
+  return cleanupEmptyOnArray(signals);
 }
 
 export function assembleFacetSignals(model: FacetModel, signals: Signal[]) {
@@ -67,7 +67,7 @@ export function assembleFacetSignals(model: FacetModel, signals: Signal[]) {
     });
   }
 
-  return signals;
+  return cleanupEmptyOnArray(signals);
 }
 
 export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
@@ -108,7 +108,7 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
     }
   }
 
-  return signals;
+  return cleanupEmptyOnArray(signals);
 }
 
 export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[] {
@@ -201,4 +201,11 @@ export function assembleSelectionScaleDomain(model: Model, domainRaw: SignalRef)
   }
 
   return {signal: 'null'};
+}
+
+function cleanupEmptyOnArray(signals: Signal[]) {
+  return signals.map(s => {
+    if (s.on && !s.on.length) delete s.on;
+    return s;
+  });
 }
