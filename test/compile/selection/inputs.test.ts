@@ -86,7 +86,6 @@ describe('Inputs Selection Transform', () => {
     expect(assembleTopLevelSignals(model, [])).toContainEqual({
       name: 'one__vgsid_',
       value: null,
-      on: [],
       bind: {input: 'range', min: 0, max: 10, step: 1}
     });
   });
@@ -104,13 +103,11 @@ describe('Inputs Selection Transform', () => {
         {
           name: 'two_Horsepower',
           value: null,
-          on: [],
           bind: {input: 'range', min: 0, max: 10, step: 1}
         },
         {
           name: 'two_Cylinders',
           value: null,
-          on: [],
           bind: {input: 'range', min: 0, max: 10, step: 1}
         }
       ])
@@ -130,7 +127,6 @@ describe('Inputs Selection Transform', () => {
         {
           name: 'three_Origin',
           value: null,
-          on: [],
           bind: {
             input: 'select',
             options: ['Japan', 'USA', 'Europe']
@@ -139,7 +135,6 @@ describe('Inputs Selection Transform', () => {
         {
           name: 'three_Cylinders',
           value: null,
-          on: [],
           bind: {
             Horsepower: {input: 'range', min: 0, max: 10, step: 1},
             Origin: {
@@ -168,7 +163,6 @@ describe('Inputs Selection Transform', () => {
         {
           name: 'seven_Year',
           init: 'datetime(1970, 1, 1+1, 0, 0, 0, 0)',
-          on: [],
           bind: {input: 'range', min: 1970, max: 1980, step: 1}
         }
       ])

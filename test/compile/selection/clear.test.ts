@@ -127,7 +127,6 @@ describe('Clear selection transform, single and multi types', () => {
         {
           name: 'seven_Year',
           value: null,
-          on: [],
           bind: {input: 'range', min: 1970, max: 1980, step: 1}
         }
       ])
