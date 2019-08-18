@@ -64,25 +64,11 @@
     {
       "name": "CylYr_Year",
       "init": "1977",
-      "on": [
-        {
-          "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? datum[\"Year\"] : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
-      ],
       "bind": {"input": "range", "min": 1969, "max": 1981, "step": 1}
     },
     {
       "name": "CylYr_Cylinders",
       "init": "4",
-      "on": [
-        {
-          "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? datum[\"Cylinders\"] : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
-      ],
       "bind": {"input": "range", "min": 3, "max": 8, "step": 1}
     },
     {"name": "CylYr", "update": "vlSelectionResolve(\"CylYr_store\")"},
