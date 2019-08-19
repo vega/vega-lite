@@ -10,7 +10,6 @@ yarn-debug.log*
 yarn-error.log*
 .yarnclean
 coverage
-Gemfile.lock
 
 test/log
 test/log/difflist.json
