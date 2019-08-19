@@ -637,9 +637,9 @@
   integrity sha512-yALhelO3i0hqZwhjtcr6dYyaLoCHbAMshwtj6cGxTvHZAKXHsYGdff6E8EPw3xLKY0ELUTQ69Q1rQiJENnccMA==
 
 "@types/jest-environment-puppeteer@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@types/jest-environment-puppeteer/-/jest-environment-puppeteer-4.0.0.tgz#0e696618965e7472471e4f1ae25adb72bcf38433"
-  integrity sha512-On6C1NKiruviCSUaZgNW4yR0J05rLZTgOyIFMiT9F66rR8zwCQu1Wj9+c50+f5r6m207+hjxtPy1Tgrr+nkfkw==
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@types/jest-environment-puppeteer/-/jest-environment-puppeteer-4.3.0.tgz#c5c765611e75f300d044dd4f240a7aa388768674"
+  integrity sha512-/ir7aSJbE4UpqDd+JtQnrajT4RxwboyTbmuhUovsIGmsIcLvAlURG+wYRDrUA8anLyPTSi6c0PTu1kwrCXp3aA==
   dependencies:
     "@types/puppeteer" "*"
 
