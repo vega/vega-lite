@@ -18,9 +18,11 @@ For instance, in the example below, `org` selects a single `Origin` data value, 
 
 <div class="vl-example" data-name="selection_bind_origin"></div>
 
-If multiple projections are specified, customized bindings can be specified by mapping the projected field/encoding to an binding definition. For example, the scatterplot below projects over both the `Cylinders` and `Year` fields, and uses a customize `range` slider for each one.
+If multiple projections are specified, customized bindings can be specified by mapping the projected field/encoding to a binding definition. For example, the scatterplot below projects over both the `Cylinders` and `Year` fields, and uses a customize `range` slider for each one.
 
 <div class="vl-example" data-name="selection_bind_cylyr"></div>
+
+**Note:** When a single selection is bound to input widgets, direct manipulation interaction (e.g., clicking or double clicking the visualization) is disabled by default. It can be re-enabled by explicitly specifying the [`on`](selection.html#selection-props) and [`clear`](clear.html) properties.
 
 ## Scale Binding
 

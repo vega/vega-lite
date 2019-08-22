@@ -31,6 +31,14 @@ describe('Clear selection transform, single and multi types', () => {
       bind: {
         Year: {input: 'range', min: 1970, max: 1980, step: 1}
       }
+    },
+    eight: {
+      type: 'single',
+      fields: ['Year'],
+      clear: 'click',
+      bind: {
+        Year: {input: 'range', min: 1970, max: 1980, step: 1}
+      }
     }
   }));
 
@@ -43,7 +51,7 @@ describe('Clear selection transform, single and multi types', () => {
     expect(clear.has(selCmpts['six'])).toBeFalsy();
   });
 
-  it('appends clear transform', () => {
+  it('appends clear event trigger', () => {
     const singleOneSg = single.signals(model, selCmpts['one']);
     const oneSg = clear.signals(model, selCmpts['one'], singleOneSg);
     expect(oneSg).toEqual([
@@ -111,22 +119,27 @@ describe('Clear selection transform, single and multi types', () => {
         ]
       }
     ]);
+  });
 
+  it('does not append clear event trigger for bound selections by default', () => {
     expect(assembleTopLevelSignals(model, [])).toEqual(
       expect.arrayContaining([
         {
           name: 'seven_Year',
           value: null,
-          on: [
-            {
-              events: [{source: 'scope', type: 'click'}],
-              update: 'datum && item().mark.marktype !== \'group\' ? datum["Year"] : null'
-            },
-            {
-              events: [{source: 'scope', type: 'dblclick'}],
-              update: 'null'
-            }
-          ],
+          bind: {input: 'range', min: 1970, max: 1980, step: 1}
+        }
+      ])
+    );
+  });
+
+  it('appends an explicit clear event trigger for bound selections', () => {
+    expect(assembleTopLevelSignals(model, [])).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'eight_Year',
+          value: null,
+          on: [{events: parseSelector('click', 'scope'), update: 'null'}],
           bind: {input: 'range', min: 1970, max: 1980, step: 1}
         }
       ])

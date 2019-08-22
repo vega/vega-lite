@@ -224,7 +224,7 @@ function channelSignals(
     : [
         {
           name: vname,
-          ...(init ? {init: assembleInit(init, scaled)} : {value: []}),
+          ...(init ? {init: assembleInit(init, true, scaled)} : {value: []}),
           on: on
         },
         {

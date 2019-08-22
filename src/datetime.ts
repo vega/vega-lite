@@ -265,9 +265,9 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false, toJS
 
   if (toJSON) {
     if (d.utc) {
-      return new Function(`return new Date(Date.UTC(${unitsString}))`)().toJSON();
+      return new Function(`return +new Date(Date.UTC(${unitsString}))`)();
     } else {
-      return new Function(`return new Date(${unitsString})`)().toJSON();
+      return new Function(`return +new Date(${unitsString})`)();
     }
   }
 

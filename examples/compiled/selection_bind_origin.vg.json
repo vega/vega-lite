@@ -30,13 +30,6 @@
     {
       "name": "org_Origin",
       "value": null,
-      "on": [
-        {
-          "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? datum[\"Origin\"] : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
-      ],
       "bind": {"input": "select", "options": [null, "Europe", "Japan", "USA"]}
     },
     {"name": "org", "update": "vlSelectionResolve(\"org_store\")"},
