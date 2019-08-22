@@ -72,26 +72,24 @@ describe('stack', () => {
     });
   });
 
-  // FIXME: enable this (https://github.com/vega/vega-lite/issues/5285)
-  // it('should always be disabled if the stackby channel is aggregated', () => {
-  //   for (const s of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
-  //     for (const mark of PRIMITIVE_MARKS) {
-  //       const spec: TopLevel<NormalizedUnitSpec> = {
-  //         data: {url: 'data/barley.json'},
-  //         mark: mark,
-  //         encoding: {
-  //           x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: s},
-  //           y: {field: 'variety', type: 'nominal'},
-  //           color: {aggregate: 'count', type: 'quantitative'}
-  //         }
-  //       };
+  it('should always be disabled if the stackby channel is aggregated', () => {
+    for (const s of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
+      for (const mark of PRIMITIVE_MARKS) {
+        const spec: TopLevel<NormalizedUnitSpec> = {
+          data: {url: 'data/barley.json'},
+          mark: mark,
+          encoding: {
+            x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: s},
+            y: {field: 'variety', type: 'nominal'},
+            color: {aggregate: 'count', type: 'quantitative'}
+          }
+        };
 
-  //       const _stack = stack(spec.mark, spec.encoding);
-  //       stack(spec.mark, spec.encoding);
-  //       expect(_stack).toBeNull();
-  //     }
-  //   }
-  // });
+        const _stack = stack(spec.mark, spec.encoding);
+        expect(_stack).toBeNull();
+      }
+    }
+  });
 
   it('can be enabled if one of the stackby channels is not aggregated', () => {
     for (const s of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
