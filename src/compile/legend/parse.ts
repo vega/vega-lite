@@ -153,7 +153,7 @@ function getProperty<K extends keyof LegendComponentProps>(
       return numberFormat(fieldDef, legend.format, model.config);
 
     case 'formatType':
-      // Same as format, we don't include temporal field here as we apply format in encode block
+      // As with format, we don't include temporal field here as we apply format in encode block
       if (isTimeFormatFieldDef(fieldDef)) {
         return undefined;
       }

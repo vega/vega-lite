@@ -113,16 +113,18 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): 
 }
 
 export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel: FacetChannel, config: Config) {
-  const {format, labelAngle, labelAnchor, labelOrient} = getHeaderProperties(
-    ['format', 'labelAngle', 'labelAnchor', 'labelOrient'],
+  const {format, labelAngle, labelAnchor, labelOrient, labelExpr} = getHeaderProperties(
+    ['format', 'labelAngle', 'labelAnchor', 'labelOrient', 'labelExpr'],
     facetFieldDef,
     config,
     channel
   );
 
+  const tileTextExpr = formatSignalRef(facetFieldDef, format, 'parent', config).signal;
   const headerChannel = getHeaderChannel(channel, labelOrient);
+
   return {
-    text: formatSignalRef(facetFieldDef, format, 'parent', config),
+    text: {signal: labelExpr ? labelExpr.replace('datum.label', tileTextExpr) : tileTextExpr},
     ...(channel === 'row' ? {orient: 'left'} : {}),
     style: 'guide-label',
     frame: 'group',

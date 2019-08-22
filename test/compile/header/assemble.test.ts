@@ -4,7 +4,8 @@ import {
   assembleTitleGroup,
   defaultHeaderGuideAlign,
   defaultHeaderGuideBaseline,
-  getLayoutTitleBand
+  getLayoutTitleBand,
+  assembleLabelTitle
 } from '../../../src/compile/header/assemble';
 import {HEADER_CHANNELS} from '../../../src/compile/header/component';
 import {
@@ -286,6 +287,18 @@ describe('compile/header/index', () => {
       it('should overwrite the config label property with the header label property', () => {
         expect(bothLabelProps.fontSize).toEqual(40);
       });
+    });
+  });
+
+  describe('assembleLabelTitle', () => {
+    it('corretly applies labelExpr', () => {
+      const title = assembleLabelTitle(
+        {field: 'foo', type: 'ordinal', header: {labelExpr: 'datum.label[0]'}},
+        'column',
+        {headerColumn: {format: 'd'}, header: {format: 'd'}}
+      );
+
+      expect(title.text).toEqual({signal: 'format(parent["foo"], "d")[0]'});
     });
   });
 });
