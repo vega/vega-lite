@@ -306,7 +306,7 @@ function getProperty<K extends keyof AxisComponentProps>(
       }
       return numberFormat(fieldDef, specifiedAxis.format, config);
     case 'formatType':
-      // Same as format, We don't include temporal field here as we apply format in encode block
+      // As with format, we don't include temporal field here as we apply format in encode block
       if (isTimeFormatFieldDef(fieldDef)) {
         return undefined;
       }

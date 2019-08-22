@@ -71,7 +71,7 @@ To customize header, a `header` definiton in row- or column-[field definitions](
 
 ### Labels
 
-{% include table.html props="format,formatType,labelAlign,labelAnchor,labelAngle,labelColor,labelFont,labelFontSize,labelFontStyle,labelLimit,labelOrient,labelPadding" source= "Header" %}
+{% include table.html props="format,formatType,labelAlign,labelAnchor,labelAngle,labelColor,labelExpr,labelFont,labelFontSize,labelFontStyle,labelLimit,labelOrient,labelPadding" source= "Header" %}
 
 {:#title}
 
