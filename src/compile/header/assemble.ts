@@ -120,11 +120,11 @@ export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel
     channel
   );
 
-  const tileTextExpr = formatSignalRef(facetFieldDef, format, 'parent', config).signal;
+  const titleTextExpr = formatSignalRef(facetFieldDef, format, 'parent', config).signal;
   const headerChannel = getHeaderChannel(channel, labelOrient);
 
   return {
-    text: {signal: labelExpr ? labelExpr.replace('datum.label', tileTextExpr) : tileTextExpr},
+    text: {signal: labelExpr ? labelExpr.replace('datum.label', titleTextExpr) : titleTextExpr},
     ...(channel === 'row' ? {orient: 'left'} : {}),
     style: 'guide-label',
     frame: 'group',
