@@ -300,5 +300,18 @@ describe('compile/header/index', () => {
 
       expect(title.text).toEqual({signal: 'format(parent["foo"], "d")[0]'});
     });
+
+    it('corretly applies labelExpr when accessing the value', () => {
+      const title = assembleLabelTitle(
+        {field: 'foo', type: 'ordinal', header: {labelExpr: 'datum.value[0]'}},
+        'column',
+        {
+          headerColumn: {format: 'd'},
+          header: {format: 'd'}
+        }
+      );
+
+      expect(title.text).toEqual({signal: 'parent["foo"][0]'});
+    });
   });
 });

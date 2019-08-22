@@ -124,7 +124,13 @@ export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel
   const headerChannel = getHeaderChannel(channel, labelOrient);
 
   return {
-    text: {signal: labelExpr ? labelExpr.replace('datum.label', tileTextExpr) : tileTextExpr},
+    text: {
+      signal: labelExpr
+        ? labelExpr
+            .replace('datum.label', tileTextExpr)
+            .replace('datum.value', vgField(facetFieldDef, {expr: 'parent'}))
+        : tileTextExpr
+    },
     ...(channel === 'row' ? {orient: 'left'} : {}),
     style: 'guide-label',
     frame: 'group',
