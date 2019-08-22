@@ -86,7 +86,7 @@ describe('Mark', () => {
       it('should have mark group with proper data and key', () => {
         const markGroup = parseMarkGroups(model)[0];
         expect(markGroup.type).toBe('symbol');
-        expect(markGroup.key.field).toBe('k');
+        expect(markGroup.key).toBe('k');
         expect(markGroup.from.data).toBe('main');
       });
 

@@ -161,7 +161,7 @@ function getMarkGroups(
       type: markCompiler[mark].vgMark,
       ...(clip ? {clip: true} : {}),
       ...(style ? {style} : {}),
-      ...(key ? {key: {field: key.field}} : {}),
+      ...(key ? {key: key.field} : {}),
       ...(sort ? {sort} : {}),
       from: {data: opt.fromPrefix + model.requestDataName(MAIN)},
       encode: {
