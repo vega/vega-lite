@@ -74,7 +74,7 @@ describe('FacetModel', () => {
     it('applies number format for fieldref of a quantitative field', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'quantitative'}
+          column: {field: 'a', type: 'quantitative', header: {format: 'd'}}
         },
         spec: {
           mark: 'point',

@@ -296,43 +296,58 @@ function getProperty<K extends keyof AxisComponentProps>(
 
   switch (property) {
     case 'scale':
-      return model.scaleName(channel) as any;
+      return model.scaleName(channel) as AxisComponentProps[K];
     case 'gridScale':
-      return properties.gridScale(model, channel) as any;
+      return properties.gridScale(model, channel) as AxisComponentProps[K];
     case 'format':
       // We don't include temporal field here as we apply format in encode block
       if (isTimeFormatFieldDef(fieldDef)) {
         return undefined;
       }
-      return numberFormat(fieldDef, specifiedAxis.format, config) as any;
+      return numberFormat(fieldDef, specifiedAxis.format, config) as AxisComponentProps[K];
     case 'formatType':
       // Same as format, We don't include temporal field here as we apply format in encode block
       if (isTimeFormatFieldDef(fieldDef)) {
         return undefined;
       }
-      return specifiedAxis.formatType as any;
+      return specifiedAxis.formatType as AxisComponentProps[K];
     case 'grid': {
       if (isBinned(model.fieldDef(channel).bin)) {
-        return false as any;
+        return false as AxisComponentProps[K];
       } else {
         const scaleType = model.getScaleComponent(channel).get('type');
-        return getFirstDefined(specifiedAxis.grid, properties.defaultGrid(scaleType, fieldDef)) as any;
+        return getFirstDefined(
+          specifiedAxis.grid,
+          properties.defaultGrid(scaleType, fieldDef)
+        ) as AxisComponentProps[K];
       }
     }
     case 'labelAlign':
-      return getFirstDefined(specifiedAxis.labelAlign, properties.defaultLabelAlign(labelAngle, orient)) as any;
+      return getFirstDefined(
+        specifiedAxis.labelAlign,
+        properties.defaultLabelAlign(labelAngle, orient)
+      ) as AxisComponentProps[K];
     case 'labelAngle':
-      return labelAngle as any;
+      return labelAngle as AxisComponentProps[K];
     case 'labelBaseline':
-      return getFirstDefined(specifiedAxis.labelBaseline, properties.defaultLabelBaseline(labelAngle, orient)) as any;
+      return getFirstDefined(
+        specifiedAxis.labelBaseline,
+        properties.defaultLabelBaseline(labelAngle, orient)
+      ) as AxisComponentProps[K];
     case 'labelFlush':
-      return getFirstDefined(specifiedAxis.labelFlush, properties.defaultLabelFlush(fieldDef, channel)) as any;
+      return getFirstDefined(
+        specifiedAxis.labelFlush,
+        properties.defaultLabelFlush(fieldDef, channel)
+      ) as AxisComponentProps[K];
     case 'labelOverlap': {
       const scaleType = model.getScaleComponent(channel).get('type');
-      return getFirstDefined(specifiedAxis.labelOverlap, properties.defaultLabelOverlap(fieldDef, scaleType)) as any;
+      return getFirstDefined(
+        specifiedAxis.labelOverlap,
+        properties.defaultLabelOverlap(fieldDef, scaleType)
+      ) as AxisComponentProps[K];
     }
     case 'orient':
-      return orient as any;
+      return orient as AxisComponentProps[K];
     case 'tickCount': {
       const scaleType = model.getScaleComponent(channel).get('type');
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
@@ -340,7 +355,7 @@ function getProperty<K extends keyof AxisComponentProps>(
       return getFirstDefined<number | SignalRef>(
         specifiedAxis.tickCount,
         properties.defaultTickCount({fieldDef, scaleType, size})
-      ) as any;
+      ) as AxisComponentProps[K];
     }
     case 'title': {
       const channel2 = channel === 'x' ? 'x2' : 'y2';
@@ -351,13 +366,13 @@ function getProperty<K extends keyof AxisComponentProps>(
         specifiedAxis.title,
         getFieldDefTitle(model, channel), // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
         mergeTitleFieldDefs([toFieldDefBase(fieldDef)], fieldDef2 ? [toFieldDefBase(fieldDef2)] : [])
-      ) as any;
+      ) as AxisComponentProps[K];
     }
     case 'values':
-      return properties.values(specifiedAxis, model, fieldDef) as any;
+      return properties.values(specifiedAxis, model, fieldDef) as AxisComponentProps[K];
     case 'zindex':
-      return getFirstDefined(specifiedAxis.zindex, properties.defaultZindex(mark, fieldDef)) as any;
+      return getFirstDefined(specifiedAxis.zindex, properties.defaultZindex(mark, fieldDef)) as AxisComponentProps[K];
   }
   // Otherwise, return specified property.
-  return isAxisProperty(property) ? (specifiedAxis[property] as any) : undefined;
+  return isAxisProperty(property) ? (specifiedAxis[property] as AxisComponentProps[K]) : undefined;
 }
