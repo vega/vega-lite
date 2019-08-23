@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
 import {ScaleChannel} from '../../channel';
 import {Scale, ScaleType} from '../../scale';
-import {Omit, some} from '../../util';
+import {some} from '../../util';
 import {VgNonUnionDomain, VgScale} from '../../vega.schema';
 import {Explicit, Split} from '../split';
 

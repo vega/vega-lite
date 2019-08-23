@@ -52,7 +52,7 @@ describe('Mark: Rule', () => {
       mark: 'rule',
       encoding: {
         x: {field: 'a', type: 'quantitative'},
-        x2: {field: 'a2', type: 'quantitative'}
+        x2: {field: 'a2'}
       }
     });
 
@@ -73,7 +73,7 @@ describe('Mark: Rule', () => {
       mark: 'rule',
       encoding: {
         y: {field: 'a', type: 'quantitative'},
-        y2: {field: 'a2', type: 'quantitative'}
+        y2: {field: 'a2'}
       }
     });
 
@@ -94,7 +94,7 @@ describe('Mark: Rule', () => {
       mark: 'rule',
       encoding: {
         x: {field: 'a', type: 'quantitative'},
-        x2: {field: 'a2', type: 'quantitative'},
+        x2: {field: 'a2'},
         y: {field: 'b', type: 'quantitative'}
       }
     });
@@ -113,9 +113,9 @@ describe('Mark: Rule', () => {
       mark: 'rule',
       encoding: {
         x: {field: 'a', type: 'quantitative'},
-        x2: {field: 'a2', type: 'quantitative'},
+        x2: {field: 'a2'},
         y: {field: 'b', type: 'quantitative'},
-        y2: {field: 'b2', type: 'quantitative'}
+        y2: {field: 'b2'}
       }
     });
 
@@ -151,7 +151,7 @@ describe('Mark: Rule', () => {
       mark: 'rule',
       encoding: {
         y: {field: 'a', type: 'quantitative'},
-        y2: {field: 'a2', type: 'quantitative'},
+        y2: {field: 'a2'},
         x: {field: 'b', type: 'quantitative'}
       }
     });

@@ -262,7 +262,7 @@ describe('compile/mark/init', () => {
         encoding: {
           x: {type: 'ordinal', field: 'foo'},
           y: {type: 'quantitative', field: 'bar'},
-          y2: {type: 'quantitative', field: 'baz'}
+          y2: {field: 'baz'}
         }
       });
       expect(model.markDef.orient).toBe('vertical');
@@ -274,7 +274,7 @@ describe('compile/mark/init', () => {
         encoding: {
           y: {type: 'ordinal', field: 'foo'},
           x: {type: 'quantitative', field: 'bar'},
-          x2: {type: 'quantitative', field: 'baz'}
+          x2: {field: 'baz'}
         }
       });
       expect(model.markDef.orient).toBe('horizontal');
@@ -285,7 +285,7 @@ describe('compile/mark/init', () => {
         mark: 'rule',
         encoding: {
           x: {type: 'quantitative', field: 'bar'},
-          x2: {type: 'quantitative', field: 'baz'}
+          x2: {field: 'baz'}
         }
       });
       expect(model.markDef.orient).toBe('horizontal');
@@ -296,7 +296,7 @@ describe('compile/mark/init', () => {
         mark: 'rule',
         encoding: {
           y: {type: 'quantitative', field: 'bar'},
-          y2: {type: 'quantitative', field: 'baz'}
+          y2: {field: 'baz'}
         }
       });
       expect(model.markDef.orient).toBe('vertical');
@@ -315,8 +315,7 @@ describe('compile/mark/init', () => {
             }
           },
           x2: {
-            field: 'bin_end',
-            type: 'quantitative'
+            field: 'bin_end'
           },
           y: {
             field: 'count',
@@ -340,8 +339,7 @@ describe('compile/mark/init', () => {
             }
           },
           y2: {
-            field: 'bin_end',
-            type: 'quantitative'
+            field: 'bin_end'
           },
           x: {
             field: 'count',
@@ -365,8 +363,7 @@ describe('compile/mark/init', () => {
             }
           },
           x2: {
-            field: 'bin_end',
-            type: 'quantitative'
+            field: 'bin_end'
           },
           y: {
             field: 'count',
@@ -390,8 +387,7 @@ describe('compile/mark/init', () => {
             }
           },
           y2: {
-            field: 'bin_end',
-            type: 'quantitative'
+            field: 'bin_end'
           },
           x: {
             field: 'count',
