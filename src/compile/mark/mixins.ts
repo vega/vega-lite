@@ -399,7 +399,7 @@ export function binPosition({
     x2: reverse ? 0 : spacing,
     y: reverse ? 0 : spacing,
     y2: reverse ? spacing : 0
-  };
+  } as const;
   const channel2 = channel === X ? X2 : Y2;
   if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {
@@ -486,13 +486,13 @@ const ALIGNED_X_CHANNEL: {[a in Align]: VgEncodeChannel} = {
   left: 'x',
   center: 'xc',
   right: 'x2'
-};
+} as const;
 
 const BASELINED_Y_CHANNEL = {
   top: 'y',
   middle: 'yc',
   bottom: 'y2'
-};
+} as const;
 
 export function pointOrRangePosition(
   channel: 'x' | 'y',

@@ -671,7 +671,7 @@
           ]
         },
         "labelExpr": {
-          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
           "type": "string"
         },
         "labelFlush": {
@@ -3297,6 +3297,10 @@
           ],
           "type": "string"
         },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
+          "type": "string"
+        },
         "test": {
           "$ref": "#/definitions/LogicalOperand<Predicate>",
           "description": "Predicate for triggering the condition"
@@ -3799,6 +3803,10 @@
             "number",
             "time"
           ],
+          "type": "string"
+        },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
           "type": "string"
         },
         "selection": {
@@ -5641,6 +5649,10 @@
           ],
           "type": "string"
         },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
+          "type": "string"
+        },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
@@ -6803,7 +6815,7 @@
           "description": "The color of the header label, can be in hex color code or regular color name."
         },
         "labelExpr": {
-          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the header's backing `datum` object.",
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the header's backing `datum` object.",
           "type": "string"
         },
         "labelFont": {
@@ -6928,6 +6940,10 @@
         "labelColor": {
           "$ref": "#/definitions/Color",
           "description": "The color of the header label, can be in hex color code or regular color name."
+        },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the header's backing `datum` object.",
+          "type": "string"
         },
         "labelFont": {
           "description": "The font of the header label.",
@@ -7742,7 +7758,7 @@
           "description": "The color of the legend label, can be in hex color code or regular color name."
         },
         "labelExpr": {
-          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the legend's backing `datum` object.",
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the legend's backing `datum` object.",
           "type": "string"
         },
         "labelFont": {
@@ -12934,6 +12950,10 @@
             "number",
             "time"
           ],
+          "type": "string"
+        },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
           "type": "string"
         },
         "timeUnit": {

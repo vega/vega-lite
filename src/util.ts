@@ -324,8 +324,6 @@ export function logicalExpr<T>(op: LogicalOperand<T>, cb: (...args: any[]) => st
   }
 }
 
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
 /**
  * Delete nested property of an object, and delete the ancestors of the property if they become empty.
  */

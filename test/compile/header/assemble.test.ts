@@ -291,7 +291,7 @@ describe('compile/header/index', () => {
   });
 
   describe('assembleLabelTitle', () => {
-    it('corretly applies labelExpr', () => {
+    it('correctly applies labelExpr', () => {
       const title = assembleLabelTitle(
         {field: 'foo', type: 'ordinal', header: {labelExpr: 'datum.label[0]'}},
         'column',

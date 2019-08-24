@@ -260,8 +260,7 @@ describe('Mark: Rect', () => {
           }
         },
         x2: {
-          field: 'bin_end',
-          type: 'quantitative'
+          field: 'bin_end'
         },
         y: {
           field: 'count',
@@ -293,8 +292,7 @@ describe('Mark: Rect', () => {
           }
         },
         y2: {
-          field: 'bin_end',
-          type: 'quantitative'
+          field: 'bin_end'
         },
         x: {
           field: 'count',

@@ -9,7 +9,7 @@ describe('RuleForRangedLineNormalizer', () => {
       encoding: {
         x: {field: 'date', type: 'temporal'},
         y: {field: 'price', type: 'quantitative'},
-        x2: {field: 'date2', type: 'temporal'}
+        x2: {field: 'date2'}
       }
     };
 
@@ -26,7 +26,7 @@ describe('RuleForRangedLineNormalizer', () => {
       mark: 'line',
       encoding: {
         x: {bin: 'binned', field: 'x', type: 'quantitative'},
-        x2: {field: 'x2', type: 'quantitative'},
+        x2: {field: 'x2'},
         y: {field: 'price', type: 'quantitative'}
       }
     };

@@ -290,7 +290,7 @@ export function extractCompositionLayout(
   for (const prop of COMPOSITION_LAYOUT_PROPERTIES) {
     if (spec[prop] !== undefined) {
       if (prop === 'spacing') {
-        const spacing = spec[prop];
+        const spacing: number | RowCol<number> = spec[prop];
 
         layout[prop] = isNumber(spacing)
           ? spacing
@@ -299,7 +299,7 @@ export function extractCompositionLayout(
               column: spacing.column || spacingConfig
             };
       } else {
-        layout[prop] = spec[prop];
+        (layout[prop] as any) = spec[prop];
       }
     }
   }

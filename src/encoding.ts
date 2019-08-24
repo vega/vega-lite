@@ -422,7 +422,7 @@ export function normalizeEncoding(encoding: Encoding<string>, markDef: MarkDef):
     ) {
       if (channelDef) {
         // Array of fieldDefs for detail channel (or production rule)
-        normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef]).reduce(
+        (normalizedEncoding[channel] as any) = (isArray(channelDef) ? channelDef : [channelDef]).reduce(
           (defs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
             if (!isFieldDef(fieldDef)) {
               log.warn(log.message.emptyFieldDef(fieldDef, channel));

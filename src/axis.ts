@@ -14,7 +14,7 @@ import {
 import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {Flag, keys, Omit} from './util';
+import {Flag, keys} from './util';
 import {LayoutAlign, VgEncodeChannel} from './vega.schema';
 
 export type BaseAxisNoSignals = AxisMixins &
