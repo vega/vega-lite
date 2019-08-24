@@ -438,7 +438,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -1677,7 +1677,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -8683,7 +8683,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -9294,7 +9294,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -9658,7 +9658,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -10278,7 +10278,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -11214,7 +11214,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -12884,7 +12884,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -13264,7 +13264,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
