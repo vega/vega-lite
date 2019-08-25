@@ -97,7 +97,7 @@ export function getCompositeMarkTooltip(
   tooltipSummary: CompositeMarkTooltipSummary[],
   continuousAxisChannelDef: PositionFieldDef<string>,
   encodingWithoutContinuousAxis: Encoding<string>,
-  withFieldName: boolean = true
+  withFieldName = true
 ): Encoding<string> {
   if ('tooltip' in encodingWithoutContinuousAxis) {
     return {tooltip: encodingWithoutContinuousAxis.tooltip};
