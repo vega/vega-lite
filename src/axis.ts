@@ -186,6 +186,13 @@ export type AxisConfig = VlOnlyGuideConfig & AxisOrientMixins & VgAxisConfigNoSi
 
 export interface Axis extends AxisOrientMixins, VgAxisConfigNoSignals, Guide {
   /**
+   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.
+   *
+   * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
+   */
+  labelExpr?: string;
+
+  /**
    * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
    *
    * __Default value:__ derived from the [axis config](https://vega.github.io/vega-lite/docs/config.html#facet-scale-config)'s `offset` (`0` by default)

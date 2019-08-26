@@ -130,6 +130,13 @@ export interface CoreHeader extends FormatMixins {
   labelAnchor?: TitleAnchor;
 
   /**
+   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.
+   *
+   * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the header's backing `datum` object.
+   */
+  labelExpr?: string;
+
+  /**
    * The rotation angle of the header labels.
    *
    * __Default value:__ `0` for column header, `-90` for row header.
