@@ -5736,9 +5736,9 @@ vega-datasets@^1.25.0:
   integrity sha512-tcxCTN6hIUxvWOfzZuQA9A5kppi0OD7qx/gpI2r6b1EAHhGKZM15DvwDPk1PS66TeYiyGJzx3E8VwGTMNRSxww==
 
 vega-embed@^4.2.1:
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-4.2.2.tgz#94f0d88fca7518bb18781979207de3ee3f3180c5"
-  integrity sha512-0CkTK8EQu7tzojhTMRfWDv1QKBy6debQRFpJ+QWKxgA+6O6fV3UkufpZaD2XccMAkCRDAFUl6tmxsLta2HBHRQ==
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-4.2.4.tgz#65537871c43e5077c8bfb89afb8ae411038a24f6"
+  integrity sha512-+irvNFNqoANQJDRmpWzUGNaOTnmf1m0QyIKhcx7AJ7SeRDLez7mJ/NRtDF3j4S2OI6o2KhtNlUgvWAijozISag==
   dependencies:
     d3-selection "^1.4.0"
     json-stringify-pretty-compact "^2.0.0"
