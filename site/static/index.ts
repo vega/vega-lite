@@ -15,7 +15,7 @@ import {event, select, selectAll, Selection} from 'd3-selection';
 import compactStringify from 'json-stringify-pretty-compact';
 import * as vega from 'vega';
 import {Handler} from 'vega-tooltip';
-import {compile, TopLevelSpec} from '../../src';
+import compile, {TopLevelSpec} from '../../src';
 import {post} from './post';
 import {runStreamingExample} from './streaming';
 
@@ -70,7 +70,7 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
 }
 
 export function embedExample($target: any, spec: TopLevelSpec, actions = true, tooltip = true) {
-  const vgSpec = compile(spec).spec;
+  const vgSpec = compile(spec);
 
   const view = new vega.View(vega.parse(vgSpec), {loader: loader}).renderer('svg').initialize($target);
 

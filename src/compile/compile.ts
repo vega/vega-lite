@@ -22,9 +22,19 @@ import {getPositionScaleChannel} from '../channel';
 import {isFitType} from '../spec/toplevel';
 
 export interface CompileOptions {
+  /**
+   * Sets a Vega-Lite configuration.
+   */
   config?: Config;
+
+  /**
+   * Sets a custom logger.
+   */
   logger?: LoggerInterface;
 
+  /**
+   * Sets a field title formatter.
+   */
   fieldTitle?: vlFieldDef.FieldTitleFormatter;
 }
 

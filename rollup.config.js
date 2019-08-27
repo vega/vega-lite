@@ -15,7 +15,7 @@ export function disallowedImports() {
 }
 
 export default {
-  input: 'build/src/index.js',
+  input: 'build/src/vl.js',
   output: {
     file: 'build/vega-lite.js',
     format: 'umd',

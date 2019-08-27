@@ -1,16 +1,13 @@
 import pkg from '../package.json';
-import {compile} from './compile/compile';
-import {CompileOptions} from './compile/compile.js';
+import {compile, CompileOptions} from './compile/compile';
+import {Config} from './config';
 import {normalize} from './normalize';
 import {TopLevelSpec} from './spec';
+import {extractTransforms} from './transformextract';
 
 const version = pkg.version;
 
-export {compile} from './compile/compile';
-export {Config} from './config';
-export {TopLevelSpec} from './spec';
-export {extractTransforms} from './transformextract';
-export {normalize, version};
+export {compile, extractTransforms, normalize, version, TopLevelSpec, Config};
 
 /**
  * Compile Vega-Lite specifications to Vega.

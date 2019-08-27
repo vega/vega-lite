@@ -5,6 +5,6 @@
   "compilerOptions": {
     "noEmit": true
   },
-  "files": ["src/index.ts"],
+  "files": ["src/vl.ts"],
   "include": ["src/**/*.ts", "test/**/*.ts", "test-runtime/**/*.ts", "site/static/**/*.ts"]
 }
