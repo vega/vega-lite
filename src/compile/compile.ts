@@ -54,6 +54,10 @@ export interface CompileOptions {
  *     | (Assemble)
  *     v
  * Vega spec
+ *
+ * @param inputSpec The Vega-Lite specification.
+ * @param opt       Optional arguments passed to the Vega-Lite compiler.
+ * @returns         An object containing the compiled Vega spec.
  */
 export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
   // 0. Augment opt with default opts

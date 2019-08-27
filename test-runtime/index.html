@@ -16,7 +16,7 @@
           view.finalize();
         }
 
-        const vgSpec = vl.compile(vlSpec).spec;
+        const vgSpec = vl.vegaLite(vlSpec);
         view = new vega.View(vega.parse(vgSpec))
           .renderer('svg')
           .initialize('#vis')
