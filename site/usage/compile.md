@@ -87,4 +87,4 @@ If you want to compile your Vega-Lite specs from the command line, we provide a 
 
 Each script simply accepts your Vega-Lite specification as its first argument.
 
-`vl2svg vega-lite-spec.vl.json`
+`vl2svg vega-lite-spec.json`
