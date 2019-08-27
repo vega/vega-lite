@@ -1,10 +1,9 @@
+import 'array-flat-polyfill';
 import {default as clone_} from 'clone';
 import deepEqual_ from 'fast-deep-equal';
 import stableStringify from 'fast-json-stable-stringify';
-import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
+import {hasOwnProperty, isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
-
-import 'array-flat-polyfill';
 
 export const deepEqual = deepEqual_;
 export const duplicate = clone_;
@@ -20,7 +19,7 @@ export const duplicate = clone_;
 export function pick<T extends object, K extends keyof T>(obj: T, props: K[]): Pick<T, K> {
   const copy: any = {};
   for (const prop of props) {
-    if (obj.hasOwnProperty(prop)) {
+    if (hasOwnProperty(obj, prop)) {
       copy[prop] = obj[prop];
     }
   }
@@ -149,7 +148,7 @@ function deepMerge_(dest: any, src: any) {
   }
 
   for (const p in src) {
-    if (!src.hasOwnProperty(p)) {
+    if (!hasOwnProperty(src, p)) {
       continue;
     }
     if (src[p] === undefined) {
@@ -273,7 +272,7 @@ export const keys = Object.keys as <T>(o: T) => (Extract<keyof T, string>)[];
 export function vals<T>(x: {[key: string]: T}): T[] {
   const _vals: T[] = [];
   for (const k in x) {
-    if (x.hasOwnProperty(k)) {
+    if (hasOwnProperty(x, k)) {
       _vals.push(x[k]);
     }
   }
@@ -283,7 +282,7 @@ export function vals<T>(x: {[key: string]: T}): T[] {
 export function entries<T>(x: {[key: string]: T}): {key: string; value: T}[] {
   const _entries: {key: string; value: T}[] = [];
   for (const k in x) {
-    if (x.hasOwnProperty(k)) {
+    if (hasOwnProperty(x, k)) {
       _entries.push({
         key: k,
         value: x[k]

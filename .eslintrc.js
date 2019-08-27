@@ -40,7 +40,6 @@ module.exports = {
     '@typescript-eslint/no-object-literal-type-assertion': 'off',
     '@typescript-eslint/no-namespace': 'off', // we can do this later
     '@typescript-eslint/ban-ts-ignore': 'off', // we need it in a few places
-    'no-prototype-builtins': 'off', // reamove when https://github.com/vega/vega/commit/e100874a432033b24ba687a4d2132610411da1b6 is released
     // https://eslint.org/docs/rules/
     'linebreak-style': ['error', 'unix'],
     'no-irregular-whitespace': ['error', {skipComments: true}],
