@@ -13,10 +13,10 @@ First install Vega-Lite using npm (`npm install vega-lite`) or by [downloading t
 
 ## Using Javascript
 
-If you want access to the compiled Vega spec from a Javascript program, you can compile your Vega-Lite spec using the `vl.compile` function.
+If you want access to the compiled Vega spec from a Javascript program, you can compile your Vega-Lite spec using the `vegaLite.compile` function.
 
 ```js
-var vgSpec = vl.compile(vlSpec, options).spec;
+var vgSpec = vegaLite.compile(vlSpec, options).spec;
 ```
 
 If provided, the `options` argument should be an object with one or more of the following properties:
@@ -38,7 +38,7 @@ You can specify a [config]({{site.baseurl}}/docs/config.html) object as a proper
 By default, warnings and other messages are printed to the JavaScript console (via `console.log/warn` methods). To redirect the log messages, you can pass a customize logger to the compile function.
 
 ```js
-var vgSpec = vl.compile(vlSpec, {logger: logger}).spec;
+var vgSpec = vegaLite.compile(vlSpec, {logger: logger}).spec;
 ```
 
 A custom logger should implement the following interface:
@@ -59,7 +59,7 @@ interface LoggerInterface {
 To customize how Vega-Lite generates axis or legend titles for a [field definition](encoding.html#field-def), you can provide a `titleFormat` function as a property of the `compile` function's `options` argument.
 
 ```js
-var vgSpec = vl.compile(vlSpec, {
+var vgSpec = vegaLite.compile(vlSpec, {
   titleFormat: function(fieldDef, config) {
     const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
     if (fn) {
@@ -79,4 +79,4 @@ If you want to compile your Vega-Lite specs from the command line, we provide a 
 
 Each script simply accepts your Vega-Lite specification as its first argument.
 
-`vl2svg vega-lite-spec.vl.json`
+`vl2svg vega-lite-spec.json`
