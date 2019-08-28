@@ -570,7 +570,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -631,7 +631,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -648,7 +648,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -666,7 +666,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -715,7 +715,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -726,7 +726,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -788,7 +788,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1016,7 +1016,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1077,7 +1077,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1094,7 +1094,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1112,7 +1112,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1157,7 +1157,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1168,7 +1168,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1226,7 +1226,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -2825,17 +2825,17 @@
         }
       ]
     },
-    "ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2858,17 +2858,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2891,17 +2891,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2924,17 +2924,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2957,17 +2957,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -3348,7 +3348,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3372,7 +3372,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3396,7 +3396,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3420,7 +3420,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3444,7 +3444,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4377,6 +4377,52 @@
       ],
       "type": "object"
     },
+    "DerivedStream": {
+      "additionalProperties": false,
+      "properties": {
+        "between": {
+          "items": {
+            "$ref": "#/definitions/Stream"
+          },
+          "type": "array"
+        },
+        "consume": {
+          "type": "boolean"
+        },
+        "debounce": {
+          "type": "number"
+        },
+        "filter": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expr"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/Expr"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "markname": {
+          "type": "string"
+        },
+        "marktype": {
+          "$ref": "#/definitions/MarkType"
+        },
+        "stream": {
+          "$ref": "#/definitions/Stream"
+        },
+        "throttle": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "stream"
+      ],
+      "type": "object"
+    },
     "Dict<InlineDataset>": {
       "additionalProperties": {
         "$ref": "#/definitions/InlineDataset"
@@ -4686,6 +4732,141 @@
       "type": "string"
     },
     "EventStream": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "between": {
+              "items": {
+                "$ref": "#/definitions/Stream"
+              },
+              "type": "array"
+            },
+            "consume": {
+              "type": "boolean"
+            },
+            "debounce": {
+              "type": "number"
+            },
+            "filter": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Expr"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/Expr"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "markname": {
+              "type": "string"
+            },
+            "marktype": {
+              "$ref": "#/definitions/MarkType"
+            },
+            "source": {
+              "enum": [
+                "view",
+                "scope"
+              ],
+              "type": "string"
+            },
+            "throttle": {
+              "type": "number"
+            },
+            "type": {
+              "$ref": "#/definitions/EventType"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "between": {
+              "items": {
+                "$ref": "#/definitions/Stream"
+              },
+              "type": "array"
+            },
+            "consume": {
+              "type": "boolean"
+            },
+            "debounce": {
+              "type": "number"
+            },
+            "filter": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Expr"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/Expr"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "markname": {
+              "type": "string"
+            },
+            "marktype": {
+              "$ref": "#/definitions/MarkType"
+            },
+            "source": {
+              "enum": [
+                "window"
+              ],
+              "type": "string"
+            },
+            "throttle": {
+              "type": "number"
+            },
+            "type": {
+              "$ref": "#/definitions/WindowEventType"
+            }
+          },
+          "required": [
+            "source",
+            "type"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "EventType": {
+      "enum": [
+        "click",
+        "dblclick",
+        "dragenter",
+        "dragleave",
+        "dragover",
+        "keydown",
+        "keypress",
+        "keyup",
+        "mousedown",
+        "mousemove",
+        "mouseout",
+        "mouseover",
+        "mouseup",
+        "mousewheel",
+        "timer",
+        "touchend",
+        "touchmove",
+        "touchstart",
+        "wheel"
+      ],
+      "type": "string"
+    },
+    "Expr": {
+      "type": "string"
     },
     "FacetEncodingFieldDef": {
       "additionalProperties": false,
@@ -7268,13 +7449,16 @@
         "clear": {
           "anyOf": [
             {
-              "$ref": "#/definitions/EventStream"
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
             },
             {
               "type": "boolean"
             }
           ],
-          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+          "description": "Clears the selection, emptying it of all values. Can be a\n[Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
         },
         "empty": {
           "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -7307,7 +7491,14 @@
           "description": "An interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark.\n\n__See also:__ [`mark`](https://vega.github.io/vega-lite/docs/selection-mark.html) documentation."
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -7354,13 +7545,16 @@
         "clear": {
           "anyOf": [
             {
-              "$ref": "#/definitions/EventStream"
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
             },
             {
               "type": "boolean"
             }
           ],
-          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+          "description": "Clears the selection, emptying it of all values. Can be a\n[Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
         },
         "empty": {
           "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -7393,7 +7587,14 @@
           "description": "An interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark.\n\n__See also:__ [`mark`](https://vega.github.io/vega-lite/docs/selection-mark.html) documentation."
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -9679,6 +9880,72 @@
       ],
       "type": "object"
     },
+    "MarkType": {
+      "enum": [
+        "arc",
+        "area",
+        "image",
+        "group",
+        "line",
+        "path",
+        "rect",
+        "rule",
+        "shape",
+        "symbol",
+        "text",
+        "trail"
+      ],
+      "type": "string"
+    },
+    "MergedStream": {
+      "additionalProperties": false,
+      "properties": {
+        "between": {
+          "items": {
+            "$ref": "#/definitions/Stream"
+          },
+          "type": "array"
+        },
+        "consume": {
+          "type": "boolean"
+        },
+        "debounce": {
+          "type": "number"
+        },
+        "filter": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expr"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/Expr"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "markname": {
+          "type": "string"
+        },
+        "marktype": {
+          "$ref": "#/definitions/MarkType"
+        },
+        "merge": {
+          "items": {
+            "$ref": "#/definitions/Stream"
+          },
+          "type": "array"
+        },
+        "throttle": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "merge"
+      ],
+      "type": "object"
+    },
     "Month": {
       "maximum": 12,
       "minimum": 1,
@@ -9690,13 +9957,16 @@
         "clear": {
           "anyOf": [
             {
-              "$ref": "#/definitions/EventStream"
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
             },
             {
               "type": "boolean"
             }
           ],
-          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+          "description": "Clears the selection, emptying it of all values. Can be a\n[Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
         },
         "empty": {
           "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -9732,7 +10002,14 @@
           "type": "boolean"
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -9765,13 +10042,16 @@
         "clear": {
           "anyOf": [
             {
-              "$ref": "#/definitions/EventStream"
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
             },
             {
               "type": "boolean"
             }
           ],
-          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+          "description": "Clears the selection, emptying it of all values. Can be a\n[Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
         },
         "empty": {
           "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -9807,7 +10087,14 @@
           "type": "boolean"
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -12168,13 +12455,16 @@
         "clear": {
           "anyOf": [
             {
-              "$ref": "#/definitions/EventStream"
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
             },
             {
               "type": "boolean"
             }
           ],
-          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+          "description": "Clears the selection, emptying it of all values. Can be a\n[Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
         },
         "empty": {
           "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -12207,7 +12497,14 @@
           "type": "boolean"
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -12247,13 +12544,16 @@
         "clear": {
           "anyOf": [
             {
-              "$ref": "#/definitions/EventStream"
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
             },
             {
               "type": "boolean"
             }
           ],
-          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+          "description": "Clears the selection, emptying it of all values. Can be a\n[Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
         },
         "empty": {
           "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -12286,7 +12586,14 @@
           "type": "boolean"
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -12552,6 +12859,19 @@
         "step"
       ],
       "type": "object"
+    },
+    "Stream": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/EventStream"
+        },
+        {
+          "$ref": "#/definitions/DerivedStream"
+        },
+        {
+          "$ref": "#/definitions/MergedStream"
+        }
+      ]
     },
     "StringValueDefWithCondition<TypeForShape>": {
       "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
@@ -15083,6 +15403,16 @@
         }
       },
       "type": "object"
+    },
+    "WindowEventType": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/EventType"
+        },
+        {
+          "type": "string"
+        }
+      ]
     },
     "WindowFieldDef": {
       "additionalProperties": false,

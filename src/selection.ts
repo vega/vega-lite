@@ -1,8 +1,11 @@
-import {Binding, Color, Vector2, Stream} from 'vega';
+import {Binding, Color, Vector2} from 'vega';
 import {SingleDefUnitChannel} from './channel';
 import {FieldName, Value} from './channeldef';
 import {DateTime} from './datetime';
 import {Dict} from './util';
+
+// TODO: import from Vega once we update to Vega 5.5
+import {Stream} from 'vega-typings';
 
 export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'single' | 'multi' | 'interval';
