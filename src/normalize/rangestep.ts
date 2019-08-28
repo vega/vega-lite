@@ -3,7 +3,7 @@ import {isFieldDef} from '../channeldef';
 import {Encoding} from '../encoding';
 import * as log from '../log';
 import {Scale} from '../scale';
-import {GenericSpec, NormalizedLayerSpec} from '../spec/index';
+import {GenericSpec} from '../spec/index';
 import {GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from '../spec/unit';
 import {keys} from '../util';
 import {NonFacetUnitNormalizer} from './base';
@@ -27,7 +27,7 @@ export class RangeStepNormalizer implements NonFacetUnitNormalizer<UnitSpecWithR
     return false;
   }
 
-  public run(spec: UnitSpecWithRangeStep): NormalizedUnitSpec | NormalizedLayerSpec {
+  public run(spec: UnitSpecWithRangeStep): NormalizedUnitSpec {
     const sizeMixins = {};
     let encoding = {...spec.encoding};
 
