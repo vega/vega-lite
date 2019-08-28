@@ -19,7 +19,8 @@ export const duplicate = clone_;
 export function pick<T extends object, K extends keyof T>(obj: T, props: K[]): Pick<T, K> {
   const copy: any = {};
   for (const prop of props) {
-    if (hasOwnProperty(obj, prop)) {
+    // TODO: remove as any when https://github.com/vega/vega/issues/1975 is out
+    if (hasOwnProperty(obj, prop as any)) {
       copy[prop] = obj[prop];
     }
   }

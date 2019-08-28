@@ -570,7 +570,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-2041899211-2468-2565-2041899211-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -631,7 +631,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1198409216-5990-6039-1198409216-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -648,7 +648,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1198409216-8505-8557-1198409216-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -666,7 +666,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-2041899211-2468-2565-2041899211-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -715,7 +715,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1198409216-8749-8890-1198409216-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -726,7 +726,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1198409216-8600-8749-1198409216-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -788,7 +788,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-2041899211-2468-2565-2041899211-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1016,7 +1016,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-2041899211-2468-2565-2041899211-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1077,7 +1077,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1198409216-5990-6039-1198409216-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1094,7 +1094,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1198409216-8505-8557-1198409216-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1112,7 +1112,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-2041899211-2468-2565-2041899211-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1157,7 +1157,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1198409216-8749-8890-1198409216-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1168,7 +1168,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1198409216-8600-8749-1198409216-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1226,7 +1226,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-2041899211-2468-2565-2041899211-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1389,14 +1389,7 @@
       "additionalProperties": false,
       "properties": {
         "anchor": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TitleAnchor"
-            },
-            {
-              "$ref": "#/definitions/SignalRef"
-            }
-          ],
+          "$ref": "#/definitions/TitleAnchor",
           "description": "The anchor point for legend orient group layout."
         },
         "bounds": {
@@ -2832,17 +2825,50 @@
         }
       ]
     },
-    "ConditionalAxisProperty<(def-alias-1198409216-5990-6039-1198409216-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1198409216-5990-6039-1198409216-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1198409216-5990-6039-1198409216-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2865,17 +2891,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-1198409216-8505-8557-1198409216-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1198409216-8505-8557-1198409216-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1198409216-8505-8557-1198409216-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2898,17 +2924,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-1198409216-8600-8749-1198409216-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1198409216-8600-8749-1198409216-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1198409216-8600-8749-1198409216-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2931,17 +2957,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-1198409216-8749-8890-1198409216-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1198409216-8749-8890-1198409216-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1198409216-8749-8890-1198409216-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2952,39 +2978,6 @@
             {
               "$ref": "#/definitions/FontStyle",
               "description": "Font style of the title."
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "condition"
-      ],
-      "type": "object"
-    },
-    "ConditionalAxisProperty<(def-alias-2041899211-2468-2565-2041899211-0-2566|undefined|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-2041899211-2468-2565-2041899211-0-2566|undefined|null)>>"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-2041899211-2468-2565-2041899211-0-2566|undefined|null)>>"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Color",
-              "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
               "type": "null"
@@ -3355,7 +3348,31 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-1198409216-5990-6039-1198409216-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color",
+              "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3379,7 +3396,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-1198409216-8505-8557-1198409216-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3403,7 +3420,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-1198409216-8600-8749-1198409216-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3427,7 +3444,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-1198409216-8749-8890-1198409216-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3439,30 +3456,6 @@
             {
               "$ref": "#/definitions/FontStyle",
               "description": "Font style of the title."
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "test"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(def-alias-2041899211-2468-2565-2041899211-0-2566|undefined|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Color",
-              "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
               "type": "null"
@@ -8262,14 +8255,7 @@
       "additionalProperties": false,
       "properties": {
         "anchor": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TitleAnchor"
-            },
-            {
-              "$ref": "#/definitions/SignalRef"
-            }
-          ],
+          "$ref": "#/definitions/TitleAnchor",
           "description": "The anchor point for legend orient group layout."
         },
         "bottom": {
@@ -10752,7 +10738,6 @@
         "conicConformal",
         "conicEqualArea",
         "conicEquidistant",
-        "equalEarth",
         "equirectangular",
         "gnomonic",
         "identity",
