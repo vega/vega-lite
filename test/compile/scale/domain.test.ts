@@ -23,9 +23,9 @@ describe('compile/scale', () => {
         mark: 'bar',
         encoding: {
           x: {field: 'a', type: 'quantitative'},
-          x2: {field: 'b', type: 'quantitative'},
+          x2: {field: 'b'},
           y: {field: 'c', type: 'quantitative'},
-          y2: {field: 'd', type: 'quantitative'}
+          y2: {field: 'd'}
         }
       });
 

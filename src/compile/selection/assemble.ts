@@ -15,7 +15,7 @@ import {forEachTransform} from './transforms/transforms';
 
 export function assembleInit(
   init: (SelectionInit | SelectionInit[] | SelectionInitInterval)[] | SelectionInit,
-  isExpr: boolean = true,
+  isExpr = true,
   wrap: (str: string) => string = identity
 ): any {
   if (isArray(init)) {

@@ -159,7 +159,7 @@ export function timeFormatExpression(
   shortTimeLabels: boolean,
   rawTimeFormat: string, // should be provided only for actual text and headers, not axis/legend labels
   isUTCScale: boolean,
-  alwaysReturn: boolean = false
+  alwaysReturn = false
 ): string {
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.

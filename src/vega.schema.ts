@@ -572,7 +572,7 @@ export interface BaseMarkConfig {
    *
    * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y2?: number | 'width';
+  y2?: number | 'height';
 
   /**
    * Whether to keep aspect ratio of image marks.

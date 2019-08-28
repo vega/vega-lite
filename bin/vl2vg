@@ -11,7 +11,7 @@ Usage: vl2vg [vega_lite_json_file] [output_vega_json_file]
 
 // import required libraries
 const {createWriteStream, readFile} = require('fs');
-const vl = require('../build/vega-lite');
+const vegaLite = require('../build/vega-lite');
 const compactStringify = require('json-stringify-pretty-compact');
 
 // arguments
@@ -39,7 +39,7 @@ readFile(specFile, 'utf8', function(err, text) {
 });
 
 function compile(vlSpec) {
-  const result = vl.compile(vlSpec);
+  const result = vegaLite.compile(vlSpec);
 
   // TODO: deal with errors
   const vgSpec = result.spec;

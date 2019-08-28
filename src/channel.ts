@@ -240,7 +240,7 @@ export const NONPOSITION_CHANNELS = keys(NONPOSITION_CHANNEL_INDEX);
 export type NonPositionChannel = typeof NONPOSITION_CHANNELS[number];
 
 // POSITION_SCALE_CHANNELS = X and Y;
-const POSITION_SCALE_CHANNEL_INDEX: {x: 1; y: 1} = {x: 1, y: 1};
+const POSITION_SCALE_CHANNEL_INDEX = {x: 1, y: 1} as const;
 export const POSITION_SCALE_CHANNELS = keys(POSITION_SCALE_CHANNEL_INDEX);
 export type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[number];
 
