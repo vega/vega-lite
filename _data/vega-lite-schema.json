@@ -438,7 +438,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -570,7 +570,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -631,7 +631,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -648,7 +648,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -666,12 +666,12 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
         "labelExpr": {
-          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
           "type": "string"
         },
         "labelFlush": {
@@ -715,7 +715,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -726,7 +726,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -788,7 +788,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1016,7 +1016,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1077,7 +1077,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1094,7 +1094,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1112,7 +1112,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1157,7 +1157,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1168,7 +1168,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1226,7 +1226,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1677,7 +1677,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -2825,17 +2825,17 @@
         }
       ]
     },
-    "ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2858,17 +2858,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2891,17 +2891,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2924,17 +2924,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2957,17 +2957,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -3142,7 +3142,7 @@
         },
         "sort": {
           "$ref": "#/definitions/Sort",
-          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "test": {
           "$ref": "#/definitions/LogicalOperand<Predicate>",
@@ -3219,7 +3219,7 @@
         },
         "sort": {
           "$ref": "#/definitions/Sort",
-          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "test": {
           "$ref": "#/definitions/LogicalOperand<Predicate>",
@@ -3290,6 +3290,10 @@
           ],
           "type": "string"
         },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
+          "type": "string"
+        },
         "test": {
           "$ref": "#/definitions/LogicalOperand<Predicate>",
           "description": "Predicate for triggering the condition"
@@ -3344,7 +3348,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3368,7 +3372,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3392,7 +3396,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3416,7 +3420,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3440,7 +3444,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3650,7 +3654,7 @@
         },
         "sort": {
           "$ref": "#/definitions/Sort",
-          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -3727,7 +3731,7 @@
         },
         "sort": {
           "$ref": "#/definitions/Sort",
-          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -3792,6 +3796,10 @@
             "number",
             "time"
           ],
+          "type": "string"
+        },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
           "type": "string"
         },
         "selection": {
@@ -4369,6 +4377,52 @@
       ],
       "type": "object"
     },
+    "DerivedStream": {
+      "additionalProperties": false,
+      "properties": {
+        "between": {
+          "items": {
+            "$ref": "#/definitions/Stream"
+          },
+          "type": "array"
+        },
+        "consume": {
+          "type": "boolean"
+        },
+        "debounce": {
+          "type": "number"
+        },
+        "filter": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expr"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/Expr"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "markname": {
+          "type": "string"
+        },
+        "marktype": {
+          "$ref": "#/definitions/MarkType"
+        },
+        "stream": {
+          "$ref": "#/definitions/Stream"
+        },
+        "throttle": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "stream"
+      ],
+      "type": "object"
+    },
     "Dict<InlineDataset>": {
       "additionalProperties": {
         "$ref": "#/definitions/InlineDataset"
@@ -4678,6 +4732,141 @@
       "type": "string"
     },
     "EventStream": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "between": {
+              "items": {
+                "$ref": "#/definitions/Stream"
+              },
+              "type": "array"
+            },
+            "consume": {
+              "type": "boolean"
+            },
+            "debounce": {
+              "type": "number"
+            },
+            "filter": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Expr"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/Expr"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "markname": {
+              "type": "string"
+            },
+            "marktype": {
+              "$ref": "#/definitions/MarkType"
+            },
+            "source": {
+              "enum": [
+                "view",
+                "scope"
+              ],
+              "type": "string"
+            },
+            "throttle": {
+              "type": "number"
+            },
+            "type": {
+              "$ref": "#/definitions/EventType"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "between": {
+              "items": {
+                "$ref": "#/definitions/Stream"
+              },
+              "type": "array"
+            },
+            "consume": {
+              "type": "boolean"
+            },
+            "debounce": {
+              "type": "number"
+            },
+            "filter": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Expr"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/Expr"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "markname": {
+              "type": "string"
+            },
+            "marktype": {
+              "$ref": "#/definitions/MarkType"
+            },
+            "source": {
+              "enum": [
+                "window"
+              ],
+              "type": "string"
+            },
+            "throttle": {
+              "type": "number"
+            },
+            "type": {
+              "$ref": "#/definitions/WindowEventType"
+            }
+          },
+          "required": [
+            "source",
+            "type"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "EventType": {
+      "enum": [
+        "click",
+        "dblclick",
+        "dragenter",
+        "dragleave",
+        "dragover",
+        "keydown",
+        "keypress",
+        "keyup",
+        "mousedown",
+        "mousemove",
+        "mouseout",
+        "mouseover",
+        "mouseup",
+        "mousewheel",
+        "timer",
+        "touchend",
+        "touchmove",
+        "touchstart",
+        "wheel"
+      ],
+      "type": "string"
+    },
+    "Expr": {
+      "type": "string"
     },
     "FacetEncodingFieldDef": {
       "additionalProperties": false,
@@ -4757,7 +4946,7 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "spacing": {
           "anyOf": [
@@ -4835,7 +5024,7 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -5379,7 +5568,7 @@
         },
         "sort": {
           "$ref": "#/definitions/Sort",
-          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -5466,7 +5655,7 @@
         },
         "sort": {
           "$ref": "#/definitions/Sort",
-          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -5553,7 +5742,7 @@
         },
         "sort": {
           "$ref": "#/definitions/Sort",
-          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -5632,6 +5821,10 @@
             "number",
             "time"
           ],
+          "type": "string"
+        },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
           "type": "string"
         },
         "timeUnit": {
@@ -6795,6 +6988,10 @@
           "$ref": "#/definitions/Color",
           "description": "The color of the header label, can be in hex color code or regular color name."
         },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the header's backing `datum` object.",
+          "type": "string"
+        },
         "labelFont": {
           "description": "The font of the header label.",
           "type": "string"
@@ -6917,6 +7114,10 @@
         "labelColor": {
           "$ref": "#/definitions/Color",
           "description": "The color of the header label, can be in hex color code or regular color name."
+        },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the header's backing `datum` object.",
+          "type": "string"
         },
         "labelFont": {
           "description": "The font of the header label.",
@@ -7248,13 +7449,16 @@
         "clear": {
           "anyOf": [
             {
-              "$ref": "#/definitions/EventStream"
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
             },
             {
               "type": "boolean"
             }
           ],
-          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+          "description": "Clears the selection, emptying it of all values. Can be a\n[Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
         },
         "empty": {
           "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -7287,7 +7491,14 @@
           "description": "An interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark.\n\n__See also:__ [`mark`](https://vega.github.io/vega-lite/docs/selection-mark.html) documentation."
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -7334,13 +7545,16 @@
         "clear": {
           "anyOf": [
             {
-              "$ref": "#/definitions/EventStream"
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
             },
             {
               "type": "boolean"
             }
           ],
-          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+          "description": "Clears the selection, emptying it of all values. Can be a\n[Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
         },
         "empty": {
           "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -7373,7 +7587,14 @@
           "description": "An interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark.\n\n__See also:__ [`mark`](https://vega.github.io/vega-lite/docs/selection-mark.html) documentation."
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -7731,7 +7952,7 @@
           "description": "The color of the legend label, can be in hex color code or regular color name."
         },
         "labelExpr": {
-          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the legend's backing `datum` object.",
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the legend's backing `datum` object.",
           "type": "string"
         },
         "labelFont": {
@@ -8663,7 +8884,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -9274,7 +9495,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -9638,7 +9859,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -9659,6 +9880,72 @@
       ],
       "type": "object"
     },
+    "MarkType": {
+      "enum": [
+        "arc",
+        "area",
+        "image",
+        "group",
+        "line",
+        "path",
+        "rect",
+        "rule",
+        "shape",
+        "symbol",
+        "text",
+        "trail"
+      ],
+      "type": "string"
+    },
+    "MergedStream": {
+      "additionalProperties": false,
+      "properties": {
+        "between": {
+          "items": {
+            "$ref": "#/definitions/Stream"
+          },
+          "type": "array"
+        },
+        "consume": {
+          "type": "boolean"
+        },
+        "debounce": {
+          "type": "number"
+        },
+        "filter": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Expr"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/Expr"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "markname": {
+          "type": "string"
+        },
+        "marktype": {
+          "$ref": "#/definitions/MarkType"
+        },
+        "merge": {
+          "items": {
+            "$ref": "#/definitions/Stream"
+          },
+          "type": "array"
+        },
+        "throttle": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "merge"
+      ],
+      "type": "object"
+    },
     "Month": {
       "maximum": 12,
       "minimum": 1,
@@ -9670,13 +9957,16 @@
         "clear": {
           "anyOf": [
             {
-              "$ref": "#/definitions/EventStream"
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
             },
             {
               "type": "boolean"
             }
           ],
-          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+          "description": "Clears the selection, emptying it of all values. Can be a\n[Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
         },
         "empty": {
           "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -9701,25 +9991,25 @@
           "type": "array"
         },
         "init": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SelectionInitMapping"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/SelectionInitMapping"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial\nvalue (or array of values).\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial\nvalue (or array of values).\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.",
+          "items": {
+            "$ref": "#/definitions/SelectionInitMapping"
+          },
+          "type": "array"
         },
         "nearest": {
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
           "type": "boolean"
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -9752,13 +10042,16 @@
         "clear": {
           "anyOf": [
             {
-              "$ref": "#/definitions/EventStream"
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
             },
             {
               "type": "boolean"
             }
           ],
-          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+          "description": "Clears the selection, emptying it of all values. Can be a\n[Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
         },
         "empty": {
           "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -9783,25 +10076,25 @@
           "type": "array"
         },
         "init": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SelectionInitMapping"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/SelectionInitMapping"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial\nvalue (or array of values).\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial\nvalue (or array of values).\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.",
+          "items": {
+            "$ref": "#/definitions/SelectionInitMapping"
+          },
+          "type": "array"
         },
         "nearest": {
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
           "type": "boolean"
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -10272,7 +10565,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -10562,7 +10855,7 @@
         },
         "sort": {
           "$ref": "#/definitions/Sort",
-          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "stack": {
           "anyOf": [
@@ -11208,7 +11501,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -11440,7 +11733,7 @@
               "type": "null"
             }
           ],
-          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "spacing": {
           "description": "The spacing in pixels between facet's sub-views.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)",
@@ -12162,13 +12455,16 @@
         "clear": {
           "anyOf": [
             {
-              "$ref": "#/definitions/EventStream"
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
             },
             {
               "type": "boolean"
             }
           ],
-          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+          "description": "Clears the selection, emptying it of all values. Can be a\n[Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
         },
         "empty": {
           "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -12201,7 +12497,14 @@
           "type": "boolean"
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -12241,13 +12544,16 @@
         "clear": {
           "anyOf": [
             {
-              "$ref": "#/definitions/EventStream"
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
             },
             {
               "type": "boolean"
             }
           ],
-          "description": "Clears the selection, emptying it of all values. Can be an\n[EventStream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+          "description": "Clears the selection, emptying it of all values. Can be a\n[Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
         },
         "empty": {
           "description": "By default, `all` data values are considered to lie within an empty selection.\nWhen set to `none`, empty selections contain no data values.",
@@ -12280,7 +12586,14 @@
           "type": "boolean"
         },
         "on": {
-          "$ref": "#/definitions/EventStream",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
         },
         "resolve": {
@@ -12546,6 +12859,19 @@
         "step"
       ],
       "type": "object"
+    },
+    "Stream": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/EventStream"
+        },
+        {
+          "$ref": "#/definitions/DerivedStream"
+        },
+        {
+          "$ref": "#/definitions/MergedStream"
+        }
+      ]
     },
     "StringValueDefWithCondition<TypeForShape>": {
       "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
@@ -12878,7 +13204,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -12929,6 +13255,10 @@
             "number",
             "time"
           ],
+          "type": "string"
+        },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
           "type": "string"
         },
         "timeUnit": {
@@ -13254,7 +13584,7 @@
             },
             {
               "enum": [
-                "width"
+                "height"
               ],
               "type": "string"
             }
@@ -13442,7 +13772,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v4.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -13580,7 +13910,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v4.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -13689,7 +14019,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v4.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -13839,7 +14169,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v4.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -13948,7 +14278,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v4.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -14082,7 +14412,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v4.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -14263,7 +14593,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v4.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -15073,6 +15403,16 @@
         }
       },
       "type": "object"
+    },
+    "WindowEventType": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/EventType"
+        },
+        {
+          "type": "string"
+        }
+      ]
     },
     "WindowFieldDef": {
       "additionalProperties": false,
