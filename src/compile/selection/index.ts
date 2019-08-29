@@ -1,4 +1,4 @@
-import {Binding, NewSignal, SignalRef} from 'vega';
+import {Binding, NewSignal, SignalRef, Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel';
 import {
@@ -10,7 +10,6 @@ import {
   SELECTION_ID
 } from '../../selection';
 import {accessPathWithDatum, Dict} from '../../util';
-import {EventStream} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {isFacetModel, Model} from '../model';
 import {UnitModel} from '../unit';
@@ -36,8 +35,7 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
     : T extends 'multi'
     ? SelectionInit | SelectionInit[]
     : never)[];
-  events: EventStream;
-  // predicate?: string;
+  events: Stream[];
   bind?: 'scales' | Binding | Dict<Binding>;
   resolve: SelectionResolution;
   empty: 'all' | 'none';
