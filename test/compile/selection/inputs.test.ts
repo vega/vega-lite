@@ -1,3 +1,4 @@
+import {selector as parseSelector} from 'vega-event-selector';
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import inputs from '../../../src/compile/selection/transforms/inputs';
@@ -17,18 +18,15 @@ describe('Inputs Selection Transform', () => {
   const selCmpts = parseUnitSelection(model, {
     one: {
       type: 'single',
-      clear: false,
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     two: {
       type: 'single',
-      clear: false,
       fields: ['Cylinders', 'Horsepower'],
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     three: {
       type: 'single',
-      clear: false,
       nearest: true,
       fields: ['Cylinders', 'Origin'],
       bind: {
@@ -38,17 +36,14 @@ describe('Inputs Selection Transform', () => {
     },
     four: {
       type: 'single',
-      clear: false,
       bind: null
     },
     six: {
       type: 'interval',
-      clear: false,
       bind: 'scales'
     },
     seven: {
       type: 'single',
-      clear: false,
       fields: ['Year'],
       bind: {
         Year: {input: 'range', min: 1970, max: 1980, step: 1}
@@ -56,6 +51,17 @@ describe('Inputs Selection Transform', () => {
       init: {
         Year: {year: 1970, month: 1, day: 1}
       }
+    },
+    eight: {
+      type: 'single',
+      on: 'dblclick',
+      bind: {input: 'range', min: 0, max: 10, step: 1}
+    },
+    nine: {
+      type: 'single',
+      on: 'click',
+      clear: 'dblclick',
+      bind: {input: 'range', min: 0, max: 10, step: 1}
     }
   });
 
@@ -66,6 +72,8 @@ describe('Inputs Selection Transform', () => {
     expect(inputs.has(selCmpts['four'])).toBeFalsy();
     expect(inputs.has(selCmpts['six'])).toBeFalsy();
     expect(inputs.has(selCmpts['seven'])).toBeTruthy();
+    expect(inputs.has(selCmpts['eight'])).toBeTruthy();
+    expect(inputs.has(selCmpts['nine'])).toBeTruthy();
   });
 
   it('adds widget binding for default projection', () => {
@@ -78,12 +86,6 @@ describe('Inputs Selection Transform', () => {
     expect(assembleTopLevelSignals(model, [])).toContainEqual({
       name: 'one__vgsid_',
       value: null,
-      on: [
-        {
-          events: [{source: 'scope', type: 'click'}],
-          update: 'datum && item().mark.marktype !== \'group\' ? datum["_vgsid_"] : null'
-        }
-      ],
       bind: {input: 'range', min: 0, max: 10, step: 1}
     });
   });
@@ -101,23 +103,11 @@ describe('Inputs Selection Transform', () => {
         {
           name: 'two_Horsepower',
           value: null,
-          on: [
-            {
-              events: [{source: 'scope', type: 'click'}],
-              update: 'datum && item().mark.marktype !== \'group\' ? datum["Horsepower"] : null'
-            }
-          ],
           bind: {input: 'range', min: 0, max: 10, step: 1}
         },
         {
           name: 'two_Cylinders',
           value: null,
-          on: [
-            {
-              events: [{source: 'scope', type: 'click'}],
-              update: 'datum && item().mark.marktype !== \'group\' ? datum["Cylinders"] : null'
-            }
-          ],
           bind: {input: 'range', min: 0, max: 10, step: 1}
         }
       ])
@@ -137,13 +127,6 @@ describe('Inputs Selection Transform', () => {
         {
           name: 'three_Origin',
           value: null,
-          on: [
-            {
-              events: [{source: 'scope', type: 'click'}],
-              update:
-                'datum && item().mark.marktype !== \'group\' ? (item().isVoronoi ? datum.datum : datum)["Origin"] : null'
-            }
-          ],
           bind: {
             input: 'select',
             options: ['Japan', 'USA', 'Europe']
@@ -152,13 +135,6 @@ describe('Inputs Selection Transform', () => {
         {
           name: 'three_Cylinders',
           value: null,
-          on: [
-            {
-              events: [{source: 'scope', type: 'click'}],
-              update:
-                'datum && item().mark.marktype !== \'group\' ? (item().isVoronoi ? datum.datum : datum)["Cylinders"] : null'
-            }
-          ],
           bind: {
             Horsepower: {input: 'range', min: 0, max: 10, step: 1},
             Origin: {
@@ -187,13 +163,39 @@ describe('Inputs Selection Transform', () => {
         {
           name: 'seven_Year',
           init: 'datetime(1970, 1, 1+1, 0, 0, 0, 0)',
+          bind: {input: 'range', min: 1970, max: 1980, step: 1}
+        }
+      ])
+    );
+  });
+
+  it('preserves explicit event triggers', () => {
+    model.component.selection = {eight: selCmpts['eight'], nine: selCmpts['nine']};
+
+    expect(assembleTopLevelSignals(model, [])).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'eight__vgsid_',
+          value: null,
+          on: [
+            {
+              events: [{source: 'scope', type: 'dblclick'}],
+              update: 'datum && item().mark.marktype !== \'group\' ? datum["_vgsid_"] : null'
+            }
+          ],
+          bind: {input: 'range', min: 0, max: 10, step: 1}
+        },
+        {
+          name: 'nine__vgsid_',
+          value: null,
           on: [
             {
               events: [{source: 'scope', type: 'click'}],
-              update: 'datum && item().mark.marktype !== \'group\' ? datum["Year"] : null'
-            }
+              update: 'datum && item().mark.marktype !== \'group\' ? datum["_vgsid_"] : null'
+            },
+            {events: parseSelector('dblclick', 'scope'), update: 'null'}
           ],
-          bind: {input: 'range', min: 1970, max: 1980, step: 1}
+          bind: {input: 'range', min: 0, max: 10, step: 1}
         }
       ])
     );

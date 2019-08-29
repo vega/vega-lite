@@ -14,7 +14,7 @@ import {
 import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {Flag, keys, Omit} from './util';
+import {Flag, keys} from './util';
 import {LayoutAlign, VgEncodeChannel} from './vega.schema';
 
 export type BaseAxisNoSignals = AxisMixins &
@@ -186,7 +186,7 @@ export type AxisConfig = VlOnlyGuideConfig & AxisOrientMixins & VgAxisConfigNoSi
 
 export interface Axis extends AxisOrientMixins, VgAxisConfigNoSignals, Guide {
   /**
-   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.
+   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.
    *
    * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
    */

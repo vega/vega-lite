@@ -48,7 +48,7 @@ In addition to the [common properties](#common), any kind of top-level specifica
 ```js
 {
   // Properties for top-level specification (e.g., standalone single view specifications)
-  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "background": ...,
   "padding": ...,
   "autosize": ...,

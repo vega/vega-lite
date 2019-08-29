@@ -187,7 +187,6 @@ describe('Axis', () => {
           },
           x2: {
             field: 'b',
-            type: 'quantitative',
             title: 'bar'
           }
         }
@@ -207,7 +206,6 @@ describe('Axis', () => {
           },
           x2: {
             field: 'b',
-            type: 'quantitative',
             title: 'bar'
           }
         }
@@ -222,7 +220,7 @@ describe('Axis', () => {
         mark: 'rule',
         encoding: {
           x: {field: 'a', type: 'quantitative'},
-          x2: {field: 'a2', type: 'quantitative'}
+          x2: {field: 'a2'}
         }
       });
       const axisComponent = parseUnitAxes(model);
@@ -278,7 +276,7 @@ describe('Axis', () => {
 
     it('correctly combines different title', () => {
       const model = parseLayerModel({
-        $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
         data: {url: 'data/cars.json'},
         layer: [
           {

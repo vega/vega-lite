@@ -133,6 +133,17 @@ describe('compile/mark/init', () => {
       expect(model.markDef.orient).toBe('horizontal');
     });
 
+    it('should return correct orient for vertical with aggregation', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        encoding: {
+          x: {type: 'quantitative', field: 'foo', aggregate: 'mean'},
+          y: {type: 'quantitative', field: 'bar'}
+        }
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
+
     it('should return correct orient for vertical tick', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'tick',
@@ -251,7 +262,7 @@ describe('compile/mark/init', () => {
         encoding: {
           x: {type: 'ordinal', field: 'foo'},
           y: {type: 'quantitative', field: 'bar'},
-          y2: {type: 'quantitative', field: 'baz'}
+          y2: {field: 'baz'}
         }
       });
       expect(model.markDef.orient).toBe('vertical');
@@ -263,7 +274,7 @@ describe('compile/mark/init', () => {
         encoding: {
           y: {type: 'ordinal', field: 'foo'},
           x: {type: 'quantitative', field: 'bar'},
-          x2: {type: 'quantitative', field: 'baz'}
+          x2: {field: 'baz'}
         }
       });
       expect(model.markDef.orient).toBe('horizontal');
@@ -274,7 +285,7 @@ describe('compile/mark/init', () => {
         mark: 'rule',
         encoding: {
           x: {type: 'quantitative', field: 'bar'},
-          x2: {type: 'quantitative', field: 'baz'}
+          x2: {field: 'baz'}
         }
       });
       expect(model.markDef.orient).toBe('horizontal');
@@ -285,7 +296,7 @@ describe('compile/mark/init', () => {
         mark: 'rule',
         encoding: {
           y: {type: 'quantitative', field: 'bar'},
-          y2: {type: 'quantitative', field: 'baz'}
+          y2: {field: 'baz'}
         }
       });
       expect(model.markDef.orient).toBe('vertical');
@@ -304,8 +315,7 @@ describe('compile/mark/init', () => {
             }
           },
           x2: {
-            field: 'bin_end',
-            type: 'quantitative'
+            field: 'bin_end'
           },
           y: {
             field: 'count',
@@ -329,8 +339,7 @@ describe('compile/mark/init', () => {
             }
           },
           y2: {
-            field: 'bin_end',
-            type: 'quantitative'
+            field: 'bin_end'
           },
           x: {
             field: 'count',
@@ -354,8 +363,7 @@ describe('compile/mark/init', () => {
             }
           },
           x2: {
-            field: 'bin_end',
-            type: 'quantitative'
+            field: 'bin_end'
           },
           y: {
             field: 'count',
@@ -379,8 +387,7 @@ describe('compile/mark/init', () => {
             }
           },
           y2: {
-            field: 'bin_end',
-            type: 'quantitative'
+            field: 'bin_end'
           },
           x: {
             field: 'count',
@@ -412,7 +419,7 @@ describe('compile/mark/init', () => {
           x: {field: 'a', type: 'ordinal'},
           y: {field: 'b', type: 'quantitative'},
           href: {
-            condition: {selection: 'test', value: 'https://vega.github.io/schema/vega-lite/v3.json'},
+            condition: {selection: 'test', value: 'https://vega.github.io/schema/vega-lite/v4.json'},
             field: 'a',
             type: 'ordinal'
           }

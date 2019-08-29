@@ -30,7 +30,7 @@ import {SELECTION_DOMAIN} from '../selection';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
-import {ScaleComponentIndex} from './component';
+import {ScaleComponentIndex, ScaleComponent} from './component';
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {
@@ -623,9 +623,9 @@ export function getFieldFromDomain(domain: VgDomain): string {
 }
 
 export function assembleDomain(model: Model, channel: ScaleChannel) {
-  const scaleComponent = model.component.scales[channel];
+  const scaleComponent: ScaleComponent = model.component.scales[channel];
 
-  const domains = scaleComponent.get('domains').map(domain => {
+  const domains = scaleComponent.get('domains').map((domain: VgNonUnionDomain) => {
     // Correct references to data as the original domain's data was determined
     // in parseScale, which happens before parseData. Thus the original data
     // reference can be incorrect.

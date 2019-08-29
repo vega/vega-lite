@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/population.json"},
   "layer": [
     {
@@ -104,7 +104,12 @@
       ],
       "layer": [
         {
-          "mark": {"type": "bar", "size": 14, "style": "boxplot-box"},
+          "mark": {
+            "type": "bar",
+            "size": 14,
+            "orient": "vertical",
+            "style": "boxplot-box"
+          },
           "encoding": {
             "y": {
               "field": "lower_box_people",

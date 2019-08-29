@@ -10,7 +10,7 @@ import {
   TypedFieldDef,
   vgField
 } from './channeldef';
-import {channelHasField, Encoding} from './encoding';
+import {channelHasField, Encoding, isAggregate} from './encoding';
 import * as log from './log';
 import {AREA, BAR, CIRCLE, isMarkDef, isPathMark, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
@@ -153,6 +153,10 @@ export function stack(
     return null;
   }
 
+  if (isAggregate(encoding) && stackBy.length === 0) {
+    return null;
+  }
+
   // warn when stacking non-linear
   if (stackedFieldDef.scale && stackedFieldDef.scale.type && stackedFieldDef.scale.type !== ScaleType.LINEAR) {
     if (opt.disallowNonLinearStack) {
@@ -170,7 +174,7 @@ export function stack(
     return null;
   }
 
-  // Warn if stacking summative aggregate
+  // Warn if stacking non-summative aggregate
   if (stackedFieldDef.aggregate && !contains(SUM_OPS, stackedFieldDef.aggregate)) {
     log.warn(log.message.stackNonSummativeAggregate(stackedFieldDef.aggregate));
   }

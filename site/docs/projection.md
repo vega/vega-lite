@@ -5,7 +5,7 @@ title: Projection
 permalink: /docs/projection.html
 ---
 
-A cartographic projection maps longitude and latitude pairs to x, y coordinates. As with Vega, one can use projections in Vega-lite to layout both geographic points (such as locations on a map) represented by longitude and latitude coordinates, or to project geographic regions (such as countries and states) represented using the GeoJSON format. Projection's are specified at the unit specification level, alongside encoding. Geographic coordinate data can then be mapped to [`longitude` and `latitude` channels](encoding.html#geo) (and `longitude2` and `latitude2` for ranged marks).
+A cartographic projection maps longitude and latitude pairs to x, y coordinates. As with Vega, one can use projections in Vega-Lite to layout both geographic points (such as locations on a map) represented by longitude and latitude coordinates, or to project geographic regions (such as countries and states) represented using the GeoJSON format. Projections are specified at the unit specification level, alongside encoding. Geographic coordinate data can then be mapped to [`longitude` and `latitude` channels](encoding.html#geo) (and `longitude2` and `latitude2` for ranged marks).
 
 For example, this example chart shows all airports in the United States by projecting `latitude`, `longitude` as `x`, `y` coordinates using the albersUsa projection.
 
@@ -29,7 +29,7 @@ _Note_: All [properties](#properties) of projections are **optional** with defau
 
 ## Projection Types
 
-Vega-lite includes all cartographic projections provided by the [d3-geo](https://github.com/d3/d3-geo#) library.
+Vega-Lite includes all cartographic projections provided by the [d3-geo](https://github.com/d3/d3-geo#) library.
 
 | Type | Description |
 | :-- | :-- |

@@ -34,7 +34,7 @@ function validateVL(spec: TopLevelSpec) {
   expect(errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', ')).toBeNull();
   expect(valid).toBe(true);
 
-  expect(spec.$schema.substr(0, 42)).toBe('https://vega.github.io/schema/vega-lite/v3');
+  expect(spec.$schema.substr(0, 42)).toBe('https://vega.github.io/schema/vega-lite/v4');
 }
 
 function validateVega(vegaSpec: VgSpec) {

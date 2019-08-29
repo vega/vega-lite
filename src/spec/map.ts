@@ -41,7 +41,7 @@ export abstract class SpecMapper<
     } else if (isUnitSpec(spec)) {
       return this.mapUnit(spec, params);
     }
-    throw new Error(log.message.INVALID_SPEC);
+    throw new Error(log.message.invalidSpec(spec));
   }
 
   public abstract mapUnit(spec: UI, params: P): UO | GenericLayerSpec<UO>;

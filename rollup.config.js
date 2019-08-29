@@ -20,7 +20,7 @@ export default {
     file: 'build/vega-lite.js',
     format: 'umd',
     sourcemap: true,
-    name: 'vl'
+    name: 'vegaLite'
   },
   plugins: [disallowedImports(), nodeResolve({browser: true}), commonjs(), json(), sourcemaps()]
 };

@@ -68,7 +68,12 @@
       },
       {
         "name": "layer_bar_labels",
-        "title": "Simple Bar Chart with Labels",
+        "title": "Bar Chart with Labels",
+        "style": "background-size: auto 70%; background-position-y: center;"
+      },
+      {
+        "name": "layer_bar_labels_grey",
+        "title": "Bar Chart with Label Overlays",
         "style": "background-size: auto 70%; background-position-y: center;"
       },
       {

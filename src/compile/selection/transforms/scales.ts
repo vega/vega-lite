@@ -7,13 +7,14 @@ import {accessPathWithDatum, varName} from '../../../util';
 import {UnitModel} from '../../unit';
 import {SelectionProjection} from './project';
 import {TransformCompiler} from './transforms';
+import {isLayerModel, Model} from '../../model';
 
 const scaleBindings: TransformCompiler = {
   has: selCmpt => {
     return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
   },
 
-  parse: (model, selDef, selCmpt) => {
+  parse: (model, selCmpt) => {
     const name = varName(selCmpt.name);
     const bound: SelectionProjection[] = (selCmpt.scales = []);
 
@@ -48,7 +49,7 @@ const scaleBindings: TransformCompiler = {
 
     // Top-level signals are only needed for multiview displays and if this
     // view's top-level signals haven't already been generated.
-    if (!model.parent || !bound.length) {
+    if (!model.parent || isTopLevelLayer(model) || !bound.length) {
       return signals;
     }
 
@@ -59,16 +60,17 @@ const scaleBindings: TransformCompiler = {
     // outer" to from within the units. We need to reassemble this state into
     // the top-level named signal, except no single selCmpt has a global view.
     const namedSg = signals.filter(s => s.name === selCmpt.name)[0];
-    const update = namedSg.update;
+    let update = namedSg.update;
     if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
       namedSg.update = `{${bound.map(proj => `${stringValue(proj.field)}: ${proj.signals.data}`).join(', ')}}`;
     } else {
       for (const proj of bound) {
-        const mapping = `, ${stringValue(proj.field)}: ${proj.signals.data}`;
+        const mapping = `${stringValue(proj.field)}: ${proj.signals.data}`;
         if (update.indexOf(mapping) < 0) {
-          namedSg.update = update.substring(0, update.length - 1) + mapping + '}';
+          update = `${update.substring(0, update.length - 1)}, ${mapping}}`;
         }
       }
+      namedSg.update = update;
     }
 
     return signals.concat(bound.map(proj => ({name: proj.signals.data})));
@@ -76,7 +78,7 @@ const scaleBindings: TransformCompiler = {
 
   signals: (model, selCmpt, signals) => {
     // Nested signals need only push to top-level signals with multiview displays.
-    if (model.parent) {
+    if (model.parent && !isTopLevelLayer(model)) {
       for (const proj of selCmpt.scales) {
         const signal: any = signals.filter(s => s.name === proj.signals.data)[0];
         signal.push = 'outer';
@@ -94,4 +96,8 @@ export default scaleBindings;
 export function domain(model: UnitModel, channel: Channel) {
   const scale = stringValue(model.scaleName(channel));
   return `domain(${scale})`;
+}
+
+function isTopLevelLayer(model: Model): boolean {
+  return model.parent && isLayerModel(model.parent) && (!model.parent.parent || isTopLevelLayer(model.parent.parent));
 }

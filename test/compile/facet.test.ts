@@ -74,7 +74,7 @@ describe('FacetModel', () => {
     it('applies number format for fieldref of a quantitative field', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'quantitative', format: 'd'}
+          column: {field: 'a', type: 'quantitative', header: {format: 'd'}}
         },
         spec: {
           mark: 'point',
@@ -159,7 +159,7 @@ describe('FacetModel', () => {
     it('should sort headers in ascending order', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'ordinal', format: 'd'}
+          column: {field: 'a', type: 'ordinal'}
         },
         spec: {
           mark: 'point',
@@ -328,7 +328,7 @@ describe('FacetModel', () => {
 
     it('returns a layout with header band if child spec is also a facet', () => {
       const model = parseFacetModelWithScale({
-        $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
         data: {url: 'data/cars.json'},
         facet: {row: {field: 'Origin', type: 'ordinal'}},
         spec: {
@@ -351,7 +351,7 @@ describe('FacetModel', () => {
 
     it('returns a layout with titleAnchor ="end" when titleOrient is right', () => {
       const model = parseFacetModelWithScale({
-        $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
         data: {url: 'data/cars.json'},
         facet: {row: {field: 'Origin', type: 'ordinal', header: {titleOrient: 'right'}}},
         spec: {
@@ -371,7 +371,7 @@ describe('FacetModel', () => {
 
     it('returns a layout with titleAnchor ="end" when titleOrient is bottom', () => {
       const model = parseFacetModelWithScale({
-        $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
         data: {url: 'data/cars.json'},
         facet: {column: {field: 'Origin', type: 'ordinal', header: {titleOrient: 'bottom'}}},
         spec: {
