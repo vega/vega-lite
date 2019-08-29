@@ -40,6 +40,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Vizard](https://github.com/yieldbot/vizard) tiny REPL client to visualize Clojure data in browser w/ Vega-Lite.
 - [Oz](https://github.com/metasoarous/oz) is a Vega & Vega-Lite based visualization and scientific document toolkit for Clojure & ClojureScript (Reagent). Originally a fork of Vizard, Oz adds support for Vega, publishing/sharing, markdown & hiccup extensions for embedding Vega-Lite & Vega visualizations in html documents, static html output, and Jupyter notebooks.
 - [Vizsla](https://github.com/gjmcn/vizsla) is a simple JavaScript API for Vega-Lite.
+- [Vega node for Node-RED Dashboard](https://flows.nodered.org/node/node-red-node-ui-vega) supports Vega and Vega-Lite visualization on [Node-RED](https://nodered.org/) flow based programming tool.
 
 ## Programming / Data Science Environment that supports Vega-Lite
 
