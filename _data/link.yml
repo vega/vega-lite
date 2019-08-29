@@ -288,7 +288,7 @@ Binding:
 BrushConfig:
   name: Mark
   link: "selection.html#interval-mark"
-EventStream:
+Stream:
   name: "Vega Event Stream"
   link: "https://vega.github.io/vega/docs/event-streams/"
 SelectionResolution:

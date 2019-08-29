@@ -5940,19 +5940,12 @@ vega-transforms@^4.2.0:
     vega-statistics "^1.4.0"
     vega-util "^1.11.0"
 
-vega-typings@0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.7.2.tgz#cb02da5bdd0237971ba2bea6d47d1cbdbc45c52a"
-  integrity sha512-BReB2qRERA/Ke+QoxKDQ7fES25A9Q3qKRm1CJxwvpLGhAl4k5cGDORx6yW+J3rFHMzpJlmdRM+kb489EuphxZQ==
+vega-typings@^0.8.0, vega-typings@~0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.8.1.tgz#6c29437cade44cbe89803d524cc7ac95a41d616d"
+  integrity sha512-ovZS3dTNtEXmSHebmH1Rw4pgtJNuAbIe1DFck2jI45toN8yGCMOTQA9I8WUSKm/hGMl06Ys5a2AcOfsjtoZqcw==
   dependencies:
-    vega-util "^1.10.0"
-
-vega-typings@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.8.0.tgz#b45273ccd7e47cb81af0002f90327fd0043604b9"
-  integrity sha512-rBV3vrDC6Vk/Cgn6CGRLXHGpbYWsKwDQ9O3gZ9gY6T2PXgJmLo0PcbDNs01lq13EJspdGsG+jRFRP+jRcUJIYg==
-  dependencies:
-    vega-util "^1.10.0"
+    vega-util "^1.11.0"
 
 vega-util@^1.10.0, vega-util@^1.11.0, vega-util@^1.8.0, vega-util@~1.11.0:
   version "1.11.0"
