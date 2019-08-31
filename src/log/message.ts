@@ -257,7 +257,9 @@ export function independentScaleMeansIndependentGuide(channel: Channel) {
 }
 
 export function domainSortDropped(sort: VgSortField) {
-  return `Dropping sort property ${stringify(sort)} as unioned domains only support boolean or op 'count'.`;
+  return `Dropping sort property ${stringify(
+    sort
+  )} as unioned domains only support boolean or op "count", "min", and "max".`;
 }
 
 export const UNABLE_TO_MERGE_DOMAINS = 'Unable to merge domains.';
