@@ -1,4 +1,4 @@
-import {isArray} from 'vega-util';
+import {hasOwnProperty, isArray} from 'vega-util';
 import {
   ChannelDef,
   Field,
@@ -108,7 +108,7 @@ type EncodingOrFacet<F extends Field> = Encoding<F> | FacetMapping<F>;
 function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValue): EncodingOrFacet<string> {
   const out: EncodingOrFacet<string> = {};
   for (const channel in mapping) {
-    if (mapping.hasOwnProperty(channel)) {
+    if (hasOwnProperty(mapping, channel)) {
       const channelDef: ChannelDef<FieldDef<Field>> | ChannelDef<FieldDef<Field>>[] = mapping[channel];
 
       if (isArray(channelDef)) {

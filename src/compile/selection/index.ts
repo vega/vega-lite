@@ -1,5 +1,5 @@
 import {Binding, NewSignal, SignalRef, Stream} from 'vega';
-import {stringValue} from 'vega-util';
+import {hasOwnProperty, stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel';
 import {
   BrushConfig,
@@ -66,7 +66,7 @@ export function forEachSelection(
 ) {
   const selections = model.component.selection;
   for (const name in selections) {
-    if (selections.hasOwnProperty(name)) {
+    if (hasOwnProperty(selections, name)) {
       const sel = selections[name];
       cb(sel, compilers[sel.type]);
     }
