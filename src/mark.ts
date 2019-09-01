@@ -122,7 +122,11 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    * - For `bar`, this represents the band size of the bar, in pixels.
    * - For `text`, this represents the font size, in pixels.
    *
-   * __Default value:__ `30` for point, circle, square marks; width/height's `step` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.
+   * __Default value:__
+   * - `30` for point, circle, square marks; width/height's `step`
+   * - `2` for bar marks with discrete dimensions;
+   * - `5` for bar marks with continuous dimensions;
+   * - `11` for text marks.
    *
    * @minimum 0
    */
@@ -141,12 +145,13 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
   invalid?: 'filter' | Hide | null;
 
   /**
-   * Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.
+   * Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.
+   * If set to `0.5`, the marks will be positioned in the middle of the time unit band step.
    */
   timeUnitBandPosition?: number;
 
   /**
-   * Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.
+   * Default relative band size for a time unit. If set to `1`, the bandwidth of the marks will be equal to the time unit band step.
    * If set to `0.5`, bandwidth of the marks will be half of the time unit band step.
    */
   timeUnitBand?: number;
@@ -154,7 +159,7 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
 
 export interface RectBinSpacingMixins {
   /**
-   * Offset between bars for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).
+   * Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).
    *
    * __Default value:__ `1`
    *
