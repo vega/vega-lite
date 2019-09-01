@@ -11,7 +11,7 @@ import {expression} from '../predicate';
 import {AxisComponent, AxisComponentIndex} from './component';
 
 function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {
-  if (isArray(title)) {
+  if (isArray<FieldDefBase<string>>(title)) {
     return title.map(fieldDef => defaultTitle(fieldDef, config)).join(', ');
   }
   return title;
@@ -21,7 +21,7 @@ function setAxisEncode(
   axis: Omit<VgAxis, 'orient' | 'scale'>,
   part: keyof AxisEncode,
   vgProp: VgEncodeChannel,
-  vgRef: VgValueRef | VgValueRef[]
+  vgRef: VgValueRef | readonly VgValueRef[]
 ) {
   axis.encode = axis.encode || {};
   axis.encode[part] = axis.encode[part] || {};

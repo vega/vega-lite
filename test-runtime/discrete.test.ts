@@ -1,7 +1,6 @@
 import {Page} from 'puppeteer';
 import {SELECTION_ID} from '../src/selection';
-import {fill} from '../src/util';
-import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
+import {embedFn, fill, hits as hitsMaster, pt, spec, testRenderFn} from './util';
 
 declare const page: Page;
 for (const type of ['single', 'multi']) {

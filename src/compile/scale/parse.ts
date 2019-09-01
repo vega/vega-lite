@@ -130,7 +130,7 @@ function parseNonUnitScaleCore(model: Model) {
   }
 
   // Merge each channel listed in the index
-  keys(scaleTypeWithExplicitIndex).forEach((channel: ScaleChannel) => {
+  for (const channel of keys(scaleTypeWithExplicitIndex)) {
     // Create new merged scale component
     const name = model.scaleName(channel, true);
     const typeWithExplicit = scaleTypeWithExplicitIndex[channel];
@@ -144,7 +144,7 @@ function parseNonUnitScaleCore(model: Model) {
         childScale.merged = true;
       }
     }
-  });
+  }
 
   return scaleComponents;
 }

@@ -14,7 +14,7 @@ import {UnitModel} from '../unit';
 import {forEachTransform} from './transforms/transforms';
 
 export function assembleInit(
-  init: (SelectionInit | SelectionInit[] | SelectionInitInterval)[] | SelectionInit,
+  init: readonly (SelectionInit | readonly SelectionInit[] | SelectionInitInterval)[] | SelectionInit,
   isExpr = true,
   wrap: (str: string) => string = identity
 ): any {
@@ -111,7 +111,8 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
   return cleanupEmptyOnArray(signals);
 }
 
-export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[] {
+export function assembleUnitSelectionData(model: UnitModel, data: readonly VgData[]): VgData[] {
+  const dataCopy = [...data];
   forEachSelection(model, selCmpt => {
     const init: VgData = {name: selCmpt.name + STORE};
     if (selCmpt.init) {
@@ -126,13 +127,13 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
           ? [{unit: unitName(model, {escape: false}), fields, values: insert}]
           : insert.map(i => ({unit: unitName(model, {escape: false}), fields, values: i}));
     }
-    const contains = data.filter(d => d.name === selCmpt.name + STORE);
+    const contains = dataCopy.filter(d => d.name === selCmpt.name + STORE);
     if (!contains.length) {
-      data.push(init);
+      dataCopy.push(init);
     }
   });
 
-  return data;
+  return dataCopy;
 }
 
 export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {
@@ -203,7 +204,7 @@ export function assembleSelectionScaleDomain(model: Model, domainRaw: SignalRef)
   return {signal: 'null'};
 }
 
-function cleanupEmptyOnArray(signals: Signal[]) {
+function cleanupEmptyOnArray(signals: readonly Signal[]) {
   return signals.map(s => {
     if (s.on && !s.on.length) delete s.on;
     return s;

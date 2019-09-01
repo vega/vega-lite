@@ -121,7 +121,7 @@ export class FacetModel extends ModelWithField {
     parseFacetHeaders(this);
   }
 
-  public assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[] {
+  public assembleSelectionTopLevelSignals(signals: readonly NewSignal[]): readonly NewSignal[] {
     return this.child.assembleSelectionTopLevelSignals(signals);
   }
 
@@ -130,7 +130,7 @@ export class FacetModel extends ModelWithField {
     return [];
   }
 
-  public assembleSelectionData(data: VgData[]): VgData[] {
+  public assembleSelectionData(data: readonly VgData[]): readonly VgData[] {
     return this.child.assembleSelectionData(data);
   }
 

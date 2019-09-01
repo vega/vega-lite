@@ -286,10 +286,10 @@ export abstract class Model {
     parseLegend(this);
   }
 
-  public abstract assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
+  public abstract assembleSelectionTopLevelSignals(signals: readonly NewSignal[]): readonly NewSignal[];
   public abstract assembleSignals(): NewSignal[];
 
-  public abstract assembleSelectionData(data: VgData[]): VgData[];
+  public abstract assembleSelectionData(data: readonly VgData[]): readonly VgData[];
 
   public assembleGroupStyle(): string | string[] {
     if (this.type === 'unit' || this.type === 'layer') {
@@ -556,7 +556,7 @@ export abstract class Model {
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
    */
-  public scaleName(originalScaleName: Channel | string, parse?: boolean): string {
+  public scaleName(originalScaleName: ScaleChannel | string, parse?: boolean): string {
     if (parse) {
       // During the parse phase always return a value
       // No need to refer to rename map because a scale can't be renamed

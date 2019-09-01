@@ -226,7 +226,7 @@ export class UnitModel extends ModelWithField {
     return [...assembleAxisSignals(this), ...assembleUnitSelectionSignals(this, [])];
   }
 
-  public assembleSelectionData(data: VgData[]): VgData[] {
+  public assembleSelectionData(data: readonly VgData[]): VgData[] {
     return assembleUnitSelectionData(this, data);
   }
 
