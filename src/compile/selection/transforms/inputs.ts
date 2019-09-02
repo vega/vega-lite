@@ -5,7 +5,7 @@ import nearest from './nearest';
 import {TUPLE_FIELDS} from './project';
 import {TransformCompiler} from './transforms';
 import legendsTx from './legends';
-import {isObject} from 'vega';
+import {isObject, stringValue} from 'vega';
 
 const inputBindings: TransformCompiler = {
   has: selCmpt => {
@@ -23,7 +23,6 @@ const inputBindings: TransformCompiler = {
     proj.items.forEach((p, i) => {
       const sgname = varName(`${name}_${p.field}`);
       const hasSignal = signals.filter(s => s.name === sgname);
-      const legendIdx = legends && legends.indexOf(p.field);
 
       if (!hasSignal.length) {
         const on = [
@@ -33,10 +32,10 @@ const inputBindings: TransformCompiler = {
           }
         ];
 
-        if (legends && legendIdx >= 0) {
+        if (legends) {
           on.push({
             events: {signal: `${name}_legend`},
-            update: `${name}_legend.values[${legendIdx}]`
+            update: `${name}_legend.fields[0] === ${stringValue(p.field)} ? ${name}_legend.values[0] : null`
           });
         }
 
