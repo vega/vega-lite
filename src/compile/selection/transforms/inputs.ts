@@ -12,6 +12,13 @@ const inputBindings: TransformCompiler = {
     return selCmpt.type === 'single' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind !== 'scales';
   },
 
+  parse: (model, selCmpt, selDef, origDef) => {
+    // Binding a selection to input widgets disables default direct manipulation interaction.
+    // A user can choose to re-enable it by explicitly specifying triggering input events.
+    if (!origDef.on) delete selCmpt.events;
+    if (!origDef.clear) delete selCmpt.clear;
+  },
+
   topLevelSignals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const proj = selCmpt.project;
@@ -25,12 +32,14 @@ const inputBindings: TransformCompiler = {
       const hasSignal = signals.filter(s => s.name === sgname);
 
       if (!hasSignal.length) {
-        const on = [
-          {
-            events: selCmpt.events,
-            update: `datum && item().mark.marktype !== 'group' ? ${accessPathWithDatum(p.field, datum)} : null`
-          }
-        ];
+        const on = selCmpt.events
+          ? [
+              {
+                events: selCmpt.events,
+                update: `datum && item().mark.marktype !== 'group' ? ${accessPathWithDatum(p.field, datum)} : null`
+              }
+            ]
+          : [];
 
         if (legends) {
           on.push({

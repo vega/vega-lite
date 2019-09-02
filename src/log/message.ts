@@ -9,6 +9,7 @@ import {DateTime, DateTimeExpr} from '../datetime';
 import {Mark} from '../mark';
 import {Projection} from '../projection';
 import {ScaleType} from '../scale';
+import {GenericSpec} from '../spec/index';
 import {Type} from '../type';
 import {stringify} from '../util';
 import {VgSortField} from '../vega.schema';
@@ -17,7 +18,11 @@ import {VgSortField} from '../vega.schema';
  * Collection of all Vega-Lite Error Messages
  */
 
-export const INVALID_SPEC = 'Invalid spec';
+export function invalidSpec(spec: GenericSpec<any, any>) {
+  return `Invalid specification ${JSON.stringify(
+    spec
+  )}.  Make sure the specification includes at least one of the following properties: "mark", "layer", "facet", "hconcat", "vconcat", "concat", or "repeat".`;
+}
 
 // FIT
 export const FIT_NON_SINGLE = 'Autosize "fit" only works for single views and layered views.';

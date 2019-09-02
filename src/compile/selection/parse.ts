@@ -1,5 +1,5 @@
 import {selector as parseSelector} from 'vega-event-selector';
-import {isString, stringValue} from 'vega-util';
+import {hasOwnProperty, isString, stringValue} from 'vega-util';
 import {SelectionComponent, STORE} from '.';
 import {LogicalOperand} from '../../logical';
 import {SelectionDef} from '../../selection';
@@ -13,16 +13,12 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
   const selectionConfig = model.config.selection;
 
-  if (selDefs) {
-    selDefs = duplicate(selDefs); // duplicate to avoid side effects to original spec
-  }
-
   for (let name in selDefs) {
-    if (!selDefs.hasOwnProperty(name)) {
+    if (!hasOwnProperty(selDefs, name)) {
       continue;
     }
 
-    const selDef = selDefs[name];
+    const selDef = duplicate(selDefs[name]);
     const {fields, encodings, ...cfg} = selectionConfig[selDef.type]; // Project transform applies its defaults.
 
     // Set default values from config if a property hasn't been specified,
@@ -54,7 +50,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
 
     forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.has(selCmpt) && txCompiler.parse) {
-        txCompiler.parse(model, selDef, selCmpt);
+        txCompiler.parse(model, selCmpt, selDef, selDefs[name]);
       }
     });
   }

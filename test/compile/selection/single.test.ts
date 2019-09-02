@@ -173,7 +173,7 @@ describe('Single Selection', () => {
         name: 'thr_ee_store',
         values: [
           {
-            unit: '""',
+            unit: '',
             fields: [{type: 'E', field: 'Horsepower'}],
             values: [50]
           }
@@ -183,7 +183,7 @@ describe('Single Selection', () => {
         name: 'four_store',
         values: [
           {
-            unit: '""',
+            unit: '',
             fields: [{field: 'Horsepower', channel: 'x', type: 'E'}, {field: 'Origin', channel: 'color', type: 'E'}],
             values: [50, 'Japan']
           }

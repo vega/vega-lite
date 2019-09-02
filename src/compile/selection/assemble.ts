@@ -15,26 +15,16 @@ import {forEachTransform} from './transforms/transforms';
 
 export function assembleInit(
   init: (SelectionInit | SelectionInit[] | SelectionInitInterval)[] | SelectionInit,
+  isExpr = true,
   wrap: (str: string) => string = identity
-): string {
-  if (isArray(init)) {
-    const str = init.map(v => assembleInit(v, wrap)).join(', ');
-    return `[${str}]`;
-  } else if (isDateTime(init)) {
-    return wrap(dateTimeExpr(init));
-  }
-  return wrap(JSON.stringify(init));
-}
-
-export function assembleInitData(
-  init: (SelectionInit | SelectionInit[] | SelectionInitInterval)[] | SelectionInit
 ): any {
   if (isArray(init)) {
-    return init.map(v => assembleInitData(v));
+    const assembled = init.map(v => assembleInit(v, isExpr, wrap));
+    return isExpr ? `[${assembled.join(', ')}]` : assembled;
   } else if (isDateTime(init)) {
-    return dateTimeExpr(init, false, true);
+    return wrap(dateTimeExpr(init, false, !isExpr));
   }
-  return init;
+  return isExpr ? wrap(JSON.stringify(init)) : init;
 }
 
 export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]) {
@@ -59,7 +49,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]
     });
   });
 
-  return signals;
+  return cleanupEmptyOnArray(signals);
 }
 
 export function assembleFacetSignals(model: FacetModel, signals: Signal[]) {
@@ -77,7 +67,7 @@ export function assembleFacetSignals(model: FacetModel, signals: Signal[]) {
     });
   }
 
-  return signals;
+  return cleanupEmptyOnArray(signals);
 }
 
 export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
@@ -118,7 +108,7 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
     }
   }
 
-  return signals;
+  return cleanupEmptyOnArray(signals);
 }
 
 export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[] {
@@ -129,11 +119,12 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
         const {signals, ...rest} = proj;
         return rest;
       });
-      const insert = selCmpt.init.map((i: SelectionInit | SelectionInit[]) => assembleInitData(i));
+
+      const insert = selCmpt.init.map(i => assembleInit(i, false));
       init.values =
         selCmpt.type === 'interval'
-          ? [{unit: unitName(model), fields, values: insert}]
-          : insert.map(i => ({unit: unitName(model), fields, values: i}));
+          ? [{unit: unitName(model, {escape: false}), fields, values: insert}]
+          : insert.map(i => ({unit: unitName(model, {escape: false}), fields, values: i}));
     }
     const contains = data.filter(d => d.name === selCmpt.name + STORE);
     if (!contains.length) {
@@ -210,4 +201,11 @@ export function assembleSelectionScaleDomain(model: Model, domainRaw: SignalRef)
   }
 
   return {signal: 'null'};
+}
+
+function cleanupEmptyOnArray(signals: Signal[]) {
+  return signals.map(s => {
+    if (s.on && !s.on.length) delete s.on;
+    return s;
+  });
 }

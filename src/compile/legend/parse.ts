@@ -105,7 +105,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   }
 
   const legendEncoding = legend.encoding || {};
-  const legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce(
+  const legendEncode = (['labels', 'legend', 'title', 'symbols', 'gradient'] as const).reduce(
     (e: LegendEncode, part) => {
       const legendEncodingPart = guideEncodeEntry(legendEncoding[part] || {}, model);
       const value = encode[part]
@@ -149,21 +149,27 @@ function getProperty<K extends keyof LegendComponentProps>(
     //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(properties.type(...)));
 
     case 'direction':
-      return direction({legend, legendConfig, timeUnit, channel, scaleType});
+      return direction({
+        legend,
+        legendConfig,
+        timeUnit,
+        channel,
+        scaleType
+      }) as LegendComponentProps[K];
 
     case 'format':
       // We don't include temporal field here as we apply format in encode block
       if (isTimeFormatFieldDef(fieldDef)) {
         return undefined;
       }
-      return numberFormat(fieldDef, legend.format, model.config);
+      return numberFormat(fieldDef, legend.format, model.config) as LegendComponentProps[K];
 
     case 'formatType':
-      // Same as format, we don't include temporal field here as we apply format in encode block
+      // As with format, we don't include temporal field here as we apply format in encode block
       if (isTimeFormatFieldDef(fieldDef)) {
         return undefined;
       }
-      return legend.formatType;
+      return legend.formatType as LegendComponentProps[K];
 
     case 'gradientLength':
       return getFirstDefined<number | SignalRef>(
@@ -178,25 +184,25 @@ function getProperty<K extends keyof LegendComponentProps>(
           channel,
           scaleType
         })
-      );
+      ) as LegendComponentProps[K];
 
     case 'labelOverlap':
-      return getFirstDefined(legend.labelOverlap, properties.defaultLabelOverlap(scaleType));
+      return getFirstDefined(legend.labelOverlap, properties.defaultLabelOverlap(scaleType)) as LegendComponentProps[K];
 
     case 'symbolType':
       return getFirstDefined(
         legend.symbolType,
         properties.defaultSymbolType(mark, channel, encoding.shape, model.markDef.shape)
-      );
+      ) as LegendComponentProps[K];
 
     case 'title':
-      return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;
+      return (fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined) as LegendComponentProps[K];
 
     case 'type':
-      return type({legend, channel, timeUnit, scaleType, alwaysReturn: false});
+      return type({legend, channel, timeUnit, scaleType, alwaysReturn: false}) as LegendComponentProps[K];
 
     case 'values':
-      return properties.values(legend, fieldDef);
+      return properties.values(legend, fieldDef) as LegendComponentProps[K];
   }
 
   // Otherwise, return specified property.

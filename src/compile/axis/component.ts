@@ -8,7 +8,7 @@ import {
   ConditionalAxisProperty
 } from '../../axis';
 import {FieldDefBase} from '../../channeldef';
-import {duplicate, Flag, keys, Omit} from '../../util';
+import {duplicate, Flag, keys} from '../../util';
 import {Split} from '../split';
 
 function isFalseOrNull(v: any) {

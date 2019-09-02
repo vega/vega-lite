@@ -58,8 +58,6 @@ export function isSignalRef(o: any): o is SignalRef {
   return !!o['signal'];
 }
 
-export type EventStream = any;
-
 // TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
 export interface VgValueRef {
   value?: ValueOrGradient | number[];
@@ -574,7 +572,7 @@ export interface BaseMarkConfig {
    *
    * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y2?: number | 'width';
+  y2?: number | 'height';
 
   /**
    * Whether to keep aspect ratio of image marks.

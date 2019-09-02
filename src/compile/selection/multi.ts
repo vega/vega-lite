@@ -30,13 +30,15 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
   return [
     {
       name: name + TUPLE,
-      on: [
-        {
-          events: selCmpt.events,
-          update: `datum && item().mark.marktype !== 'group' ? {${update}: [${values}]} : null`,
-          force: true
-        }
-      ]
+      on: selCmpt.events
+        ? [
+            {
+              events: selCmpt.events,
+              update: `datum && item().mark.marktype !== 'group' ? {${update}: [${values}]} : null`,
+              force: true
+            }
+          ]
+        : []
     }
   ];
 }
