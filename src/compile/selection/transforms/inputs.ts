@@ -5,7 +5,7 @@ import nearest from './nearest';
 import {TUPLE_FIELDS} from './project';
 import {TransformCompiler} from './transforms';
 import legendsTx from './legends';
-import {isObject, stringValue} from 'vega';
+import {isObject, stringValue} from 'vega-util';
 
 const inputBindings: TransformCompiler = {
   has: selCmpt => {
@@ -43,7 +43,7 @@ const inputBindings: TransformCompiler = {
 
         if (legends) {
           on.push({
-            events: {signal: `${name}_legend`},
+            events: {signal: `${name}_legend`} as any,
             update: `${name}_legend.fields[0] === ${stringValue(p.field)} ? ${name}_legend.values[0] : null`
           });
         }

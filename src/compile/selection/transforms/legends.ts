@@ -3,17 +3,17 @@ import {UnitModel} from '../../unit';
 import {NonPositionScaleChannel} from '../../../channel';
 import {LegendComponent} from '../../legend/component';
 import {forEachSelection, SelectionComponent, STORE} from '..';
-import {isObject, stringValue} from 'vega-util';
-import {OnEvent} from 'vega';
+import {isObject, stringValue, array} from 'vega-util';
 import toggleTx from './toggle';
+import {OnEvent} from 'vega';
 
 const legendBindings: TransformCompiler = {
   has: selCmpt => selCmpt.type !== 'interval' && selCmpt.legends !== false,
 
-  parse: (model, selDef, selCmpt) => {
+  parse: (model, selCmpt) => {
     const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
     for (const evt of selCmpt.events) {
-      evt.filter = evt.filter || [];
+      evt.filter = array(evt.filter || []);
       if (evt.filter.indexOf(legendFilter) < 0) {
         evt.filter.push(legendFilter);
       }
