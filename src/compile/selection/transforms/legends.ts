@@ -10,14 +10,25 @@ import toggleTx from './toggle';
 const legendBindings: TransformCompiler = {
   has: selCmpt => selCmpt.type !== 'interval' && selCmpt.legends !== false,
 
+  parse: (model, selDef, selCmpt) => {
+    const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
+    for (const evt of selCmpt.events) {
+      evt.filter = evt.filter || [];
+      if (evt.filter.indexOf(legendFilter) < 0) {
+        evt.filter.push(legendFilter);
+      }
+    }
+  },
+
   topLevelSignals: (model, selCmpt: SelectionComponent<'single' | 'multi'>, sg) => {
-    const name = selCmpt.name;
+    const selName = selCmpt.name;
+    const name = `${selName}_legend`;
     if (!isObject(selCmpt.legends)) return sg;
-    if (sg.some(s => s.name.indexOf(`${name}_legend`) >= 0)) return sg;
+    if (sg.some(s => s.name.indexOf(name) >= 0)) return sg;
 
     const hasToggle = toggleTx.has(selCmpt);
     const toggle = selCmpt.toggle;
-    const store = stringValue(name + STORE);
+    const store = stringValue(selName + STORE);
 
     const on: OnEvent[] = [];
 
@@ -37,7 +48,7 @@ const legendBindings: TransformCompiler = {
             (selCmpt.resolve === 'global'
               ? `${toggle} ? null : true, `
               : `${toggle} ? null : {unit: ${stringValue(prefix)}}, `) +
-            `${toggle} ? ${tpl} : null)`,
+            `${toggle} ? ${tpl} : null) && ${tpl}`,
           force: true
         });
       } else {
@@ -48,9 +59,10 @@ const legendBindings: TransformCompiler = {
             `modify(${store}, ${tpl}, ` +
             (selCmpt.resolve === 'global'
               ? selCmpt.type === 'single'
-                ? 'true)'
-                : 'null)'
-              : `{unit: ${stringValue(prefix)}})`),
+                ? 'true'
+                : 'null'
+              : `{unit: ${stringValue(prefix)}}`) +
+            `) && ${tpl}`,
           force: true
         });
       }
@@ -63,10 +75,10 @@ const legendBindings: TransformCompiler = {
       update:
         `!event.item || !datum ? modify(${store}, null, ` +
         (selCmpt.resolve === 'global' ? (hasToggle ? `${toggle} ? null : true)` : 'true)') : '{legend: true})') +
-        ': null'
+        `: ${name}`
     });
 
-    return sg.concat({name: `${name}_legend`, on});
+    return sg.concat({name, on});
   }
 };
 

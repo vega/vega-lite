@@ -80,7 +80,13 @@ describe('Inputs Selection Transform', () => {
       value: null,
       on: [
         {
-          events: [{source: 'scope', type: 'click'}],
+          events: [
+            {
+              source: 'scope',
+              type: 'click',
+              filter: ['event.item && indexof(event.item.mark.role, "legend") < 0']
+            }
+          ],
           update: 'datum && item().mark.marktype !== \'group\' ? datum["_vgsid_"] : null'
         }
       ],
@@ -103,7 +109,13 @@ describe('Inputs Selection Transform', () => {
           value: null,
           on: [
             {
-              events: [{source: 'scope', type: 'click'}],
+              events: [
+                {
+                  source: 'scope',
+                  type: 'click',
+                  filter: ['event.item && indexof(event.item.mark.role, "legend") < 0']
+                }
+              ],
               update: 'datum && item().mark.marktype !== \'group\' ? datum["Horsepower"] : null'
             }
           ],
@@ -114,7 +126,13 @@ describe('Inputs Selection Transform', () => {
           value: null,
           on: [
             {
-              events: [{source: 'scope', type: 'click'}],
+              events: [
+                {
+                  source: 'scope',
+                  type: 'click',
+                  filter: ['event.item && indexof(event.item.mark.role, "legend") < 0']
+                }
+              ],
               update: 'datum && item().mark.marktype !== \'group\' ? datum["Cylinders"] : null'
             }
           ],
@@ -126,6 +144,7 @@ describe('Inputs Selection Transform', () => {
 
   it('adds projection-specific widget bindings', () => {
     model.component.selection = {three: selCmpts['three']};
+    model.parseLegends();
     expect(assembleUnitSelectionSignals(model, [])).toContainEqual({
       name: 'three_tuple',
       update:
@@ -139,9 +158,19 @@ describe('Inputs Selection Transform', () => {
           value: null,
           on: [
             {
-              events: [{source: 'scope', type: 'click'}],
+              events: [
+                {
+                  source: 'scope',
+                  type: 'click',
+                  filter: ['event.item && indexof(event.item.mark.role, "legend") < 0']
+                }
+              ],
               update:
                 'datum && item().mark.marktype !== \'group\' ? (item().isVoronoi ? datum.datum : datum)["Origin"] : null'
+            },
+            {
+              events: {signal: 'three_legend'},
+              update: 'three_legend.values[0]'
             }
           ],
           bind: {
@@ -154,7 +183,13 @@ describe('Inputs Selection Transform', () => {
           value: null,
           on: [
             {
-              events: [{source: 'scope', type: 'click'}],
+              events: [
+                {
+                  source: 'scope',
+                  type: 'click',
+                  filter: ['event.item && indexof(event.item.mark.role, "legend") < 0']
+                }
+              ],
               update:
                 'datum && item().mark.marktype !== \'group\' ? (item().isVoronoi ? datum.datum : datum)["Cylinders"] : null'
             }
@@ -189,7 +224,13 @@ describe('Inputs Selection Transform', () => {
           init: 'datetime(1970, 1, 1+1, 0, 0, 0, 0)',
           on: [
             {
-              events: [{source: 'scope', type: 'click'}],
+              events: [
+                {
+                  source: 'scope',
+                  type: 'click',
+                  filter: ['event.item && indexof(event.item.mark.role, "legend") < 0']
+                }
+              ],
               update: 'datum && item().mark.marktype !== \'group\' ? datum["Year"] : null'
             }
           ],

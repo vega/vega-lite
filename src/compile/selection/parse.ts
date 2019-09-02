@@ -53,7 +53,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
     } as any);
 
     forEachTransform(selCmpt, txCompiler => {
-      if (txCompiler.parse) {
+      if (txCompiler.has(selCmpt) && txCompiler.parse) {
         txCompiler.parse(model, selDef, selCmpt);
       }
     });

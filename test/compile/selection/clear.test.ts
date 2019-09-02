@@ -119,7 +119,7 @@ describe('Clear selection transform, single and multi types', () => {
           value: null,
           on: [
             {
-              events: [{source: 'scope', type: 'click'}],
+              events: selCmpts['seven'].events,
               update: 'datum && item().mark.marktype !== \'group\' ? datum["Year"] : null'
             },
             {

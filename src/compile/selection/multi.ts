@@ -2,7 +2,6 @@ import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from '.';
 import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
 import {TUPLE_FIELDS} from './transforms/project';
-import {EventStream} from '../../vega.schema';
 
 export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionComponent<'single' | 'multi'>) {
   const name = selCmpt.name;
@@ -33,11 +32,7 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
       name: name + TUPLE,
       on: [
         {
-          events: selCmpt.events.map((e: EventStream) => {
-            e.filter = e.filter || [];
-            e.filter.push('event.item && indexof(event.item.mark.role, "legend") < 0');
-            return e;
-          }),
+          events: selCmpt.events,
           update: `datum && item().mark.marktype !== 'group' ? {${update}: [${values}]} : null`,
           force: true
         }
