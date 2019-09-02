@@ -4,6 +4,8 @@ import {assembleInit} from '../assemble';
 import nearest from './nearest';
 import {TUPLE_FIELDS} from './project';
 import {TransformCompiler} from './transforms';
+import legendsTx from './legends';
+import {isObject} from 'vega';
 
 const inputBindings: TransformCompiler = {
   has: selCmpt => {
@@ -16,20 +18,32 @@ const inputBindings: TransformCompiler = {
     const bind = selCmpt.bind;
     const init = selCmpt.init && selCmpt.init[0]; // Can only exist on single selections (one initial value).
     const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
+    const legends = legendsTx.has(selCmpt) && isObject(selCmpt.legends) && Object.keys(selCmpt.legends);
 
     proj.items.forEach((p, i) => {
       const sgname = varName(`${name}_${p.field}`);
       const hasSignal = signals.filter(s => s.name === sgname);
+      const legendIdx = legends && legends.indexOf(p.field);
+
       if (!hasSignal.length) {
+        const on = [
+          {
+            events: selCmpt.events,
+            update: `datum && item().mark.marktype !== 'group' ? ${accessPathWithDatum(p.field, datum)} : null`
+          }
+        ];
+
+        if (legends && legendIdx >= 0) {
+          on.push({
+            events: {signal: `${name}_legend`},
+            update: `${name}_legend.values[${legendIdx}]`
+          });
+        }
+
         signals.unshift({
           name: sgname,
           ...(init ? {init: assembleInit(init[i])} : {value: null}),
-          on: [
-            {
-              events: selCmpt.events,
-              update: `datum && item().mark.marktype !== 'group' ? ${accessPathWithDatum(p.field, datum)} : null`
-            }
-          ],
+          on,
           bind: bind[p.field] || bind[p.channel] || bind
         });
       }
