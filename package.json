@@ -126,7 +126,7 @@
     "yargs": "~14.0.0"
   },
   "peerDependencies": {
-    "vega": "^5.4.0"
+    "vega": "^5.5.0"
   },
   "jest": {
     "preset": "jest-puppeteer",
