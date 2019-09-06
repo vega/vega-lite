@@ -49,7 +49,7 @@ We can represent this data as a [JSON array](http://www.json.org/) in which each
 ]
 ```
 
-To visualize this data with Vega-Lite, we can add it directly to the `data` property in a Vega-Lite specification. (Note that we reformatted the array to make it more compact.)
+To visualize this data with Vega-Lite, we can add it directly to the `data` property in a Vega-Lite specification.
 
 ```json
 {
@@ -126,7 +126,7 @@ Great! You computed the aggregate values for each category and visualized the re
 
 <div class="vl-example" data-name="bar_array_aggregate"></div>
 
-Since the quantitative value is on y, you automatically get a vertical bar chart. If we swap the `x` and `y` channel, we get a horizontal bar chart instead.
+Since the quantitative value is on `y`, you automatically get a vertical bar chart. If we swap the `x` and `y` channel, we get a horizontal bar chart instead.
 
 <div class="vl-example" data-name="bar_swap_axes"></div>
 
