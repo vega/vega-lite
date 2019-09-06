@@ -5,7 +5,6 @@ import {hasContinuousDomain} from '../../../scale';
 import {SelectionInit, SelectionInitInterval} from '../../../selection';
 import {Dict, hash, keys, varName} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
-import scales from './scales';
 import {TransformCompiler} from './transforms';
 
 export const TUPLE_FIELDS = '_tuple_fields';
@@ -136,19 +135,15 @@ const project: TransformCompiler = {
     }
 
     if (selDef.init) {
-      if (scales.has(selCmpt)) {
-        log.warn(log.message.NO_INIT_SCALE_BINDINGS);
-      } else {
-        const parseInit = <T extends SelectionInit | SelectionInitInterval>(i: Dict<T>): T[] => {
-          return proj.items.map(p => (i[p.channel] !== undefined ? i[p.channel] : i[p.field]));
-        };
+      const parseInit = <T extends SelectionInit | SelectionInitInterval>(i: Dict<T>): T[] => {
+        return proj.items.map(p => (i[p.channel] !== undefined ? i[p.channel] : i[p.field]));
+      };
 
-        if (selDef.type === 'interval') {
-          selCmpt.init = parseInit(selDef.init);
-        } else {
-          const init = isArray(selDef.init) ? selDef.init : [selDef.init];
-          selCmpt.init = init.map(parseInit);
-        }
+      if (selDef.type === 'interval') {
+        selCmpt.init = parseInit(selDef.init);
+      } else {
+        const init = isArray(selDef.init) ? selDef.init : [selDef.init];
+        selCmpt.init = init.map(parseInit);
       }
     }
 
