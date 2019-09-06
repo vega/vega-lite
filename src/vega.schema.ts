@@ -340,6 +340,7 @@ export type VgEncodeEntry = {[k in VgEncodeChannel]?: VgValueRef | (VgValueRef &
 export interface VgBinTransform extends BaseBin {
   type: 'bin';
   extent?: number[] | {signal: string};
+  rawExtent?: {signal: string};
   field: string;
   as: string[];
   signal?: string;

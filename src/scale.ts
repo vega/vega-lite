@@ -1,13 +1,13 @@
 import {toSet} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, CHANNELS, isColorChannel} from './channel';
-import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
 import * as log from './log';
 import * as TYPE from './type';
 import {Type, TYPE_INDEX} from './type';
 import {contains, Flag, keys} from './util';
 import {ScaleInterpolate, ScaleInterpolateParams} from './vega.schema';
+import {SelectionExtent} from './selection';
 
 export namespace ScaleType {
   // Continuous - Quantitative
@@ -402,38 +402,14 @@ export interface SchemeParams {
   count?: number;
 }
 
-export type SelectionDomain =
-  | {
-      /**
-       * The name of a selection.
-       */
-      selection: string;
-      /**
-       * The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
-       * over multiple fields or encodings.
-       */
-      field?: FieldName;
-    }
-  | {
-      /**
-       * The name of a selection.
-       */
-      selection: string;
-      /**
-       * The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
-       * over multiple fields or encodings.
-       */
-      encoding?: string;
-    };
-
-export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionDomain;
+export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionExtent;
 export type Scheme = string | SchemeParams;
 
 export function isExtendedScheme(scheme: string | SchemeParams): scheme is SchemeParams {
   return scheme && !!scheme['name'];
 }
 
-export function isSelectionDomain(domain: Domain): domain is SelectionDomain {
+export function isSelectionDomain(domain: Domain): domain is SelectionExtent {
   return domain && domain['selection'];
 }
 
@@ -463,7 +439,7 @@ export interface Scale {
    *
    * The `selection` property can be used to [interactively determine](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain.
    */
-  domain?: number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionDomain;
+  domain?: number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionExtent;
 
   // Hide because we might not really need this.
   /**
