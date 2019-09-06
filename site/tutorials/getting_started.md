@@ -153,9 +153,9 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
     <title>Vega-Lite Bar Chart</title>
     <meta charset="utf-8" />
 
-    <script src="https://cdn.jsdelivr.net/npm/vega@{{ site.data.versions.vega }}/build/vega.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@{{ site.data.versions.vega-lite }}/build/vega-lite.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-embed@{{ site.data.versions.vega-embed }}/build/vega-embed.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega@{{ site.data.versions.vega }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@{{ site.data.versions.vega-lite }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@{{ site.data.versions.vega-embed }}"></script>
 
     <style media="screen">
       /* Add space between Vega-Embed links  */
