@@ -201,6 +201,26 @@ export class ParseNode extends DataFlowNode {
   }
 
   /**
+   * Creates a parse node for implicit parsing from a model and updates ancestorParse.
+   */
+  public static makeImplicitFromSelection(parent: DataFlowNode, model: Model, ancestorParse: AncestorParse) {
+    const implicit: Dict<string> = {};
+
+    if (isUnitModel(model) && model.component.selection) {
+      for (const name of keys(model.component.selection)) {
+        const selCmpt = model.component.selection[name];
+        for (const proj of selCmpt.project.items) {
+          if (!proj.channel && accessPathDepth(proj.field) > 1) {
+            implicit[proj.field] = 'flatten';
+          }
+        }
+      }
+    }
+
+    return this.makeWithAncestors(parent, {}, implicit, ancestorParse);
+  }
+
+  /**
    * Creates a parse node from "explicit" parse and "implicit" parse and updates ancestorParse.
    */
   private static makeWithAncestors(

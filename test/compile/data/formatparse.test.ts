@@ -164,7 +164,7 @@ describe('compile/data/formatparse', () => {
       expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse())).toBeNull();
     });
 
-    it('should add flatten for nested fields', () => {
+    it('should add flatten for nested fields in encoding', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
@@ -174,6 +174,24 @@ describe('compile/data/formatparse', () => {
       });
 
       expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse).toEqual({
+        'foo.bar': 'flatten',
+        'foo.baz': 'flatten'
+      });
+    });
+
+    it('should add flatten for nested fields in selection', () => {
+      const model = parseUnitModel({
+        selection: {foo: {type: 'single', fields: ['foo.bar', 'foo.baz']}},
+        mark: 'point',
+        encoding: {
+          x: {field: 'bar', type: 'quantitative'},
+          y: {field: 'baz', type: 'ordinal'}
+        }
+      });
+
+      model.parseSelections();
+
+      expect(ParseNode.makeImplicitFromSelection(null, model, new AncestorParse()).parse).toEqual({
         'foo.bar': 'flatten',
         'foo.baz': 'flatten'
       });

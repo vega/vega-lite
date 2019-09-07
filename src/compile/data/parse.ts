@@ -322,6 +322,7 @@ export function parseData(model: Model): DataComponent {
   }
 
   head = ParseNode.makeImplicitFromEncoding(head, model, ancestorParse) || head;
+  head = ParseNode.makeImplicitFromSelection(head, model, ancestorParse) || head;
 
   if (isUnitModel(model)) {
     head = GeoJSONNode.parseAll(head, model);
