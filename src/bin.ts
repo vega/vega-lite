@@ -47,7 +47,7 @@ export interface BaseBin {
    *
    * @minItems 1
    */
-  divide?: number[];
+  divide?: [number, number];
   /**
    * Maximum number of bins.
    *
@@ -89,7 +89,7 @@ export interface BinParams extends BaseBin {
 
 export type Bin = boolean | BinParams | 'binned' | null;
 
-export type BinExtent = number[] | SelectionExtent;
+export type BinExtent = [number, number] | SelectionExtent;
 
 /**
  * Create a key for the bin configuration. Not for prebinned bin.

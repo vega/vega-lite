@@ -1,3 +1,4 @@
+import {BinTransform as VgBinTransform} from 'vega';
 import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning, isSelectionExtent} from '../../bin';
 import {Channel} from '../../channel';
@@ -5,7 +6,7 @@ import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDe
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, replacePathInField, unique, vals, varName} from '../../util';
-import {VgBinTransform, VgTransform} from '../../vega.schema';
+import {VgTransform} from '../../vega.schema';
 import {binFormatExpression} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -191,7 +192,7 @@ export class BinNode extends DataFlowNode {
         field: replacePathInField(bin.field),
         as: binAs,
         signal: bin.signal,
-        ...(!isSelectionExtent(extent) ? {extent} : {}),
+        ...(!isSelectionExtent(extent) ? {extent} : {extent: null}),
         ...(rawExtent ? {rawExtent: {signal: rawExtent}} : {}),
         ...params
       };
