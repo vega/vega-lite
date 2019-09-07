@@ -5,7 +5,7 @@ import {forEachSelection, MODIFY, SELECTION_DOMAIN, STORE, unitName, VL_SELECTIO
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {SelectionInit, SelectionInitInterval} from '../../selection';
-import {accessPathWithDatum, keys, varName} from '../../util';
+import {keys, varName} from '../../util';
 import {VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
@@ -197,7 +197,7 @@ export function assembleSelectionScaleDomain(model: Model, domainRaw: SignalRef)
       }
     }
 
-    return {signal: accessPathWithDatum(field, name)};
+    return {signal: `${name}[${stringValue(field)}]`};
   }
 
   return {signal: 'null'};

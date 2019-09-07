@@ -1,6 +1,6 @@
 import {Signal} from 'vega';
+import {stringValue} from 'vega-util';
 import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from '.';
-import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
 import {TUPLE_FIELDS} from './transforms/project';
 
@@ -14,9 +14,9 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
       const fieldDef = model.fieldDef(p.channel);
       // Binned fields should capture extents, for a range test against the raw field.
       return fieldDef && fieldDef.bin
-        ? `[${accessPathWithDatum(model.vgField(p.channel, {}), datum)}, ` +
-            `${accessPathWithDatum(model.vgField(p.channel, {binSuffix: 'end'}), datum)}]`
-        : `${accessPathWithDatum(p.field, datum)}`;
+        ? `[${datum}[${stringValue(model.vgField(p.channel, {}))}], ` +
+            `${datum}[${stringValue(model.vgField(p.channel, {binSuffix: 'end'}))}]]`
+        : `${datum}[${stringValue(p.field)}]`;
     })
     .join(', ');
 

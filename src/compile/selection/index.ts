@@ -9,7 +9,7 @@ import {
   SelectionType,
   SELECTION_ID
 } from '../../selection';
-import {accessPathWithDatum, Dict} from '../../util';
+import {Dict} from '../../util';
 import {FacetModel} from '../facet';
 import {isFacetModel, Model} from '../model';
 import {UnitModel} from '../unit';
@@ -92,7 +92,7 @@ export function unitName(model: Model, {escape} = {escape: true}) {
     const {facet} = facetModel;
     for (const channel of FACET_CHANNELS) {
       if (facet[channel]) {
-        name += ` + '__facet_${channel}_' + (${accessPathWithDatum(facetModel.vgField(channel), 'facet')})`;
+        name += ` + '__facet_${channel}_' + (facet[${stringValue(facetModel.vgField(channel))}])`;
       }
     }
   }

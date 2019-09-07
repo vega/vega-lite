@@ -3,7 +3,7 @@ import {VL_SELECTION_RESOLVE} from '..';
 import {Channel, isScaleChannel, X, Y} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
-import {accessPathWithDatum, varName} from '../../../util';
+import {varName} from '../../../util';
 import {UnitModel} from '../../unit';
 import {SelectionProjection} from './project';
 import {TransformCompiler} from './transforms';
@@ -33,13 +33,13 @@ const scaleBindings: TransformCompiler = {
         continue;
       }
 
-      scale.set('domainRaw', {signal: accessPathWithDatum(proj.field, name)}, true);
+      scale.set('domainRaw', {signal: `${name}[${stringValue(proj.field)}]`}, true);
       bound.push(proj);
 
       // Bind both x/y for diag plot of repeated views.
       if (model.repeater && model.repeater.row === model.repeater.column) {
         const scale2 = model.getScaleComponent(channel === X ? Y : X);
-        scale2.set('domainRaw', {signal: accessPathWithDatum(proj.field, name)}, true);
+        scale2.set('domainRaw', {signal: `${name}[${stringValue(proj.field)}]`}, true);
       }
     }
   },

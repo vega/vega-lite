@@ -62,6 +62,17 @@ describe('Inputs Selection Transform', () => {
       on: 'click',
       clear: 'dblclick',
       bind: {input: 'range', min: 0, max: 10, step: 1}
+    },
+    ten: {
+      type: 'single',
+      fields: ['nested.a'],
+      bind: {input: 'range', min: 0, max: 10, step: 1}
+    },
+    eleven: {
+      type: 'single',
+      fields: ['nested.a'],
+      on: 'click',
+      bind: {input: 'range', min: 0, max: 10, step: 1}
     }
   });
 
@@ -74,6 +85,8 @@ describe('Inputs Selection Transform', () => {
     expect(inputs.has(selCmpts['seven'])).toBeTruthy();
     expect(inputs.has(selCmpts['eight'])).toBeTruthy();
     expect(inputs.has(selCmpts['nine'])).toBeTruthy();
+    expect(inputs.has(selCmpts['ten'])).toBeTruthy();
+    expect(inputs.has(selCmpts['eleven'])).toBeTruthy();
   });
 
   it('adds widget binding for default projection', () => {
@@ -145,6 +158,38 @@ describe('Inputs Selection Transform', () => {
         }
       ])
     );
+  });
+
+  it('adds widget binding for flattened projection', () => {
+    model.component.selection = {one: selCmpts['ten']};
+    expect(assembleUnitSelectionSignals(model, [])).toContainEqual({
+      name: 'ten_tuple',
+      update: 'ten_nested_a !== null ? {fields: ten_tuple_fields, values: [ten_nested_a]} : null'
+    });
+
+    expect(assembleTopLevelSignals(model, [])).toContainEqual({
+      name: 'ten_nested_a',
+      value: null,
+      bind: {input: 'range', min: 0, max: 10, step: 1}
+    });
+
+    model.component.selection = {one: selCmpts['eleven']};
+    expect(assembleUnitSelectionSignals(model, [])).toContainEqual({
+      name: 'eleven_tuple',
+      update: 'eleven_nested_a !== null ? {fields: eleven_tuple_fields, values: [eleven_nested_a]} : null'
+    });
+
+    expect(assembleTopLevelSignals(model, [])).toContainEqual({
+      name: 'eleven_nested_a',
+      value: null,
+      on: [
+        {
+          events: [{source: 'scope', type: 'click'}],
+          update: 'datum && item().mark.marktype !== \'group\' ? datum["nested.a"] : null'
+        }
+      ],
+      bind: {input: 'range', min: 0, max: 10, step: 1}
+    });
   });
 
   it('respects initialization', () => {
