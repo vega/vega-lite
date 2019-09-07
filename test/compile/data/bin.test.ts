@@ -131,7 +131,7 @@ describe('compile/data/bin', () => {
         maxbins: 10,
         signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_bins',
         extent: {signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_extent'},
-        rawExtent: {signal: 'foo["Acceleration"]'}
+        span: {signal: 'span(foo["Acceleration"])'}
       });
     });
 
@@ -164,7 +164,7 @@ describe('compile/data/bin', () => {
         maxbins: 10,
         signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_bins',
         extent: {signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_extent'},
-        rawExtent: {signal: 'foo["bar"]'}
+        span: {signal: 'span(foo["bar"])'}
       });
     });
 
@@ -266,7 +266,7 @@ describe('compile/data/bin', () => {
         maxbins: 10,
         signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_bins',
         extent: {signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_extent'},
-        rawExtent: {signal: 'foo["Rotten_Tomatoes_Rating"]'}
+        span: {signal: 'span(foo["Rotten_Tomatoes_Rating"])'}
       });
     });
 
@@ -291,7 +291,7 @@ describe('compile/data/bin', () => {
         maxbins: 10,
         signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_bins',
         extent: {signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_extent'},
-        rawExtent: {signal: 'foo["bar"]'}
+        span: {signal: 'span(foo["bar"])'}
       });
     });
 

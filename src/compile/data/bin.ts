@@ -52,7 +52,7 @@ function isBinTransform(t: TypedFieldDef<string> | BinTransform): t is BinTransf
 
 function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolean | BinParams, model: Model) {
   let as: [string, string];
-  let rawExtent: string;
+  let span: string;
 
   if (isBinTransform(t)) {
     as = isString(t.as) ? [t.as, `${t.as}_end`] : [t.as[0], t.as[1]];
@@ -60,15 +60,15 @@ function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolea
     as = [vgField(t, {forAs: true}), vgField(t, {binSuffix: 'end', forAs: true})];
   }
 
-  const normalizedBin = normalizeBin(bin, undefined) || {};
+  const normalizedBin = {...normalizeBin(bin, undefined)};
   const key = binKey(normalizedBin, t.field);
   const {signal, extentSignal} = getSignalsFromModel(model, key);
 
   if (isSelectionExtent(normalizedBin.extent)) {
     const ext = normalizedBin.extent;
     const selName = ext.selection;
-    rawExtent = parseSelectionBinExtent(model.getSelectionComponent(varName(selName), selName), ext);
-    delete normalizedBin.extent;
+    span = parseSelectionBinExtent(model.getSelectionComponent(varName(selName), selName), ext);
+    delete normalizedBin.extent; // Vega-Lite selection extent map to Vega's span property.
   }
 
   const binComponent: BinComponent = {
@@ -77,7 +77,7 @@ function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolea
     as: [as],
     ...(signal ? {signal} : {}),
     ...(extentSignal ? {extentSignal} : {}),
-    ...(rawExtent ? {rawExtent} : {})
+    ...(span ? {span} : {})
   };
 
   return {key, binComponent};
@@ -88,7 +88,7 @@ export interface BinComponent {
   field: FieldName;
   extentSignal?: string;
   signal?: string;
-  rawExtent?: string;
+  span?: string;
 
   /** Pairs of strings of the names of start and end signals */
   as: [string, string][];
@@ -186,14 +186,13 @@ export class BinNode extends DataFlowNode {
 
       const [binAs, ...remainingAs] = bin.as;
       const {extent, ...params} = bin.bin;
-      const {rawExtent} = bin;
       const binTrans: VgBinTransform = {
         type: 'bin',
         field: replacePathInField(bin.field),
         as: binAs,
         signal: bin.signal,
         ...(!isSelectionExtent(extent) ? {extent} : {extent: null}),
-        ...(rawExtent ? {rawExtent: {signal: rawExtent}} : {}),
+        ...(bin.span ? {span: {signal: `span(${bin.span})`}} : {}),
         ...params
       };
 
