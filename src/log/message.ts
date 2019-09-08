@@ -53,8 +53,6 @@ export function selectionNotFound(name: string) {
 export const SCALE_BINDINGS_CONTINUOUS =
   'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
 
-export const NO_INIT_SCALE_BINDINGS = 'Selections bound to scales cannot be separately initialized.';
-
 // REPEAT
 export function noSuchRepeatedValue(field: string) {
   return `Unknown repeated value "${field}".`;
@@ -257,7 +255,9 @@ export function independentScaleMeansIndependentGuide(channel: Channel) {
 }
 
 export function domainSortDropped(sort: VgSortField) {
-  return `Dropping sort property ${stringify(sort)} as unioned domains only support boolean or op 'count'.`;
+  return `Dropping sort property ${stringify(
+    sort
+  )} as unioned domains only support boolean or op "count", "min", and "max".`;
 }
 
 export const UNABLE_TO_MERGE_DOMAINS = 'Unable to merge domains.';

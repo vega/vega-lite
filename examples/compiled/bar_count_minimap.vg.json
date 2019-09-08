@@ -10,6 +10,29 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "filter",
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["Name"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
           "type": "aggregate",
           "groupby": ["Name"],
           "ops": ["count"],
@@ -53,9 +76,8 @@
         {
           "name": "concat_0_marks",
           "type": "rect",
-          "clip": true,
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -314,7 +336,7 @@
           "name": "concat_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -383,11 +405,10 @@
       "name": "concat_0_y",
       "type": "band",
       "domain": {
-        "data": "source_0",
+        "data": "data_0",
         "field": "Name",
         "sort": {"op": "count", "order": "descending"}
       },
-      "domainRaw": {"signal": "brush[\"Name\"]"},
       "range": {"step": {"signal": "concat_0_y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -395,7 +416,7 @@
     {
       "name": "concat_1_x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "__count"},
+      "domain": {"data": "data_2", "field": "__count"},
       "range": [0, {"signal": "concat_1_width"}],
       "nice": true,
       "zero": true
