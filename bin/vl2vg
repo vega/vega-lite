@@ -39,7 +39,7 @@ readFile(specFile, 'utf8', function(err, text) {
 });
 
 function compile(vlSpec) {
-  const vgSpec = vegaLite(vlSpec);
+  const vgSpec = vegaLite(vlSpec).spec;
 
   const file = argv._[1] || null;
   const out = file ? createWriteStream(file) : process.stdout;
