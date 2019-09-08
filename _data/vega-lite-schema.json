@@ -78,7 +78,7 @@
         },
         "op": {
           "$ref": "#/definitions/AggregateOp",
-          "description": "The aggregation operation to apply to the fields (e.g., sum, average or count).\nSee the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops)\nfor more information."
+          "description": "The aggregation operation to apply to the fields (e.g., `\"sum\"`, `\"average\"`, or `\"count\"`).\nSee the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops)\nfor more information."
         }
       },
       "required": [
@@ -300,7 +300,7 @@
           "type": "string"
         },
         "size": {
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; width/height's `step` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -364,11 +364,11 @@
           "type": "number"
         },
         "timeUnitBand": {
-          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "description": "Default relative band size for a time unit. If set to `1`, the bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
           "type": "number"
         },
         "timeUnitBandPosition": {
-          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.\nIf set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -570,7 +570,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
             }
           ]
         },
@@ -631,7 +631,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -648,7 +648,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -666,7 +666,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
             }
           ]
         },
@@ -715,7 +715,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -726,7 +726,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -788,7 +788,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1016,7 +1016,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1077,7 +1077,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1094,7 +1094,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1112,7 +1112,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1157,7 +1157,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1168,7 +1168,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
             }
           ]
         },
@@ -1226,7 +1226,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
             }
           ]
         },
@@ -1389,7 +1389,14 @@
       "additionalProperties": false,
       "properties": {
         "anchor": {
-          "$ref": "#/definitions/TitleAnchor",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TitleAnchor"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The anchor point for legend orient group layout."
         },
         "bounds": {
@@ -1775,7 +1782,7 @@
           "type": "number"
         },
         "binned": {
-          "description": "When set to true, Vega-Lite treats the input data as already binned.",
+          "description": "When set to `true`, Vega-Lite treats the input data as already binned.",
           "type": "boolean"
         },
         "divide": {
@@ -2168,7 +2175,7 @@
       "properties": {
         "fill": {
           "$ref": "#/definitions/Color",
-          "description": "The fill color of the interval mark.\n\n__Default value:__ `#333333`"
+          "description": "The fill color of the interval mark.\n\n__Default value:__ `\"#333333\"`"
         },
         "fillOpacity": {
           "description": "The fill opacity of the interval mark (a value between 0 and 1).\n\n__Default value:__ `0.125`",
@@ -2176,7 +2183,7 @@
         },
         "stroke": {
           "$ref": "#/definitions/Color",
-          "description": "The stroke color of the interval mark.\n\n__Default value:__ `#ffffff`"
+          "description": "The stroke color of the interval mark.\n\n__Default value:__ `\"#ffffff\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke and space lengths,\nfor creating dashed or dotted lines.",
@@ -2190,7 +2197,7 @@
           "type": "number"
         },
         "strokeOpacity": {
-          "description": "The stroke opacity of the interval mark (a value between 0 and 1).",
+          "description": "The stroke opacity of the interval mark (a value between `0` and `1`).",
           "type": "number"
         },
         "strokeWidth": {
@@ -2825,17 +2832,17 @@
         }
       ]
     },
-    "ConditionalAxisProperty<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2858,17 +2865,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2891,17 +2898,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2924,17 +2931,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2957,17 +2964,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>"
               },
               "type": "array"
             }
@@ -3098,7 +3105,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -3161,7 +3168,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -3175,7 +3182,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -3238,7 +3245,7 @@
         },
         "type": {
           "$ref": "#/definitions/TypeForShape",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -3252,7 +3259,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -3311,7 +3318,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -3348,7 +3355,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-1303714689-2468-2565-1303714689-0-2566|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3372,7 +3379,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-210474486-5990-6039-210474486-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3396,7 +3403,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-210474486-8505-8557-210474486-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3420,7 +3427,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-210474486-8600-8749-210474486-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3444,7 +3451,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-210474486-8749-8890-210474486-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3606,7 +3613,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -3669,7 +3676,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -3683,7 +3690,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -3746,7 +3753,7 @@
         },
         "type": {
           "$ref": "#/definitions/TypeForShape",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -3760,7 +3767,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -3819,7 +3826,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -4246,7 +4253,7 @@
               "type": "string"
             }
           ],
-          "description": "Value representing the day of a week.  This can be one of: (1) integer value -- `1` represents Monday; (2) case-insensitive day name (e.g., `\"Monday\"`);  (3) case-insensitive, 3-character short day name (e.g., `\"Mon\"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`."
+          "description": "Value representing the day of a week.  This can be one of:\n(1) integer value -- `1` represents Monday;\n(2) case-insensitive day name (e.g., `\"Monday\"`);\n(3) case-insensitive, 3-character short day name (e.g., `\"Mon\"`).\n\n**Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`."
         },
         "hours": {
           "description": "Integer value representing the hour of a day from 0-23.",
@@ -4275,7 +4282,7 @@
               "type": "string"
             }
           ],
-          "description": "One of: (1) integer value representing the month from `1`-`12`. `1` represents January;  (2) case-insensitive month name (e.g., `\"January\"`);  (3) case-insensitive, 3-character short month name (e.g., `\"Jan\"`)."
+          "description": "One of:\n(1) integer value representing the month from `1`-`12`. `1` represents January;\n(2) case-insensitive month name (e.g., `\"January\"`);\n(3) case-insensitive, 3-character short month name (e.g., `\"Jan\"`)."
         },
         "quarter": {
           "description": "Integer value representing the quarter of the year (from 1-4).",
@@ -4873,7 +4880,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "align": {
           "anyOf": [
@@ -4972,7 +4979,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -4985,7 +4992,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -5039,7 +5046,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -5510,7 +5517,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -5583,7 +5590,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -5597,7 +5604,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -5670,7 +5677,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -5684,7 +5691,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -5757,7 +5764,7 @@
         },
         "type": {
           "$ref": "#/definitions/TypeForShape",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -5771,7 +5778,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -5840,7 +5847,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -6972,7 +6979,7 @@
         },
         "labelAlign": {
           "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment of header labels."
+          "description": "Horizontal text alignment of header labels. One of `\"left\"`, `\"center\"`, or `\"right\"`."
         },
         "labelAnchor": {
           "$ref": "#/definitions/TitleAnchor",
@@ -7099,7 +7106,7 @@
         },
         "labelAlign": {
           "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment of header labels."
+          "description": "Horizontal text alignment of header labels. One of `\"left\"`, `\"center\"`, or `\"right\"`."
         },
         "labelAnchor": {
           "$ref": "#/definitions/TitleAnchor",
@@ -7252,7 +7259,7 @@
         },
         "method": {
           "$ref": "#/definitions/ImputeMethod",
-          "description": "The imputation method to use for the field value of imputed data objects.\nOne of `value`, `mean`, `median`, `max` or `min`.\n\n__Default value:__  `\"value\"`"
+          "description": "The imputation method to use for the field value of imputed data objects.\nOne of `\"value\"`, `\"mean\"`, `\"median\"`, `\"max\"` or `\"min\"`.\n\n__Default value:__  `\"value\"`"
         },
         "value": {
           "description": "The field value to use when the imputation `method` is `\"value\"`."
@@ -7324,7 +7331,7 @@
         },
         "method": {
           "$ref": "#/definitions/ImputeMethod",
-          "description": "The imputation method to use for the field value of imputed data objects.\nOne of `value`, `mean`, `median`, `max` or `min`.\n\n__Default value:__  `\"value\"`"
+          "description": "The imputation method to use for the field value of imputed data objects.\nOne of `\"value\"`, `\"mean\"`, `\"median\"`, `\"max\"` or `\"min\"`.\n\n__Default value:__  `\"value\"`"
         },
         "value": {
           "description": "The field value to use when the imputation `method` is `\"value\"`."
@@ -7513,7 +7520,7 @@
           ]
         },
         "type": {
-          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `single` -- to select a single discrete data value on `click`.\n- `multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.\n- `interval` -- to select a continuous range of data values on `drag`.",
+          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `\"single\"` -- to select a single discrete data value on `click`.\n- `\"multi\"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.\n- `\"interval\"` -- to select a continuous range of data values on `drag`.",
           "enum": [
             "interval"
           ],
@@ -7627,11 +7634,11 @@
         },
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "The data field for which to compute the aggregate function. This can be omitted for functions that do not operate over a field such as `count`."
+          "description": "The data field for which to compute the aggregate function. This can be omitted for functions that do not operate over a field such as `\"count\"`."
         },
         "op": {
           "$ref": "#/definitions/AggregateOp",
-          "description": "The aggregation operation to apply (e.g., sum, average or count). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/aggregate.html#ops)."
+          "description": "The aggregation operation to apply (e.g., `\"sum\"`, `\"average\"` or `\"count\"`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/aggregate.html#ops)."
         }
       },
       "required": [
@@ -7715,7 +7722,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation.",
@@ -7737,7 +7744,7 @@
           ]
         },
         "type": {
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation.",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation.",
           "enum": [
             "quantitative"
           ],
@@ -8456,7 +8463,14 @@
       "additionalProperties": false,
       "properties": {
         "anchor": {
-          "$ref": "#/definitions/TitleAnchor",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TitleAnchor"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The anchor point for legend orient group layout."
         },
         "bottom": {
@@ -8746,7 +8760,7 @@
           "type": "string"
         },
         "size": {
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; width/height's `step` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -8810,11 +8824,11 @@
           "type": "number"
         },
         "timeUnitBand": {
-          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "description": "Default relative band size for a time unit. If set to `1`, the bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
           "type": "number"
         },
         "timeUnitBandPosition": {
-          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.\nIf set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -8988,7 +9002,7 @@
           "type": "array"
         },
         "bandwidth": {
-          "description": "A bandwidth parameter in the range [0, 1] that determines the amount of smoothing.\n\n__Default value:__ `0.3`",
+          "description": "A bandwidth parameter in the range `[0, 1]` that determines the amount of smoothing.\n\n__Default value:__ `0.3`",
           "type": "number"
         },
         "groupby": {
@@ -9357,7 +9371,7 @@
           "type": "string"
         },
         "size": {
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; width/height's `step` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -9421,11 +9435,11 @@
           "type": "number"
         },
         "timeUnitBand": {
-          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "description": "Default relative band size for a time unit. If set to `1`, the bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
           "type": "number"
         },
         "timeUnitBandPosition": {
-          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.\nIf set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -9527,7 +9541,7 @@
           "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "binSpacing": {
-          "description": "Offset between bars for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).\n\n__Default value:__ `1`",
+          "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
           "minimum": 0,
           "type": "number"
         },
@@ -9690,7 +9704,7 @@
           "type": "string"
         },
         "size": {
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; width/height's `step` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -9773,11 +9787,11 @@
           "type": "number"
         },
         "timeUnitBand": {
-          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "description": "Default relative band size for a time unit. If set to `1`, the bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
           "type": "number"
         },
         "timeUnitBandPosition": {
-          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.\nIf set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -10024,7 +10038,7 @@
           ]
         },
         "type": {
-          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `single` -- to select a single discrete data value on `click`.\n- `multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.\n- `interval` -- to select a continuous range of data values on `drag`.",
+          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `\"single\"` -- to select a single discrete data value on `click`.\n- `\"multi\"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.\n- `\"interval\"` -- to select a continuous range of data values on `drag`.",
           "enum": [
             "multi"
           ],
@@ -10186,7 +10200,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -10229,7 +10243,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -10405,7 +10419,7 @@
           "type": "string"
         },
         "size": {
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; width/height's `step` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -10483,11 +10497,11 @@
           "type": "number"
         },
         "timeUnitBand": {
-          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "description": "Default relative band size for a time unit. If set to `1`, the bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
           "type": "number"
         },
         "timeUnitBandPosition": {
-          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.\nIf set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -10795,7 +10809,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "axis": {
           "anyOf": [
@@ -10884,7 +10898,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -11025,6 +11039,7 @@
         "conicConformal",
         "conicEqualArea",
         "conicEquidistant",
+        "equalEarth",
         "equirectangular",
         "gnomonic",
         "identity",
@@ -11222,7 +11237,7 @@
           "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "binSpacing": {
-          "description": "Offset between bars for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).\n\n__Default value:__ `1`",
+          "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
           "minimum": 0,
           "type": "number"
         },
@@ -11363,7 +11378,7 @@
           "type": "string"
         },
         "size": {
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; width/height's `step` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -11427,11 +11442,11 @@
           "type": "number"
         },
         "timeUnitBand": {
-          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "description": "Default relative band size for a time unit. If set to `1`, the bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
           "type": "number"
         },
         "timeUnitBandPosition": {
-          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.\nIf set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -11550,7 +11565,7 @@
           "type": "array"
         },
         "method": {
-          "description": "The functional form of the regression model. One of \"linear\", \"log\", \"exp\", \"pow\", \"quad\", or \"poly\".\n\n__Default value:__ `\"linear\"`",
+          "description": "The functional form of the regression model. One of `\"linear\"`, `\"log\"`, `\"exp\"`, `\"pow\"`, `\"quad\"`, or `\"poly\"`.\n\n__Default value:__ `\"linear\"`",
           "enum": [
             "linear",
             "log",
@@ -11624,7 +11639,7 @@
     },
     "Resolve": {
       "additionalProperties": false,
-      "description": "Defines how scales, axes, and legends from different specs should be combined. Resolve is a mapping from `scale`, `axis`, and `legend` to a mapping from channels to resolutions.",
+      "description": "Defines how scales, axes, and legends from different specs should be combined. Resolve is a mapping from `scale`, `axis`, and `legend` to a mapping from channels to resolutions. Scales and guides can be resolved to be `\"independent\"` or `\"shared\"`.",
       "properties": {
         "axis": {
           "$ref": "#/definitions/AxisResolveMap"
@@ -11686,7 +11701,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "align": {
           "$ref": "#/definitions/LayoutAlign",
@@ -11752,7 +11767,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -12202,7 +12217,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation.",
@@ -12512,7 +12527,7 @@
           "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
         },
         "type": {
-          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `single` -- to select a single discrete data value on `click`.\n- `multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.\n- `interval` -- to select a continuous range of data values on `drag`.",
+          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `\"single\"` -- to select a single discrete data value on `click`.\n- `\"multi\"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.\n- `\"interval\"` -- to select a continuous range of data values on `drag`.",
           "enum": [
             "single"
           ],
@@ -12801,7 +12816,7 @@
               "type": "array"
             }
           ],
-          "description": "Output field names. This can be either a string or an array of strings with\ntwo elements denoting the name for the fields for stack start and stack end\nrespectively.\nIf a single string(eg.\"val\") is provided, the end field will be \"val_end\"."
+          "description": "Output field names. This can be either a string or an array of strings with two elements denoting the name for the fields for stack start and stack end respectively.\nIf a single string(e.g., `\"val\"`) is provided, the end field will be `\"val_end\"`."
         },
         "groupby": {
           "description": "The data fields to group by.",
@@ -13066,7 +13081,7 @@
           "type": "boolean"
         },
         "size": {
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; width/height's `step` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -13130,11 +13145,11 @@
           "type": "number"
         },
         "timeUnitBand": {
-          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "description": "Default relative band size for a time unit. If set to `1`, the bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
           "type": "number"
         },
         "timeUnitBandPosition": {
-          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.\nIf set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -13219,7 +13234,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -13274,7 +13289,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -13441,7 +13456,7 @@
           "type": "string"
         },
         "size": {
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; width/height's `step` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -13510,11 +13525,11 @@
           "type": "number"
         },
         "timeUnitBand": {
-          "description": "Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "description": "Default relative band size for a time unit. If set to `1`, the bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
           "type": "number"
         },
         "timeUnitBandPosition": {
-          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.\nIf set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
           "type": "number"
         },
         "tooltip": {
@@ -14822,7 +14837,7 @@
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+          "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
           "anyOf": [
@@ -14861,7 +14876,7 @@
         },
         "type": {
           "$ref": "#/definitions/StandardType",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
       "required": [
@@ -15423,7 +15438,7 @@
         },
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `count`, `rank`, `dense_rank`."
+          "description": "The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `\"count\"`, `\"rank\"`, `\"dense_rank\"`."
         },
         "op": {
           "anyOf": [
@@ -15434,7 +15449,7 @@
               "$ref": "#/definitions/WindowOnlyOp"
             }
           ],
-          "description": "The window or aggregation operation to apply within a window (e.g., `rank`, `lead`, `sum`, `average` or `count`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops)."
+          "description": "The window or aggregation operation to apply within a window (e.g., `\"rank\"`, `\"lead\"`, `\"sum\"`, `\"average\"` or `\"count\"`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops)."
         },
         "param": {
           "description": "Parameter values for the window functions. Parameter values can be omitted for operations that do not accept a parameter.\n\nSee the list of all supported operations and their parameters [here](https://vega.github.io/vega-lite/docs/transforms/window.html).",
