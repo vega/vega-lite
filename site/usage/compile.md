@@ -25,7 +25,7 @@ If provided, the `options` argument should be an object with one or more of the 
 - [`logger`](#logging) sets a logger
 - [`fieldTitle`](#field-title) sets a field title formatter
 
-Note that the `vegaLite` function is a convenient wrapper around the `vegaLite.compile` function. `vegaLite.compile` retusn an object with an argument `spec` rather than the Vega spec iself.
+Note that the `vegaLite` function is a convenient wrapper around the `vegaLite.compile` function. `vegaLite.compile` returns an object with an argument `spec` rather than the Vega spec iself.
 
 The call above is therefore equivalent to calling `vegaLite.compile` like this.
 
