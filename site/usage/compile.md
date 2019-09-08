@@ -13,10 +13,10 @@ First install Vega-Lite using npm (`npm install vega-lite`) or by [downloading t
 
 ## Using JavaScript
 
-If you want access to the compiled Vega spec from a JavaScript program, you can compile your Vega-Lite spec using the `vegaLite` function.
+If you want access to the compiled Vega spec from a JavaScript program, you can compile your Vega-Lite spec using the `vegaLite` function. Note that this function returns an object with an argument `spec` rather than the Vega spec iself.
 
 ```js
-var vgSpec = vegaLite(vlSpec, options);
+var vgSpec = vegaLite(vlSpec, options).spec;
 ```
 
 If provided, the `options` argument should be an object with one or more of the following properties:
@@ -24,14 +24,6 @@ If provided, the `options` argument should be an object with one or more of the 
 - [`config`](#config) sets a default config
 - [`logger`](#logging) sets a logger
 - [`fieldTitle`](#field-title) sets a field title formatter
-
-Note that the `vegaLite` function is a convenient wrapper around the `vegaLite.compile` function. `vegaLite.compile` returns an object with an argument `spec` rather than the Vega spec iself.
-
-The call above is therefore equivalent to calling `vegaLite.compile` like this.
-
-```js
-var vgSpec = vegaLite.compile(vlSpec, options).spec;
-```
 
 {:#config}
 
@@ -46,7 +38,7 @@ You can specify a [config]({{site.baseurl}}/docs/config.html) object as a proper
 By default, warnings and other messages are printed to the JavaScript console (via `console.log/warn` methods). To redirect the log messages, you can pass a customized logger to the compile function.
 
 ```js
-var vgSpec = vegaLite(vlSpec, {logger: logger});
+var vgSpec = vegaLite(vlSpec, {logger: logger}).spec;
 ```
 
 A custom logger should implement the following interface:
@@ -76,7 +68,7 @@ var vgSpec = vegaLite(vlSpec, {
       return fieldDef.field;
     }
   }
-});
+}).spec;
 ```
 
 {:#cli}
