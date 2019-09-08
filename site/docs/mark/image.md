@@ -41,7 +41,9 @@ Image marks allow external images, such as icons or photographs, to be included 
 }
 ```
 
-An `image` mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties: {% include table.html props="url,aspect,align,baseline" source="MarkConfig" %}
+An `image` mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties: 
+
+{% include table.html props="url,aspect,align,baseline" source="MarkConfig" %}
 
 ## Examples
 
