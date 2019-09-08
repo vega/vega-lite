@@ -286,7 +286,7 @@ export abstract class Model {
     parseLegend(this);
   }
 
-  public abstract assembleSelectionTopLevelSignals(signals: readonly NewSignal[]): readonly NewSignal[];
+  public abstract assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
   public abstract assembleSignals(): NewSignal[];
 
   public abstract assembleSelectionData(data: readonly VgData[]): readonly VgData[];

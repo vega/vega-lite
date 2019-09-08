@@ -204,7 +204,7 @@ export function assembleSelectionScaleDomain(model: Model, domainRaw: SignalRef)
   return {signal: 'null'};
 }
 
-function cleanupEmptyOnArray(signals: readonly Signal[]) {
+function cleanupEmptyOnArray(signals: Signal[]) {
   return signals.map(s => {
     if (s.on && !s.on.length) delete s.on;
     return s;

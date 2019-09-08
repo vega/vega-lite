@@ -81,7 +81,7 @@ export class LayerModel extends Model {
     parseLayerAxes(this);
   }
 
-  public assembleSelectionTopLevelSignals(signals: readonly NewSignal[]): readonly NewSignal[] {
+  public assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[] {
     return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
   }
 

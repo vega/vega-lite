@@ -57,7 +57,7 @@ export abstract class BaseConcatModel extends Model {
     // TODO(#2415): support shared axes
   }
 
-  public assembleSelectionTopLevelSignals(signals: readonly NewSignal[]): readonly NewSignal[] {
+  public assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[] {
     return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
   }
 

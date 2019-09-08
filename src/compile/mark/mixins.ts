@@ -106,6 +106,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
   };
 }
 
+// TODO: mark VgValueRef[] as readonly after https://github.com/vega/vega/pull/1987
 function wrapAllFieldsInvalid(model: UnitModel, channel: Channel, valueRef: VgValueRef | VgValueRef[]): VgEncodeEntry {
   const {config, mark, markDef} = model;
 
@@ -241,7 +242,7 @@ export function wrapCondition<FD extends FieldDef<any>, V extends ValueOrGradien
   const condition = channelDef && channelDef.condition;
   const valueRef = refFn(channelDef);
   if (condition) {
-    const conditions = isArray(condition) ? condition : [condition];
+    const conditions = array(condition);
     const vgConditions = conditions.map(c => {
       const conditionValueRef = refFn(c);
       const test = isConditionalSelection(c) ? parseSelectionPredicate(model, c.selection) : expression(model, c.test);
