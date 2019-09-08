@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Dominik Moritz, Kanit \"Ham\" Wongsuphasawat, Arvind Satyanarayan, Jeffrey Heer",
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.2",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -67,24 +67,24 @@
     "url": "https://github.com/vega/vega-lite/issues"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.0",
+    "@types/chai": "^4.2.1",
     "@types/d3": "^5.7.2",
     "@types/highlight.js": "^9.12.3",
     "@types/jest": "^24.0.18",
     "@types/jest-environment-puppeteer": "^4.3.1",
     "@types/mkdirp": "^0.5.2",
-    "@types/node": "^12.7.2",
+    "@types/node": "^12.7.4",
     "@types/puppeteer": "^1.19.1",
-    "@typescript-eslint/eslint-plugin": "^2.0.0",
-    "@typescript-eslint/parser": "^2.0.0",
+    "@typescript-eslint/eslint-plugin": "^2.1.0",
+    "@typescript-eslint/parser": "^2.1.0",
     "ajv": "^6.10.2",
     "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.2",
     "codecov": "^3.5.0",
     "concurrently": "^4.1.2",
     "d3": "^5.11.0",
-    "eslint": "^6.2.2",
-    "eslint-config-prettier": "^6.1.0",
+    "eslint": "^6.3.0",
+    "eslint-config-prettier": "^6.2.0",
     "eslint-plugin-prettier": "^3.1.0",
     "highlight.js": "^9.15.10",
     "http-server": "^0.11.1",
@@ -93,8 +93,8 @@
     "mkdirp": "^0.5.1",
     "prettier": "^1.18.2",
     "puppeteer": "^1.19.0",
-    "rollup": "^1.20.2",
-    "rollup-plugin-commonjs": "^10.0.2",
+    "rollup": "^1.20.3",
+    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
@@ -103,11 +103,11 @@
     "terser": "^4.2.1",
     "ts-jest": "^24.0.2",
     "ts-json-schema-generator": "^0.52.14",
-    "typescript": "^3.5.3",
-    "vega-cli": "^5.4.0",
+    "typescript": "~3.6.2",
+    "vega-cli": "^5.5.3",
     "vega-datasets": "^1.25.0",
-    "vega-embed": "^4.2.4",
-    "vega-tooltip": "^0.18.1",
+    "vega-embed": "^5.1.2",
+    "vega-tooltip": "^0.19.1",
     "yaml-front-matter": "^4.0.0"
   },
   "dependencies": {
@@ -122,11 +122,11 @@
     "vega-event-selector": "~2.0.1",
     "vega-expression": "~2.6.1",
     "vega-typings": "~0.8.1",
-    "vega-util": "~1.11.0",
+    "vega-util": "~1.11.1",
     "yargs": "~14.0.0"
   },
   "peerDependencies": {
-    "vega": "^5.4.0"
+    "vega": "^5.5.0"
   },
   "jest": {
     "preset": "jest-puppeteer",

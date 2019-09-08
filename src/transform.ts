@@ -97,7 +97,7 @@ export interface AggregateTransform {
 
 export interface AggregatedFieldDef {
   /**
-   * The aggregation operation to apply to the fields (e.g., sum, average or count).
+   * The aggregation operation to apply to the fields (e.g., `"sum"`, `"average"`, or `"count"`).
    * See the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops)
    * for more information.
    */
@@ -135,10 +135,8 @@ export interface StackTransform {
    */
   sort?: SortField[];
   /**
-   * Output field names. This can be either a string or an array of strings with
-   * two elements denoting the name for the fields for stack start and stack end
-   * respectively.
-   * If a single string(eg."val") is provided, the end field will be "val_end".
+   * Output field names. This can be either a string or an array of strings with two elements denoting the name for the fields for stack start and stack end respectively.
+   * If a single string(e.g., `"val"`) is provided, the end field will be `"val_end"`.
    */
   as: FieldName | FieldName[];
 }
@@ -158,7 +156,7 @@ export type WindowOnlyOp =
 
 export interface WindowFieldDef {
   /**
-   * The window or aggregation operation to apply within a window (e.g., `rank`, `lead`, `sum`, `average` or `count`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops).
+   * The window or aggregation operation to apply within a window (e.g., `"rank"`, `"lead"`, `"sum"`, `"average"` or `"count"`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops).
    */
   op: AggregateOp | WindowOnlyOp;
 
@@ -170,7 +168,7 @@ export interface WindowFieldDef {
   param?: number;
 
   /**
-   * The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `count`, `rank`, `dense_rank`.
+   * The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `"count"`, `"rank"`, `"dense_rank"`.
    */
   field?: FieldName;
 
@@ -213,12 +211,12 @@ export interface WindowTransform {
 
 export interface JoinAggregateFieldDef {
   /**
-   * The aggregation operation to apply (e.g., sum, average or count). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/aggregate.html#ops).
+   * The aggregation operation to apply (e.g., `"sum"`, `"average"` or `"count"`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/aggregate.html#ops).
    */
   op: AggregateOp;
 
   /**
-   * The data field for which to compute the aggregate function. This can be omitted for functions that do not operate over a field such as `count`.
+   * The data field for which to compute the aggregate function. This can be omitted for functions that do not operate over a field such as `"count"`.
    */
   field?: FieldName;
 
@@ -478,7 +476,7 @@ export interface RegressionTransform {
   groupby?: string[];
 
   /**
-   * The functional form of the regression model. One of "linear", "log", "exp", "pow", "quad", or "poly".
+   * The functional form of the regression model. One of `"linear"`, `"log"`, `"exp"`, `"pow"`, `"quad"`, or `"poly"`.
    *
    * __Default value:__ `"linear"`
    */
@@ -534,7 +532,7 @@ export interface LoessTransform {
   groupby?: string[];
 
   /**
-   * A bandwidth parameter in the range [0, 1] that determines the amount of smoothing.
+   * A bandwidth parameter in the range `[0, 1]` that determines the amount of smoothing.
    *
    * __Default value:__ `0.3`
    */

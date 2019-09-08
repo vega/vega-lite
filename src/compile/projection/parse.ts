@@ -1,4 +1,5 @@
 import {SignalRef} from 'vega';
+import {hasOwnProperty} from 'vega-util';
 import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {MAIN} from '../../data';
 import {PROJECTION_PROPERTIES} from '../../projection';
@@ -61,13 +62,13 @@ function gatherFitData(model: UnitModel) {
 function mergeIfNoConflict(first: ProjectionComponent, second: ProjectionComponent): ProjectionComponent {
   const allPropertiesShared = every(PROJECTION_PROPERTIES, prop => {
     // neither has the property
-    if (!first.explicit.hasOwnProperty(prop) && !second.explicit.hasOwnProperty(prop)) {
+    if (!hasOwnProperty(first.explicit, prop) && !hasOwnProperty(second.explicit, prop)) {
       return true;
     }
     // both have property and an equal value for property
     if (
-      first.explicit.hasOwnProperty(prop) &&
-      second.explicit.hasOwnProperty(prop) &&
+      hasOwnProperty(first.explicit, prop) &&
+      hasOwnProperty(second.explicit, prop) &&
       // some properties might be signals or objects and require hashing for comparison
       stringify(first.get(prop)) === stringify(second.get(prop))
     ) {

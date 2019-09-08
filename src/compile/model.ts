@@ -1,13 +1,13 @@
 import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
-import {isString} from 'vega-util';
+import {hasOwnProperty, isString} from 'vega-util';
 import {
   Channel,
   FACET_CHANNELS,
+  getPositionScaleChannel,
   isChannel,
   isScaleChannel,
   ScaleChannel,
-  SingleDefChannel,
-  getPositionScaleChannel
+  SingleDefChannel
 } from '../channel';
 import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
@@ -304,7 +304,7 @@ export abstract class Model {
 
     const e = {};
     for (const property in baseView) {
-      if (baseView.hasOwnProperty(property)) {
+      if (hasOwnProperty(baseView, property)) {
         const value = baseView[property];
         if (value !== undefined) {
           e[property] = {value};

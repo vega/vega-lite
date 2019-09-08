@@ -1,5 +1,5 @@
 import {selector as parseSelector} from 'vega-event-selector';
-import {isString, stringValue} from 'vega-util';
+import {hasOwnProperty, isString, stringValue} from 'vega-util';
 import {SelectionComponent, STORE} from '.';
 import {LogicalOperand} from '../../logical';
 import {SelectionDef} from '../../selection';
@@ -14,7 +14,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
   const selectionConfig = model.config.selection;
 
   for (let name in selDefs) {
-    if (!selDefs.hasOwnProperty(name)) {
+    if (!hasOwnProperty(selDefs, name)) {
       continue;
     }
 

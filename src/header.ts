@@ -120,7 +120,7 @@ export interface CoreHeader extends FormatMixins {
   labels?: boolean;
 
   /**
-   * Horizontal text alignment of header labels.
+   * Horizontal text alignment of header labels. One of `"left"`, `"center"`, or `"right"`.
    */
   labelAlign?: Align;
 

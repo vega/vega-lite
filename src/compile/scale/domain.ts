@@ -1,5 +1,12 @@
 import {isObject, isString} from 'vega-util';
-import {isAggregateOp, isArgmaxDef, isArgminDef, NonArgAggregateOp, SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
+import {
+  isAggregateOp,
+  isArgmaxDef,
+  isArgminDef,
+  NonArgAggregateOp,
+  SHARED_DOMAIN_OP_INDEX,
+  MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX
+} from '../../aggregate';
 import {isBinning} from '../../bin';
 import {getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
 import {binRequiresRange, hasBand, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
@@ -540,11 +547,11 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
     return domain;
   }
 
-  // only keep simple sort properties that work with unioned domains
-  const simpleSorts = util.unique(
+  // only keep sort properties that work with unioned domains
+  const unionDomainSorts = util.unique<VgUnionSortField>(
     sorts.map(s => {
-      if (util.isBoolean(s) || s.op === 'count') {
-        return s;
+      if (util.isBoolean(s) || s.op in UNIONDOMAIN_SORT_OP_INDEX) {
+        return s as VgUnionSortField;
       }
       log.warn(log.message.domainSortDropped(s));
       return true;
@@ -554,9 +561,9 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
 
   let sort: VgUnionSortField;
 
-  if (simpleSorts.length === 1) {
-    sort = simpleSorts[0];
-  } else if (simpleSorts.length > 1) {
+  if (unionDomainSorts.length === 1) {
+    sort = unionDomainSorts[0];
+  } else if (unionDomainSorts.length > 1) {
     log.warn(log.message.MORE_THAN_ONE_SORT);
     sort = true;
   }

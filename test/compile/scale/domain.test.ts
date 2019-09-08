@@ -789,7 +789,7 @@ describe('compile/scale', () => {
       });
     });
 
-    it('should merge domains with different data and sort', () => {
+    it('should merge domains with different data and sort by count', () => {
       const domain = mergeDomains([
         {
           data: 'foo',
@@ -817,6 +817,40 @@ describe('compile/scale', () => {
         ],
         sort: {
           op: 'count'
+        }
+      });
+    });
+
+    it('should merge domains with different data and sort by min or max', () => {
+      const domain = mergeDomains([
+        {
+          data: 'foo',
+          field: 'a',
+          sort: {
+            op: 'min',
+            field: 'b'
+          }
+        },
+        {
+          data: 'bar',
+          field: 'a'
+        }
+      ]);
+
+      expect(domain).toEqual({
+        fields: [
+          {
+            data: 'foo',
+            field: 'a'
+          },
+          {
+            data: 'bar',
+            field: 'a'
+          }
+        ],
+        sort: {
+          op: 'min',
+          field: 'b'
         }
       });
     });

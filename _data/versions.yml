@@ -1,4 +1,4 @@
-vega: 5.4.0
-vega-lite: 4.0.0-beta.1
-vega-embed: 4.2.4
-vega-tooltip: 0.18.1
+vega: 5.5.3
+vega-lite: 4.0.0-beta.2
+vega-embed: 5.1.2
+vega-tooltip: 0.19.1
