@@ -136,8 +136,8 @@ describe('extractTransforms()', () => {
         const extractSpec = extractTransforms(normalize(spec, config), config) as TopLevelSpec;
 
         // convert to JSON to resolve `SignalRefWrapper`s that are lazily evaluated
-        const originalCompiled = compile(spec, {config});
-        const transformCompiled = compile(extractSpec, {config});
+        const originalCompiled = compile(spec, {config}).spec;
+        const transformCompiled = compile(extractSpec, {config}).spec;
 
         expect(transformCompiled).toEqual(originalCompiled);
       });
