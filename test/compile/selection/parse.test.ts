@@ -2,6 +2,7 @@ import {selector as parseSelector} from 'vega-event-selector';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {keys} from '../../../src/util';
 import {parseUnitModel} from '../../util';
+import project from '../../../src/compile/selection/transforms/project';
 
 describe('Selection', () => {
   const model = parseUnitModel({
@@ -281,6 +282,21 @@ describe('Selection', () => {
           {field: 'Horsepower', channel: 'x', type: 'R', signals: {data: 'three_Horsepower', visual: 'three_x'}}
         ])
       );
+    });
+
+    it('escapes flattened fields', () => {
+      const component = parseUnitSelection(model, {
+        one: {type: 'single', fields: ['nested.a', 'nested.b.aa']}
+      });
+
+      expect(component['one'].project.items).toEqual([
+        {field: 'nested.a', type: 'E', signals: {data: 'one_nested_a'}},
+        {field: 'nested.b.aa', type: 'E', signals: {data: 'one_nested_b_aa'}}
+      ]);
+
+      expect(project.signals(null, component['one'], [])).toEqual([
+        {name: 'one_tuple_fields', value: [{field: 'nested\\.a', type: 'E'}, {field: 'nested\\.b\\.aa', type: 'E'}]}
+      ]);
     });
   });
 });
