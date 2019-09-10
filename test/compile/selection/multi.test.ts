@@ -53,6 +53,11 @@ describe('Multi Selection', () => {
           Year: {year: 1980, month: 1, day: 1}
         }
       ]
+    },
+    six: {
+      type: 'multi',
+      fields: ['nested.a', 'nested.b'],
+      clear: false
     }
   }));
 
@@ -132,8 +137,23 @@ describe('Multi Selection', () => {
       }
     ]);
 
+    const sixSg = multi.signals(model, selCmpts['six']);
+    expect(sixSg).toEqual([
+      {
+        name: 'six_tuple',
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update:
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: six_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["nested.a"], (item().isVoronoi ? datum.datum : datum)["nested.b"]]} : null',
+            force: true
+          }
+        ]
+      }
+    ]);
+
     const signals = assembleUnitSelectionSignals(model, []);
-    expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg, ...fiveSg]));
+    expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg, ...fiveSg, ...sixSg]));
   });
 
   it('builds unit datasets', () => {
@@ -174,7 +194,8 @@ describe('Multi Selection', () => {
             values: [+new Date(1980, 1, 2, 0, 0, 0, 0), 'USA']
           }
         ]
-      }
+      },
+      {name: 'six_store'}
     ]);
   });
 

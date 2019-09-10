@@ -6,6 +6,7 @@ import {UnitModel} from '../../../src/compile/unit';
 import * as log from '../../../src/log';
 import {Domain} from '../../../src/scale';
 import {parseConcatModel, parseRepeatModel, parseUnitModelWithScale} from '../../util';
+import {Model} from '../../../src/compile/model';
 
 describe('Selection + Scales', () => {
   describe('domainRaw', () => {
@@ -158,6 +159,98 @@ describe('Selection + Scales', () => {
       const scales = assembleScalesForModel(model.children[0]);
       expect('domainRaw' in scales[0]).toBeTruthy();
       expect(scales[0].domainRaw.signal).toBe('brush["date"]');
+    });
+
+    it('should handle nested field references', () => {
+      let model: Model = parseUnitModelWithScale({
+        selection: {
+          grid: {
+            type: 'interval',
+            bind: 'scales'
+          }
+        },
+        data: {
+          values: [{nested: {a: '1', b: 28}}, {nested: {a: '2', b: 55}}, {nested: {a: '3', b: 43}}]
+        },
+        mark: 'point',
+        encoding: {
+          y: {
+            field: 'nested.a',
+            type: 'quantitative'
+          },
+          x: {
+            field: 'nested.b',
+            type: 'quantitative'
+          }
+        }
+      });
+      model.parseSelections();
+
+      let scales = assembleScalesForModel(model);
+      expect('domainRaw' in scales[0]).toBeTruthy();
+      expect(scales[0].domainRaw.signal).toBe('grid["nested.b"]');
+      expect('domainRaw' in scales[1]).toBeTruthy();
+      expect(scales[1].domainRaw.signal).toBe('grid["nested.a"]');
+
+      model = parseConcatModel({
+        vconcat: [
+          {
+            mark: 'area',
+            selection: {
+              brush: {type: 'interval', encodings: ['x']}
+            },
+            encoding: {
+              x: {field: 'nested.a', type: 'temporal'},
+              y: {field: 'price', type: 'quantitative'}
+            }
+          },
+          {
+            mark: 'area',
+            encoding: {
+              x: {
+                field: 'date',
+                type: 'temporal',
+                scale: {domain: {selection: 'brush', encoding: 'x'}}
+              },
+              y: {
+                field: 'price',
+                type: 'quantitative'
+              }
+            }
+          },
+          {
+            mark: 'area',
+            encoding: {
+              x: {
+                field: 'date',
+                type: 'temporal',
+                scale: {domain: {selection: 'brush', field: 'nested.a'}}
+              },
+              y: {
+                field: 'price',
+                type: 'quantitative'
+              }
+            }
+          }
+        ],
+        resolve: {
+          scale: {
+            color: 'independent',
+            opacity: 'independent'
+          }
+        }
+      });
+
+      model.parseScale();
+      model.parseSelections();
+
+      scales = assembleScalesForModel(model.children[1]);
+      expect('domainRaw' in scales[0]).toBeTruthy();
+      expect(scales[0].domainRaw.signal).toBe('brush["nested.a"]');
+
+      scales = assembleScalesForModel(model.children[2]);
+      expect('domainRaw' in scales[0]).toBeTruthy();
+      expect(scales[0].domainRaw.signal).toBe('brush["nested.a"]');
     });
   });
 
