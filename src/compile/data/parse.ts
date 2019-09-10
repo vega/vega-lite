@@ -23,8 +23,8 @@ import {
   isJoinAggregate,
   isLoess,
   isLookup,
-  isRegression,
   isPivot,
+  isRegression,
   isSample,
   isStack,
   isTimeUnit,
@@ -43,7 +43,12 @@ import {FilterNode} from './filter';
 import {FilterInvalidNode} from './filterinvalid';
 import {FlattenTransformNode} from './flatten';
 import {FoldTransformNode} from './fold';
-import {ParseNode} from './formatparse';
+import {
+  getImplicitFromEncoding,
+  getImplicitFromFilterTransform,
+  getImplicitFromSelection,
+  ParseNode
+} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
 import {GraticuleNode} from './graticule';
@@ -54,8 +59,8 @@ import {JoinAggregateTransformNode} from './joinaggregate';
 import {makeJoinAggregateFromFacet} from './joinaggregatefacet';
 import {LoessTransformNode} from './loess';
 import {LookupNode} from './lookup';
-import {RegressionTransformNode} from './regression';
 import {PivotTransformNode} from './pivot';
+import {RegressionTransformNode} from './regression';
 import {SampleTransformNode} from './sample';
 import {SequenceNode} from './sequence';
 import {SourceNode} from './source';
@@ -145,7 +150,8 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       transformNode = head = new CalculateNode(head, t);
       derivedType = 'derived';
     } else if (isFilter(t)) {
-      transformNode = head = ParseNode.makeImplicitFromFilterTransform(head, t, ancestorParse) || head;
+      const implicit = getImplicitFromFilterTransform(t);
+      transformNode = head = ParseNode.makeWithAncestors(head, {}, implicit, ancestorParse) || head;
 
       head = new FilterNode(head, model, t.filter);
     } else if (isBin(t)) {
@@ -321,8 +327,10 @@ export function parseData(model: Model): DataComponent {
     head = parseTransformArray(head, model, ancestorParse);
   }
 
-  head = ParseNode.makeImplicitFromEncoding(head, model, ancestorParse) || head;
-  head = ParseNode.makeImplicitFromSelection(head, model, ancestorParse) || head;
+  // create parse nodes for fields that need to be parsed (or flattened) implicitly
+  const implicitSelection = getImplicitFromSelection(model);
+  const implicitEncoding = getImplicitFromEncoding(model);
+  head = ParseNode.makeWithAncestors(head, {}, {...implicitSelection, ...implicitEncoding}, ancestorParse) || head;
 
   if (isUnitModel(model)) {
     head = GeoJSONNode.parseAll(head, model);

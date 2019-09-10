@@ -1,12 +1,18 @@
 import {AncestorParse} from '../../../src/compile/data';
 import {PlaceholderDataFlowNode} from './util';
-import {ParseNode} from '../../../src/compile/data/formatparse';
+import {ParseNode, getImplicitFromEncoding, getImplicitFromSelection} from '../../../src/compile/data/formatparse';
 import {parseTransformArray} from '../../../src/compile/data/parse';
 import {ModelWithField} from '../../../src/compile/model';
 import * as log from '../../../src/log';
 import {parseFacetModel, parseUnitModel} from '../../util';
 
 describe('compile/data/formatparse', () => {
+  describe('makeWithAncestors', () => {
+    it('should return null for empty explicit and implicit', () => {
+      expect(ParseNode.makeWithAncestors(null, {}, {}, new AncestorParse())).toBeNull();
+    });
+  });
+
   describe('parseUnit', () => {
     it('should flatten nested fields that are used to sort domains', () => {
       const model = parseUnitModel({
@@ -16,7 +22,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse).toEqual({
+      expect(getImplicitFromEncoding(model)).toEqual({
         'foo.bar': 'flatten'
       });
     });
@@ -33,12 +39,11 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      const ancestorParese = new AncestorParse();
-      expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParese).parse).toEqual({
+      expect(getImplicitFromEncoding(model)).toEqual({
         b: 'date'
       });
 
-      expect(ParseNode.makeExplicit(null, model, ancestorParese).parse).toEqual({
+      expect(ParseNode.makeExplicit(null, model, new AncestorParse()).parse).toEqual({
         c: 'number',
         d: 'date'
       });
@@ -59,8 +64,13 @@ describe('compile/data/formatparse', () => {
       const ancestorParse = new AncestorParse();
       const parent = new PlaceholderDataFlowNode(null);
       parseTransformArray(parent, model, ancestorParse);
-      expect(ancestorParse.combine()).toEqual({b2: 'derived'});
-      expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse).parse).toEqual({
+
+      const implicit = getImplicitFromEncoding(model);
+      expect(implicit).toEqual({
+        a: 'date'
+      });
+
+      expect(ParseNode.makeWithAncestors(null, {}, implicit, ancestorParse).parse).toEqual({
         a: 'date'
       });
     });
@@ -75,7 +85,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse())).toEqual(null);
+      expect(getImplicitFromEncoding(model)).toEqual({});
     });
 
     it('should not parse the same field twice', () => {
@@ -113,13 +123,12 @@ describe('compile/data/formatparse', () => {
 
       // set the ancestor parse to see whether fields from it are not parsed
       model.child.component.data.ancestorParse = new AncestorParse({a: 'number'});
-      expect(
-        ParseNode.makeImplicitFromEncoding(
-          null,
-          model.child as ModelWithField,
-          model.child.component.data.ancestorParse
-        ).parse
-      ).toEqual({
+
+      const implicit = getImplicitFromEncoding(model.child as ModelWithField);
+      expect(implicit).toEqual({
+        b: 'date'
+      });
+      expect(ParseNode.makeWithAncestors(null, {}, implicit, model.child.component.data.ancestorParse).parse).toEqual({
         b: 'date'
       });
     });
@@ -161,7 +170,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse())).toBeNull();
+      expect(getImplicitFromEncoding(model)).toEqual({});
     });
 
     it('should add flatten for nested fields in encoding', () => {
@@ -173,7 +182,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse).toEqual({
+      expect(getImplicitFromEncoding(model)).toEqual({
         'foo.bar': 'flatten',
         'foo.baz': 'flatten'
       });
@@ -191,7 +200,7 @@ describe('compile/data/formatparse', () => {
 
       model.parseSelections();
 
-      expect(ParseNode.makeImplicitFromSelection(null, model, new AncestorParse()).parse).toEqual({
+      expect(getImplicitFromSelection(model)).toEqual({
         'foo.bar': 'flatten',
         'foo.baz': 'flatten'
       });
@@ -219,7 +228,8 @@ describe('compile/data/formatparse', () => {
       expect(ancestorParse.combine()).toEqual({
         b: null
       });
-      expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse)).toBeNull();
+
+      expect(getImplicitFromEncoding(model)).toEqual({});
     });
 
     it('should not parse if parse is disabled', () => {
@@ -249,7 +259,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse).toEqual({
+      expect(getImplicitFromEncoding(model)).toEqual({
         foo: 'number'
       });
     });
