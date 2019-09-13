@@ -363,17 +363,17 @@ export interface PivotTransform {
   /**
    * The data field to pivot on. The unique values of this field become new field names in the output stream.
    */
-  pivot: string;
+  pivot: FieldName;
 
   /**
    * The data field to populate pivoted fields. The aggregate values of this field become the values of the new pivoted fields.
    */
-  value: string;
+  value: FieldName;
 
   /**
    * The optional data fields to group by. If not specified, a single group containing all data objects will be used.
    */
-  groupby?: string[];
+  groupby?: FieldName[];
 
   /**
    * An optional parameter indicating the maximum number of pivoted fields to generate.
@@ -397,12 +397,12 @@ export interface DensityTransform {
   /**
    * The data field for which to perform density estimation.
    */
-  density: string;
+  density: FieldName;
 
   /**
    * The data fields to group by. If not specified, a single group containing all data objects will be used.
    */
-  groupby?: string[];
+  groupby?: FieldName[];
 
   /**
    * A boolean flag indicating whether to produce density estimates (false) or cumulative density estimates (true).
@@ -452,7 +452,7 @@ export interface DensityTransform {
    *
    * __Default value:__ `["value", "density"]`
    */
-  as?: [string, string];
+  as?: [FieldName, FieldName];
 }
 
 export function isDensity(t: Transform): t is DensityTransform {
@@ -463,17 +463,17 @@ export interface RegressionTransform {
   /**
    * The data field of the dependent variable to predict.
    */
-  regression: string;
+  regression: FieldName;
 
   /**
    * The data field of the independent variable to use a predictor.
    */
-  on: string;
+  on: FieldName;
 
   /**
    * The data fields to group by. If not specified, a single group containing all data objects will be used.
    */
-  groupby?: string[];
+  groupby?: FieldName[];
 
   /**
    * The functional form of the regression model. One of `"linear"`, `"log"`, `"exp"`, `"pow"`, `"quad"`, or `"poly"`.
@@ -508,7 +508,7 @@ export interface RegressionTransform {
    *
    * __Default value:__ The field names of the input x and y values.
    */
-  as?: [string, string];
+  as?: [FieldName, FieldName];
 }
 
 export function isRegression(t: Transform): t is RegressionTransform {
@@ -519,17 +519,17 @@ export interface LoessTransform {
   /**
    * The data field of the dependent variable to smooth.
    */
-  loess: string;
+  loess: FieldName;
 
   /**
    * The data field of the independent variable to use a predictor.
    */
-  on: string;
+  on: FieldName;
 
   /**
    * The data fields to group by. If not specified, a single group containing all data objects will be used.
    */
-  groupby?: string[];
+  groupby?: FieldName[];
 
   /**
    * A bandwidth parameter in the range `[0, 1]` that determines the amount of smoothing.
@@ -543,7 +543,7 @@ export interface LoessTransform {
    *
    * __Default value:__ The field names of the input x and y values.
    */
-  as?: [string, string];
+  as?: [FieldName, FieldName];
 }
 
 export function isLoess(t: Transform): t is LoessTransform {
