@@ -22,9 +22,9 @@ Highlight points in the scatterplot below by <select name="toggle" onchange="bui
 
 <script type="text/javascript">
 function buildToggle(changeType) {
-  var type = document.querySelector('select[name=toggle]');
-  var expl = document.getElementById('toggle-expl');
-  var inputs = document.querySelectorAll('input[name=toggle]');
+  const type = document.querySelector('select[name=toggle]');
+  const expl = document.getElementById('toggle-expl');
+  const inputs = document.querySelectorAll('input[name=toggle]');
 
   if (!changeType && !inputs[0].checked && !inputs[1].checked) {
     type.value = 'insert';

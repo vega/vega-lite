@@ -6,6 +6,4 @@ scripts/pre-deploy.sh
 
 yarn presite
 
-bundle exec jekyll build
-
-gh-pages -d _site
+gh-pages -d site

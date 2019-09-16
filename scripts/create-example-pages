@@ -6,7 +6,7 @@
  */
 
 const fs = require('fs');
-const examples = require('../_data/examples.json');
+const examples = require('../site/_data/examples.json');
 const svg2png = require('svg2png-many');
 
 function createPage(example) {
@@ -42,7 +42,6 @@ for (const category of Object.keys(examples)) {
         example.description = parsed.description;
       }
 
-      fs.writeFileSync(`site/examples/${name}.vl.json`, fileContent);
       fs.writeFileSync(`site/examples/${name}.md`, createPage(example));
       fileMap[`examples/compiled/${name}.svg`] = `examples/compiled/${name}.png`;
     }

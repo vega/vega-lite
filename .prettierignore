@@ -1,5 +1,5 @@
-examples/specs/*.vl.json
-site/examples/
-_includes/
 build/
 coverage/
+examples/specs/*.vl.json
+site/_includes/*
+site/examples/*

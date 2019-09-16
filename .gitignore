@@ -1,5 +1,3 @@
-_data/vega-lite-schema.json
-_site
 !build/vega-lite-schema.json
 !site/examples/index.md
 .DS_Store
@@ -7,12 +5,16 @@ _site
 .yarnclean
 build/*
 coverage
-data/*
 examples/all-examples.json
 examples/compiled/*.png
 node_modules
 npm-debug.log*
-site/examples/
+site/_data/vega-lite-schema.json
+site/_site
+site/build
+site/data
+site/examples
+site/static/bundle.*
 test/log
 test/log/difflist.json
 yarn-debug.log*

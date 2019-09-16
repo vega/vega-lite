@@ -1,0 +1,4 @@
+<a class="imagegroup" href="{{ site.baseurl }}/examples/{{ include.spec }}.html">
+  <span class="image" style="background-image: url({{site.baseurl}}/examples/{{ include.spec }}.{% if include.png %}png{% else %}svg{% endif %});{% if include.style %}{{ include.style }}{% endif %}"></span>
+  <span class="image-title">{{ include.title | strip }}</span>
+</a>
