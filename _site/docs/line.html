@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Line | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Line" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/docs/line.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/docs/line.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Line","url":"https://vega.github.io/vega-lite/docs/line.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      const BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" class="active">Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="docs">
+    
+
+
+
+<div class="page-centered page-main">
+  
+  <aside class="page-sidebar">
+    <ul class="sidebar-nav">
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/" title="">Overview
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/spec.html" title="">View Specification
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/title.html" title="">Title
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/size.html" title="">Width / Height
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/data.html" title="">Data / Datasets
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/projection.html" title="">Projection
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/transform.html" title="">Transform
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/calculate.html" title="">Calculate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/density.html" title="">Density
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/filter.html" title="">Filter
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/flatten.html" title="">Flatten
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/fold.html" title="">Fold
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/joinaggregate.html" title="">Join Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/loess.html" title="">Loess
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/lookup.html" title="">Lookup
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/regression.html" title="">Regression
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/pivot.html" title="">Pivot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sample.html" title="">Sample
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/window.html" title="">Window
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/mark.html" title="">Mark
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/area.html" title="">Area
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bar.html" title="">Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/boxplot.html" title="">Box Plot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/circle.html" title="">Circle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorband.html" title="">Error Band
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorbar.html" title="">Error Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/geoshape.html" title="">Geoshape
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/image.html" title="">Image
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a class="active"
+            href="/vega-lite/docs/line.html" title="">Line
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/point.html" title="">Point
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rect.html" title="">Rect
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rule.html" title="">Rule
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/square.html" title="">Square
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/text.html" title="">Text
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/tick.html" title="">Tick
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/trail.html" title="">Trail
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/encoding.html" title="">Encoding
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/axis.html" title="">Axis
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/condition.html" title="">Condition
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/field.html" title="">Field
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/format.html" title="">Format
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/header.html" title="">Header
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/legend.html" title="">Legend
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/scale.html" title="">Scale
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sort.html" title="">Sort
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/type.html" title="">Type
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/value.html" title="">Value
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/composition.html" title="">View Composition
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/facet.html" title="">Facet
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/layer.html" title="">Layer
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/concat.html" title="">Concat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/repeat.html" title="">Repeat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/resolve.html" title="">Resolve
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/selection.html" title="">Selections
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bind.html" title="">Bind
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/clear.html" title="">Clear
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/project.html" title="">Encodings / Fields
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/init.html" title="">Init
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-mark.html" title="">Mark
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/nearest.html" title="">Nearest
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-resolve.html" title="">Resolve
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/toggle.html" title="">Toggle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/translate.html" title="">Translate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/zoom.html" title="">Zoom
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/config.html" title="">Config
+      </a></li>
+      
+      
+      
+      
+      <br>
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/types.html" title="">Parameter Types
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/tooltip.html" title="">Tooltip
+      </a></li>
+      
+      
+      
+    </nav>
+  </aside>
+  
+
+  <section class="page-content">
+    <h1>Line</h1>
+    <span class="edit-page">
+    <a href="https://github.com/vega/vega-lite/edit/master/docs/mark/line.md">Edit this page</a>
+</span>
+<pre><code class="language-js">{
+  "data": ... ,
+  "mark": "line",
+  "encoding": ... ,
+  ...
+}
+</code></pre>
+
+<p>The <code>line</code> mark represents the data points stored in a field with a line connecting all of these points. Line marks are commonly used to depict trajectories or change over time. Unlike most other marks that represent one data element per mark, one line mark represents multiple data element as a single line, akin to <a href="area.html"><code>area</code></a> and <a href="trail.html"><code>trail</code></a>.</p>
+
+<p><strong>Note:</strong> For line segments that connect (x,y) positions to (x2,y2) positions, please use <a href="rule.html"><code>rule</code></a> marks. For continuous lines with varying size, please use <a href="trail.html"><code>trail</code></a> marks.</p>
+
+<h2 id="documentation-overview">Documentation Overview</h2>
+
+<!-- prettier-ignore -->
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="#documentation-overview" id="markdown-toc-documentation-overview">Documentation Overview</a></li>
+  <li><a href="#properties" id="markdown-toc-properties">Line Mark Properties</a></li>
+  <li><a href="#examples" id="markdown-toc-examples">Examples</a>    <ul>
+      <li><a href="#line-chart" id="markdown-toc-line-chart">Line Chart</a></li>
+      <li><a href="#multi-series-colored-line-chart" id="markdown-toc-multi-series-colored-line-chart">Multi-series Colored Line Chart</a></li>
+      <li><a href="#line-detail" id="markdown-toc-line-detail">Multi-series Line Chart with the Detail Channel</a></li>
+      <li><a href="#line-chart-with-point-markers" id="markdown-toc-line-chart-with-point-markers">Line Chart with Point Markers</a></li>
+      <li><a href="#line-chart-with-invalid-values" id="markdown-toc-line-chart-with-invalid-values">Line Chart with Invalid Values</a></li>
+      <li><a href="#connected-scatter-plot" id="markdown-toc-connected-scatter-plot">Connected Scatter Plot (Line Chart with Custom Path)</a></li>
+      <li><a href="#line-interpolation" id="markdown-toc-line-interpolation">Line interpolation</a></li>
+      <li><a href="#geo-line" id="markdown-toc-geo-line">Geo Line</a></li>
+    </ul>
+  </li>
+  <li><a href="#config" id="markdown-toc-config">Line Config</a></li>
+</ul>
+
+<h2 id="properties">Line Mark Properties</h2>
+
+<pre><code class="language-js">// Single View Specification
+{
+  ...
+  "mark": {
+    "type": "line",
+    ...
+  },
+  "encoding": ... ,
+  ...
+}
+</code></pre>
+
+<p>An line mark definition can contain any <a href="mark.html#mark-def">standard mark properties</a> and the following line interpolation and point overlay properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>orient</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The orientation of a non-stacked bar, tick, area, and line charts.
+The value is either horizontal (default) or vertical.</p>
+<ul>
+  <li>For bar, rule and tick, this determines whether the size of the bar and tick
+should be applied to x or y dimension.</li>
+  <li>For area, this property determines the orient property of the Vega output.</li>
+  <li>For line and trail marks, this property determines the sort order of the points in the line
+if <code>config.sortLineBy</code> is not specified.
+For stacked charts, this is always determined by the orientation of the stack;
+therefore explicitly specified value will be ignored.</li>
+</ul>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>interpolate</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The line interpolation method to use for line and area marks. One of the following:</p>
+<ul>
+  <li><code>"linear"</code>: piecewise linear segments, as in a polyline.</li>
+  <li><code>"linear-closed"</code>: close the linear segments to form a polygon.</li>
+  <li><code>"step"</code>: alternate between horizontal and vertical segments, as in a step function.</li>
+  <li><code>"step-before"</code>: alternate between vertical and horizontal segments, as in a step function.</li>
+  <li><code>"step-after"</code>: alternate between horizontal and vertical segments, as in a step function.</li>
+  <li><code>"basis"</code>: a B-spline, with control point duplication on the ends.</li>
+  <li><code>"basis-open"</code>: an open B-spline; may not intersect the start or end.</li>
+  <li><code>"basis-closed"</code>: a closed B-spline, as in a loop.</li>
+  <li><code>"cardinal"</code>: a Cardinal spline, with control point duplication on the ends.</li>
+  <li><code>"cardinal-open"</code>: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.</li>
+  <li><code>"cardinal-closed"</code>: a closed Cardinal spline, as in a loop.</li>
+  <li><code>"bundle"</code>: equivalent to basis, except the tension parameter is used to straighten the spline.</li>
+  <li><code>"monotone"</code>: cubic interpolation that preserves monotonicity in y.</li>
+</ul>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>tension</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Depending on the interpolation type, sets the tension parameter (for line and area marks).</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>point</td>
+        <td>Boolean | OverlayMarkDef | String
+</td>
+        <td>
+  
+    <p>A flag for overlaying points on top of line or area marks, or an object defining the properties of the overlayed points.</p>
+
+<ul>
+  <li>
+    <p>If this property is <code>"transparent"</code>, transparent points will be used (for enhancing tooltips and selections).</p>
+  </li>
+  <li>
+    <p>If this property is an empty object (<code>{}</code>) or <code>true</code>, filled points with default properties will be used.</p>
+  </li>
+  <li>
+    <p>If this property is <code>false</code>, no points would be automatically added to line or area marks.</p>
+  </li>
+</ul>
+
+<p><strong>Default value:</strong> <code>false</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h2 id="examples">Examples</h2>
+
+<h3 id="line-chart">Line Chart</h3>
+
+<p>Using <code>line</code> with one temporal or ordinal field (typically on <code>x</code>) and another quantitative field (typically on <code>y</code>) produces a simple line chart with a single line.</p>
+
+<p><span class="vl-example" data-name="line"></span></p>
+
+<p>We can add create multiple lines by grouping along different attributes, such as <code>color</code> or <code>detail</code>.</p>
+
+<h3 id="multi-series-colored-line-chart">Multi-series Colored Line Chart</h3>
+
+<p>Adding a field to a <a href="encoding.html#mark-prop">mark property channel</a> such as <code>color</code> groups data points into different series, producing a multi-series colored line chart.</p>
+
+<p><span class="vl-example" data-name="line_color"></span></p>
+
+<h3 id="line-detail">Multi-series Line Chart with the Detail Channel</h3>
+
+<p>To group lines by a field without mapping the field to any visual properties, we can map the field to the <a href="encoding.html#detail"><code>detail</code></a> channel to create a multi-series line chart with the same color.</p>
+
+<p><span class="vl-example" data-name="line_detail"></span></p>
+
+<p>The same method can be used to group lines for a ranged dot plot.</p>
+
+<p><span class="vl-example" data-name="layer_ranged_dot"></span></p>
+
+<h3 id="line-chart-with-point-markers">Line Chart with Point Markers</h3>
+
+<p>By setting the <code>point</code> property of the mark definition to <code>true</code> or an object defining a property of the overlaying point marks, we can overlay point markers on top of line.</p>
+
+<p><span class="vl-example" data-name="line_overlay"></span></p>
+
+<p>This is equilvalent to adding another layer of filled point marks.</p>
+
+<p><span class="vl-example" data-name="normalized/line_overlay_normalized"></span></p>
+
+<p>Note that the overlay point marks have <code>opacity</code> = 1 by default (instead of semi-transparent like normal point marks).</p>
+
+<p>Here we create stroked points by setting their <code>\"filled\"</code> to <code>false</code> and their <code>fill</code> to <code>\"white\"</code>.</p>
+
+<p><span class="vl-example" data-name="line_overlay_stroked"></span></p>
+
+<h3 id="line-chart-with-invalid-values">Line Chart with Invalid Values</h3>
+
+<p>By default, data points with invalid x- or y-values (<code>null</code> or <code>NaN</code>) will cause break in the lines.</p>
+
+<p><span class="vl-example" data-name="line_skip_invalid"></span></p>
+
+<p>Note that individual points without connecting points will still be invisible by default.</p>
+
+<p><span class="vl-example" data-name="line_skip_invalid_mid"></span></p>
+
+<p>To show individual points without connecting points, you may set <code>strokeCap</code> to <code>"square"</code>:</p>
+
+<p><span class="vl-example" data-name="line_skip_invalid_mid_cap_square"></span></p>
+
+<p>or overlay it with marker points:</p>
+
+<p><span class="vl-example" data-name="line_skip_invalid_mid_overlay"></span></p>
+
+<h3 id="connected-scatter-plot">Connected Scatter Plot (Line Chart with Custom Path)</h3>
+
+<p>As shown in previous example, the line’s path (order of points in the line) is determined by data values on the temporal/ordinal field by default. However, a field can be mapped to the <a href="encoding.html#order"><code>order</code></a> channel for determining a custom path.</p>
+
+<p>For example, to show a pattern of data change over time between gasoline price and average miles driven per capita we use <code>order</code> channel to sort the points in the line by time field (<code>year</code>). In this example, we also use the <code>point</code> property to overlay point marks over the line marks to highlight each data point.</p>
+
+<p><span class="vl-example" data-name="connected_scatterplot"></span></p>
+
+<h3 id="line-interpolation">Line interpolation</h3>
+
+<p>The <code>interpolate</code> property of a <a href="mark.html#mark-def">mark definition</a> can be used to change line interpolation method. For example, we can set <code>interpolate</code> to <code>"monotone"</code>.</p>
+
+<p><span class="vl-example" data-name="line_monotone"></span></p>
+
+<p>We can also set <code>interpolate</code> to <code>"step-after"</code> to create a step-chart.</p>
+
+<p><span class="vl-example" data-name="line_step"></span></p>
+
+<p>For the list of all supported <code>interpolate</code> properties, please see the <a href="#properties">line mark properties</a> section.</p>
+
+<h3 id="geo-line">Geo Line</h3>
+
+<p>By mapping geographic coordinate data to <code>longitude</code> and <code>latitude</code> channels of a corresponding <a href="projection.html">projection</a>, we can draw lines through geographic points.</p>
+
+<p><span class="vl-example" data-name="geo_line"></span></p>
+
+<h2 id="config">Line Config</h2>
+
+<pre><code class="language-js">// Top-level View Specification
+{
+  ...
+  "config": {
+    "line": ...,
+    ...
+  }
+}
+</code></pre>
+
+<p>The <code>line</code> property of the top-level <a href="config.html"><code>config</code></a> object sets the default properties for all line marks. If <a href="encoding.html#mark-prop">mark property encoding channels</a> are specified for marks, these config values will be overridden.</p>
+
+<p>The line config can contain any <a href="#properties">line mark properties</a> (except <code>type</code>, <code>style</code>, and <code>clip</code>).</p>
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/docs/mark/line.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/static/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

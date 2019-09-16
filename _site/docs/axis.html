@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Axis | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Axis" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/docs/axis.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/docs/axis.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Axis","url":"https://vega.github.io/vega-lite/docs/axis.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      const BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" class="active">Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="docs">
+    
+
+
+
+<div class="page-centered page-main">
+  
+  <aside class="page-sidebar">
+    <ul class="sidebar-nav">
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/" title="">Overview
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/spec.html" title="">View Specification
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/title.html" title="">Title
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/size.html" title="">Width / Height
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/data.html" title="">Data / Datasets
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/projection.html" title="">Projection
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/transform.html" title="">Transform
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/calculate.html" title="">Calculate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/density.html" title="">Density
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/filter.html" title="">Filter
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/flatten.html" title="">Flatten
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/fold.html" title="">Fold
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/joinaggregate.html" title="">Join Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/loess.html" title="">Loess
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/lookup.html" title="">Lookup
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/regression.html" title="">Regression
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/pivot.html" title="">Pivot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sample.html" title="">Sample
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/window.html" title="">Window
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/mark.html" title="">Mark
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/area.html" title="">Area
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bar.html" title="">Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/boxplot.html" title="">Box Plot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/circle.html" title="">Circle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorband.html" title="">Error Band
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorbar.html" title="">Error Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/geoshape.html" title="">Geoshape
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/image.html" title="">Image
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/line.html" title="">Line
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/point.html" title="">Point
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rect.html" title="">Rect
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rule.html" title="">Rule
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/square.html" title="">Square
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/text.html" title="">Text
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/tick.html" title="">Tick
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/trail.html" title="">Trail
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/encoding.html" title="">Encoding
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a class="active"
+            href="/vega-lite/docs/axis.html" title="">Axis
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/condition.html" title="">Condition
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/field.html" title="">Field
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/format.html" title="">Format
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/header.html" title="">Header
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/legend.html" title="">Legend
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/scale.html" title="">Scale
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sort.html" title="">Sort
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/type.html" title="">Type
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/value.html" title="">Value
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/composition.html" title="">View Composition
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/facet.html" title="">Facet
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/layer.html" title="">Layer
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/concat.html" title="">Concat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/repeat.html" title="">Repeat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/resolve.html" title="">Resolve
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/selection.html" title="">Selections
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bind.html" title="">Bind
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/clear.html" title="">Clear
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/project.html" title="">Encodings / Fields
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/init.html" title="">Init
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-mark.html" title="">Mark
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/nearest.html" title="">Nearest
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-resolve.html" title="">Resolve
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/toggle.html" title="">Toggle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/translate.html" title="">Translate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/zoom.html" title="">Zoom
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/config.html" title="">Config
+      </a></li>
+      
+      
+      
+      
+      <br>
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/types.html" title="">Parameter Types
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/tooltip.html" title="">Tooltip
+      </a></li>
+      
+      
+      
+    </nav>
+  </aside>
+  
+
+  <section class="page-content">
+    <h1>Axis</h1>
+    <span class="edit-page">
+    <a href="https://github.com/vega/vega-lite/edit/master/docs/encoding/axis.md">Edit this page</a>
+</span>
+<p>Axes provide axis lines, ticks, and labels to convey how a positional range represents a data range. Simply put, axes visualize scales.</p>
+
+<p>By default, Vega-Lite automatically creates axes with default properties for <code>x</code> and <code>y</code> channels when they encode data fields. User can set the <code>axis</code> property of x- or y-<a href="encoding.html#field">field definition</a> to an object to customize <a href="#axis-properties">axis properties</a> or set <code>axis</code> to <code>null</code> to remove the axis.</p>
+
+<p>Besides <code>axis</code> property of a field definition, the configuration object (<a href="config.html"><code>config</code></a>) also provides <a href="#config">axis config</a> (<code>config: {axis: {...}}</code>) for setting default axis properties for all axes.</p>
+
+<h2 id="documentation-overview">Documentation Overview</h2>
+
+<!-- prettier-ignore -->
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="#documentation-overview" id="markdown-toc-documentation-overview">Documentation Overview</a></li>
+  <li><a href="#axis-properties" id="markdown-toc-axis-properties">Axis Properties</a>    <ul>
+      <li><a href="#general" id="markdown-toc-general">General</a>        <ul>
+          <li><a href="#example-using-axis-minextent-to-align-multi-view-plots" id="markdown-toc-example-using-axis-minextent-to-align-multi-view-plots">Example: Using Axis <code>minExtent</code> to Align Multi-View Plots</a></li>
+        </ul>
+      </li>
+      <li><a href="#domain" id="markdown-toc-domain">Domain</a></li>
+      <li><a href="#labels" id="markdown-toc-labels">Labels</a>        <ul>
+          <li><a href="#example-using-axis-labelexpr-to-display-initial-letters-of-month-name" id="markdown-toc-example-using-axis-labelexpr-to-display-initial-letters-of-month-name">Example: Using Axis <code>labelExpr</code> to Display Initial Letters of Month Name</a></li>
+        </ul>
+      </li>
+      <li><a href="#ticks" id="markdown-toc-ticks">Ticks</a></li>
+      <li><a href="#title" id="markdown-toc-title">Title</a></li>
+      <li><a href="#grid" id="markdown-toc-grid">Grid</a></li>
+      <li><a href="#conditional" id="markdown-toc-conditional">Conditional Axis Properties</a></li>
+    </ul>
+  </li>
+  <li><a href="#config" id="markdown-toc-config">Axis Config</a></li>
+</ul>
+
+<h2 id="axis-properties">Axis Properties</h2>
+
+<pre><code class="language-js">// A Single View or a Layer Specification
+{
+  ...,
+  "mark/layer": ...,
+  "encoding": {
+    "x": {
+      "field": ...,
+      "type": ...,
+      "axis": {                // Axis
+        ...
+      },
+      ...
+    },
+    "y": ...,
+    ...
+  }
+}
+</code></pre>
+
+<p id="properties">To customize axis, you can specify an <code>axis</code> object in <a href="encoding.html">an encoding channel’s definition</a>. This section lists all properties of axes.</p>
+
+<p><em>See also:</em> This <a href="https://beta.observablehq.com/@jheer/a-guide-to-guides-axes-legends-in-vega">interactive article</a> demonstrates axes and legends in the underlying Vega language.</p>
+
+<h3 id="general">General</h3>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>bandPosition</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>An interpolation fraction indicating where, for <code>band</code> scales, axis ticks should be positioned. A value of <code>0</code> places ticks at the left edge of their bands. A value of <code>0.5</code> places ticks in the middle of their bands.</p>
+
+<p><strong>Default value:</strong> <code>0.5</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>maxExtent</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.</p>
+
+<p><strong>Default value:</strong> <code>undefined</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>minExtent</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.</p>
+
+<p><strong>Default value:</strong> <code>30</code> for y-axis; <code>undefined</code> for x-axis.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>orient</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The orientation of the axis. One of <code>"top"</code>, <code>"bottom"</code>, <code>"left"</code> or <code>"right"</code>. The orientation can be used to further specialize the axis type (e.g., a y-axis oriented towards the right edge of the chart).</p>
+
+<p><strong>Default value:</strong> <code>"bottom"</code> for x-axes and <code>"left"</code> for y-axes.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>offset</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.</p>
+
+<p><strong>Default value:</strong> derived from the <a href="https://vega.github.io/vega-lite/docs/config.html#facet-scale-config">axis config</a>’s <code>offset</code> (<code>0</code> by default)</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>position</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.</p>
+
+<p><strong>Default value</strong>: <code>0</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>zindex</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>A non-negative integer indicating the z-index of the axis.
+If zindex is 0, axes should be drawn behind all chart elements.
+To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
+
+<p><strong>Default value:</strong> <code>0</code> (behind the marks).</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h4 id="example-using-axis-minextent-to-align-multi-view-plots">Example: Using Axis <code>minExtent</code> to Align Multi-View Plots</h4>
+
+<p>By default, Vega-Lite automatically sets the axis extent (the space axis ticks and labels use). However, to align axes between multiple plots in multi-view displays, you can manually set <code>minExtent</code> (and optionally <code>maxExtent</code>) to make the extent consistent across plots.</p>
+
+<div class="vl-example" data-name="nested_concat_align"></div>
+
+<h3 id="domain">Domain</h3>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>domain</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.</p>
+
+<p><strong>Default value:</strong> <code>true</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>domainColor</td>
+        <td><a href="types.html#color">Color</a>
+</td>
+        <td>
+  
+    <p>Color of axis domain line.</p>
+
+<p><strong>Default value:</strong> <code>"gray"</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>domainOpacity</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Opacity of the axis domain line.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>domainWidth</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Stroke width of axis domain line</p>
+
+<p><strong>Default value:</strong> <code>1</code></p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="labels">Labels</h3>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>format</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The text formatting pattern for labels of guides (axes, legends, headers) and text marks.</p>
+
+<ul>
+  <li>If the format type is <code>"number"</code> (e.g., for quantitative fields), this is D3’s <a href="https://github.com/d3/d3-format#locale_format">number format pattern</a>.</li>
+  <li>If the format type is <code>"time"</code> (e.g., for temporal fields), this is D3’s <a href="https://github.com/d3/d3-time-format#locale_format">time format pattern</a>.</li>
+</ul>
+
+<p>See the <a href="https://vega.github.io/vega-lite/docs/format.html">format documentation</a> for more examples.</p>
+
+<p><strong>Default value:</strong>  Derived from <a href="https://vega.github.io/vega-lite/docs/config.html#format">numberFormat</a> config for number format and from <a href="https://vega.github.io/vega-lite/docs/config.html#format">timeFormat</a> config for time format.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>formatType</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The format type for labels (<code>"number"</code> or <code>"time"</code>).</p>
+
+<p><strong>Default value:</strong></p>
+<ul>
+  <li><code>"time"</code> for temporal fields and ordinal and nomimal fields with <code>timeUnit</code>.</li>
+  <li><code>"number"</code> for quantitative fields as well as ordinal and nomimal fields without <code>timeUnit</code>.</li>
+</ul>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labels</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>A boolean flag indicating if labels should be included as part of the axis.</p>
+
+<p><strong>Default value:</strong> <code>true</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelAlign</td>
+        <td>String | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation.</p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelAngle</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The rotation angle of the axis labels.</p>
+
+<p><strong>Default value:</strong> <code>-90</code> for nominal and ordinal fields; <code>0</code> otherwise.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelBaseline</td>
+        <td>String | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be <code>"top"</code>, <code>"middle"</code>, <code>"bottom"</code>, or <code>"alphabetic"</code>.</p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelBound</td>
+        <td>Number | Boolean
+</td>
+        <td>
+  
+    <p>Indicates if labels should be hidden if they exceed the axis range. If <code>false</code> (the default) no bounds overlap analysis is performed. If <code>true</code>, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.</p>
+
+<p><strong>Default value:</strong> <code>false</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelColor</td>
+        <td><a href="types.html#color">Color</a> | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>The color of the tick label, can be in hex color code or regular color name.</p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelExpr</td>
+        <td>String
+</td>
+        <td>
+  
+    <p><a href="https://vega.github.io/vega/docs/expressions/">Vega expression</a> for customizing labels.</p>
+
+<p><strong>Note:</strong> The label text and value can be assessed via the <code>label</code> and <code>value</code> properties of the axis’s backing <code>datum</code> object.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelFlush</td>
+        <td>Boolean | Number
+</td>
+        <td>
+  
+    <p>Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.</p>
+
+<p><strong>Default value:</strong> <code>true</code> for axis of a continuous x-scale. Otherwise, <code>false</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelFlushOffset</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Indicates the number of pixels by which to offset flush-adjusted labels. For example, a value of <code>2</code> will push flush-adjusted labels 2 pixels outward from the center of the axis. Offsets can help the labels better visually group with corresponding axis ticks.</p>
+
+<p><strong>Default value:</strong> <code>0</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelFont</td>
+        <td>String | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>The font of the tick label.</p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelFontSize</td>
+        <td>Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>The font size of the label, in pixels.</p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelFontStyle</td>
+        <td>FontStyle | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>Font style of the title.</p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelFontWeight</td>
+        <td>String | Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>Font weight of axis tick labels.</p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelLimit</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Maximum allowed pixel width of axis tick labels.</p>
+
+<p><strong>Default value:</strong> <code>180</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelOpacity</td>
+        <td>Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>The opacity of the labels.</p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelOverlap</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The strategy to use for resolving overlap of axis labels. If <code>false</code> (the default), no overlap reduction is attempted. If set to <code>true</code> or <code>"parity"</code>, a strategy of removing every other label is used (this works well for standard linear axes). If set to <code>"greedy"</code>, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).</p>
+
+<p><strong>Default value:</strong> <code>true</code> for non-nominal fields with non-log scales; <code>"greedy"</code> for log scales; otherwise <code>false</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelPadding</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The padding, in pixels, between axis and text labels.</p>
+
+<p><strong>Default value:</strong> <code>2</code></p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p><strong>See also:</strong> <a href="mark.html#style-config"><code>guide-label</code> style config</a> (common styles for axis, <a href="legend.html">legend</a>, and <a href="facet.html#header">header</a> labels).</p>
+
+<h4 id="example-using-axis-labelexpr-to-display-initial-letters-of-month-name">Example: Using Axis <code>labelExpr</code> to Display Initial Letters of Month Name</h4>
+
+<div class="vl-example" data-name="bar_month_temporal_initial"></div>
+
+<h3 id="ticks">Ticks</h3>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>tickColor</td>
+        <td><a href="types.html#color">Color</a> | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>The color of the axis’s tick.</p>
+
+<p><strong>Default value:</strong> <code>"gray"</code></p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>tickCount</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are “nice” (multiples of 2, 5, 10) and lie within the underlying scale’s range.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>tickExtra</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for <code>band</code> scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with <code>"bandPosition": 1</code> and an axis <code>"padding"</code> value of <code>0</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>tickOffset</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Position offset in pixels to apply to ticks, labels, and gridlines.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>tickOpacity</td>
+        <td>Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>Opacity of the ticks.</p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>tickRound</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>Boolean flag indicating if pixel position values should be rounded to the nearest integer.</p>
+
+<p><strong>Default value:</strong> <code>true</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>ticks</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>Boolean value that determines whether the axis should include ticks.</p>
+
+<p><strong>Default value:</strong> <code>true</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>tickSize</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The size in pixels of axis ticks.</p>
+
+<p><strong>Default value:</strong> <code>5</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>tickWidth</td>
+        <td>Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>The width, in pixels, of ticks.</p>
+
+<p><strong>Default value:</strong> <code>1</code></p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>values</td>
+        <td>Number[] | String[] | Boolean[] | <a href="types.html#datetime">DateTime</a>[]
+</td>
+        <td>
+  
+    <p>Explicitly set the visible axis tick values.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="title">Title</h3>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>title</td>
+        <td>String | Null
+</td>
+        <td>
+  
+    <p>A title for the field. If <code>null</code>, the title will be removed.</p>
+
+<p><strong>Default value:</strong>  derived from the field’s name and transformation function (<code>aggregate</code>, <code>bin</code> and <code>timeUnit</code>).  If the field has an aggregate function, the function is displayed as part of the title (e.g., <code>"Sum of Profit"</code>). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., <code>"Profit (binned)"</code>, <code>"Transaction Date (year-month)"</code>).  Otherwise, the title is simply the field name.</p>
+
+<p><strong>Notes</strong>:</p>
+
+<p>1) You can customize the default field title format by providing the <a href="https://vega.github.io/vega-lite/docs/config.html#top-level-config"><code>fieldTitle</code></a> property in the <a href="https://vega.github.io/vega-lite/docs/config.html">config</a> or <a href="https://vega.github.io/vega-lite/docs/compile.html#field-title"><code>fieldTitle</code> function via the <code>compile</code> function’s options</a>.</p>
+
+<p>2) If both field definition’s <code>title</code> and axis, header, or legend <code>title</code> are defined, axis/header/legend title will be used.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleAlign</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>Horizontal text alignment of axis titles.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleAnchor</td>
+        <td>TitleAnchor
+</td>
+        <td>
+  
+    <p>Text anchor position for placing axis titles.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleAngle</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Angle in degrees of axis titles.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleBaseline</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>Vertical text baseline for axis titles.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleColor</td>
+        <td><a href="types.html#color">Color</a>
+</td>
+        <td>
+  
+    <p>Color of the title, can be in hex color code or regular color name.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleFont</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>Font of the title. (e.g., <code>"Helvetica Neue"</code>).</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleFontSize</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Font size of the title.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleFontStyle</td>
+        <td>FontStyle
+</td>
+        <td>
+  
+    <p>Font style of the title.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleFontWeight</td>
+        <td>String | Number
+</td>
+        <td>
+  
+    <p>Font weight of the title.
+This can be either a string (e.g <code>"bold"</code>, <code>"normal"</code>) or a number (<code>100</code>, <code>200</code>, <code>300</code>, …, <code>900</code> where <code>"normal"</code> = <code>400</code> and <code>"bold"</code> = <code>700</code>).</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleLimit</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Maximum allowed pixel width of axis titles.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleOpacity</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Opacity of the axis title.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titlePadding</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The padding, in pixels, between title and axis.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleX</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>X-coordinate of the axis title relative to the axis group.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleY</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Y-coordinate of the axis title relative to the axis group.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>For example, the following plot has a customized x-axis title.</p>
+
+<div class="vl-example" data-name="bar_1d"></div>
+
+<p><strong>See also:</strong> <a href="#title-config">Axis Title Config</a> and <a href="mark.html#style-config"><code>guide-title</code> style config</a> (common styles for axis, <a href="legend.html">legend</a>, and <a href="facet.html#header">header</a> titles).</p>
+
+<h3 id="grid">Grid</h3>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>grid</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>A boolean flag indicating if grid lines should be included as part of the axis</p>
+
+<p><strong>Default value:</strong> <code>true</code> for <a href="https://vega.github.io/vega-lite/docs/scale.html#continuous">continuous scales</a> that are not binned; otherwise, <code>false</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>gridColor</td>
+        <td><a href="types.html#color">Color</a> | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>Color of gridlines.</p>
+
+<p><strong>Default value:</strong> <code>"lightGray"</code>.</p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>gridDash</td>
+        <td>Number[] | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>An array of alternating [stroke, space] lengths for dashed grid lines.</p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>gridOpacity</td>
+        <td>Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>The stroke opacity of grid (value between [0,1])</p>
+
+<p><strong>Default value:</strong> <code>1</code></p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>gridWidth</td>
+        <td>Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+</td>
+        <td>
+  
+  
+    
+      <p>The grid width, in pixels.</p>
+
+<p><strong>Default value:</strong> <code>1</code></p>
+
+    
+  
+    
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<!--
+### Custom Axis Encodings
+
+**TODO** (We have `encoding` property akin to [Vega's axis `encode`](https://vega.github.io/vega/docs/axes/#custom-axis-encodings), but within each element's block, we do not have `enter/update/exit`.)
+-->
+
+<h3 id="conditional">Conditional Axis Properties</h3>
+
+<p>We can set axis properties (which can be of type “ConditionalAxisProperty”) to a <a href="condition.html#value">conditional value definition</a>.</p>
+
+<p>Note that each axis tick, grid line, and label instance is backed by a data object with the following fields, which may be accessed as part of the test condition in a condition axis property.</p>
+
+<ul>
+  <li><code>label</code> - the string label</li>
+  <li><code>value</code> - the data value</li>
+</ul>
+
+<p>For example, we can adjust the grid dash in a line chart based on whether a particular grid line falls on a year boundary:</p>
+
+<div class="vl-example" data-name="line_conditional_grid_dash"></div>
+
+<p>We can also conditionally hide some labels and ticks in the following Lasagna plot using conditional <code>labelColor</code> and <code>tickColor</code>:</p>
+
+<div class="vl-example" data-name="rect_lasagna"></div>
+
+<h2 id="config">Axis Config</h2>
+
+<pre><code class="language-js">// Top-level View Specification
+{
+  ...
+  "config": {
+    "axis": : ...,
+    "axisX": : ...,
+    "axisY": : ...,
+    "axisLeft": : ...,
+    "axisRight": : ...,
+    "axisTop": : ...,
+    "axisBottom": : ...,
+    "axisBand": : ...,
+    ...
+  }
+}
+</code></pre>
+
+<p>Axis configuration defines default settings for axes. Properties defined under the <code>"axis"</code> property in the top-level <a href="config.html"><code>config</code></a> object are applied to <em>all</em> axes.</p>
+
+<p>Additional property blocks can target more specific axis types based on the orientation (<code>"axisX"</code>, <code>"axisY"</code>, <code>"axisLeft"</code>, <code>"axisTop"</code>, etc.) or band scale type (<code>"axisBand"</code>). For example, properties defined under the <code>"axisBand"</code> property will only apply to axes visualizing <code>"band"</code> scales. If multiple axis config blocks apply to a single axis, type-based options take precedence over orientation-based options, which in turn take precedence over general options.</p>
+
+<p>An axis configuration supports all <a href="#properties">axis properties</a> except <code>position</code>, <code>orient</code>, <code>format</code>, <code>tickCount</code>, <code>values</code>, and <code>zindex</code>.</p>
+
+<p>The <code>shortTimeLabels</code> property is also available for the general axis config (<code>config.axis</code>), but not for specific axis config (e.g., <code>config.axisX</code>).</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>shortTimeLabels</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>Whether month names and weekday names should be abbreviated.</p>
+
+<p><strong>Default value:</strong>  <code>false</code></p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p><strong>See also:</strong> <a href="#labels">Axis Labels Properties</a> and <a href="mark.html#style-config"><code>guide-label</code> style config</a> (common styles for by axis, <a href="legend.html">legend</a>, and <a href="facet.html#header">header</a> labels).</p>
+
+<!-- hide as `grid` in axis config does not work yet.
+### Axis Config Example
+
+Setting axis config's `domain` and `grid` to `false` hides all axis domain lines and grids.
+
+<div class="vl-example" data-name="point_no_axis_domain_grid"></div> -->
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/docs/encoding/axis.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/static/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

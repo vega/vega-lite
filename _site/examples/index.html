@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Example Gallery | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Example Gallery" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/examples/" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/examples/" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Example Gallery","url":"https://vega.github.io/vega-lite/examples/","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      const BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" class="active">Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html">Tutorials</a>
+          <a href="/vega-lite/docs/">Documentation</a>
+          <a href="/vega-lite/usage/embed.html">Usage</a>
+          <a href="/vega-lite/ecosystem.html">Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="examples">
+    <div class="page-centered page-content">
+  
+    <h1>Example Gallery</h1>
+  
+  <p>This page shows example specifications for different types of graphics. To see example code for embedding visualizations in a webpage, please read the <a href="../usage/embed.html">embed documentation</a>.</p>
+
+<!-- prettier-ignore -->
+<ul id="markdown-toc">
+  <li>
+<a href="#single-view-plots" id="markdown-toc-single-view-plots">Single-View Plots</a>    <ul>
+      <li><a href="#bar-charts--histograms" id="markdown-toc-bar-charts--histograms">Bar Charts &amp; Histograms</a></li>
+      <li><a href="#scatter--strip-plots" id="markdown-toc-scatter--strip-plots">Scatter &amp; Strip Plots</a></li>
+      <li><a href="#line-charts" id="markdown-toc-line-charts">Line Charts</a></li>
+      <li><a href="#area-charts--streamgraphs" id="markdown-toc-area-charts--streamgraphs">Area Charts &amp; Streamgraphs</a></li>
+      <li><a href="#table-based-plots" id="markdown-toc-table-based-plots">Table-based Plots</a></li>
+      <li><a href="#advanced-calculations" id="markdown-toc-advanced-calculations">Advanced Calculations</a></li>
+    </ul>
+  </li>
+  <li>
+<a href="#composite-mark" id="markdown-toc-composite-mark">Composite Mark</a>    <ul>
+      <li><a href="#error-bars--error-bands" id="markdown-toc-error-bars--error-bands">Error Bars &amp; Error Bands</a></li>
+      <li><a href="#box-plots" id="markdown-toc-box-plots">Box Plots</a></li>
+    </ul>
+  </li>
+  <li>
+<a href="#layered-plots" id="markdown-toc-layered-plots">Layered Plots</a>    <ul>
+      <li><a href="#labeling--annotation" id="markdown-toc-labeling--annotation">Labeling &amp; Annotation</a></li>
+      <li><a href="#other-layered-plots" id="markdown-toc-other-layered-plots">Other Layered Plots</a></li>
+    </ul>
+  </li>
+  <li>
+<a href="#multi-view-displays" id="markdown-toc-multi-view-displays">Multi-View Displays</a>    <ul>
+      <li><a href="#faceting-trellis-plot--small-multiples" id="markdown-toc-faceting-trellis-plot--small-multiples">Faceting (Trellis Plot / Small Multiples)</a></li>
+      <li><a href="#repeat--concatenation" id="markdown-toc-repeat--concatenation">Repeat &amp; Concatenation</a></li>
+    </ul>
+  </li>
+  <li><a href="#maps-geographic-displays" id="markdown-toc-maps-geographic-displays">Maps (Geographic Displays)</a></li>
+  <li>
+<a href="#interactive" id="markdown-toc-interactive">Interactive</a>    <ul>
+      <li><a href="#interactive-charts" id="markdown-toc-interactive-charts">Interactive Charts</a></li>
+      <li><a href="#interactive-multi-view-displays" id="markdown-toc-interactive-multi-view-displays">Interactive Multi-View Displays</a></li>
+    </ul>
+  </li>
+  <li><a href="#community-examples" id="markdown-toc-community-examples">Community Examples</a></li>
+</ul>
+
+<h2 id="single-view-plots">Single-View Plots</h2>
+
+<h3 id="bar-charts--histograms">Bar Charts &amp; Histograms</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/bar.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/bar.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Simple Bar Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/bar_aggregate.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/bar_aggregate.svg);"></span>
+  <span class="image-title">Aggregate Bar Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/bar_aggregate_sort_by_encoding.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/bar_aggregate_sort_by_encoding.svg);"></span>
+  <span class="image-title">Aggregate Bar Chart (Sorted)</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/histogram.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/histogram.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Histogram</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/bar_binned_data.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/bar_binned_data.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Histogram (from Binned Data)</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/histogram_log.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/histogram_log.svg);"></span>
+  <span class="image-title">Log-scaled Histogram</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/bar_grouped.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/bar_grouped.svg);"></span>
+  <span class="image-title">Grouped Bar Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/stacked_bar_weather.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/stacked_bar_weather.svg);"></span>
+  <span class="image-title">Stacked Bar Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/stacked_bar_h.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/stacked_bar_h.svg);"></span>
+  <span class="image-title">Horizontal Stacked Bar Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/stacked_bar_normalize.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/stacked_bar_normalize.svg);"></span>
+  <span class="image-title">Normalized (Percentage) Stacked Bar Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/bar_gantt.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/bar_gantt.svg);background-size: auto 75%; background-position-y: center !important;"></span>
+  <span class="image-title">Gantt Chart (Ranged Bar Marks)</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/bar_color_disabled_scale.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/bar_color_disabled_scale.svg);"></span>
+  <span class="image-title">A Bar Chart Encoding Color Names in the Data</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/bar_layered_transparent.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/bar_layered_transparent.svg);"></span>
+  <span class="image-title">Layered Bar Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/bar_diverging_stack_population_pyramid.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/bar_diverging_stack_population_pyramid.svg);"></span>
+  <span class="image-title">Diverging Stacked Bar Chart (Population Pyramid)</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/bar_diverging_stack_transform.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/bar_diverging_stack_transform.svg);"></span>
+  <span class="image-title">Diverging Stacked Bar Chart (with Neutral Parts)</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_bar_labels.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_bar_labels.svg);background-size: auto 70%; background-position-y: center;"></span>
+  <span class="image-title">Bar Chart with Labels</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_bar_labels_grey.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_bar_labels_grey.svg);background-size: auto 70%; background-position-y: center;"></span>
+  <span class="image-title">Bar Chart with Label Overlays</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/circle_wilkinson_dotplot.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/circle_wilkinson_dotplot.svg);"></span>
+  <span class="image-title">Wilkinson Dot Plot</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/isotype_bar_chart.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/isotype_bar_chart.svg);"></span>
+  <span class="image-title">Isotype Bar Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/isotype_bar_chart_emoji.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/isotype_bar_chart_emoji.svg);"></span>
+  <span class="image-title">Isotype Bar Chart with Emoji</span>
+</a>
+</span></p>
+
+<h3 id="scatter--strip-plots">Scatter &amp; Strip Plots</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/point_2d.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/point_2d.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Scatterplot</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/tick_dot.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/tick_dot.svg);background-size: auto 50%; background-position-y: center !important;"></span>
+  <span class="image-title">1D Strip Plot</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/tick_strip.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/tick_strip.svg);background-size: auto 85%; background-position-y: center !important;"></span>
+  <span class="image-title">Strip Plot</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/point_color_with_shape.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/point_color_with_shape.svg);"></span>
+  <span class="image-title">Colored Scatterplot</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/circle_binned.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/circle_binned.svg);"></span>
+  <span class="image-title">Binned Scatterplot</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/point_bubble.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/point_bubble.svg);"></span>
+  <span class="image-title">Bubble Plot</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/point_invalid_color.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/point_invalid_color.png);"></span>
+  <span class="image-title">Scatterplot with Null Values in Grey</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/circle.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/circle.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Scatterplot with Filled Circles</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/circle_bubble_health_income.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/circle_bubble_health_income.svg);"></span>
+  <span class="image-title">Bubble Plot (Gapminder)</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/circle_natural_disasters.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/circle_natural_disasters.png);"></span>
+  <span class="image-title">Bubble Plot (Natural Disasters)</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/text_scatterplot_colored.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/text_scatterplot_colored.svg);"></span>
+  <span class="image-title">Scatter Plot with Text Marks</span>
+</a>
+</span></p>
+
+<h3 id="line-charts">Line Charts</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/line.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/line.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Line Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/line_overlay.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/line_overlay.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Line Chart with Point Markers</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/line_overlay_stroked.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/line_overlay_stroked.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Line Chart with Stroked Point Markers</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/line_color.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/line_color.svg);"></span>
+  <span class="image-title">Multi Series Line Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/line_slope.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/line_slope.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Slope Graph</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/line_step.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/line_step.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Step Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/line_monotone.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/line_monotone.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Line Chart with Monotone Interpolation</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/line_conditional_grid_dash.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/line_conditional_grid_dash.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Line Chart with Conditional Grid Dash</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/connected_scatterplot.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/connected_scatterplot.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Connected Scatterplot (Lines with Custom Paths)</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/trail_color.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/trail_color.svg);"></span>
+  <span class="image-title">Line Chart with Varying Size (using the trail mark)</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/line_skip_invalid_mid_overlay.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/line_skip_invalid_mid_overlay.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Line Chart with Markers and Invalid Values</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_line_co2_concentration.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_line_co2_concentration.svg);"></span>
+  <span class="image-title">Carbon Dioxide in the Atmosphere</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/window_rank.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/window_rank.svg);"></span>
+  <span class="image-title">Line Charts Showing Ranks Over Time</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/sequence_line_fold.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/sequence_line_fold.svg);"></span>
+  <span class="image-title">Drawing Sine and Cosine Curves with the Sequence Generator</span>
+</a>
+</span></p>
+
+<h3 id="area-charts--streamgraphs">Area Charts &amp; Streamgraphs</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/area.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/area.svg);"></span>
+  <span class="image-title">Area Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/area_gradient.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/area_gradient.svg);"></span>
+  <span class="image-title">Area Chart with Gradient</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/area_overlay.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/area_overlay.svg);"></span>
+  <span class="image-title">Area Chart with Overlaying Lines and Point Markers</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/stacked_area.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/stacked_area.svg);"></span>
+  <span class="image-title">Stacked Area Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/stacked_area_normalize.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/stacked_area_normalize.svg);"></span>
+  <span class="image-title">Normalized Stacked Area Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/stacked_area_stream.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/stacked_area_stream.svg);"></span>
+  <span class="image-title">Streamgraph</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/area_horizon.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/area_horizon.svg);background-size: auto 70%; background-position-y: center;"></span>
+  <span class="image-title">Horizon Graph</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/rect_mosaic_labelled_with_offset.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/rect_mosaic_labelled_with_offset.svg);"></span>
+  <span class="image-title">Mosaic Chart with Labels</span>
+</a>
+</span></p>
+
+<h3 id="table-based-plots">Table-based Plots</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/rect_heatmap.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/rect_heatmap.svg);background-size: auto"></span>
+  <span class="image-title">Table Heatmap</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/rect_heatmap_weather.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/rect_heatmap_weather.svg);"></span>
+  <span class="image-title">Annual Weather Heatmap</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/rect_binned_heatmap.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/rect_binned_heatmap.svg);"></span>
+  <span class="image-title">Table Binned heatmap</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/circle_github_punchcard.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/circle_github_punchcard.svg);"></span>
+  <span class="image-title">Table Bubble Plot (Github Punch Card)</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_text_heatmap.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_text_heatmap.svg);background-size: auto 55%; background-position-y: center !important;"></span>
+  <span class="image-title">Heatmap with Labels</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/rect_lasagna.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/rect_lasagna.svg);"></span>
+  <span class="image-title">Lasagna Plot (Dense Time-Series Heatmap)</span>
+</a>
+</span></p>
+
+<h3 id="advanced-calculations">Advanced Calculations</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/window_percent_of_total.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/window_percent_of_total.svg);"></span>
+  <span class="image-title">Calculate Percentage of Total</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/joinaggregate_mean_difference.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/joinaggregate_mean_difference.svg);"></span>
+  <span class="image-title">Calculate Difference from Average</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/joinaggregate_mean_difference_by_year.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/joinaggregate_mean_difference_by_year.svg);"></span>
+  <span class="image-title">Calculate Difference from Annual Average</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/joinaggregate_residual_graph.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/joinaggregate_residual_graph.png);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Calculate Residuals</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/window_rank.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/window_rank.svg);"></span>
+  <span class="image-title">Line Charts Showing Ranks Over Time</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/waterfall_chart.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/waterfall_chart.svg);"></span>
+  <span class="image-title">Waterfall Chart of Monthly Profit and Loss</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/window_top_k.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/window_top_k.svg);background-size: 110%"></span>
+  <span class="image-title">Filtering Top-K Items</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/window_top_k_others.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/window_top_k_others.svg);background-size: 110%"></span>
+  <span class="image-title">Top-K Plot with “Others”</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/lookup.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/lookup.svg);background-size: 75%; background-position-x: center;"></span>
+  <span class="image-title">Using the lookup transform to combine data</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/area_cumulative_freq.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/area_cumulative_freq.png);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Cumulative Frequency Distribution</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_cumulative_histogram.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_cumulative_histogram.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Layered Histogram and Cumulative Histogram</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/parallel_coordinate.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/parallel_coordinate.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Parallel Coordinate Plot</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/bar_argmax.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/bar_argmax.svg);"></span>
+  <span class="image-title">Bar Chart Showing Argmax Value</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_line_mean_point_raw.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_line_mean_point_raw.svg);"></span>
+  <span class="image-title">Layering Averages over Raw Values</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_line_rolling_mean_point_raw.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_line_rolling_mean_point_raw.svg);"></span>
+  <span class="image-title">Layering Rolling Averages over Raw Values</span>
+</a>
+</span></p>
+
+<h2 id="composite-mark">Composite Mark</h2>
+
+<h3 id="error-bars--error-bands">Error Bars &amp; Error Bands</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/layer_point_errorbar_ci.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_point_errorbar_ci.svg);"></span>
+  <span class="image-title">Error Bars Showing Confidence Interval</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_point_errorbar_stdev.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_point_errorbar_stdev.svg);"></span>
+  <span class="image-title">Error Bars Showing Standard Deviation</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_line_errorband_ci.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_line_errorband_ci.svg);"></span>
+  <span class="image-title">Line Chart with Confidence Interval Band</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_scatter_errorband_1D_stdev_global_mean.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_scatter_errorband_1D_stdev_global_mean.svg);"></span>
+  <span class="image-title">Scatterplot with Mean and Standard Deviation Overlay</span>
+</a>
+</span></p>
+
+<h3 id="box-plots">Box Plots</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/boxplot_minmax_2D_vertical.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/boxplot_minmax_2D_vertical.svg);"></span>
+  <span class="image-title">Box Plot with Min/Max Whiskers</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/boxplot_2D_vertical.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/boxplot_2D_vertical.svg);"></span>
+  <span class="image-title">Tukey Box Plot (1.5 IQR)</span>
+</a>
+</span></p>
+
+<h2 id="layered-plots">Layered Plots</h2>
+
+<h3 id="labeling--annotation">Labeling &amp; Annotation</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/layer_bar_labels.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_bar_labels.svg);background-size: auto 70%; background-position-y: center;"></span>
+  <span class="image-title">Simple Bar Chart with Labels</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_text_heatmap.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_text_heatmap.svg);background-size: auto 55%; background-position-y: center !important;"></span>
+  <span class="image-title">Layering text over heatmap</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_line_co2_concentration.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_line_co2_concentration.svg);"></span>
+  <span class="image-title">Carbon Dioxide in the Atmosphere</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_bar_annotations.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_bar_annotations.svg);"></span>
+  <span class="image-title">Bar Chart Highlighting Values beyond a Threshold</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_precipitation_mean.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_precipitation_mean.svg);"></span>
+  <span class="image-title">Mean overlay over precipitation chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_histogram_global_mean.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_histogram_global_mean.svg);background-size: auto 105%; background-position: center center !important;"></span>
+  <span class="image-title">Histogram with a Global Mean Overlay</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_falkensee.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_falkensee.svg);background-size: auto 90%; background-position-y: center !important;"></span>
+  <span class="image-title">Line Chart with Highlighted Rectangles</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_line_mean_point_raw.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_line_mean_point_raw.svg);"></span>
+  <span class="image-title">Layering Averages over Raw Values</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_line_rolling_mean_point_raw.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_line_rolling_mean_point_raw.svg);"></span>
+  <span class="image-title">Layering Rolling Averages over Raw Values</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_likert.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_likert.svg);"></span>
+  <span class="image-title">Distributions and Medians of Likert Scale Ratings</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/concat_layer_voyager_result.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/concat_layer_voyager_result.svg);"></span>
+  <span class="image-title">Comparative Likert Scale Ratings</span>
+</a>
+</span></p>
+
+<h3 id="other-layered-plots">Other Layered Plots</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/layer_candlestick.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_candlestick.svg);"></span>
+  <span class="image-title">Candlestick Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_ranged_dot.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_ranged_dot.svg);background-size: auto 70%; background-position-y: center;"></span>
+  <span class="image-title">Ranged Dot Plot</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/facet_bullet.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/facet_bullet.svg);"></span>
+  <span class="image-title">Bullet Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/layer_dual_axis.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/layer_dual_axis.svg);background-size: 100% auto; background-position-y: center;"></span>
+  <span class="image-title">Layered Plot with Dual-Axis</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/area_horizon.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/area_horizon.svg);background-size: auto 70%; background-position-y: center;"></span>
+  <span class="image-title">Horizon Graph</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/bar_layered_weather.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/bar_layered_weather.svg);"></span>
+  <span class="image-title">Weekly Weather Plot</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/wheat_wages.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/wheat_wages.svg);"></span>
+  <span class="image-title">Wheat and Wages Example</span>
+</a>
+</span></p>
+
+<h2 id="multi-view-displays">Multi-View Displays</h2>
+
+<h3 id="faceting-trellis-plot--small-multiples">Faceting (Trellis Plot / Small Multiples)</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/trellis_bar.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/trellis_bar.svg);"></span>
+  <span class="image-title">Trellis Bar Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/trellis_stacked_bar.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/trellis_stacked_bar.svg);"></span>
+  <span class="image-title">Trellis Stacked Bar Chart</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/trellis_scatter.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/trellis_scatter.png);"></span>
+  <span class="image-title">Trellis Scatter Plot</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/trellis_bar_histogram.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/trellis_bar_histogram.svg);"></span>
+  <span class="image-title">Trellis Histograms</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/trellis_anscombe.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/trellis_anscombe.svg);"></span>
+  <span class="image-title">Trellis Scatter Plot Showing Anscombe’s Quartet</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/trellis_barley.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/trellis_barley.svg);"></span>
+  <span class="image-title">Becker’s Barley Trellis Plot</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/trellis_area.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/trellis_area.svg);"></span>
+  <span class="image-title">Trellis Area</span>
+</a>
+</span></p>
+
+<h3 id="repeat--concatenation">Repeat &amp; Concatenation</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/repeat_layer.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/repeat_layer.svg);"></span>
+  <span class="image-title">Repeat and Layer to Show Different Weather Measures</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/vconcat_weather.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/vconcat_weather.svg);"></span>
+  <span class="image-title">Vertical Concatenation</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/repeat_histogram.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/repeat_histogram.svg);"></span>
+  <span class="image-title">Horizontally Repeated Charts</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/interactive_splom.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/interactive_splom.png);"></span>
+  <span class="image-title">Interactive Scatterplot Matrix</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/concat_marginal_histograms.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/concat_marginal_histograms.svg);"></span>
+  <span class="image-title">Marginal Histograms</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/concat_bar_scales_discretize.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/concat_bar_scales_discretize.svg);"></span>
+  <span class="image-title">Discretizing scales</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/nested_concat_align.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/nested_concat_align.svg);"></span>
+  <span class="image-title">Nested View Concatenation Aligned with Axis <code>minExtent</code></span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/concat_population_pyramid.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/concat_population_pyramid.svg);"></span>
+  <span class="image-title">Population Pyramid</span>
+</a>
+</span></p>
+
+<h2 id="maps-geographic-displays">Maps (Geographic Displays)</h2>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/geo_choropleth.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/geo_choropleth.png);"></span>
+  <span class="image-title">Choropleth of Unemployment Rate per County</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/geo_circle.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/geo_circle.png);"></span>
+  <span class="image-title">One Dot per Zipcode in the U.S.</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/geo_layer.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/geo_layer.png);"></span>
+  <span class="image-title">One Dot per Airport in the U.S. Overlayed on Geoshape</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/geo_rule.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/geo_rule.png);"></span>
+  <span class="image-title">Rules (line segments) Connecting SEA to every Airport Reachable via Direct Flights</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/geo_repeat.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/geo_repeat.png);"></span>
+  <span class="image-title">Three Choropleths Representing Disjoint Data from the Same Table</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/geo_text.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/geo_text.png);"></span>
+  <span class="image-title">U.S. State Capitals Overlayed on a Map of U.S.</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/geo_line.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/geo_line.png);"></span>
+  <span class="image-title">Line between Airports in the U.S.</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/geo_trellis.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/geo_trellis.png);"></span>
+  <span class="image-title">Income in the U.S. by State, Faceted over Income Brackets</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/geo_layer_line_london.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/geo_layer_line_london.png);"></span>
+  <span class="image-title">London Tube Lines</span>
+</a>
+</span></p>
+
+<h2 id="interactive">Interactive</h2>
+
+<h3 id="interactive-charts">Interactive Charts</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/interactive_bar_select_highlight.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/interactive_bar_select_highlight.svg);"></span>
+  <span class="image-title">Bar Chart with Highlighting on Hover and Selection on Click</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/point_href.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/point_href.svg);"></span>
+  <span class="image-title">Scatterplot with External Links and Tooltips</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/interactive_brush.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/interactive_brush.svg);"></span>
+  <span class="image-title">Rectangular Brush</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/interactive_area_brush.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/interactive_area_brush.svg);"></span>
+  <span class="image-title">Area Chart with Rectangular Brush</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/interactive_paintbrush.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/interactive_paintbrush.png);"></span>
+  <span class="image-title">Paintbrush Highlight</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/selection_translate_scatterplot_drag.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/selection_translate_scatterplot_drag.svg);"></span>
+  <span class="image-title">Scatterplot Pan &amp; Zoom</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/interactive_query_widgets.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/interactive_query_widgets.svg);"></span>
+  <span class="image-title">Query Widgets</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/selection_layer_bar_month.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/selection_layer_bar_month.svg);"></span>
+  <span class="image-title">Interactive Average</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/interactive_multi_line_label.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/interactive_multi_line_label.png);"></span>
+  <span class="image-title">Multi Series Line Chart with Labels</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/interactive_multi_line_tooltip.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/interactive_multi_line_tooltip.png);"></span>
+  <span class="image-title">Multi Series Line Chart with Tooltip</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/isotype_grid.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/isotype_grid.png);"></span>
+  <span class="image-title">Isotype Grid</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/brush_table.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/brush_table.svg);"></span>
+  <span class="image-title">Brushing Scatter Plot to show data on a table</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/selection_heatmap.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/selection_heatmap.svg);"></span>
+  <span class="image-title">Selectable Heatmap</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/bar_count_minimap.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/bar_count_minimap.svg);"></span>
+  <span class="image-title">Bar Chart with a Minimap</span>
+</a>
+</span></p>
+
+<h3 id="interactive-multi-view-displays">Interactive Multi-View Displays</h3>
+
+<p><span class="gallery"><a class="imagegroup" href="/vega-lite/examples/interactive_overview_detail.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/interactive_overview_detail.svg);"></span>
+  <span class="image-title">Overview and Detail</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/interactive_layered_crossfilter.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/interactive_layered_crossfilter.svg);"></span>
+  <span class="image-title">Crossfilter</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/interactive_splom.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/interactive_splom.png);"></span>
+  <span class="image-title">Interactive Scatterplot Matrix</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/interactive_concat_layer.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/interactive_concat_layer.svg);"></span>
+  <span class="image-title">Interactive Dashboard with Cross Highlight</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/interactive_seattle_weather.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/interactive_seattle_weather.png);"></span>
+  <span class="image-title">Seattle Weather Exploration</span>
+</a>
+<a class="imagegroup" href="/vega-lite/examples/airport_connections.html">
+  <span class="image" style="background-image: url(/vega-lite/examples/airport_connections.png);"></span>
+  <span class="image-title">Connections among Major U.S. Airports.</span>
+</a>
+</span></p>
+
+<h2 id="community-examples">Community Examples</h2>
+
+<p>Here we list great examples of Vega-Lite visualizations that were created by the community. Please help us expand this gallery by <a href="https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9">forking our example block</a> and sending us a <a href="https://github.com/vega/vega-lite/edit/master/site/examples/index.md">pull request</a> with your example added to this list.</p>
+
+<ul>
+  <li>Many visualizations in the book <a href="https://makingdatavisual.github.io/figurelist.html">Making Data Visual</a> by Danyel Fisher and Miriah Meyer are made with Vega-Lite</li>
+  <li>
+<a href="https://bl.ocks.org/domoritz/f5abc519dd990bfcbc3f20f634658364">Grouped Bar Chart</a> by <a href="https://github.com/churtado" class="user-mention">@churtado</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/digi0ps/3691287ab4033509e988d67c932fca47">Bar Chart with Negative Values</a> by <a href="https://github.com/digi0ps" class="user-mention">@digi0ps</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/amitkaps/fe4238e716db53930b2f1a70d3401701">Multi Line Highlight</a> by <a href="https://github.com/amitkaps" class="user-mention">@amitkaps</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/g3o2/a6c539eacfb0b99eaf01e4f20b9f2897">Slope graph</a> by <a href="https://github.com/g3o2" class="user-mention">@g3o2</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/amitkaps/abfa7157d4366cc43cbbba55353d35d8">Scatter Nearest Rule</a> by <a href="https://github.com/amitkaps" class="user-mention">@amitkaps</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/amitkaps/a484b94a7e1e0705c5ec865ba31f463c">Scatter Brush Rule</a> by <a href="https://github.com/amitkaps" class="user-mention">@amitkaps</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/amitkaps/d6648bd8ddb1c1e3706d7530126d1e2b">Unit Chart Rectangular</a> by <a href="https://github.com/amitkaps" class="user-mention">@amitkaps</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/amitkaps/cdc7dacd8f7d9f2a9cff4b10d3279b86">Unit Chart Stacked</a> by <a href="https://github.com/amitkaps" class="user-mention">@amitkaps</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/amitkaps/67bd6dcb2af300a2b76f1e2351c1afdc">Unit Chart Small Multiple</a> by <a href="https://github.com/amitkaps" class="user-mention">@amitkaps</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/g3o2/bd4362574137061c243a2994ba648fb8">Dot-dash plot</a> by <a href="https://github.com/g3o2" class="user-mention">@g3o2</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/domoritz/bef687de0e2dba1f522f674c260ac17f">Cumulative Wikipedia Donations</a> by <a href="https://github.com/domoritz" class="user-mention">@domoritz</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/domoritz/4e3289f9266fb3ef7e9baa201060361b">CO2 Concentration in the Atmosphere</a> by <a href="https://github.com/domoritz" class="user-mention">@domoritz</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/pratapvardhan/00800a4981d43a84efdba0c4cf8ee2e1">Horizontal Stacked Bar Chart with Labels</a> by <a href="https://github.com/pratapvardhan" class="user-mention">@pratapvardhan</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/jakevdp/1643ebb6853e76c32e47a969f415f3ea">Interactive stacked time-series</a> by <a href="https://github.com/jakevdp" class="user-mention">@jakevdp</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/jakevdp/b511d09ed4e2797234bd6236d7b428f7">Bicycle Count Time-series with Dynamic Scale</a> by <a href="https://github.com/jakevdp" class="user-mention">@jakevdp</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/domoritz/81008b55ae2e2649eb42f600440f87d2">Vega-Lite downloads</a> by <a href="https://github.com/domoritz" class="user-mention">@domoritz</a>
+</li>
+  <li>
+<a href="https://bl.ocks.org/italo-batista/5f93b3c9f87dffcf01bb489d90f60652/ef01271c72c57dc940bb357019be1c6cdf9eb51a">Waterfall Chart</a> by <a href="https://github.com/italo-batista" class="user-mention">@italo-batista</a>
+</li>
+  <li>
+<a href="https://medium.com/enigma-engineering/exploring-new-york-city-event-permits-with-vega-lite-f83178ff9a8d">Bar, Small Multiple, Heatmap, Gantt Charts: Exploring NYC Event Permits</a> by <a href="https://twitter.com/hydrosquall">@hydrosquall</a>
+</li>
+  <li>
+<a href="https://beta.observablehq.com/@amitkaps/image-pixel-render-with-vega-lite">Image Pixel Render</a> by <a href="https://github.com/amitkaps" class="user-mention">@amitkaps</a>
+</li>
+  <li>
+<a href="https://beta.observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example">Top-K Plot with Others</a> by <a href="https://github.com/manzt" class="user-mention">@manzt</a>
+</li>
+  <li>
+<a href="https://www.trafforddatalab.io/interactive_graphics_companion/">Trafford Data Lab’s Vega-Lite graphics companion</a> by <a href="https://github.com/trafforddatalab" class="user-mention">@trafforddatalab</a>
+</li>
+  <li>
+<a href="https://observablehq.com/@alhenry/international-flight-map">International Flight Map</a> by <a href="https://twitter.com/maha_albert">@alhenry</a>
+</li>
+</ul>
+
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/examples/index.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/static/idl-logo.png"></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/static/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

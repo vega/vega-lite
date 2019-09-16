@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "../build/site/"
+  },
+  "references": [
+    {
+      "path": "../src/tsconfig.src.json"
+    }
+  ],
+  "files": ["static/index.ts"],
+  "include": ["static/*.ts"]
+}

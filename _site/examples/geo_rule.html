@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Rules (line segments) Connecting SEA to every Airport Reachable via Direct Flights | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Rules (line segments) Connecting SEA to every Airport Reachable via Direct Flights" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/examples/geo_rule.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/examples/geo_rule.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta property="og:image" content="https://vega.github.io/vega-lite/examples/compiled/geo_rule.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Rules (line segments) Connecting SEA to every Airport Reachable via Direct Flights","url":"https://vega.github.io/vega-lite/examples/geo_rule.html","image":"https://vega.github.io/vega-lite/examples/compiled/geo_rule.png","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      const BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" class="active">Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="examples">
+    <div class="page-centered page-content">
+  
+    <h1>Rules (line segments) Connecting SEA to every Airport Reachable via Direct Flights</h1>
+  
+  
+<div id="geo_rule"></div>
+
+<script>
+    window.onload = function() {
+      const spec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "width": 800,
+  "height": 500,
+  "layer": [
+    {
+      "data": {
+        "url": "data/us-10m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "states"
+        }
+      },
+      "projection": {
+        "type": "albersUsa"
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "lightgray",
+        "stroke": "white"
+      }
+    },
+    {
+      "data": {
+        "url": "data/airports.csv"
+      },
+      "projection": {
+        "type": "albersUsa"
+      },
+      "mark": "circle",
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "size": {"value": 5},
+        "color": {"value": "gray"}
+      }
+    },
+    {
+      "data": {
+        "url": "data/flights-airport.csv"
+      },
+      "transform": [
+        {"filter": {"field": "origin", "equal": "SEA"}},
+        {
+          "lookup": "origin",
+          "from": {
+            "data": {
+              "url": "data/airports.csv"
+            },
+            "key": "iata",
+            "fields": ["latitude", "longitude"]
+          },
+          "as": ["origin_latitude", "origin_longitude"]
+        },
+        {
+          "lookup": "destination",
+          "from": {
+            "data": {
+              "url": "data/airports.csv"
+            },
+            "key": "iata",
+            "fields": ["latitude", "longitude"]
+          },
+          "as": ["dest_latitude", "dest_longitude"]
+        }
+      ],
+      "projection": {
+        "type": "albersUsa"
+      },
+      "mark": "rule",
+      "encoding": {
+        "longitude": {
+          "field": "origin_longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "origin_latitude",
+          "type": "quantitative"
+        },
+        "longitude2": {
+          "field": "dest_longitude",
+          "type": "quantitative"
+        },
+        "latitude2": {
+          "field": "dest_latitude",
+          "type": "quantitative"
+        }
+      }
+    }
+  ]
+}
+;
+
+      embedExample('#geo_rule', spec, false);
+  }
+</script>
+
+<p><a href="https://vega.github.io/editor/#/examples/vega-lite/geo_rule">
+  View this example in the online editor
+</a></p>
+
+<h3 id="spec">Vega-Lite JSON Specification</h3>
+
+<pre class="example-spec"><code class="language-json">{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "width": 800,
+  "height": 500,
+  "layer": [
+    {
+      "data": {
+        "url": "data/us-10m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "states"
+        }
+      },
+      "projection": {
+        "type": "albersUsa"
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "lightgray",
+        "stroke": "white"
+      }
+    },
+    {
+      "data": {
+        "url": "data/airports.csv"
+      },
+      "projection": {
+        "type": "albersUsa"
+      },
+      "mark": "circle",
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "size": {"value": 5},
+        "color": {"value": "gray"}
+      }
+    },
+    {
+      "data": {
+        "url": "data/flights-airport.csv"
+      },
+      "transform": [
+        {"filter": {"field": "origin", "equal": "SEA"}},
+        {
+          "lookup": "origin",
+          "from": {
+            "data": {
+              "url": "data/airports.csv"
+            },
+            "key": "iata",
+            "fields": ["latitude", "longitude"]
+          },
+          "as": ["origin_latitude", "origin_longitude"]
+        },
+        {
+          "lookup": "destination",
+          "from": {
+            "data": {
+              "url": "data/airports.csv"
+            },
+            "key": "iata",
+            "fields": ["latitude", "longitude"]
+          },
+          "as": ["dest_latitude", "dest_longitude"]
+        }
+      ],
+      "projection": {
+        "type": "albersUsa"
+      },
+      "mark": "rule",
+      "encoding": {
+        "longitude": {
+          "field": "origin_longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "origin_latitude",
+          "type": "quantitative"
+        },
+        "longitude2": {
+          "field": "dest_longitude",
+          "type": "quantitative"
+        },
+        "latitude2": {
+          "field": "dest_latitude",
+          "type": "quantitative"
+        }
+      }
+    }
+  ]
+}
+
+</code></pre>
+
+
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/_data/examples.json">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/static/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

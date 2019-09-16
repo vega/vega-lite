@@ -1,0 +1,12 @@
+<div id="showcase">
+  <div class="examples">
+    {% for image in page.images %}
+    <a
+      class="preview"
+      href="{{ site.baseurl }}/examples/{{ image.spec }}.html"
+      style="background-image: url('{{ site.baseurl }}/examples/{{ image.spec }}.png')"
+    >
+    </a>
+    {% endfor %}
+  </div>
+</div>

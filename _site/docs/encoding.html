@@ -1,0 +1,2195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Encoding | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Encoding" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/docs/encoding.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/docs/encoding.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Encoding","url":"https://vega.github.io/vega-lite/docs/encoding.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      const BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" class="active">Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="docs">
+    
+
+
+
+<div class="page-centered page-main">
+  
+  <aside class="page-sidebar">
+    <ul class="sidebar-nav">
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/" title="">Overview
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/spec.html" title="">View Specification
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/title.html" title="">Title
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/size.html" title="">Width / Height
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/data.html" title="">Data / Datasets
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/projection.html" title="">Projection
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/transform.html" title="">Transform
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/calculate.html" title="">Calculate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/density.html" title="">Density
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/filter.html" title="">Filter
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/flatten.html" title="">Flatten
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/fold.html" title="">Fold
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/joinaggregate.html" title="">Join Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/loess.html" title="">Loess
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/lookup.html" title="">Lookup
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/regression.html" title="">Regression
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/pivot.html" title="">Pivot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sample.html" title="">Sample
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/window.html" title="">Window
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/mark.html" title="">Mark
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/area.html" title="">Area
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bar.html" title="">Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/boxplot.html" title="">Box Plot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/circle.html" title="">Circle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorband.html" title="">Error Band
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorbar.html" title="">Error Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/geoshape.html" title="">Geoshape
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/image.html" title="">Image
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/line.html" title="">Line
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/point.html" title="">Point
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rect.html" title="">Rect
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rule.html" title="">Rule
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/square.html" title="">Square
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/text.html" title="">Text
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/tick.html" title="">Tick
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/trail.html" title="">Trail
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a class="active"
+          href="/vega-lite/docs/encoding.html" title="">Encoding
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/axis.html" title="">Axis
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/condition.html" title="">Condition
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/field.html" title="">Field
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/format.html" title="">Format
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/header.html" title="">Header
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/legend.html" title="">Legend
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/scale.html" title="">Scale
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sort.html" title="">Sort
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/type.html" title="">Type
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/value.html" title="">Value
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/composition.html" title="">View Composition
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/facet.html" title="">Facet
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/layer.html" title="">Layer
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/concat.html" title="">Concat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/repeat.html" title="">Repeat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/resolve.html" title="">Resolve
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/selection.html" title="">Selections
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bind.html" title="">Bind
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/clear.html" title="">Clear
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/project.html" title="">Encodings / Fields
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/init.html" title="">Init
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-mark.html" title="">Mark
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/nearest.html" title="">Nearest
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-resolve.html" title="">Resolve
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/toggle.html" title="">Toggle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/translate.html" title="">Translate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/zoom.html" title="">Zoom
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/config.html" title="">Config
+      </a></li>
+      
+      
+      
+      
+      <br>
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/types.html" title="">Parameter Types
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/tooltip.html" title="">Tooltip
+      </a></li>
+      
+      
+      
+    </nav>
+  </aside>
+  
+
+  <section class="page-content">
+    <h1>Encoding</h1>
+    <span class="edit-page">
+    <a href="https://github.com/vega/vega-lite/edit/master/docs/encoding.md">Edit this page</a>
+</span>
+<p>An integral part of the data visualization process is encoding data with visual properties of graphical marks. The <code>encoding</code> property of a single view specification represents the mapping between <a href="#channels">encoding channels</a> (such as <code>x</code>, <code>y</code>, or <code>color</code>) and <a href="#field-def">data fields</a> or <a href="#value-def">constant values</a>.</p>
+
+<pre><code class="language-js">// Specification of a Single View
+{
+  "data": ... ,
+  "mark": ... ,
+  "encoding": {     // Encoding
+    // Position Channels
+    "x": ...,
+    "y": ...,
+    "x2": ...,
+    "y2": ...,
+    "xError": ...,
+    "yError": ...,
+    "xError2": ...,
+    "yError2": ...,
+
+    // Geographic Position Channels
+    "longtitude": ...,
+    "latitude": ...,
+
+    // Mark Properties Channels
+    "color": ...,
+    "opacity": ...,
+    "fillOpacity": ...,
+    "strokeOpacity": ...,
+    "strokeWidth": ...,
+    "size": ...,
+    "shape": ...,
+
+    // Text and Tooltip Channels
+    "text": ...,
+    "tooltip": ...,
+
+    // Hyperlink Channel
+    "href": ...,
+
+    // Key Channel
+    "key": ...,
+
+    // Order Channel
+    "order": ...,
+
+    // Level of Detail Channel
+    "detail": ...,
+
+    // Facet Channels
+    "facet": ...,
+    "row": ...,
+    "column": ...
+  },
+  ...
+}
+</code></pre>
+
+<h2 id="channels">Encoding Channels</h2>
+
+<p>The keys in the <code>encoding</code> object are encoding channels. Vega-lite supports the following groups of encoding channels</p>
+
+<ul>
+  <li><a href="#position">Position Channels</a>: <code>x</code>, <code>y</code>, <code>x2</code>, <code>y2</code></li>
+  <li><a href="#geo">Geographic Position Channels</a>: <code>longitude</code>, <code>latitude</code>, <code>longitude2</code>, <code>latitude2</code></li>
+  <li><a href="#mark-prop">Mark Property Channels</a>: <code>color</code>, <code>opacity</code>, <code>fillOpacity</code>, <code>strokeOpacity</code>, <code>shape</code>, <code>size</code>, <code>strokeWidth</code></li>
+  <li><a href="#text">Text and Tooltip Channels</a>: <code>text</code>, <code>tooltip</code></li>
+  <li><a href="#href">Hyperlink Channel</a>: <code>href</code></li>
+  <li><a href="#detail">Level of Detail Channel</a>: <code>detail</code></li>
+  <li><a href="#key">Key Channel</a>: <code>key</code></li>
+  <li><a href="#order">Order Channel</a>: <code>order</code></li>
+  <li><a href="#facet">Facet Channels</a>: <code>facet</code>, <code>row</code>, <code>column</code></li>
+</ul>
+
+<h2 id="channel-definition">Channel Definition</h2>
+
+<p>Each channel definition object is either a <a href="(#field-def)">field definition</a>, which describes the data field encoded by the channel, or a <a href="#value-def">value definition</a>, which describes an encoded constant value.</p>
+
+<h3 id="field-def">Field Definition</h3>
+
+<pre><code class="language-js">// Specification of a Single View
+{
+  ...,
+  "encoding": {     // Encoding
+    ...: {
+      "field": ...,
+      "type": ...,
+      ...
+    },
+    ...
+  },
+  ...
+}
+</code></pre>
+
+<p>To encode a particular field in the data set with an encoding channel, the channel’s field definition must describe the <a href="field.html"><code>field</code></a> name and its data <a href="type.html"><code>type</code></a>. To facilitate data exploration, Vega-Lite also provides inline field transforms (<a href="aggregate.html"><code>aggregate</code></a>, <a href="bin.html"><code>bin</code></a>, <a href="sort.html"><code>sort</code></a>, <a href="stack.html"><code>stack</code></a>, and <a href="timeunit.html"><code>timeUnit</code></a>) as a part of a field definition in addition to the top-level <a href="transform.html"><code>transform</code></a>.</p>
+
+<p>All field definitions support the following properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>field</td>
+        <td><a href="field.html">Field</a>
+</td>
+        <td>
+  
+    <p><strong>Required.</strong> A string defining the name of the field from which to pull a data value
+or an object defining iterated values from the <a href="https://vega.github.io/vega-lite/docs/repeat.html"><code>repeat</code></a> operator.</p>
+
+<p><strong>See also:</strong> <a href="https://vega.github.io/vega-lite/docs/field.html"><code>field</code></a> documentation.</p>
+
+<p><strong>Notes:</strong>
+1)  Dots (<code>.</code>) and brackets (<code>[</code> and <code>]</code>) can be used to access nested objects (e.g., <code>"field": "foo.bar"</code> and <code>"field": "foo['bar']"</code>).
+If field names contain dots or brackets but are not nested, you can use <code>\\</code> to escape dots and brackets (e.g., <code>"a\\.b"</code> and <code>"a\\[0\\]"</code>).
+See more details about escaping in the <a href="https://vega.github.io/vega-lite/docs/field.html">field documentation</a>.
+2) <code>field</code> is not required if <code>aggregate</code> is <code>count</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>type</td>
+        <td>String
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The encoded field’s type of measurement (<code>"quantitative"</code>, <code>"temporal"</code>, <code>"ordinal"</code>, or <code>"nominal"</code>).
+It can also be a <code>"geojson"</code> type for encoding <a href="https://vega.github.io/vega-lite/docs/geoshape.html">‘geoshape’</a>.</p>
+
+<p><strong>Note:</strong></p>
+
+<ul>
+  <li>Data values for a temporal field can be either a date-time string (e.g., <code>"2015-03-07 12:32:17"</code>, <code>"17:01"</code>, <code>"2015-03-16"</code>. <code>"2015"</code>) or a timestamp number (e.g., <code>1552199579097</code>).</li>
+  <li>Data <code>type</code> describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.</li>
+  <li>When using with <a href="https://vega.github.io/vega-lite/docs/bin.html"><code>bin</code></a>, the <code>type</code> property can be either <code>"quantitative"</code> (for using a linear bin scale) or <a href="https://vega.github.io/vega-lite/docs/type.html#cast-bin"><code>"ordinal"</code> (for using an ordinal bin scale)</a>.</li>
+  <li>When using with <a href="https://vega.github.io/vega-lite/docs/timeunit.html"><code>timeUnit</code></a>, the <code>type</code> property can be either <code>"temporal"</code> (for using a temporal scale) or <a href="https://vega.github.io/vega-lite/docs/type.html#cast-bin"><code>"ordinal"</code> (for using an ordinal scale)</a>.</li>
+  <li>When using with <a href="https://vega.github.io/vega-lite/docs/aggregate.html"><code>aggregate</code></a>, the <code>type</code> property refers to the post-aggregation data type. For example, we can calculate count <code>distinct</code> of a categorical field <code>"cat"</code> using <code>{"aggregate": "distinct", "field": "cat", "type": "quantitative"}</code>. The <code>"type"</code> of the aggregate output is <code>"quantitative"</code>.</li>
+  <li>Secondary channels (e.g., <code>x2</code>, <code>y2</code>, <code>xError</code>, <code>yError</code>) do not have <code>type</code> as they have exactly the same type as their primary channels (e.g., <code>x</code>, <code>y</code>).</li>
+</ul>
+
+<p><strong>See also:</strong> <a href="https://vega.github.io/vega-lite/docs/type.html"><code>type</code></a> documentation.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>bin</td>
+        <td>Boolean | <a href="bin.html#bin-parameters">BinParams</a> | String | Null
+</td>
+        <td>
+  
+    <p>A flag for binning a <code>quantitative</code> field, <a href="https://vega.github.io/vega-lite/docs/bin.html#params">an object defining binning parameters</a>, or indicating that the data for <code>x</code> or <code>y</code> channel are binned before they are imported into Vega-Lite (<code>"binned"</code>).</p>
+
+<ul>
+  <li>
+    <p>If <code>true</code>, default <a href="https://vega.github.io/vega-lite/docs/bin.html">binning parameters</a> will be applied.</p>
+  </li>
+  <li>
+    <p>If <code>"binned"</code>, this indicates that the data for the <code>x</code> (or <code>y</code>) channel are already binned. You can map the bin-start field to <code>x</code> (or <code>y</code>) and the bin-end field to <code>x2</code> (or <code>y2</code>). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis’s <a href="https://vega.github.io/vega-lite/docs/axis.html#ticks"><code>tickMinStep</code></a> property.</p>
+  </li>
+</ul>
+
+<p><strong>Default value:</strong> <code>false</code></p>
+
+<p><strong>See also:</strong> <a href="https://vega.github.io/vega-lite/docs/bin.html"><code>bin</code></a> documentation.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>timeUnit</td>
+        <td><a href="timeunit.html">TimeUnit</a>
+</td>
+        <td>
+  
+    <p>Time unit (e.g., <code>year</code>, <code>yearmonth</code>, <code>month</code>, <code>hours</code>) for a temporal field.
+or <a href="https://vega.github.io/vega-lite/docs/type.html#cast">a temporal field that gets casted as ordinal</a>.</p>
+
+<p><strong>Default value:</strong> <code>undefined</code> (None)</p>
+
+<p><strong>See also:</strong> <a href="https://vega.github.io/vega-lite/docs/timeunit.html"><code>timeUnit</code></a> documentation.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>aggregate</td>
+        <td><a href="aggregate.html">Aggregate</a>
+</td>
+        <td>
+  
+    <p>Aggregation function for the field
+(e.g., <code>"mean"</code>, <code>"sum"</code>, <code>"median"</code>, <code>"min"</code>, <code>"max"</code>, <code>"count"</code>).</p>
+
+<p><strong>Default value:</strong> <code>undefined</code> (None)</p>
+
+<p><strong>See also:</strong> <a href="https://vega.github.io/vega-lite/docs/aggregate.html"><code>aggregate</code></a> documentation.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>title</td>
+        <td>String | Null
+</td>
+        <td>
+  
+    <p>A title for the field. If <code>null</code>, the title will be removed.</p>
+
+<p><strong>Default value:</strong>  derived from the field’s name and transformation function (<code>aggregate</code>, <code>bin</code> and <code>timeUnit</code>).  If the field has an aggregate function, the function is displayed as part of the title (e.g., <code>"Sum of Profit"</code>). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., <code>"Profit (binned)"</code>, <code>"Transaction Date (year-month)"</code>).  Otherwise, the title is simply the field name.</p>
+
+<p><strong>Notes</strong>:</p>
+
+<p>1) You can customize the default field title format by providing the <a href="https://vega.github.io/vega-lite/docs/config.html#top-level-config"><code>fieldTitle</code></a> property in the <a href="https://vega.github.io/vega-lite/docs/config.html">config</a> or <a href="https://vega.github.io/vega-lite/docs/compile.html#field-title"><code>fieldTitle</code> function via the <code>compile</code> function’s options</a>.</p>
+
+<p>2) If both field definition’s <code>title</code> and axis, header, or legend <code>title</code> are defined, axis/header/legend title will be used.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>In addition, field definitions for different encoding channels may support the following properties:</p>
+
+<ul>
+  <li>
+    <p><a href="scale.html"><code>scale</code></a> - The function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) for <a href="#position">position</a> and <a href="#mark-prop">mark property</a> channels.</p>
+  </li>
+  <li>
+    <p><a href="axis.html"><code>axis</code></a> - The guiding visualization to aid interpretation of scales for <a href="#position">position channels</a>.</p>
+  </li>
+  <li>
+    <p><a href="legend.html"><code>legend</code></a> - The guiding visualization to aid interpretation of <a href="#mark-prop">mark property channels</a>.</p>
+  </li>
+  <li>
+    <p><a href="format.html"><code>format</code></a> - The formatting pattern for text value for <a href="#text">text channels</a>.</p>
+  </li>
+  <li>
+    <p><a href="stack.html"><code>stack</code></a> - Type of stacking offset if a <a href="#position">position field</a> with continuous domain should be stacked.</p>
+  </li>
+  <li>
+    <p><a href="sort.html"><code>sort</code></a> - Sort order for a field for <a href="#position">position</a> and <a href="#mark-prop">mark property</a> channels.</p>
+  </li>
+  <li>
+    <p><a href="condition.html"><code>condition</code></a> - The conditional encoding rule for <a href="#mark-prop">mark property</a> and <a href="#text">text</a> channels.</p>
+  </li>
+</ul>
+
+<p>To see a list of additional properties for each type of encoding channels, please see the specific sections for <a href="#position">position</a>, <a href="#mark-prop">mark property</a>, <a href="#text">text and tooltip</a>, <a href="#detail">detail</a>, <a href="#order">order</a>, and <a href="#facet">facet</a> channels.</p>
+
+<h3 id="value-def">Value Definition</h3>
+
+<pre><code class="language-js">// Specification of a Single View
+{
+  ...,
+  "encoding": {     // Encoding
+    ...: {
+      "value": ...
+    },
+    ...
+  },
+  ...
+}
+</code></pre>
+
+<p>To map a constant value to an encoding channel, the channel’s value definition must describe the <code>value</code> property. (See the <a href="value.html"><code>value</code></a> page for more examples.)</p>
+
+<!--<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>value</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+-->
+
+<h2 id="position">Position Channels</h2>
+
+<p><code>x</code> and <code>y</code> position channels determine the position of the marks, or width/height of horizontal/vertical <code>"area"</code> and <code>"bar"</code>. In addition, <code>x2</code> and <code>y2</code> can specify the span of ranged <a href="area.html#ranged"><code>area</code></a>, <a href="bar.html#ranged"><code>bar</code></a>, <a href="rect.html#ranged"><code>rect</code></a>, and <a href="rule.html#ranged"><code>rule</code></a>.</p>
+
+<p>By default, Vega-Lite automatically generates a <a href="scale.html">scale</a> and an <a href="axis.html">axis</a> for each field mapped to a position channel. If unspecified, properties of scales and axes are determined based on a set of rules by the compiler. <code>scale</code> and <code>axis</code> properties of the field definition can be used to customize their properties.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>x</td>
+        <td><a href="encoding.html#position-field-def">PositionFieldDef</a> | <a href="encoding.html#value">ValueDef</a>
+</td>
+        <td>
+  
+    <p>X coordinates of the marks, or width of horizontal <code>"bar"</code> and <code>"area"</code> without specified <code>x2</code> or <code>width</code>.</p>
+
+<p>The <code>value</code> of this channel can be a number or a string <code>"width"</code> for the width of the plot.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>y</td>
+        <td><a href="encoding.html#position-field-def">PositionFieldDef</a> | <a href="encoding.html#value">ValueDef</a>
+</td>
+        <td>
+  
+    <p>Y coordinates of the marks, or height of vertical <code>"bar"</code> and <code>"area"</code> without specified <code>y2</code> or <code>height</code>.</p>
+
+<p>The <code>value</code> of this channel can be a number or a string <code>"height"</code> for the height of the plot.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>x2</td>
+        <td><a href="encoding.html#field">FieldDef</a> | <a href="encoding.html#value">ValueDef</a>
+</td>
+        <td>
+  
+    <p>X2 coordinates for ranged <code>"area"</code>, <code>"bar"</code>, <code>"rect"</code>, and  <code>"rule"</code>.</p>
+
+<p>The <code>value</code> of this channel can be a number or a string <code>"width"</code> for the width of the plot.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>y2</td>
+        <td><a href="encoding.html#field">FieldDef</a> | <a href="encoding.html#value">ValueDef</a>
+</td>
+        <td>
+  
+    <p>Y2 coordinates for ranged <code>"area"</code>, <code>"bar"</code>, <code>"rect"</code>, and  <code>"rule"</code>.</p>
+
+<p>The <code>value</code> of this channel can be a number or a string <code>"height"</code> for the height of the plot.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="position-field-def">Position Field Definition</h3>
+
+<p>In addition to <a href="field.html"><code>field</code></a>, <a href="type.html"><code>type</code></a>, <a href="bin.html"><code>bin</code></a>, <a href="timeunit.html"><code>timeUnit</code></a> and <a href="aggregate.html"><code>aggregate</code></a>, <a href="#field-def">field definitions</a> for <code>x</code> and <code>y</code> channels may also include these properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>scale</td>
+        <td><a href="scale.html">Scale</a> | Null
+</td>
+        <td>
+  
+    <p>An object defining properties of the channel’s scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.</p>
+
+<p>If <code>null</code>, the scale will be <a href="https://vega.github.io/vega-lite/docs/scale.html#disable">disabled and the data value will be directly encoded</a>.</p>
+
+<p><strong>Default value:</strong> If undefined, default <a href="https://vega.github.io/vega-lite/docs/scale.html">scale properties</a> are applied.</p>
+
+<p><strong>See also:</strong> <a href="https://vega.github.io/vega-lite/docs/scale.html"><code>scale</code></a> documentation.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>axis</td>
+        <td><a href="axis.html">Axis</a> | Null
+</td>
+        <td>
+  
+    <p>An object defining properties of axis’s gridlines, ticks and labels.
+If <code>null</code>, the axis for the encoding channel will be removed.</p>
+
+<p><strong>Default value:</strong> If undefined, default <a href="https://vega.github.io/vega-lite/docs/axis.html">axis properties</a> are applied.</p>
+
+<p><strong>See also:</strong> <a href="https://vega.github.io/vega-lite/docs/axis.html"><code>axis</code></a> documentation.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>sort</td>
+        <td><a href="sort.html">Sort</a>
+</td>
+        <td>
+  
+    <p>Sort order for the encoded field.</p>
+
+<p>For continuous fields (quantitative or temporal), <code>sort</code> can be either <code>"ascending"</code> or <code>"descending"</code>.</p>
+
+<p>For discrete fields, <code>sort</code> can be one of the following:</p>
+<ul>
+  <li><code>"ascending"</code> or <code>"descending"</code> – for sorting by the values’ natural order in JavaScript.</li>
+  <li><a href="https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding">A string indicating an encoding channel name to sort by</a> (e.g., <code>"x"</code> or <code>"y"</code>) with an optional minus prefix for descending sort (e.g., <code>"-x"</code> to sort by x-field, descending).  This channel string is short-form of <a href="https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding">a sort-by-encoding definition</a>. For example, <code>"sort": "-x"</code> is equivalent to <code>"sort": {"encoding": "x", "order": "descending"}</code>.</li>
+  <li><a href="https://vega.github.io/vega-lite/docs/sort.html#sort-field">A sort field definition</a> for sorting by another field.</li>
+  <li><a href="https://vega.github.io/vega-lite/docs/sort.html#sort-array">An array specifying the field values in preferred order</a>. In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be <a href="types#datetime">date-time definition objects</a>. In addition, for time units <code>"month"</code> and <code>"day"</code>, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., <code>"Mon"</code>, <code>"Tue"</code>).</li>
+  <li><code>null</code> indicating no sort.</li>
+</ul>
+
+<p><strong>Default value:</strong> <code>"ascending"</code></p>
+
+<p><strong>Note:</strong> <code>null</code> and sorting by another channel is not supported for <code>row</code> and <code>column</code>.</p>
+
+<p><strong>See also:</strong> <a href="https://vega.github.io/vega-lite/docs/sort.html"><code>sort</code></a> documentation.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>band</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>For rect-based marks (<code>rect</code>, <code>bar</code>, and <code>image</code>), mark size relative to bandwidth of <a href="https://vega.github.io/vega-lite/docs/scale.html#band">band scales</a> or time units. If set to <code>1</code>, the mark size is set to the bandwidth or the time unit interval. If set to <code>0.5</code>, the mark size is half of the bandwidth or the time unit interval.</p>
+
+<p>For other marks, relative position on a band of a stacked, binned, time unit or band scale.  If set to <code>0</code>, the marks will be positioned at the beginning of the band.  If set to <code>0.5</code>, the marks will be positioned in the middle of the band.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>impute</td>
+        <td>ImputeParams
+</td>
+        <td>
+  
+    <p>An object defining the properties of the Impute Operation to be applied.
+The field value of the other positional channel is taken as <code>key</code> of the <code>Impute</code> Operation.
+The field of the <code>color</code> channel if specified is used as <code>groupby</code> of the <code>Impute</code> Operation.</p>
+
+<p><strong>See also:</strong> <a href="https://vega.github.io/vega-lite/docs/impute.html"><code>impute</code></a> documentation.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>stack</td>
+        <td>String | Null | Boolean
+</td>
+        <td>
+  
+    <p>Type of stacking offset if the field should be stacked.
+<code>stack</code> is only applicable for <code>x</code> and <code>y</code> channels with continuous domains.
+For example, <code>stack</code> of <code>y</code> can be used to customize stacking for a vertical bar chart.</p>
+
+<p><code>stack</code> can be one of the following values:</p>
+<ul>
+  <li><code>"zero"</code> or <code>true</code>: stacking with baseline offset at zero value of the scale (for creating typical stacked <a href="https://vega.github.io/vega-lite/docs/stack.html#bar">bar</a> and <a href="https://vega.github.io/vega-lite/docs/stack.html#area">area</a> chart).</li>
+  <li><code>"normalize"</code> - stacking with normalized domain (for creating <a href="https://vega.github.io/vega-lite/docs/stack.html#normalized">normalized stacked bar and area charts</a>. <br />
+-<code>"center"</code> - stacking with center baseline (for <a href="https://vega.github.io/vega-lite/docs/stack.html#streamgraph">streamgraph</a>).</li>
+  <li><code>null</code> or <code>false</code> - No-stacking. This will produce layered <a href="https://vega.github.io/vega-lite/docs/stack.html#layered-bar-chart">bar</a> and area chart.</li>
+</ul>
+
+<p><strong>Default value:</strong> <code>zero</code> for plots with all of the following conditions are true:
+(1) the mark is <code>bar</code> or <code>area</code>;
+(2) the stacked measure channel (x or y) has a linear scale;
+(3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, <code>null</code> by default.</p>
+
+<p><strong>See also:</strong> <a href="https://vega.github.io/vega-lite/docs/stack.html"><code>stack</code></a> documentation.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p><strong>Note:</strong> <code>x2</code> and <code>y2</code> do not have their own definitions for <code>scale</code>, <code>axis</code>, <code>sort</code>, and <code>stack</code> since they share the same scales and axes with <code>x</code> and <code>y</code> respectively.</p>
+
+<h2 id="geo">Geographic Position Channels</h2>
+
+<p><code>longitude</code> and <code>latitude</code> channels can be used to encode geographic coordinate data via a <a href="projection.html">projection</a>. In addition, <code>longitude2</code> and <code>latitude2</code> can specify the span of geographically projected ranged <a href="area.html#ranged"><code>area</code></a>, <a href="bar.html#ranged"><code>bar</code></a>, <a href="rect.html#ranged"><code>rect</code></a>, and <a href="rule.html#ranged"><code>rule</code></a>.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>longitude</td>
+        <td><a href="encoding.html#field">FieldDef</a> | <a href="encoding.html#value">ValueDef</a>
+</td>
+        <td>
+  
+    <p>Longitude position of geographically projected marks.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>latitude</td>
+        <td><a href="encoding.html#field">FieldDef</a> | <a href="encoding.html#value">ValueDef</a>
+</td>
+        <td>
+  
+    <p>Latitude position of geographically projected marks.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>longitude2</td>
+        <td><a href="encoding.html#field">FieldDef</a> | <a href="encoding.html#value">ValueDef</a>
+</td>
+        <td>
+  
+    <p>Longitude-2 position for geographically projected ranged <code>"area"</code>, <code>"bar"</code>, <code>"rect"</code>, and  <code>"rule"</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>latitude2</td>
+        <td><a href="encoding.html#field">FieldDef</a> | <a href="encoding.html#value">ValueDef</a>
+</td>
+        <td>
+  
+    <p>Latitude-2 position for geographically projected ranged <code>"area"</code>, <code>"bar"</code>, <code>"rect"</code>, and  <code>"rule"</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>See <a href="https://vega.github.io/vega-lite/examples/geo_circle.html">an example that uses <code>longitude</code> and <code>latitude</code> channels in a map</a> or <a href="https://vega.github.io/vega-lite/examples/geo_rule.html">another example that draws line segments (<code>rule</code>s) between points in a map</a>.</p>
+
+<h2 id="mark-prop">Mark Property Channels</h2>
+
+<p>Mark properties channels map data fields to visual properties of the marks. By default, Vega-Lite automatically generates a scale and a legend for each field mapped to a mark property channel. If unspecified, properties of scales and legends are determined based on a set of rules by the compiler. <code>scale</code> and <code>legend</code> properties of the field definition can be used to customize their properties. In addition, definitions of mark property channels can include the <code>condition</code> property to specify conditional logic.</p>
+
+<p>Here are the list of mark property channels:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>color</td>
+        <td><a href="encoding.html#mark-prop-field-def">MarkPropFieldDef</a> | <a href="encoding.html#mark-prop-value-def">MarkPropValueDef</a>
+</td>
+        <td>
+  
+    <p>Color of the marks – either fill or stroke color based on  the <code>filled</code> property of mark definition.
+By default, <code>color</code> represents fill color for <code>"area"</code>, <code>"bar"</code>, <code>"tick"</code>,
+<code>"text"</code>, <code>"trail"</code>, <code>"circle"</code>, and <code>"square"</code> / stroke color for <code>"line"</code> and <code>"point"</code>.</p>
+
+<p><strong>Default value:</strong> If undefined, the default color depends on <a href="https://vega.github.io/vega-lite/docs/config.html#mark">mark config</a>’s <code>color</code> property.</p>
+
+<p><em>Note:</em>
+1) For fine-grained control over both fill and stroke colors of the marks, please use the <code>fill</code> and <code>stroke</code> channels.  The <code>fill</code> or <code>stroke</code> encodings have higher precedence than <code>color</code>, thus may override the <code>color</code> encoding if conflicting encodings are specified.
+2) See the scale documentation for more information about customizing <a href="https://vega.github.io/vega-lite/docs/scale.html#scheme">color scheme</a>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>fill</td>
+        <td><a href="encoding.html#mark-prop-field-def">MarkPropFieldDef</a> | <a href="encoding.html#mark-prop-value-def">MarkPropValueDef</a>
+</td>
+        <td>
+  
+    <p>Fill color of the marks.
+<strong>Default value:</strong> If undefined, the default color depends on <a href="https://vega.github.io/vega-lite/docs/config.html#mark">mark config</a>’s <code>color</code> property.</p>
+
+<p><em>Note:</em> The <code>fill</code> encoding has higher precedence than <code>color</code>, thus may override the <code>color</code> encoding if conflicting encodings are specified.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>stroke</td>
+        <td><a href="encoding.html#mark-prop-field-def">MarkPropFieldDef</a> | <a href="encoding.html#mark-prop-value-def">MarkPropValueDef</a>
+</td>
+        <td>
+  
+    <p>Stroke color of the marks.
+<strong>Default value:</strong> If undefined, the default color depends on <a href="https://vega.github.io/vega-lite/docs/config.html#mark">mark config</a>’s <code>color</code> property.</p>
+
+<p><em>Note:</em> The <code>stroke</code> encoding has higher precedence than <code>color</code>, thus may override the <code>color</code> encoding if conflicting encodings are specified.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>opacity</td>
+        <td><a href="encoding.html#mark-prop-field-def">MarkPropFieldDef</a> | <a href="encoding.html#mark-prop-value-def">MarkPropValueDef</a>
+</td>
+        <td>
+  
+    <p>Opacity of the marks.</p>
+
+<p><strong>Default value:</strong> If undefined, the default opacity depends on <a href="https://vega.github.io/vega-lite/docs/config.html#mark">mark config</a>’s <code>opacity</code> property.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>fillOpacity</td>
+        <td><a href="encoding.html#mark-prop-field-def">MarkPropFieldDef</a> | <a href="encoding.html#mark-prop-value-def">MarkPropValueDef</a>
+</td>
+        <td>
+  
+    <p>Fill opacity of the marks.</p>
+
+<p><strong>Default value:</strong> If undefined, the default opacity depends on <a href="https://vega.github.io/vega-lite/docs/config.html#mark">mark config</a>’s <code>fillOpacity</code> property.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>strokeOpacity</td>
+        <td><a href="encoding.html#mark-prop-field-def">MarkPropFieldDef</a> | <a href="encoding.html#mark-prop-value-def">MarkPropValueDef</a>
+</td>
+        <td>
+  
+    <p>Stroke opacity of the marks.</p>
+
+<p><strong>Default value:</strong> If undefined, the default opacity depends on <a href="https://vega.github.io/vega-lite/docs/config.html#mark">mark config</a>’s <code>strokeOpacity</code> property.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>shape</td>
+        <td><a href="encoding.html#mark-prop-field-def">MarkPropFieldDef</a> | <a href="encoding.html#mark-prop-value-def">MarkPropValueDef</a>
+</td>
+        <td>
+  
+    <p>Shape of the mark.</p>
+
+<ol>
+  <li>For <code>point</code> marks the supported values include:
+    <ul>
+      <li>plotting shapes: <code>"circle"</code>, <code>"square"</code>, <code>"cross"</code>, <code>"diamond"</code>, <code>"triangle-up"</code>, <code>"triangle-down"</code>, <code>"triangle-right"</code>, or <code>"triangle-left"</code>.</li>
+      <li>the line symbol <code>"stroke"</code></li>
+      <li>centered directional shapes <code>"arrow"</code>, <code>"wedge"</code>, or <code>"triangle"</code></li>
+      <li>a custom <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths">SVG path string</a> (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)</li>
+    </ul>
+  </li>
+  <li>For <code>geoshape</code> marks it should be a field definition of the geojson data</li>
+</ol>
+
+<p><strong>Default value:</strong> If undefined, the default shape depends on <a href="https://vega.github.io/vega-lite/docs/config.html#point-config">mark config</a>’s <code>shape</code> property. (<code>"circle"</code> if unset.)</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>size</td>
+        <td><a href="encoding.html#mark-prop-field-def">MarkPropFieldDef</a> | <a href="encoding.html#mark-prop-value-def">MarkPropValueDef</a>
+</td>
+        <td>
+  
+    <p>Size of the mark.</p>
+<ul>
+  <li>For <code>"point"</code>, <code>"square"</code> and <code>"circle"</code>, – the symbol size, or pixel area of the mark.</li>
+  <li>For <code>"bar"</code> and <code>"tick"</code> – the bar and tick’s size.</li>
+  <li>For <code>"text"</code> – the text’s font size.</li>
+  <li>Size is unsupported for <code>"line"</code>, <code>"area"</code>, and <code>"rect"</code>. (Use <code>"trail"</code> instead of line with varying size)</li>
+</ul>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>strokeWidth</td>
+        <td><a href="encoding.html#mark-prop-field-def">MarkPropFieldDef</a> | <a href="encoding.html#mark-prop-value-def">MarkPropValueDef</a>
+</td>
+        <td>
+  
+    <p>Stroke width of the marks.</p>
+
+<p><strong>Default value:</strong> If undefined, the default stroke width depends on <a href="https://vega.github.io/vega-lite/docs/config.html#mark">mark config</a>’s <code>strokeWidth</code> property.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="mark-prop-field-def">Mark Property Field Definition</h3>
+
+<p>In addition to <a href="field.html"><code>field</code></a>, <a href="type.html"><code>type</code></a>, <a href="bin.html"><code>bin</code></a>, <a href="timeunit.html"><code>timeUnit</code></a> and <a href="aggregate.html"><code>aggregate</code></a>, <a href="#field-def">field definitions</a> for mark property channels may also include these properties:</p>
+
+<!-- <table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>scale</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>legend</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>condition</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+ -->
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>scale</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>legend</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>condition</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="mark-prop-value-def">Mark Property Value Definition</h3>
+
+<p>In addition to the constant <code>value</code>, <a href="#value-def">value definitions</a> of mark properties channels can include the <code>condition</code> property to specify conditional logic.</p>
+
+<!-- <table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>condition</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+ -->
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>condition</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>See <a href="condition.html">the <code>condition</code></a> page for examples how to specify condition logic.</p>
+
+<h2 id="text">Text and Tooltip Channels</h2>
+
+<p>Text and tooltip channels directly encode text values of the data fields. By default, Vega-Lite automatically determines appropriate format for quantitative and temporal values. Users can set <code>format</code> property to customize text and time format. Similar to mark property channels, definitions of text and tooltip channels can include the <code>condition</code> property to specify conditional logic.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>text</td>
+        <td><a href="encoding.html#text-field-def">TextFieldDef</a> | <a href="encoding.html#text-value-def">TextValueDef</a>
+</td>
+        <td>
+  
+    <p>Text of the <code>text</code> mark.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>tooltip</td>
+        <td><a href="encoding.html#text-field-def">TextFieldDef</a> | <a href="encoding.html#text-value-def">TextValueDef</a> | TextFieldDef[] | Null
+</td>
+        <td>
+  
+    <p>The tooltip text to show upon mouse hover. Specifying <code>tooltip</code> encoding overrides <a href="https://vega.github.io/vega-lite/docs/mark.html#mark-def">the <code>tooltip</code> property in the mark definition</a>.</p>
+
+<p>See the <a href="https://vega.github.io/vega-lite/docs/tooltip.html"><code>tooltip</code></a> documentation for a detailed discussion about tooltip in Vega-Lite.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="text-field-def">Text and Tooltip Field Definition</h3>
+
+<p>In addition to <a href="field.html"><code>field</code></a>, <a href="type.html"><code>type</code></a>, <a href="bin.html"><code>bin</code></a>, <a href="timeunit.html"><code>timeUnit</code></a> and <a href="aggregate.html"><code>aggregate</code></a>, <a href="#field-def">field definitions</a> for <code>text</code> and <code>tooltip</code> channels may also include these properties:</p>
+
+<!-- <table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>format</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>formatType</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>condition</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+ -->
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>format</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The text formatting pattern for labels of guides (axes, legends, headers) and text marks.</p>
+
+<ul>
+  <li>If the format type is <code>"number"</code> (e.g., for quantitative fields), this is D3’s <a href="https://github.com/d3/d3-format#locale_format">number format pattern</a>.</li>
+  <li>If the format type is <code>"time"</code> (e.g., for temporal fields), this is D3’s <a href="https://github.com/d3/d3-time-format#locale_format">time format pattern</a>.</li>
+</ul>
+
+<p>See the <a href="https://vega.github.io/vega-lite/docs/format.html">format documentation</a> for more examples.</p>
+
+<p><strong>Default value:</strong>  Derived from <a href="https://vega.github.io/vega-lite/docs/config.html#format">numberFormat</a> config for number format and from <a href="https://vega.github.io/vega-lite/docs/config.html#format">timeFormat</a> config for time format.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>formatType</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The format type for labels (<code>"number"</code> or <code>"time"</code>).</p>
+
+<p><strong>Default value:</strong></p>
+<ul>
+  <li><code>"time"</code> for temporal fields and ordinal and nomimal fields with <code>timeUnit</code>.</li>
+  <li><code>"number"</code> for quantitative fields as well as ordinal and nomimal fields without <code>timeUnit</code>.</li>
+</ul>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>condition</td>
+        <td><a href="condition.html#value">ConditionalValueDef</a> | <a href="condition.html#value">ConditionalValueDef</a>[]
+</td>
+        <td>
+  
+    <p>One or more value definition(s) with <a href="https://vega.github.io/vega-lite/docs/condition.html">a selection or a test predicate</a>.</p>
+
+<p><strong>Note:</strong> A field definition’s <code>condition</code> property can only contain <a href="https://vega.github.io/vega-lite/docs/condition.html#value">conditional value definitions</a>
+since Vega-Lite only allows at most one encoded field per encoding channel.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="text-value-def">Text and Tooltip Value Definition</h3>
+
+<p>In addition to the constant <code>value</code>, <a href="#value-def">value definitions</a> of <code>text</code> and <code>tooltip</code> channels can include the <code>condition</code> property to specify conditional logic.</p>
+
+<!-- <table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>condition</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+ -->
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>condition</td>
+        <td><a href="condition.html#field">ConditionFieldDef</a> | <a href="condition.html#value">ConditionalValueDef</a> | <a href="condition.html#value">ConditionalValueDef</a>[]
+</td>
+        <td>
+  
+    <p>A field definition or one or more value definition(s) with a selection predicate.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="multiple-field-definitions-for-tooltips">Multiple Field Definitions for Tooltips</h3>
+
+<p>Similar to <a href="#detail"><code>detail</code></a>, you can use an array of field definitions. Vega-Lite will display a tooltip with multiple fields. <a href="https://github.com/vega/vega-tooltip/">Vega tooltip</a> will display a table that shows the name of the field and its value. See the <a href="tooltip.html">tooltip</a> page for details.</p>
+
+<h2 id="href">Hyperlink Channel</h2>
+
+<p>By setting the <code>href</code> channel, a mark becomes a hyperlink. The specified URL is loaded upon a mouse click. When the <code>href</code> channel is specified, the <a href="mark.html#hyperlink"><code>cursor</code> mark property</a> is set to <code>"pointer"</code> by default to serve as affordance for hyperlinks.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>href</td>
+        <td><a href="encoding.html#text-field-def">TextFieldDef</a> | <a href="encoding.html#text-value-def">TextValueDef</a>
+</td>
+        <td>
+  
+    <p>A URL to load upon mouse click.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="href-field-def">Hyperlink Field Definition</h3>
+
+<p>In addition to <a href="field.html"><code>field</code></a>, <a href="type.html"><code>type</code></a>, <a href="bin.html"><code>bin</code></a>, <a href="timeunit.html"><code>timeUnit</code></a> and <a href="aggregate.html"><code>aggregate</code></a>, <a href="#field-def">field definitions</a> for the <code>href</code> channel can include the <code>condition</code> property to specify conditional logic.</p>
+
+<!-- <table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>condition</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+ -->
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>condition</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>The example below show how the href channel can be used to provide links to external resources with more details.</p>
+
+<p><span class="vl-example" data-name="point_href"></span></p>
+
+<h3 id="href-value-def">Hyperlink Value Definition</h3>
+
+<p>In addition to the constant <code>value</code>, <a href="#value-def">value definitions</a> of the <code>href</code> channel can include the <code>condition</code> property to specify conditional logic.</p>
+
+<!-- <table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>condition</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+ -->
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>condition</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h2 id="detail">Level of Detail Channel</h2>
+
+<p>Grouping data is another important operation in data visualization. For line and area marks, mapping a unaggregate data field (field without <code>aggregate</code> function) to any non-<a href="#position">position</a> channel will group the lines and stacked areas by the field. For <a href="aggregate.html">aggregated plots</a>, all unaggregated fields encoded are used as grouping fields in the aggregation (similar to fields in <code>GROUP BY</code> in SQL).</p>
+
+<p><code>detail</code> channel specify an additional grouping field (or fields) for grouping data without mapping the field(s) to any visual properties.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>detail</td>
+        <td><a href="encoding.html#field">FieldDef</a> | <a href="encoding.html#field">FieldDef</a>[]
+</td>
+        <td>
+  
+    <p>Additional levels of detail for grouping data in aggregate views and
+in line, trail, and area marks without mapping data to a specific visual channel.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h4 id="examples">Examples</h4>
+
+<p>Here is a scatterplot showing average horsepower and displacement for cars from different origins. We map <code>Origin</code> to <code>detail</code> channel to use the field as a group-by field without mapping it to visual properties of the marks.</p>
+
+<div class="vl-example" data-name="point_aggregate_detail"></div>
+
+<p>Here is a line chart showing stock prices of 5 tech companies over time. We map <code>symbol</code> variable (stock market ticker symbol) to <code>detail</code> to use them to group lines.</p>
+
+<div class="vl-example" data-name="line_detail"></div>
+
+<p>Here is a ranged dot plot showing life expectancy change in the five largest countries between 1955 and 2000. We use <code>detail</code> here to group the lines such that they range only from one year to another within a country (as opposed to jumping between countries as well).</p>
+
+<div class="vl-example" data-name="layer_ranged_dot"></div>
+
+<!-- TODO Need to decide if we want to keep the two examples above since they look bad with labels / tooltips -->
+
+<h2 id="key">Key Channel</h2>
+
+<p>The key channel can enable object constancy for transitions over dynamic data. When a visualization’s data is updated (via <a href="https://vega.github.io/vega/docs/api/view/#data">Vega’s View API</a>), the key value will be used to match data elements to existing mark instances.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>key</td>
+        <td><a href="encoding.html#field">FieldDef</a>
+</td>
+        <td>
+  
+    <p>A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h2 id="order">Order Channel</h2>
+
+<p><code>order</code> channel can define a data field (or a ordered list of data fields) that are used to sorts stacking order for stacked charts (see <a href="stack.html#order">an example in the <code>stack</code> page</a>) and the order of data points in line marks for connected scatterplots (see <a href="line.html#connected-scatter-plot">an example in the <code>line</code> page</a>).</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>order</td>
+        <td><a href="encoding.html#order">OrderFieldDef</a> | <a href="encoding.html#order">OrderFieldDef</a>[] | <a href="encoding.html#value">ValueDef</a>
+</td>
+        <td>
+  
+    <p>Order of the marks.</p>
+<ul>
+  <li>For stacked marks, this <code>order</code> channel encodes <a href="https://vega.github.io/vega-lite/docs/stack.html#order">stack order</a>.</li>
+  <li>For line and trail marks, this <code>order</code> channel encodes order of data points in the lines. This can be useful for creating <a href="https://vega.github.io/vega-lite/examples/connected_scatterplot.html">a connected scatterplot</a>.  Setting <code>order</code> to <code>{"value": null}</code> makes the line marks use the original order in the data sources.</li>
+  <li>Otherwise, this <code>order</code> channel encodes layer order of the marks.</li>
+</ul>
+
+<p><strong>Note</strong>: In aggregate plots, <code>order</code> field should be <code>aggregate</code>d to avoid creating additional aggregation grouping.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="order-field-definition">Order Field Definition</h3>
+
+<p>In addition to <a href="field.html"><code>field</code></a>, <a href="type.html"><code>type</code></a>, <a href="bin.html"><code>bin</code></a>, <a href="timeunit.html"><code>timeUnit</code></a> and <a href="aggregate.html"><code>aggregate</code></a>, <a href="#field-def">field definitions</a> for the <code>order</code> channel can include <code>sort</code>.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>sort</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The sort order. One of <code>"ascending"</code> (default) or <code>"descending"</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h2 id="facet">Facet Channels</h2>
+
+<p><code>facet</code>, <code>row</code> and <code>column</code> are special encoding channels that facets single plots into <a href="https://en.wikipedia.org/wiki/Small_multiple">trellis plots (or small multiples)</a>.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>facet</td>
+        <td>FacetEncodingFieldDef
+</td>
+        <td>
+  
+    <p>A field definition for the (flexible) facet of trellis plots.</p>
+
+<p>If either <code>row</code> or <code>column</code> is specified, this channel will be ignored.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>row</td>
+        <td>RowColumnEncodingFieldDef
+</td>
+        <td>
+  
+    <p>A field definition for the vertical facet of trellis plots.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>column</td>
+        <td>RowColumnEncodingFieldDef
+</td>
+        <td>
+  
+    <p>A field definition for the horizontal facet of trellis plots.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>For more information, read the <a href="facet.html">facet documentation</a>.</p>
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/docs/encoding.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/static/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

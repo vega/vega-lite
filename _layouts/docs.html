@@ -1,0 +1,173 @@
+---
+layout: page_submenu
+
+sidebar:
+- text: Overview
+  url: index
+- text: View Specification
+  url: spec
+  sub-sidebar:
+  - text: Title
+    url: title
+  - text: Width / Height
+    url: size
+- text: Data / Datasets
+  url: data
+- text: Projection
+  url: projection
+- text: Transform
+  url: transform
+  sub-sidebar:
+  - text: Aggregate
+    url: aggregate
+  - text: Bin
+    url: bin
+  - text: Calculate
+    url: calculate
+  - text: Density
+    url: density
+  - text: Filter
+    url: filter
+  - text: Flatten
+    url: flatten
+  - text: Fold
+    url: fold
+  - text: Impute
+    url: impute
+  - text: Join Aggregate
+    url: joinaggregate
+  - text: Loess
+    url: loess
+  - text: Lookup
+    url: lookup
+  - text: Regression
+    url: regression
+  - text: Pivot
+    url: pivot
+  - text: Sample
+    url: sample
+  - text: Stack
+    url: stack
+  - text: Time Unit
+    url: timeunit
+  - text: Window
+    url: window
+- text: Mark
+  url: mark
+  sub-sidebar:
+  - text: Area
+    url: area
+  - text: Bar
+    url: bar
+  - text: Box Plot
+    url: boxplot
+  - text: Circle
+    url: circle
+  - text: Error Band
+    url: errorband
+  - text: Error Bar
+    url: errorbar
+  - text: Geoshape
+    url: geoshape
+  - text: Image
+    url: image
+  - text: Line
+    url: line
+  - text: Point
+    url: point
+  - text: Rect
+    url: rect
+  - text: Rule
+    url: rule
+  - text: Square
+    url: square
+  - text: Text
+    url: text
+  - text: Tick
+    url: tick
+  - text: Trail
+    url: trail
+- text: Encoding
+  url: encoding
+  sub-sidebar:
+  - text: Aggregate
+    url: aggregate
+  - text: Axis
+    url: axis
+  - text: Bin
+    url: bin
+  - text: Condition
+    url: condition
+  - text: Field
+    url: field
+  - text: Format
+    url: format
+  - text: Header
+    url: header
+  - text: Impute
+    url: impute
+  - text: Legend
+    url: legend
+  - text: Scale
+    url: scale
+  - text: Stack
+    url: stack
+  - text: Sort
+    url: sort
+  - text: Time Unit
+    url: timeunit
+  - text: Type
+    url: type
+  - text: Value
+    url: value
+- text: View Composition
+  url: composition
+  sub-sidebar:
+  - text: Facet
+    url: facet
+  - text: Layer
+    url: layer
+  - text: Concat
+    url: concat
+  - text: Repeat
+    url: repeat
+  - text: Resolve
+    url: resolve
+- text: Selections
+  url: selection
+  sub-sidebar:
+  - text: Bind
+    url: bind
+  - text: Clear
+    url: clear
+  - text: Encodings / Fields
+    url: project
+  - text: Init
+    url: init
+  - text: Mark
+    url: selection-mark
+  - text: Nearest
+    url: nearest
+  - text: Resolve
+    url: selection-resolve
+  - text: Toggle
+    url: toggle
+  - text: Translate
+    url: translate
+  - text: Zoom
+    url: zoom
+- text: Config
+  url: config
+- break: true
+- text: Parameter Types
+  url: types
+- text: Tooltip
+  url: tooltip
+
+
+base: /docs/
+---
+<span class="edit-page">
+    <a href="https://github.com/vega/vega-lite/edit/master/{{page.path}}">Edit this page</a>
+</span>
+{{ content }}

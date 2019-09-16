@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Streaming Data | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Streaming Data" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/tutorials/streaming.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/tutorials/streaming.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Streaming Data","url":"https://vega.github.io/vega-lite/tutorials/streaming.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      const BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" class="active">Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="tutorials">
+    
+
+
+<div class="sub-nav">
+  <nav class="page-centered">
+    
+    <a 
+        href="/vega-lite/tutorials/getting_started.html" title="">Getting Started
+    </a>
+    
+    <a 
+        href="/vega-lite/tutorials/explore.html" title="">Exploring Data
+    </a>
+    
+    <a 
+        href="/vega-lite/tutorials/figures.html" title="">Paper Figures
+    </a>
+    
+    <a class="active"
+        href="/vega-lite/tutorials/streaming.html" title="">Streaming Data
+    </a>
+    
+  </nav>
+</div>
+
+
+<div class="page-centered page-main">
+  
+
+  <section class="page-content">
+    <h1>Streaming Data</h1>
+    <p>In this tutorial, you’ll learn how to stream new data in a Vega-Lite visualization. If you are not familiar with Vega-Lite, please read the <a href="/vega-lite/tutorials/getting_started.html">getting started tutorial</a> first.</p>
+
+<p>We will be using the <code>View</code> API from the Vega, where we update data via the <a href="https://vega.github.io/vega/docs/api/view/#data"><code>change</code></a> method. Data in Vega and Vega-Lite is updated either via interactions, or by specifying the data changes directly. In both cases, the data is pushed through the Vega runtime for optimized performance. This tutorial focuses on the latter for streaming data, where no user interaction is involved.</p>
+
+<div id="chart"></div>
+
+<p>To use <code>view.change</code>, you have to first specify the name of the data source you are updating: <code>view.change('data', ... )</code>. The name needs to be specified in the original spec, as described <a href="/vega-lite/docs/data.html#named">here</a>. As the second parameter to the <code>view.change</code> method, you should specify what data to add, and what data to remove. To add data, simply supply the array of data entries matching previous schemas, for the example here, it is:</p>
+
+<pre><code class="language-js">{
+  "x": number,
+  "y": number,
+  "category": number
+}
+</code></pre>
+
+<p>As for removing data points, you could either supply the actual data points to be removed similar to the insert above (which requires your storing the data), or you could filter existing rendered data by some attributes and pass the predicate to the <code>remove()</code> function, such as in this case <code>function (t) { return t.x &lt; minimumX; }</code>. If you are familiar with D3, this <code>insert</code> and <code>remove</code> pattern is similar to the <a href="https://bost.ocks.org/mike/circles/#entering">enter exit</a> pattern.</p>
+
+<p>Putting it together, we have:</p>
+
+<pre><code class="language-js">var changeSet = vega
+  .changeset()
+  .insert(valueGenerator())
+  .remove(function(t) {
+    return t.x &lt; minimumX;
+  });
+view.change('table', changeSet).run();
+</code></pre>
+
+<p>The view is given to us by the <a href="https://github.com/vega/vega-embed">embed</a> method, which helps load Vega/Vega-Lite specs on your webpages. When <code>embed</code> completes successfully, <code>embed</code> returns a fulfilled <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a> with an object containing the <code>view</code>, which is how we could access the <code>view.change</code> mentioned earlier, and <code>spec</code>, which is the compiled Vega spec from the original Vega-Lite spec given. When <code>embed</code> fails, it returns a rejected <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">promise</a> with an error object.</p>
+
+<p>For simplicity, we have generated some data to simulate real time data updates, but the code could easily be swapped with a server data request. In the example, the “real time” is being simulated by <code>window.setInterval</code> that triggers <code>view.change</code> periodically.</p>
+
+<p>Below is the JavaScript code to run this example. Make sure your html contains a div with id <code>'chart'</code>.</p>
+
+<pre><code class="language-js">var vlSpec = {
+  $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: {name: 'table'},
+  width: 400,
+  mark: 'line',
+  encoding: {
+    x: {field: 'x', type: 'quantitative', scale: {zero: false}},
+    y: {field: 'y', type: 'quantitative'},
+    color: {field: 'category', type: 'nominal'}
+  }
+};
+vegaEmbed('#chart', vlSpec).then(function(res) {
+  /**
+   * Generates a new tuple with random walk.
+   */
+  function newGenerator() {
+    var counter = -1;
+    var previousY = [5, 5, 5, 5];
+    return function() {
+      counter++;
+      var newVals = previousY.map(function(v, c) {
+        return {
+          x: counter,
+          y: v + Math.round(Math.random() * 10 - c * 3),
+          category: c
+        };
+      });
+      previousY = newVals.map(function(v) {
+        return v.y;
+      });
+      return newVals;
+    };
+  }
+
+  var valueGenerator = newGenerator();
+  var minimumX = -100;
+  window.setInterval(function() {
+    minimumX++;
+    var changeSet = vega
+      .changeset()
+      .insert(valueGenerator())
+      .remove(function(t) {
+        return t.x &lt; minimumX;
+      });
+    res.view.change('table', changeSet).run();
+  }, 1000);
+});
+</code></pre>
+
+<p>This is the end of this tutorial where you learned how to stream new data into your chart. If you want to use Vega-Lite with websockets, check out the <a href="https://bl.ocks.org/domoritz/8e1e4da185e1a32c7e54934732a8d3d5">Vega-Lite with websockets</a> demo. You can find more visualizations in the <a href="/vega-lite/examples/">gallery</a>. If you want to further customize your charts, please read the <a href="/vega-lite/docs/">documentation</a>.</p>
+
+<script>
+  window.onload = () => window.runStreamingExample('#chart');
+</script>
+
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/tutorials/streaming.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/static/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

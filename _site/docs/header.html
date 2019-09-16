@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Header | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Header" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/docs/header.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/docs/header.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Header","url":"https://vega.github.io/vega-lite/docs/header.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      const BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" class="active">Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="docs">
+    
+
+
+
+<div class="page-centered page-main">
+  
+  <aside class="page-sidebar">
+    <ul class="sidebar-nav">
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/" title="">Overview
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/spec.html" title="">View Specification
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/title.html" title="">Title
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/size.html" title="">Width / Height
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/data.html" title="">Data / Datasets
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/projection.html" title="">Projection
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/transform.html" title="">Transform
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/calculate.html" title="">Calculate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/density.html" title="">Density
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/filter.html" title="">Filter
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/flatten.html" title="">Flatten
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/fold.html" title="">Fold
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/joinaggregate.html" title="">Join Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/loess.html" title="">Loess
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/lookup.html" title="">Lookup
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/regression.html" title="">Regression
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/pivot.html" title="">Pivot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sample.html" title="">Sample
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/window.html" title="">Window
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/mark.html" title="">Mark
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/area.html" title="">Area
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bar.html" title="">Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/boxplot.html" title="">Box Plot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/circle.html" title="">Circle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorband.html" title="">Error Band
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorbar.html" title="">Error Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/geoshape.html" title="">Geoshape
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/image.html" title="">Image
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/line.html" title="">Line
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/point.html" title="">Point
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rect.html" title="">Rect
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rule.html" title="">Rule
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/square.html" title="">Square
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/text.html" title="">Text
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/tick.html" title="">Tick
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/trail.html" title="">Trail
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/encoding.html" title="">Encoding
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/axis.html" title="">Axis
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/condition.html" title="">Condition
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/field.html" title="">Field
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/format.html" title="">Format
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a class="active"
+            href="/vega-lite/docs/header.html" title="">Header
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/legend.html" title="">Legend
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/scale.html" title="">Scale
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sort.html" title="">Sort
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/type.html" title="">Type
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/value.html" title="">Value
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/composition.html" title="">View Composition
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/facet.html" title="">Facet
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/layer.html" title="">Layer
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/concat.html" title="">Concat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/repeat.html" title="">Repeat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/resolve.html" title="">Resolve
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/selection.html" title="">Selections
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bind.html" title="">Bind
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/clear.html" title="">Clear
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/project.html" title="">Encodings / Fields
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/init.html" title="">Init
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-mark.html" title="">Mark
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/nearest.html" title="">Nearest
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-resolve.html" title="">Resolve
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/toggle.html" title="">Toggle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/translate.html" title="">Translate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/zoom.html" title="">Zoom
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/config.html" title="">Config
+      </a></li>
+      
+      
+      
+      
+      <br>
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/types.html" title="">Parameter Types
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/tooltip.html" title="">Tooltip
+      </a></li>
+      
+      
+      
+    </nav>
+  </aside>
+  
+
+  <section class="page-content">
+    <h1>Header</h1>
+    <span class="edit-page">
+    <a href="https://github.com/vega/vega-lite/edit/master/docs/encoding/header.md">Edit this page</a>
+</span>
+<p>Headers provide a title and labels for <a href="facet.html">faceted plots</a>. A header’s title describes the field that is used to facet the plot, while a header’s labels describe that field’s value for each subplot.</p>
+
+<p>By default, Vega-Lite automatically creates headers with default properties for <code>row</code> and <code>column</code> channels of a faceted view. User can set the <code>header</code> property of row- or column-<a href="facet.html#field-def">field definition</a> to an object to customize <a href="#header-properties">header properties</a>.</p>
+
+<p>In addition to the <code>header</code> property of a row- or column-field definition, users can also set default header properties for all headers with the configuration object’s (<a href="config.html"><code>config</code></a>) <a href="#config">header configuration</a> (<code>config: {header: {...}}</code>).</p>
+
+<h2 id="documentation-overview">Documentation Overview</h2>
+
+<!-- prettier-ignore -->
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="#documentation-overview" id="markdown-toc-documentation-overview">Documentation Overview</a></li>
+  <li><a href="#header-properties" id="markdown-toc-header-properties">Header Properties</a>    <ul>
+      <li><a href="#general" id="markdown-toc-general">General</a></li>
+      <li><a href="#labels" id="markdown-toc-labels">Labels</a></li>
+      <li><a href="#title" id="markdown-toc-title">Title</a></li>
+      <li><a href="#example" id="markdown-toc-example">Example</a></li>
+    </ul>
+  </li>
+  <li><a href="#config" id="markdown-toc-config">Header Config</a></li>
+</ul>
+
+<h2 id="header-properties">Header Properties</h2>
+
+<pre><code class="language-js">// A Single View or a Layer Specification
+{
+  ...,
+  "mark/layer": ...,
+  "encoding": {
+    "row": {
+      "field": ...,
+      "type": ...,
+      "header": {...}, // Header
+      ...
+    },
+    "x": ...,
+    "y": ...,
+    ...
+  }
+}
+</code></pre>
+
+<pre><code class="language-js">// A Facet Specification
+{
+  ...,
+  "facet": {
+    "row/column": {
+      "field": ...,
+      "type": ...,
+      "header": {...}, // Header
+      ...
+    },
+    ...
+  },
+  "spec": ...
+}
+</code></pre>
+
+<p>To customize header, a <code>header</code> definiton in row- or column-<a href="facet.html#mapping">field definitions</a> can contain the following groups of properties:</p>
+
+<h3 id="general">General</h3>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>title</td>
+        <td>String | Null
+</td>
+        <td>
+  
+    <p>A title for the field. If <code>null</code>, the title will be removed.</p>
+
+<p><strong>Default value:</strong>  derived from the field’s name and transformation function (<code>aggregate</code>, <code>bin</code> and <code>timeUnit</code>).  If the field has an aggregate function, the function is displayed as part of the title (e.g., <code>"Sum of Profit"</code>). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., <code>"Profit (binned)"</code>, <code>"Transaction Date (year-month)"</code>).  Otherwise, the title is simply the field name.</p>
+
+<p><strong>Notes</strong>:</p>
+
+<p>1) You can customize the default field title format by providing the <a href="https://vega.github.io/vega-lite/docs/config.html#top-level-config"><code>fieldTitle</code></a> property in the <a href="https://vega.github.io/vega-lite/docs/config.html">config</a> or <a href="https://vega.github.io/vega-lite/docs/compile.html#field-title"><code>fieldTitle</code> function via the <code>compile</code> function’s options</a>.</p>
+
+<p>2) If both field definition’s <code>title</code> and axis, header, or legend <code>title</code> are defined, axis/header/legend title will be used.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p><strong>See also:</strong> You may also use <code>guide-title</code> and <code>guide-label</code> <a href="mark.html#style-config">style configs</a> to customize common styles for <a href="axis.html">axis</a>, <a href="legend.html">legend</a>, and <a href="header.html">header</a> labels and titles.</p>
+
+<h3 id="labels">Labels</h3>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>format</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The text formatting pattern for labels of guides (axes, legends, headers) and text marks.</p>
+
+<ul>
+  <li>If the format type is <code>"number"</code> (e.g., for quantitative fields), this is D3’s <a href="https://github.com/d3/d3-format#locale_format">number format pattern</a>.</li>
+  <li>If the format type is <code>"time"</code> (e.g., for temporal fields), this is D3’s <a href="https://github.com/d3/d3-time-format#locale_format">time format pattern</a>.</li>
+</ul>
+
+<p>See the <a href="https://vega.github.io/vega-lite/docs/format.html">format documentation</a> for more examples.</p>
+
+<p><strong>Default value:</strong>  Derived from <a href="https://vega.github.io/vega-lite/docs/config.html#format">numberFormat</a> config for number format and from <a href="https://vega.github.io/vega-lite/docs/config.html#format">timeFormat</a> config for time format.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>formatType</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The format type for labels (<code>"number"</code> or <code>"time"</code>).</p>
+
+<p><strong>Default value:</strong></p>
+<ul>
+  <li><code>"time"</code> for temporal fields and ordinal and nomimal fields with <code>timeUnit</code>.</li>
+  <li><code>"number"</code> for quantitative fields as well as ordinal and nomimal fields without <code>timeUnit</code>.</li>
+</ul>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelAlign</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>Horizontal text alignment of header labels. One of <code>"left"</code>, <code>"center"</code>, or <code>"right"</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelAnchor</td>
+        <td>TitleAnchor
+</td>
+        <td>
+  
+    <p>The anchor position for placing the labels. One of <code>"start"</code>, <code>"middle"</code>, or <code>"end"</code>. For example, with a label orientation of top these anchor positions map to a left-, center-, or right-aligned label.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelAngle</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The rotation angle of the header labels.</p>
+
+<p><strong>Default value:</strong> <code>0</code> for column header, <code>-90</code> for row header.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelColor</td>
+        <td><a href="types.html#color">Color</a>
+</td>
+        <td>
+  
+    <p>The color of the header label, can be in hex color code or regular color name.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelExpr</td>
+        <td>String
+</td>
+        <td>
+  
+    <p><a href="https://vega.github.io/vega/docs/expressions/">Vega expression</a> for customizing labels.</p>
+
+<p><strong>Note:</strong> The label text and value can be assessed via the <code>label</code> and <code>value</code> properties of the header’s backing <code>datum</code> object.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelFont</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The font of the header label.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelFontSize</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The font size of the header label, in pixels.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelFontStyle</td>
+        <td>FontStyle
+</td>
+        <td>
+  
+    <p>The font style of the header label.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelLimit</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.</p>
+
+<p><strong>Default value:</strong> <code>0</code>, indicating no limit</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelOrient</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The orientation of the header label. One of <code>"top"</code>, <code>"bottom"</code>, <code>"left"</code> or <code>"right"</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>labelPadding</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The padding, in pixel, between facet header’s label and the plot.</p>
+
+<p><strong>Default value:</strong> <code>10</code></p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="title">Title</h3>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>titleAlign</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>Horizontal text alignment (to the anchor) of header titles.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleAnchor</td>
+        <td>TitleAnchor
+</td>
+        <td>
+  
+    <p>The anchor position for placing the title. One of <code>"start"</code>, <code>"middle"</code>, or <code>"end"</code>. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleAngle</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The rotation angle of the header title.</p>
+
+<p><strong>Default value:</strong> <code>0</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleBaseline</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>Vertical text baseline for the header title. One of <code>"top"</code>, <code>"bottom"</code>, <code>"middle"</code>.</p>
+
+<p><strong>Default value:</strong> <code>"middle"</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleColor</td>
+        <td><a href="types.html#color">Color</a>
+</td>
+        <td>
+  
+    <p>Color of the header title, can be in hex color code or regular color name.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleFont</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>Font of the header title. (e.g., <code>"Helvetica Neue"</code>).</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleFontWeight</td>
+        <td>String | Number
+</td>
+        <td>
+  
+    <p>Font weight of the header title.
+This can be either a string (e.g <code>"bold"</code>, <code>"normal"</code>) or a number (<code>100</code>, <code>200</code>, <code>300</code>, …, <code>900</code> where <code>"normal"</code> = <code>400</code> and <code>"bold"</code> = <code>700</code>).</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleFontSize</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Font size of the header title.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleFontStyle</td>
+        <td>FontStyle
+</td>
+        <td>
+  
+    <p>The font style of the header title.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleLimit</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.</p>
+
+<p><strong>Default value:</strong> <code>0</code>, indicating no limit</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titleOrient</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The orientation of the header title. One of <code>"top"</code>, <code>"bottom"</code>, <code>"left"</code> or <code>"right"</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>titlePadding</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The padding, in pixel, between facet header’s title and the label.</p>
+
+<p><strong>Default value:</strong> <code>10</code></p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="example">Example</h3>
+
+<p><span class="vl-example" data-name="facet_custom_header"></span></p>
+
+<p>This example uses header properties to change the font size of this faceted plot’s title and labels.</p>
+
+<h2 id="config">Header Config</h2>
+
+<pre><code class="language-js">// Top-level View Specification
+{
+  ...
+  "config": {
+    "header": {...},               // Header
+    "headerRow": {...},
+    "headerColumn": {...},
+    "headerFacet": {...},
+    ...
+  }
+}
+</code></pre>
+
+<p>The <code>header</code> property of the top-level <code>config</code> object sets the default properties for all headers. If header properties are set in row-, column-, or facet-<a href="facet.html#mapping">field definitions</a>, these configuration values will be overridden. Additional property blocks can target more specific header types based on types of facet channels (<code>"headerRow"</code>, <code>"headerColumn"</code>, <code>"headerFacet"</code>).</p>
+
+<p>The header configuration can contain any <a href="#general">header properties</a>.</p>
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/docs/encoding/header.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/static/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>
