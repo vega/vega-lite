@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Drawing Sine and Cosine Curves with the Sequence Generator | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Drawing Sine and Cosine Curves with the Sequence Generator" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Plots two functions using a generated sequence." />
+<meta property="og:description" content="Plots two functions using a generated sequence." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/examples/sequence_line_fold.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/examples/sequence_line_fold.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta property="og:image" content="https://vega.github.io/vega-lite/examples/compiled/sequence_line_fold.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Drawing Sine and Cosine Curves with the Sequence Generator","url":"https://vega.github.io/vega-lite/examples/sequence_line_fold.html","image":"https://vega.github.io/vega-lite/examples/compiled/sequence_line_fold.png","description":"Plots two functions using a generated sequence.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      var BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/site/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/site/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" class="active">Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="examples">
+    <div class="page-centered page-content">
+  
+    <h1>Drawing Sine and Cosine Curves with the Sequence Generator</h1>
+  
+  <p>Plots two functions using a generated sequence.</p>
+
+<div id="sequence_line_fold"></div>
+
+<script>
+  window.onload = function() {
+    var spec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "Plots two functions using a generated sequence.",
+  "width": 300,
+  "height": 150,
+  "data": {
+    "sequence": {
+      "start": 0,
+      "stop": 12.7,
+      "step": 0.1,
+      "as": "x"
+    }
+  },
+  "transform": [
+    {
+      "calculate": "sin(datum.x)",
+      "as": "sin(x)"
+    },
+    {
+      "calculate": "cos(datum.x)",
+      "as": "cos(x)"
+    },
+    {
+      "fold": ["sin(x)", "cos(x)"]
+    }
+  ],
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "type": "quantitative",
+      "field": "x"
+    },
+    "y": {
+      "field": "value",
+      "type": "quantitative"
+    },
+    "color": {
+      "field": "key",
+      "type": "nominal",
+      "title": null
+    }
+  }
+}
+;
+
+    embedExample('#sequence_line_fold', spec, false);
+}
+</script>
+
+<p><a href="https://vega.github.io/editor/#/examples/vega-lite/sequence_line_fold">View this example in the online editor</a></p>
+
+<h3 id="spec">Vega-Lite JSON Specification</h3>
+
+<pre class="example-spec"><code class="language-json">{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "Plots two functions using a generated sequence.",
+  "width": 300,
+  "height": 150,
+  "data": {
+    "sequence": {
+      "start": 0,
+      "stop": 12.7,
+      "step": 0.1,
+      "as": "x"
+    }
+  },
+  "transform": [
+    {
+      "calculate": "sin(datum.x)",
+      "as": "sin(x)"
+    },
+    {
+      "calculate": "cos(datum.x)",
+      "as": "cos(x)"
+    },
+    {
+      "fold": ["sin(x)", "cos(x)"]
+    }
+  ],
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "type": "quantitative",
+      "field": "x"
+    },
+    "y": {
+      "field": "value",
+      "type": "quantitative"
+    },
+    "color": {
+      "field": "key",
+      "type": "nominal",
+      "title": null
+    }
+  }
+}
+
+</code></pre>
+
+
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/_data/examples.json">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/site/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/build/site/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Wheat and Wages Example | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Wheat and Wages Example" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A recreation of William Playfair’s classic chart visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Based on a chart by @manzt." />
+<meta property="og:description" content="A recreation of William Playfair’s classic chart visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Based on a chart by @manzt." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/examples/wheat_wages.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/examples/wheat_wages.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta property="og:image" content="https://vega.github.io/vega-lite/examples/compiled/wheat_wages.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Wheat and Wages Example","url":"https://vega.github.io/vega-lite/examples/wheat_wages.html","image":"https://vega.github.io/vega-lite/examples/compiled/wheat_wages.png","description":"A recreation of William Playfair’s classic chart visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Based on a chart by @manzt.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      var BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/site/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/site/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" class="active">Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html">Tutorials</a>
+          <a href="/vega-lite/docs/">Documentation</a>
+          <a href="/vega-lite/usage/embed.html">Usage</a>
+          <a href="/vega-lite/ecosystem.html">Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="examples">
+    <div class="page-centered page-content">
+  
+    <h1>Wheat and Wages Example</h1>
+  
+  <p>A recreation of William Playfair’s classic chart visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Based on a chart by <a href="https://github.com/manzt" class="user-mention">@manzt</a>.</p>
+
+<div id="wheat_wages"></div>
+
+<script>
+  window.onload = function() {
+    var spec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "width": 900,
+  "height": 400,
+  "data": { "url": "data/wheat.json"},
+  "transform": [{"calculate": "+datum.year + 5", "as": "year_end"}],
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "fill": "#aaa",
+        "stroke": "#999"
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative",
+          "axis": {
+            "tickCount": 5,
+            "format": "d"
+          }
+        },
+        "x2": {
+          "field": "year_end"
+        },
+        "y": {
+          "field": "wheat",
+          "type": "quantitative",
+          "axis": { "zindex": 1 }
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          { "year": "1600" },
+          { "year": "1650" },
+          { "year": "1700" },
+          { "year": "1750" },
+          { "year": "1800" }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "stroke": "#000",
+        "strokeWidth": 0.6,
+        "opacity": 0.5
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "area",
+        "color": "#a4cedb",
+        "opacity": 0.7
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "wages",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "color": "#000",
+        "opacity": 0.7
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "wages",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "yOffset": -2,
+        "color": "#EE8182"
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "wages",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "data": {"url": "data/monarchs.json"},
+      "transform": [
+        { "calculate": "((!datum.commonwealth && datum.index % 2) ? -1: 1) * 2 + 95", "as": "offset" },
+        { "calculate": "95", "as": "y" }
+      ],
+      "mark": {
+        "type": "bar",
+        "stroke": "#000"
+      },
+      "encoding": {
+        "x": {
+          "field": "start",
+          "type": "quantitative"
+        },
+        "x2": {
+          "field": "end"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "y2": { "field": "offset" },
+        "fill": {
+          "field": "commonwealth",
+          "scale": { "range": ["black", "white"] },
+          "legend": null,
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/monarchs.json"
+      },
+      "transform": [
+        { "calculate": "((!datum.commonwealth && datum.index % 2) ? -1: 1) + 95", "as": "off2" },
+        { "calculate": "+datum.start + (+datum.end - +datum.start)/2", "as": "x"}
+      ],
+      "mark": {
+        "type": "text",
+        "yOffset": 16,
+        "fontSize": 9,
+        "baseline": "bottom",
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {"field": "off2", "type": "quantitative"},
+        "text": {"field": "name", "type": "nominal"}
+      }
+    }
+  ],
+  "config": {
+    "axis": {
+      "title": null,
+      "gridColor": "white",
+      "gridOpacity": 0.25,
+      "domain": false
+    },
+    "view": { "stroke": "transparent" }
+  }
+}
+;
+
+    embedExample('#wheat_wages', spec, false);
+}
+</script>
+
+<p><a href="https://vega.github.io/editor/#/examples/vega-lite/wheat_wages">View this example in the online editor</a></p>
+
+<h3 id="spec">Vega-Lite JSON Specification</h3>
+
+<pre class="example-spec"><code class="language-json">{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "width": 900,
+  "height": 400,
+  "data": { "url": "data/wheat.json"},
+  "transform": [{"calculate": "+datum.year + 5", "as": "year_end"}],
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "fill": "#aaa",
+        "stroke": "#999"
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative",
+          "axis": {
+            "tickCount": 5,
+            "format": "d"
+          }
+        },
+        "x2": {
+          "field": "year_end"
+        },
+        "y": {
+          "field": "wheat",
+          "type": "quantitative",
+          "axis": { "zindex": 1 }
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          { "year": "1600" },
+          { "year": "1650" },
+          { "year": "1700" },
+          { "year": "1750" },
+          { "year": "1800" }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "stroke": "#000",
+        "strokeWidth": 0.6,
+        "opacity": 0.5
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "area",
+        "color": "#a4cedb",
+        "opacity": 0.7
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "wages",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "color": "#000",
+        "opacity": 0.7
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "wages",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "yOffset": -2,
+        "color": "#EE8182"
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "wages",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "data": {"url": "data/monarchs.json"},
+      "transform": [
+        { "calculate": "((!datum.commonwealth &amp;&amp; datum.index % 2) ? -1: 1) * 2 + 95", "as": "offset" },
+        { "calculate": "95", "as": "y" }
+      ],
+      "mark": {
+        "type": "bar",
+        "stroke": "#000"
+      },
+      "encoding": {
+        "x": {
+          "field": "start",
+          "type": "quantitative"
+        },
+        "x2": {
+          "field": "end"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "y2": { "field": "offset" },
+        "fill": {
+          "field": "commonwealth",
+          "scale": { "range": ["black", "white"] },
+          "legend": null,
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/monarchs.json"
+      },
+      "transform": [
+        { "calculate": "((!datum.commonwealth &amp;&amp; datum.index % 2) ? -1: 1) + 95", "as": "off2" },
+        { "calculate": "+datum.start + (+datum.end - +datum.start)/2", "as": "x"}
+      ],
+      "mark": {
+        "type": "text",
+        "yOffset": 16,
+        "fontSize": 9,
+        "baseline": "bottom",
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {"field": "off2", "type": "quantitative"},
+        "text": {"field": "name", "type": "nominal"}
+      }
+    }
+  ],
+  "config": {
+    "axis": {
+      "title": null,
+      "gridColor": "white",
+      "gridOpacity": 0.25,
+      "domain": false
+    },
+    "view": { "stroke": "transparent" }
+  }
+}
+
+</code></pre>
+
+
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/_data/examples.json">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/site/static/idl-logo.png"></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/build/site/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

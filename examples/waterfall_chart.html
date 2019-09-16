@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Waterfall Chart of Monthly Profit and Loss | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Waterfall Chart of Monthly Profit and Loss" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/examples/waterfall_chart.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/examples/waterfall_chart.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta property="og:image" content="https://vega.github.io/vega-lite/examples/compiled/waterfall_chart.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Waterfall Chart of Monthly Profit and Loss","url":"https://vega.github.io/vega-lite/examples/waterfall_chart.html","image":"https://vega.github.io/vega-lite/examples/compiled/waterfall_chart.png","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      var BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/site/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/site/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" class="active">Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="examples">
+    <div class="page-centered page-content">
+  
+    <h1>Waterfall Chart of Monthly Profit and Loss</h1>
+  
+  
+<div id="waterfall_chart"></div>
+
+<script>
+  window.onload = function() {
+    var spec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {
+    "values": [
+      {"label": "Begin", "amount": 4000},
+      {"label": "Jan", "amount": 1707},
+      {"label": "Feb", "amount": -1425},
+      {"label": "Mar", "amount": -1030},
+      {"label": "Apr", "amount": 1812},
+      {"label": "May", "amount": -1067},
+      {"label": "Jun", "amount": -1481},
+      {"label": "Jul", "amount": 1228},
+      {"label": "Aug", "amount": 1176},
+      {"label": "Sep", "amount": 1146},
+      {"label": "Oct", "amount": 1205},
+      {"label": "Nov", "amount": -1388},
+      {"label": "Dec", "amount": 1492},
+      {"label": "End", "amount": 0}
+    ]
+  },
+  "width": 800,
+  "height": 450,
+  "transform": [
+    {"window": [{"op": "sum", "field": "amount", "as": "sum"}]},
+    {"window": [{"op": "lead", "field": "label", "as": "lead"}]},
+    {
+      "calculate": "datum.lead === null ? datum.label : datum.lead",
+      "as": "lead"
+    },
+    {
+      "calculate": "datum.label === 'End' ? 0 : datum.sum - datum.amount",
+      "as": "previous_sum"
+    },
+    {
+      "calculate": "datum.label === 'End' ? datum.sum : datum.amount",
+      "as": "amount"
+    },
+    {
+      "calculate": "(datum.label !== 'Begin' && datum.label !== 'End' && datum.amount > 0 ? '+' : '') + datum.amount",
+      "as": "text_amount"
+    },
+    {"calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center"},
+    {
+      "calculate": "datum.sum < datum.previous_sum ? datum.sum : ''",
+      "as": "sum_dec"
+    },
+    {
+      "calculate": "datum.sum > datum.previous_sum ? datum.sum : ''",
+      "as": "sum_inc"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "label",
+      "type": "ordinal",
+      "sort": null,
+      "axis": {"labelAngle": 0, "title": "Months"}
+    }
+  },
+  "layer": [
+    {
+      "mark": {"type": "bar", "size": 45},
+      "encoding": {
+        "y": {
+          "field": "previous_sum",
+          "type": "quantitative",
+          "title": "Amount"
+        },
+        "y2": {"field": "sum"},
+        "color": {
+          "condition": [
+            {
+              "test": "datum.label === 'Begin' || datum.label === 'End'",
+              "value": "#f7e0b6"
+            },
+            {"test": "datum.sum < datum.previous_sum", "value": "#f78a64"}
+          ],
+          "value": "#93c4aa"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#404040",
+        "opacity": 1,
+        "strokeWidth": 2,
+        "xOffset": -22.5,
+        "x2Offset": 22.5
+      },
+      "encoding": {
+        "x2": {"field": "lead"},
+        "y": {"field": "sum", "type": "quantitative"}
+      }
+    },
+    {
+      "mark": {"type": "text", "dy": -4, "baseline": "bottom"},
+      "encoding": {
+        "y": {"field": "sum_inc", "type": "quantitative"},
+        "text": {"field": "sum_inc", "type": "nominal"}
+      }
+    },
+    {
+      "mark": {"type": "text", "dy": 4, "baseline": "top"},
+      "encoding": {
+        "y": {"field": "sum_dec", "type": "quantitative"},
+        "text": {"field": "sum_dec", "type": "nominal"}
+      }
+    },
+    {
+      "mark": {"type": "text", "fontWeight": "bold", "baseline": "middle"},
+      "encoding": {
+        "y": {"field": "center", "type": "quantitative"},
+        "text": {"field": "text_amount", "type": "nominal"},
+        "color": {
+          "condition": [
+            {
+              "test": "datum.label === 'Begin' || datum.label === 'End'",
+              "value": "#725a30"
+            }
+          ],
+          "value": "white"
+        }
+      }
+    }
+  ],
+  "config": {"text": {"fontWeight": "bold", "color": "#404040"}}
+}
+;
+
+    embedExample('#waterfall_chart', spec, false);
+}
+</script>
+
+<p><a href="https://vega.github.io/editor/#/examples/vega-lite/waterfall_chart">View this example in the online editor</a></p>
+
+<h3 id="spec">Vega-Lite JSON Specification</h3>
+
+<pre class="example-spec"><code class="language-json">{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {
+    "values": [
+      {"label": "Begin", "amount": 4000},
+      {"label": "Jan", "amount": 1707},
+      {"label": "Feb", "amount": -1425},
+      {"label": "Mar", "amount": -1030},
+      {"label": "Apr", "amount": 1812},
+      {"label": "May", "amount": -1067},
+      {"label": "Jun", "amount": -1481},
+      {"label": "Jul", "amount": 1228},
+      {"label": "Aug", "amount": 1176},
+      {"label": "Sep", "amount": 1146},
+      {"label": "Oct", "amount": 1205},
+      {"label": "Nov", "amount": -1388},
+      {"label": "Dec", "amount": 1492},
+      {"label": "End", "amount": 0}
+    ]
+  },
+  "width": 800,
+  "height": 450,
+  "transform": [
+    {"window": [{"op": "sum", "field": "amount", "as": "sum"}]},
+    {"window": [{"op": "lead", "field": "label", "as": "lead"}]},
+    {
+      "calculate": "datum.lead === null ? datum.label : datum.lead",
+      "as": "lead"
+    },
+    {
+      "calculate": "datum.label === 'End' ? 0 : datum.sum - datum.amount",
+      "as": "previous_sum"
+    },
+    {
+      "calculate": "datum.label === 'End' ? datum.sum : datum.amount",
+      "as": "amount"
+    },
+    {
+      "calculate": "(datum.label !== 'Begin' &amp;&amp; datum.label !== 'End' &amp;&amp; datum.amount &gt; 0 ? '+' : '') + datum.amount",
+      "as": "text_amount"
+    },
+    {"calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center"},
+    {
+      "calculate": "datum.sum &lt; datum.previous_sum ? datum.sum : ''",
+      "as": "sum_dec"
+    },
+    {
+      "calculate": "datum.sum &gt; datum.previous_sum ? datum.sum : ''",
+      "as": "sum_inc"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "label",
+      "type": "ordinal",
+      "sort": null,
+      "axis": {"labelAngle": 0, "title": "Months"}
+    }
+  },
+  "layer": [
+    {
+      "mark": {"type": "bar", "size": 45},
+      "encoding": {
+        "y": {
+          "field": "previous_sum",
+          "type": "quantitative",
+          "title": "Amount"
+        },
+        "y2": {"field": "sum"},
+        "color": {
+          "condition": [
+            {
+              "test": "datum.label === 'Begin' || datum.label === 'End'",
+              "value": "#f7e0b6"
+            },
+            {"test": "datum.sum &lt; datum.previous_sum", "value": "#f78a64"}
+          ],
+          "value": "#93c4aa"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#404040",
+        "opacity": 1,
+        "strokeWidth": 2,
+        "xOffset": -22.5,
+        "x2Offset": 22.5
+      },
+      "encoding": {
+        "x2": {"field": "lead"},
+        "y": {"field": "sum", "type": "quantitative"}
+      }
+    },
+    {
+      "mark": {"type": "text", "dy": -4, "baseline": "bottom"},
+      "encoding": {
+        "y": {"field": "sum_inc", "type": "quantitative"},
+        "text": {"field": "sum_inc", "type": "nominal"}
+      }
+    },
+    {
+      "mark": {"type": "text", "dy": 4, "baseline": "top"},
+      "encoding": {
+        "y": {"field": "sum_dec", "type": "quantitative"},
+        "text": {"field": "sum_dec", "type": "nominal"}
+      }
+    },
+    {
+      "mark": {"type": "text", "fontWeight": "bold", "baseline": "middle"},
+      "encoding": {
+        "y": {"field": "center", "type": "quantitative"},
+        "text": {"field": "text_amount", "type": "nominal"},
+        "color": {
+          "condition": [
+            {
+              "test": "datum.label === 'Begin' || datum.label === 'End'",
+              "value": "#725a30"
+            }
+          ],
+          "value": "white"
+        }
+      }
+    }
+  ],
+  "config": {"text": {"fontWeight": "bold", "color": "#404040"}}
+}
+
+</code></pre>
+
+
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/_data/examples.json">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/site/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/build/site/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

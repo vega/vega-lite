@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Scale | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Scale" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/docs/scale.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/docs/scale.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Scale","url":"https://vega.github.io/vega-lite/docs/scale.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      var BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/site/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/site/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" class="active">Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="docs">
+    
+
+
+
+<div class="page-centered page-main">
+  
+  <aside class="page-sidebar">
+    <ul class="sidebar-nav">
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/" title="">Overview
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/spec.html" title="">View Specification
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/title.html" title="">Title
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/size.html" title="">Width / Height
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/data.html" title="">Data / Datasets
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/projection.html" title="">Projection
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/transform.html" title="">Transform
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/calculate.html" title="">Calculate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/density.html" title="">Density
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/filter.html" title="">Filter
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/flatten.html" title="">Flatten
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/fold.html" title="">Fold
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/joinaggregate.html" title="">Join Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/loess.html" title="">Loess
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/lookup.html" title="">Lookup
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/regression.html" title="">Regression
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/pivot.html" title="">Pivot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sample.html" title="">Sample
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/window.html" title="">Window
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/mark.html" title="">Mark
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/area.html" title="">Area
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bar.html" title="">Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/boxplot.html" title="">Box Plot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/circle.html" title="">Circle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorband.html" title="">Error Band
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorbar.html" title="">Error Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/geoshape.html" title="">Geoshape
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/image.html" title="">Image
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/line.html" title="">Line
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/point.html" title="">Point
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rect.html" title="">Rect
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rule.html" title="">Rule
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/square.html" title="">Square
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/text.html" title="">Text
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/tick.html" title="">Tick
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/trail.html" title="">Trail
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/encoding.html" title="">Encoding
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/axis.html" title="">Axis
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/condition.html" title="">Condition
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/field.html" title="">Field
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/format.html" title="">Format
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/header.html" title="">Header
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/legend.html" title="">Legend
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a class="active"
+            href="/vega-lite/docs/scale.html" title="">Scale
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sort.html" title="">Sort
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/type.html" title="">Type
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/value.html" title="">Value
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/composition.html" title="">View Composition
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/facet.html" title="">Facet
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/layer.html" title="">Layer
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/concat.html" title="">Concat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/repeat.html" title="">Repeat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/resolve.html" title="">Resolve
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/selection.html" title="">Selections
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bind.html" title="">Bind
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/clear.html" title="">Clear
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/project.html" title="">Encodings / Fields
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/init.html" title="">Init
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-mark.html" title="">Mark
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/nearest.html" title="">Nearest
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-resolve.html" title="">Resolve
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/toggle.html" title="">Toggle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/translate.html" title="">Translate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/zoom.html" title="">Zoom
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/config.html" title="">Config
+      </a></li>
+      
+      
+      
+      
+      <br>
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/types.html" title="">Parameter Types
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/tooltip.html" title="">Tooltip
+      </a></li>
+      
+      
+      
+    </nav>
+  </aside>
+  
+
+  <section class="page-content">
+    <h1>Scale</h1>
+    <span class="edit-page">
+    <a href="https://github.com/vega/vega-lite/edit/master/site/docs/encoding/scale.md">Edit this page</a>
+</span>
+<p>Scales are functions that transform a domain of data values (numbers, dates, strings, etc.) to a range of visual values (pixels, colors, sizes). Internally, Vega-Lite uses <a href="https://vega.github.io/vega/docs/scales/">Vega scales</a>, which are derived from the <a href="https://github.com/d3/d3-scale">d3-scale</a> library. For more background about scales, please see <a href="https://medium.com/@mbostock/introducing-d3-scale-61980c51545f">“Introducing d3-scale”</a> by Mike Bostock.</p>
+
+<p>Vega-Lite automatically creates scales for fields that are mapped to <a href="encoding.html#position">position</a> and <a href="encoding.html#mark-prop">mark property</a> channels. To customize the scale of a field, users can provide a <code>scale</code> object as a part of the <a href="encoding.html#field">field definition</a> to customize scale properties (e.g., <a href="#type">type</a>, <a href="#domain">domain</a>, and <a href="#range">range</a>).</p>
+
+<pre><code class="language-js">// A Single View or a Layer Specification
+{
+  ...,
+  "mark/layer": ...,
+  "encoding": {
+    "x": {
+      "field": ...,
+      "type": ...,
+      "scale": {                // scale
+        "type": ...,
+        ...
+      },
+      ...
+    },
+    "y": ...,
+    ...
+  },
+  ...
+}
+</code></pre>
+
+<p>Besides the <code>scale</code> property of each encoding channel, the top-level configuration object (<a href="config.html"><code>config</code></a>) also provides <a href="#config">scale config</a> (<code>config: {scale: {...}}</code>) for setting default scale properties for all scales.</p>
+
+<p>For more information about guides that visualize the scales, please see the <a href="axis.html">axes</a> and <a href="legend.html">legends</a> pages.</p>
+
+<h2 id="documentation-overview">Documentation Overview</h2>
+
+<!-- prettier-ignore -->
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="#documentation-overview" id="markdown-toc-documentation-overview">Documentation Overview</a></li>
+  <li><a href="#type" id="markdown-toc-type">Scale Types</a></li>
+  <li><a href="#domain" id="markdown-toc-domain">Scale Domains</a></li>
+  <li><a href="#range" id="markdown-toc-range">Scale Ranges</a>    <ul>
+      <li><a href="#scheme" id="markdown-toc-scheme">Color Schemes</a></li>
+    </ul>
+  </li>
+  <li><a href="#continuous" id="markdown-toc-continuous">Continuous Scales</a>    <ul>
+      <li><a href="#linear" id="markdown-toc-linear">Linear Scales</a></li>
+      <li><a href="#pow" id="markdown-toc-pow">Power Scales</a></li>
+      <li><a href="#sqrt" id="markdown-toc-sqrt">Square Root Scales</a></li>
+      <li><a href="#log" id="markdown-toc-log">Logarithmic Scales</a></li>
+      <li><a href="#symlog" id="markdown-toc-symlog">Symlog Scales</a></li>
+      <li><a href="#time" id="markdown-toc-time">Time and UTC Scales</a></li>
+      <li><a href="#piecewise" id="markdown-toc-piecewise">Piecewise Scales</a></li>
+    </ul>
+  </li>
+  <li><a href="#discrete" id="markdown-toc-discrete">Discrete Scales</a>    <ul>
+      <li><a href="#ordinal" id="markdown-toc-ordinal">Ordinal Scales</a></li>
+      <li><a href="#band" id="markdown-toc-band">Band and Point Scales</a></li>
+    </ul>
+  </li>
+  <li><a href="#discretizing" id="markdown-toc-discretizing">Discretizing Scales</a>    <ul>
+      <li><a href="#bin-linear" id="markdown-toc-bin-linear">Bin-Linear Scales</a></li>
+      <li><a href="#bin-ordinal" id="markdown-toc-bin-ordinal">Bin-Ordinal Scales</a></li>
+      <li><a href="#quantile" id="markdown-toc-quantile">Quantile Scales</a></li>
+      <li><a href="#quantize" id="markdown-toc-quantize">Quantize Scales</a></li>
+      <li><a href="#threshold" id="markdown-toc-threshold">Threshold Scales</a></li>
+    </ul>
+  </li>
+  <li><a href="#disable" id="markdown-toc-disable">Disabling Scale</a></li>
+  <li><a href="#config" id="markdown-toc-config">Configuration</a>    <ul>
+      <li><a href="#scale-config" id="markdown-toc-scale-config">Scale Config</a>        <ul>
+          <li><a href="#padding" id="markdown-toc-padding">Padding</a></li>
+          <li><a href="#range" id="markdown-toc-range">Range</a></li>
+          <li><a href="#other" id="markdown-toc-other">Other</a></li>
+        </ul>
+      </li>
+      <li><a href="#range-config" id="markdown-toc-range-config">Range Config</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="type">Scale Types</h2>
+
+<p>The <code>type</code> property can be specified to customize the scale type.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>type</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The type of scale.  Vega-Lite supports the following categories of scale types:</p>
+
+<p>1) <a href="https://vega.github.io/vega-lite/docs/scale.html#continuous"><strong>Continuous Scales</strong></a> – mapping continuous domains to continuous output ranges (<a href="https://vega.github.io/vega-lite/docs/scale.html#linear"><code>"linear"</code></a>, <a href="https://vega.github.io/vega-lite/docs/scale.html#pow"><code>"pow"</code></a>, <a href="https://vega.github.io/vega-lite/docs/scale.html#sqrt"><code>"sqrt"</code></a>, <a href="https://vega.github.io/vega-lite/docs/scale.html#symlog"><code>"symlog"</code></a>, <a href="https://vega.github.io/vega-lite/docs/scale.html#log"><code>"log"</code></a>, <a href="https://vega.github.io/vega-lite/docs/scale.html#time"><code>"time"</code></a>, <a href="https://vega.github.io/vega-lite/docs/scale.html#utc"><code>"utc"</code></a>.</p>
+
+<p>2) <a href="https://vega.github.io/vega-lite/docs/scale.html#discrete"><strong>Discrete Scales</strong></a> – mapping discrete domains to discrete (<a href="https://vega.github.io/vega-lite/docs/scale.html#ordinal"><code>"ordinal"</code></a>) or continuous (<a href="https://vega.github.io/vega-lite/docs/scale.html#band"><code>"band"</code></a> and <a href="https://vega.github.io/vega-lite/docs/scale.html#point"><code>"point"</code></a>) output ranges.</p>
+
+<p>3) <a href="https://vega.github.io/vega-lite/docs/scale.html#discretizing"><strong>Discretizing Scales</strong></a> – mapping continuous domains to discrete output ranges <a href="https://vega.github.io/vega-lite/docs/scale.html#bin-ordinal"><code>"bin-ordinal"</code></a>, <a href="https://vega.github.io/vega-lite/docs/scale.html#quantile"><code>"quantile"</code></a>, <a href="https://vega.github.io/vega-lite/docs/scale.html#quantize"><code>"quantize"</code></a> and <a href="https://vega.github.io/vega-lite/docs/scale.html#threshold"><code>"threshold"</code></a>.</p>
+
+<p><strong>Default value:</strong> please see the <a href="https://vega.github.io/vega-lite/docs/scale.html#type">scale type table</a>.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>By default, Vega-Lite use the following scale types for the following <a href="type.html">data types</a> and <a href="encoding.html#channel">encoding channels</a>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right"> </th>
+      <th style="text-align: center">Nominal / Ordinal</th>
+      <th style="text-align: center">Quantitative</th>
+      <th style="text-align: center">Bin-Quantitative<sup>1</sup></th>
+      <th style="text-align: center">Temporal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right"><strong>X, Y</strong></td>
+      <td style="text-align: center"><a href="#band">Band</a> / <a href="#point">Point</a><sup>2</sup></td>
+      <td style="text-align: center"><a href="#linear">Linear</a></td>
+      <td style="text-align: center"><a href="#linear">Linear</a></td>
+      <td style="text-align: center"><a href="#time">Time</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><strong>Size, Opacity</strong></td>
+      <td style="text-align: center"><a href="#point">Point</a></td>
+      <td style="text-align: center"><a href="#linear">Linear</a></td>
+      <td style="text-align: center"><a href="#linear">Linear</a></td>
+      <td style="text-align: center"><a href="#time">Time</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><strong>Color</strong></td>
+      <td style="text-align: center"><a href="#ordinal">Ordinal</a></td>
+      <td style="text-align: center"><a href="#linear">Linear</a></td>
+      <td style="text-align: center"><a href="#bin-ordinal">Bin-Ordinal</a></td>
+      <td style="text-align: center"><a href="#linear">Linear</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><strong>Shape</strong></td>
+      <td style="text-align: center"><a href="#ordinal">Ordinal</a></td>
+      <td style="text-align: center">N/A</td>
+      <td style="text-align: center">N/A</td>
+      <td style="text-align: center">N/A</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="note-line">
+<sup>1</sup> Quantitative fields with the <a href="bin.html"><code>bin</code></a> transform.
+</span>
+<span class="note-line">
+<sup>2</sup> For positional (x and y) ordinal and ordinal fields, <code>"band"</code> scale is the default scale type for
+bar, image, rect, and rule marks while <code>"point"</code> is the default scales for all other marks.
+</span></p>
+
+<h2 id="domain">Scale Domains</h2>
+
+<p>By default, a scale in Vega-Lite draws domain values directly from a channel’s encoded field. Users can specify the <code>domain</code> property of a scale to customize its domain values. To sort the order of the domain of the encoded, the <a href="sort.html"><code>sort</code></a> property of a <a href="encoding.html#field-def">field definition</a> can be specified.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>domain</td>
+        <td>Number[] | String[] | Boolean[] | <a href="types.html#datetime">DateTime</a>[] | String | <a href="selection.html#scale-domains">SelectionDomain</a>
+</td>
+        <td>
+  
+    <p>Customized domain values.</p>
+
+<p>For <em>quantitative</em> fields, <code>domain</code> can take the form of a two-element array with minimum and maximum values.  <a href="https://vega.github.io/vega-lite/docs/scale.html#piecewise">Piecewise scales</a> can be created by providing a <code>domain</code> with more than two entries.
+If the input field is aggregated, <code>domain</code> can also be a string value <code>"unaggregated"</code>, indicating that the domain should include the raw data values prior to the aggregation.</p>
+
+<p>For <em>temporal</em> fields, <code>domain</code> can be a two-element array minimum and maximum values, in the form of either timestamps or the <a href="https://vega.github.io/vega-lite/docs/types.html#datetime">DateTime definition objects</a>.</p>
+
+<p>For <em>ordinal</em> and <em>nominal</em> fields, <code>domain</code> can be an array that lists valid input values.</p>
+
+<p>The <code>selection</code> property can be used to <a href="https://vega.github.io/vega-lite/docs/selection.html#scale-domains">interactively determine</a> the scale domain.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>A common use case for the <code>domain</code> property is to limit, for example, the <code>x</code> range of values to include in a plot. However, setting the domain property alone is insufficient to achieve the desired effect. For example, consider the line plot specification below in which the <code>x</code> domain is restricted to the range <code>[300, 450]</code>.</p>
+
+<div class="vl-example" data-name="line_outside_domain"></div>
+
+<p>There are two approaches to keep the mark from being plotted outside the desired <code>x</code> range of values.</p>
+
+<ul>
+  <li>
+    <p>The first one is to set <code>clip: true</code> in mark definition.</p>
+
+    <div class="vl-example" data-name="line_inside_domain_using_clip"></div>
+  </li>
+  <li>
+    <p>The second approach is to use <code>transform</code>. Note that these two approaches have slightly different behaviors. Using <code>transform</code> removes unwanted data points, yet setting <code>clip</code> to <code>true</code> clips the mark to be the enclosing group’s width and height.</p>
+  </li>
+</ul>
+
+<div class="vl-example" data-name="line_inside_domain_using_transform"></div>
+
+<!--
+#### Example: Custom Domain
+TODO: Custom Domain for quantitative / discrete scales
+-->
+
+<h2 id="range">Scale Ranges</h2>
+
+<p>The range of the scale represents the set of output visual values. Vega-Lite automatically determines the default range for each <a href="encoding.html#channel">encoding channel</a> using the following rules:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Channels</th>
+      <th style="text-align: left">Default Range</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code>x</code></td>
+      <td style="text-align: left">The range is <em>always</em> <code>[0, width]</code>. Any directly specified <code>range</code> will be ignored. Range can be customized via the view’s <a href="size.html"><code>width</code></a> property.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code>y</code></td>
+      <td style="text-align: left">The range is <em>always</em> <code>[0, height]</code>. Any directly specified <code>range</code> will be ignored. Range can be customized via the view’s <a href="size.html"><code>height</code></a> property.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code>opacity</code></td>
+      <td style="text-align: left">Derived from the <a href="#config">scale config</a>’s <code>min/maxOpacity</code>.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code>color</code></td>
+      <td style="text-align: left">Derived from the following <a href="scale.html#range-config">named ranges</a> based on the field’s <a href="type.html"><code>type</code></a>: <br /> • <code>"category"</code> for <em>nominal</em> fields. <br /> • <code>"ordinal"</code> for <em>ordinal</em> fields. <br /> • <code>"heatmap"</code> for <em>quantitative</em> and <em>temporal</em> fields with <code>"rect"</code> marks and <code>"ramp'</code> for other marks. <br /><br /> See the <a href="#scheme">color scheme</a> section for examples.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code>size</code></td>
+      <td style="text-align: left">Derived from the following <a href="#config">named ranges</a> based on the <code>mark</code> type: <br /> • <code>min/maxBandSize</code> for bar and tick. <br /> • <code>min/maxStrokeWidth</code> for line and rule. <br /> • <code>min/maxSize</code> for point, square, and circle <br /> • <code>min/maxFontSize</code> for text</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code>shape</code></td>
+      <td style="text-align: left">Derived from the <a href="#range-config">pre-defined named range</a> <code>"symbol"</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>To customize range values, users can directly specify <code>range</code> or specify the special <a href="#scheme"><code>scheme</code></a> property for <a href="#ordinal">ordinal</a> and <a href="#continuous">continuous</a> color scales.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>range</td>
+        <td>Number[] | String[] | String
+</td>
+        <td>
+  
+    <p>The range of the scale. One of:</p>
+
+<ul>
+  <li>
+    <p>A string indicating a <a href="https://vega.github.io/vega-lite/docs/scale.html#range-config">pre-defined named scale range</a> (e.g., example, <code>"symbol"</code>, or <code>"diverging"</code>).</p>
+  </li>
+  <li>
+    <p>For <a href="https://vega.github.io/vega-lite/docs/scale.html#continuous">continuous scales</a>, two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a <a href="https://vega.github.io/vega-lite/docs/scale.html#piecewise">piecewise scale</a>.</p>
+  </li>
+  <li>
+    <p>For <a href="https://vega.github.io/vega-lite/docs/scale.html#discrete">discrete</a> and <a href="https://vega.github.io/vega-lite/docs/scale.html#discretizing">discretizing</a> scales, an array of desired output values.</p>
+  </li>
+</ul>
+
+<p><strong>Notes:</strong></p>
+
+<p>1) For color scales you can also specify a color <a href="https://vega.github.io/vega-lite/docs/scale.html#scheme"><code>scheme</code></a> instead of <code>range</code>.</p>
+
+<p>2) Any directly specified <code>range</code> for <code>x</code> and <code>y</code> channels will be ignored. Range can be customized via the view’s corresponding <a href="https://vega.github.io/vega-lite/docs/size.html">size</a> (<code>width</code> and <code>height</code>).</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="scheme">Color Schemes</h3>
+
+<p>Color schemes provide a set of named color palettes as a scale range for the <code>color</code> channel. Vega-Lite (via Vega) provides a collection of perceptually-motivated color schemes, many of which are drawn from the <a href="https://github.com/d3/d3-scale">d3-scale</a>, <a href="https://github.com/d3/d3-scale-chromatic">d3-scale-chromatic</a>, and <a href="http://colorbrewer2.org/">ColorBrewer</a> projects.</p>
+
+<p>By default, Vega-Lite assigns different <a href="#range-config">default color schemes</a> based on the types of the encoded fields:</p>
+
+<ul>
+  <li><em>Nominal</em> fields use the <code>"categorical"</code> <a href="#range-config">pre-defined named range</a> (the <a href="https://vega.github.io/vega/docs/schemes/#tableau10"><code>"tableau10"</code></a> scheme by default).</li>
+</ul>
+
+<div class="vl-example" data-name="point_color"></div>
+
+<ul>
+  <li><em>Ordinal</em> fields use the <code>"ordinal"</code> <a href="#range-config">pre-defined named color range</a> (the <a href="https://vega.github.io/vega/docs/schemes/#blues"><code>"blues"</code></a> color scheme by default).</li>
+</ul>
+
+<div class="vl-example" data-name="point_color_ordinal"></div>
+
+<ul>
+  <li><em>Quantitative</em> and <em>temporal</em> fields use the <a href="#range-config">pre-defined named color range</a> <code>"heatmap"</code> (the <a href="https://vega.github.io/vega/docs/schemes/#viridis"><code>"viridis"</code></a> scheme by default) for rect marks and <code>"ramp"</code> (the <a href="https://vega.github.io/vega/docs/schemes/#blues"><code>"blues"</code></a> scheme by default) for other marks.</li>
+</ul>
+
+<div class="vl-example" data-name="rect_heatmap"></div>
+
+<div class="vl-example" data-name="point_color_quantitative"></div>
+
+<p>There are multiple ways to customize the scale range for the color encoding channel:</p>
+
+<ol>
+  <li>Set a custom <code>scheme</code>.</li>
+</ol>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>scheme</td>
+        <td>String | <a href="scale.html#scheme-params">SchemeParams</a>
+</td>
+        <td>
+  
+    <p>A string indicating a color <a href="https://vega.github.io/vega-lite/docs/scale.html#scheme">scheme</a> name (e.g., <code>"category10"</code> or <code>"blues"</code>) or a <a href="https://vega.github.io/vega-lite/docs/scale.html#scheme-params">scheme parameter object</a>.</p>
+
+<p>Discrete color schemes may be used with <a href="https://vega.github.io/vega-lite/docs/scale.html#discrete">discrete</a> or <a href="https://vega.github.io/vega-lite/docs/scale.html#discretizing">discretizing</a> scales. Continuous color schemes are intended for use with color scales.</p>
+
+<p>For the full list of supported schemes, please refer to the <a href="https://vega.github.io/vega/docs/schemes/#reference">Vega Scheme</a> reference.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>For example, the following plot use the <code>"category20b"</code> scheme.</p>
+
+<div class="vl-example" data-name="stacked_area"></div>
+
+<p id="scheme-params">The <code>scheme</code> property can also be a <strong>scheme parameter object</strong>, which contain the following properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>name</td>
+        <td>String
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> A color scheme name for ordinal scales (e.g., <code>"category10"</code> or <code>"blues"</code>).</p>
+
+<p>For the full list of supported schemes, please refer to the <a href="https://vega.github.io/vega/docs/schemes/#reference">Vega Scheme</a> reference.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>extent</td>
+        <td>Number[]
+</td>
+        <td>
+  
+    <p>The extent of the color range to use. For example <code>[0.2, 1]</code> will rescale the color scheme such that color values in the range <em>[0, 0.2)</em> are excluded from the scheme.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>count</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The number of colors to use in the scheme. This can be useful for scale types such as <code>"quantize"</code>, which use the length of the scale range to determine the number of discrete bins for the scale domain.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<ol>
+  <li>Setting the <code>range</code> property to an array of valid CSS color strings.</li>
+</ol>
+
+<div class="vl-example" data-name="point_color_custom"></div>
+
+<ol>
+  <li>Change the default color schemes using the <a href="#range-config">range config</a>.</li>
+</ol>
+
+<h2 id="continuous">Continuous Scales</h2>
+
+<p>Continuous scales map a continuous domain (numbers or dates) to a continuous output range (pixel locations, sizes, colors). Supported continuous scale types for <em>quantitative</em> fields are <a href="#linear"><code>"linear"</code></a>, <a href="#log"><code>"log"</code></a>, <a href="#pow"><code>"pow"</code></a>, <a href="#sqrt"><code>"sqrt"</code></a>, and <a href="#symlog"><code>"symlog"</code></a>. Meanwhile, supported continuous scale types for <em>temporal</em> fields are <a href="#time"><code>"time"</code></a>, <a href="#utc"><code>"utc"</code></a>, and <a href="#symlog"><code>"symlog"</code></a>.</p>
+
+<p>By default, Vega-Lite uses <code>"linear"</code> scales for quantitative fields and uses <code>"time"</code> scales for temporal fields for all <a href="encoding.html#channel">encoding channels</a>.</p>
+
+<p>In addition to <a href="#type"><code>type</code></a>, <a href="#domain"><code>domain</code></a>, and <a href="#range"><code>range</code></a>, continuous scales support the following properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>clamp</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>If <code>true</code>, values that exceed the data domain are clamped to either the minimum or maximum range value</p>
+
+<p><strong>Default value:</strong> derived from the <a href="https://vega.github.io/vega-lite/docs/config.html#scale-config">scale config</a>’s <code>clamp</code> (<code>true</code> by default).</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>interpolate</td>
+        <td>String | ScaleInterpolateParams
+</td>
+        <td>
+  
+    <p>The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in HCL space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include <code>rgb</code>, <code>hsl</code>, <code>hsl-long</code>, <code>lab</code>, <code>hcl</code>, <code>hcl-long</code>, <code>cubehelix</code> and <code>cubehelix-long</code> (‘-long’ variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued <em>type</em> property and an optional numeric <em>gamma</em> property applicable to rgb and cubehelix interpolators. For more, see the <a href="https://github.com/d3/d3-interpolate">d3-interpolate documentation</a>.</p>
+
+<ul>
+  <li><strong>Default value:</strong> <code>hcl</code></li>
+</ul>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>nice</td>
+        <td>Boolean | Number | String | Object
+</td>
+        <td>
+  
+    <p>Extending the domain so that it starts and ends on nice round values. This method typically modifies the scale’s domain, and may only extend the bounds to the nearest round value. Nicing is useful if the domain is computed from data and may be irregular. For example, for a domain of <em>[0.201479…, 0.996679…]</em>, a nice domain might be <em>[0.2, 1.0]</em>.</p>
+
+<p>For quantitative scales such as linear, <code>nice</code> can be either a boolean flag or a number. If <code>nice</code> is a number, it will represent a desired tick count. This allows greater control over the step size used to extend the bounds, guaranteeing that the returned ticks will exactly cover the domain.</p>
+
+<p>For temporal fields with time and utc scales, the <code>nice</code> value can be a string indicating the desired time interval. Legal values are <code>"millisecond"</code>, <code>"second"</code>, <code>"minute"</code>, <code>"hour"</code>, <code>"day"</code>, <code>"week"</code>, <code>"month"</code>, and <code>"year"</code>. Alternatively, <code>time</code> and <code>utc</code> scales can accept an object-valued interval specifier of the form <code>{"interval": "month", "step": 3}</code>, which includes a desired number of interval steps. Here, the domain would snap to quarter (Jan, Apr, Jul, Oct) boundaries.</p>
+
+<p><strong>Default value:</strong> <code>true</code> for unbinned <em>quantitative</em> fields; <code>false</code> otherwise.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>padding</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>For <em><a href="https://vega.github.io/vega-lite/docs/scale.html#continuous">continuous</a></em> scales, expands the scale domain to accommodate the specified number of pixels on each of the scale range. The scale range must represent pixels for this parameter to function as intended. Padding adjustment is performed prior to all other adjustments, including the effects of the <code>zero</code>, <code>nice</code>, <code>domainMin</code>, and <code>domainMax</code> properties.</p>
+
+<p>For <em><a href="https://vega.github.io/vega-lite/docs/scale.html#band">band</a></em> scales, shortcut for setting <code>paddingInner</code> and <code>paddingOuter</code> to the same value.</p>
+
+<p>For <em><a href="https://vega.github.io/vega-lite/docs/scale.html#point">point</a></em> scales, alias for <code>paddingOuter</code>.</p>
+
+<p><strong>Default value:</strong> For <em>continuous</em> scales, derived from the <a href="https://vega.github.io/vega-lite/docs/scale.html#config">scale config</a>’s <code>continuousPadding</code>.
+For <em>band and point</em> scales, see <code>paddingInner</code> and <code>paddingOuter</code>.  By default, Vega-Lite sets padding such that <em>width/height = number of unique values * step</em>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>round</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>If <code>true</code>, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.</p>
+
+<p><strong>Default value:</strong> <code>false</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>zero</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>If <code>true</code>, ensures that a zero baseline value is included in the scale domain.</p>
+
+<p><strong>Default value:</strong> <code>true</code> for x and y channels if the quantitative field is not binned and no custom <code>domain</code> is provided; <code>false</code> otherwise.</p>
+
+<p><strong>Note:</strong> Log, time, and utc scales do not support <code>zero</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="linear">Linear Scales</h3>
+
+<p>Linear scales (<code>"linear"</code>) are quantitative scales scales that preserve proportional differences. Each range value y can be expressed as a linear function of the domain value <em>x</em>: <em>y = mx + b</em>.</p>
+
+<h3 id="pow">Power Scales</h3>
+
+<p>Power scales (<code>"pow"</code>) are quantitative scales scales that apply an exponential transform to the input domain value before the output range value is computed. Each range value y can be expressed as a polynomial function of the domain value <em>x</em>: <em>y = mx^k + b</em>, where <em>k</em> is the <code>exponent</code> value. Power scales also support negative domain values, in which case the input value and the resulting output value are multiplied by -1.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>exponent</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The exponent of the <code>pow</code> scale.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="sqrt">Square Root Scales</h3>
+
+<p>Square root (<code>"sqrt"</code>) scales are a convenient shorthand for power scales with an <code>exponent</code> of <code>0.5</code>, indicating a square root transform.</p>
+
+<h3 id="log">Logarithmic Scales</h3>
+
+<p>Log scales (<code>"log"</code>) are quantitative scales in which a logarithmic transform is applied to the input domain value before the output range value is computed. Log scales are particularly useful for plotting data that varies over multiple orders of magnitude. The mapping to the range value y can be expressed as a logarithmic function of the domain value <em>x</em>: <em>y = m log<sub>a</sub>(x) + b</em>, where <em>a</em> is the logarithmic <code>base</code>.</p>
+
+<p>As <em>log(0) = -∞</em>, a log scale domain must be strictly-positive or strictly-negative; the domain must not include or cross zero. A log scale with a positive domain has a well-defined behavior for positive values, and a log scale with a negative domain has a well-defined behavior for negative values. (For a negative domain, input and output values are implicitly multiplied by -1.) The behavior of the scale is undefined if you run a negative value through a log scale with a positive domain or vice versa.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>base</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The logarithm base of the <code>log</code> scale (default <code>10</code>).</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p><strong>Example:</strong> The following plot has a logarithmic y-scale.</p>
+
+<div class="vl-example" data-name="point_log"></div>
+
+<!-- <table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>base</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The logarithm base of the <code>log</code> scale (default <code>10</code>).</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+ -->
+
+<!--
+- `quantize` scale maps continuous value to a discrete range by dividing the domain into uniform segments based on the number of values in (i.e., the cardinality of) the output range. Each range value _y_ can be expressed as a quantized linear function of the domain value _x_: _y = m round(x) + b_.
+- `quantile` scale maps a sampled input domain to a discrete range by sorting the domain and compute the quantiles. The cardinality of the output range determines the number of quantiles that will be computed. -->
+
+<!-- TODO: need to test if we support threshold scale correctly before writing about it-->
+
+<h3 id="symlog">Symlog Scales</h3>
+
+<p>Symmetric log scales (symlog) are quantitative scales scales that provide scaling similar to log scales, but supports non-positive numbers. Symlog scales are particularly useful for plotting data that varies over multiple orders of magnitude but includes negative- or zero-valued data. For more, see <a href="https://www.researchgate.net/profile/John_Webber4/publication/233967063_A_bi-symmetric_log_transformation_for_wide-range_data/links/0fcfd50d791c85082e000000.pdf">“A bi-symmetric log transformation for wide-range data”</a> by Webber for more.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>constant</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>A constant determining the slope of the symlog function around zero. Only used for <code>symlog</code> scales.</p>
+
+<p><strong>Default value:</strong> <code>1</code></p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="time">Time and UTC Scales</h3>
+
+<p>Time and UTC scales (<code>"time"</code> and <code>"utc"</code>) are <a href="#quantitative">continuous scales</a> with a temporal domain: values in the input domain are assumed to be <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a> objects or timestamps. Time scales use the current local timezone setting. UTC scales instead use <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">Coordinated Universal Time</a>.</p>
+
+<h3 id="piecewise">Piecewise Scales</h3>
+
+<p>We can use any types of continuous scales (<a href="scale.html#linear"><code>"linear"</code></a>, <a href="scale.html#pow"><code>"pow"</code></a>, <a href="scale.html#sqrt"><code>"sqrt"</code></a>, <a href="scale.html#log"><code>"log"</code></a>, <a href="scale.html#symlog"><code>"symlog"</code></a>, <a href="scale.html#time"><code>"time"</code></a>, <a href="scale.html#utc"><code>"utc"</code></a> to create a diverging color graph by specifying a custom <code>domain</code> with multiple elements.</p>
+
+<p>If <code>range</code> is specified, the number of elements in <code>range</code> should match with the number of elements in <code>domain</code>. <a href="https://vega.github.io/vega/docs/schemes/#diverging">Diverging color <code>scheme</code>s</a> are also useful as a range for a piecewise scale.</p>
+
+<p><strong>Example</strong></p>
+
+<div class="vl-example" data-name="point_diverging_color"></div>
+
+<h2 id="discrete">Discrete Scales</h2>
+
+<p>Discrete scales map values from a discrete domain to a discrete or continuous range.</p>
+
+<h3 id="ordinal">Ordinal Scales</h3>
+
+<p>Ordinal scales (<code>"ordinal"</code>) have a discrete domain and range. These scales function as a “lookup table” from a domain value to a range value.</p>
+
+<p>By default, Vega-Lite automatically creates ordinal scales for <code>color</code> and <code>shape</code> channels. For example, the following plot implicitly has two ordinal scales, which map the values of the field <code>"Origin"</code> to a set of <code>color</code>s and a set of <code>shape</code>s.</p>
+
+<div class="vl-example" data-name="point_color_with_shape"></div>
+
+<p>The <a href="#range"><code>range</code></a> of an ordinal scale can be an array of desired output values, which are directly mapped to elements in the <a href="#domain"><code>domain</code></a>. Both <code>domain</code> and <code>range</code> array can be re-ordered to specify the order and mapping between the domain and the output range. For ordinal color scales, a custom <a href="#scheme"><code>scheme</code></a> can be set as well.</p>
+
+<p><a name="point"></a><!-- point and band are in the same section --></p>
+
+<h3 id="band">Band and Point Scales</h3>
+
+<p>Band and point scales accept a discrete domain similar to <a href="#ordinal">ordinal scales</a>, but map this domain to a continuous, numeric output range such as pixels.</p>
+
+<p><strong>Band scales</strong> (<code>"band"</code>) compute the discrete output values by dividing the continuous range into uniform <em>bands</em>. Band scales are typically used for bar charts with an ordinal or categorical dimension.</p>
+
+<p>In addition to a standard numerical <em>range</em> value (such as <code>[0, 500]</code>), band scales can be given a fixed <em>step</em> size for each band. The actual range is then determined by both the step size and the cardinality (element count) of the input domain.</p>
+
+<p>This image from the <a href="https://github.com/d3/d3-scale#band-scales">d3-scale documentation</a> illustrates how a band scale works:</p>
+
+<p><img src="https://raw.githubusercontent.com/d3/d3-scale/master/img/band.png" /></p>
+
+<p><strong>Point scales</strong> (<code>"point"</code>) are a variant of <a href="#band">band scales</a> where the internal band width is fixed to zero. Point scales are typically used for scatterplots with an ordinal or categorical dimension. Similar to band scales, point scale <em>range</em> values may be specified using either a numerical extent (<code>[0, 500]</code>) or a step size (<code>{"step": 20}</code>).</p>
+
+<p>This image from the <a href="https://github.com/d3/d3-scale#band-scales">d3-scale documentation</a> illustrates how a point scale works:</p>
+
+<p><img src="https://raw.githubusercontent.com/d3/d3-scale/master/img/point.png" /></p>
+
+<p>By default, Vega-Lite uses band scales for nominal and ordinal fields on <a href="encoding.html#position">position channels</a> (<code>x</code> and <code>y</code>) of <a href="bar.html">bar</a> or <a href="rect.html">rect</a> marks. For <code>x</code> and <code>y</code> of other marks and <code>size</code> and <code>opacity</code>, Vega-Lite uses point scales by default.</p>
+
+<p>For example, the following bar chart has uses a band scale for its x-position.</p>
+
+<div class="vl-example" data-name="bar"></div>
+
+<p id="range-step"><a name="padding"></a></p>
+
+<p>To customize the step size of band scales for x/y-fields, we can set the step property of the view’s <code>width</code>/<code>height</code>.</p>
+
+<p>For example, we can either make a bar chart have a fixed width:</p>
+
+<p><span class="vl-example" data-name="bar_size_fit"></span></p>
+
+<p>or set the width per discrete step:</p>
+
+<p><span class="vl-example" data-name="bar_size_step_small"></span></p>
+
+<p>To customize the range of band and point scales, users can provide the following properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>align</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The alignment of the steps within the scale range.</p>
+
+<p>This value must lie in the range <code>[0,1]</code>. A value of <code>0.5</code> indicates that the steps should be centered within the range. A value of <code>0</code> or <code>1</code> may be used to shift the bands to one side, say to position them adjacent to an axis.</p>
+
+<p><strong>Default value:</strong> <code>0.5</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>padding</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>For <em><a href="https://vega.github.io/vega-lite/docs/scale.html#continuous">continuous</a></em> scales, expands the scale domain to accommodate the specified number of pixels on each of the scale range. The scale range must represent pixels for this parameter to function as intended. Padding adjustment is performed prior to all other adjustments, including the effects of the <code>zero</code>, <code>nice</code>, <code>domainMin</code>, and <code>domainMax</code> properties.</p>
+
+<p>For <em><a href="https://vega.github.io/vega-lite/docs/scale.html#band">band</a></em> scales, shortcut for setting <code>paddingInner</code> and <code>paddingOuter</code> to the same value.</p>
+
+<p>For <em><a href="https://vega.github.io/vega-lite/docs/scale.html#point">point</a></em> scales, alias for <code>paddingOuter</code>.</p>
+
+<p><strong>Default value:</strong> For <em>continuous</em> scales, derived from the <a href="https://vega.github.io/vega-lite/docs/scale.html#config">scale config</a>’s <code>continuousPadding</code>.
+For <em>band and point</em> scales, see <code>paddingInner</code> and <code>paddingOuter</code>.  By default, Vega-Lite sets padding such that <em>width/height = number of unique values * step</em>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>paddingInner</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The inner padding (spacing) within each band step of band scales, as a fraction of the step size. This value must lie in the range [0,1].</p>
+
+<p>For point scale, this property is invalid as point scales do not have internal band widths (only step sizes between bands).</p>
+
+<p><strong>Default value:</strong> derived from the <a href="https://vega.github.io/vega-lite/docs/scale.html#config">scale config</a>’s <code>bandPaddingInner</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>paddingOuter</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The outer padding (spacing) at the ends of the range of band and point scales,
+as a fraction of the step size. This value must lie in the range [0,1].</p>
+
+<p><strong>Default value:</strong> derived from the <a href="https://vega.github.io/vega-lite/docs/scale.html#config">scale config</a>’s <code>bandPaddingOuter</code> for band scales and <code>pointPadding</code> for point scales.
+By default, Vega-Lite sets outer padding such that <em>width/height = number of unique values * step</em>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>round</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>If <code>true</code>, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.</p>
+
+<p><strong>Default value:</strong> <code>false</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h2 id="discretizing">Discretizing Scales</h2>
+
+<p>Discretizing scales break up a continuous domain into discrete segments, and then map values in each segment to a range value.</p>
+
+<h3 id="bin-linear">Bin-Linear Scales</h3>
+
+<p>Binned linear scales (<code>"bin-linear"</code>) are a special type of linear scale for use with <a href="bin.html">binned</a> fields to correctly create legend labels. Vega-Lite <em>always</em> uses binned linear scales with binned quantitative fields on size and opacity channels.</p>
+
+<p>For example, the following plot has a binned field on the <code>size</code> channel.</p>
+
+<p><span class="vl-example" data-name="point_binned_size"></span></p>
+
+<h3 id="bin-ordinal">Bin-Ordinal Scales</h3>
+
+<p>Binned ordinal scales (<code>"bin-ordinal"</code>) are a special type of ordinal scale for use with <a href="bin.html">binned</a> fields to correctly create legend labels. Vega-Lite <em>always</em> uses binned ordinal scales with binned quantitative fields on the color channel.</p>
+
+<p>For example, the following plot has a binned field on the <code>color</code> channel.</p>
+
+<p><span class="vl-example" data-name="point_binned_color"></span></p>
+
+<p>Similar to <a href="#ordinal">ordinal</a> color scales, a custom <a href="#range"><code>range</code></a> or <a href="#scheme"><code>scheme</code></a> can be specified for binned ordinal scales.</p>
+
+<h3 id="quantile">Quantile Scales</h3>
+
+<p>Quantile scales (<code>"quantile"</code>) map a sample of input domain values to a discrete range based on computed <a href="https://en.wikipedia.org/wiki/Quantile">quantile</a> boundaries. The domain is considered continuous and thus the scale will accept any reasonable input value; however, the domain is specified as a discrete set of sample values. The number of values in (i.e., the cardinality of) the output range determines the number of quantiles that will be computed from the domain. To compute the quantiles, the domain is sorted, and treated as a population of discrete values. The resulting quantile boundaries segment the domain into groups with roughly equals numbers of sample points per group. If the <code>range</code> is not specified, the domain will be segmented into 4 quantiles (quartiles) by default.</p>
+
+<p>Quantile scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range. For related functionality see <a href="scale.html#quantize">quantize scales</a>, which partition the domain into uniform domain extents, rather than groups with equal element counts. Quantile scales have the benefit of evenly distributing data points to encoded values. In contrast, quantize scales uniformly segment the input domain and provide no guarantee on how data points will be distributed among the output visual values.</p>
+
+<p><span class="vl-example" data-name="circle_scale_quantile"></span></p>
+
+<h3 id="quantize">Quantize Scales</h3>
+
+<p>Quantize scales (<code>"quantize"</code>) are similar to <a href="scale.html#linear">linear scales</a>, except they use a discrete rather than continuous range. The <code>quantize</code> scale maps continuous value to a discrete range by dividing the domain into uniform segments based on the number of values in (i.e., the cardinality of) the output range. Each range value <em>y</em> can be expressed as a quantized linear function of the domain value <em>x</em>: <em>y = m round(x) + b</em>. If the <code>range</code> property is not specified, the domain will be divided into 4 uniform segments by default.</p>
+
+<p>Quantize scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range. For related functionality see <a href="scale.html#quantile">quantile scales</a>, which partition the domain into groups with equal element counts, rather than uniform domain extents.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>nice</td>
+        <td>Boolean | Number | String | Object
+</td>
+        <td>
+  
+    <p>Extending the domain so that it starts and ends on nice round values. This method typically modifies the scale’s domain, and may only extend the bounds to the nearest round value. Nicing is useful if the domain is computed from data and may be irregular. For example, for a domain of <em>[0.201479…, 0.996679…]</em>, a nice domain might be <em>[0.2, 1.0]</em>.</p>
+
+<p>For quantitative scales such as linear, <code>nice</code> can be either a boolean flag or a number. If <code>nice</code> is a number, it will represent a desired tick count. This allows greater control over the step size used to extend the bounds, guaranteeing that the returned ticks will exactly cover the domain.</p>
+
+<p>For temporal fields with time and utc scales, the <code>nice</code> value can be a string indicating the desired time interval. Legal values are <code>"millisecond"</code>, <code>"second"</code>, <code>"minute"</code>, <code>"hour"</code>, <code>"day"</code>, <code>"week"</code>, <code>"month"</code>, and <code>"year"</code>. Alternatively, <code>time</code> and <code>utc</code> scales can accept an object-valued interval specifier of the form <code>{"interval": "month", "step": 3}</code>, which includes a desired number of interval steps. Here, the domain would snap to quarter (Jan, Apr, Jul, Oct) boundaries.</p>
+
+<p><strong>Default value:</strong> <code>true</code> for unbinned <em>quantitative</em> fields; <code>false</code> otherwise.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>zero</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>If <code>true</code>, ensures that a zero baseline value is included in the scale domain.</p>
+
+<p><strong>Default value:</strong> <code>true</code> for x and y channels if the quantitative field is not binned and no custom <code>domain</code> is provided; <code>false</code> otherwise.</p>
+
+<p><strong>Note:</strong> Log, time, and utc scales do not support <code>zero</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p><span class="vl-example" data-name="circle_scale_quantize"></span></p>
+
+<h3 id="threshold">Threshold Scales</h3>
+
+<p>Threshold scales (<code>"threshold"</code>) are similar to <a href="scale.html#quantize">quantize scales</a>, except they allow mapping of arbitrary subsets of the domain (not uniform segments) to discrete values in the range. The input domain is still continuous, and divided into slices based on a set of threshold values provided to the <em>required</em> <code>domain</code> property. The <code>range</code> property must have N+1 elements, where N is the number of threshold boundaries provided in the domain.</p>
+
+<p><span class="vl-example" data-name="circle_scale_threshold"></span></p>
+
+<h2 id="disable">Disabling Scale</h2>
+
+<p>To directly encode the data value, the <code>scale</code> property can be set to <code>null</code>.</p>
+
+<p>For example, the follow bar chart directly encodes color names in the data.</p>
+
+<p><span class="vl-example" data-name="bar_color_disabled_scale"></span></p>
+
+<h2 id="config">Configuration</h2>
+
+<pre><code class="language-js">// Top-level View Specification
+{
+  ...
+  "config": {
+    "scale": {
+      ...                       // Scale Config
+    },
+    "range": {
+      ...                       // Scale Range Config
+    },
+    ...
+  }
+  ...
+}
+</code></pre>
+
+<h3 id="scale-config">Scale Config</h3>
+
+<p>To provide themes for all scales, the scale config (<code>config: {scale: {...}}</code>) can contain the following properties:</p>
+
+<h4 id="padding">Padding</h4>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>bandPaddingInner</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Default inner padding for <code>x</code> and <code>y</code> band-ordinal scales.</p>
+
+<p><strong>Default value:</strong></p>
+<ul>
+  <li><code>barBandPaddingInner</code> for bar marks (<code>0.1</code> by default)</li>
+  <li><code>rectBandPaddingInner</code> for rect and other marks (<code>0</code> by default)</li>
+</ul>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>barBandPaddingInner</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Default inner padding for <code>x</code> and <code>y</code> band-ordinal scales of <code>"bar"</code> marks.</p>
+
+<p><strong>Default value:</strong> <code>0.1</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>rectBandPaddingInner</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Default inner padding for <code>x</code> and <code>y</code> band-ordinal scales of <code>"rect"</code> marks.</p>
+
+<p><strong>Default value:</strong> <code>0</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>bandPaddingOuter</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Default outer padding for <code>x</code> and <code>y</code> band-ordinal scales.</p>
+
+<p><strong>Default value:</strong> <code>paddingInner/2</code> (which makes <em>width/height = number of unique values * step</em>)</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>continuousPadding</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Default padding for continuous scales.</p>
+
+<p><strong>Default:</strong> <code>5</code> for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; <code>0</code> otherwise.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>pointPadding</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Default outer padding for <code>x</code> and <code>y</code> point-ordinal scales.</p>
+
+<p><strong>Default value:</strong> <code>0.5</code> (which makes <em>width/height = number of unique values * step</em>)</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h4 id="range">Range</h4>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>maxBandSize</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The default max value for mapping quantitative fields to bar’s size/bandSize.</p>
+
+<p>If undefined (default), we will use the axis’s size (width or height) - 1.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>minBandSize</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The default min value for mapping quantitative fields to bar and tick’s size/bandSize scale with zero=false.</p>
+
+<p><strong>Default value:</strong> <code>2</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>maxFontSize</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The default max value for mapping quantitative fields to text’s size/fontSize.</p>
+
+<p><strong>Default value:</strong> <code>40</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>minFontSize</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The default min value for mapping quantitative fields to tick’s size/fontSize scale with zero=false</p>
+
+<p><strong>Default value:</strong> <code>8</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>maxOpacity</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Default max opacity for mapping a field to opacity.</p>
+
+<p><strong>Default value:</strong> <code>0.8</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>minOpacity</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Default minimum opacity for mapping a field to opacity.</p>
+
+<p><strong>Default value:</strong> <code>0.3</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>maxSize</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Default max value for point size scale.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>minSize</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Default minimum value for point size scale with zero=false.</p>
+
+<p><strong>Default value:</strong> <code>9</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>maxStrokeWidth</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Default max strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks.</p>
+
+<p><strong>Default value:</strong> <code>4</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>minStrokeWidth</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Default minimum strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks with zero=false.</p>
+
+<p><strong>Default value:</strong> <code>1</code></p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h4 id="other">Other</h4>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>clamp</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>If true, values that exceed the data domain are clamped to either the minimum or maximum range value</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>round</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>If true, rounds numeric output values to integers.
+This can be helpful for snapping to the pixel grid.
+(Only available for <code>x</code>, <code>y</code>, and <code>size</code> scales.)</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>useUnaggregatedDomain</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>Use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.</p>
+
+<p>This is equivalent to setting <code>domain</code> to <code>"unaggregate"</code> for aggregated <em>quantitative</em> fields by default.</p>
+
+<p>This property only works with aggregate functions that produce values within the raw data domain (<code>"mean"</code>, <code>"average"</code>, <code>"median"</code>, <code>"q1"</code>, <code>"q3"</code>, <code>"min"</code>, <code>"max"</code>). For other aggregations that produce values outside of the raw data domain (e.g. <code>"count"</code>, <code>"sum"</code>), this property is ignored.</p>
+
+<p><strong>Default value:</strong> <code>false</code></p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="range-config">Range Config</h3>
+
+<p>The scale range configuration (<code>config: {range: {...}}</code>) defines key-value mapping for named scale ranges: the keys represent the range names, while the values define valid <a href="#range"><code>range</code></a> or, for named color ranges, <a href="https://vega.github.io/vega/docs/schemes/#scheme-properties">Vega scheme definitions</a>.</p>
+
+<p>By default, Vega-Lite (via Vega) includes the following pre-defined named ranges:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>category</td>
+        <td>String[] | SchemeConfig
+</td>
+        <td>
+  
+    <p>Default range for <em>nominal</em> (categorical) fields.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>diverging</td>
+        <td>String[] | SchemeConfig
+</td>
+        <td>
+  
+    <p>Default range for diverging <em>quantitative</em> fields.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>heatmap</td>
+        <td>String[] | SchemeConfig
+</td>
+        <td>
+  
+    <p>Default range for <em>quantitative</em> heatmaps.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>ordinal</td>
+        <td>String[] | SchemeConfig
+</td>
+        <td>
+  
+    <p>Default range for <em>ordinal</em> fields.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>ramp</td>
+        <td>String[] | SchemeConfig
+</td>
+        <td>
+  
+    <p>Default range for <em>quantitative</em> and <em>temporal</em> fields.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>symbol</td>
+        <td>String[]
+</td>
+        <td>
+  
+    <p>Default range palette for the <code>shape</code> channel.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>See <a href="https://github.com/vega/vega-parser/blob/master/src/config.js#L188">this file</a> for the default values of named ranges.</p>
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/site/docs/encoding/scale.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/site/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/build/site/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

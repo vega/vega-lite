@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Impute | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Impute" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/docs/impute.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/docs/impute.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Impute","url":"https://vega.github.io/vega-lite/docs/impute.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      var BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/site/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/site/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    
+
+
+
+<div class="page-centered page-main">
+  
+  <aside class="page-sidebar">
+    <ul class="sidebar-nav">
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/" title="">Overview
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/spec.html" title="">View Specification
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/title.html" title="">Title
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/size.html" title="">Width / Height
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/data.html" title="">Data / Datasets
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/projection.html" title="">Projection
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/transform.html" title="">Transform
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/calculate.html" title="">Calculate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/density.html" title="">Density
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/filter.html" title="">Filter
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/flatten.html" title="">Flatten
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/fold.html" title="">Fold
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a class="active"
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/joinaggregate.html" title="">Join Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/loess.html" title="">Loess
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/lookup.html" title="">Lookup
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/regression.html" title="">Regression
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/pivot.html" title="">Pivot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sample.html" title="">Sample
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/window.html" title="">Window
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/mark.html" title="">Mark
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/area.html" title="">Area
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bar.html" title="">Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/boxplot.html" title="">Box Plot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/circle.html" title="">Circle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorband.html" title="">Error Band
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorbar.html" title="">Error Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/geoshape.html" title="">Geoshape
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/image.html" title="">Image
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/line.html" title="">Line
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/point.html" title="">Point
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rect.html" title="">Rect
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rule.html" title="">Rule
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/square.html" title="">Square
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/text.html" title="">Text
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/tick.html" title="">Tick
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/trail.html" title="">Trail
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/encoding.html" title="">Encoding
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/axis.html" title="">Axis
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/condition.html" title="">Condition
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/field.html" title="">Field
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/format.html" title="">Format
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/header.html" title="">Header
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a class="active"
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/legend.html" title="">Legend
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/scale.html" title="">Scale
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sort.html" title="">Sort
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/type.html" title="">Type
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/value.html" title="">Value
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/composition.html" title="">View Composition
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/facet.html" title="">Facet
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/layer.html" title="">Layer
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/concat.html" title="">Concat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/repeat.html" title="">Repeat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/resolve.html" title="">Resolve
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/selection.html" title="">Selections
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bind.html" title="">Bind
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/clear.html" title="">Clear
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/project.html" title="">Encodings / Fields
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/init.html" title="">Init
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-mark.html" title="">Mark
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/nearest.html" title="">Nearest
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-resolve.html" title="">Resolve
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/toggle.html" title="">Toggle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/translate.html" title="">Translate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/zoom.html" title="">Zoom
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/config.html" title="">Config
+      </a></li>
+      
+      
+      
+      
+      <br>
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/types.html" title="">Parameter Types
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/tooltip.html" title="">Tooltip
+      </a></li>
+      
+      
+      
+    </nav>
+  </aside>
+  
+
+  <section class="page-content">
+    <h1>Impute</h1>
+    <span class="edit-page">
+    <a href="https://github.com/vega/vega-lite/edit/master/site/docs/transform/impute.md">Edit this page</a>
+</span>
+<p>To impute missing data in Vega-Lite, you can either use the <code>impute</code> transform, either via an <a href="#encoding">encoding field definition</a> or via an <a href="#transform"><code>transform</code></a> array.</p>
+
+<p>The impute transform groups data and determines missing values of the <code>key</code> field within each group. For each missing value in each group, the impute transform will produce a new tuple with the <code>impute</code>d field generated based on a specified imputation <code>method</code> (by using a constant <code>value</code> or by calculating statistics such as mean within each group).</p>
+
+<h2 id="documentation-overview">Documentation Overview</h2>
+
+<!-- prettier-ignore -->
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="#documentation-overview" id="markdown-toc-documentation-overview">Documentation Overview</a></li>
+  <li><a href="#encoding" id="markdown-toc-encoding">Impute in Encoding Field Definition</a>    <ul>
+      <li><a href="#specifying-the-key-values-to-be-imputed" id="markdown-toc-specifying-the-key-values-to-be-imputed">Specifying the Key Values to be Imputed</a></li>
+    </ul>
+  </li>
+  <li><a href="#transform" id="markdown-toc-transform">Impute Transform</a></li>
+</ul>
+
+<h2 id="encoding">Impute in Encoding Field Definition</h2>
+
+<pre><code class="language-js">// A Single View or a Layer Specification
+{
+  ...,
+  "mark/layer": ...,
+  "encoding": {
+    "x": {
+      "field": ...,
+      "type": "quantitative",
+      "impute": {...},               // Impute
+      ...
+    },
+    "y": ...,
+    ...
+  },
+  ...
+}
+</code></pre>
+
+<p>An <a href="encoding.html#field-def">encoding field definition</a> can include an <code>impute</code> definition object to generate new data objects in place of the missing data.</p>
+
+<p>The <code>impute</code> definition object can contain the following properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>frame</td>
+        <td>(Null | Number)[]
+</td>
+        <td>
+  
+    <p>A frame specification as a two-element array used to control the window over which the specified method is applied. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object.  For example, the value <code>[-5, 5]</code> indicates that the window should include five objects preceding and five objects following the current object.</p>
+
+<p><strong>Default value:</strong>:  <code>[null, null]</code> indicating that the window includes all objects.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>keyvals</td>
+        <td>Any[] | <a href="impute.html#sequence-def">ImputeSequence</a>
+</td>
+        <td>
+  
+    <p>Defines the key values that should be considered for imputation.
+An array of key values or an object defining a <a href="https://vega.github.io/vega-lite/docs/impute.html#sequence-def">number sequence</a>.</p>
+
+<p>If provided, this will be used in addition to the key values observed within the input data.  If not provided, the values will be derived from all unique values of the <code>key</code> field. For <code>impute</code> in <code>encoding</code>, the key field is the x-field if the y-field is imputed, or vice versa.</p>
+
+<p>If there is no impute grouping, this property <em>must</em> be specified.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>method</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The imputation method to use for the field value of imputed data objects.
+One of <code>"value"</code>, <code>"mean"</code>, <code>"median"</code>, <code>"max"</code> or <code>"min"</code>.</p>
+
+<p><strong>Default value:</strong>  <code>"value"</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>value</td>
+        <td>Any
+</td>
+        <td>
+  
+    <p>The field value to use when the imputation <code>method</code> is <code>"value"</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>For <code>impute</code> in encoding, the grouping fields and the key field (for identifying missing values) are automatically determined. Values are automatically grouped by the specified fields of <a href="encoding.html#mark-prop">mark property channels</a>, <a href="encoding.html#key">key channel</a> and <a href="encoding.html#detail">detail channel</a>. If x-field is <code>impute</code>d, y-field is the key field. Basically, any missing y-value in each group will lead to a new tuple imputed, and vice versa.</p>
+
+<p>In this example, we <code>impute</code> the <code>y</code>-field (<code>"b"</code>), so the <code>x</code>-field (<code>"a"</code>) will be used as the <code>"key"</code>. The values are then grouped by the field <code>"c"</code> of the <code>color</code> encoding. The impute transform then determines missing key values within each group. In this case, the data tuple where <code>"a"</code> is <code>3</code> and <code>"c"</code> is <code>1</code> is missing, so a new tuple with <code>"a"</code> = <code>3</code>, <code>"c"</code> = <code>1</code>, and <code>"b"</code> = <code>0</code> will be added.</p>
+
+<div class="vl-example" data-name="line_impute_value" id="encoding-impute-value"></div>
+
+<p>Besides imputing with a constant <code>value</code>, we can also use a <code>method</code> (such as <code>"mean"</code>) on existing data points to generate the missing data.</p>
+
+<div class="vl-example" data-name="line_impute_method"></div>
+
+<p>The <code>frame</code> property of <code>impute</code> can be used to control the window over which the specified <code>method</code> is applied. Here, the <code>frame</code> is <code>[-2, 2]</code> which indicates that the window for calculating mean includes two objects preceding and two objects following the current object.</p>
+
+<div class="vl-example" data-name="line_impute_frame"></div>
+
+<h3 id="specifying-the-key-values-to-be-imputed">Specifying the Key Values to be Imputed</h3>
+
+<p>The <code>keyvals</code> property provides additional key values that should be considered for imputation. If not provided, all of the values will be derived from all unique values of the <code>key</code> field. If there is no grouping field (e.g., no <code>color</code> in the examples given above), then <code>keyvals</code> <em>must</em> be specified. Otherwise, the impute transform will have no effect on the data.</p>
+
+<p>The <code>keyvals</code> property can be an array:</p>
+
+<div class="vl-example" data-name="line_encoding_impute_keyvals"></div>
+
+<p id="sequence-def">Alternatively, the <code>keyvals</code> property can be an <a href="#sequence-def">object</a> defining a sequence, which can contain the following properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>start</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The starting value of the sequence.
+<strong>Default value:</strong> <code>0</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>stop</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The ending value(exclusive) of the sequence.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>step</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The step value between sequence entries.
+<strong>Default value:</strong> <code>1</code> or <code>-1</code> if <code>stop &lt; start</code></p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<div class="vl-example" data-name="line_encoding_impute_keyvals_sequence"></div>
+
+<h2 id="transform">Impute Transform</h2>
+
+<p>An impute transform can also be specified as a part of the <code>transform</code> array.</p>
+
+<pre><code class="language-js">// A View Specification
+{
+  ...
+  "transform": [
+    ...
+    {
+      // Impute Transform
+      "impute": ...,
+      "key": ...,
+      "keyvals": ...,
+      "groupby": [...],
+      "frame": [...],
+      "method": ...,
+      "value": ...
+    }
+    ...
+  ],
+  ...
+}
+</code></pre>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>impute</td>
+        <td>FieldName
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The data field for which the missing values should be imputed.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>key</td>
+        <td>FieldName
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> A key field that uniquely identifies data objects within a group.
+Missing key values (those occurring in the data but not in the current group) will be imputed.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>keyvals</td>
+        <td>Any[] | <a href="impute.html#sequence-def">ImputeSequence</a>
+</td>
+        <td>
+  
+    <p>Defines the key values that should be considered for imputation.
+An array of key values or an object defining a <a href="https://vega.github.io/vega-lite/docs/impute.html#sequence-def">number sequence</a>.</p>
+
+<p>If provided, this will be used in addition to the key values observed within the input data.  If not provided, the values will be derived from all unique values of the <code>key</code> field. For <code>impute</code> in <code>encoding</code>, the key field is the x-field if the y-field is imputed, or vice versa.</p>
+
+<p>If there is no impute grouping, this property <em>must</em> be specified.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>groupby</td>
+        <td>FieldName[]
+</td>
+        <td>
+  
+    <p>An optional array of fields by which to group the values.
+Imputation will then be performed on a per-group basis.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>frame</td>
+        <td>(Null | Number)[]
+</td>
+        <td>
+  
+    <p>A frame specification as a two-element array used to control the window over which the specified method is applied. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object.  For example, the value <code>[-5, 5]</code> indicates that the window should include five objects preceding and five objects following the current object.</p>
+
+<p><strong>Default value:</strong>:  <code>[null, null]</code> indicating that the window includes all objects.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>method</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The imputation method to use for the field value of imputed data objects.
+One of <code>"value"</code>, <code>"mean"</code>, <code>"median"</code>, <code>"max"</code> or <code>"min"</code>.</p>
+
+<p><strong>Default value:</strong>  <code>"value"</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>value</td>
+        <td>Any
+</td>
+        <td>
+  
+    <p>The field value to use when the imputation <code>method</code> is <code>"value"</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>For example, the same chart with <code>impute</code> in encoding <a href="&quot;#encoding-impute-value&quot;">above</a> can be created using the <code>impute</code> transform. Here, we have to manually specify the <code>key</code> and <code>groupby</code> fields, which were inferred automatically for <code>impute</code> in <code>encoding</code>.</p>
+
+<div class="vl-example" data-name="line_impute_transform_value"></div>
+
+<div class="vl-example" data-name="line_impute_transform_frame"></div>
+
+<p>Similarly <code>keyvals</code> <em>must</em> be specified if the <code>groupby</code> property is not specified.</p>
+
+<div class="vl-example" data-name="line_impute_keyvals"></div>
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/site/docs/transform/impute.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/site/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/build/site/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Regression | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Regression" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/docs/regression.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/docs/regression.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Regression","url":"https://vega.github.io/vega-lite/docs/regression.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      var BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/site/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/site/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" class="active">Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="docs">
+    
+
+
+
+<div class="page-centered page-main">
+  
+  <aside class="page-sidebar">
+    <ul class="sidebar-nav">
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/" title="">Overview
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/spec.html" title="">View Specification
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/title.html" title="">Title
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/size.html" title="">Width / Height
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/data.html" title="">Data / Datasets
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/projection.html" title="">Projection
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/transform.html" title="">Transform
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/calculate.html" title="">Calculate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/density.html" title="">Density
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/filter.html" title="">Filter
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/flatten.html" title="">Flatten
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/fold.html" title="">Fold
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/joinaggregate.html" title="">Join Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/loess.html" title="">Loess
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/lookup.html" title="">Lookup
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a class="active"
+            href="/vega-lite/docs/regression.html" title="">Regression
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/pivot.html" title="">Pivot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sample.html" title="">Sample
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/window.html" title="">Window
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/mark.html" title="">Mark
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/area.html" title="">Area
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bar.html" title="">Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/boxplot.html" title="">Box Plot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/circle.html" title="">Circle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorband.html" title="">Error Band
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorbar.html" title="">Error Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/geoshape.html" title="">Geoshape
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/image.html" title="">Image
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/line.html" title="">Line
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/point.html" title="">Point
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rect.html" title="">Rect
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rule.html" title="">Rule
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/square.html" title="">Square
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/text.html" title="">Text
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/tick.html" title="">Tick
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/trail.html" title="">Trail
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/encoding.html" title="">Encoding
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/axis.html" title="">Axis
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/condition.html" title="">Condition
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/field.html" title="">Field
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/format.html" title="">Format
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/header.html" title="">Header
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/legend.html" title="">Legend
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/scale.html" title="">Scale
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sort.html" title="">Sort
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/type.html" title="">Type
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/value.html" title="">Value
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/composition.html" title="">View Composition
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/facet.html" title="">Facet
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/layer.html" title="">Layer
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/concat.html" title="">Concat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/repeat.html" title="">Repeat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/resolve.html" title="">Resolve
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/selection.html" title="">Selections
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bind.html" title="">Bind
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/clear.html" title="">Clear
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/project.html" title="">Encodings / Fields
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/init.html" title="">Init
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-mark.html" title="">Mark
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/nearest.html" title="">Nearest
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-resolve.html" title="">Resolve
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/toggle.html" title="">Toggle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/translate.html" title="">Translate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/zoom.html" title="">Zoom
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/config.html" title="">Config
+      </a></li>
+      
+      
+      
+      
+      <br>
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/types.html" title="">Parameter Types
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/tooltip.html" title="">Tooltip
+      </a></li>
+      
+      
+      
+    </nav>
+  </aside>
+  
+
+  <section class="page-content">
+    <h1>Regression</h1>
+    <span class="edit-page">
+    <a href="https://github.com/vega/vega-lite/edit/master/site/docs/transform/regression.md">Edit this page</a>
+</span>
+<p>The regression transform fits two-dimensional <a href="https://en.wikipedia.org/wiki/Regression_analysis">regression models</a> to smooth and predict data. This transform can fit multiple models for input data (one per group) and generates new data objects that represent points for summary trend lines. Alternatively, this transform can be used to generate a set of objects containing regression model parameters, one per group.</p>
+
+<p>This transform supports parametric models for the following functional forms:</p>
+
+<ul>
+  <li>linear (<code>linear</code>): <em>y = a + b * x</em></li>
+  <li>logarithmic (<code>log</code>): <em>y = a + b * log(x)</em></li>
+  <li>exponential (<code>exp</code>): <em>y = a + eb * x</em></li>
+  <li>power (<code>pow</code>): <em>y = a * xb</em></li>
+  <li>quadratic (<code>quad</code>): <em>y = a + b * x + c * x2</em></li>
+  <li>polynomial (<code>poly</code>): <em>y = a + b * x + … + k * xorder</em></li>
+</ul>
+
+<p>All models are fit using <a href="https://en.wikipedia.org/wiki/Ordinary_least_squares">ordinary least squares</a>. For non-parametric locally weighted regression, see the <a href="loess.html">loess</a> transform.</p>
+
+<pre><code class="language-js">// Any View Specification
+{
+  ...
+  "transform": [
+    {"regression": ...} // Regression Transform
+     ...
+  ],
+  ...
+}
+</code></pre>
+
+<h2 id="regression-transform-definition">Regression Transform Definition</h2>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>regression</td>
+        <td>String
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The data field of the dependent variable to predict.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>on</td>
+        <td>String
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The data field of the independent variable to use a predictor.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>groupby</td>
+        <td>String[]
+</td>
+        <td>
+  
+    <p>The data fields to group by. If not specified, a single group containing all data objects will be used.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>method</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The functional form of the regression model. One of <code>"linear"</code>, <code>"log"</code>, <code>"exp"</code>, <code>"pow"</code>, <code>"quad"</code>, or <code>"poly"</code>.</p>
+
+<p><strong>Default value:</strong> <code>"linear"</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>order</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The polynomial order (number of coefficients) for the ‘poly’ method.</p>
+
+<p><strong>Default value:</strong> <code>3</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>extent</td>
+        <td>Any[]
+</td>
+        <td>
+  
+    <p>A [min, max] domain over the independent (x) field for the starting and ending points of the generated trend line.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>as</td>
+        <td>Any[]
+</td>
+        <td>
+  
+    <p>The output field names for the smoothed points generated by the regression transform.</p>
+
+<p><strong>Default value:</strong> The field names of the input x and y values.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h2 id="usage">Usage</h2>
+
+<pre><code class="language-json">{"regression": "y", "on": "x"}
+</code></pre>
+
+<p>Generate a linear regression trend line that models field <code>"y"</code> as a function of <code>"x"</code>. The output data stream can then be visualized with a line mark, and takes the form:</p>
+
+<pre><code class="language-js">[
+  {"x": 1, "y": 2.3},
+  {"x": 2, "y": 2.7},
+  {"x": 3, "y": 3.0},
+  ...
+]
+</code></pre>
+
+<p>If the <code>groupby</code> parameter is provided, separate trend lines will be fit per-group, and the output records will additionally include all groupby field values.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="vl-example" data-name="layer_point_line_regression"></div>
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/site/docs/transform/regression.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/site/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/build/site/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

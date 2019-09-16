@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Vega-Lite compared with other Languages | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Vega-Lite compared with other Languages" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/comparison.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/comparison.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Vega-Lite compared with other Languages","url":"https://vega.github.io/vega-lite/comparison.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      var BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/site/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/site/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    <div class="page-centered page-content">
+  
+    <h1>Vega-Lite compared with other Languages</h1>
+  
+  <h2 id="vega-and-d3">Vega and D3</h2>
+
+<p>Vega-Lite is a high-level grammar for visual analysis. It supports common chart types (bar chart, line chart, area chart, scatter plot, heatmap, trellis plots, …) and common data transformations (sorting, aggregation, faceting). In Vega, you have to manually construct axis and legends and you have to decide how to map the data to visual properties. Vega-Lite automates the construction of axes, legends, and scales from a high level encoding specification. This makes Vega-Lite specifications significantly shorter (about 1/10th). Vega-Lite is compiled to Vega and some visualizations that are expressible in Vega cannot be expressed in Vega-Lite.</p>
+
+<p>Vega-Lite and Vega are visualization specification languages in JSON. The Vega website has a detailed <a href="https://vega.github.io/vega/about/vega-and-d3/">comparison of Vega and D3</a>.</p>
+
+<h2 id="grammar-of-graphics-ggplot-and-tableau">Grammar of Graphics, GGPlot and Tableau</h2>
+
+<p>GGPlot and Vega-Lite both use a compositional approach to visualization design and are both grounded in the <a href="https://www.amazon.com/The-Grammar-Graphics-Statistics-Computing/dp/0387245448">Grammar of Graphics</a>. Vega-Lite adds common data analysis transformations such as aggregation. GGPlot is embedded in R so that data can be transformed outside of the visualization specification. Vega-Lite is implemented in JavaScript and thus available in all modern browsers.</p>
+
+<p><a href="https://www.tableau.com/">Tableau</a> is a graphical interface. The underlying formalism (<a href="https://www.tableau.com/products/technology">VizQL</a>) heavily influenced the design of Vega-Lite. Vega-Lite and Tableau both provide smart defaults.</p>
+
+<h2 id="highcharts-and-plotly">Highcharts and plotly</h2>
+
+<p><a href="https://www.highcharts.com/">Highcharts</a> and <a href="https://plot.ly/">plotly</a> use templates for common chart types rather than composing primitive marks. Templates make it easier to add a new chart type but limit expressiveness and makes it harder to change just a single aspect of a visualization.</p>
+
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/site/comparison.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/site/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/build/site/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

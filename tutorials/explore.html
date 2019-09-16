@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Exploring Data | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Exploring Data" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/tutorials/explore.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/tutorials/explore.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Exploring Data","url":"https://vega.github.io/vega-lite/tutorials/explore.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      var BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/site/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/site/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" class="active">Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="tutorials">
+    
+
+
+<div class="sub-nav">
+  <nav class="page-centered">
+    
+    <a 
+        href="/vega-lite/tutorials/getting_started.html" title="">Getting Started
+    </a>
+    
+    <a class="active"
+        href="/vega-lite/tutorials/explore.html" title="">Exploring Data
+    </a>
+    
+    <a 
+        href="/vega-lite/tutorials/figures.html" title="">Paper Figures
+    </a>
+    
+    <a 
+        href="/vega-lite/tutorials/streaming.html" title="">Streaming Data
+    </a>
+    
+  </nav>
+</div>
+
+
+<div class="page-centered page-main">
+  
+
+  <section class="page-content">
+    <h1>Exploring Data</h1>
+    <p>In this tutorial, you’ll learn a few more techniques for creating visualizations in Vega-Lite. If you are not familiar with Vega-Lite, please read the <a href="/vega-lite/tutorials/getting_started.html">getting started tutorial</a> first.</p>
+
+<p>For this tutorial, we will create visualizations to explore weather data for Seattle, taken from <a href="https://www.ncdc.noaa.gov/cdo-web/">NOAA</a>. The <a href="/vega-lite/data/seattle-weather.csv">dataset</a> is a <a href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV file</a> with columns for the temperature (in Celsius), precipitation (in millimeter), wind (in meter/second), and weather type. We have one row for each day from January 1st, 2012 to December 31st, 2015.</p>
+
+<p>To load the CSV file with Vega-Lite, we need to provide a URL and set the format type in the data section of the specification.</p>
+
+<pre><code class="language-js">"data": {"url": "data/seattle-weather.csv"}
+</code></pre>
+
+<p>Let’s start by looking at the precipitation. Precipitation is a quantitative variable. Let’s use a tick mark to show the distribution of precipitation.</p>
+
+<div class="vl-example" data-name="tick_dot"></div>
+
+<p>It looks as though precipitation is skewed towards lower values; that is, when it rains, it usually doesn’t rain very much. To better see this, we can create a histogram of the precipitation data. For this, we have to add an encoding channel for <code>y</code> that uses a special field <code>*</code> that is aggregated with <code>count</code>. It is difficult to see patterns across continuous variables. You can therefore discretize temperature values by setting <code>"bin": true</code>.</p>
+
+<div class="vl-example" data-name="bar_aggregate_count"></div>
+
+<p>Next, let’s look at how precipitation in Seattle changes throughout the year. Vega-Lite natively supports dates and discretization of dates when we set the type to <code>temporal</code>. For example, in the following plot, we sum up the precipitation for each month. To discretize the data into months, we set <code>"timeUnit": "month"</code>.</p>
+
+<div class="vl-example" data-name="line_mean_month"></div>
+
+<p>This chart shows that in Seattle the precipitation in the winter is, on average, much higher than summer. You can now create similar charts for the other variables on your own!</p>
+
+<p>When looking at precipitation and temperature, we might want to aggregate by year and month (<code>yearmonth</code>) rather than just month. This allows us to see seasonal trends but for each year separately. You can find more about <a href="/vega-lite/docs/timeunit.html">time units in the documentation</a>. We can also set the <code>aggregate</code> to <code>max</code> in order to see the maximum temperature in each month.</p>
+
+<div class="vl-example" data-name="line_max_year"></div>
+
+<p>In this chart, it looks as though the maximum temperature is increasing from year to year. To look closer into this, let’s create a chart that shows the mean of the maximum daily temperatures.</p>
+
+<div class="vl-example" data-name="line_mean_year"></div>
+
+<p>And yes, this chart shows that it is in fact increasing. You can observe a similar change for the minimum daily temperatures. Considering minimum and maximum temperatures, you might wonder how the variability of the temperatures changes throughout the year. For this, we have to add a computation to derive a new field.</p>
+
+<pre><code class="language-js">"transform": [
+  {
+    "calculate": "datum.temp_max - datum.temp_min",
+    "as": "temp_range"
+  }
+]
+</code></pre>
+
+<p>We can use the new field <code>temp_range</code> just like any other field. You can find more <a href="/vega-lite/docs/transform.html">data transformation operations in the docs</a>.</p>
+
+<div class="vl-example" data-name="line_calculate"></div>
+
+<p>For the last visualization in this tutorial, we will explore the <code>weather</code> field. We might wish to know how different kinds of weather (e.g. sunny days or rainy days) are distributed throughout the year. To answer this, we discretize the <code>date</code> by month and then count the number of records on the y-Axis. We then break down the bars by the weather type by adding a color channel with nominal data. When a field is mapped to color for a bar mark, Vega-Lite automatically stacks the bars atop each other.</p>
+
+<!-- TODO: link to stacking config once we finish moving it -->
+
+<div class="vl-example" data-name="stacked_bar_count"></div>
+
+<p>However, the default color palette’s semantics might not match our expectation. For example, we probably do not expect “sun” (sunny) to be purple. We can further tune the chart by providing a color <a href="/vega-lite/docs/scale.html#range">scale range</a> that maps the values from the <code>weather</code> field to meaningful colors. In addition, we can customize the <a href="/vega-lite/docs/axis.html">axis</a> and <a href="/vega-lite/docs/legend.html">legend</a> titles.</p>
+
+<div class="vl-example" data-name="stacked_bar_weather"></div>
+
+<p>This is the end of this tutorial where you learned different ways to discretize and aggregate data, derive new fields, and customize your charts. You can find more visualizations in the <a href="/vega-lite/examples/">gallery</a>. If you want to further customize your charts, please read the <a href="/vega-lite/docs/">documentation</a>.</p>
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/site/tutorials/explore.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/site/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/build/site/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

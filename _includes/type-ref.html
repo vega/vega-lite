@@ -1,8 +1,0 @@
-{% assign ref = include.ref | split: "/" | last | strip %}
-{% assign refschema = site.data.vega-lite-schema.definitions[ref] %}
-{% assign refcontent = ref | split: "<" | first | strip | append: include.suffix %}
-{% if refschema.type == "string" and refschema.enum != nil %}
-  String
-{% else %}
-  {{ refcontent }}
-{% endif %}

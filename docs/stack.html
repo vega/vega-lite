@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Stack | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Stack" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/docs/stack.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/docs/stack.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Stack","url":"https://vega.github.io/vega-lite/docs/stack.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      var BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/site/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/site/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    
+
+
+
+<div class="page-centered page-main">
+  
+  <aside class="page-sidebar">
+    <ul class="sidebar-nav">
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/" title="">Overview
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/spec.html" title="">View Specification
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/title.html" title="">Title
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/size.html" title="">Width / Height
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/data.html" title="">Data / Datasets
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/projection.html" title="">Projection
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/transform.html" title="">Transform
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/calculate.html" title="">Calculate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/density.html" title="">Density
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/filter.html" title="">Filter
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/flatten.html" title="">Flatten
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/fold.html" title="">Fold
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/joinaggregate.html" title="">Join Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/loess.html" title="">Loess
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/lookup.html" title="">Lookup
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/regression.html" title="">Regression
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/pivot.html" title="">Pivot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sample.html" title="">Sample
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a class="active"
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/window.html" title="">Window
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/mark.html" title="">Mark
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/area.html" title="">Area
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bar.html" title="">Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/boxplot.html" title="">Box Plot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/circle.html" title="">Circle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorband.html" title="">Error Band
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorbar.html" title="">Error Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/geoshape.html" title="">Geoshape
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/image.html" title="">Image
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/line.html" title="">Line
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/point.html" title="">Point
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rect.html" title="">Rect
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rule.html" title="">Rule
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/square.html" title="">Square
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/text.html" title="">Text
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/tick.html" title="">Tick
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/trail.html" title="">Trail
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/encoding.html" title="">Encoding
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/axis.html" title="">Axis
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/condition.html" title="">Condition
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/field.html" title="">Field
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/format.html" title="">Format
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/header.html" title="">Header
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/legend.html" title="">Legend
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/scale.html" title="">Scale
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a class="active"
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sort.html" title="">Sort
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/type.html" title="">Type
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/value.html" title="">Value
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/composition.html" title="">View Composition
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/facet.html" title="">Facet
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/layer.html" title="">Layer
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/concat.html" title="">Concat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/repeat.html" title="">Repeat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/resolve.html" title="">Resolve
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/selection.html" title="">Selections
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bind.html" title="">Bind
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/clear.html" title="">Clear
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/project.html" title="">Encodings / Fields
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/init.html" title="">Init
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-mark.html" title="">Mark
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/nearest.html" title="">Nearest
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-resolve.html" title="">Resolve
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/toggle.html" title="">Toggle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/translate.html" title="">Translate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/zoom.html" title="">Zoom
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/config.html" title="">Config
+      </a></li>
+      
+      
+      
+      
+      <br>
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/types.html" title="">Parameter Types
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/tooltip.html" title="">Tooltip
+      </a></li>
+      
+      
+      
+    </nav>
+  </aside>
+  
+
+  <section class="page-content">
+    <h1>Stack</h1>
+    <span class="edit-page">
+    <a href="https://github.com/vega/vega-lite/edit/master/site/docs/transform/stack.md">Edit this page</a>
+</span>
+<p>To stack fields in Vega-Lite, users can either use the <code>stack</code> property of an <a href="#encoding">encoding field definition</a> or a <code>stack</code> transform inside the <a href="#transform"><code>transform</code></a> array.</p>
+
+<h2 id="documentation-overview">Documentation Overview</h2>
+
+<!-- prettier-ignore -->
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="#documentation-overview" id="markdown-toc-documentation-overview">Documentation Overview</a></li>
+  <li><a href="#encoding" id="markdown-toc-encoding">Stack in Encoding Field Definition</a>    <ul>
+      <li><a href="#bar" id="markdown-toc-bar">Stack Bar Chart</a></li>
+      <li><a href="#area" id="markdown-toc-area">Stack Area Chart</a></li>
+      <li><a href="#normalized" id="markdown-toc-normalized">Normalized Stacked Bar and Area Charts</a></li>
+      <li><a href="#streamgraph" id="markdown-toc-streamgraph">Streamgraph</a></li>
+      <li><a href="#layered-bar-chart" id="markdown-toc-layered-bar-chart">Layered Bar Chart</a></li>
+      <li><a href="#order" id="markdown-toc-order">Diverging Stacked Bar Chart (Stacked with negative values)</a></li>
+      <li><a href="#sorting-stack-order" id="markdown-toc-sorting-stack-order">Sorting Stack Order</a></li>
+      <li><a href="#layering-lines-on-top-of-stacked-area-chart" id="markdown-toc-layering-lines-on-top-of-stacked-area-chart">Layering Lines on top of Stacked Area Chart</a></li>
+    </ul>
+  </li>
+  <li><a href="#transform" id="markdown-toc-transform">Stack Transform</a>    <ul>
+      <li><a href="#diverging-bar-chart" id="markdown-toc-diverging-bar-chart">Diverging Bar Chart</a></li>
+      <li><a href="#mosaic-chart" id="markdown-toc-mosaic-chart">Mosaic Chart</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="encoding">Stack in Encoding Field Definition</h2>
+
+<pre><code class="language-js">// A Single View or a Layer Specification
+{
+  ...,
+  "mark/layer": ...,
+  "encoding": {     // Encoding
+    "x" or "y": {
+      "field": ...,
+      "type": "quantitative",
+      "stack": ..., // Stack
+      ...
+    },
+    ...
+  },
+  ...
+}
+</code></pre>
+
+<p>The <code>stack</code> property of a <a href="encoding.html#position-field-def">position field definition</a> determines type of stacking offset if the field should be stacked.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>stack</td>
+        <td>String | Null | Boolean
+</td>
+        <td>
+  
+    <p>Type of stacking offset if the field should be stacked.
+<code>stack</code> is only applicable for <code>x</code> and <code>y</code> channels with continuous domains.
+For example, <code>stack</code> of <code>y</code> can be used to customize stacking for a vertical bar chart.</p>
+
+<p><code>stack</code> can be one of the following values:</p>
+<ul>
+  <li><code>"zero"</code> or <code>true</code>: stacking with baseline offset at zero value of the scale (for creating typical stacked <a href="https://vega.github.io/vega-lite/docs/stack.html#bar">bar</a> and <a href="https://vega.github.io/vega-lite/docs/stack.html#area">area</a> chart).</li>
+  <li><code>"normalize"</code> - stacking with normalized domain (for creating <a href="https://vega.github.io/vega-lite/docs/stack.html#normalized">normalized stacked bar and area charts</a>. <br />
+-<code>"center"</code> - stacking with center baseline (for <a href="https://vega.github.io/vega-lite/docs/stack.html#streamgraph">streamgraph</a>).</li>
+  <li><code>null</code> or <code>false</code> - No-stacking. This will produce layered <a href="https://vega.github.io/vega-lite/docs/stack.html#layered-bar-chart">bar</a> and area chart.</li>
+</ul>
+
+<p><strong>Default value:</strong> <code>zero</code> for plots with all of the following conditions are true:
+(1) the mark is <code>bar</code> or <code>area</code>;
+(2) the stacked measure channel (x or y) has a linear scale;
+(3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, <code>null</code> by default.</p>
+
+<p><strong>See also:</strong> <a href="https://vega.github.io/vega-lite/docs/stack.html"><code>stack</code></a> documentation.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="bar">Stack Bar Chart</h3>
+
+<p>Adding a color field to a bar chart also creates stacked bar chart by default.</p>
+
+<p><span class="vl-example" data-name="stacked_bar_v"></span></p>
+
+<h3 id="area">Stack Area Chart</h3>
+
+<p>Similarly, adding a color field to area chart also creates stacked area chart by default.</p>
+
+<p><span class="vl-example" data-name="stacked_area"></span></p>
+
+<h3 id="normalized">Normalized Stacked Bar and Area Charts</h3>
+
+<p>You can set <code>stack</code> to <code>"normalize"</code> to create normalized (or percentage) stacked bar and area charts.</p>
+
+<div class="vl-example" data-name="stacked_bar_normalize"></div>
+
+<div class="vl-example" data-name="stacked_area_normalize"></div>
+
+<h3 id="streamgraph">Streamgraph</h3>
+
+<p>Setting <code>stack</code> to <code>"center"</code> for a stacked area chart creates a streamgraph:</p>
+
+<div class="vl-example" data-name="stacked_area_stream"></div>
+
+<h3 id="layered-bar-chart">Layered Bar Chart</h3>
+
+<p>If <code>stack</code> is <code>null</code>, the marks will be layered on top of each other. In this example, setting the mark’s <code>opacity</code> to be semi-transparent (<code>0.6</code>) creates a layered bar chart.</p>
+
+<div class="vl-example" data-name="bar_layered_transparent"></div>
+
+<h3 id="order">Diverging Stacked Bar Chart (Stacked with negative values)</h3>
+
+<p>The stack transform can also handle negative values by creating a diverging stacked bar chart.</p>
+
+<div class="vl-example" data-name="bar_diverging_stack_population_pyramid"></div>
+
+<p>Note: that the stack transform cannot handle if there should be items stacked in the middle like in the <a href="https://vega.github.io/vega-lite/examples/bar_diverging_stack_transform.html">“Diverging Stacked Bar Chart with Neutral Parts”</a> example.</p>
+
+<h3 id="sorting-stack-order">Sorting Stack Order</h3>
+
+<p>You can use the order channel to sort the order of stacked marks.</p>
+
+<p>For example, given a stacked bar chart for the barley dataset:</p>
+
+<div class="vl-example" data-name="stacked_bar_h"></div>
+
+<p>By default, the stacked bar are sorted by the stack grouping fields (<code>color</code> in this example).</p>
+
+<p>Mapping the sum of yield to <code>order</code> channel will sort the layer of stacked bar by the sum of yield instead.</p>
+
+<div class="vl-example" data-name="stacked_bar_h_order"></div>
+
+<p>Here we can see that site with higher yields for each type of barley are put on the top of the stack (rightmost).</p>
+
+<p>If you want to define custom sort order, you can derive a new field using the <a href="calculate.html"><code>calculate</code> transform</a> and sort by that field instead. For example, the following plot makes “University Farm” and “Grand Rapids” be the first (<code>0</code>) and second values in the stack order:</p>
+
+<div class="vl-example" data-name="stacked_bar_h_order_custom"></div>
+
+<p>Note: we plan to have <a href="https://github.com/vega/vega-lite/issues/2915">a better syntax for customized sort order</a> in the future.</p>
+
+<h3 id="layering-lines-on-top-of-stacked-area-chart">Layering Lines on top of Stacked Area Chart</h3>
+
+<p>Since <code>line</code> marks are not stacked by default, to layer lines on top of stacked area charts, you have to manually set the <code>stack</code> offset for the lines.</p>
+
+<div class="vl-example" data-name="normalized/stacked_area_overlay_normalized"></div>
+
+<h2 id="transform">Stack Transform</h2>
+
+<pre><code class="language-js">// Any View Specification
+{
+  ...
+  "transform": [
+    // Stack Transform
+    {
+      "stack": ...,
+      "groupby": ...,
+      "offset": ...,
+      "sort": ...,
+      "as": ...
+    }
+    ...
+  ],
+  ...
+}
+</code></pre>
+
+<p>For example, here is the same <a href="stack.html#normalized">normalized stacked bar chart</a> of the <code>"population"</code>, grouped by <code>"age"</code> and colored by <code>"gender"</code>, but this time using the <code>stack</code> property of <code>transform</code>.</p>
+
+<div class="vl-example" data-name="stacked_bar_population_transform"></div>
+
+<p>The <code>stack</code> transform in the <code>transform</code> array has the following properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>stack</td>
+        <td>FieldName
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The field which is stacked.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>groupby</td>
+        <td>FieldName[]
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The data fields to group by.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>offset</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>Mode for stacking marks. One of <code>"zero"</code> (default), <code>"center"</code>, or <code>"normalize"</code>.
+The <code>"zero"</code> offset will stack starting at <code>0</code>. The <code>"center"</code> offset will center the stacks. The <code>"normalize"</code> offset will compute percentage values for each stack point, with output values in the range <code>[0,1]</code>.</p>
+
+<p><strong>Default value:</strong> <code>"zero"</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>sort</td>
+        <td><a href="window.html#sort-field-def">SortField</a>[]
+</td>
+        <td>
+  
+    <p>Field that determines the order of leaves in the stacked charts.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>as</td>
+        <td>FieldName | FieldName[]
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> Output field names. This can be either a string or an array of strings with two elements denoting the name for the fields for stack start and stack end respectively.
+If a single string(e.g., <code>"val"</code>) is provided, the end field will be <code>"val_end"</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>We can use <code>stack</code> transform in conjunction with other transforms to create more complicated charts.</p>
+
+<h3 id="diverging-bar-chart">Diverging Bar Chart</h3>
+
+<p>Here we initially <code>stack</code> by <code>"question"</code> and then use <code>window</code> transform to offset each stack.</p>
+
+<div class="vl-example" data-name="bar_diverging_stack_transform"></div>
+
+<h3 id="mosaic-chart">Mosaic Chart</h3>
+
+<p>To create a mosaic chart we <code>stack</code> twice, once in each direction along with <code>window</code> transform.</p>
+
+<div class="vl-example" data-name="rect_mosaic_simple"></div>
+
+<p>To add labels to this chart, consult <a href="/vega-lite/examples/rect_mosaic_labelled_with_offset">this example</a>.</p>
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/site/docs/transform/stack.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/site/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/build/site/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

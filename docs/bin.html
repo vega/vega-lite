@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Binning | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Binning" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/docs/bin.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/docs/bin.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Binning","url":"https://vega.github.io/vega-lite/docs/bin.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      var BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/site/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/site/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    
+
+
+
+<div class="page-centered page-main">
+  
+  <aside class="page-sidebar">
+    <ul class="sidebar-nav">
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/" title="">Overview
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/spec.html" title="">View Specification
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/title.html" title="">Title
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/size.html" title="">Width / Height
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/data.html" title="">Data / Datasets
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/projection.html" title="">Projection
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/transform.html" title="">Transform
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a class="active"
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/calculate.html" title="">Calculate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/density.html" title="">Density
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/filter.html" title="">Filter
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/flatten.html" title="">Flatten
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/fold.html" title="">Fold
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/joinaggregate.html" title="">Join Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/loess.html" title="">Loess
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/lookup.html" title="">Lookup
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/regression.html" title="">Regression
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/pivot.html" title="">Pivot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sample.html" title="">Sample
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/window.html" title="">Window
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/mark.html" title="">Mark
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/area.html" title="">Area
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bar.html" title="">Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/boxplot.html" title="">Box Plot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/circle.html" title="">Circle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorband.html" title="">Error Band
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorbar.html" title="">Error Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/geoshape.html" title="">Geoshape
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/image.html" title="">Image
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/line.html" title="">Line
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/point.html" title="">Point
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rect.html" title="">Rect
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rule.html" title="">Rule
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/square.html" title="">Square
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/text.html" title="">Text
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/tick.html" title="">Tick
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/trail.html" title="">Trail
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/encoding.html" title="">Encoding
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/axis.html" title="">Axis
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a class="active"
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/condition.html" title="">Condition
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/field.html" title="">Field
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/format.html" title="">Format
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/header.html" title="">Header
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/legend.html" title="">Legend
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/scale.html" title="">Scale
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sort.html" title="">Sort
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/type.html" title="">Type
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/value.html" title="">Value
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/composition.html" title="">View Composition
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/facet.html" title="">Facet
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/layer.html" title="">Layer
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/concat.html" title="">Concat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/repeat.html" title="">Repeat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/resolve.html" title="">Resolve
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/selection.html" title="">Selections
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bind.html" title="">Bind
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/clear.html" title="">Clear
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/project.html" title="">Encodings / Fields
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/init.html" title="">Init
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-mark.html" title="">Mark
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/nearest.html" title="">Nearest
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-resolve.html" title="">Resolve
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/toggle.html" title="">Toggle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/translate.html" title="">Translate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/zoom.html" title="">Zoom
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/config.html" title="">Config
+      </a></li>
+      
+      
+      
+      
+      <br>
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/types.html" title="">Parameter Types
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/tooltip.html" title="">Tooltip
+      </a></li>
+      
+      
+      
+    </nav>
+  </aside>
+  
+
+  <section class="page-content">
+    <h1>Binning</h1>
+    <span class="edit-page">
+    <a href="https://github.com/vega/vega-lite/edit/master/site/docs/transform/bin.md">Edit this page</a>
+</span>
+<p>Binning discretizes numeric values into a set of bins. A common use case is to <a href="#example">create a histogram</a>.</p>
+
+<p>There are two ways to define binning in Vega-Lite: <a href="#encoding">the <code>bin</code> property in encoding field definitions</a> and <a href="#transform">the <code>bin</code> transform</a>.</p>
+
+<h2 id="documentation-overview">Documentation Overview</h2>
+
+<!-- prettier-ignore -->
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="#documentation-overview" id="markdown-toc-documentation-overview">Documentation Overview</a></li>
+  <li><a href="#encoding" id="markdown-toc-encoding">Binning in Encoding Field Definition</a>    <ul>
+      <li><a href="#histogram" id="markdown-toc-histogram">Example: Histogram</a></li>
+      <li><a href="#histogram-ordinal" id="markdown-toc-histogram-ordinal">Example: Histogram with Ordinal Scale</a></li>
+      <li><a href="#example-binned-color" id="markdown-toc-example-binned-color">Example: Binned color</a></li>
+      <li><a href="#binned" id="markdown-toc-binned">Example: Using Vega-Lite with Binned data</a></li>
+    </ul>
+  </li>
+  <li><a href="#transform" id="markdown-toc-transform">Bin Transform</a>    <ul>
+      <li><a href="#example-histogram-with-bin-transform" id="markdown-toc-example-histogram-with-bin-transform">Example: Histogram with Bin Transform</a></li>
+    </ul>
+  </li>
+  <li><a href="#bin-parameters" id="markdown-toc-bin-parameters">Bin Parameters</a>    <ul>
+      <li><a href="#example-customizing-max-bins" id="markdown-toc-example-customizing-max-bins">Example: Customizing Max Bins</a></li>
+    </ul>
+  </li>
+  <li><a href="#ordinal-bin" id="markdown-toc-ordinal-bin">Ordinal Bin</a></li>
+</ul>
+
+<h2 id="encoding">Binning in Encoding Field Definition</h2>
+
+<pre><code class="language-js">// A Single View or a Layer Specification
+{
+  ...,
+  "mark/layer": ...,
+  "encoding": {
+    "x": {
+      "bin": ...,               // bin
+      "field": ...,
+      "type": "quantitative",
+      ...
+    },
+    "y": ...,
+    ...
+  },
+  ...
+}
+</code></pre>
+
+<p>You can directly bin an <code>encoding</code> field by using the <code>bin</code> property in a <a href="encoding.html#field">field definition</a>.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>bin</td>
+        <td>Boolean | <a href="bin.html#bin-parameters">BinParams</a> | String | Null
+</td>
+        <td>
+  
+    <p>A flag for binning a <code>quantitative</code> field, <a href="https://vega.github.io/vega-lite/docs/bin.html#params">an object defining binning parameters</a>, or indicating that the data for <code>x</code> or <code>y</code> channel are binned before they are imported into Vega-Lite (<code>"binned"</code>).</p>
+
+<ul>
+  <li>
+    <p>If <code>true</code>, default <a href="https://vega.github.io/vega-lite/docs/bin.html">binning parameters</a> will be applied.</p>
+  </li>
+  <li>
+    <p>If <code>"binned"</code>, this indicates that the data for the <code>x</code> (or <code>y</code>) channel are already binned. You can map the bin-start field to <code>x</code> (or <code>y</code>) and the bin-end field to <code>x2</code> (or <code>y2</code>). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis’s <a href="https://vega.github.io/vega-lite/docs/axis.html#ticks"><code>tickMinStep</code></a> property.</p>
+  </li>
+</ul>
+
+<p><strong>Default value:</strong> <code>false</code></p>
+
+<p><strong>See also:</strong> <a href="https://vega.github.io/vega-lite/docs/bin.html"><code>bin</code></a> documentation.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="histogram">Example: Histogram</h3>
+
+<p>Mapping binned values and its count to a <code>bar</code> mark produces a histogram.</p>
+
+<div class="vl-example" data-name="histogram"></div>
+
+<h3 id="histogram-ordinal">Example: Histogram with Ordinal Scale</h3>
+
+<p>Setting the binned field’s <code>type</code> to <code>"ordinal"</code> produces a histogram with an ordinal scale.</p>
+
+<div class="vl-example" data-name="histogram_ordinal"></div>
+
+<h3 id="example-binned-color">Example: Binned color</h3>
+
+<p>You can use binning to discretize color scales. Vega-Lite automatically creates legends with range labels.</p>
+
+<div class="vl-example" data-name="point_binned_color"></div>
+
+<h3 id="binned">Example: Using Vega-Lite with Binned data</h3>
+
+<p>If you have data that is already binned outside of Vega-Lite, setting the <code>bin</code> property to <code>"binned"</code> will trigger Vega-Lite to render scales and axes similar to setting the <code>bin</code> property in encoding field definitions. Note that you have to specify field names that encode the start and end of each bin. To adjust the axis ticks based on the bin step, you can set <code>bin</code> to e.g. <code>{"binned": true, "step": 2}</code>.</p>
+
+<div class="vl-example" data-name="bar_binned_data"></div>
+
+<h2 id="transform">Bin Transform</h2>
+
+<pre><code class="language-js">// Any View Specification
+{
+  ...
+  "transform": [
+    {"bin": ..., "field": ..., "as" ...} // Bin Transform
+     ...
+  ],
+  ...
+}
+</code></pre>
+
+<p>The <code>bin</code> transform in the <code>transform</code> array has the following properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>bin</td>
+        <td>Boolean | <a href="bin.html#bin-parameters">BinParams</a>
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> An object indicating bin properties, or simply <code>true</code> for using default bin parameters.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>field</td>
+        <td>FieldName
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The data field to bin.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>as</td>
+        <td>FieldName | FieldName[]
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The output fields at which to write the start and end bin values.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="example-histogram-with-bin-transform">Example: Histogram with Bin Transform</h3>
+
+<p>Instead of using the <code>bin</code> property of a field definition, you can also use a bin transform to derive a new field (e.g., <code>bin_IMDB_Rating</code>), and encode the new field with bin property of a field definition set to <code>binned</code> instead.</p>
+
+<div class="vl-example" data-name="histogram_bin_transform"></div>
+
+<p>While binning in <code>transform</code> is more verbose than in <code>encoding</code>, it can be useful if you want to perform additional calculation before encoding the data.</p>
+
+<h2 id="bin-parameters">Bin Parameters</h2>
+
+<p>If <code>bin</code> is <code>true</code>, default binning parameters are used. To customize binning parameters, you can set <code>bin</code> to a bin definition object, which can have the following properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>anchor</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>A value in the binned domain at which to anchor the bins, shifting the bin boundaries if necessary to ensure that a boundary aligns with the anchor value.</p>
+
+<p><strong>Default value:</strong> the minimum bin extent value</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>base</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The number base to use for automatic bin determination (default is base 10).</p>
+
+<p><strong>Default value:</strong> <code>10</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>divide</td>
+        <td>Number[]
+</td>
+        <td>
+  
+    <p>Scale factors indicating allowable subdivisions. The default value is [5, 2], which indicates that for base 10 numbers (the default base), the method may consider dividing bin sizes by 5 and/or 2. For example, for an initial step size of 10, the method can check if bin sizes of 2 (= 10/5), 5 (= 10/2), or 1 (= 10/(5*2)) might also satisfy the given constraints.</p>
+
+<p><strong>Default value:</strong> <code>[5, 2]</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>extent</td>
+        <td>Number[]
+</td>
+        <td>
+  
+    <p>A two-element (<code>[min, max]</code>) array indicating the range of desired bin values.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>maxbins</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>Maximum number of bins.</p>
+
+<p><strong>Default value:</strong> <code>6</code> for <code>row</code>, <code>column</code> and <code>shape</code> channels; <code>10</code> for other channels</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>minstep</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>A minimum allowable step size (particularly useful for integer values).</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>nice</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>If true, attempts to make the bin boundaries use human-friendly boundaries, such as multiples of ten.</p>
+
+<p><strong>Default value:</strong> <code>true</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>step</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>An exact step size to use between bins.</p>
+
+<p><strong>Note:</strong> If provided, options such as maxbins will be ignored.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>steps</td>
+        <td>Number[]
+</td>
+        <td>
+  
+    <p>An array of allowable step sizes to choose from.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="example-customizing-max-bins">Example: Customizing Max Bins</h3>
+
+<p>Setting the <code>maxbins</code> parameter changes the number of output bins.</p>
+
+<div class="vl-example" data-name="histogram_bin_change"></div>
+
+<h2 id="ordinal-bin">Ordinal Bin</h2>
+
+<p>Usually, you should set the type of binned encodings to be quantitative. Vega-Lite automatically creates axes and legends that best represent binned data. However, if you want to sort the bins or skip empty bins, you can set the type to ordinal.</p>
+
+<p>For example, this following plot shows binned values sort by count.</p>
+
+<div class="vl-example" data-name="histogram_ordinal_sort"></div>
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/site/docs/transform/bin.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/site/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/build/site/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

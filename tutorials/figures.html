@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Create Figures for Papers | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Create Figures for Papers" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/tutorials/figures.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/tutorials/figures.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Create Figures for Papers","url":"https://vega.github.io/vega-lite/tutorials/figures.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      var BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/site/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/site/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" class="active">Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="tutorials">
+    
+
+
+<div class="sub-nav">
+  <nav class="page-centered">
+    
+    <a 
+        href="/vega-lite/tutorials/getting_started.html" title="">Getting Started
+    </a>
+    
+    <a 
+        href="/vega-lite/tutorials/explore.html" title="">Exploring Data
+    </a>
+    
+    <a class="active"
+        href="/vega-lite/tutorials/figures.html" title="">Paper Figures
+    </a>
+    
+    <a 
+        href="/vega-lite/tutorials/streaming.html" title="">Streaming Data
+    </a>
+    
+  </nav>
+</div>
+
+
+<div class="page-centered page-main">
+  
+
+  <section class="page-content">
+    <h1>Create Figures for Papers</h1>
+    <p>In this tutorial you will learn how to use Vega-Lite to create charts for figures and embed them in a paper written with LaTeX. The overall workflow includes (1) opening a chart in the online editor, (2) exporting a chart as SVG, (3) converting the SVG to PDF, (4) cropping the PDF to remove excessive whitespace, and (5) embedding a chart in a LaTeX paper.</p>
+
+<h2 id="create-a-chart-in-vega-lite">Create a Chart in Vega-Lite</h2>
+
+<p>First, you need a chart. To export charts as figures, you can start with specifications from the online editor, use <a href="/vega-lite/examples/">examples from the Vega-Lite website</a>, copy charts created in <a href="https://altair-viz.github.io/">Altair</a>, or use charts from <a href="https://beta.observablehq.com/@domoritz/hello-vega-embed">Observable</a>. To export the chart, copy the Vega-Lite specification into the <a href="https://vega.github.io/editor/">Vega-Lite editor</a>.</p>
+
+<p>For this tutorial, we will use the example chart below, which you can view in the editor <a href="https://vega.github.io/editor/#/url/vega-lite/N4KABGBEAkDODGALApgWwIaQFxUQFzwAdYsB6UgN2QHN0A6agSz0QFcAjOxge1IRQyUa6ALQAbZskoBmOgCtY3AHaQANOCgB3RgBMW2MABYADMfURIKRtXwGATKfNRkS+Nx2Ml1A6AgWAHj4aflAAZozIYjoGkABO3JpqwX6QeACehMgxAI6s6Ep4zOiFVEkhFoV4Ylk4kAAqsYzoYmXlkAjNNWDAkEqM8F2hzbDIAL5OIZDo-oywPpDUjdE4Q2Ijo8kQ48mQaUHlYRFRMaHErZPpmTl5BUUlWRMpldUxAGKx6KjIsGAACsixMAAZWQbiUOjAAApTrAAJTnFLTWbzRa6AyrdaPCwdF44HqXLqQMTcbwbELbSZuYmxfZtcKRZZQWBpWB4NAIioZQlKbioTzNDlQZ6EoEstmoQVEmguRm+A5QbiNFx4GLsbgEXkiRo2FWbMBkvwUlKwRgALy6PQozVYXQAjAajUT0GkAQYANpyiw6YqYPF63qfQmrMGQZJGiofJSwUKKiU4N16nracEJd09biEGLxTQAfSUrFQ7Fdqig6DmtWzkFGAF1w34evBmvBWGJioTbaZjKRvXgC3Qe5gS1Ny2EznWIA2my22zEAOSvJvKWdqUsj9pi9kGiDVx6QDCxADWMQkSiyGiNnqgA9pkyUgZisFy6FiZ-Ju7wkejsfdicgyZ0qbxummYVgkeYFkWNJDmWWapjW47dJAjZiM2rZsjEHamN2xR9te0FrjCVZYohyGoTOtSzkCT4vmAADC8SwNGjBiGygKQtIACysLLvhD4bhKW5gDuOz7ketQnq++rCV6PojHgI6XpAwbKO6toAGx0AAHLaACcek6WpOmGJpdiGHYdiqLpdAAOwAKz6Zp0h2LatnSE5xjSJZGnGNZ+l6XY0jWcYanGLZtmWTpdC2b5fkBUFIVhV5dBmZ2pjWWpdg6dIRnhepdAOKl6WZdlhiuUlxgFaYpXWel0hqdZFkuXQWV+bZmkeY5nl5XY7WdmpmlqWppW2cYmlJbaul6ZpWW2ppmmGOlanjfZDkLYYtrOba42TTp03SLN82LeN2X6dI01DfNZ3jalHW2oYhkNdZSWVWlGUtaVXUaXYIWduZc3aY5S1WdIK27UF0imMVEU2TdRXvWVTUtfpbUdW50O2idelnQZxmGFd3Ww29JUIxpE0OTNc0LYN0O2S91W1fVjWRUFhVEzln35YTxXs6oDjNTFem2WZAVqU5Y3dX5OlxcFoULUlKWs9zpVJdpfmGcZpnmUluUabZP3GBj1lOTpHbqeNvWmBDtm2nZ1ni95Av+YFMuJd1mM6TVE2zephjlSYnYm2FdhG4YvsS7FzsJXLwOS2ps2uRVRuWbZdCGX57VS2p1uBc97uexN2lDcnzUvT5bPK91oOOc5rnuRzzl+ftblC4YUva3T0UMw18ugzpo2hw1WdAxpdWpXHHnW3rjUp9ZO0zc3odt3lMumIbxum0DKcGalemzc5PU6fLjtC+ZdVi0l+uW9p90e8Hz3+wb9XzYNvlPXlRmpa5JjRXHb9fZVG0HDgw2rlLevd+4LW+nrYu001bxwhsHDmC1WrCzPj1JK+01ZGRMsLYudlYp2SAbTYuksM5QIxvVc2qUrY22ivbfKc8m4g0XtPLSN1dI+WkMZUWx1G7nVxvjL6ktpZRz-nQUefUOwgxchlZ6l8-pzVmnVEh4D5qQKHiQ92KMzpozyq5PyphtJ21nrw06-DLr0LsFXJyLk3IOHrlzeGXUU6wP0nHTSCdEHlUdlLSOoUdZ0B8sIvxrsU5pwcsYTO2c35hMvu1DsA0zLDzoBjPhOMLG81kJhTsZ07oPTvnlS+t0b6PXlqXOGxNyodxqqLRmxc47pw8WFPuJkMFV3BpDLKeDGEY2Ya3VhUtOwdkygZEysimp61SutAy6kxFcNSi5Kxmk7aH3MlpABIVnINQ8fUuJBtRpDW+sXSZnZplx0oWbS5Li57qxwQ3DBsd4GJyQZfXeJkNqH2Xr3e69kzI6Nzn5fO3si5NQtqvPuIcBocxcunNaG0JoYMvuPaRU9oYs07BUnmeVskVR6oowGpisbmLxuLa5WCNZmV0vLTGA1vpBWmvNQlWViWCMCdUrurCBpjykZPcZ3lvlZyMgFRyVSpmd1qd3RG5Ty6gK0jc7BmsqV6J8SI-xMCwUTVDiYE29DorBPimqpq4SpqRPITnYGFsOz9QmrTLh0MAqAtngXH2XkSFgtbvZK1FcwEGLUYPaBBNFZOLdVMnSnrgoVxHg-A2tM2orIwfKilWturyLxQDZRUrHGVImdGwOtMQ5h1Ju7bGF0SU919QPKByT5lDNjcs6aMDE13KVczHpC9+l4N7sHWmPliF5VbhEqJFCYk2TbX0peDt9UuwCXjByGV6qjV2oWzmQbibOOaqoytGjLmkxurkkpBTIqYLcQq3B2K93X3yWI2a1DQq0Ltioit6joFrNFmk0t+MXGPI8QgpO3UBbLN8plfqdlrrUMvbfEdgzV05W8VOhKATvqpQUemzeWlv2eL-S4jZFUbY9T7WE0hpqs6GxIQBtqHiMoG0aiPS1wVtKLLtcvXNLl81cLDpFBWGKZWaNau1HR0Le6HXWptEhrydX7wbZXByNja72LwWC-qg1hqjXVQsu6odImzRDacsNJsI0BJXgbQK69H7bXJvtSmR0ApsrFTUuqkqwlzzmmFeyo0BnSqVoZ-Wa9Mob0soYGyimBpDTCqplNyG01KKBpFHtpzxUOZo+IptmsktFP3Ve56Y6W5L2Zg-WZz96oe2hvdHeEmPkkOjV-UK6UbYwPdrpaaGNorLpxcUzL-bxN7wq9igD2U7bBxcmBnJEHSmIy0fxzq5UfMmb82Z0FSKeUyM5SlylnzvLu0MTbZZW1esyY9iZWesrVYnqTUq6y+V4OyygxN1G66jaOq9oXMOM9sssPqX1g7g3jL1Oc00tzrSjUXryZB8qm3RrbZMRM+pCzm4aeMHjErNL530qXWJsr3WD4Av0kC57fsd6scQaHbHelcc+2ksaaiXQ3SmRXdxrzXULuuL0u4zD66wUGwhVwqFqg2rJQWXWlZwVk5bSsTZ7JHsh5WN5qVcRt7ra23Fsohqcucl3sV1tMKMMYPKzMvz2tSyhdLUCtr+n8NVAQxScDg9T1LdtYy6D5yNkrtCyenzdLo275O5VSE6OF2Pcg7G5pOnr0Ge8y2kZW0pvAE+Q8htSyNVxHvoEWNHqTuLbGRMtpaXINIoAPMrH-aOftNbKt5Iiey3LJHMMrzi7PuDWJVlyM-SqrEogyirC6yImOxGV5pFe3nu3eyHry7OWocQ9ly8wn03ofg02xn5PufhH07EeibzOvLu5ZrJH6Ii3P7U4B3SlPcKJsO+rS7-C3b2kk9mPSWWqml2po1SlqM0DUD0O39Lb7KxgXFsV9RUslksjBNLPMsrlLTmCjQhrqoEbCkuSs2ofHrPrqvILtNMLsZAvpirrlHkJnCs5JEt-lHgPoHl7sYI-i3r7m7lHs3k7A3tHMHjQb4nQW-BdsQTbjTKoFnnTjHsAjRnYHAadnchZKXsziWinrzKFFFBFP7tyv-rIuZK3GwlVHND1CApZB5IEp3t3ltLPKnPAYqogRdrgRfvgb3utMgTGobmgcboFuFFrHzHYVHuirPmupZAwZviweQbQaPm-Eehhr+p5INBpABs-sBnNOHoFqISyqnhtKrpbOrnQlXi4vLvetpKoPVHoYIQYbzt5FofCgQaoLLjvmqmdF4UwdOhbp5O3tGosnGtYbzPwc4Yvq4THHAj+s8tDMzjMu0V4rTmwR1nnh4eHmUa3nLCDKNJkWGiAbNG-gjmXqYMiryo1FYhYbUfWofFnHER5AkXbFtCFM7hHA3uFOPpEuft3gUXVCMSEuFJbnYcHgHuwXom4QfuBiQUPpgTKp5GsowaMZ4Q8QMRPlgWVKHMHiEUBq-uAYFjUagRsbrHkaJq5FIdbIUSnJ5ubj1Dfm4k8r0XnlmjzN9B8WHisV0azgEc8f0aDvPv8Y7mQRSaUisWia4W5E5OkUYbzrIMYecb3kgZyfkb3tlM1ALlYX3EtMHC8SNm8X3uKVfJKW5FIfPoyViqCUMQyXiR9ElE0UCRzCSdiUnKZLSfobgrTKsTCegfwacVNHgT3r7HKX3AbnUSKbzKnvcdbh1hdj8ZQRIeHg0QcRQcwRqWqQjLiTrgjHZJicynfldHjFIVwoSeiczIGVUYFnaSgcKcLiscUa7tPh6f6a+q6ZSTIa8Y8e6YmfaqWV7EofEQrnQltNUUKQ6emYWRKewSse7N0WzsMTqT0X+i6UWR1sHnSV7tQeWUzv4R0XVu1GfpaSYQiplL6d4bvnbvmWNqKcEUMfPnYfwTmT4RqSqfwW2aSR0YntCcKRbqLgmSGV8aCaWUcnlF2R2aCuwlztwl1IgfwbyaYd-qieWcESOR-lid2V8btszOucqYcTufdPKWyXlJmfQVcf6bNPBTuXdP+SzrqZ5OtM8dubvgqeuZ4TcVuS7pudKe1pSRpNSWNqOW0R2SsRRQUmyXzNhddrzN+Zec8XRZ4ZqZ8dWOeCAKMEAA">here</a>. Note that the complete specification is stored in the URL. You can easily share modifications with your collaborators.</p>
+
+<p><img src="/vega-lite/site/static/falcon.png" style="max-width: 500px" /></p>
+
+<p>If you need to customize the figure beyond what is supported in Vega-Lite, you can open the compiled Vega in the editor, edit it as desired, and then continue the tutorial below.</p>
+
+<h2 id="export-as-svg">Export as SVG</h2>
+
+<p>Now that you have loaded the chart in the editor, you can export it with “Export” and then “Open SVG”. We are exporting the chart as an SVG, a vector graphic format, which is infinitely scalable. You figure will be crisp even when zoomed in.</p>
+
+<video controls="" style="max-width: 700px">
+  <source src="/vega-lite/site/static/share.mp4" type="video/mp4" />
+</video>
+
+<h2 id="print-to-pdf">Print to PDF</h2>
+
+<p>Unfortunately, LaTeX cannot import SVGs so we must first convert it to PDF. There are many ways to convert SVGs to PDF, including using illustrator, using another image editor, using command line scripts, or printing as PDF in the browser. For this tutorial, we are going to use the printing feature of your browser; from the newly opened SVG image, select “File” and then “Print…” (or use <kbd>Cmd</kbd>+<kbd>P</kbd>) in your browser (e.g. Chrome or Firefox).</p>
+
+<p>Now make sure that the destination is set to “Save as PDF” (see below). Then save the PDF in the directory of your LaTeX paper.</p>
+
+<p><img src="/vega-lite/site/static/print.png" style="max-width: 700px" /></p>
+
+<h2 id="crop-the-pdf">Crop the PDF</h2>
+
+<p>You will notice that there is a lot of white space that we want to remove because the SVG image is saved as a single printer page. If your figure is too large, you need to scale it so that the output fits on a single page. To crop the file, open the PDF file in Mac OS Preview application. Select the “Rectangular Selection” tool and draw a box around the chart. You can adjust the box until it tightly fits the chart. Then click “crop” (or use <kbd>Cmd</kbd>+<kbd>K</kbd>). Make sure to save the newly modified file!</p>
+
+<video controls="" style="max-width: 700px">
+  <source src="/vega-lite/site/static/crop.mp4" type="video/mp4" />
+</video>
+
+<h2 id="embed-the-chart">Embed the Chart</h2>
+
+<p>Lastly, embed the chart in the paper as a figure. In this case we named the PDF <code>benchmark.pdf</code>. Adjust the command below accordingly.</p>
+
+<pre><code class="language-latex">\begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{benchmark}
+  \caption{\label{fig:benchmark} A title that describes the figure.}
+\end{figure}
+</code></pre>
+
+<p>That’s it. Do you have feedback on this tutorial or suggestions? Please <a href="https://github.com/vega/vega-lite/issues/new">create an issue on GitHub</a>.</p>
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/site/tutorials/figures.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/site/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/build/site/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

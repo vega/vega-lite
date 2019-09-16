@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Data | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Data" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/docs/data.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/docs/data.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"Data","url":"https://vega.github.io/vega-lite/docs/data.html","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      var BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/site/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/site/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" class="active">Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="docs">
+    
+
+
+
+<div class="page-centered page-main">
+  
+  <aside class="page-sidebar">
+    <ul class="sidebar-nav">
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/" title="">Overview
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/spec.html" title="">View Specification
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/title.html" title="">Title
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/size.html" title="">Width / Height
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a class="active"
+          href="/vega-lite/docs/data.html" title="">Data / Datasets
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/projection.html" title="">Projection
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/transform.html" title="">Transform
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/calculate.html" title="">Calculate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/density.html" title="">Density
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/filter.html" title="">Filter
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/flatten.html" title="">Flatten
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/fold.html" title="">Fold
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/joinaggregate.html" title="">Join Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/loess.html" title="">Loess
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/lookup.html" title="">Lookup
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/regression.html" title="">Regression
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/pivot.html" title="">Pivot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sample.html" title="">Sample
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/window.html" title="">Window
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/mark.html" title="">Mark
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/area.html" title="">Area
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bar.html" title="">Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/boxplot.html" title="">Box Plot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/circle.html" title="">Circle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorband.html" title="">Error Band
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorbar.html" title="">Error Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/geoshape.html" title="">Geoshape
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/image.html" title="">Image
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/line.html" title="">Line
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/point.html" title="">Point
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rect.html" title="">Rect
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rule.html" title="">Rule
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/square.html" title="">Square
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/text.html" title="">Text
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/tick.html" title="">Tick
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/trail.html" title="">Trail
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/encoding.html" title="">Encoding
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/axis.html" title="">Axis
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/condition.html" title="">Condition
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/field.html" title="">Field
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/format.html" title="">Format
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/header.html" title="">Header
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/legend.html" title="">Legend
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/scale.html" title="">Scale
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sort.html" title="">Sort
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/type.html" title="">Type
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/value.html" title="">Value
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/composition.html" title="">View Composition
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/facet.html" title="">Facet
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/layer.html" title="">Layer
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/concat.html" title="">Concat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/repeat.html" title="">Repeat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/resolve.html" title="">Resolve
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/selection.html" title="">Selections
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bind.html" title="">Bind
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/clear.html" title="">Clear
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/project.html" title="">Encodings / Fields
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/init.html" title="">Init
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-mark.html" title="">Mark
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/nearest.html" title="">Nearest
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection-resolve.html" title="">Resolve
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/toggle.html" title="">Toggle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/translate.html" title="">Translate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/zoom.html" title="">Zoom
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/config.html" title="">Config
+      </a></li>
+      
+      
+      
+      
+      <br>
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/types.html" title="">Parameter Types
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/tooltip.html" title="">Tooltip
+      </a></li>
+      
+      
+      
+    </nav>
+  </aside>
+  
+
+  <section class="page-content">
+    <h1>Data</h1>
+    <span class="edit-page">
+    <a href="https://github.com/vega/vega-lite/edit/master/site/docs/data.md">Edit this page</a>
+</span>
+<p>Akin to <a href="https://www.github.com/vega/vega">Vega</a>’s <a href="https://vega.github.io/vega/docs/data/">data model</a>, the basic data model used by Vega-Lite is <em>tabular</em> data, similar to a spreadsheet or a database table. Individual data sets are assumed to contain a collection of records, which may contain any number of named data fields.</p>
+
+<p>Vega-Lite’s <code>data</code> property describes the visualization’s data source as part of the specification, which can be either <a href="#inline">inline data</a> (<code>values</code>) or <a href="#url">a URL from which to load the data</a> (<code>url</code>). Or, we can create an empty, <a href="#named">named data source</a> (<code>name</code>), which can be <a href="https://vega.github.io/vega/docs/api/view/#data">bound at runtime</a> or populated from top-level <a href="#datasets"><code>datasets</code></a>.</p>
+
+<p>In addition, Vega-Lite includes <em>data generators</em> which can generate data sets such as numerical sequences or geographic reference elements such as GeoJSON graticule or sphere objects.</p>
+
+<h2 id="documentation-overview">Documentation Overview</h2>
+
+<!-- prettier-ignore -->
+<ul class="no_toc" id="markdown-toc">
+  <li><a href="#documentation-overview" id="markdown-toc-documentation-overview">Documentation Overview</a></li>
+  <li><a href="#types-of-data-sources" id="markdown-toc-types-of-data-sources">Types of Data Sources</a>    <ul>
+      <li><a href="#inline" id="markdown-toc-inline">Inline Data</a></li>
+      <li><a href="#url" id="markdown-toc-url">Data from URL</a></li>
+      <li><a href="#named" id="markdown-toc-named">Named Data Sources</a></li>
+    </ul>
+  </li>
+  <li><a href="#format" id="markdown-toc-format">Format</a>    <ul>
+      <li><a href="#json" id="markdown-toc-json">json</a></li>
+      <li><a href="#csv" id="markdown-toc-csv">csv</a></li>
+      <li><a href="#tsv" id="markdown-toc-tsv">tsv</a></li>
+      <li><a href="#dsv" id="markdown-toc-dsv">dsv</a></li>
+      <li><a href="#topojson" id="markdown-toc-topojson">topojson</a></li>
+    </ul>
+  </li>
+  <li><a href="#data-generators" id="markdown-toc-data-generators">Data Generators</a>    <ul>
+      <li><a href="#sequence" id="markdown-toc-sequence">Sequence Generator</a></li>
+      <li><a href="#graticule" id="markdown-toc-graticule">Graticule Generator</a></li>
+      <li><a href="#sphere" id="markdown-toc-sphere">Sphere Generator</a></li>
+    </ul>
+  </li>
+  <li><a href="#datasets" id="markdown-toc-datasets">Datasets</a></li>
+</ul>
+
+<h2 id="types-of-data-sources">Types of Data Sources</h2>
+
+<h3 id="inline">Inline Data</h3>
+
+<p>Inline Data can be specified using <code>values</code> property. Here is a list of all properties of an inline <code>data</code> source:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>values</td>
+        <td>InlineDataset
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The full data set, included inline. This can be an array of objects or primitive values, an object, or a string.
+Arrays of primitive values are ingested as objects with a <code>data</code> property. Strings are parsed according to the specified format type.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>name</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>Provide a placeholder name and bind data at runtime.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>format</td>
+        <td><a href="data.html#format">DataFormat</a>
+</td>
+        <td>
+  
+    <p>An object that specifies the format for parsing the data.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>For example, the following specification embeds an inline data table with nine rows and two columns (<code>a</code> and <code>b</code>).</p>
+
+<p><span class="vl-example" data-name="bar"></span></p>
+
+<p>If the input data is simply an array of primitive values, each value is mapped to the <code>data</code> property of a new object. For example <code>[5, 3, 8, 1]</code> is loaded as:</p>
+
+<pre><code class="language-json">[{"data": 5}, {"data": 3}, {"data": 8}, {"data": 1}]
+</code></pre>
+
+<p>You can also inline a string that will be parsed according to the specified format type.</p>
+
+<p><span class="vl-example" data-name="embedded_csv"></span></p>
+
+<h3 id="url">Data from URL</h3>
+
+<p>Data can be loaded from a URL using the <code>url</code> property. In addition, the format of the input data can be specified using the <code>formatType</code> property. By default Vega-Lite will infer the type from the file extension.</p>
+
+<p>Here is a list of all properties describing a <code>data</code> source from URL:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>url</td>
+        <td>String
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> An URL from which to load the data set. Use the <code>format.type</code> property
+to ensure the loaded data is correctly parsed.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>name</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>Provide a placeholder name and bind data at runtime.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>format</td>
+        <td><a href="data.html#format">DataFormat</a>
+</td>
+        <td>
+  
+    <p>An object that specifies the format for parsing the data.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>For example, the following specification loads data from a relative <code>url</code>: <code>data/cars.json</code>. Note that the format type is implicitly <code>"json"</code> by default.</p>
+
+<p><span class="vl-example" data-name="point_2d"></span></p>
+
+<h3 id="named">Named Data Sources</h3>
+
+<p>Data can also be added at runtime through the <a href="https://vega.github.io/vega/docs/api/view/#data">Vega View API</a>. Data sources are referenced by name, which is specified in Vega-Lite with <code>name</code>.</p>
+
+<p>Here is a list of all properties describing a named <code>data</code> source:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>name</td>
+        <td>String
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> Provide a placeholder name and bind data at runtime.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>format</td>
+        <td><a href="data.html#format">DataFormat</a>
+</td>
+        <td>
+  
+    <p>An object that specifies the format for parsing the data.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>For example, to create a data source named <code>myData</code>, use the following data</p>
+
+<pre><code class="language-json">{
+  "name": "myData"
+}
+</code></pre>
+
+<p>You can use the <a href="https://vega.github.io/vega/docs/api/view/#data">Vega view API</a> to load data at runtime and update the chart. Here is an example using <a href="https://github.com/vega/vega-embed">Vega-Embed</a>:</p>
+
+<pre><code class="language-js">vegaEmbed('#vis', spec).then(res =&gt;
+  res.view
+    .insert('myData', [
+      /* some data array */
+    ])
+    .run()
+);
+</code></pre>
+
+<p>You can also use a <a href="https://github.com/vega/vega-view#view_change">changeset</a> to modify the data on the chart as done on this <a href="https://vega.github.io/vega-lite/tutorials/streaming.html">data streaming demo</a></p>
+
+<h2 id="format">Format</h2>
+
+<p>The format object describes the data format and additional parsing instructions.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>type</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>Type of input data: <code>"json"</code>, <code>"csv"</code>, <code>"tsv"</code>, <code>"dsv"</code>.</p>
+
+<p><strong>Default value:</strong>  The default format type is determined by the extension of the file URL.
+If no extension is detected, <code>"json"</code> will be used by default.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>parse</td>
+        <td>Parse | Null
+</td>
+        <td>
+  
+    <p>If set to <code>null</code>, disable type inference based on the spec and only use type inference based on the data.
+Alternatively, a parsing directive object can be provided for explicit data types. Each property of the object corresponds to a field name, and the value to the desired data type (one of <code>"number"</code>, <code>"boolean"</code>, <code>"date"</code>, or null (do not parse the field)).
+For example, <code>"parse": {"modified_on": "date"}</code> parses the <code>modified_on</code> field in each input record a Date value.</p>
+
+<p>For <code>"date"</code>, we parse data based using Javascript’s <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse"><code>Date.parse()</code></a>.
+For Specific date formats can be provided (e.g., <code>{foo: "date:'%m%d%Y'"}</code>), using the <a href="https://github.com/d3/d3-time-format#locale_format">d3-time-format syntax</a>. UTC date format parsing is supported similarly (e.g., <code>{foo: "utc:'%m%d%Y'"}</code>). See more about <a href="https://vega.github.io/vega-lite/docs/timeunit.html#utc">UTC time</a></p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="json">json</h3>
+
+<p>Loads a JavaScript Object Notation (JSON) file. Assumes row-oriented data, where each row is an object with named attributes. This is the default file format, and so will be used if no format parameter is provided. If specified, the <code>format</code> parameter should have a type property of <code>"json"</code>, and can also accept the following:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>property</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The JSON property containing the desired data.
+This parameter can be used when the loaded JSON file may have surrounding structure or meta-data.
+For example <code>"property": "values.features"</code> is equivalent to retrieving <code>json.values.features</code>
+from the loaded JSON object.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="csv">csv</h3>
+
+<p>Load a comma-separated values (CSV) file. This format type does not support any additional properties.</p>
+
+<h3 id="tsv">tsv</h3>
+
+<p>Load a tab-separated values (TSV) file. This format type does not support any additional properties.</p>
+
+<h3 id="dsv">dsv</h3>
+
+<p>Load a delimited text file with a custom delimiter. This is a general version of CSV and TSV.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>delimiter</td>
+        <td>String
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The delimiter between records. The delimiter must be a single character (i.e., a single 16-bit code unit); so, ASCII delimiters are fine, but emoji delimiters are not.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="topojson">topojson</h3>
+
+<p>Load a JavaScript Object Notation (JSON) file using the TopoJSON format. The input file must contain valid TopoJSON data. The TopoJSON input is then converted into a GeoJSON format. There are two mutually exclusive properties that can be used to specify the conversion process:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>feature</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The name of the TopoJSON object set to convert to a GeoJSON feature collection.
+For example, in a map of the world, there may be an object set named <code>"countries"</code>.
+Using the feature property, we can extract this set and generate a GeoJSON feature object for each country.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>mesh</td>
+        <td>String
+</td>
+        <td>
+  
+    <p>The name of the TopoJSON object set to convert to mesh.
+Similar to the <code>feature</code> option, <code>mesh</code> extracts a named TopoJSON object set.
+  Unlike the <code>feature</code> option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.
+Extracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h2 id="data-generators">Data Generators</h2>
+
+<h3 id="sequence">Sequence Generator</h3>
+
+<p>The sequence generator creates a set of numeric values based on given start, stop, and (optional) step parameters. By default, new objects with a single field named <code>data</code> are generated; use the <code>as</code> parameter to change the field name.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>start</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The starting value of the sequence (inclusive).</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>stop</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The ending value of the sequence (exclusive).</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>step</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The step value between sequence entries.</p>
+
+<p><strong>Default value:</strong> <code>1</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>as</td>
+        <td>FieldName
+</td>
+        <td>
+  
+    <p>The name of the generated sequence field.</p>
+
+<p><strong>Default value:</strong> <code>"data"</code></p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>For example, the following specification generates a domain of number values and then uses calculate transforms to draw a sine curve:</p>
+
+<p><span class="vl-example" data-name="sequence_line"></span></p>
+
+<h3 id="graticule">Graticule Generator</h3>
+
+<p>A graticule is a grid formed by lines of latitude and longitude. The graticule generator creates a geographic grid (as <a href="https://en.wikipedia.org/wiki/GeoJSON">GeoJSON</a> data) to serve as a guiding element to include in maps. The graticule generator can be specified with either a boolean <code>true</code> value (indicating the default graticule) or a graticule parameter object:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>extentMajor</td>
+        <td>Number[]
+</td>
+        <td>
+  
+    <p>The major extent of the graticule as a two-element array of coordinates.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>extentMinor</td>
+        <td>Number[]
+</td>
+        <td>
+  
+    <p>The minor extent of the graticule as a two-element array of coordinates.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>extent</td>
+        <td>Number[]
+</td>
+        <td>
+  
+    <p>Sets both the major and minor extents to the same values.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>stepMajor</td>
+        <td>Number[]
+</td>
+        <td>
+  
+    <p>The major step angles of the graticule.</p>
+
+<p><strong>Default value:</strong> <code>[90, 360]</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>stepMinor</td>
+        <td>Number[]
+</td>
+        <td>
+  
+    <p>The minor step angles of the graticule.</p>
+
+<p><strong>Default value:</strong> <code>[10, 10]</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>step?</td>
+        <td>Any
+</td>
+        <td>
+  
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>precision</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The precision of the graticule in degrees.</p>
+
+<p><strong>Default value:</strong> <code>2.5</code></p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>The following example generates a custom graticule and visualizes it using an orthographic projection:</p>
+
+<p><span class="vl-example" data-name="geo_graticule_object"></span></p>
+
+<h3 id="sphere">Sphere Generator</h3>
+
+<p>A <a href="https://en.wikipedia.org/wiki/GeoJSON">GeoJSON</a> sphere represents the full globe. The sphere generator injects a dataset whose contents are simply <code>[{"type": "Sphere"}]</code>. The resulting sphere can be used as a background layer within a map to represent the extent of the Earth. The sphere generator requires either a boolean <code>true</code> value or an empty object <code>{}</code> as its sole parameter.</p>
+
+<p>The following example generates a layered base map containing a sphere (light blue fill) and a default graticule (black strokes):</p>
+
+<p><span class="vl-example" data-name="geo_sphere"></span></p>
+
+<h2 id="datasets">Datasets</h2>
+
+<p>Vega-Lite supports a top-level <code>datasets</code> property. This can be useful when the same data should be inlined in different places in the spec. Instead of setting values inline, specify datasets at the top level and then refer to the <a href="#named">named</a> datasource in the rest of the spec. <code>datasets</code> is a mapping from name to an <a href="#inline">inline</a> dataset.</p>
+
+<pre><code class="language-json">    "datasets": {
+      "somedata": [1,2,3]
+    },
+    "data": {
+      "name": "somedata"
+    }
+</code></pre>
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/site/docs/data.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/site/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/build/site/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

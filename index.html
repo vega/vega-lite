@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>A High-Level Grammar of Interactive Graphics | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="A High-Level Grammar of Interactive Graphics" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"headline":"A High-Level Grammar of Interactive Graphics","url":"https://vega.github.io/vega-lite/","name":"Vega-Lite","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebSite","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      var BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/site/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/site/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/custom/vega-lite">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    <div class="page-centered title">
+  <h1>
+    <strong>Vega-Lite</strong> –  A Grammar of Interactive Graphics
+  </h1>
+</div>
+
+<div id="showcase">
+  <div class="examples">
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/stacked_area_stream.html"
+      style="background-image: url('/vega-lite/examples/compiled/stacked_area_stream.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/selection_translate_scatterplot_drag.html"
+      style="background-image: url('/vega-lite/examples/compiled/selection_translate_scatterplot_drag.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/layer_point_errorbar_stdev.html"
+      style="background-image: url('/vega-lite/examples/compiled/layer_point_errorbar_stdev.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/tick_strip.html"
+      style="background-image: url('/vega-lite/examples/compiled/tick_strip.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/line_overlay_stroked.html"
+      style="background-image: url('/vega-lite/examples/compiled/line_overlay_stroked.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/trellis_barley.html"
+      style="background-image: url('/vega-lite/examples/compiled/trellis_barley.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/geo_choropleth.html"
+      style="background-image: url('/vega-lite/examples/compiled/geo_choropleth.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/circle_github_punchcard.html"
+      style="background-image: url('/vega-lite/examples/compiled/circle_github_punchcard.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/geo_layer_line_london.html"
+      style="background-image: url('/vega-lite/examples/compiled/geo_layer_line_london.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/stacked_bar_weather.html"
+      style="background-image: url('/vega-lite/examples/compiled/stacked_bar_weather.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/layer_line_co2_concentration.html"
+      style="background-image: url('/vega-lite/examples/compiled/layer_line_co2_concentration.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/circle_natural_disasters.html"
+      style="background-image: url('/vega-lite/examples/compiled/circle_natural_disasters.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/trellis_area.html"
+      style="background-image: url('/vega-lite/examples/compiled/trellis_area.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/layer_line_errorband_ci.html"
+      style="background-image: url('/vega-lite/examples/compiled/layer_line_errorband_ci.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/line_slope.html"
+      style="background-image: url('/vega-lite/examples/compiled/line_slope.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/layer_ranged_dot.html"
+      style="background-image: url('/vega-lite/examples/compiled/layer_ranged_dot.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/layer_bar_annotations.html"
+      style="background-image: url('/vega-lite/examples/compiled/layer_bar_annotations.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/rect_binned_heatmap.html"
+      style="background-image: url('/vega-lite/examples/compiled/rect_binned_heatmap.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/interactive_splom.html"
+      style="background-image: url('/vega-lite/examples/compiled/interactive_splom.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/interactive_layered_crossfilter.html"
+      style="background-image: url('/vega-lite/examples/compiled/interactive_layered_crossfilter.png')"
+    >
+    </a>
+    
+    <a
+      class="preview"
+      href="/vega-lite/examples/interactive_overview_detail.html"
+      style="background-image: url('/vega-lite/examples/compiled/interactive_overview_detail.png')"
+    >
+    </a>
+    
+  </div>
+</div>
+
+
+<div class="page-centered page-main">
+  <section class="page-content">
+    <p class="lead">
+  <strong>Vega-Lite</strong> is a high-level grammar of interactive graphics. It provides a concise JSON syntax for rapidly generating visualizations to support analysis. Vega-Lite specifications can be compiled to <a href="https://vega.github.io/vega">Vega</a> specifications.
+</p>
+
+<p><span class="lead-columns">
+  <span>
+    Vega-Lite specifications describe visualizations as mappings from data to <strong>properties of graphical marks</strong> (e.g., points or bars). The Vega-Lite compiler <strong>automatically produces visualization components</strong> including axes, legends, and scales. It then determines properties of these components based on a set of <strong>carefully designed rules</strong>. This approach allows specifications to be succinct and expressive, but also provide user control. As Vega-Lite is designed for analysis, it supports <strong>data transformations</strong> such as aggregation, binning, filtering, sorting, and <strong>visual transformations</strong> including stacking and faceting. Moreover, Vega-Lite specifications can be <strong>composed</strong> into layered and multi-view displays, and made <strong>interactive with selections</strong>.
+  </span>
+  <span class="lead-buttons">
+    <a href="/vega-lite/tutorials/getting_started.html">Get started<br /><small>Latest Version: 4.0.0-beta.2</small></a>
+    <a href="https://vega.github.io/editor/#/custom/vega-lite">Try online</a>
+  </span>
+</span></p>
+
+<p>Read our <a href="https://medium.com/@uwdata/de6661c12d58">introduction article to Vega-Lite v2 on Medium</a>, watch our <a href="https://www.youtube.com/watch?v=9uaHRWj04D4">OpenVis Conf talk about the new features in Vega-Lite v2</a>, check out the <a href="/vega-lite/docs/">documentation</a> and take a look at our <a href="/vega-lite/examples/">example gallery</a>.</p>
+
+<h2 id="example">Example</h2>
+
+<div id="carousel" class="carousel">
+  <p>
+    With Vega-Lite, we can start with a <a class="slide-nav" data-slide="0" data-state="active">bar chart of the average monthly precipitation</a> in Seattle, <a class="slide-nav" data-slide="1">overlay a rule for the overall yearly average</a>, and have it represent <a class="slide-nav" data-slide="2">an interactive moving average for a dragged region</a>. <button class="next-slide">Next step</button>
+  </p>
+
+  <div class="slides">
+    <div class="slide" data-state="active">
+      <div class="vl-example" data-name="bar_month"></div>
+    </div>
+    <div class="slide">
+      <div class="vl-example" data-name="layer_bar_month"></div>
+    </div>
+    <div class="slide video-demo">
+      <div class="vl-example" data-name="selection_layer_bar_month"></div>
+      <video loop="">
+        <source src="/vega-lite/site/static/moving-avg.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </div>
+  <div class="indicators">
+    <input class="indicator" name="indicator" data-slide="0" data-state="active" checked="" type="radio" />
+    <input class="indicator" name="indicator" data-slide="1" type="radio" />
+    <input class="indicator" name="indicator" data-slide="2" type="radio" />
+  </div>
+</div>
+
+<h2 id="additional-links">Additional Links</h2>
+
+<ul>
+  <li>Award winning <a href="https://idl.cs.washington.edu/papers/vega-lite">research paper</a> and <a href="https://www.youtube.com/watch?v=9uaHRWj04D4">video of our OpenVis Conf talk</a> on the design of Vega-Lite</li>
+  <li>Listen to a Data Stories episode about <a href="http://datastori.es/121-declarative-visualization-with-vega-lite-and-altair-with-dominik-moritz-jacob-vanderplas-kanit-ham-wongsuphasawat/">Declarative Visualization with Vega-Lite and Altair</a></li>
+  <li><a href="http://json-schema.org/">JSON schema</a> specification for <a href="https://github.com/vega/schema">Vega-Lite</a> (<a href="https://vega.github.io/schema/vega-lite/v4.json">latest</a>)</li>
+  <li>Ask questions about Vega-Lite on <a href="https://stackoverflow.com/tags/vega-lite">Stack Overflow</a> or <a href="https://bit.ly/join-vega-slack">Slack</a></li>
+  <li>Fork our <a href="https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9">Vega-Lite Block</a>, or <a href="https://beta.observablehq.com/@domoritz/vega-lite-demo">Observable Notebook</a>.</li>
+</ul>
+
+<h2 id="team">Team</h2>
+
+<p>The development of Vega-Lite is led by the alumni and members of the <a href="https://idl.cs.washington.edu">University of Washington Interactive Data Lab</a> (UW IDL), including <a href="https://twitter.com/kanitw">Kanit “Ham” Wongsuphasawat</a> (now at Apple), <a href="https://twitter.com/domoritz">Dominik Moritz</a> (UW IDL), <a href="https://twitter.com/arvindsatya1">Arvind Satyanarayan</a> (now at MIT), and <a href="https://twitter.com/jeffrey_heer">Jeffrey Heer</a> (UW IDL).</p>
+
+<p>Vega-Lite gets significant contributions from its community. In particular <a href="https://willium.com">Will Strimling</a>, <a href="https://github.com/YuhanLu">Yuhan (Zoe) Lu</a>, <a href="https://github.com/invokesus">Souvik Sen</a>, <a href="https://github.com/chanwutk">Chanwut Kittivorawong</a>, <a href="https://github.com/mattwchun">Matthew Chun</a>, <a href="https://github.com/AkshatSh">Akshat Shrivastava</a>, <a href="https://github.com/Saba9">Saba Noorassa</a>, and <a href="https://github.com/sirahd">Sira Horradarn</a>. Please see the <a href="https://github.com/vega/vega-lite/graphs/contributors">contributors page</a> for the full list of contributors.</p>
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/master/site/index.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/site/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/build/site/bundle.js"></script>
+    <script>
+      // Google Analytics
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-44428446-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>
