@@ -168,7 +168,7 @@ During development, it can be convenient to rebuild automatically or to run test
 
 ### Deployment
 
-(For team members only) `yarn deploy` will publish latest code to NPM and also update GitHub Pages, which contains our webpage and documentation. If you want to update only GitHub Pages, use `yarn deploy:gh`.
+(For team members only) `yarn deploy` will publish latest code to NPM and also update GitHub Pages, which contains our webpage and documentation. If you want to update only GitHub Pages, use `yarn deploy:site`.
 
 ## Suggested Programming Environment.
 

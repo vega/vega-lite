@@ -4,7 +4,7 @@
       {
         "name": "bar",
         "title": "Simple Bar Chart",
-        "description": "A bar chart encodes quantitative values as the extent of rectangular bars",
+        "description": "A bar chart encodes quantitative values as the extent of rectangular bars.",
         "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
@@ -83,12 +83,12 @@
       {
         "name": "isotype_bar_chart",
         "title": "Isotype Bar Chart",
-        "description": "Inspired by this [Only An Ocean Between, 1943](http://www.thomwhite.co.uk/?p=1303). Population Live Stock, p.13. This example was created by [@jwoLondon](https://github.com/jwoLondon)"
+        "description": "Inspired by this [Only An Ocean Between, 1943](http://www.thomwhite.co.uk/?p=1303). Population Live Stock, p.13. This example was created by [@jwoLondon](https://github.com/jwoLondon)."
       },
       {
         "name": "isotype_bar_chart_emoji",
         "title": "Isotype Bar Chart with Emoji",
-        "description": "This example was inspired by [@jakevdp](https://github.com/jakevdp) and Isotype Bar Chart by [@jwoLondon](https://github.com/jwoLondon)"
+        "description": "This example was inspired by [@jakevdp](https://github.com/jakevdp) and Isotype Bar Chart by [@jwoLondon](https://github.com/jwoLondon)."
       }
     ],
     "Scatter & Strip Plots": [
@@ -135,7 +135,7 @@
       },
       {
         "name": "circle_natural_disasters",
-        "description": "Visualization of global deaths from natural disasters. Copy of chart from [Our World in Data](https://ourworldindata.org/natural-catastrophes)",
+        "description": "Visualization of global deaths from natural disasters. Copy of chart from [Our World in Data](https://ourworldindata.org/natural-catastrophes).",
         "title": "Bubble Plot (Natural Disasters)",
         "png": true
       },
@@ -204,7 +204,7 @@
       {
         "name": "layer_line_co2_concentration",
         "title": "Carbon Dioxide in the Atmosphere",
-        "description": "This example was inspired by [Gregor Aisch](https://github.com/gka)'s [Carbon Dioxide Concentration By Decade](https://www.datawrapper.de/_/OHgEm/)"
+        "description": "This example was inspired by [Gregor Aisch](https://github.com/gka)'s [Carbon Dioxide Concentration By Decade](https://www.datawrapper.de/_/OHgEm/)."
       },
       {
         "name": "window_rank",
@@ -397,12 +397,12 @@
       {
         "name": "layer_line_co2_concentration",
         "title": "Carbon Dioxide in the Atmosphere",
-        "description": "This example was inspired by [Gregor Aisch](https://github.com/gka)'s [Carbon Dioxide Concentration By Decade](https://www.datawrapper.de/_/OHgEm/)"
+        "description": "This example was inspired by [Gregor Aisch](https://github.com/gka)'s [Carbon Dioxide Concentration By Decade](https://www.datawrapper.de/_/OHgEm/)."
       },
       {
         "name": "layer_bar_annotations",
         "title": "Bar Chart Highlighting Values beyond a Threshold",
-        "description": "To create a bar chart that highlights values beyond a threshold, we use two `layer`s of `bar` marks. The lower layer shows all the bars while the upper layer shows bar with values above the threshold in red (`#e45755`).  We then `layer` a `rule` mark and a `text` mark over the bars to annotate the threshold value"
+        "description": "To create a bar chart that highlights values beyond a threshold, we use two `layer`s of `bar` marks. The lower layer shows all the bars while the upper layer shows bar with values above the threshold in red (`#e45755`).  We then `layer` a `rule` mark and a `text` mark over the bars to annotate the threshold value."
       },
       {
         "name": "layer_precipitation_mean",
@@ -429,12 +429,12 @@
       {
         "name": "layer_likert",
         "title": "Distributions and Medians of Likert Scale Ratings",
-        "description": "Distributions and Medians of Likert Scale Ratings. (Figure 9. from @jhoffswell and @zcliu's 'Interactive Repair of Tables Extracted from PDF Documents on Mobile Devices' -- http://idl.cs.washington.edu/files/2019-InteractiveTableRepair-CHI.pdf)"
+        "description": "Distributions and Medians of Likert Scale Ratings. (Figure 9 from @jhoffswell and @zcliu's 'Interactive Repair of Tables Extracted from PDF Documents on Mobile Devices' -- http://idl.cs.washington.edu/files/2019-InteractiveTableRepair-CHI.pdf)."
       },
       {
         "name": "concat_layer_voyager_result",
         "title": "Comparative Likert Scale Ratings",
-        "description": "Comparing Likert scale ratings between two conditions. (Figure 10. from @kanitw et al.'s 'Voyager 2: Augmenting Visual Analysis with Partial View Specifications' -- http://idl.cs.washington.edu/files/2017-Voyager2-CHI.pdf)"
+        "description": "Comparing Likert scale ratings between two conditions. (Figure 10. from @kanitw et al.'s \"Voyager 2: Augmenting Visual Analysis with Partial View Specifications\" -- http://idl.cs.washington.edu/files/2017-Voyager2-CHI.pdf)."
       }
     ],
     "Other Layered Plots": [
@@ -518,7 +518,7 @@
       {
         "name": "repeat_histogram",
         "title": "Horizontally Repeated Charts",
-        "description": "Horizontally repeated charts that show the histograms of different parameters of cars in different countries"
+        "description": "Horizontally repeated charts that show the histograms of different parameters of cars in different countries."
       },
       {
         "name": "interactive_splom",
@@ -533,7 +533,7 @@
       {
         "name": "concat_bar_scales_discretize",
         "title": "Discretizing scales",
-        "description": "Horizontally concatenated charts that show different types of discretizing scales"
+        "description": "Horizontally concatenated charts that show different types of discretizing scales."
       },
       {
         "name": "nested_concat_align",
@@ -590,7 +590,7 @@
       {
         "name": "geo_layer_line_london",
         "title": "London Tube Lines",
-        "description": "This example was created by Jo Wood",
+        "description": "This example was created by @jwoLondon.",
         "png": true
       }
     ]
@@ -630,12 +630,12 @@
       {
         "name": "selection_layer_bar_month",
         "title": "Interactive Average",
-        "description": "The plot below uses an interval selection, which causes the chart to include an interactive brush (shown in grey). The brush selection parameterizes the red guideline, which visualizes the average value within the selected interval"
+        "description": "The plot below uses an interval selection, which causes the chart to include an interactive brush (shown in grey). The brush selection parameterizes the red guideline, which visualizes the average value within the selected interval."
       },
       {
         "name": "interactive_multi_line_label",
         "title": "Multi Series Line Chart with Labels",
-        "description": "The plot displays labels for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)",
+        "description": "The plot displays labels for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9).",
         "png": true
       },
       {
@@ -647,7 +647,7 @@
       {
         "name": "isotype_grid",
         "title": "Isotype Grid",
-        "description": "Inspired by this [D3 example by Alan Smith](http://bl.ocks.org/alansmithy/d832fc03f6e6a91e99f4). Drag region to select. This example was created by [@jwoLondon](https://github.com/jwoLondon)",
+        "description": "Inspired by this [D3 example by Alan Smith](http://bl.ocks.org/alansmithy/d832fc03f6e6a91e99f4). Drag region to select. This example was created by @jwoLondon.",
         "png": true
       },
       {

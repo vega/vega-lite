@@ -12,7 +12,7 @@ const svg2png = require('svg2png-many');
 function createPage(example) {
   return `---
 layout: page
-${example.description ? `description: ${example.description}` : ''}
+${example.description ? `description: "${example.description.replace(/"/g, '\\"')}"` : ''}
 title: ${example.title}
 menu: examples
 permalink: /examples/${example.name}.html

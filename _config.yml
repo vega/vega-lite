@@ -4,36 +4,40 @@ description:
 
   Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.
 
-baseurl: '/vega-lite' # the subpath of your site, e.g. /blog/
-url: 'http://vega.github.io' # the base hostname & protocol for your site
+baseurl: "/vega-lite" # the subpath of your site, e.g. /blog/
+url: "https://vega.github.io" # the base hostname & protocol for your site
 twitter:
   username: vega_vis
 exclude:
-  - bin
-  - .github
-  - .vscode
   - .eslintrc.js
-  - .prettierrc
-  - .prettierignore
-  - .travis.yml
+  - .github
   - .npmignore
+  - .prettierignore
+  - .prettierrc
+  - .travis.yml
+  - .vscode
+  - bin
+  - codecov.yml
+  - CONTRIBUTING.md
   - coverage
+  - examples/compiled/data
+  - examples/specs/data
   - Gemfile
   - Gemfile.lock
+  - jest-puppeteer.config.js
+  - LICENSE
   - node_modules
+  - package.json
+  - README.md
+  - rollup.config.js
   - scripts
+  - src
   - test
   - test-runtime
-  - typings
-  - package.json
-  - yarn.lock
+  - tsconfig.base.json
   - tsconfig.json
-  - nodemon.json
-  - LICENSE
-  - README.md
-  - src
-  - examples/specs/data
-  - examples/compiled/data
+  - typings
+  - yarn.lock
 
 markdown: kramdown
 highlighter: none
