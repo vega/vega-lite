@@ -1,7 +1,6 @@
 import Ajv from 'ajv';
 import {inspect} from 'util';
-
-const specSchema = require('../build/vega-lite-schema.json');
+import specSchema from '../build/vega-lite-schema.json';
 
 describe('Schema', () => {
   it('should be valid', () => {

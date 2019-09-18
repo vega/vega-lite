@@ -46,8 +46,8 @@
     "site": "bundle exec jekyll serve --incremental",
     "tsc:src": "tsc -b src/tsconfig.src.json",
     "tsc:site": "tsc -b site/tsconfig.site.json",
-    "prettierbase": "prettier '{src,test,test-runtime,site,typings}/**/*.{md,css}'",
-    "eslintbase": "eslint '{src,test,test-runtime,site,typings}/**/*.ts'",
+    "prettierbase": "prettier '**/*.{md,css}'",
+    "eslintbase": "eslint --ext .ts .",
     "format": "yarn eslintbase --fix && yarn prettierbase --write",
     "lint": "yarn eslintbase && yarn prettierbase --check",
     "test": "jest test/ && yarn lint && yarn schema && jest examples/ && yarn test:runtime",
@@ -87,8 +87,10 @@
     "eslint-plugin-prettier": "^3.1.1",
     "highlight.js": "^9.15.10",
     "http-server": "^0.11.1",
+    "husky": "^3.0.5",
     "jest": "^24.9.0",
     "jest-puppeteer": "^4.3.0",
+    "lint-staged": "^9.2.5",
     "mkdirp": "^0.5.1",
     "prettier": "^1.18.2",
     "puppeteer": "^1.20.0",
@@ -126,6 +128,21 @@
   },
   "peerDependencies": {
     "vega": "^5.5.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{md,css}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "jest": {
     "preset": "jest-puppeteer",

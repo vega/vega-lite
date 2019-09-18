@@ -1,12 +1,13 @@
 ---
-name: "Feature request"
-about: "Suggest a new idea for Vega-Lite"
-labels: "Feature Request :raising_hand_woman:"
+name: 'Feature request'
+about: 'Suggest a new idea for Vega-Lite'
+labels: 'Feature Request :raising_hand_woman:'
 ---
 
 Please:
+
 - [ ] Check for duplicate issues. Please file separate requests as separate issues on GitHub.
-- [ ] Describe the feature's goal, motivating use cases, and its expected behavior. 
+- [ ] Describe the feature's goal, motivating use cases, and its expected behavior.
 
 - [ ] If you are proposing a new syntax, please provide at least one example spec, wrapped by triple backticks like this:
 

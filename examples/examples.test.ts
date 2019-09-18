@@ -1,15 +1,15 @@
 import Ajv from 'ajv';
+import draft6Schema from 'ajv/lib/refs/json-schema-draft-06.json';
 import fs from 'fs';
 import path from 'path';
 import {inspect} from 'util';
 import {Spec as VgSpec} from 'vega';
+import vgSchema from 'vega/build/vega-schema.json';
+import vlSchema from '../build/vega-lite-schema.json';
 import {compile} from '../src/compile/compile';
 import * as log from '../src/log';
 import {TopLevelSpec} from '../src/spec';
 import {duplicate} from '../src/util';
-
-const vlSchema = require('../build/vega-lite-schema.json');
-const vgSchema = require('vega/build/vega-schema.json');
 
 const ajv = new Ajv({
   validateSchema: true,
@@ -18,7 +18,7 @@ const ajv = new Ajv({
   schemaId: 'auto' // for draft 04 and 06 schemas
 });
 
-ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
+ajv.addMetaSchema(draft6Schema);
 ajv.addFormat('color-hex', () => true);
 
 const validateVl = ajv.compile(vlSchema);
