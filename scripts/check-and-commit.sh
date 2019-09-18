@@ -2,17 +2,7 @@
 
 set -e
 
-if [[ $GITHUB_REF != refs/heads/* ]]; then
-  echo "${GITHUB_REF} is not a ref."
-  exit 0;
-fi
-
-PREFIX=refs/heads/
-BRANCH=${GITHUB_REF#"$PREFIX"}
-
-git config --global user.name "${GITHUB_ACTOR}"
-git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-git checkout $BRANCH
+scripts/setup-git-ci.sh
 
 echo ""
 echo "------- Checking Schema -------"
@@ -77,7 +67,6 @@ if [[ $BRANCH != 'master' ]]; then
   fi
 
   # Then push all the changes (schema, examples, prettier)
-  git remote add origin-pushable https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git > /dev/null 2>&1
   git push origin-pushable ${GITHUB_REF}
 fi
 

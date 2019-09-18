@@ -176,7 +176,7 @@ During development, it can be convenient to rebuild automatically or to run test
 
 ### Deployment
 
-(For team members only) `yarn deploy` will publish latest code to NPM and also update GitHub Pages, which contains our webpage and documentation. If you want to update only GitHub Pages, use `yarn deploy:site`.
+To make a new release, bump the version number with `yarn version`. Then push the tagged commit to master. GitHub will run checks and make a release. This will also update the website and schema. Once the release is on NPM, add a new GitHub release and update the changelog. If you want to update only GitHub Pages, use `yarn deploy:site`.
 
 ## Suggested Programming Environment.
 
