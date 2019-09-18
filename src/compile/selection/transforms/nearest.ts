@@ -34,8 +34,8 @@ const nearest: TransformCompiler = {
       transform: [
         {
           type: 'voronoi',
-          x: {expr: x || (!x && !y) ? 'datum.datum.x || 0' : '0'},
-          y: {expr: y || (!x && !y) ? 'datum.datum.y || 0' : '0'},
+          x: {expr: x || !y ? 'datum.datum.x || 0' : '0'},
+          y: {expr: y || !x ? 'datum.datum.y || 0' : '0'},
           size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')]
         }
       ]
