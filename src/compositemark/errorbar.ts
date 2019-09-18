@@ -11,7 +11,7 @@ import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {Step} from '../spec/base';
 import {TitleParams} from '../title';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
-import {Flag, keys, titlecase} from '../util';
+import {Flag, keys, replaceAll, titlecase} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -532,9 +532,7 @@ function errorBarAggregationAndCalculation<
     for (const postAggregateCalculate of postAggregateCalculates) {
       tooltipSummary.push({
         fieldPrefix: postAggregateCalculate.as.substring(0, 6),
-        titlePrefix: postAggregateCalculate.calculate
-          .replace(new RegExp('datum\\[\\"', 'g'), '')
-          .replace(new RegExp('\\"\\]', 'g'), '')
+        titlePrefix: replaceAll(replaceAll(postAggregateCalculate.calculate, 'datum["', ''), '"]', '')
       });
     }
   }

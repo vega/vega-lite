@@ -376,8 +376,19 @@ export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' | 'd
  */
 export function replacePathInField(path: string) {
   return `${splitAccessPath(path)
-    .map(p => p.replace('.', '\\.'))
+    .map(p => replaceAll(p, '.', '\\.'))
     .join('\\.')}`;
+}
+
+/**
+ * Replace all ocurrences of a string with another string.
+ *
+ * @param string the string to replace in
+ * @param find the string to replace
+ * @param replacement the replacement
+ */
+export function replaceAll(string: string, find: string, replacement: string) {
+  return string.replace(new RegExp(find.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), replacement);
 }
 
 /**
