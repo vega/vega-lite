@@ -299,7 +299,7 @@ export function normalizeBoxPlot(
     return {
       ...outerSpec,
       layer: [
-        ...(filteredLayersMixins ? [filteredLayersMixins] : []),
+        filteredLayersMixins,
         {
           // boxplot
           transform,
