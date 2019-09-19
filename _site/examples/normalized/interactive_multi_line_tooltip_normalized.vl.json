@@ -1,0 +1,48 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {"url": "data/seattle-weather.csv", "format": {"type": "csv"}},
+  "layer": [
+    {
+      "mark": {"type": "line", "color": "orange"},
+      "encoding": {
+        "x": {"timeUnit": "yearmonthdate", "field": "date", "type": "temporal"},
+        "tooltip": [
+          {"timeUnit": "yearmonthdate", "field": "date", "type": "temporal"},
+          {"field": "temp_max", "type": "quantitative"},
+          {"field": "temp_min", "type": "quantitative"}
+        ],
+        "y": {"field": "temp_max", "type": "quantitative"}
+      }
+    },
+    {
+      "mark": {"type": "line", "color": "red"},
+      "encoding": {
+        "x": {"timeUnit": "yearmonthdate", "field": "date", "type": "temporal"},
+        "tooltip": [
+          {"timeUnit": "yearmonthdate", "field": "date", "type": "temporal"},
+          {"field": "temp_max", "type": "quantitative"},
+          {"field": "temp_min", "type": "quantitative"}
+        ],
+        "y": {"field": "temp_min", "type": "quantitative"}
+      }
+    },
+    {
+      "mark": "rule",
+      "selection": {
+        "hover": {"type": "single", "on": "mouseover", "empty": "none"}
+      },
+      "encoding": {
+        "x": {"timeUnit": "yearmonthdate", "field": "date", "type": "temporal"},
+        "tooltip": [
+          {"timeUnit": "yearmonthdate", "field": "date", "type": "temporal"},
+          {"field": "temp_max", "type": "quantitative"},
+          {"field": "temp_min", "type": "quantitative"}
+        ],
+        "color": {
+          "condition": {"selection": {"not": "hover"}, "value": "transparent"}
+        }
+      }
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
+}
