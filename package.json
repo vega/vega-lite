@@ -46,7 +46,7 @@
     "site": "bundle exec jekyll serve --incremental",
     "tsc:src": "tsc -b src/tsconfig.src.json",
     "tsc:site": "tsc -b site/tsconfig.site.json",
-    "prettierbase": "prettier '**/*.{md,css}'",
+    "prettierbase": "prettier '**/*.{md,css,yml}'",
     "eslintbase": "eslint --ext .ts .",
     "format": "yarn eslintbase --fix && yarn prettierbase --write",
     "lint": "yarn eslintbase && yarn prettierbase --check",
@@ -139,7 +139,7 @@
       "eslint --fix",
       "git add"
     ],
-    "*.{md,css}": [
+    "*.{md,css,yml}": [
       "prettier --write",
       "git add"
     ]
