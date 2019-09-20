@@ -40,9 +40,8 @@ export class LocalLogger implements LoggerInterface {
     return this;
   }
 
-  public error(...args: any[]) {
+  public error(...args: any[]): this {
     throw Error(...args);
-    return this; // @ts-ignore
   }
 }
 
