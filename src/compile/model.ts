@@ -510,7 +510,7 @@ export abstract class Model {
               signal: sizeExpr(scaleName, scaleComponent, fieldRef)
             };
           } else {
-            log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
+            log.warn(`Unknown field for ${channel}. Cannot calculate view size.`);
             return null;
           }
         }
