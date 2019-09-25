@@ -663,6 +663,7 @@ nav .dropdown-content {
   position: absolute;
   display: none;
   min-width: 141px;
+  top: 54px; /* For Firefox */
 }
 
 nav .dropdown-content a {

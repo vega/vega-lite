@@ -71,4 +71,4 @@ git push --tags
 scripts/deploy-schema.sh
 
 # 4. GITHUB PAGES PUBLISH
-scripts/deploy-gh.sh
+scripts/deploy-site.sh
