@@ -67,6 +67,8 @@
     "url": "https://github.com/vega/vega-lite/issues"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
     "@types/chai": "^4.2.3",
     "@types/d3": "^5.7.2",
     "@types/highlight.js": "^9.12.3",
@@ -131,7 +133,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
