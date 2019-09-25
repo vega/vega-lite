@@ -1,6 +1,6 @@
 import {DateTimeExpr, dateTimeExpr} from './datetime';
 import * as log from './log';
-import {accessPathWithDatum, Flag, keys} from './util';
+import {accessPathWithDatum, Flag, keys, replaceAll} from './util';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
@@ -429,7 +429,7 @@ export function formatExpression(
 export function normalizeTimeUnit(timeUnit: TimeUnit): TimeUnit {
   if (timeUnit !== 'day' && timeUnit.indexOf('day') >= 0) {
     log.warn(log.message.dayReplacedWithDate(timeUnit));
-    return timeUnit.replace('day', 'date') as TimeUnit;
+    return replaceAll(timeUnit, 'day', 'date') as TimeUnit;
   }
   return timeUnit;
 }

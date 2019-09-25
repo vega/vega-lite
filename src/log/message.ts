@@ -11,7 +11,7 @@ import {Projection} from '../projection';
 import {ScaleType} from '../scale';
 import {GenericSpec} from '../spec/index';
 import {Type} from '../type';
-import {stringify} from '../util';
+import {stringify, replaceAll} from '../util';
 import {VgSortField} from '../vega.schema';
 
 /**
@@ -287,7 +287,8 @@ export function invalidTimeUnit(unitName: string, value: string | number) {
 }
 
 export function dayReplacedWithDate(fullTimeUnit: string) {
-  return `Time unit "${fullTimeUnit}" is not supported. We are replacing it with ${fullTimeUnit.replace(
+  return `Time unit "${fullTimeUnit}" is not supported. We are replacing it with ${replaceAll(
+    fullTimeUnit,
     'day',
     'date'
   )}.`;

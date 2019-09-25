@@ -1,5 +1,5 @@
 import {Legend as VgLegend, LegendEncode} from 'vega';
-import {keys, stringify, vals} from '../../util';
+import {keys, replaceAll, stringify, vals} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {Model} from '../model';
 import {LegendComponent} from './component';
@@ -64,7 +64,7 @@ export function assembleLegends(model: Model): VgLegend[] {
           legend.encode.labels.update &&
           isSignalRef(legend.encode.labels.update.text)
         ) {
-          expr = labelExpr.replace('datum.label', legend.encode.labels.update.text.signal);
+          expr = replaceAll(labelExpr, 'datum.label', legend.encode.labels.update.text.signal);
         }
 
         setLegendEncode(legend, 'labels', 'text', {signal: expr});

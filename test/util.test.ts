@@ -19,7 +19,8 @@ import {
   stringify,
   unique,
   uniqueId,
-  varName
+  varName,
+  replaceAll
 } from '../src/util';
 
 describe('util', () => {
@@ -68,6 +69,7 @@ describe('util', () => {
       expect(hash({foo: 42})).toBe('{"foo":42}');
     });
   });
+
   describe('deleteNestedProperty', () => {
     it('removes a property from an object', () => {
       const originalObject = {
@@ -261,6 +263,7 @@ describe('util', () => {
       expect(arr).toEqual([42, 42, 42, 42, 42]);
     });
   });
+
   describe('isEqual', () => {
     it('should return false when dict is a subset of other', () => {
       expect(isEqual({a: 1}, {a: 1, b: 2})).toBe(false);
@@ -275,6 +278,7 @@ describe('util', () => {
       expect(isEqual({a: 1}, {a: 2})).toBe(false);
     });
   });
+
   describe('differArray', () => {
     it('should return false when both arrays are empty', () => {
       expect(differArray([], [])).toBe(false);
@@ -290,6 +294,7 @@ describe('util', () => {
       expect(differArray(a, b)).toBe(false);
     });
   });
+
   describe('isNumeric', () => {
     it('should return true for integers', () => {
       expect(isNumeric(1)).toBe(true);
@@ -304,6 +309,17 @@ describe('util', () => {
     });
     it('should return false for text', () => {
       expect(isNumeric('foo')).toBe(false);
+    });
+  });
+
+  describe('replaceAll', () => {
+    it('should replace all ocurrences', () => {
+      expect(replaceAll('abababa', 'a', 'c')).toBe('cbcbcbc');
+    });
+    it('should work with special characters', () => {
+      expect(replaceAll('a/c', '/', 'b')).toBe('abc');
+      expect(replaceAll('a\\c', '\\', 'b')).toBe('abc');
+      expect(replaceAll('a[c', '[', 'b')).toBe('abc');
     });
   });
 });

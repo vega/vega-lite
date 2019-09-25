@@ -4,7 +4,7 @@ import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isCondition
 import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';
 import {Config} from '../../config';
-import {getFirstDefined, keys} from '../../util';
+import {getFirstDefined, keys, replaceAll} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {Model} from '../model';
 import {expression} from '../predicate';
@@ -115,7 +115,7 @@ export function assembleAxis(
         axis.encode.labels.update &&
         isSignalRef(axis.encode.labels.update.text)
       ) {
-        expr = labelExpr.replace('datum.label', axis.encode.labels.update.text.signal);
+        expr = replaceAll(labelExpr, 'datum.label', axis.encode.labels.update.text.signal);
       }
 
       setAxisEncode(axis, 'labels', 'text', {signal: expr});
