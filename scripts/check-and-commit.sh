@@ -4,6 +4,8 @@ set -e
 
 scripts/setup-git-ci.sh
 
+GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
 echo ""
 echo "------- Checking Schema -------"
 echo ""
@@ -12,7 +14,7 @@ echo ""
 if ! git diff --exit-code ./build/vega-lite-schema.json
 then
   ## Only do this for master
-  if [[ $BRANCH == 'master' ]]; then
+  if [[ $GIT_BRANCH == 'master' ]]; then
     echo "Outdated schema."
     exit 1
   else
@@ -26,7 +28,7 @@ echo "------- Checking Examples -------"
 echo ""
 
 
-if git log -1 | grep "\[SVG\]" && [[ $BRANCH != 'master' ]]; then
+if git log -1 | grep "\[SVG\]" && [[ $GIT_BRANCH != 'master' ]]; then
   echo "As the latest commit includes [SVG]. Rebuilding all SVGs."
   yarn build:examples-full
 else
@@ -39,7 +41,7 @@ fi
 # Note: git commands need single quotes for all the files and directories with wildcards
 git add ./examples/compiled/vega_version './examples/compiled/*.vg.json' './examples/compiled/*.svg' './examples/specs/normalized/*.vl.json'
 
-if [[ $BRANCH == 'master' ]]; then
+if [[ $GIT_BRANCH == 'master' ]]; then
   # Don't diff SVG as floating point calculation is not always consistent
   if ! git diff --cached --word-diff=color --exit-code './examples/compiled/*.vg.json' './examples/specs/normalized/*.vl.json'
   then
@@ -58,7 +60,7 @@ echo ""
 echo "------- Checking Code Formatting -------"
 echo ""
 
-if [[ $BRANCH != 'master' ]]; then
+if [[ $GIT_BRANCH != 'master' ]]; then
   ## For non-master branch, commit eslint fix and prettier changes if outdated
   if ! git diff --word-diff=color --exit-code  src test test-runtime
   then

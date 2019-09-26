@@ -1,6 +1,9 @@
 name: Check
 
-on: [push]
+on:
+  push:
+    branches:
+      - '*'
 
 jobs:
   check:
@@ -24,11 +27,11 @@ jobs:
           sudo mv parallel sem /usr/local/bin
 
       - name: Lint
-        if: github.ref == 'master'
+        if: github.ref == 'refs/heads/master'
         run: yarn lint
 
       - name: Format
-        if: github.ref != 'master'
+        if: github.ref != 'refs/heads/master'
         run: yarn format
 
       - name: Build Schema

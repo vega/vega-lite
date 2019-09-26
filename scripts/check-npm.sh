@@ -24,13 +24,10 @@ if ! [ -f build/vega-lite-schema.json ]; then
   exit 1;
 fi
 if ! [ -f build/src/index.js ]; then
-  echo "${RED} build/src/index.js not found.  Typescripts may not be compiled.${NC}"
+  echo "${RED} build/src/index.js not found. Typescripts may not be compiled.${NC}"
   exit 1;
 fi
 if ! [ -f build/src/index.d.ts ]; then
-  echo "${RED} build/src/index.d.ts not found.  Typescript declarations may not be compiled.${NC}"
+  echo "${RED} build/src/index.d.ts not found. Typescript declarations may not be compiled.${NC}"
   exit 1;
 fi
-
-echo "Publishing to NPM"
-npm publish

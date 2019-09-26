@@ -2,11 +2,6 @@
 
 set -e
 
-if [[ $GITHUB_REF != refs/heads/* ]]; then
-  echo "${GITHUB_REF} is not a ref."
-  exit 0;
-fi
-
 GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
 
 git config --global user.name "${GITHUB_ACTOR}"

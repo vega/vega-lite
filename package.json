@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Dominik Moritz, Kanit \"Ham\" Wongsuphasawat, Arvind Satyanarayan, Jeffrey Heer",
-  "version": "4.0.0-beta.2",
+  "version": "4.0.0-beta.3",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -54,7 +54,8 @@
     "test:runtime:generate": "rm -Rf test-runtime/resources && VL_GENERATE_TESTS=true yarn test:runtime",
     "watch:build": "yarn build:only && concurrently --kill-others -n Typescript,Rollup 'yarn tsc:src -w' 'rollup -c -w'",
     "watch:site": "concurrently --kill-others -n Typescript,Rollup 'yarn tsc:site -w' 'rollup -c site/rollup.config.js -w'",
-    "watch:test": "jest --watch"
+    "watch:test": "jest --watch",
+    "preversion": "scripts/pre-deploy.sh"
   },
   "repository": {
     "type": "git",

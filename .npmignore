@@ -16,6 +16,7 @@ _config.yml
 /test
 /test-runtime
 codecov.yml
+commitlint.config.js
 CONTRIBUTING.md
 Gemfile
 Gemfile.lock
