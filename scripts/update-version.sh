@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-FILE='./_data/versions.yml'
+FILE='site/_data/versions.yml'
 
 echo "vega: `./scripts/version.sh vega`" > $FILE
 echo "vega-lite: `./scripts/version.sh vega-lite`" >> $FILE

@@ -43,7 +43,7 @@ Besides the properties listed above, `"box"`, `"median"`, `"rule"`, `"outliers"`
 
 Vega-Lite supports two types of box plots, defined by the `extent` property in the mark definition object.
 
-1. **Tukey Box Plot** is the default box plot in Vega-Lite. For a Tukey box plot, the whisker spans from the smallest data to the largest data within the range _[Q1 - k * IQR, Q3 + k * IQR]_ where _Q1_ and _Q3_ are the first and third quartiles while _IQR_ is the interquartile range (_Q3-Q1_). In this type of box plot, you can specify the constant _k_ by setting the `extent`. If [there are outlier points beyond the whisker](#2d), they will be displayed using point marks.
+1. **Tukey Box Plot** is the default box plot in Vega-Lite. For a Tukey box plot, the whisker spans from the smallest data to the largest data within the range _[Q1 - k * IQR, Q3 + k * IQR]_ where _Q1_ and _Q3_ are the first and third quartiles while _IQR_ is the interquartile range (_Q3-Q1_). In this type of box plot, you can specify the constant _k_ by setting the `extent`. If [there are outlier points beyond the whisker](#dims-orient), they will be displayed using point marks.
 
 By default, the extent is `1.5`.
 
@@ -57,11 +57,13 @@ Explicitly setting `extent` to `1.5` produces the following identical plot.
 
 <div class="vl-example" data-name="boxplot_minmax_2D_horizontal"></div>
 
+{:#dims-orient}
+
 ## Dimension & Orientation
 
 Vega-Lite supports both 1D and 2D box plots:
 
-{:#1d} **1D box plot** shows the distribution of a continuous field.
+**1D box plot** shows the distribution of a continuous field.
 
 <div class="vl-example" data-name="boxplot_1D_horizontal"></div>
 
@@ -69,7 +71,7 @@ A boxplot's orientation is automatically determined by the continuous field axis
 
 <div class="vl-example" data-name="boxplot_1D_vertical"></div>
 
-{:#2d} **2D box plot** shows the distribution of a continuous field, broken down by categories.
+**2D box plot** shows the distribution of a continuous field, broken down by categories.
 
 For 2D box plots with one continuous field and one discrete field, the box plot will be horizontal if the continuous field is on the x axis.
 
@@ -83,7 +85,7 @@ Alternatively, if the continuous field is on the y axis, the box plot will be ve
 
 ## The Parts of Box Plots
 
-Under the hood, the `"boxplot"` mark is a [composite mark](mark.html#composite-marks) that expands into a layered plot. For example, [a basic 1D boxplot shown above](#1d) is expanded to:
+Under the hood, the `"boxplot"` mark is a [composite mark](mark.html#composite-marks) that expands into a layered plot. For example, [a basic 1D boxplot shown above](#dims-orient) is expanded to:
 
 <div class="vl-example" data-name="normalized/boxplot_1D_horizontal_normalized"></div>
 

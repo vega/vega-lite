@@ -108,18 +108,26 @@ For bundler:
 gem install bundler
 ```
 
-For jekyll and its dependencies, because we already have the `Gemfile` in the repo, you can simply run:
+For Jekyll and its dependencies, because we already have the `Gemfile` in the repo, you can simply run:
 
 ```sh
+pushd site
 bundle install
+popd
 ```
 
 ## Directory Structure
 
-- `_layouts/` – Our website and documentation's Jekyll layout files.
 - `bin/` – Scripts for using Vega-Lite with command line.
-- `data/` – Example data.
 - `site/` – Vega-Lite website including documentation.
+
+  - `_data/` – Jekyll data.
+  - `_includes/` – Jekyll includes.
+  - `_layouts/` – Jekyll layout files.
+  - `data/` – Example data.
+  - `examples/` – Example images, specifications, and pages for the website.
+  - `static/` – Static files for the website.
+
 - `examples/` – Example Vega-Lite specifications.
 
   - `specs` Vega-Lite examples.

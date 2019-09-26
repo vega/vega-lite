@@ -20,8 +20,8 @@ Pan the <select id="type" onchange="buildTranslate()"><option>brush</option><opt
 
 <script type="text/javascript">
 function buildTranslate() {
-  var type = document.getElementById('type').value;
-  var event = document.getElementById('event').value;
+  const type = document.getElementById('type').value;
+  const event = document.getElementById('event').value;
   changeSpec('translate', 'selection_translate_' + type + '_' + event);
 }
 </script>

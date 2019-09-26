@@ -10,16 +10,16 @@
     {% seo %}
 
     <script>
-      var BASEURL = window.location.origin + '{{site.baseurl}}';
+      const BASEURL = window.location.origin + '{{site.baseurl}}';
     </script>
 
-    <link rel="stylesheet" href="{{ site.baseurl }}/site/static/github.css" />
+    <link rel="stylesheet" href="{{ site.baseurl }}/static/github.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
-    <link rel="stylesheet" href="{{ site.baseurl }}/site/static/main.css" />
+    <link rel="stylesheet" href="{{ site.baseurl }}/static/main.css" />
   </head>
   <body>
     {{ content }}
-    <script src="{{ site.baseurl }}/build/site/bundle.js"></script>
+    <script src="{{ site.baseurl }}/static/bundle.js"></script>
     <script>
       // Google Analytics
       (function(i, s, o, g, r, a, m) {
