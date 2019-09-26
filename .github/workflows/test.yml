@@ -1,0 +1,61 @@
+name: Test
+
+on: [push]
+
+jobs:
+  test-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [8, 10, 12]
+
+    name: Node ${{ matrix.node }}
+
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Tests
+        run: yarn jest test/
+
+      - name: Example tests
+        run: yarn jest examples/
+
+      - name: Build
+        run: yarn build
+
+  runtime-coverage:
+    runs-on: ubuntu-latest
+
+    name: Runtime and Coverage
+
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Build
+        run: yarn build:only
+
+      - name: Runtime tests
+        run: yarn test:runtime
+
+      - name: Test coverage
+        run: yarn jest test/ --collectCoverage=true
+
+      - name: Upload coverage to Codecov
+        run: yarn codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

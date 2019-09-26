@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 FILE='site/_data/versions.yml'
 
 echo "vega: `./scripts/version.sh vega`" > $FILE

@@ -1,0 +1,43 @@
+name: Check
+
+on: [push]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    name: Lint, Format, Schema, and Examples
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Install Parallel
+        run: |
+          # Minimal installation as described in https://github.com/martinda/gnu-parallel
+          # Faster than "sudo apt-get install parallel"
+          wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
+          chmod +x parallel
+          cp parallel sem
+          sudo mv parallel sem /usr/local/bin
+
+      - name: Lint
+        if: github.ref == 'master'
+        run: yarn lint
+
+      - name: Format
+        if: github.ref != 'master'
+        run: yarn format
+
+      - name: Build Schema
+        run: yarn schema
+
+      - name: Check Schema
+        run: ./scripts/check-schema.sh
+
+      - name: Check and Commit
+        run: ./scripts/check-and-commit.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
