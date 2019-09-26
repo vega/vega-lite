@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite) ![](https://github.com/actions/vega/workflows/Test/badge.svg) [![codecov](https://codecov.io/gh/vega/vega-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/vega/vega-lite) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=rounded)](https://github.com/prettier/prettier) [![JSDevlivr](https://data.jsdelivr.com/v1/package/npm/vega-lite/badge?style=rounded)](https://www.jsdelivr.com/package/npm/vega-lite)
 
-![Teaser](static/teaser.png)
+![Teaser](site/static/teaser.png)
 
 [Vega-Lite](https://vega.github.io/vega-lite/) provides a higher-level grammar for visual analysis that generates complete [Vega](https://vega.github.io/) specifications.
 
