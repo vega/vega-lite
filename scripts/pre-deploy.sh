@@ -26,7 +26,6 @@ else
 fi
 
 # 0.4 Check if the Vega's schema repository exists in the same parent directory (as a sibling directory)
-
 if ! [ -d "../schema" ]; then
   echo "${RED}Vega-Lite schema cannot be updated if the vega/schema repository does not exist in the same parent directory.${NC}"
   exit 1;

@@ -1,13 +1,6 @@
 #!/usr/bin/env bash
 
-set -ex
-
-scripts/pre-deploy.sh
-
-# 1. NPM PUBLISH
-
-yarn clean
-yarn build
+set -e
 
 # Check if all required files are here
 if ! [ -f build/vega-lite.js ]; then
@@ -39,36 +32,5 @@ if ! [ -f build/src/index.d.ts ]; then
   exit 1;
 fi
 
+echo "Publishing to NPM"
 npm publish
-
-# exit if npm publish failed
-rc=$?
-if [[ $rc != 0 ]]; then
-	echo "${RED} npm publish failed.  Publishing canceled. ${NC} \n\n"
-	exit $rc;
-fi
-
-# 2. TAG RELEASE
-
-gitsha=$(git rev-parse HEAD)
-version=$(scripts/version.sh vega-lite)
-
-git checkout head
-# add the compiled files, commit and tag!
-git add build/** -f
-
-# commit, tag and push to gh-pages and swap back to master
-set +e
-git commit -m "Release $version $gitsha"
-set -e
-git tag -am "Release v$version." "v$version"
-
-# swap back to the clean master and push the new tag
-git checkout master
-git push --tags
-
-# 3. SCHEMA
-scripts/deploy-schema.sh
-
-# 4. GITHUB PAGES PUBLISH
-scripts/deploy-site.sh

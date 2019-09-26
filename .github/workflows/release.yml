@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    name: Release
+
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+
+      - name: Setup Git remote
+        run: ./scripts/setup-git-ci.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add schema repo
+        run: |
+          pushd ..
+          git clone https://x-access-token:${GITHUB_TOKEN}@github.com/vega/schema.git
+          popd
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy check
+        run: ./scripts/pre-deploy.sh
+
+      - name: Publish to NPM registry
+        run: ./scripts/deploy-npm.sh
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish website
+        run: ./scripts/deploy-site.sh
+
+      - name: Publish schema
+        run: ./scripts/deploy-schema.sh
