@@ -37,6 +37,8 @@
     "build:jekyll": "pushd site && bundle exec jekyll build -q && popd",
     "build:versions": "scripts/update-version.sh",
     "clean": "find build ! -name 'vega-lite-schema.json' -type f -delete && rm -rf site/data/* && rm -f examples/compiled/*.png && find site/examples ! -name 'index.md' ! -name 'data' -type f -delete",
+    "predeploy:site": "yarn presite",
+    "deploy:site": "gh-pages -d site",
     "data": "rsync -r node_modules/vega-datasets/data/* site/data",
     "schema": "mkdir -p build && ts-json-schema-generator -c -f tsconfig.json -p src/index.ts -t TopLevelSpec > build/vega-lite-schema.json && yarn renameschema && cp build/vega-lite-schema.json site/_data/",
     "renameschema": "scripts/rename-schema.sh",
