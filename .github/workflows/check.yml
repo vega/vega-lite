@@ -49,12 +49,9 @@ jobs:
           ruby-version: '2.x'
 
       - name: Build Jekyll
-        run: |
-          gem install bundler
-          pushd site
-          bundle install
-          bundle exec jekyll build -q
-          popd
+        uses: docker://jekyll/builder
+        with:
+          args: /bin/bash -c "cd /github/workspace/site && jekyll build"
 
       - name: Build TOC
         run: scripts/generate-toc
