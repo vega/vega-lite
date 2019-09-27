@@ -211,7 +211,7 @@ In this webpage, we first load the dependencies for Vega-Lite (Vega-Embed, Vega,
 
 In the JavaScript code, we create a variable `vlSpec` that holds the Vega-Lite specification in JSON format. The `vegaEmbed` method translates a Vega-Lite specification into a Vega specification and then calls the [Vega Runtime](https://vega.github.io/vega/usage/) to display visualization in the container `<div/>` element.
 
-If viewed in a browser, this page displays our bar chart like on our [demo page]({{site.baseurl}}/site/demo.html). You can also fork our [Vega-Lite Block example](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9).
+If viewed in a browser, this page displays our bar chart like on our [demo page]({{site.baseurl}}/demo.html). You can also fork our [Vega-Lite Block example](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9).
 
 ## Next Steps
 

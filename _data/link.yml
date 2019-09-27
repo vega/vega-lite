@@ -5,58 +5,57 @@ Spec:
   link: spec.html
 CompositeUnitSpec:
   name: SingleViewSpec
-  link: "spec.html#single"
+  link: 'spec.html#single'
 ViewBackground:
-  name: "spec.html#view-background"
+  name: 'spec.html#view-background'
 LayerSpec:
-  link: "layer.html"
+  link: 'layer.html'
 AutoSizeParams:
-  link: "size.html#autosize"
+  link: 'size.html#autosize'
 
 ## Facet Spec
 FacetMapping:
-  link: "facet.html#mapping"
+  link: 'facet.html#mapping'
 Header:
-  link: "facet.html#header"
+  link: 'facet.html#header'
 
 # Data
 Data:
-  link: "data.html"
+  link: 'data.html'
 DataFormat:
-  link: "data.html#format"
-
+  link: 'data.html#format'
 
 # Title
 TitleParams:
-  link: "title.html#params"
+  link: 'title.html#params'
 
 # Transform
 Transform:
-  link: "transform.html"
+  link: 'transform.html'
 
 AggregateOp:
-  link: "aggregate.html#ops"
+  link: 'aggregate.html#ops'
 NonArgAggregateOp:
   name: AggregateOp
-  link: "aggregate.html#ops"
+  link: 'aggregate.html#ops'
 Bin:
-  link: "bin.html"
+  link: 'bin.html'
 BinParams:
-  link: "bin.html#bin-parameters"
-"LogicalOperand<Predicate>":
+  link: 'bin.html#bin-parameters'
+'LogicalOperand<Predicate>':
   name: Predicate
-  link: "transform.html#predicate"
-"LogicalOperand&lt;Predicate&gt;":
+  link: 'transform.html#predicate'
+'LogicalOperand&lt;Predicate&gt;':
   name: Predicate
-  link: "transform.html#predicate"
+  link: 'transform.html#predicate'
 AggregateOpDef:
-  link: "transform.html#aggregate-op-def"
+  link: 'transform.html#aggregate-op-def'
 TimeUnit:
-  link: "timeunit.html"
+  link: 'timeunit.html'
 LookupData:
-  link: "lookup.html#lookup-data"
+  link: 'lookup.html#lookup-data'
 Window:
-  link: "window.html"
+  link: 'window.html'
 
 # Transform - Impute
 ImputeSequence:
@@ -70,11 +69,11 @@ Day:
 
 # Transform - Window
 WindowFieldDef:
-  link: "window.html#field-def"
+  link: 'window.html#field-def'
 SortField:
-  link: "window.html#sort-field-def"
+  link: 'window.html#sort-field-def'
 WindowOnlyOp:
-  link: "window.html#ops"
+  link: 'window.html#ops'
 
 # Mark
 AnyMark:
@@ -87,234 +86,232 @@ SymbolShape:
 LabelOverlap:
   name: String
 ConditionalAxisProperty:
-  link: "axis.html#conditional"
+  link: 'axis.html#conditional'
 
 # Config
 Config:
-  link: "config.html"
+  link: 'config.html'
 AxisConfig:
-  link: "axis.html#config"
+  link: 'axis.html#config'
 LegendConfig:
-  link: "legend.html#config"
+  link: 'legend.html#config'
 MarkConfig:
-  link: "mark.html#config"
+  link: 'mark.html#config'
 BarConfig:
-  link: "bar.html#config"
+  link: 'bar.html#config'
 RangeConfig:
-  link: "scale.html#range-config"
+  link: 'scale.html#range-config'
 ScaleConfig:
-  link: "scale.html#config"
+  link: 'scale.html#config'
 ProjectionConfig:
-  link: "projection.html#config"
+  link: 'projection.html#config'
 SelectionConfig:
-  link: "selection.html#config"
+  link: 'selection.html#config'
 StyleConfigIndex:
   name: Object
 TextConfig:
-  link: "text.html#config"
+  link: 'text.html#config'
 TickConfig:
-  link: "tick.html#config"
+  link: 'tick.html#config'
 TitleConfig:
-  link: "title.html#config"
+  link: 'title.html#config'
 ViewConfig:
-  link: "spec.html#config"
+  link: 'spec.html#config'
 CompositionConfig:
-  link: "config.html#composition-config"
+  link: 'config.html#composition-config'
 
 # Encoding
 EncodingWithFacet:
   name: Encoding
-  link: "encoding.html"
+  link: 'encoding.html'
 Type:
   link: type.html
 SingleDefChannel:
-  name: "Channel"
-  link: "encoding.html#channels"
+  name: 'Channel'
+  link: 'encoding.html#channels'
 SingleDefUnitChannel:
-  name: "Channel"
-  link: "encoding.html#channels"
+  name: 'Channel'
+  link: 'encoding.html#channels'
 AllSortString:
-  name: "String"
+  name: 'String'
 
 # Channel Definitions
 NumericFieldDefWithCondition:
   name: MarkPropFieldDef
-  link: "encoding.html#mark-prop-field-def"
+  link: 'encoding.html#mark-prop-field-def'
 NumericValueDefWithCondition:
   name: MarkPropValueDef
-  link: "encoding.html#mark-prop-value-def"
+  link: 'encoding.html#mark-prop-value-def'
 
 StringFieldDefWithCondition:
   name: MarkPropFieldDef
-  link: "encoding.html#mark-prop-field-def"
+  link: 'encoding.html#mark-prop-field-def'
 StringValueDefWithCondition:
   name: MarkPropValueDef
-  link: "encoding.html#mark-prop-value-def"
+  link: 'encoding.html#mark-prop-value-def'
 
 ShapeFieldDefWithCondition:
   name: MarkPropFieldDef
-  link: "encoding.html#mark-prop-field-def"
+  link: 'encoding.html#mark-prop-field-def'
 ShapeValueDefWithCondition:
   name: MarkPropValueDef
-  link: "encoding.html#mark-prop-value-def"
+  link: 'encoding.html#mark-prop-value-def'
 
 ColorGradientFieldDefWithCondition:
   name: MarkPropFieldDef
-  link: "encoding.html#mark-prop-field-def"
+  link: 'encoding.html#mark-prop-field-def'
 ColorGradientValueDefWithCondition:
   name: MarkPropValueDef
-  link: "encoding.html#mark-prop-value-def"
+  link: 'encoding.html#mark-prop-value-def'
 
 TextFieldDefWithCondition:
   name: TextFieldDef
-  link: "encoding.html#text-field-def"
+  link: 'encoding.html#text-field-def'
 TextValueDefWithCondition:
   name: TextValueDef
-  link: "encoding.html#text-value-def"
+  link: 'encoding.html#text-value-def'
 
 FieldDefWithCondition:
-  link: "encoding.html#href-field-def"
+  link: 'encoding.html#href-field-def'
 ValueDefWithCondition:
-  link: "encoding.html#href-value-def"
+  link: 'encoding.html#href-value-def'
 
 ConditionalMarkPropFieldDef:
   name: ConditionalFieldDef
-  link: "condition.html#field"
+  link: 'condition.html#field'
 ConditionalTextFieldDef:
   name: ConditionFieldDef
-  link: "condition.html#field"
+  link: 'condition.html#field'
 ConditionalFieldDef:
-  link: "condition.html#field"
+  link: 'condition.html#field'
 ConditionalValueDef:
-  link: "condition.html#value"
+  link: 'condition.html#value'
 ConditionalColorValueDef:
   name: ConditionalValueDef
-  link: "condition.html#value"
+  link: 'condition.html#value'
 ConditionalTextValueDef:
   name: ConditionalValueDef
-  link: "condition.html#value"
+  link: 'condition.html#value'
 ConditionalStringValueDef:
   name: ConditionalValueDef
-  link: "condition.html#value"
+  link: 'condition.html#value'
 
 FieldDef:
-  link: "encoding.html#field"
+  link: 'encoding.html#field'
 FieldDefWithoutScale:
   name: FieldDef
-  link: "encoding.html#field"
+  link: 'encoding.html#field'
 LatLongFieldDef:
   name: FieldDef
-  link: "encoding.html#field"
+  link: 'encoding.html#field'
 SecondaryFieldDef:
   name: FieldDef
-  link: "encoding.html#field"
+  link: 'encoding.html#field'
 FacetFieldDef:
-  link: "facet.html#facet-field-definition"
+  link: 'facet.html#facet-field-definition'
 OrderFieldDef:
-  link: "encoding.html#order"
+  link: 'encoding.html#order'
 PositionFieldDef:
-  link: "encoding.html#position-field-def"
+  link: 'encoding.html#position-field-def'
 
 ValueDef:
-  link: "encoding.html#value"
+  link: 'encoding.html#value'
 NumberValueDef:
   name: ValueDef
-  link: "encoding.html#value"
+  link: 'encoding.html#value'
 XValueDef:
   name: ValueDef
-  link: "encoding.html#value"
+  link: 'encoding.html#value'
 YValueDef:
   name: ValueDef
-  link: "encoding.html#value"
+  link: 'encoding.html#value'
 StringValueDef:
   name: ValueDef
-  link: "encoding.html#value"
+  link: 'encoding.html#value'
 
 # Field Definition
 Aggregate:
-  link: "aggregate.html"
+  link: 'aggregate.html'
 Axis:
-  link: "axis.html"
-Bin:
-  link: "bin.html"
+  link: 'axis.html'
 Field:
-  link: "field.html"
+  link: 'field.html'
 RepeatRef:
-  link: "field.html#repeat-ref"
+  link: 'field.html#repeat-ref'
 Legend:
   link: legend.html
 Scale:
-  link: "scale.html"
+  link: 'scale.html'
 Sort:
-  link: "sort.html"
+  link: 'sort.html'
 EncodingSortField:
-  link: "sort.html#sort-field"
+  link: 'sort.html#sort-field'
 StackOffset:
-  link: "stack.html"
+  link: 'stack.html'
 
 # Scale / Axis / Legend / Projection
 ProjectionType:
-  link: "projection.html#projection-types"
+  link: 'projection.html#projection-types'
 SchemeParams:
-  link: "scale.html#scheme-params"
+  link: 'scale.html#scheme-params'
 SelectionDomain:
-  link: "selection.html#scale-domains"
+  link: 'selection.html#scale-domains'
 InterpolateParams:
   name: Object
 Scheme:
-  link: "https://vega.github.io/vega/docs/schemes/#scheme-properties"
+  link: 'https://vega.github.io/vega/docs/schemes/#scheme-properties'
 
 Resolve:
   name: Resolve
-  link: "resolve.html"
+  link: 'resolve.html'
 
 # Selections
 SelectionDef:
   name: Selection
-  link: "selection.html"
+  link: 'selection.html'
 SelectionOperand:
-  name: "String | Object"
+  name: 'String | Object'
 SingleSelectionConfig:
   name: Selection
-  link: "selection.html#definition"
+  link: 'selection.html#definition'
 MultiSelectionConfig:
   name: Selection
-  link: "selection.html#definition"
+  link: 'selection.html#definition'
 IntervalSelectionConfig:
   name: Selection
-  link: "selection.html#definition"
+  link: 'selection.html#definition'
 Binding:
-  link: "bind.html"
+  link: 'bind.html'
 BrushConfig:
   name: Mark
-  link: "selection.html#interval-mark"
+  link: 'selection.html#interval-mark'
 Stream:
-  name: "Vega Event Stream"
-  link: "https://vega.github.io/vega/docs/event-streams/"
+  name: 'Vega Event Stream'
+  link: 'https://vega.github.io/vega/docs/event-streams/'
 SelectionResolution:
-  link: "selection.html#resolve"
+  link: 'selection.html#resolve'
 SelectionInitMapping:
-  name: "Object"
-  link: "init.html"
+  name: 'Object'
+  link: 'init.html'
 SelectionInitIntervalMapping:
-  name: "Object"
-  link: "init.html"
+  name: 'Object'
+  link: 'init.html'
 
 # Types
 DateTime:
-  link: "types.html#datetime"
+  link: 'types.html#datetime'
 Color:
-  link: "types.html#color"
+  link: 'types.html#color'
 GradientStop:
   name: Stop
-  link: "types.html#gradient-stop"
+  link: 'types.html#gradient-stop'
 
 # Others
 FontWeight:
-  name: "String | Number"
+  name: 'String | Number'
 RepeatMapping:
-  link: "repeat.html#repeat-mapping"
+  link: 'repeat.html#repeat-mapping'
 Padding:
-  name: "Number | Object"
+  name: 'Number | Object'
 TextBaseline:
   name: String # we need to cast his as TextBaseline unions "alphabetic" with Baseline
