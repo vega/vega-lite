@@ -142,7 +142,7 @@ export function normalizeBoxPlot(
 
   // ## Whisker Layers
 
-  const endTick: MarkDef = {type: 'tick', color: 'black', opacity: 1, orient: ticksOrient};
+  const endTick: MarkDef = {type: 'tick', color: 'black', opacity: 1, orient: ticksOrient, invalid: null};
   const whiskerTooltipEncoding: Encoding<string> =
     boxPlotType === 'min-max'
       ? fiveSummaryTooltipEncoding // for min-max, show five-summary tooltip for whisker
@@ -159,14 +159,14 @@ export function normalizeBoxPlot(
   const whiskerLayers = [
     ...makeBoxPlotExtent({
       partName: 'rule',
-      mark: 'rule',
+      mark: {type: 'rule', invalid: null},
       positionPrefix: 'lower_whisker',
       endPositionPrefix: 'lower_box',
       extraEncoding: whiskerTooltipEncoding
     }),
     ...makeBoxPlotExtent({
       partName: 'rule',
-      mark: 'rule',
+      mark: {type: 'rule', invalid: null},
       positionPrefix: 'upper_box',
       endPositionPrefix: 'upper_whisker',
       extraEncoding: whiskerTooltipEncoding
@@ -192,7 +192,7 @@ export function normalizeBoxPlot(
     ...(boxPlotType !== 'tukey' ? whiskerLayers : []),
     ...makeBoxPlotBox({
       partName: 'box',
-      mark: {type: 'bar', ...(sizeValue ? {size: sizeValue} : {}), orient: boxOrient},
+      mark: {type: 'bar', ...(sizeValue ? {size: sizeValue} : {}), orient: boxOrient, invalid: null},
       positionPrefix: 'lower_box',
       endPositionPrefix: 'upper_box',
       extraEncoding: fiveSummaryTooltipEncoding
@@ -201,6 +201,7 @@ export function normalizeBoxPlot(
       partName: 'median',
       mark: {
         type: 'tick',
+        invalid: null,
         ...(isObject(config.boxplot.median) && config.boxplot.median.color ? {color: config.boxplot.median.color} : {}),
         ...(sizeValue ? {size: sizeValue} : {}),
         orient: ticksOrient
