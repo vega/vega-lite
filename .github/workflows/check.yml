@@ -40,6 +40,9 @@ jobs:
       - name: Check Schema
         run: ./scripts/check-schema.sh
 
+      - name: Build TOC
+        run: yarn build:toc
+
       - name: Check and Commit
         run: ./scripts/check-and-commit.sh
         env:

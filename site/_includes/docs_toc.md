@@ -121,7 +121,7 @@
         - [Documentation Overview]({{site.baseurl}}/docs/boxplot.html#documentation-overview)
         - [Box Plot Mark Properties]({{site.baseurl}}/docs/boxplot.html#properties)
         - [Types of Box Plot]({{site.baseurl}}/docs/boxplot.html#boxplot-types)
-        - [Dimension & Orientation]({{site.baseurl}}/docs/boxplot.html#dimension--orientation)
+        - [Dimension & Orientation]({{site.baseurl}}/docs/boxplot.html#dims-orient)
         - [The Parts of Box Plots]({{site.baseurl}}/docs/boxplot.html#parts)
         - [Color, Size, and Opacity Encoding Channels]({{site.baseurl}}/docs/boxplot.html#color-size-and-opacity-encoding-channels)
         - [Tooltip Encoding Channels]({{site.baseurl}}/docs/boxplot.html#tooltip-encoding-channels)

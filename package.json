@@ -54,8 +54,7 @@
     "test:runtime:generate": "rm -Rf test-runtime/resources && VL_GENERATE_TESTS=true yarn test:runtime",
     "watch:build": "yarn build:only && concurrently --kill-others -n Typescript,Rollup 'yarn tsc:src -w' 'rollup -c -w'",
     "watch:site": "concurrently --kill-others -n Typescript,Rollup 'yarn tsc:site -w' 'rollup -c site/rollup.config.js -w'",
-    "watch:test": "jest --watch",
-    "preversion": "scripts/pre-deploy.sh"
+    "watch:test": "jest --watch"
   },
   "repository": {
     "type": "git",
