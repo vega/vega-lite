@@ -4,4 +4,4 @@ set -ex
 
 yarn presite
 
-gh-pages -d site
+yarn gh-pages -d site
