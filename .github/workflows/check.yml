@@ -40,8 +40,24 @@ jobs:
       - name: Check Schema
         run: ./scripts/check-schema.sh
 
+      - name: Setup data
+        run: yarn data
+
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.x'
+
+      - name: Build Jekyll
+        run: |
+          gem install bundler
+          pushd site
+          bundle install
+          bundle exec jekyll build -q
+          popd
+
       - name: Build TOC
-        run: yarn build:toc
+        run: scripts/generate-toc
 
       - name: Check and Commit
         run: ./scripts/check-and-commit.sh
