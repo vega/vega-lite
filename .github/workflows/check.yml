@@ -19,9 +19,8 @@ jobs:
 
       - name: Install Parallel
         run: |
-          # Minimal installation as described in https://github.com/martinda/gnu-parallel
           # Faster than "sudo apt-get install parallel"
-          wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
+          wget https://raw.githubusercontent.com/martinda/gnu-parallel/master/src/parallel
           chmod +x parallel
           cp parallel sem
           sudo mv parallel sem /usr/local/bin
