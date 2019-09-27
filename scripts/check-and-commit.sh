@@ -86,7 +86,7 @@ if [[ $GIT_BRANCH != 'master' ]]; then
   fi
 
   # Then push all the changes (schema, examples, prettier)
-  git push origin-pushable ${GITHUB_REF}
+  git push origin ${GITHUB_REF}
 fi
 
 exit 0
