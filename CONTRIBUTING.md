@@ -111,9 +111,7 @@ gem install bundler
 For Jekyll and its dependencies, because we already have the `Gemfile` in the repo, you can simply run:
 
 ```sh
-pushd site
-bundle install
-popd
+pushd site && bundle install && popd
 ```
 
 ## Directory Structure
