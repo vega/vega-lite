@@ -26,13 +26,14 @@ import {
   title,
   TypedFieldDef,
   Value,
-  vgField,
-  ValueOrGradient
+  ValueOrGradient,
+  vgField
 } from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding, forEach} from '../../encoding';
 import * as log from '../../log';
 import {isPathMark, Mark, MarkDef} from '../../mark';
+import {fieldValidPredicate} from '../../predicate';
 import {hasDiscreteDomain, isContinuousToContinuous, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
@@ -97,10 +98,7 @@ export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: Po
 }
 
 export function fieldInvalidPredicate(field: FieldName | FieldDef<string>, invalid = true) {
-  field = isString(field) ? field : vgField(field, {expr: 'datum'});
-  const op = invalid ? '||' : '&&';
-  const eq = invalid ? '===' : '!==';
-  return `${field} ${eq} null ${op} ${invalid ? '' : '!'}isNaN(${field})`;
+  return fieldValidPredicate(isString(field) ? field : vgField(field, {expr: 'datum'}), !invalid);
 }
 
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale

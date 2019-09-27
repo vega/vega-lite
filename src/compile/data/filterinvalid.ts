@@ -2,7 +2,7 @@ import {isScaleChannel} from '../../channel';
 import {FieldDef, vgField as fieldRef} from '../../channeldef';
 import {isPathMark} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
-import {Dict, keys, hash} from '../../util';
+import {Dict, hash, keys} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {getMarkPropOrConfig} from '../common';
 import {UnitModel} from '../unit';
@@ -72,7 +72,7 @@ export class FilterInvalidNode extends DataFlowNode {
 
       if (fieldDef !== null) {
         vegaFilters.push(`${ref} !== null`);
-        vegaFilters.push(`!isNaN(${ref})`);
+        vegaFilters.push(`isFinite(${ref})`);
       }
       return vegaFilters;
     }, []);
