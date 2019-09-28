@@ -81,7 +81,7 @@ By setting the `point` property of the mark definition to `true` or an object de
 
 <span class="vl-example" data-name="line_overlay"></span>
 
-This is equilvalent to adding another layer of filled point marks.
+This is equivalent to adding another layer of filled point marks.
 
 <span class="vl-example" data-name="normalized/line_overlay_normalized"></span>
 
