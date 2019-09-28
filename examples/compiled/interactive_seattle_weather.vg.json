@@ -49,7 +49,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"precipitation\"] !== null && !isNaN(datum[\"precipitation\"]) && datum[\"monthdate_date\"] !== null && !isNaN(datum[\"monthdate_date\"]) && datum[\"temp_max\"] !== null && !isNaN(datum[\"temp_max\"])"
+          "expr": "datum[\"precipitation\"] !== null && isFinite(datum[\"precipitation\"]) && datum[\"monthdate_date\"] !== null && isFinite(datum[\"monthdate_date\"]) && datum[\"temp_max\"] !== null && isFinite(datum[\"temp_max\"])"
         }
       ]
     }

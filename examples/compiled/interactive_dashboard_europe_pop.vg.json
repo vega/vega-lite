@@ -315,7 +315,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Population_ages_15_64_of_total\"] !== null && !isNaN(datum[\"Population_ages_15_64_of_total\"])"
+          "expr": "datum[\"Population_ages_15_64_of_total\"] !== null && isFinite(datum[\"Population_ages_15_64_of_total\"])"
         }
       ]
     },
@@ -325,7 +325,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Population_ages_65_and_above_of_total\"] !== null && !isNaN(datum[\"Population_ages_65_and_above_of_total\"])"
+          "expr": "datum[\"Population_ages_65_and_above_of_total\"] !== null && isFinite(datum[\"Population_ages_65_and_above_of_total\"])"
         }
       ]
     },
@@ -335,7 +335,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Population_ages_15_64_of_total\"] !== null && !isNaN(datum[\"Population_ages_15_64_of_total\"]) && datum[\"Population_ages_65_and_above_of_total\"] !== null && !isNaN(datum[\"Population_ages_65_and_above_of_total\"])"
+          "expr": "datum[\"Population_ages_15_64_of_total\"] !== null && isFinite(datum[\"Population_ages_15_64_of_total\"]) && datum[\"Population_ages_65_and_above_of_total\"] !== null && isFinite(datum[\"Population_ages_65_and_above_of_total\"])"
         }
       ]
     }
@@ -1285,7 +1285,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"Population_ages_65_and_above_of_total\"] === null || isNaN(datum[\"Population_ages_65_and_above_of_total\"])",
+                  "test": "datum[\"Population_ages_65_and_above_of_total\"] === null || !isFinite(datum[\"Population_ages_65_and_above_of_total\"])",
                   "value": 0
                 },
                 {
@@ -1295,7 +1295,7 @@
               ],
               "y": [
                 {
-                  "test": "datum[\"Population_ages_15_64_of_total\"] === null || isNaN(datum[\"Population_ages_15_64_of_total\"])",
+                  "test": "datum[\"Population_ages_15_64_of_total\"] === null || !isFinite(datum[\"Population_ages_15_64_of_total\"])",
                   "field": {"group": "height"}
                 },
                 {

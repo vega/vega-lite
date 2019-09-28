@@ -30,7 +30,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"])"
+          "expr": "datum[\"month_date\"] !== null && isFinite(datum[\"month_date\"])"
         }
       ]
     }
@@ -46,14 +46,14 @@
           "fill": {"value": "#4c78a8"},
           "x2": [
             {
-              "test": "datum[\"month_date\"] === null || isNaN(datum[\"month_date\"])",
+              "test": "datum[\"month_date\"] === null || !isFinite(datum[\"month_date\"])",
               "value": 0
             },
             {"scale": "x", "field": "month_date", "offset": 1}
           ],
           "x": [
             {
-              "test": "datum[\"month_date\"] === null || isNaN(datum[\"month_date\"])",
+              "test": "datum[\"month_date\"] === null || !isFinite(datum[\"month_date\"])",
               "value": 0
             },
             {"scale": "x", "field": "month_date_end"}

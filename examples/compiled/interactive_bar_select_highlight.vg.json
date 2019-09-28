@@ -29,7 +29,7 @@
         {"type": "identifier", "as": "_vgsid_"},
         {
           "type": "filter",
-          "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
+          "expr": "datum[\"b\"] !== null && isFinite(datum[\"b\"])"
         }
       ]
     }

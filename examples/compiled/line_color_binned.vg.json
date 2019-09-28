@@ -71,7 +71,7 @@
               "x": {"scale": "x", "field": "Year"},
               "y": {"scale": "y", "field": "mean_Horsepower"},
               "defined": {
-                "signal": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"]) && datum[\"mean_Horsepower\"] !== null && !isNaN(datum[\"mean_Horsepower\"])"
+                "signal": "datum[\"Year\"] !== null && isFinite(datum[\"Year\"]) && datum[\"mean_Horsepower\"] !== null && isFinite(datum[\"mean_Horsepower\"])"
               }
             }
           }

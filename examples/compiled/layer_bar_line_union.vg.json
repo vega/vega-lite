@@ -25,7 +25,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"c\"] !== null && !isNaN(datum[\"c\"])"
+          "expr": "datum[\"c\"] !== null && isFinite(datum[\"c\"])"
         }
       ]
     }
@@ -64,7 +64,9 @@
           "stroke": {"value": "red"},
           "x": {"scale": "x", "field": "b", "band": 0.5},
           "y": {"scale": "y", "field": "c"},
-          "defined": {"signal": "datum[\"c\"] !== null && !isNaN(datum[\"c\"])"}
+          "defined": {
+            "signal": "datum[\"c\"] !== null && isFinite(datum[\"c\"])"
+          }
         }
       }
     }

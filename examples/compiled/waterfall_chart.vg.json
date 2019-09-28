@@ -88,7 +88,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"previous_sum\"] !== null && !isNaN(datum[\"previous_sum\"])"
+          "expr": "datum[\"previous_sum\"] !== null && isFinite(datum[\"previous_sum\"])"
         }
       ]
     },
@@ -98,7 +98,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"sum\"] !== null && !isNaN(datum[\"sum\"])"
+          "expr": "datum[\"sum\"] !== null && isFinite(datum[\"sum\"])"
         }
       ]
     },
@@ -108,7 +108,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"sum_inc\"] !== null && !isNaN(datum[\"sum_inc\"])"
+          "expr": "datum[\"sum_inc\"] !== null && isFinite(datum[\"sum_inc\"])"
         }
       ]
     },
@@ -118,7 +118,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"sum_dec\"] !== null && !isNaN(datum[\"sum_dec\"])"
+          "expr": "datum[\"sum_dec\"] !== null && isFinite(datum[\"sum_dec\"])"
         }
       ]
     },
@@ -128,7 +128,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"center\"] !== null && !isNaN(datum[\"center\"])"
+          "expr": "datum[\"center\"] !== null && isFinite(datum[\"center\"])"
         }
       ]
     }

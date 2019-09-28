@@ -62,7 +62,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && !isNaN(datum[\"bin_maxbins_10_Acceleration\"]) && datum[\"bin_maxbins_10_Horsepower\"] !== null && !isNaN(datum[\"bin_maxbins_10_Horsepower\"])"
+          "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && isFinite(datum[\"bin_maxbins_10_Acceleration\"]) && datum[\"bin_maxbins_10_Horsepower\"] !== null && isFinite(datum[\"bin_maxbins_10_Horsepower\"])"
         }
       ]
     },
@@ -84,7 +84,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && !isNaN(datum[\"bin_maxbins_10_Acceleration\"]) && datum[\"bin_maxbins_10_Horsepower\"] !== null && !isNaN(datum[\"bin_maxbins_10_Horsepower\"])"
+          "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && isFinite(datum[\"bin_maxbins_10_Acceleration\"]) && datum[\"bin_maxbins_10_Horsepower\"] !== null && isFinite(datum[\"bin_maxbins_10_Horsepower\"])"
         }
       ]
     }
@@ -100,7 +100,7 @@
           "fill": {"value": "#4c78a8"},
           "x": [
             {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"])",
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || !isFinite(datum[\"bin_maxbins_10_Acceleration\"])",
               "value": 0
             },
             {
@@ -109,7 +109,7 @@
           ],
           "y": [
             {
-              "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"])",
+              "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || !isFinite(datum[\"bin_maxbins_10_Horsepower\"])",
               "field": {"group": "height"}
             },
             {
@@ -131,7 +131,7 @@
           "fill": {"value": "firebrick"},
           "x": [
             {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"])",
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || !isFinite(datum[\"bin_maxbins_10_Acceleration\"])",
               "value": 0
             },
             {
@@ -140,7 +140,7 @@
           ],
           "y": [
             {
-              "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"])",
+              "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || !isFinite(datum[\"bin_maxbins_10_Horsepower\"])",
               "field": {"group": "height"}
             },
             {

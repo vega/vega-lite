@@ -50,7 +50,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"lower_upper_yield\"] !== null && !isNaN(datum[\"lower_upper_yield\"])"
+          "expr": "datum[\"lower_upper_yield\"] !== null && isFinite(datum[\"lower_upper_yield\"])"
         }
       ]
     },
@@ -60,7 +60,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"center\"] !== null && !isNaN(datum[\"center\"])"
+          "expr": "datum[\"center\"] !== null && isFinite(datum[\"center\"])"
         }
       ]
     }
@@ -83,14 +83,14 @@
           },
           "x": [
             {
-              "test": "datum[\"lower_upper_yield\"] === null || isNaN(datum[\"lower_upper_yield\"])",
+              "test": "datum[\"lower_upper_yield\"] === null || !isFinite(datum[\"lower_upper_yield\"])",
               "value": 0
             },
             {"scale": "x", "field": "lower_upper_yield"}
           ],
           "x2": [
             {
-              "test": "datum[\"upper_upper_yield\"] === null || isNaN(datum[\"upper_upper_yield\"])",
+              "test": "datum[\"upper_upper_yield\"] === null || !isFinite(datum[\"upper_upper_yield\"])",
               "value": 0
             },
             {"scale": "x", "field": "upper_upper_yield"}
@@ -110,7 +110,7 @@
           "fill": {"value": "black"},
           "x": [
             {
-              "test": "datum[\"center\"] === null || isNaN(datum[\"center\"])",
+              "test": "datum[\"center\"] === null || !isFinite(datum[\"center\"])",
               "value": 0
             },
             {"scale": "x", "field": "center"}

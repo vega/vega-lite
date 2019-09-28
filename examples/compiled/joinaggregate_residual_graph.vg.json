@@ -30,7 +30,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"Release_Date\"] !== null && !isNaN(datum[\"Release_Date\"]) && datum[\"RatingDelta\"] !== null && !isNaN(datum[\"RatingDelta\"])"
+          "expr": "datum[\"Release_Date\"] !== null && isFinite(datum[\"Release_Date\"]) && datum[\"RatingDelta\"] !== null && isFinite(datum[\"RatingDelta\"])"
         }
       ]
     }

@@ -59,7 +59,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"ra\"] !== null && !isNaN(datum[\"ra\"]) && datum[\"dec\"] !== null && !isNaN(datum[\"dec\"])"
+          "expr": "datum[\"ra\"] !== null && isFinite(datum[\"ra\"]) && datum[\"dec\"] !== null && isFinite(datum[\"dec\"])"
         }
       ]
     },
@@ -152,7 +152,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"ra\"] === null || isNaN(datum[\"ra\"])",
+                  "test": "datum[\"ra\"] === null || !isFinite(datum[\"ra\"])",
                   "value": 0
                 },
                 {"scale": "concat_0_x", "field": "ra"}
@@ -253,7 +253,7 @@
                   "x": {"scale": "concat_1_x", "field": "lc\\.time"},
                   "y": {"scale": "concat_1_y", "field": "lc\\.mag"},
                   "defined": {
-                    "signal": "datum[\"lc.time\"] !== null && !isNaN(datum[\"lc.time\"]) && datum[\"lc.mag\"] !== null && !isNaN(datum[\"lc.mag\"])"
+                    "signal": "datum[\"lc.time\"] !== null && isFinite(datum[\"lc.time\"]) && datum[\"lc.mag\"] !== null && isFinite(datum[\"lc.mag\"])"
                   }
                 }
               }

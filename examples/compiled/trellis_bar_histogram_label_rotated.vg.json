@@ -34,7 +34,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_15_Horsepower\"] !== null && !isNaN(datum[\"bin_maxbins_15_Horsepower\"])"
+          "expr": "datum[\"bin_maxbins_15_Horsepower\"] !== null && isFinite(datum[\"bin_maxbins_15_Horsepower\"])"
         }
       ]
     },
@@ -139,7 +139,7 @@
               "fill": {"value": "#4c78a8"},
               "x2": [
                 {
-                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"])",
+                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || !isFinite(datum[\"bin_maxbins_15_Horsepower\"])",
                   "value": 0
                 },
                 {
@@ -150,7 +150,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"])",
+                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || !isFinite(datum[\"bin_maxbins_15_Horsepower\"])",
                   "value": 0
                 },
                 {"scale": "x", "field": "bin_maxbins_15_Horsepower_end"}

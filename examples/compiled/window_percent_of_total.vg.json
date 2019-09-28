@@ -33,7 +33,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"PercentOfTotal\"] !== null && !isNaN(datum[\"PercentOfTotal\"])"
+          "expr": "datum[\"PercentOfTotal\"] !== null && isFinite(datum[\"PercentOfTotal\"])"
         }
       ]
     }

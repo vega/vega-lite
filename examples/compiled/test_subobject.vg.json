@@ -32,7 +32,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"source.reco\"] !== null && !isNaN(datum[\"source.reco\"]) && datum[\"source.yes\"] !== null && !isNaN(datum[\"source.yes\"])"
+          "expr": "datum[\"source.reco\"] !== null && isFinite(datum[\"source.reco\"]) && datum[\"source.yes\"] !== null && isFinite(datum[\"source.yes\"])"
         }
       ]
     }

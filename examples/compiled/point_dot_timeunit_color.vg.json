@@ -25,7 +25,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"])"
+          "expr": "datum[\"yearmonth_date\"] !== null && isFinite(datum[\"yearmonth_date\"])"
         }
       ]
     }

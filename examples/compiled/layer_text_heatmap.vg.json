@@ -24,7 +24,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"num_cars\"] !== null && !isNaN(datum[\"num_cars\"])"
+          "expr": "datum[\"num_cars\"] !== null && isFinite(datum[\"num_cars\"])"
         }
       ]
     }

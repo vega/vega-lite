@@ -36,7 +36,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
+          "expr": "datum[\"IMDB_Rating\"] !== null && isFinite(datum[\"IMDB_Rating\"])"
         }
       ]
     },
@@ -46,7 +46,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"AverageYearRating\"] !== null && !isNaN(datum[\"AverageYearRating\"])"
+          "expr": "datum[\"AverageYearRating\"] !== null && isFinite(datum[\"AverageYearRating\"])"
         }
       ]
     }

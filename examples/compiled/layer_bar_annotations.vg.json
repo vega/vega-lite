@@ -36,7 +36,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Value\"] !== null && !isNaN(datum[\"Value\"])"
+          "expr": "datum[\"Value\"] !== null && isFinite(datum[\"Value\"])"
         }
       ]
     },
@@ -48,7 +48,7 @@
         {"type": "formula", "expr": "300", "as": "baseline"},
         {
           "type": "filter",
-          "expr": "datum[\"baseline\"] !== null && !isNaN(datum[\"baseline\"])"
+          "expr": "datum[\"baseline\"] !== null && isFinite(datum[\"baseline\"])"
         }
       ]
     },
@@ -58,7 +58,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"ThresholdValue\"] !== null && !isNaN(datum[\"ThresholdValue\"])"
+          "expr": "datum[\"ThresholdValue\"] !== null && isFinite(datum[\"ThresholdValue\"])"
         }
       ]
     },
@@ -68,7 +68,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"ThresholdValue\"] !== null && !isNaN(datum[\"ThresholdValue\"])"
+          "expr": "datum[\"ThresholdValue\"] !== null && isFinite(datum[\"ThresholdValue\"])"
         }
       ]
     }

@@ -102,7 +102,7 @@
               "x": {"scale": "x", "field": "key", "band": 0.5},
               "y": {"scale": "y", "field": "norm_val"},
               "defined": {
-                "signal": "datum[\"norm_val\"] !== null && !isNaN(datum[\"norm_val\"])"
+                "signal": "datum[\"norm_val\"] !== null && isFinite(datum[\"norm_val\"])"
               }
             }
           }

@@ -44,7 +44,7 @@
               "y": {"scale": "y", "field": "price"},
               "size": {"scale": "size", "field": "price"},
               "defined": {
-                "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                "signal": "datum[\"date\"] !== null && isFinite(datum[\"date\"]) && datum[\"price\"] !== null && isFinite(datum[\"price\"])"
               }
             }
           }

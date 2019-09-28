@@ -39,7 +39,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"])"
+          "expr": "datum[\"bin_maxbins_10_IMDB_Rating\"] !== null && isFinite(datum[\"bin_maxbins_10_IMDB_Rating\"])"
         }
       ]
     }
@@ -55,14 +55,14 @@
           "fill": {"value": "#4c78a8"},
           "x2": [
             {
-              "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"])",
+              "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || !isFinite(datum[\"bin_maxbins_10_IMDB_Rating\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_maxbins_10_IMDB_Rating"}
           ],
           "x": [
             {
-              "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"])",
+              "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || !isFinite(datum[\"bin_maxbins_10_IMDB_Rating\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_maxbins_10_IMDB_Rating_end"}
