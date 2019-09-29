@@ -232,7 +232,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"median\"] !== null && !isNaN(datum[\"median\"])"
+          "expr": "datum[\"median\"] !== null && isFinite(datum[\"median\"])"
         }
       ]
     },
@@ -252,7 +252,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"value\"] !== null && !isNaN(datum[\"value\"])"
+          "expr": "datum[\"value\"] !== null && isFinite(datum[\"value\"])"
         }
       ]
     }

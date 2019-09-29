@@ -13,7 +13,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+          "expr": "datum[\"Horsepower\"] !== null && isFinite(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && isFinite(datum[\"Miles_per_Gallon\"])"
         }
       ]
     },
@@ -40,7 +40,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"lower_Miles_per_Gallon\"] !== null && !isNaN(datum[\"lower_Miles_per_Gallon\"])"
+          "expr": "datum[\"lower_Miles_per_Gallon\"] !== null && isFinite(datum[\"lower_Miles_per_Gallon\"])"
         }
       ]
     }

@@ -44,7 +44,7 @@
           "x": {"scale": "x", "field": "month_date"},
           "y": {"scale": "y", "field": "mean_temp_range"},
           "defined": {
-            "signal": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"]) && datum[\"mean_temp_range\"] !== null && !isNaN(datum[\"mean_temp_range\"])"
+            "signal": "datum[\"month_date\"] !== null && isFinite(datum[\"month_date\"]) && datum[\"mean_temp_range\"] !== null && isFinite(datum[\"mean_temp_range\"])"
           }
         }
       }

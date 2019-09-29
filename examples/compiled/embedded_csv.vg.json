@@ -13,7 +13,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"a\"] !== null && !isNaN(datum[\"a\"])"
+          "expr": "datum[\"a\"] !== null && isFinite(datum[\"a\"])"
         }
       ]
     }

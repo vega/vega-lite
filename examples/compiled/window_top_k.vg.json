@@ -54,7 +54,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"score\"] !== null && !isNaN(datum[\"score\"])"
+          "expr": "datum[\"score\"] !== null && isFinite(datum[\"score\"])"
         }
       ]
     }

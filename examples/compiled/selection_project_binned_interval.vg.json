@@ -50,7 +50,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && !isNaN(datum[\"bin_maxbins_10_Acceleration\"])"
+          "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && isFinite(datum[\"bin_maxbins_10_Acceleration\"])"
         }
       ]
     },
@@ -70,7 +70,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && !isNaN(datum[\"bin_maxbins_10_Acceleration\"])"
+          "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && isFinite(datum[\"bin_maxbins_10_Acceleration\"])"
         }
       ]
     }
@@ -289,14 +289,14 @@
           "fill": {"value": "#4c78a8"},
           "x2": [
             {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"])",
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || !isFinite(datum[\"bin_maxbins_10_Acceleration\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_maxbins_10_Acceleration", "offset": 1}
           ],
           "x": [
             {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"])",
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || !isFinite(datum[\"bin_maxbins_10_Acceleration\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_maxbins_10_Acceleration_end"}
@@ -316,14 +316,14 @@
           "fill": {"value": "goldenrod"},
           "x2": [
             {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"])",
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || !isFinite(datum[\"bin_maxbins_10_Acceleration\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_maxbins_10_Acceleration", "offset": 1}
           ],
           "x": [
             {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"])",
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || !isFinite(datum[\"bin_maxbins_10_Acceleration\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_maxbins_10_Acceleration_end"}

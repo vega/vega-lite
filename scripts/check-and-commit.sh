@@ -19,7 +19,7 @@ then
     exit 1
   else
     git add ./build/vega-lite-schema.json
-    git commit -m "chore: Update schema [CI]"
+    git commit -m "chore: update schema [CI]"
   fi
 fi
 
@@ -36,7 +36,7 @@ then
     exit 1
   else
     git add ./site/_includes/docs_toc.md
-    git commit -m "chore: Update TOC [CI]"
+    git commit -m "chore: update TOC [CI]"
   fi
 fi
 
@@ -68,7 +68,7 @@ if [[ $GIT_BRANCH == 'master' ]]; then
 else
   if ! git diff --cached --word-diff=color --exit-code ./examples/compiled/vega_version './examples/compiled/*.vg.json' './examples/compiled/*.svg' './examples/specs/normalized/*.vl.json'
   then
-    git commit -m "chore: Update examples [CI]"
+    git commit -m "chore: update examples [CI]"
   fi
 fi
 
@@ -82,7 +82,7 @@ if [[ $GIT_BRANCH != 'master' ]]; then
   if ! git diff --word-diff=color --exit-code  src test test-runtime
   then
     git add src test test-runtime
-    git commit -m "chore: Auto-formatting [CI]"
+    git commit -m "chore: auto-formatting [CI]"
   fi
 
   # Then push all the changes (schema, examples, prettier)

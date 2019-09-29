@@ -38,7 +38,7 @@
           "y": {"scale": "y", "field": "cumulative_count"},
           "y2": {"scale": "y", "value": 0},
           "defined": {
-            "signal": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"]) && datum[\"cumulative_count\"] !== null && !isNaN(datum[\"cumulative_count\"])"
+            "signal": "datum[\"IMDB_Rating\"] !== null && isFinite(datum[\"IMDB_Rating\"]) && datum[\"cumulative_count\"] !== null && isFinite(datum[\"cumulative_count\"])"
           }
         }
       }

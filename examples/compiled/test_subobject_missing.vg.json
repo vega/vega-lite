@@ -46,7 +46,7 @@
           "x": {"scale": "x", "field": "rank"},
           "y": {"scale": "y", "field": "options\\.price"},
           "defined": {
-            "signal": "datum[\"options.price\"] !== null && !isNaN(datum[\"options.price\"])"
+            "signal": "datum[\"options.price\"] !== null && isFinite(datum[\"options.price\"])"
           }
         }
       }

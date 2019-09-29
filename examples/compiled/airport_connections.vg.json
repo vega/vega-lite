@@ -101,7 +101,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"routes\"] !== null && !isNaN(datum[\"routes\"])"
+          "expr": "datum[\"routes\"] !== null && isFinite(datum[\"routes\"])"
         }
       ]
     }

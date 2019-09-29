@@ -77,7 +77,7 @@
               "y": {"scale": "y", "field": "density_end"},
               "y2": {"scale": "y", "field": "density_start"},
               "defined": {
-                "signal": "datum[\"value\"] !== null && !isNaN(datum[\"value\"]) && datum[\"density\"] !== null && !isNaN(datum[\"density\"])"
+                "signal": "datum[\"value\"] !== null && isFinite(datum[\"value\"]) && datum[\"density\"] !== null && isFinite(datum[\"density\"])"
               }
             }
           }

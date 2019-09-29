@@ -31,7 +31,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"gold\"] !== null && !isNaN(datum[\"gold\"])"
+          "expr": "datum[\"gold\"] !== null && isFinite(datum[\"gold\"])"
         }
       ]
     }

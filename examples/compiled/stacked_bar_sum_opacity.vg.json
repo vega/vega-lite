@@ -34,7 +34,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
+          "expr": "datum[\"people\"] !== null && isFinite(datum[\"people\"])"
         }
       ]
     }

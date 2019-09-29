@@ -28,7 +28,7 @@
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "sin(x)"},
           "defined": {
-            "signal": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"sin(x)\"] !== null && !isNaN(datum[\"sin(x)\"])"
+            "signal": "datum[\"x\"] !== null && isFinite(datum[\"x\"]) && datum[\"sin(x)\"] !== null && isFinite(datum[\"sin(x)\"])"
           }
         }
       }

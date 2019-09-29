@@ -29,7 +29,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp_max\"] !== null && !isNaN(datum[\"temp_max\"])"
+          "expr": "datum[\"date\"] !== null && isFinite(datum[\"date\"]) && datum[\"temp_max\"] !== null && isFinite(datum[\"temp_max\"])"
         }
       ]
     }
@@ -63,7 +63,7 @@
           "y": {"scale": "y", "field": "rolling_mean"},
           "strokeWidth": {"value": 3},
           "defined": {
-            "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"rolling_mean\"] !== null && !isNaN(datum[\"rolling_mean\"])"
+            "signal": "datum[\"date\"] !== null && isFinite(datum[\"date\"]) && datum[\"rolling_mean\"] !== null && isFinite(datum[\"rolling_mean\"])"
           }
         }
       }

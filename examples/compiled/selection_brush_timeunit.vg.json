@@ -42,7 +42,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"minutes_date\"] !== null && !isNaN(datum[\"minutes_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+          "expr": "datum[\"minutes_date\"] !== null && isFinite(datum[\"minutes_date\"]) && datum[\"price\"] !== null && isFinite(datum[\"price\"])"
         }
       ]
     },
@@ -52,7 +52,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"seconds_date\"] !== null && !isNaN(datum[\"seconds_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+          "expr": "datum[\"seconds_date\"] !== null && isFinite(datum[\"seconds_date\"]) && datum[\"price\"] !== null && isFinite(datum[\"price\"])"
         }
       ]
     }

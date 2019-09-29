@@ -33,7 +33,7 @@
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "defined": {
-            "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+            "signal": "datum[\"date\"] !== null && isFinite(datum[\"date\"]) && datum[\"price\"] !== null && isFinite(datum[\"price\"])"
           }
         }
       }

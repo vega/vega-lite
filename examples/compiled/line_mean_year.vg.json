@@ -39,7 +39,7 @@
           "x": {"scale": "x", "field": "year_date"},
           "y": {"scale": "y", "field": "mean_temp_max"},
           "defined": {
-            "signal": "datum[\"year_date\"] !== null && !isNaN(datum[\"year_date\"]) && datum[\"mean_temp_max\"] !== null && !isNaN(datum[\"mean_temp_max\"])"
+            "signal": "datum[\"year_date\"] !== null && isFinite(datum[\"year_date\"]) && datum[\"mean_temp_max\"] !== null && isFinite(datum[\"mean_temp_max\"])"
           }
         }
       }

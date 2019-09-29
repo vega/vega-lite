@@ -15,7 +15,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"health\"] !== null && !isNaN(datum[\"health\"]) && datum[\"income\"] !== null && !isNaN(datum[\"income\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
+          "expr": "datum[\"health\"] !== null && isFinite(datum[\"health\"]) && datum[\"income\"] !== null && isFinite(datum[\"income\"]) && datum[\"population\"] !== null && isFinite(datum[\"population\"])"
         }
       ]
     }
@@ -141,7 +141,7 @@
           "x": {"scale": "x", "field": "income"},
           "y": [
             {
-              "test": "datum[\"health\"] === null || isNaN(datum[\"health\"])",
+              "test": "datum[\"health\"] === null || !isFinite(datum[\"health\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "health"}
