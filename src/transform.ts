@@ -459,6 +459,39 @@ export function isDensity(t: Transform): t is DensityTransform {
   return t['density'] !== undefined;
 }
 
+export interface QuantileTransform {
+  /**
+   * The data field for which to perform quantile estimation.
+   */
+  quantile: FieldName;
+
+  /**
+   * The data fields to group by. If not specified, a single group containing all data objects will be used.
+   */
+  groupby?: FieldName[];
+
+  /**
+   * An array of probabilities in the range (0, 1) for which to compute quantile values. If not specified, the *step* parameter will be used.
+   */
+  probs?: number[];
+
+  /**
+   * A probability step size (default 0.01) for sampling quantile values. All values from one-half the step size up to 1 (exclusive) will be sampled. This parameter is only used if the *probs* parameter is not provided.
+   */
+  step?: number;
+
+  /**
+   * The output field names for the probability and quantile values.
+   *
+   * __Default value:__ `["prob", "value"]`
+   */
+  as?: [FieldName, FieldName];
+}
+
+export function isQuantile(t: Transform): t is QuantileTransform {
+  return t['quantile'] !== undefined;
+}
+
 export interface RegressionTransform {
   /**
    * The data field of the dependent variable to predict.
@@ -609,6 +642,7 @@ export type Transform =
   | JoinAggregateTransform
   | LoessTransform
   | LookupTransform
+  | QuantileTransform
   | RegressionTransform
   | TimeUnitTransform
   | SampleTransform

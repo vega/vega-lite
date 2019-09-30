@@ -118,11 +118,6 @@ export interface Legend
   labelExpr?: string;
 
   /**
-   * The desired number of tick values for quantitative legends.
-   */
-  tickCount?: number;
-
-  /**
    * The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.
    *
    * __Default value__: `undefined`
@@ -252,6 +247,7 @@ export const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   symbolDash: 1,
   symbolDashOffset: 1,
   symbolFillColor: 1,
+  symbolLimit: 1,
   symbolOffset: 1,
   symbolOpacity: 1,
   symbolSize: 1,
@@ -270,6 +266,7 @@ export const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   titleFontStyle: 1,
   titleFontWeight: 1,
   titleLimit: 1,
+  titleLineHeight: 1,
   titleOpacity: 1,
   titleOrient: 1,
   titlePadding: 1,

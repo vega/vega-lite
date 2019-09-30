@@ -24,6 +24,7 @@ import {
   isLoess,
   isLookup,
   isPivot,
+  isQuantile,
   isRegression,
   isSample,
   isStack,
@@ -60,6 +61,7 @@ import {makeJoinAggregateFromFacet} from './joinaggregatefacet';
 import {LoessTransformNode} from './loess';
 import {LookupNode} from './lookup';
 import {PivotTransformNode} from './pivot';
+import {QuantileTransformNode} from './quantile';
 import {RegressionTransformNode} from './regression';
 import {SampleTransformNode} from './sample';
 import {SequenceNode} from './sequence';
@@ -200,6 +202,9 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       derivedType = 'derived';
     } else if (isDensity(t)) {
       transformNode = head = new DensityTransformNode(head, t);
+      derivedType = 'derived';
+    } else if (isQuantile(t)) {
+      transformNode = head = new QuantileTransformNode(head, t);
       derivedType = 'derived';
     } else if (isRegression(t)) {
       transformNode = head = new RegressionTransformNode(head, t);
