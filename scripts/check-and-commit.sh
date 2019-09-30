@@ -6,6 +6,8 @@ scripts/setup-git-ci.sh
 
 GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
+echo "On branch $GIT_BRANCH."
+
 echo ""
 echo "------- Checking Schema -------"
 echo ""
