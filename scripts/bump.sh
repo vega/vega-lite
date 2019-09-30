@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 if [ "$#" -ne 1 ]; then
   echo "You must provide the new version to the script. The current version is $(./scripts/version.sh vega-lite)."

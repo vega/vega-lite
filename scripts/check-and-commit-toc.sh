@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
 # git checkout $GIT_BRANCH

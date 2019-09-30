@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 perl -pi -e s,'<Field>','',g build/vega-lite-schema.json
 perl -pi -e s,'<Field\,','<',g build/vega-lite-schema.json

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 if [[ $1 == "vega-lite" ]]; then
   npm list vega-lite | head -n 1 | sed 's/.*@//' | awk '{print $1}'
