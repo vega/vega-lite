@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefailuxo pipefail
+set -euxo pipefail
 
 git config --global user.name "GitHub Actions Bot"
 git config --global user.email "vega-actions-bot@users.noreply.github.com"

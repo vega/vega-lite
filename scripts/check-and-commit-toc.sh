@@ -21,17 +21,11 @@ then
   else
     git add ./site/_includes/docs_toc.md
     git commit -m "chore: update TOC [CI]"
+
+    # Push all the TOC changes
+    git pull --rebase origin ${GITHUB_REF}
+    git push origin ${GITHUB_REF}
   fi
-fi
-
-echo ""
-echo "------- Checking Code Formatting -------"
-echo ""
-
-if [[ $GIT_BRANCH != 'master' ]]; then
-  # Push all the TOC changes
-  git pull --rebase origin ${GITHUB_REF}
-  git push origin ${GITHUB_REF}
 fi
 
 exit 0

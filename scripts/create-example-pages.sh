@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefailuxo pipefail
+set -euxo pipefail
 
 rsync -r examples/specs/* site/examples/
 rsync examples/compiled/*.svg site/examples/
