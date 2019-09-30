@@ -39,7 +39,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"lower_Miles_per_Gallon\"] !== null && !isNaN(datum[\"lower_Miles_per_Gallon\"]) && datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
+          "expr": "datum[\"lower_Miles_per_Gallon\"] !== null && isFinite(datum[\"lower_Miles_per_Gallon\"]) && datum[\"year_Year\"] !== null && isFinite(datum[\"year_Year\"])"
         }
       ]
     },
@@ -49,7 +49,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"upper_Miles_per_Gallon\"] !== null && !isNaN(datum[\"upper_Miles_per_Gallon\"]) && datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
+          "expr": "datum[\"upper_Miles_per_Gallon\"] !== null && isFinite(datum[\"upper_Miles_per_Gallon\"]) && datum[\"year_Year\"] !== null && isFinite(datum[\"year_Year\"])"
         }
       ]
     }
@@ -70,7 +70,7 @@
           "xc": {"scale": "x", "field": "year_Year"},
           "yc": [
             {
-              "test": "datum[\"lower_Miles_per_Gallon\"] === null || isNaN(datum[\"lower_Miles_per_Gallon\"])",
+              "test": "datum[\"lower_Miles_per_Gallon\"] === null || !isFinite(datum[\"lower_Miles_per_Gallon\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "lower_Miles_per_Gallon"}
@@ -95,7 +95,7 @@
           "xc": {"scale": "x", "field": "year_Year"},
           "yc": [
             {
-              "test": "datum[\"upper_Miles_per_Gallon\"] === null || isNaN(datum[\"upper_Miles_per_Gallon\"])",
+              "test": "datum[\"upper_Miles_per_Gallon\"] === null || !isFinite(datum[\"upper_Miles_per_Gallon\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "upper_Miles_per_Gallon"}
@@ -119,14 +119,14 @@
           "x": {"scale": "x", "field": "year_Year"},
           "y": [
             {
-              "test": "datum[\"lower_Miles_per_Gallon\"] === null || isNaN(datum[\"lower_Miles_per_Gallon\"])",
+              "test": "datum[\"lower_Miles_per_Gallon\"] === null || !isFinite(datum[\"lower_Miles_per_Gallon\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "lower_Miles_per_Gallon"}
           ],
           "y2": [
             {
-              "test": "datum[\"upper_Miles_per_Gallon\"] === null || isNaN(datum[\"upper_Miles_per_Gallon\"])",
+              "test": "datum[\"upper_Miles_per_Gallon\"] === null || !isFinite(datum[\"upper_Miles_per_Gallon\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "upper_Miles_per_Gallon"}

@@ -45,7 +45,7 @@
           "x": {"scale": "x", "field": "Name"},
           "y": {"scale": "y", "field": "Score"},
           "defined": {
-            "signal": "datum[\"Score\"] !== null && !isNaN(datum[\"Score\"])"
+            "signal": "datum[\"Score\"] !== null && isFinite(datum[\"Score\"])"
           }
         }
       }

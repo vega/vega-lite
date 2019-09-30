@@ -52,7 +52,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"x1\"] !== null && !isNaN(datum[\"x1\"])"
+          "expr": "datum[\"x1\"] !== null && isFinite(datum[\"x1\"])"
         }
       ]
     }

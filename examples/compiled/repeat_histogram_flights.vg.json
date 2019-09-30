@@ -71,7 +71,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_time\"] !== null && !isNaN(datum[\"bin_maxbins_20_time\"])"
+          "expr": "datum[\"bin_maxbins_20_time\"] !== null && isFinite(datum[\"bin_maxbins_20_time\"])"
         }
       ]
     },
@@ -88,7 +88,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_delay\"] !== null && !isNaN(datum[\"bin_maxbins_20_delay\"])"
+          "expr": "datum[\"bin_maxbins_20_delay\"] !== null && isFinite(datum[\"bin_maxbins_20_delay\"])"
         }
       ]
     },
@@ -105,7 +105,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
+          "expr": "datum[\"bin_maxbins_20_distance\"] !== null && isFinite(datum[\"bin_maxbins_20_distance\"])"
         }
       ]
     }
@@ -130,7 +130,7 @@
               "fill": {"value": "#4c78a8"},
               "x2": [
                 {
-                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"])",
+                  "test": "datum[\"bin_maxbins_20_distance\"] === null || !isFinite(datum[\"bin_maxbins_20_distance\"])",
                   "value": 0
                 },
                 {
@@ -141,7 +141,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"])",
+                  "test": "datum[\"bin_maxbins_20_distance\"] === null || !isFinite(datum[\"bin_maxbins_20_distance\"])",
                   "value": 0
                 },
                 {
@@ -211,7 +211,7 @@
               "fill": {"value": "#4c78a8"},
               "x2": [
                 {
-                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"])",
+                  "test": "datum[\"bin_maxbins_20_delay\"] === null || !isFinite(datum[\"bin_maxbins_20_delay\"])",
                   "value": 0
                 },
                 {
@@ -222,7 +222,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"])",
+                  "test": "datum[\"bin_maxbins_20_delay\"] === null || !isFinite(datum[\"bin_maxbins_20_delay\"])",
                   "value": 0
                 },
                 {
@@ -292,7 +292,7 @@
               "fill": {"value": "#4c78a8"},
               "x2": [
                 {
-                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"])",
+                  "test": "datum[\"bin_maxbins_20_time\"] === null || !isFinite(datum[\"bin_maxbins_20_time\"])",
                   "value": 0
                 },
                 {
@@ -303,7 +303,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"])",
+                  "test": "datum[\"bin_maxbins_20_time\"] === null || !isFinite(datum[\"bin_maxbins_20_time\"])",
                   "value": 0
                 },
                 {

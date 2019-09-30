@@ -247,7 +247,7 @@ export function fieldIntersection(a: Set<string>, b: Set<string>): boolean {
 }
 
 export function isNumeric(num: string | number) {
-  return !isNaN(num as any);
+  return isFinite(num as any);
 }
 
 export function differArray<T>(array: T[], other: T[]) {

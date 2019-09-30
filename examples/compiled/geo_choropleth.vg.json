@@ -25,7 +25,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"rate\"] !== null && !isNaN(datum[\"rate\"])"
+          "expr": "datum[\"rate\"] !== null && isFinite(datum[\"rate\"])"
         }
       ]
     }

@@ -43,7 +43,7 @@
           "x": {"scale": "x", "field": "month"},
           "y": {"scale": "y", "field": "max_temp_max"},
           "defined": {
-            "signal": "datum[\"month\"] !== null && !isNaN(datum[\"month\"]) && datum[\"max_temp_max\"] !== null && !isNaN(datum[\"max_temp_max\"])"
+            "signal": "datum[\"month\"] !== null && isFinite(datum[\"month\"]) && datum[\"max_temp_max\"] !== null && isFinite(datum[\"max_temp_max\"])"
           }
         }
       }

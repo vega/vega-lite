@@ -10,7 +10,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Worldwide_Gross\"] !== null && !isNaN(datum[\"Worldwide_Gross\"]) && datum[\"US_DVD_Sales\"] !== null && !isNaN(datum[\"US_DVD_Sales\"])"
+          "expr": "datum[\"Worldwide_Gross\"] !== null && isFinite(datum[\"Worldwide_Gross\"]) && datum[\"US_DVD_Sales\"] !== null && isFinite(datum[\"US_DVD_Sales\"])"
         }
       ]
     },

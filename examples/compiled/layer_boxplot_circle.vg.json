@@ -51,7 +51,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"lower_whisker_people\"] !== null && !isNaN(datum[\"lower_whisker_people\"])"
+          "expr": "datum[\"lower_whisker_people\"] !== null && isFinite(datum[\"lower_whisker_people\"])"
         }
       ]
     },
@@ -61,7 +61,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"upper_box_people\"] !== null && !isNaN(datum[\"upper_box_people\"])"
+          "expr": "datum[\"upper_box_people\"] !== null && isFinite(datum[\"upper_box_people\"])"
         }
       ]
     },
@@ -90,7 +90,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"lower_box_people\"] !== null && !isNaN(datum[\"lower_box_people\"])"
+          "expr": "datum[\"lower_box_people\"] !== null && isFinite(datum[\"lower_box_people\"])"
         }
       ]
     },
@@ -100,7 +100,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"mid_box_people\"] !== null && !isNaN(datum[\"mid_box_people\"])"
+          "expr": "datum[\"mid_box_people\"] !== null && isFinite(datum[\"mid_box_people\"])"
         }
       ]
     },
@@ -110,7 +110,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
+          "expr": "datum[\"people\"] !== null && isFinite(datum[\"people\"])"
         }
       ]
     }

@@ -25,7 +25,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"bin_start\"] !== null && !isNaN(datum[\"bin_start\"]) && datum[\"count\"] !== null && !isNaN(datum[\"count\"])"
+          "expr": "datum[\"bin_start\"] !== null && isFinite(datum[\"bin_start\"]) && datum[\"count\"] !== null && isFinite(datum[\"count\"])"
         }
       ]
     }

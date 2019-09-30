@@ -157,7 +157,7 @@
                   "x": {"scale": "x", "field": "quarter_date"},
                   "y": {"scale": "y", "field": "mean_price"},
                   "defined": {
-                    "signal": "datum[\"mean_price\"] !== null && !isNaN(datum[\"mean_price\"])"
+                    "signal": "datum[\"mean_price\"] !== null && isFinite(datum[\"mean_price\"])"
                   }
                 }
               }

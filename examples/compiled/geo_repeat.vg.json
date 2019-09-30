@@ -34,7 +34,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
+          "expr": "datum[\"population\"] !== null && isFinite(datum[\"population\"])"
         }
       ]
     },
@@ -56,7 +56,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"engineers\"] !== null && !isNaN(datum[\"engineers\"])"
+          "expr": "datum[\"engineers\"] !== null && isFinite(datum[\"engineers\"])"
         }
       ]
     },
@@ -78,7 +78,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"hurricanes\"] !== null && !isNaN(datum[\"hurricanes\"])"
+          "expr": "datum[\"hurricanes\"] !== null && isFinite(datum[\"hurricanes\"])"
         }
       ]
     }

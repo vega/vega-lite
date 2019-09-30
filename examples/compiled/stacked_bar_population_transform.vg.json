@@ -27,7 +27,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"v1\"] !== null && !isNaN(datum[\"v1\"])"
+          "expr": "datum[\"v1\"] !== null && isFinite(datum[\"v1\"])"
         }
       ]
     }

@@ -75,7 +75,7 @@
           "y": {"scale": "y", "field": "lower_ci1"},
           "y2": {"scale": "y", "field": "upper_ci1"},
           "defined": {
-            "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"lower_ci1\"] !== null && !isNaN(datum[\"lower_ci1\"])"
+            "signal": "datum[\"year_Year\"] !== null && isFinite(datum[\"year_Year\"]) && datum[\"lower_ci1\"] !== null && isFinite(datum[\"lower_ci1\"])"
           }
         }
       }
@@ -92,7 +92,7 @@
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "center"},
           "defined": {
-            "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"center\"] !== null && !isNaN(datum[\"center\"])"
+            "signal": "datum[\"year_Year\"] !== null && isFinite(datum[\"year_Year\"]) && datum[\"center\"] !== null && isFinite(datum[\"center\"])"
           }
         }
       }

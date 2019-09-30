@@ -19,7 +19,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"mean_acc\"] !== null && !isNaN(datum[\"mean_acc\"])"
+          "expr": "datum[\"mean_acc\"] !== null && isFinite(datum[\"mean_acc\"])"
         }
       ]
     }

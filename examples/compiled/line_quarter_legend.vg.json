@@ -62,7 +62,7 @@
               "x": {"scale": "x", "field": "year_date"},
               "y": {"scale": "y", "field": "mean_price"},
               "defined": {
-                "signal": "datum[\"year_date\"] !== null && !isNaN(datum[\"year_date\"]) && datum[\"mean_price\"] !== null && !isNaN(datum[\"mean_price\"])"
+                "signal": "datum[\"year_date\"] !== null && isFinite(datum[\"year_date\"]) && datum[\"mean_price\"] !== null && isFinite(datum[\"mean_price\"])"
               }
             }
           }

@@ -55,7 +55,7 @@
           "y": {"scale": "y", "field": "lower_Miles_per_Gallon"},
           "y2": {"scale": "y", "field": "upper_Miles_per_Gallon"},
           "defined": {
-            "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"lower_Miles_per_Gallon\"] !== null && !isNaN(datum[\"lower_Miles_per_Gallon\"])"
+            "signal": "datum[\"year_Year\"] !== null && isFinite(datum[\"year_Year\"]) && datum[\"lower_Miles_per_Gallon\"] !== null && isFinite(datum[\"lower_Miles_per_Gallon\"])"
           }
         }
       }
@@ -77,7 +77,7 @@
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "lower_Miles_per_Gallon"},
           "defined": {
-            "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"lower_Miles_per_Gallon\"] !== null && !isNaN(datum[\"lower_Miles_per_Gallon\"])"
+            "signal": "datum[\"year_Year\"] !== null && isFinite(datum[\"year_Year\"]) && datum[\"lower_Miles_per_Gallon\"] !== null && isFinite(datum[\"lower_Miles_per_Gallon\"])"
           }
         }
       }
@@ -99,7 +99,7 @@
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "upper_Miles_per_Gallon"},
           "defined": {
-            "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"upper_Miles_per_Gallon\"] !== null && !isNaN(datum[\"upper_Miles_per_Gallon\"])"
+            "signal": "datum[\"year_Year\"] !== null && isFinite(datum[\"year_Year\"]) && datum[\"upper_Miles_per_Gallon\"] !== null && isFinite(datum[\"upper_Miles_per_Gallon\"])"
           }
         }
       }
@@ -116,7 +116,7 @@
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "mean_Miles_per_Gallon"},
           "defined": {
-            "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"mean_Miles_per_Gallon\"] !== null && !isNaN(datum[\"mean_Miles_per_Gallon\"])"
+            "signal": "datum[\"year_Year\"] !== null && isFinite(datum[\"year_Year\"]) && datum[\"mean_Miles_per_Gallon\"] !== null && isFinite(datum[\"mean_Miles_per_Gallon\"])"
           }
         }
       }

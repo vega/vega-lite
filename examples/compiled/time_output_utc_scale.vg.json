@@ -43,7 +43,7 @@
           "x": {"scale": "x", "field": "yearmonthdatehoursminutes_date"},
           "y": {"scale": "y", "field": "price"},
           "defined": {
-            "signal": "datum[\"yearmonthdatehoursminutes_date\"] !== null && !isNaN(datum[\"yearmonthdatehoursminutes_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+            "signal": "datum[\"yearmonthdatehoursminutes_date\"] !== null && isFinite(datum[\"yearmonthdatehoursminutes_date\"]) && datum[\"price\"] !== null && isFinite(datum[\"price\"])"
           }
         }
       }

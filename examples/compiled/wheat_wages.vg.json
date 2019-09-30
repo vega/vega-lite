@@ -35,7 +35,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"wheat\"] !== null && !isNaN(datum[\"wheat\"])"
+          "expr": "datum[\"year\"] !== null && isFinite(datum[\"year\"]) && datum[\"wheat\"] !== null && isFinite(datum[\"wheat\"])"
         }
       ]
     },
@@ -45,7 +45,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"year\"] !== null && !isNaN(datum[\"year\"])"
+          "expr": "datum[\"year\"] !== null && isFinite(datum[\"year\"])"
         }
       ]
     },
@@ -61,7 +61,7 @@
         {"type": "formula", "expr": "95", "as": "y"},
         {
           "type": "filter",
-          "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
+          "expr": "datum[\"start\"] !== null && isFinite(datum[\"start\"]) && datum[\"y\"] !== null && isFinite(datum[\"y\"])"
         }
       ]
     },
@@ -81,7 +81,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"off2\"] !== null && !isNaN(datum[\"off2\"])"
+          "expr": "datum[\"x\"] !== null && isFinite(datum[\"x\"]) && datum[\"off2\"] !== null && isFinite(datum[\"off2\"])"
         }
       ]
     }
@@ -98,14 +98,14 @@
           "stroke": {"value": "#999"},
           "x": [
             {
-              "test": "datum[\"year\"] === null || isNaN(datum[\"year\"])",
+              "test": "datum[\"year\"] === null || !isFinite(datum[\"year\"])",
               "value": 0
             },
             {"scale": "x", "field": "year"}
           ],
           "x2": [
             {
-              "test": "datum[\"year_end\"] === null || isNaN(datum[\"year_end\"])",
+              "test": "datum[\"year_end\"] === null || !isFinite(datum[\"year_end\"])",
               "value": 0
             },
             {"scale": "x", "field": "year_end"}
@@ -127,7 +127,7 @@
           "strokeWidth": {"value": 0.6},
           "x": [
             {
-              "test": "datum[\"year\"] === null || isNaN(datum[\"year\"])",
+              "test": "datum[\"year\"] === null || !isFinite(datum[\"year\"])",
               "value": 0
             },
             {"scale": "x", "field": "year"}
@@ -152,7 +152,7 @@
           "y": {"scale": "y", "field": "wages"},
           "y2": {"scale": "y", "value": 0},
           "defined": {
-            "signal": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"wages\"] !== null && !isNaN(datum[\"wages\"])"
+            "signal": "datum[\"year\"] !== null && isFinite(datum[\"year\"]) && datum[\"wages\"] !== null && isFinite(datum[\"wages\"])"
           }
         }
       }
@@ -170,7 +170,7 @@
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages"},
           "defined": {
-            "signal": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"wages\"] !== null && !isNaN(datum[\"wages\"])"
+            "signal": "datum[\"year\"] !== null && isFinite(datum[\"year\"]) && datum[\"wages\"] !== null && isFinite(datum[\"wages\"])"
           }
         }
       }
@@ -187,7 +187,7 @@
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages", "offset": -2},
           "defined": {
-            "signal": "datum[\"year\"] !== null && !isNaN(datum[\"year\"]) && datum[\"wages\"] !== null && !isNaN(datum[\"wages\"])"
+            "signal": "datum[\"year\"] !== null && isFinite(datum[\"year\"]) && datum[\"wages\"] !== null && isFinite(datum[\"wages\"])"
           }
         }
       }
@@ -203,14 +203,14 @@
           "fill": {"scale": "fill", "field": "commonwealth"},
           "x": [
             {
-              "test": "datum[\"start\"] === null || isNaN(datum[\"start\"])",
+              "test": "datum[\"start\"] === null || !isFinite(datum[\"start\"])",
               "value": 0
             },
             {"scale": "x", "field": "start"}
           ],
           "x2": [
             {
-              "test": "datum[\"end\"] === null || isNaN(datum[\"end\"])",
+              "test": "datum[\"end\"] === null || !isFinite(datum[\"end\"])",
               "value": 0
             },
             {"scale": "x", "field": "end"}
@@ -233,7 +233,7 @@
           "fill": {"value": "black"},
           "x": [
             {
-              "test": "datum[\"x\"] === null || isNaN(datum[\"x\"])",
+              "test": "datum[\"x\"] === null || !isFinite(datum[\"x\"])",
               "value": 0
             },
             {"scale": "x", "field": "x"}

@@ -27,7 +27,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+          "expr": "datum[\"Horsepower\"] !== null && isFinite(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && isFinite(datum[\"Miles_per_Gallon\"])"
         }
       ]
     },
@@ -79,7 +79,7 @@
       },
       "title": {
         "text": {
-          "signal": "parent[\"bin_maxbins_6_Acceleration\"] === null || isNaN(parent[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(parent[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(parent[\"bin_maxbins_6_Acceleration_end\"], \"\")"
+          "signal": "parent[\"bin_maxbins_6_Acceleration\"] === null || !isFinite(parent[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(parent[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(parent[\"bin_maxbins_6_Acceleration_end\"], \"\")"
         },
         "orient": "left",
         "style": "guide-label",

@@ -27,7 +27,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"a b\"] !== null && !isNaN(datum[\"a b\"]) && datum[\"c d\"] !== null && !isNaN(datum[\"c d\"])"
+          "expr": "datum[\"a b\"] !== null && isFinite(datum[\"a b\"]) && datum[\"c d\"] !== null && isFinite(datum[\"c d\"])"
         }
       ]
     }

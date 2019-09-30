@@ -18,7 +18,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+          "expr": "datum[\"date\"] !== null && isFinite(datum[\"date\"]) && datum[\"price\"] !== null && isFinite(datum[\"price\"])"
         }
       ]
     },
@@ -35,7 +35,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+          "expr": "datum[\"date\"] !== null && isFinite(datum[\"date\"])"
         }
       ]
     },
@@ -45,7 +45,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+          "expr": "datum[\"date\"] !== null && isFinite(datum[\"date\"]) && datum[\"price\"] !== null && isFinite(datum[\"price\"])"
         }
       ]
     }
@@ -109,7 +109,7 @@
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
               "defined": {
-                "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                "signal": "datum[\"date\"] !== null && isFinite(datum[\"date\"]) && datum[\"price\"] !== null && isFinite(datum[\"price\"])"
               }
             }
           }

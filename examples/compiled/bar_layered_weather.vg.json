@@ -74,7 +74,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"record.low\"] !== null && !isNaN(datum[\"record.low\"])"
+          "expr": "datum[\"record.low\"] !== null && isFinite(datum[\"record.low\"])"
         }
       ]
     },
@@ -84,7 +84,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"normal.low\"] !== null && !isNaN(datum[\"normal.low\"])"
+          "expr": "datum[\"normal.low\"] !== null && isFinite(datum[\"normal.low\"])"
         }
       ]
     },
@@ -94,7 +94,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"actual.low\"] !== null && !isNaN(datum[\"actual.low\"])"
+          "expr": "datum[\"actual.low\"] !== null && isFinite(datum[\"actual.low\"])"
         }
       ]
     },
@@ -104,7 +104,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"forecast.low.low\"] !== null && !isNaN(datum[\"forecast.low.low\"])"
+          "expr": "datum[\"forecast.low.low\"] !== null && isFinite(datum[\"forecast.low.low\"])"
         }
       ]
     },
@@ -114,7 +114,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"forecast.low.high\"] !== null && !isNaN(datum[\"forecast.low.high\"])"
+          "expr": "datum[\"forecast.low.high\"] !== null && isFinite(datum[\"forecast.low.high\"])"
         }
       ]
     },
@@ -124,7 +124,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"forecast.high.low\"] !== null && !isNaN(datum[\"forecast.high.low\"])"
+          "expr": "datum[\"forecast.high.low\"] !== null && isFinite(datum[\"forecast.high.low\"])"
         }
       ]
     }
@@ -142,14 +142,14 @@
           "width": {"value": 20},
           "y": [
             {
-              "test": "datum[\"record.low\"] === null || isNaN(datum[\"record.low\"])",
+              "test": "datum[\"record.low\"] === null || !isFinite(datum[\"record.low\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "record\\.low"}
           ],
           "y2": [
             {
-              "test": "datum[\"record.high\"] === null || isNaN(datum[\"record.high\"])",
+              "test": "datum[\"record.high\"] === null || !isFinite(datum[\"record.high\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "record\\.high"}
@@ -169,14 +169,14 @@
           "width": {"value": 20},
           "y": [
             {
-              "test": "datum[\"normal.low\"] === null || isNaN(datum[\"normal.low\"])",
+              "test": "datum[\"normal.low\"] === null || !isFinite(datum[\"normal.low\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "normal\\.low"}
           ],
           "y2": [
             {
-              "test": "datum[\"normal.high\"] === null || isNaN(datum[\"normal.high\"])",
+              "test": "datum[\"normal.high\"] === null || !isFinite(datum[\"normal.high\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "normal\\.high"}
@@ -196,14 +196,14 @@
           "width": {"value": 12},
           "y": [
             {
-              "test": "datum[\"actual.low\"] === null || isNaN(datum[\"actual.low\"])",
+              "test": "datum[\"actual.low\"] === null || !isFinite(datum[\"actual.low\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "actual\\.low"}
           ],
           "y2": [
             {
-              "test": "datum[\"actual.high\"] === null || isNaN(datum[\"actual.high\"])",
+              "test": "datum[\"actual.high\"] === null || !isFinite(datum[\"actual.high\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "actual\\.high"}
@@ -223,14 +223,14 @@
           "width": {"value": 12},
           "y": [
             {
-              "test": "datum[\"forecast.low.low\"] === null || isNaN(datum[\"forecast.low.low\"])",
+              "test": "datum[\"forecast.low.low\"] === null || !isFinite(datum[\"forecast.low.low\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "forecast\\.low\\.low"}
           ],
           "y2": [
             {
-              "test": "datum[\"forecast.low.high\"] === null || isNaN(datum[\"forecast.low.high\"])",
+              "test": "datum[\"forecast.low.high\"] === null || !isFinite(datum[\"forecast.low.high\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "forecast\\.low\\.high"}
@@ -250,14 +250,14 @@
           "width": {"value": 3},
           "y": [
             {
-              "test": "datum[\"forecast.low.high\"] === null || isNaN(datum[\"forecast.low.high\"])",
+              "test": "datum[\"forecast.low.high\"] === null || !isFinite(datum[\"forecast.low.high\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "forecast\\.low\\.high"}
           ],
           "y2": [
             {
-              "test": "datum[\"forecast.high.low\"] === null || isNaN(datum[\"forecast.high.low\"])",
+              "test": "datum[\"forecast.high.low\"] === null || !isFinite(datum[\"forecast.high.low\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "forecast\\.high\\.low"}
@@ -277,14 +277,14 @@
           "width": {"value": 12},
           "y": [
             {
-              "test": "datum[\"forecast.high.low\"] === null || isNaN(datum[\"forecast.high.low\"])",
+              "test": "datum[\"forecast.high.low\"] === null || !isFinite(datum[\"forecast.high.low\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "forecast\\.high\\.low"}
           ],
           "y2": [
             {
-              "test": "datum[\"forecast.high.high\"] === null || isNaN(datum[\"forecast.high.high\"])",
+              "test": "datum[\"forecast.high.high\"] === null || !isFinite(datum[\"forecast.high.high\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "forecast\\.high\\.high"}

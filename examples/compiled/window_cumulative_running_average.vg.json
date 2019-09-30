@@ -41,7 +41,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+          "expr": "datum[\"year_Year\"] !== null && isFinite(datum[\"year_Year\"]) && datum[\"Miles_per_Gallon\"] !== null && isFinite(datum[\"Miles_per_Gallon\"])"
         }
       ]
     }
@@ -74,7 +74,7 @@
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "Average_MPG"},
           "defined": {
-            "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"Average_MPG\"] !== null && !isNaN(datum[\"Average_MPG\"])"
+            "signal": "datum[\"year_Year\"] !== null && isFinite(datum[\"year_Year\"]) && datum[\"Average_MPG\"] !== null && isFinite(datum[\"Average_MPG\"])"
           }
         }
       }

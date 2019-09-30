@@ -14,7 +14,7 @@
         {"type": "filter", "expr": "datum.Entity !== 'All natural disasters'"},
         {
           "type": "filter",
-          "expr": "datum[\"Deaths\"] !== null && !isNaN(datum[\"Deaths\"])"
+          "expr": "datum[\"Deaths\"] !== null && isFinite(datum[\"Deaths\"])"
         }
       ]
     }

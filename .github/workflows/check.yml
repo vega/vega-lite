@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - '*'
+      - '*/*'
 
 jobs:
   check:
@@ -19,9 +20,8 @@ jobs:
 
       - name: Install Parallel
         run: |
-          # Minimal installation as described in https://github.com/martinda/gnu-parallel
           # Faster than "sudo apt-get install parallel"
-          wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
+          wget https://raw.githubusercontent.com/martinda/gnu-parallel/master/src/parallel
           chmod +x parallel
           cp parallel sem
           sudo mv parallel sem /usr/local/bin
@@ -40,8 +40,24 @@ jobs:
       - name: Check Schema
         run: ./scripts/check-schema.sh
 
+      - name: Setup data
+        run: yarn data
+
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.x'
+
+      - name: Build Jekyll
+        run: |
+          gem install bundler
+          pushd site
+          bundle install
+          bundle exec jekyll build -q
+          popd
+
       - name: Build TOC
-        run: yarn build:toc
+        run: scripts/generate-toc
 
       - name: Check and Commit
         run: ./scripts/check-and-commit.sh
