@@ -14,6 +14,7 @@ import {
   LoessTransform as VgLoessTransform,
   Orientation,
   ProjectionType,
+  QuantileTransform as VgQuantileTransform,
   RegressionTransform as VgRegressionTransform,
   SampleTransform as VgSampleTransform,
   SignalRef,
@@ -421,6 +422,7 @@ export type VgTransform =
   | VgSequenceTransform
   | VgKDETransform
   | VgLoessTransform
+  | VgQuantileTransform
   | VgRegressionTransform
   | VgPivotTransform;
 

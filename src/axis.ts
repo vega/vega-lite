@@ -67,7 +67,7 @@ export const CONDITIONAL_AXIS_PROP_INDEX: {
   },
   labelBaseline: {
     part: 'labels',
-    vgProp: 'align'
+    vgProp: 'baseline'
   },
   labelColor: {
     part: 'labels',
@@ -308,6 +308,7 @@ export const AXIS_PROPERTY_TYPE: {
   titleFontSize: 'main',
   titleFontWeight: 'main',
   titleLimit: 'main',
+  titleLineHeight: 'main',
   titleOpacity: 'main',
   titlePadding: 'main',
   titleX: 'main',
@@ -414,6 +415,7 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   titleFontStyle: 1,
   titleFontWeight: 1,
   titleLimit: 1,
+  titleLineHeight: 1,
   titleOpacity: 1,
   titlePadding: 1,
   titleX: 1,
