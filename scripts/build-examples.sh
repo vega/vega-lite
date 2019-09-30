@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # script for npm run x-compile
 
-set -e
+set -eo pipefail
 
 dir=${dir-"examples/compiled"}
 

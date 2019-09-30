@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 if grep 'Generic[^U].*Spec<' ./build/vega-lite-schema.json
 then
