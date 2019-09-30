@@ -40,13 +40,29 @@ jobs:
       - name: Check Schema
         run: ./scripts/check-schema.sh
 
-      - name: Setup data
-        run: yarn data
+      - name: Check and Commit
+        run: ./scripts/check-and-commit.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  toc:
+    runs-on: ubuntu-latest
+
+    name: TOC
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
 
       - name: Setup Ruby
         uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.x'
+
+      - name: Setup data
+        run: yarn data
 
       - name: Build Jekyll
         run: |
@@ -60,6 +76,6 @@ jobs:
         run: scripts/generate-toc
 
       - name: Check and Commit
-        run: ./scripts/check-and-commit.sh
+        run: ./scripts/check-and-commit-toc.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
