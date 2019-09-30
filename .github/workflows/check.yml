@@ -40,10 +40,13 @@ jobs:
       - name: Check Schema
         run: ./scripts/check-schema.sh
 
-      - name: Check and Commit
-        run: ./scripts/check-and-commit.sh
+      - name: Setup Git remote
+        run: ./scripts/setup-git-ci.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check and Commit
+        run: ./scripts/check-and-commit.sh
 
   toc:
     runs-on: ubuntu-latest
@@ -75,7 +78,10 @@ jobs:
       - name: Build TOC
         run: scripts/generate-toc
 
-      - name: Check and Commit
-        run: ./scripts/check-and-commit-toc.sh
+      - name: Setup Git remote
+        run: ./scripts/setup-git-ci.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check and Commit
+        run: ./scripts/check-and-commit-toc.sh

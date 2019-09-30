@@ -2,9 +2,8 @@
 
 set -e
 
-scripts/setup-git-ci.sh
-
-GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
+# git checkout $GIT_BRANCH
 
 echo "On branch $GIT_BRANCH."
 
