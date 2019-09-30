@@ -3,7 +3,7 @@
 set -euo pipefail
 
 GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
-# git checkout $GIT_BRANCH
+git checkout $GIT_BRANCH
 
 echo "On branch $GIT_BRANCH."
 
