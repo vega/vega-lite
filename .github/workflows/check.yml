@@ -14,6 +14,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
+        with:
+          fetch-depth: 10
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
@@ -40,13 +42,34 @@ jobs:
       - name: Check Schema
         run: ./scripts/check-schema.sh
 
-      - name: Setup data
-        run: yarn data
+      - name: Setup Git remote
+        run: ./scripts/setup-git-ci.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check and Commit
+        run: ./scripts/check-and-commit.sh
+
+  toc:
+    runs-on: ubuntu-latest
+
+    name: TOC
+
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 10
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
 
       - name: Setup Ruby
         uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.x'
+
+      - name: Setup data
+        run: yarn data
 
       - name: Build Jekyll
         run: |
@@ -59,7 +82,10 @@ jobs:
       - name: Build TOC
         run: scripts/generate-toc
 
-      - name: Check and Commit
-        run: ./scripts/check-and-commit.sh
+      - name: Setup Git remote
+        run: ./scripts/setup-git-ci.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check and Commit
+        run: ./scripts/check-and-commit-toc.sh

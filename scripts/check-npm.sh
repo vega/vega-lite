@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 # Check if all required files are here
 if ! [ -f build/vega-lite.js ]; then

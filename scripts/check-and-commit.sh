@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-scripts/setup-git-ci.sh
+GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
+git checkout $GIT_BRANCH
 
-GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+echo "On branch $GIT_BRANCH."
 
 echo ""
 echo "------- Checking Schema -------"
@@ -24,26 +25,8 @@ then
 fi
 
 echo ""
-echo "------- Checking TOC -------"
-echo ""
-
-# Commit the TOC if outdated
-if ! git diff --exit-code ./site/_includes/docs_toc.md
-then
-  ## Only do this for master
-  if [[ $GIT_BRANCH == 'master' ]]; then
-    echo "Outdated TOC."
-    exit 1
-  else
-    git add ./site/_includes/docs_toc.md
-    git commit -m "chore: update TOC [CI]"
-  fi
-fi
-
-echo ""
 echo "------- Checking Examples -------"
 echo ""
-
 
 if git log -1 | grep "\[SVG\]" && [[ $GIT_BRANCH != 'master' ]]; then
   echo "As the latest commit includes [SVG]. Rebuilding all SVGs."
@@ -72,7 +55,6 @@ else
   fi
 fi
 
-
 echo ""
 echo "------- Checking Code Formatting -------"
 echo ""
@@ -86,6 +68,7 @@ if [[ $GIT_BRANCH != 'master' ]]; then
   fi
 
   # Then push all the changes (schema, examples, prettier)
+  git pull --rebase origin ${GITHUB_REF}
   git push origin ${GITHUB_REF}
 fi
 
