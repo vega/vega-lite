@@ -631,7 +631,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-6039-6088-981995915-0-10055|undefined|null)>"
             }
           ]
         },
@@ -648,7 +648,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8592-8644-981995915-0-10055|undefined|null)>"
             }
           ]
         },
@@ -715,7 +715,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8836-8977-981995915-0-10055|undefined|null)>"
             }
           ]
         },
@@ -726,7 +726,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8687-8836-981995915-0-10055|undefined|null)>"
             }
           ]
         },
@@ -918,6 +918,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "titleLineHeight": {
+          "description": "Line height in pixels for multi-line title text.",
+          "type": "number"
+        },
         "titleOpacity": {
           "description": "Opacity of the axis title.",
           "type": "number"
@@ -1077,7 +1081,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-6039-6088-981995915-0-10055|undefined|null)>"
             }
           ]
         },
@@ -1094,7 +1098,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8592-8644-981995915-0-10055|undefined|null)>"
             }
           ]
         },
@@ -1157,7 +1161,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8836-8977-981995915-0-10055|undefined|null)>"
             }
           ]
         },
@@ -1168,7 +1172,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8687-8836-981995915-0-10055|undefined|null)>"
             }
           ]
         },
@@ -1343,6 +1347,10 @@
         "titleLimit": {
           "description": "Maximum allowed pixel width of axis titles.",
           "minimum": 0,
+          "type": "number"
+        },
+        "titleLineHeight": {
+          "description": "Line height in pixels for multi-line title text.",
           "type": "number"
         },
         "titleOpacity": {
@@ -1698,30 +1706,31 @@
       "additionalProperties": false,
       "properties": {
         "align": {
-          "$ref": "#/definitions/Align"
+          "$ref": "#/definitions/Align",
+          "description": "Horizontal text alignment for title text. One of `\"left\"`, `\"center\"`, or `\"right\"`."
         },
         "anchor": {
           "$ref": "#/definitions/TitleAnchor",
-          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
+          "description": "The anchor position for placing the title and subtitle text. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
         },
         "angle": {
-          "description": "Angle in degrees of title text.",
+          "description": "Angle in degrees of title and subtitle text.",
           "type": "number"
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for title text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+          "description": "Vertical text baseline for title and subtitle text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
         },
         "color": {
           "$ref": "#/definitions/Color",
           "description": "Text color for title text."
         },
         "dx": {
-          "description": "Delta offset for title text x-coordinate.",
+          "description": "Delta offset for title and subtitle text x-coordinate.",
           "type": "number"
         },
         "dy": {
-          "description": "Delta offset for title text y-coordinate.",
+          "description": "Delta offset for title and subtitle text y-coordinate.",
           "type": "number"
         },
         "font": {
@@ -1729,7 +1738,7 @@
           "type": "string"
         },
         "fontSize": {
-          "description": "Font size in pixels for title text.\n\n__Default value:__ `10`.",
+          "description": "Font size in pixels for title text.",
           "minimum": 0,
           "type": "number"
         },
@@ -1746,17 +1755,50 @@
           "description": "The reference frame for the anchor position, one of `\"bounds\"` (to anchor relative to the full bounding box) or `\"group\"` (to anchor relative to the group width or height)."
         },
         "limit": {
-          "description": "The maximum allowed length in pixels of legend labels.",
+          "description": "The maximum allowed length in pixels of title and subtitle text.",
           "minimum": 0,
           "type": "number"
         },
+        "lineHeight": {
+          "description": "Line height in pixels for multi-line title text.",
+          "type": "number"
+        },
         "offset": {
-          "description": "The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.",
+          "description": "The orthogonal offset in pixels by which to displace the title group from its position along the edge of the chart.",
           "type": "number"
         },
         "orient": {
           "$ref": "#/definitions/TitleOrient",
           "description": "Default title orientation (`\"top\"`, `\"bottom\"`, `\"left\"`, or `\"right\"`)"
+        },
+        "subtitleColor": {
+          "$ref": "#/definitions/Color",
+          "description": "Text color for subtitle text."
+        },
+        "subtitleFont": {
+          "description": "Font name for subtitle text.",
+          "type": "string"
+        },
+        "subtitleFontSize": {
+          "description": "Font size in pixels for subtitle text.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "subtitleFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "Font style for subtitle text."
+        },
+        "subtitleFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight for subtitle text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "subtitleLineHeight": {
+          "description": "Line height in pixels for multi-line subtitle text.",
+          "type": "number"
+        },
+        "subtitlePadding": {
+          "description": "The padding in pixels between title and subtitle text.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -2865,17 +2907,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-981995915-6039-6088-981995915-0-10055|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-6039-6088-981995915-0-10055|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-6039-6088-981995915-0-10055|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2898,17 +2940,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-981995915-8592-8644-981995915-0-10055|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8592-8644-981995915-0-10055|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8592-8644-981995915-0-10055|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2931,17 +2973,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-981995915-8687-8836-981995915-0-10055|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8687-8836-981995915-0-10055|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8687-8836-981995915-0-10055|undefined|null)>>"
               },
               "type": "array"
             }
@@ -2964,17 +3006,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>": {
+    "ConditionalAxisProperty<(def-alias-981995915-8836-8977-981995915-0-10055|undefined|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8836-8977-981995915-0-10055|undefined|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8836-8977-981995915-0-10055|undefined|null)>>"
               },
               "type": "array"
             }
@@ -3379,7 +3421,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-5990-6039-981995915-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-6039-6088-981995915-0-10055|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3403,7 +3445,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-8505-8557-981995915-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-8592-8644-981995915-0-10055|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3427,7 +3469,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-8600-8749-981995915-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-8687-8836-981995915-0-10055|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3451,7 +3493,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-8749-8890-981995915-0-9900|undefined|null)>>": {
+    "ConditionalPredicate<ValueDef<(def-alias-981995915-8836-8977-981995915-0-10055|undefined|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -8046,6 +8088,10 @@
           "$ref": "#/definitions/Color",
           "description": "The color of the legend symbol,"
         },
+        "symbolLimit": {
+          "description": "The maximum number of allowed entries for a symbol legend. Additional entries will be dropped.",
+          "type": "number"
+        },
         "symbolOffset": {
           "description": "Horizontal pixel offset for legend symbols.\n\n__Default value:__ `0`.",
           "type": "number"
@@ -8073,8 +8119,8 @@
           "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
         },
         "tickCount": {
-          "description": "The desired number of tick values for quantitative legends.",
-          "type": "number"
+          "$ref": "#/definitions/TickCount",
+          "description": "The desired number of tick values for quantitative legends."
         },
         "tickMinStep": {
           "description": "The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.\n\n__Default value__: `undefined`",
@@ -8122,6 +8168,10 @@
         "titleLimit": {
           "description": "Maximum allowed pixel width of legend titles.\n\n__Default value:__ `180`.",
           "minimum": 0,
+          "type": "number"
+        },
+        "titleLineHeight": {
+          "description": "Line height in pixels for multi-line title text.",
           "type": "number"
         },
         "titleOpacity": {
@@ -8377,6 +8427,10 @@
           "$ref": "#/definitions/Color",
           "description": "The color of the legend symbol,"
         },
+        "symbolLimit": {
+          "description": "The maximum number of allowed entries for a symbol legend. Additional entries will be dropped.",
+          "type": "number"
+        },
         "symbolOffset": {
           "description": "Horizontal pixel offset for legend symbols.\n\n__Default value:__ `0`.",
           "type": "number"
@@ -8402,6 +8456,10 @@
         "symbolType": {
           "$ref": "#/definitions/SymbolShape",
           "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
+        },
+        "tickCount": {
+          "$ref": "#/definitions/TickCount",
+          "description": "The desired number of tick values for quantitative legends."
         },
         "title": {
           "description": "Set to null to disable title for the axis, legend, or header.",
@@ -8442,6 +8500,10 @@
         "titleLimit": {
           "description": "Maximum allowed pixel width of legend titles.\n\n__Default value:__ `180`.",
           "minimum": 0,
+          "type": "number"
+        },
+        "titleLineHeight": {
+          "description": "Line height in pixels for multi-line title text.",
           "type": "number"
         },
         "titleOpacity": {
@@ -11051,6 +11113,51 @@
       ],
       "type": "string"
     },
+    "QuantileTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The output field names for the probability and quantile values.\n\n__Default value:__ `[\"prob\", \"value\"]`",
+          "items": [
+            {
+              "$ref": "#/definitions/FieldName"
+            },
+            {
+              "$ref": "#/definitions/FieldName"
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "groupby": {
+          "description": "The data fields to group by. If not specified, a single group containing all data objects will be used.",
+          "items": {
+            "$ref": "#/definitions/FieldName"
+          },
+          "type": "array"
+        },
+        "probs": {
+          "description": "An array of probabilities in the range (0, 1) for which to compute quantile values. If not specified, the *step* parameter will be used.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "quantile": {
+          "$ref": "#/definitions/FieldName",
+          "description": "The data field for which to perform quantile estimation."
+        },
+        "step": {
+          "description": "A probability step size (default 0.01) for sampling quantile values. All values from one-half the step size up to 1 (exclusive) will be sampled. This parameter is only used if the *probs* parameter is not provided.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "quantile"
+      ],
+      "type": "object"
+    },
     "RadialGradient": {
       "additionalProperties": false,
       "properties": {
@@ -13609,6 +13716,32 @@
       },
       "type": "object"
     },
+    "TickCount": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "$ref": "#/definitions/TimeInterval"
+        },
+        {
+          "$ref": "#/definitions/SignalRef"
+        }
+      ]
+    },
+    "TimeInterval": {
+      "enum": [
+        "millisecond",
+        "second",
+        "minute",
+        "hour",
+        "day",
+        "week",
+        "month",
+        "year"
+      ],
+      "type": "string"
+    },
     "TimeUnit": {
       "anyOf": [
         {
@@ -13678,30 +13811,31 @@
       "additionalProperties": false,
       "properties": {
         "align": {
-          "$ref": "#/definitions/Align"
+          "$ref": "#/definitions/Align",
+          "description": "Horizontal text alignment for title text. One of `\"left\"`, `\"center\"`, or `\"right\"`."
         },
         "anchor": {
           "$ref": "#/definitions/TitleAnchor",
           "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `\"start\"`."
         },
         "angle": {
-          "description": "Angle in degrees of title text.",
+          "description": "Angle in degrees of title and subtitle text.",
           "type": "number"
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for title text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+          "description": "Vertical text baseline for title and subtitle text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
         },
         "color": {
           "$ref": "#/definitions/Color",
           "description": "Text color for title text."
         },
         "dx": {
-          "description": "Delta offset for title text x-coordinate.",
+          "description": "Delta offset for title and subtitle text x-coordinate.",
           "type": "number"
         },
         "dy": {
-          "description": "Delta offset for title text y-coordinate.",
+          "description": "Delta offset for title and subtitle text y-coordinate.",
           "type": "number"
         },
         "font": {
@@ -13709,7 +13843,7 @@
           "type": "string"
         },
         "fontSize": {
-          "description": "Font size in pixels for title text.\n\n__Default value:__ `10`.",
+          "description": "Font size in pixels for title text.",
           "minimum": 0,
           "type": "number"
         },
@@ -13726,12 +13860,16 @@
           "description": "The reference frame for the anchor position, one of `\"bounds\"` (to anchor relative to the full bounding box) or `\"group\"` (to anchor relative to the group width or height)."
         },
         "limit": {
-          "description": "The maximum allowed length in pixels of legend labels.",
+          "description": "The maximum allowed length in pixels of title and subtitle text.",
           "minimum": 0,
           "type": "number"
         },
+        "lineHeight": {
+          "description": "Line height in pixels for multi-line title text.",
+          "type": "number"
+        },
         "offset": {
-          "description": "The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.",
+          "description": "The orthogonal offset in pixels by which to displace the title group from its position along the edge of the chart.",
           "type": "number"
         },
         "orient": {
@@ -13751,6 +13889,35 @@
             }
           ],
           "description": "A [mark style property](https://vega.github.io/vega-lite/docs/config.html#style) to apply to the title text mark.\n\n__Default value:__ `\"group-title\"`."
+        },
+        "subtitleColor": {
+          "$ref": "#/definitions/Color",
+          "description": "Text color for subtitle text."
+        },
+        "subtitleFont": {
+          "description": "Font name for subtitle text.",
+          "type": "string"
+        },
+        "subtitleFontSize": {
+          "description": "Font size in pixels for subtitle text.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "subtitleFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "Font style for subtitle text."
+        },
+        "subtitleFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight for subtitle text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "subtitleLineHeight": {
+          "description": "Line height in pixels for multi-line subtitle text.",
+          "type": "number"
+        },
+        "subtitlePadding": {
+          "description": "The padding in pixels between title and subtitle text.",
+          "type": "number"
         },
         "text": {
           "description": "The title text.",
@@ -14802,6 +14969,9 @@
         },
         {
           "$ref": "#/definitions/LookupTransform"
+        },
+        {
+          "$ref": "#/definitions/QuantileTransform"
         },
         {
           "$ref": "#/definitions/RegressionTransform"
