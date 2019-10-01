@@ -22,7 +22,11 @@
           ],
           "mark": {"type": "point", "style": "boxplot-outliers"},
           "encoding": {
-            "x": {"field": "people", "type": "quantitative"},
+            "x": {
+              "field": "people",
+              "type": "quantitative",
+              "axis": {"title": "population"}
+            },
             "y": {"field": "age", "type": "ordinal"}
           }
         },
