@@ -21,7 +21,7 @@
           ],
           "mark": {"type": "point", "style": "boxplot-outliers"},
           "encoding": {
-            "y": {"field": "people", "type": "quantitative"},
+            "y": {"field": "people", "type": "quantitative", "title": "people"},
             "x": {"field": "age", "type": "ordinal"}
           }
         },

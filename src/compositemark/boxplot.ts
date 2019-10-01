@@ -15,6 +15,7 @@ import {
   filterTooltipWithAggregatedField,
   GenericCompositeMarkDef,
   getCompositeMarkTooltip,
+  getTitle,
   makeCompositeAggregatePartFactory,
   partLayerMixins,
   PartsMixins
@@ -267,13 +268,20 @@ export function normalizeBoxPlot(
     }
 
     const {tooltip, ...encodingWithoutSizeColorContinuousAxisAndTooltip} = encodingWithoutSizeColorAndContinuousAxis;
+
+    const {scale, axis} = continuousAxisChannelDef;
+    const title = getTitle(continuousAxisChannelDef);
+
     const outlierLayersMixins = partLayerMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot, {
       transform: [{filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`}],
       mark: 'point',
       encoding: {
         [continuousAxis]: {
           field: continuousAxisChannelDef.field,
-          type: continuousAxisChannelDef.type
+          type: continuousAxisChannelDef.type,
+          ...(title !== undefined ? {title} : {}),
+          ...(scale !== undefined ? {scale} : {}),
+          ...(axis !== undefined ? {axis} : {})
         },
         ...encodingWithoutSizeColorContinuousAxisAndTooltip,
         ...(customTooltipWithoutAggregatedField ? {tooltip: customTooltipWithoutAggregatedField} : {})

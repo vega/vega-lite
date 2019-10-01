@@ -16,6 +16,7 @@ import {Encoding, fieldDefs} from '../encoding';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
+import {getFirstDefined} from '../util';
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 
@@ -120,6 +121,11 @@ export function getCompositeMarkTooltip(
   };
 }
 
+export function getTitle(continuousAxisChannelDef: PositionFieldDef<string>) {
+  const {axis, title, field} = continuousAxisChannelDef;
+  return axis && axis.title !== undefined ? undefined : getFirstDefined(title, field);
+}
+
 export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
   compositeMarkDef: GenericCompositeMarkDef<any> & P,
   continuousAxis: 'x' | 'y',
@@ -142,12 +148,7 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
     endPositionPrefix?: string;
     extraEncoding?: Encoding<string>;
   }) => {
-    const title =
-      axis && axis.title !== undefined
-        ? undefined
-        : continuousAxisChannelDef.title !== undefined
-        ? continuousAxisChannelDef.title
-        : continuousAxisChannelDef.field;
+    const title = getTitle(continuousAxisChannelDef);
 
     return partLayerMixins<P>(compositeMarkDef, partName, compositeMarkConfig, {
       mark, // TODO better remove this method and just have mark as a parameter of the method
@@ -155,9 +156,9 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
         [continuousAxis]: {
           field: positionPrefix + '_' + continuousAxisChannelDef.field,
           type: continuousAxisChannelDef.type,
-          ...(title ? {title} : {}),
-          ...(scale ? {scale} : {}),
-          ...(axis ? {axis} : {})
+          ...(title !== undefined ? {title} : {}),
+          ...(scale !== undefined ? {scale} : {}),
+          ...(axis !== undefined ? {axis} : {})
         },
         ...(isString(endPositionPrefix)
           ? {

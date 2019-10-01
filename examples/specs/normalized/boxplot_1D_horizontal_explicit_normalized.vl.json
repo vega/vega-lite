@@ -21,7 +21,13 @@
             }
           ],
           "mark": {"type": "point", "style": "boxplot-outliers"},
-          "encoding": {"x": {"field": "people", "type": "quantitative"}}
+          "encoding": {
+            "x": {
+              "field": "people",
+              "type": "quantitative",
+              "axis": {"title": "population"}
+            }
+          }
         },
         {
           "transform": [
