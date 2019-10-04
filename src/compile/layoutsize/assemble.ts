@@ -1,4 +1,4 @@
-import {NewSignal} from 'vega';
+import {NewSignal, InitSignal} from 'vega';
 import {hasDiscreteDomain} from '../../scale';
 import {getFirstDefined} from '../../util';
 import {isVgRangeStep, VgRangeStep} from '../../vega.schema';
@@ -9,7 +9,7 @@ export function assembleLayoutSignals(model: Model): NewSignal[] {
   return [...sizeSignals(model, 'width'), ...sizeSignals(model, 'height')];
 }
 
-export function sizeSignals(model: Model, sizeType: 'width' | 'height'): NewSignal[] {
+export function sizeSignals(model: Model, sizeType: 'width' | 'height'): (NewSignal | InitSignal)[] {
   const channel = sizeType === 'width' ? 'x' : 'y';
   const size = model.component.layoutSize.get(sizeType);
   if (!size || size === 'merged') {
@@ -50,6 +50,9 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): NewSign
     }
     /* istanbul ignore next: Condition should not happen -- only for warning in development. */
     throw new Error('layout size is step although width/height is not step.');
+  } else if (size == 'container') {
+    const expr = name.endsWith('width') ? 'containerSize()[0]' : 'containerSize()[1]';
+    return [{name, init: expr, on: [{update: expr, events: 'window:resize'}]}];
   } else {
     return [
       {

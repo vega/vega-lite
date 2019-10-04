@@ -232,6 +232,70 @@ describe('compile/compile', () => {
     expect(spec.autosize).toBe('fit');
   });
 
+  it('should use containerSize for width and autosize to fit-x/padding', () => {
+    const spec = compile({
+      width: 'container',
+      data: {url: 'foo.csv'},
+      mark: 'point',
+      encoding: {}
+    }).spec;
+
+    expect(spec.autosize).toEqual({type: 'fit-x', contains: 'padding'});
+    expect(spec.signals).toEqual([
+      {
+        name: 'width',
+        init: 'containerSize()[0]',
+        on: [{events: 'window:resize', update: 'containerSize()[0]'}]
+      }
+    ]);
+    expect(spec.width).toBeUndefined();
+  });
+
+  it('should use containerSize for width and autosize to fit-y/padding', () => {
+    const spec = compile({
+      height: 'container',
+      data: {url: 'foo.csv'},
+      mark: 'point',
+      encoding: {}
+    }).spec;
+
+    expect(spec.autosize).toEqual({type: 'fit-y', contains: 'padding'});
+    expect(spec.signals).toEqual([
+      {
+        name: 'height',
+        init: 'containerSize()[1]',
+        on: [{events: 'window:resize', update: 'containerSize()[1]'}]
+      }
+    ]);
+    expect(spec.height).toBeUndefined();
+  });
+
+  it('should use containerSize for width/height and autosize to fit/padding', () => {
+    const spec = compile({
+      width: 'container',
+      height: 'container',
+      data: {url: 'foo.csv'},
+      mark: 'point',
+      encoding: {}
+    }).spec;
+
+    expect(spec.autosize).toEqual({type: 'fit', contains: 'padding'});
+    expect(spec.signals).toEqual([
+      {
+        name: 'width',
+        init: 'containerSize()[0]',
+        on: [{events: 'window:resize', update: 'containerSize()[0]'}]
+      },
+      {
+        name: 'height',
+        init: 'containerSize()[1]',
+        on: [{events: 'window:resize', update: 'containerSize()[1]'}]
+      }
+    ]);
+    expect(spec.width).toBeUndefined();
+    expect(spec.height).toBeUndefined();
+  });
+
   it(
     'warn if trying to fit composed spec',
     log.wrap(localLogger => {

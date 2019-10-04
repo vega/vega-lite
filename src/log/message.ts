@@ -26,6 +26,9 @@ export function invalidSpec(spec: GenericSpec<any, any>) {
 
 // FIT
 export const FIT_NON_SINGLE = 'Autosize "fit" only works for single views and layered views.';
+export const CONTAINER_SIZE_NON_SINGLE = 'Width/height "container" only works for single views and layered views.';
+export const CONTAINER_SIZE_NOT_COMPATIBLE_WITH_AUTOSIZE =
+  'Width/height "container" only works well with autosize "fit".';
 
 export function droppingFit(channel?: PositionScaleChannel) {
   return channel

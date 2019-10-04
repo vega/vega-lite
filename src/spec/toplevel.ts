@@ -3,7 +3,7 @@ import {Config} from '../config';
 import {InlineDataset} from '../data';
 import * as log from '../log';
 import {Dict} from '../util';
-import {BaseSpec, TopLevelSpec} from './index';
+import {BaseSpec, TopLevelSpec, LayoutSizeMixins} from './index';
 import {isLayerSpec} from './layer';
 import {isUnitSpec} from './unit';
 import {getPositionScaleChannel} from '../channel';
@@ -105,9 +105,22 @@ function _normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {
   return isString(autosize) ? {type: autosize} : autosize || {};
 }
 
-export function normalizeAutoSize(spec: TopLevelSpec, config?: Config): AutoSizeParams {
+export function normalizeAutoSize(spec: TopLevelSpec & LayoutSizeMixins, config?: Config): AutoSizeParams {
+  // Default autosize parameters to fit when width/height is "container"
+  const autosizeDefault: AutoSizeParams = {};
+  if (spec.width == 'container' && spec.height == 'container') {
+    autosizeDefault.type = 'fit';
+    autosizeDefault.contains = 'padding';
+  } else if (spec.width == 'container') {
+    autosizeDefault.type = 'fit-x';
+    autosizeDefault.contains = 'padding';
+  } else if (spec.height == 'container') {
+    autosizeDefault.type = 'fit-y';
+    autosizeDefault.contains = 'padding';
+  }
   const autosize: AutoSizeParams = {
     type: 'pad',
+    ...autosizeDefault,
     ...(config ? _normalizeAutoSize(config.autosize) : {}),
     ..._normalizeAutoSize(spec.autosize)
   };
@@ -117,6 +130,13 @@ export function normalizeAutoSize(spec: TopLevelSpec, config?: Config): AutoSize
       log.warn(log.message.FIT_NON_SINGLE);
       autosize.type = 'pad';
     }
+  }
+
+  if (
+    (spec.width == 'container' && !(autosize.type == 'fit' || autosize.type == 'fit-x')) ||
+    (spec.height == 'container' && !(autosize.type == 'fit' || autosize.type == 'fit-y'))
+  ) {
+    log.warn(log.message.CONTAINER_SIZE_NOT_COMPATIBLE_WITH_AUTOSIZE);
   }
 
   return autosize;

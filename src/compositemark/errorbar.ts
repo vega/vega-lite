@@ -305,8 +305,8 @@ export function errorBarParams<
     name?: string;
     description?: string;
     transform?: Transform[];
-    width?: number | Step;
-    height?: number | Step;
+    width?: number | 'container' | Step;
+    height?: number | 'container' | Step;
   };
   tooltipEncoding: ErrorEncoding<string>;
 } {
