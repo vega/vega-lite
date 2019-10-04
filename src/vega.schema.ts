@@ -150,8 +150,12 @@ export interface VgProjection {
    */
   rotate?: number[];
   /*
+   * The desired parallels of the projection.
+   */    
+  parallels?: number[];    
+  /*
    * The desired precision of the projection.
-   */
+   */  
   precision?: number;
   /*
    * GeoJSON data to which the projection should attempt to automatically fit the translate and scale parameters..
