@@ -23,8 +23,13 @@
   "signals": [
     {
       "name": "width",
-      "init": "containerSize()[0]",
-      "on": [{"update": "containerSize()[0]", "events": "window:resize"}]
+      "init": "isValid(containerSize()[0]) ? containerSize()[0] : 200",
+      "on": [
+        {
+          "update": "isValid(containerSize()[0]) ? containerSize()[0] : 200",
+          "events": "window:resize"
+        }
+      ]
     }
   ],
   "marks": [
