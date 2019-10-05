@@ -45,9 +45,9 @@ For a discrete axis, specifying a fixed size (e.g., width in the following plot)
 
 ### Specifying Responsive Width and Height
 
-The top-level `width` and/or `height` property can be set to `container` indicating that the width and/or height of the plot should be the same as its container. The `width` and `height` can be set independently, for example, you can have responsive `width` and fixed `height` by setting `width` to `container` and `height` to a number.
+The top-level `width` and/or `height` properties can be set to `container` indicating that the width and/or height of the plot should be the same as its surrounding container. The `width` and `height` can be set independently, for example, you can have responsive `width` and fixed `height` by setting `width` to `container` and `height` to a number.
 
-After setting `width` or `height` to `container`, you need to make sure that the container's width or height is determined outside the plot. For example, the container can be a `<div>` element that has style `width: 100%; height: 300px`.
+After setting `width` or `height` to `container`, you need to make sure that the container's width or height is determined outside the plot. For example, the container can be a `<div>` element that has style `width: 100%; height: 300px`. When the container is not available or its size is not defined (e.g., in server-side rendering), width/height default to `config.view.continuousWidth` and `config.view.continuousHeight`.
 
 <span class="vl-example vl-example-responsive" data-name="bar_size_responsive"></span>
 

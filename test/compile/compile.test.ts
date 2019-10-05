@@ -244,8 +244,8 @@ describe('compile/compile', () => {
     expect(spec.signals).toEqual([
       {
         name: 'width',
-        init: 'containerSize()[0]',
-        on: [{events: 'window:resize', update: 'containerSize()[0]'}]
+        init: 'isValid(containerSize()[0]) ? containerSize()[0] : 200',
+        on: [{events: 'window:resize', update: 'isValid(containerSize()[0]) ? containerSize()[0] : 200'}]
       }
     ]);
     expect(spec.width).toBeUndefined();
@@ -263,33 +263,39 @@ describe('compile/compile', () => {
     expect(spec.signals).toEqual([
       {
         name: 'height',
-        init: 'containerSize()[1]',
-        on: [{events: 'window:resize', update: 'containerSize()[1]'}]
+        init: 'isValid(containerSize()[1]) ? containerSize()[1] : 200',
+        on: [{events: 'window:resize', update: 'isValid(containerSize()[1]) ? containerSize()[1] : 200'}]
       }
     ]);
     expect(spec.height).toBeUndefined();
   });
 
-  it('should use containerSize for width/height and autosize to fit/padding', () => {
+  it('should use containerSize for width/height and autosize to fit/padding, and respect default view width/height', () => {
     const spec = compile({
       width: 'container',
       height: 'container',
       data: {url: 'foo.csv'},
       mark: 'point',
-      encoding: {}
+      encoding: {},
+      config: {
+        view: {
+          continuousWidth: 500,
+          continuousHeight: 300
+        }
+      }
     }).spec;
 
     expect(spec.autosize).toEqual({type: 'fit', contains: 'padding'});
     expect(spec.signals).toEqual([
       {
         name: 'width',
-        init: 'containerSize()[0]',
-        on: [{events: 'window:resize', update: 'containerSize()[0]'}]
+        init: 'isValid(containerSize()[0]) ? containerSize()[0] : 500',
+        on: [{events: 'window:resize', update: 'isValid(containerSize()[0]) ? containerSize()[0] : 500'}]
       },
       {
         name: 'height',
-        init: 'containerSize()[1]',
-        on: [{events: 'window:resize', update: 'containerSize()[1]'}]
+        init: 'isValid(containerSize()[1]) ? containerSize()[1] : 300',
+        on: [{events: 'window:resize', update: 'isValid(containerSize()[1]) ? containerSize()[1] : 300'}]
       }
     ]);
     expect(spec.width).toBeUndefined();

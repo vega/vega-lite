@@ -51,8 +51,12 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): (NewSig
     /* istanbul ignore next: Condition should not happen -- only for warning in development. */
     throw new Error('layout size is step although width/height is not step.');
   } else if (size == 'container') {
-    const expr = name.endsWith('width') ? 'containerSize()[0]' : 'containerSize()[1]';
-    return [{name, init: expr, on: [{update: expr, events: 'window:resize'}]}];
+    const isWidth = name.endsWith('width');
+    const expr = isWidth ? 'containerSize()[0]' : 'containerSize()[1]';
+    const defaultValue = isWidth ? model.config.view.continuousWidth : model.config.view.continuousHeight;
+    // make sure the value is valid
+    const safeExpr = `isValid(${expr}) ? ${expr} : ${defaultValue}`;
+    return [{name, init: safeExpr, on: [{update: safeExpr, events: 'window:resize'}]}];
   } else {
     return [
       {

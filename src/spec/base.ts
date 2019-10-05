@@ -72,7 +72,7 @@ export interface LayoutSizeMixins {
    *
    * - For a plot with a continuous x-field, width should be a number.
    * - For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.)
-   * - To enable responsive sizing on width, it should be set to `container`
+   * - To enable responsive sizing on width, it should be set to `container`.
    *
    * __Default value:__
    * Based on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.
@@ -88,7 +88,7 @@ export interface LayoutSizeMixins {
    *
    * - For a plot with a continuous y-field, height should be a number.
    * - For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.)
-   * - To enable responsive sizing on height, it should be set to `container`
+   * - To enable responsive sizing on height, it should be set to `container`.
    *
    * __Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.
    *
