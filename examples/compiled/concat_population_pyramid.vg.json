@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A population pyramid for the US in 2000.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "data": [
     {
@@ -281,5 +282,9 @@
       "paddingOuter": 0.05
     }
   ],
-  "config": {"axis": {"grid": false}, "style": {"cell": {"stroke": null}}}
+  "config": {
+    "background": "white",
+    "axis": {"grid": false},
+    "style": {"cell": {"stroke": null}}
+  }
 }
