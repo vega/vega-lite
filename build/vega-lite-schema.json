@@ -11728,7 +11728,7 @@
     },
     "RepeatRef": {
       "additionalProperties": false,
-      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n} \n Reference to a repeated value.",
+      "description": "Reference to a repeated value.",
       "properties": {
         "repeat": {
           "enum": [
@@ -15184,7 +15184,6 @@
     },
     "ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "minProperties": 1,
       "properties": {
         "condition": {
@@ -15223,7 +15222,6 @@
     },
     "ValueDefWithCondition<MarkPropFieldDef,number>": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "minProperties": 1,
       "properties": {
         "condition": {
@@ -15252,7 +15250,6 @@
     },
     "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "minProperties": 1,
       "properties": {
         "condition": {
@@ -15284,7 +15281,6 @@
     },
     "ValueDefWithCondition<TextFieldDef,Value>": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "minProperties": 1,
       "properties": {
         "condition": {
