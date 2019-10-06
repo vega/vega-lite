@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "the population per state, engineers per state, and hurricanes per state",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 500,
   "height": 300,
@@ -238,5 +239,6 @@
       "interpolate": "hcl",
       "zero": false
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

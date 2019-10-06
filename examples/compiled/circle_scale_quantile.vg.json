@@ -1,6 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 20,
   "style": "cell",
@@ -100,5 +101,6 @@
       "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
       "size": "size"
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

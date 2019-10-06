@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Average Stock prices of 5 Tech Companies.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 20,
   "height": 200,
@@ -86,5 +87,6 @@
       "symbolType": "stroke",
       "title": "symbol"
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

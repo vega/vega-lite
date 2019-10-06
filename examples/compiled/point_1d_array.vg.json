@@ -1,6 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 20,
   "style": "cell",
@@ -65,5 +66,6 @@
       "labelBaseline": "middle",
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

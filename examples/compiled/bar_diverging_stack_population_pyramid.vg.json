@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A population pyramid for the US in 2000, created using stack. See https://vega.github.io/vega-lite/examples/concat_population_pyramid.html for a variant of this created using concat.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 300,
   "height": 200,
@@ -117,5 +118,9 @@
       "symbolType": "square"
     }
   ],
-  "config": {"axis": {"grid": false}, "style": {"cell": {"stroke": null}}}
+  "config": {
+    "background": "white",
+    "axis": {"grid": false},
+    "style": {"cell": {"stroke": null}}
+  }
 }
