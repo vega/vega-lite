@@ -236,10 +236,6 @@ export function fieldIntersection(a: ReadonlySet<string>, b: ReadonlySet<string>
   return hasIntersection(prefixGenerator(a), prefixGenerator(b));
 }
 
-export function isNumeric(num: string | number) {
-  return isFinite(num as any);
-}
-
 // This is a stricter version of Object.keys but with better types. See https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
 export const keys = Object.keys as <T>(o: T) => (Extract<keyof T, string>)[];
 
