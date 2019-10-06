@@ -214,3 +214,11 @@ export function testRenderFn(page: Page, path: string) {
     expect(render).toBe(file.toString());
   };
 }
+
+export function fill<T>(val: T, len: number) {
+  const arr = new Array<T>(len);
+  for (let i = 0; i < len; ++i) {
+    arr[i] = val;
+  }
+  return arr;
+}

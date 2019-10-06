@@ -105,7 +105,10 @@ export function parseLayerAxes(model: LayerModel) {
   }
 }
 
-function mergeAxisComponents(mergedAxisCmpts: AxisComponent[], childAxisCmpts: AxisComponent[]): AxisComponent[] {
+function mergeAxisComponents(
+  mergedAxisCmpts: AxisComponent[],
+  childAxisCmpts: readonly AxisComponent[]
+): AxisComponent[] {
   if (mergedAxisCmpts) {
     // FIXME: this is a bit wrong once we support multiple axes
     if (mergedAxisCmpts.length !== childAxisCmpts.length) {

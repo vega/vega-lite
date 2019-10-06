@@ -130,7 +130,7 @@ export class FacetModel extends ModelWithField {
     return [];
   }
 
-  public assembleSelectionData(data: VgData[]): VgData[] {
+  public assembleSelectionData(data: readonly VgData[]): readonly VgData[] {
     return this.child.assembleSelectionData(data);
   }
 
