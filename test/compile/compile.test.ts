@@ -302,6 +302,20 @@ describe('compile/compile', () => {
     expect(spec.height).toBeUndefined();
   });
 
+  it('warn if use container for width and pad for autosize', () => {
+    log.wrap(localLogger => {
+      const spec = compile({
+        width: 'container',
+        autosize: 'pad',
+        data: {url: 'foo.csv'},
+        mark: 'point',
+        encoding: {}
+      }).spec;
+      expect(localLogger.warns[0]).toEqual(log.message.CONTAINER_SIZE_NOT_COMPATIBLE_WITH_AUTOSIZE);
+      expect(spec.autosize).toBe('pad');
+    });
+  });
+
   it(
     'warn if trying to fit composed spec',
     log.wrap(localLogger => {
