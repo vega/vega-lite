@@ -10,7 +10,6 @@ import {
   hash,
   hasIntersection,
   isEqual,
-  isNumeric,
   prefixGenerator,
   replacePathInField,
   setEqual,
@@ -266,23 +265,6 @@ describe('util', () => {
     });
     it('should return false when key values differ', () => {
       expect(isEqual({a: 1}, {a: 2})).toBe(false);
-    });
-  });
-
-  describe('isNumeric', () => {
-    it('should return true for integers', () => {
-      expect(isNumeric(1)).toBe(true);
-      expect(isNumeric(-1)).toBe(true);
-    });
-    it('should be true for real numbers', () => {
-      expect(isNumeric(0.0)).toBe(true);
-      expect(isNumeric(3.14)).toBe(true);
-    });
-    it('should return false for NaN', () => {
-      expect(isNumeric(NaN)).toBe(false);
-    });
-    it('should return false for text', () => {
-      expect(isNumeric('foo')).toBe(false);
     });
   });
 
