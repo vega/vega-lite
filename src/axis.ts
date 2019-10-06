@@ -1,41 +1,11 @@
-import {
-  Align,
-  Axis as VgAxis,
-  AxisEncode,
-  AxisOrient,
-  BaseAxis,
-  Color,
-  FontStyle,
-  FontWeight,
-  LabelOverlap,
-  TextBaseline,
-  TitleAnchor
-} from 'vega';
+import {Axis as VgAxis, AxisEncode, AxisOrient, BaseAxis, LabelOverlap} from 'vega';
 import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {LayoutAlign, OmitValueRef, VgEncodeChannel} from './vega.schema';
+import {OmitValueRef, VgEncodeChannel} from './vega.schema';
 
-export type BaseAxisNoSignals = AxisMixins &
-  BaseAxis<
-    number,
-    number,
-    boolean,
-    number | boolean,
-    string,
-    Color,
-    FontWeight,
-    FontStyle,
-    Align,
-    TextBaseline,
-    LayoutAlign,
-    LabelOverlap,
-    number[],
-    TitleAnchor
-  >;
-
-type BaseAxisNoSignals = AxisMixins & OmitValueRef<BaseAxis>;
+export type BaseAxisNoSignals = AxisMixins & OmitValueRef<BaseAxis>;
 
 export type ConditionalAxisProp =
   | 'labelAlign'
