@@ -4013,7 +4013,8 @@
           "description": "Y-axis specific config."
         },
         "background": {
-          "description": "CSS color property to use as the background of the whole Vega-Lite view\n\n__Default value:__ none (transparent)",
+          "$ref": "#/definitions/Color",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`",
           "type": "string"
         },
         "bar": {
@@ -13981,7 +13982,7 @@
           "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
-          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`",
           "type": "string"
         },
         "bounds": {
@@ -14108,7 +14109,7 @@
           "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
-          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`",
           "type": "string"
         },
         "bounds": {
@@ -14228,7 +14229,7 @@
           "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
-          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`",
           "type": "string"
         },
         "bounds": {
@@ -14367,7 +14368,7 @@
           "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
-          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`",
           "type": "string"
         },
         "bounds": {
@@ -14476,7 +14477,7 @@
           "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
-          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`",
           "type": "string"
         },
         "config": {
@@ -14621,7 +14622,7 @@
           "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
-          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`",
           "type": "string"
         },
         "bounds": {
@@ -14791,7 +14792,7 @@
           "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
-          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`",
           "type": "string"
         },
         "config": {

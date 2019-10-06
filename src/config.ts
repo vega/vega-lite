@@ -20,6 +20,7 @@ import {TopLevelProperties} from './spec/toplevel';
 import {extractTitleConfig, TitleConfig} from './title';
 import {duplicate, getFirstDefined, keys, mergeDeep} from './util';
 import {BaseMarkConfig, SchemeConfig} from './vega.schema';
+import {Color} from 'vega';
 
 export interface ViewConfig extends BaseViewBackground {
   /**
@@ -182,11 +183,11 @@ export interface Config
     HeaderConfigMixins,
     CompositionConfigMixins {
   /**
-   * CSS color property to use as the background of the whole Vega-Lite view
+   * CSS color property to use as the background of the entire view.
    *
-   * __Default value:__ none (transparent)
+   * __Default value:__ `"white"`
    */
-  background?: string;
+  background?: Color;
 
   /**
    * An object hash that defines default range arrays or schemes for using with scales.
@@ -214,6 +215,8 @@ export interface Config
 }
 
 export const defaultConfig: Config = {
+  background: 'white',
+
   padding: 5,
   timeFormat: '%b %d, %Y',
   countTitle: 'Count of Records',
