@@ -55,7 +55,7 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): (NewSig
     const expr = isWidth ? 'containerSize()[0]' : 'containerSize()[1]';
     const defaultValue = isWidth ? model.config.view.continuousWidth : model.config.view.continuousHeight;
     // make sure the value is valid
-    const safeExpr = `isValid(${expr}) ? ${expr} : ${defaultValue}`;
+    const safeExpr = `isFinite(${expr}) ? ${expr} : ${defaultValue}`;
     return [{name, init: safeExpr, on: [{update: safeExpr, events: 'window:resize'}]}];
   } else {
     return [

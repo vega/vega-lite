@@ -244,8 +244,8 @@ describe('compile/compile', () => {
     expect(spec.signals).toEqual([
       {
         name: 'width',
-        init: 'isValid(containerSize()[0]) ? containerSize()[0] : 200',
-        on: [{events: 'window:resize', update: 'isValid(containerSize()[0]) ? containerSize()[0] : 200'}]
+        init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 200',
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 200'}]
       }
     ]);
     expect(spec.width).toBeUndefined();
@@ -263,8 +263,8 @@ describe('compile/compile', () => {
     expect(spec.signals).toEqual([
       {
         name: 'height',
-        init: 'isValid(containerSize()[1]) ? containerSize()[1] : 200',
-        on: [{events: 'window:resize', update: 'isValid(containerSize()[1]) ? containerSize()[1] : 200'}]
+        init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 200',
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 200'}]
       }
     ]);
     expect(spec.height).toBeUndefined();
@@ -289,13 +289,13 @@ describe('compile/compile', () => {
     expect(spec.signals).toEqual([
       {
         name: 'width',
-        init: 'isValid(containerSize()[0]) ? containerSize()[0] : 500',
-        on: [{events: 'window:resize', update: 'isValid(containerSize()[0]) ? containerSize()[0] : 500'}]
+        init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500',
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'}]
       },
       {
         name: 'height',
-        init: 'isValid(containerSize()[1]) ? containerSize()[1] : 300',
-        on: [{events: 'window:resize', update: 'isValid(containerSize()[1]) ? containerSize()[1] : 300'}]
+        init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300',
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'}]
       }
     ]);
     expect(spec.width).toBeUndefined();
