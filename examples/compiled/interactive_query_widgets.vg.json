@@ -1,3 +1,10 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  description: 'Drag the sliders to highlight points.',
+  data: { url: 'data/cars.json' },
+  transform: [ { calculate: 'year(datum.Year)', as: 'Year' } ],
+  layer:
+   [ { selection: [Object], mark: 'circle', encoding: [Object] },
+     { transform: [Array], mark: 'circle', encoding: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Drag the sliders to highlight points.",

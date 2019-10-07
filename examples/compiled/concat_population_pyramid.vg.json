@@ -1,3 +1,22 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  description: 'A population pyramid for the US in 2000.',
+  data: { url: 'data/population.json' },
+  transform:
+   [ { filter: 'datum.year == 2000' },
+     { calculate: 'datum.sex == 2 ? \'Female\' : \'Male\'',
+       as: 'gender' } ],
+  spacing: 0,
+  hconcat:
+   [ { transform: [Array],
+       title: 'Female',
+       mark: 'bar',
+       encoding: [Object] },
+     { width: 20, view: [Object], mark: [Object], encoding: [Object] },
+     { transform: [Array],
+       title: 'Male',
+       mark: 'bar',
+       encoding: [Object] } ],
+  config: { view: { stroke: null }, axis: { grid: false } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A population pyramid for the US in 2000.",

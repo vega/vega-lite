@@ -1,3 +1,22 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  title: 'Seattle Temperature Range, 2012-2015',
+  data: { url: 'data/seattle-weather.csv' },
+  width: 600,
+  height: 300,
+  mark: 'area',
+  encoding:
+   { x:
+      { axis: [Object],
+        field: 'date',
+        timeUnit: 'monthdate',
+        type: 'temporal' },
+     y:
+      { title: 'Daily Temperature Range (C)',
+        field: 'temp_max',
+        type: 'quantitative',
+        aggregate: 'max' },
+     y2: { field: 'temp_min', aggregate: 'min' },
+     opacity: { value: 0.7 } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

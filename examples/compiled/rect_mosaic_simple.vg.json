@@ -1,3 +1,27 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { url: 'data/cars.json' },
+  transform:
+   [ { aggregate: [Array], groupby: [Array] },
+     { stack: 'count_*',
+       groupby: [],
+       as: [Array],
+       offset: 'normalize',
+       sort: [Array] },
+     { joinaggregate: [Array], groupby: [Array] },
+     { stack: 'count_*',
+       groupby: [Array],
+       as: [Array],
+       offset: 'normalize',
+       sort: [Array] } ],
+  mark: { type: 'rect' },
+  encoding:
+   { x: { field: 'x', type: 'quantitative', axis: null },
+     x2: { field: 'x2', type: 'quantitative' },
+     y: { field: 'y', type: 'quantitative', axis: null },
+     y2: { field: 'y2', type: 'quantitative' },
+     color: { field: 'Origin', type: 'nominal' },
+     opacity: { field: 'Cylinders', type: 'quantitative', legend: null },
+     tooltip: [ [Object], [Object] ] } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

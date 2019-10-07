@@ -1,3 +1,24 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data:
+   { values:
+      [ [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object] ] },
+  mark: 'circle',
+  encoding:
+   { y: { field: 'b', type: 'nominal', sort: null, axis: [Object] },
+     size: { field: 'b', type: 'quantitative', scale: [Object] },
+     color:
+      { field: 'b',
+        type: 'quantitative',
+        scale: [Object],
+        legend: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

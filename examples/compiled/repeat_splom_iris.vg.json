@@ -1,3 +1,13 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { url: 'data/iris.json' },
+  repeat:
+   { row: [ 'petalWidth', 'petalLength', 'sepalWidth', 'sepalLength' ],
+     column: [ 'sepalLength', 'sepalWidth', 'petalLength', 'petalWidth' ] },
+  spec:
+   { width: 150,
+     height: 150,
+     mark: 'point',
+     encoding: { x: [Object], y: [Object], color: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

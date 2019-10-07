@@ -1,6 +1,15 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  width: 'container',
+  height: 250,
+  data: { url: 'data/cars.json' },
+  mark: 'bar',
+  encoding:
+   { x: { field: 'Origin', type: 'nominal' },
+     y: { aggregate: 'count', type: 'quantitative' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": {"type": "fit-x", "contains": "padding"},
+  "background": "white",
   "padding": 5,
   "height": 250,
   "style": "cell",
@@ -100,5 +109,6 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

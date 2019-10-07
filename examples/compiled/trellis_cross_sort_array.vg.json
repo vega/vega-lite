@@ -1,3 +1,25 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data:
+   { values:
+      [ [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object] ] },
+  transform:
+   [ { joinaggregate: [Array], groupby: [Array] },
+     { joinaggregate: [Array], groupby: [Array] } ],
+  facet:
+   { column: { field: 'a', type: 'nominal', sort: [Array] },
+     row: { field: 'b', type: 'nominal', sort: [Array] } },
+  spec:
+   { width: 50,
+     height: 50,
+     layer: [ [Object], [Object], [Object] ] } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

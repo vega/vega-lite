@@ -1,3 +1,18 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  description:
+   'A bar graph showing what activites consume what percentage of the day.',
+  data:
+   { values: [ [Object], [Object], [Object], [Object], [Object] ] },
+  transform:
+   [ { window: [Array], frame: [Array] },
+     { calculate: 'datum.Time/datum.TotalTime * 100',
+       as: 'PercentOfTotal' } ],
+  height: { step: 12 },
+  mark: 'bar',
+  encoding:
+   { x:
+      { field: 'PercentOfTotal', type: 'quantitative', axis: [Object] },
+     y: { field: 'Activity', type: 'nominal' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar graph showing what activites consume what percentage of the day.",

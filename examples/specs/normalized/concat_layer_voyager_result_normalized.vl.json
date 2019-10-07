@@ -169,5 +169,6 @@
       "arrow-label2": {"dy": 24, "fontSize": 9.5}
     },
     "title": {"fontSize": 12}
-  }
+  },
+  "autosize": {"type": "pad"}
 }

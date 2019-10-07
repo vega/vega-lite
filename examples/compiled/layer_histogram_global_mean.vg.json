@@ -1,3 +1,8 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { url: 'data/movies.json' },
+  layer:
+   [ { mark: 'bar', encoding: [Object] },
+     { mark: 'rule', encoding: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

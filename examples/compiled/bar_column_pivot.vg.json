@@ -1,3 +1,20 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data:
+   { values:
+      [ [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object] ] },
+  transform: [ { pivot: 'type', value: 'count', groupby: [Array] } ],
+  mark: 'bar',
+  encoding:
+   { x: { field: 'country', type: 'nominal' },
+     y: { field: 'gold', type: 'quantitative' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

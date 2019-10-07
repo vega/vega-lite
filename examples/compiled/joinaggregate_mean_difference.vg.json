@@ -1,3 +1,12 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { url: 'data/movies.json' },
+  transform:
+   [ { filter: 'datum.IMDB_Rating != null' },
+     { joinaggregate: [Array] },
+     { filter: '(datum.IMDB_Rating - datum.AverageRating) > 2.5' } ],
+  layer:
+   [ { mark: 'bar', encoding: [Object] },
+     { mark: [Object], encoding: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

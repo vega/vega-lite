@@ -1,3 +1,29 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  width: 900,
+  height: 400,
+  data: { url: 'data/wheat.json' },
+  transform: [ { calculate: '+datum.year + 5', as: 'year_end' } ],
+  layer:
+   [ { mark: [Object], encoding: [Object] },
+     { data: [Object], mark: [Object], encoding: [Object] },
+     { mark: [Object], encoding: [Object] },
+     { mark: [Object], encoding: [Object] },
+     { mark: [Object], encoding: [Object] },
+     { data: [Object],
+       transform: [Array],
+       mark: [Object],
+       encoding: [Object] },
+     { data: [Object],
+       transform: [Array],
+       mark: [Object],
+       encoding: [Object] } ],
+  config:
+   { axis:
+      { title: null,
+        gridColor: 'white',
+        gridOpacity: 0.25,
+        domain: false },
+     view: { stroke: 'transparent' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

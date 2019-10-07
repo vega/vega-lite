@@ -1,3 +1,16 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  description: 'Anscombe\'s Quartet',
+  data: { url: 'data/anscombe.json' },
+  facet: { column: { field: 'Series', type: 'nominal' } },
+  spec:
+   { mark: 'circle',
+     encoding:
+      { x: [Object],
+        y: [Object],
+        size: [Object],
+        color: [Object],
+        opacity: [Object] },
+     selection: { brush: [Object], grid: [Object], xenc: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Anscombe's Quartet",

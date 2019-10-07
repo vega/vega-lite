@@ -1,3 +1,10 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { url: 'data/seattle-weather.csv', format: { type: 'csv' } },
+  layer:
+   [ { mark: [Object], encoding: [Object] },
+     { mark: [Object], encoding: [Object] },
+     { mark: 'rule', selection: [Object], encoding: [Object] } ],
+  config: { axisY: { minExtent: 30 } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

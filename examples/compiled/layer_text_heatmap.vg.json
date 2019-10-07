@@ -1,3 +1,12 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { url: 'data/cars.json' },
+  transform: [ { aggregate: [Array], groupby: [Array] } ],
+  layer:
+   [ { mark: 'rect', encoding: [Object] },
+     { mark: 'text', encoding: [Object] } ],
+  config:
+   { scale: { bandPaddingInner: 0, bandPaddingOuter: 0 },
+     text: { baseline: 'middle' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

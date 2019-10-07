@@ -1,3 +1,14 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { url: 'data/iris.json' },
+  transform:
+   [ { fold: [Array], as: [Array] },
+     { density: 'value', bandwidth: 0.3, groupby: [Array] } ],
+  facet: { row: { field: 'organ', type: 'nominal' } },
+  spec:
+   { mark: 'area',
+     width: 300,
+     height: 50,
+     encoding: { x: [Object], y: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

@@ -1,3 +1,13 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  width: 600,
+  height: 300,
+  data: { url: 'data/stocks.csv' },
+  layer:
+   [ { mark: 'line', encoding: [Object] },
+     { selection: [Object], mark: [Object], encoding: [Object] },
+     { transform: [Array], mark: 'rule', encoding: [Object] },
+     { transform: [Array], mark: 'text', encoding: [Object] } ],
+  config: { text: { align: 'right', dx: -5, dy: 5 } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

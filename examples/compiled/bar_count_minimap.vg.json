@@ -1,3 +1,12 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { url: 'data/cars.json' },
+  hconcat:
+   [ { mark: 'bar', transform: [Array], encoding: [Object] },
+     { height: 200,
+       width: 50,
+       selection: [Object],
+       mark: 'bar',
+       encoding: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

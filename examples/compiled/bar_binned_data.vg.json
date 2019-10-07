@@ -1,3 +1,19 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data:
+   { values:
+      [ [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object] ] },
+  mark: 'bar',
+  encoding:
+   { x: { field: 'bin_start', bin: [Object], type: 'quantitative' },
+     x2: { field: 'bin_end' },
+     y: { field: 'count', type: 'quantitative' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

@@ -1,3 +1,11 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  description: 'Stock price average broken down by quarter.',
+  data: { url: 'data/stocks.csv' },
+  mark: 'line',
+  encoding:
+   { x: { field: 'date', type: 'temporal', timeUnit: 'year' },
+     y: { field: 'price', type: 'quantitative', aggregate: 'mean' },
+     color: { field: 'date', type: 'temporal', timeUnit: 'quarter' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock price average broken down by quarter.",

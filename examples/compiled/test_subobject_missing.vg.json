@@ -1,3 +1,10 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { values: [ [Object], [Object], [Object] ] },
+  transform: [ { filter: 'datum.options != null' } ],
+  mark: 'line',
+  encoding:
+   { x: { field: 'rank', type: 'ordinal' },
+     y: { field: 'options.price', type: 'quantitative' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
