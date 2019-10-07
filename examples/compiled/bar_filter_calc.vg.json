@@ -1,24 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description:
-   'A simple bar chart with embedded data that uses a filter and calculate.',
-  data:
-   { values:
-      [ [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object] ] },
-  transform:
-   [ { calculate: '2*datum.b', as: 'b2' },
-     { filter: 'datum.b2 > 60' } ],
-  mark: 'bar',
-  encoding:
-   { y: { field: 'b2', type: 'quantitative' },
-     x: { field: 'a', type: 'ordinal' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A simple bar chart with embedded data that uses a filter and calculate.",

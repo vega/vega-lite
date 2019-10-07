@@ -1,12 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  data: { url: 'data/barley.json' },
-  transform:
-   [ { aggregate: [Array], groupby: [Array] },
-     { calculate: 'datum["center_yield"] + datum["extent_yield"]',
-       as: 'upper_yield' },
-     { calculate: 'datum["center_yield"] - datum["extent_yield"]',
-       as: 'lower_yield' } ],
-  layer: [ { mark: [Object], encoding: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

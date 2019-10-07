@@ -1,10 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  repeat: { column: [ 'Origin', 'Cylinders' ] },
-  spec:
-   { data: { url: 'data/cars.json' },
-     mark: 'point',
-     encoding: { x: [Object], y: [Object], color: [Object] } },
-  resolve: { scale: { color: 'independent' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

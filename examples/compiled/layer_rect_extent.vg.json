@@ -1,12 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description:
-   'A scatterplot showing horsepower and miles per gallons for various cars.',
-  data: { url: 'data/cars.json' },
-  layer:
-   [ { mark: 'point', encoding: [Object] },
-     { mark: 'rule', encoding: [Object] },
-     { mark: 'rule', encoding: [Object] },
-     { mark: 'rect', encoding: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A scatterplot showing horsepower and miles per gallons for various cars.",

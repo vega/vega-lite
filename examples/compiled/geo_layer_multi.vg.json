@@ -1,20 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  hconcat:
-   [ { width: 100,
-       height: 100,
-       data: [Object],
-       projection: [Object],
-       mark: [Object] },
-     { width: 100,
-       height: 100,
-       data: [Object],
-       projection: [Object],
-       mark: [Object] },
-     { width: 100,
-       height: 100,
-       data: [Object],
-       projection: [Object],
-       mark: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

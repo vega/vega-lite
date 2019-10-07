@@ -1,11 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description: 'A bar chart that directly encodes color names in the data.',
-  data: { values: [ [Object], [Object], [Object] ] },
-  mark: 'bar',
-  encoding:
-   { x: { field: 'color', type: 'nominal' },
-     y: { field: 'b', type: 'quantitative' },
-     color: { field: 'color', type: 'nominal', scale: null } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar chart that directly encodes color names in the data.",

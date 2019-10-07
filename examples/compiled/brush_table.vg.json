@@ -1,12 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description:
-   'Drag a rectangular brush to show (first 20) selected points in a table.',
-  data: { url: 'data/cars.json' },
-  transform: [ { window: [Array] } ],
-  hconcat:
-   [ { selection: [Object], mark: 'point', encoding: [Object] },
-     { transform: [Array], hconcat: [Array] } ],
-  resolve: { legend: { color: 'independent' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Drag a rectangular brush to show (first 20) selected points in a table.",

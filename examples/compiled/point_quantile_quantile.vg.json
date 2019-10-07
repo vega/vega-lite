@@ -1,12 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  data: { url: 'data/normal-2d.json' },
-  transform:
-   [ { quantile: 'u', step: 0.01, as: [Array] },
-     { calculate: 'quantileUniform(datum.p)', as: 'unif' },
-     { calculate: 'quantileNormal(datum.p)', as: 'norm' } ],
-  hconcat:
-   [ { mark: 'point', encoding: [Object] },
-     { mark: 'point', encoding: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

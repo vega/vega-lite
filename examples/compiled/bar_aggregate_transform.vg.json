@@ -1,10 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  data: { url: 'data/cars.json' },
-  transform: [ { aggregate: [Array], groupby: [Array] } ],
-  mark: 'bar',
-  encoding:
-   { x: { field: 'Cylinders', type: 'ordinal' },
-     y: { field: 'mean_acc', type: 'quantitative' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

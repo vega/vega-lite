@@ -1,12 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description: 'Line with center band for timeUnit',
-  data: { url: 'data/seattle-temps.csv' },
-  mark: { type: 'line', interpolate: 'monotone' },
-  encoding:
-   { x:
-      { timeUnit: 'month', field: 'date', type: 'temporal', band: 0.5 },
-     y: { aggregate: 'mean', field: 'temp', type: 'quantitative' } },
-  config: { axis: { shortTimeLabels: true } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Line with center band for timeUnit",

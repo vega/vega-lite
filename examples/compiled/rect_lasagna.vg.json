@@ -1,22 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  transform: [ { filter: 'datum.symbol !== \'GOOG\'' } ],
-  width: 300,
-  height: 100,
-  data: { url: 'data/stocks.csv' },
-  mark: 'rect',
-  encoding:
-   { x:
-      { timeUnit: 'yearmonthdate',
-        field: 'date',
-        type: 'ordinal',
-        title: 'Time',
-        axis: [Object] },
-     color:
-      { aggregate: 'sum',
-        field: 'price',
-        type: 'quantitative',
-        title: 'Price' },
-     y: { field: 'symbol', type: 'nominal', title: null } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

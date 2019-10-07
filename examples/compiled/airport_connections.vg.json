@@ -1,22 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description:
-   'An interactive visualization of connections among major U.S. airports in 2008. Based on a U.S. airports example by Mike Bostock.',
-  layer:
-   [ { mark: [Object], data: [Object], projection: [Object] },
-     { mark: [Object],
-       data: [Object],
-       transform: [Array],
-       encoding: [Object],
-       projection: [Object] },
-     { mark: [Object],
-       data: [Object],
-       transform: [Array],
-       selection: [Object],
-       encoding: [Object],
-       projection: [Object] } ],
-  width: 900,
-  height: 500,
-  config: { view: { stroke: null } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "An interactive visualization of connections among major U.S. airports in 2008. Based on a U.S. airports example by Mike Bostock.",

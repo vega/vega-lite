@@ -1,31 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description:
-   'A bar chart with highlighting on hover and selecting on click. (Inspired by Tableau\'s interaction style.)',
-  data:
-   { values:
-      [ [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object] ] },
-  selection:
-   { highlight: { type: 'single', empty: 'none', on: 'mouseover' },
-     select: { type: 'multi' } },
-  mark:
-   { type: 'bar',
-     fill: '#4C78A8',
-     stroke: 'black',
-     cursor: 'pointer' },
-  encoding:
-   { x: { field: 'a', type: 'ordinal' },
-     y: { field: 'b', type: 'quantitative' },
-     fillOpacity: { condition: [Object], value: 0.3 },
-     strokeWidth: { condition: [Array], value: 0 } },
-  config: { scale: { bandPaddingInner: 0.2 } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar chart with highlighting on hover and selecting on click. (Inspired by Tableau's interaction style.)",

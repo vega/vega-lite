@@ -1,14 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  data: { url: 'data/barley.json' },
-  description:
-   'Slope graph showing the change in yield for different barley sites. It shows the error in the year labels for the Morris site.',
-  mark: 'line',
-  width: { step: 50 },
-  encoding:
-   { x: { field: 'year', type: 'ordinal', scale: [Object] },
-     y:
-      { aggregate: 'median', field: 'yield', type: 'quantitative' },
-     color: { field: 'site', type: 'nominal' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Slope graph showing the change in yield for different barley sites. It shows the error in the year labels for the Morris site.",

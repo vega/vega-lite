@@ -1,9 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description: 'Stock prices of 5 Tech Companies over Time with Averages.',
-  data: { url: 'data/stocks.csv' },
-  layer:
-   [ { mark: 'line', encoding: [Object] },
-     { mark: 'rule', encoding: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock prices of 5 Tech Companies over Time with Averages.",

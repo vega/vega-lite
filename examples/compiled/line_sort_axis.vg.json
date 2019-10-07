@@ -1,9 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.2.1.json',
-  data: { values: [ [Object], [Object], [Object] ] },
-  mark: 'line',
-  encoding:
-   { x: { type: 'nominal', field: 'Name', sort: [Array] },
-     y: { type: 'quantitative', field: 'Score' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

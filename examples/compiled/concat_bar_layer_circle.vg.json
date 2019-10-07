@@ -1,14 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description: 'A dashboard with cross-highlighting.',
-  data: { url: 'data/movies.json' },
-  vconcat:
-   [ { layer: [Array], resolve: [Object] },
-     { width: 330,
-       height: 120,
-       mark: 'bar',
-       selection: [Object],
-       encoding: [Object] } ],
-  resolve: { legend: { color: 'independent', size: 'independent' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A dashboard with cross-highlighting.",

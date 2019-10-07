@@ -1,9 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  data: { url: 'data/barley.json' },
-  facet: { column: { field: 'year', type: 'ordinal' } },
-  spec:
-   { mark: 'bar',
-     encoding: { x: [Object], y: [Object], color: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

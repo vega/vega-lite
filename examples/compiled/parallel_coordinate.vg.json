@@ -1,27 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description:
-   'Though Vega-Lite supports only one scale per axes, one can create a parallel coordinate plot by folding variables, using `joinaggregate` to normalize their values and using ticks and rules to manually create axes.',
-  data: { url: 'data/iris.json' },
-  width: 600,
-  height: 300,
-  transform:
-   [ { window: [Array] },
-     { fold: [Array] },
-     { joinaggregate: [Array], groupby: [Array] },
-     { calculate: '(datum.value - datum.min) / (datum.max-datum.min)',
-       as: 'norm_val' },
-     { calculate: '(datum.min + datum.max) / 2', as: 'mid' } ],
-  layer:
-   [ { mark: [Object], encoding: [Object] },
-     { mark: 'line', encoding: [Object] },
-     { layer: [Array] },
-     { layer: [Array] },
-     { layer: [Array] } ],
-  config:
-   { axisX:
-      { domain: false, labelAngle: 0, tickColor: '#ccc', title: null },
-     view: { stroke: null },
-     style: { label: [Object], tick: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Though Vega-Lite supports only one scale per axes, one can create a parallel coordinate plot by folding variables, using `joinaggregate` to normalize their values and using ticks and rules to manually create axes.",

@@ -1,15 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  data: { url: 'data/cars.json' },
-  transform:
-   [ { timeUnit: 'year', field: 'Year', as: 'year_Year' },
-     { aggregate: [Array], groupby: [Array] },
-     { calculate:
-        'datum["center_Miles_per_Gallon"] + datum["extent_Miles_per_Gallon"]',
-       as: 'upper_Miles_per_Gallon' },
-     { calculate:
-        'datum["center_Miles_per_Gallon"] - datum["extent_Miles_per_Gallon"]',
-       as: 'lower_Miles_per_Gallon' } ],
-  layer: [ { mark: [Object], encoding: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

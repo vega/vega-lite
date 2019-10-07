@@ -1,33 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description:
-   'Log-scaled Histogram.  We may improve the support of this. See https://github.com/vega/vega-lite/issues/4792.',
-  data:
-   { values:
-      [ [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object],
-        [Object] ] },
-  transform:
-   [ { calculate: 'log(datum.x)/log(10)', as: 'log_x' },
-     { bin: true, field: 'log_x', as: 'bin_log_x' },
-     { calculate: 'pow(10, datum.bin_log_x)', as: 'x1' },
-     { calculate: 'pow(10, datum.bin_log_x_end)', as: 'x2' } ],
-  mark: 'bar',
-  encoding:
-   { x:
-      { field: 'x1',
-        type: 'quantitative',
-        scale: [Object],
-        axis: [Object] },
-     x2: { field: 'x2' },
-     y: { aggregate: 'count', type: 'quantitative' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Log-scaled Histogram.  We may improve the support of this. See https://github.com/vega/vega-lite/issues/4792.",

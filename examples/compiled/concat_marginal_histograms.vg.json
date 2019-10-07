@@ -1,11 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  data: { url: 'data/movies.json' },
-  spacing: 15,
-  bounds: 'flush',
-  vconcat:
-   [ { mark: 'bar', height: 60, encoding: [Object] },
-     { spacing: 15, bounds: 'flush', hconcat: [Array] } ],
-  config: { view: { stroke: 'transparent' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

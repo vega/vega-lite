@@ -1,11 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description:
-   'Cars from Japan compared to all cars. Demonstrates independent legends in layers.',
-  data: { url: 'data/cars.json' },
-  layer:
-   [ { mark: 'circle', encoding: [Object] },
-     { transform: [Array], mark: 'circle', encoding: [Object] } ],
-  resolve: { legend: { size: 'independent' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Cars from Japan compared to all cars. Demonstrates independent legends in layers.",

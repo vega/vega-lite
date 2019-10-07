@@ -1,11 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description: 'Average Stock prices of 5 Tech Companies.',
-  data: { url: 'data/stocks.csv' },
-  mark: 'rule',
-  encoding:
-   { y: { field: 'price', type: 'quantitative', aggregate: 'mean' },
-     size: { value: 2 },
-     color: { field: 'symbol', type: 'nominal' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Average Stock prices of 5 Tech Companies.",

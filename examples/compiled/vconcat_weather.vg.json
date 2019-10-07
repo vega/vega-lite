@@ -1,11 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description:
-   'Two vertically concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature.',
-  data: { url: 'data/weather.csv' },
-  transform: [ { filter: 'datum.location === \'Seattle\'' } ],
-  vconcat:
-   [ { mark: 'bar', encoding: [Object] },
-     { mark: 'point', encoding: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Two vertically concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature.",

@@ -1,17 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description:
-   'A trellis bar chart showing the US population distribution of age groups and gender in 2000.',
-  data: { url: 'data/population.json' },
-  transform:
-   [ { filter: 'datum.year == 2000' },
-     { calculate: 'datum.sex == 2 ? \'Female\' : \'Male\'',
-       as: 'gender' } ],
-  facet:
-   { column: { field: 'gender', type: 'nominal', header: [Object] } },
-  spec:
-   { mark: 'bar',
-     width: { step: 17 },
-     encoding: { y: [Object], x: [Object], color: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",

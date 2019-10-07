@@ -1,12 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description: 'Line chart with conditional grid dash.',
-  data: { url: 'data/stocks.csv' },
-  transform:
-   [ { filter: 'datum.symbol===\'GOOG\'' }, { filter: [Object] } ],
-  mark: 'line',
-  encoding:
-   { x: { field: 'date', type: 'temporal', axis: [Object] },
-     y: { field: 'price', type: 'quantitative' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Line chart with conditional grid dash.",

@@ -1,11 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  data: { url: 'data/movies.json' },
-  facet: { column: { field: 'MPAA_Rating', type: 'ordinal' } },
-  spec:
-   { mark: 'point',
-     width: 75,
-     height: 75,
-     encoding: { x: [Object], y: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

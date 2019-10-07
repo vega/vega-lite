@@ -1,14 +1,3 @@
-spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
-  description:
-   'A horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000.',
-  data: { url: 'data/population.json' },
-  config: { boxplot: { median: [Object] } },
-  transform: [ { aggregate: [Array], groupby: [Array] } ],
-  layer:
-   [ { mark: [Object], encoding: [Object] },
-     { mark: [Object], encoding: [Object] },
-     { mark: [Object], encoding: [Object] },
-     { mark: [Object], encoding: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000.",
