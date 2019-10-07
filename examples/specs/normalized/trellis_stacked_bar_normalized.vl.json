@@ -9,5 +9,6 @@
       "y": {"field": "variety", "type": "nominal"},
       "color": {"field": "site", "type": "nominal"}
     }
-  }
+  },
+  "autosize": {"type": "pad"}
 }

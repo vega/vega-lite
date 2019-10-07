@@ -1,3 +1,17 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  description: 'Area chart showing weight of cars over time.',
+  width: 300,
+  height: 200,
+  data: { url: 'data/unemployment-across-industries.json' },
+  mark: 'area',
+  encoding:
+   { x:
+      { timeUnit: 'yearmonth',
+        field: 'date',
+        type: 'temporal',
+        axis: [Object] },
+     y: { aggregate: 'sum', field: 'count', type: 'quantitative' },
+     color: { field: 'series', type: 'nominal', scale: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Area chart showing weight of cars over time.",

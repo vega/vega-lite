@@ -9,5 +9,6 @@
       "x": {"field": "Worldwide_Gross", "type": "quantitative"},
       "y": {"field": "US_DVD_Sales", "type": "quantitative"}
     }
-  }
+  },
+  "autosize": {"type": "pad"}
 }

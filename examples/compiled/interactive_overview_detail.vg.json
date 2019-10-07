@@ -1,3 +1,12 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { url: 'data/sp500.csv' },
+  vconcat:
+   [ { width: 480, mark: 'area', encoding: [Object] },
+     { width: 480,
+       height: 60,
+       mark: 'area',
+       selection: [Object],
+       encoding: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

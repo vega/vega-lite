@@ -1,3 +1,37 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  description:
+   'A bar graph showing the scores of the top 5 students. This shows an example of the window transform, for how the top K (5) can be filtered, and also how a rank can be computed for each student.',
+  data:
+   { values:
+      [ [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object] ] },
+  transform:
+   [ { window: [Array], sort: [Array] },
+     { filter: 'datum.rank <= 5' } ],
+  mark: 'bar',
+  encoding:
+   { x: { field: 'score', type: 'quantitative' },
+     y: { field: 'student', type: 'nominal', sort: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar graph showing the scores of the top 5 students. This shows an example of the window transform, for how the top K (5) can be filtered, and also how a rank can be computed for each student.",

@@ -1,3 +1,18 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  description:
+   'Using `labelExpr` to show only initial letters of month names.',
+  data: { url: 'data/seattle-weather.csv' },
+  mark: 'bar',
+  encoding:
+   { x:
+      { timeUnit: 'month',
+        field: 'date',
+        type: 'temporal',
+        axis: [Object] },
+     y:
+      { aggregate: 'mean',
+        field: 'precipitation',
+        type: 'quantitative' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Using `labelExpr` to show only initial letters of month names.",

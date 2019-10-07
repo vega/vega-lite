@@ -1,3 +1,11 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { url: 'data/movies.json' },
+  mark: 'point',
+  encoding:
+   { x: { field: 'IMDB_Rating', type: 'quantitative' },
+     y: { field: 'Rotten_Tomatoes_Rating', type: 'quantitative' },
+     color: { condition: [Object] } },
+  config: { mark: { invalid: null } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

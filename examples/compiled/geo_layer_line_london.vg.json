@@ -1,3 +1,14 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  width: 700,
+  height: 500,
+  config: { view: { stroke: 'transparent' } },
+  layer:
+   [ { data: [Object], mark: [Object], encoding: [Object] },
+     { data: [Object],
+       transform: [Array],
+       mark: 'text',
+       encoding: [Object] },
+     { data: [Object], mark: [Object], encoding: [Object] } ] }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

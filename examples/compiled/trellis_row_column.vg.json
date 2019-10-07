@@ -1,3 +1,12 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { url: 'data/cars.json' },
+  facet:
+   { row: { field: 'Cylinders', type: 'ordinal' },
+     column: { field: 'Origin', type: 'ordinal' } },
+  spec:
+   { mark: 'point',
+     encoding:
+      { x: [Object], y: [Object], color: [Object], shape: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

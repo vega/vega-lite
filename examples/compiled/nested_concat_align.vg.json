@@ -1,3 +1,13 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  description: 'Nested concatenation aligned by setting axis minExtent',
+  data: { url: 'data/movies.json' },
+  vconcat:
+   [ { title: 'Ratings', repeat: [Object], spec: [Object] },
+     { title: 'Gross', repeat: [Object], spec: [Object] } ],
+  config:
+   { countTitle: 'Count',
+     axisX: { titleLimit: 150 },
+     axisY: { minExtent: 40 } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Nested concatenation aligned by setting axis minExtent",

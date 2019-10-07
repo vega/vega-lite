@@ -319,5 +319,6 @@
         "text": {"field": "hi", "type": "nominal"}
       }
     }
-  ]
+  ],
+  "autosize": {"type": "pad"}
 }

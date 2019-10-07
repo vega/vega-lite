@@ -1,3 +1,26 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  title:
+   { text: 'World Cup 2018: Group F Rankings', frame: 'bounds' },
+  data:
+   { values:
+      [ [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object] ] },
+  transform: [ { sort: [Array], window: [Array], groupby: [Array] } ],
+  mark: { type: 'line', orient: 'vertical' },
+  encoding:
+   { x: { field: 'matchday', type: 'ordinal' },
+     y: { field: 'rank', type: 'ordinal' },
+     color: { field: 'team', type: 'nominal', scale: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

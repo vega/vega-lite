@@ -1,3 +1,15 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  description:
+   'Stock prices of four large companies as a small multiples of area charts.',
+  transform: [ { filter: 'datum.symbol !== \'GOOG\'' } ],
+  data: { url: 'data/stocks.csv' },
+  facet:
+   { row: { field: 'symbol', type: 'nominal', header: [Object] } },
+  spec:
+   { mark: 'area',
+     width: 300,
+     height: 40,
+     encoding: { x: [Object], y: [Object], color: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock prices of four large companies as a small multiples of area charts.",

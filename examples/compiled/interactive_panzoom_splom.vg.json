@@ -1,3 +1,12 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { url: 'data/cars.json' },
+  repeat:
+   { row: [ 'Horsepower', 'Acceleration', 'Miles_per_Gallon' ],
+     column: [ 'Miles_per_Gallon', 'Acceleration', 'Horsepower' ] },
+  spec:
+   { selection: { grid: [Object] },
+     mark: 'point',
+     encoding: { x: [Object], y: [Object], color: [Object] } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

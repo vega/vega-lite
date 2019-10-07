@@ -1,3 +1,26 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data:
+   { url: 'data/co2-concentration.csv',
+     format: { parse: [Object] } },
+  width: 800,
+  height: 500,
+  transform:
+   [ { calculate: 'year(datum.Date)', as: 'year' },
+     { calculate: 'floor(datum.year / 10)', as: 'decade' },
+     { calculate: '(datum.year % 10) + (month(datum.Date)/12)',
+       as: 'scaled_date' },
+     { window: [Array],
+       sort: [Array],
+       groupby: [Array],
+       frame: [Array] },
+     { calculate:
+        'datum.first_date === datum.scaled_date ? \'first\' : datum.last_date === datum.scaled_date ? \'last\' : null',
+       as: 'end' } ],
+  layer:
+   [ { mark: 'line', encoding: [Object] },
+     { transform: [Array], mark: [Object], encoding: [Object] },
+     { transform: [Array], mark: [Object], encoding: [Object] } ],
+  config: { text: { align: 'left', dx: 3, dy: 1 } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

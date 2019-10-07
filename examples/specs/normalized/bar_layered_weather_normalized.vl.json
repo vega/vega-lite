@@ -163,5 +163,6 @@
         "text": {"field": "day", "type": "nominal"}
       }
     }
-  ]
+  ],
+  "autosize": {"type": "pad"}
 }

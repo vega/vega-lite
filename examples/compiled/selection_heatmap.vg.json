@@ -1,3 +1,28 @@
+spec after normalize { data:
+   { values:
+      [ [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object],
+        [Object] ] },
+  selection: { highlight: { type: 'single' } },
+  mark: { type: 'rect', strokeWidth: 2 },
+  encoding:
+   { y: { field: 'actual', type: 'nominal' },
+     x: { field: 'predicted', type: 'nominal' },
+     fill: { field: 'count', type: 'quantitative' },
+     stroke: { condition: [Object], value: null },
+     opacity: { condition: [Object], value: 0.5 },
+     order: { condition: [Object], value: 0 } },
+  config:
+   { scale: { bandPaddingInner: 0, bandPaddingOuter: 0 },
+     view: { step: 40 },
+     range: { ramp: [Object] },
+     axis: { domain: false, zindex: 0 } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

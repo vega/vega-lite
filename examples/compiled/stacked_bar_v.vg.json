@@ -1,3 +1,10 @@
+spec after normalize { '$schema': 'https://vega.github.io/schema/vega-lite/v4.json',
+  data: { url: 'data/barley.json' },
+  mark: 'bar',
+  encoding:
+   { x: { field: 'variety', type: 'nominal' },
+     y: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+     color: { field: 'site', type: 'nominal' } } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",

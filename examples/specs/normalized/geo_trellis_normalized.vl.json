@@ -24,5 +24,6 @@
       "shape": {"field": "geo", "type": "geojson"},
       "color": {"field": "pct", "type": "quantitative"}
     }
-  }
+  },
+  "autosize": {"type": "pad"}
 }
