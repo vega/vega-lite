@@ -25,22 +25,22 @@ export class LocalLogger implements LoggerInterface {
     return this;
   }
 
-  public warn(...args: any[]) {
+  public warn(...args: readonly any[]) {
     this.warns.push(...args);
     return this;
   }
 
-  public info(...args: any[]) {
+  public info(...args: readonly any[]) {
     this.infos.push(...args);
     return this;
   }
 
-  public debug(...args: any[]) {
+  public debug(...args: readonly any[]) {
     this.debugs.push(...args);
     return this;
   }
 
-  public error(...args: any[]): this {
+  public error(...args: readonly any[]): this {
     throw Error(...args);
   }
 }
@@ -69,14 +69,14 @@ export function reset() {
   return current;
 }
 
-export function warn(...args: any[]) {
+export function warn(...args: readonly any[]) {
   current.warn(...args);
 }
 
-export function info(...args: any[]) {
+export function info(...args: readonly any[]) {
   current.info(...args);
 }
 
-export function debug(...args: any[]) {
+export function debug(...args: readonly any[]) {
   current.debug(...args);
 }

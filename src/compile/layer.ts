@@ -98,7 +98,7 @@ export class LayerModel extends Model {
     }, assembleLayoutSignals(this));
   }
 
-  public assembleSelectionData(data: VgData[]): VgData[] {
+  public assembleSelectionData(data: readonly VgData[]): readonly VgData[] {
     return this.children.reduce((db, child) => child.assembleSelectionData(db), data);
   }
 

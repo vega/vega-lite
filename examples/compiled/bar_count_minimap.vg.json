@@ -1,6 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "data": [
     {"name": "brush_store"},
@@ -433,5 +434,6 @@
       "paddingInner": 0.1,
       "paddingOuter": 0.05
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

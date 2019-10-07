@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Plot showing average data with raw values in the background.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -155,5 +156,6 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

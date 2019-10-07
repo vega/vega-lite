@@ -93,7 +93,7 @@ A `timeUnit` transform in the `transform` array has the following properties:
 
 {% include table.html props="timeUnit,field,as" source="TimeUnitTransform" %}
 
-In the example below, we use the time unit transform to extract the month component of the dates. We can then visualize the hottest temperature. Note that Vega-Lite will automatically format the axis if the `timeUnit` is applied outside `encoding` so we have to format it manually. For this reason, you should prefer time units as part of encoding definitions.
+In the example below, we use the time unit transform to extract the month component of the dates. We can then visualize the hottest temperature. Note that Vega-Lite will not automatically format the axis if the `timeUnit` is applied outside `encoding` so we have to format it manually. For this reason, you should prefer time units as part of encoding definitions.
 
 <span class="vl-example" data-name="line_timeunit_transform"></span>
 

@@ -73,8 +73,7 @@
       },
       {
         "name": "layer_bar_labels_grey",
-        "title": "Bar Chart with Label Overlays",
-        "style": "background-size: auto 70%; background-position-y: center;"
+        "title": "Bar Chart with Label Overlays"
       },
       {
         "name": "circle_wilkinson_dotplot",
@@ -349,6 +348,10 @@
       {
         "name": "layer_line_rolling_mean_point_raw",
         "title": "Layering Rolling Averages over Raw Values"
+      },
+      {
+        "name": "layer_line_window",
+        "title": "Line Chart to Show Benchmarking Results"
       }
     ]
   },

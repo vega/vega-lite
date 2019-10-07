@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Drag a rectangular brush to show (first 20) selected points in a table.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "data": [
     {"name": "brush_store"},
@@ -634,5 +635,6 @@
       "range": {"step": {"signal": "concat_1_concat_2_y_step"}},
       "padding": 0.5
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

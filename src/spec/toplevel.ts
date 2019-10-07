@@ -45,7 +45,7 @@ export interface TopLevelProperties {
   /**
    * CSS color property to use as the background of the entire view.
    *
-   * __Default value:__ none (transparent)
+   * __Default value:__ `"white"`
    */
   background?: string;
 

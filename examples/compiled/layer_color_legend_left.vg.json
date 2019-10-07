@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock price over time with color legend orient = left.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -170,5 +171,6 @@
       "fill": "color",
       "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

@@ -195,7 +195,7 @@ export function sortParams(
 
 export type AxisTitleComponent = AxisComponentProps['title'];
 
-export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase<string>[]) {
+export function mergeTitleFieldDefs(f1: readonly FieldDefBase<string>[], f2: readonly FieldDefBase<string>[]) {
   const merged = [...f1];
 
   f2.forEach(fdToMerge => {

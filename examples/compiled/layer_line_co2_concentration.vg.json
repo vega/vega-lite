@@ -1,6 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 800,
   "height": 500,
@@ -234,5 +235,8 @@
       "zindex": 0
     }
   ],
-  "config": {"style": {"text": {"align": "left", "dx": 3, "dy": 1}}}
+  "config": {
+    "background": "white",
+    "style": {"text": {"align": "left", "dx": 3, "dy": 1}}
+  }
 }

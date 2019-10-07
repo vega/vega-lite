@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Show a line chart corresponding to selected points.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 300,
   "data": [
@@ -343,5 +344,6 @@
       "nice": true,
       "zero": true
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Horizontally concatenated charts that show different types of discretizing scales.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "data": [
     {
@@ -290,5 +291,6 @@
       "domain": [30, 70],
       "range": [80, 200, 320]
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

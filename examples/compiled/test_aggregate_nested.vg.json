@@ -1,6 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "style": "cell",
@@ -159,5 +160,6 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "square"
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

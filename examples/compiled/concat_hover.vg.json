@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Drag out a rectangular brush to highlight points.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "data": [
@@ -322,5 +323,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }
