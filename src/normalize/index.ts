@@ -60,8 +60,6 @@ export function normalizeAutoSize(
 ): TopLevel<NormalizedSpec> & LayoutSizeMixins {
   let {width, height} = sizeInfo;
 
-  console.log('spec after normalize', spec);
-
   const isFitCompatible = isUnitSpec(spec) || isLayerSpec(spec);
 
   // Don't attempt to change autosize if spec is not compatible with autosize == "fit"

@@ -1,3 +1,4 @@
+import {Color} from 'vega';
 import {getPositionScaleChannel} from '../channel';
 import {Config} from '../config';
 import {InlineDataset} from '../data';
@@ -43,7 +44,7 @@ export interface TopLevelProperties {
    *
    * __Default value:__ `"white"`
    */
-  background?: string;
+  background?: Color;
 
   /**
    * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.
