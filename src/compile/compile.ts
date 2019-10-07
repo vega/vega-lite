@@ -1,25 +1,17 @@
-import {Spec as VgSpec, LoggerInterface} from 'vega';
+import {LoggerInterface, Spec as VgSpec} from 'vega';
+import {getPositionScaleChannel} from '../channel';
 import * as vlFieldDef from '../channeldef';
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
 import * as log from '../log';
 import {normalize} from '../normalize/index';
 import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec';
-import {
-  Datasets,
-  extractTopLevelProperties,
-  TopLevelProperties,
-  getFitType,
-  normalizeAutoSize,
-  AutoSizeParams
-} from '../spec/toplevel';
+import {Datasets, extractTopLevelProperties, getFitType, isFitType, TopLevelProperties} from '../spec/toplevel';
 import {keys, mergeDeep} from '../util';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
 // import {draw} from './data/debug';
 import {optimizeDataflow} from './data/optimize';
 import {Model} from './model';
-import {getPositionScaleChannel} from '../channel';
-import {isFitType} from '../spec/toplevel';
 
 export interface CompileOptions {
   config?: Config;
@@ -74,9 +66,8 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     // 2. Normalize: Convert input spec -> normalized spec
 
     // - Decompose all extended unit specs into composition of unit spec.  For example, a box plot get expanded into multiple layers of bars, ticks, and rules. The shorthand row/column channel is also expanded to a facet spec.
+    // - Normalize autosize and width or height spec
     const spec = normalize(inputSpec, config);
-    // - Normalize autosize to be a autosize properties object.
-    const autosize = normalizeAutoSize(inputSpec, config);
 
     // 3. Build Model: normalized spec -> Model (a tree structure)
 
@@ -106,7 +97,7 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     // 6. Assemble: convert model components --> Vega Spec.
     return assembleTopLevelModel(
       model,
-      getTopLevelProperties(inputSpec, config, autosize, model),
+      getTopLevelProperties(inputSpec, spec, config, model),
       inputSpec.datasets,
       inputSpec.usermeta
     );
@@ -122,9 +113,10 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
   }
 }
 
-function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config, autosize: AutoSizeParams, model: Model) {
+function getTopLevelProperties(inputSpec: TopLevel<any>, spec: TopLevel<any>, config: Config, model: Model) {
   const width = model.component.layoutSize.get('width');
   const height = model.component.layoutSize.get('height');
+  const autosize = spec.autosize;
   if (width && height && isFitType(autosize.type)) {
     if (width === 'step' && height === 'step') {
       log.warn(log.message.droppingFit());
@@ -146,7 +138,7 @@ function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config, auto
   return {
     autosize: keys(autosize).length === 1 && autosize.type ? autosize.type : autosize,
     ...extractTopLevelProperties(config),
-    ...extractTopLevelProperties(topLevelSpec)
+    ...extractTopLevelProperties(inputSpec)
   };
 }
 
