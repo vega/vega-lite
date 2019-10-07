@@ -306,12 +306,14 @@ describe('compile/compile', () => {
     log.wrap(localLogger => {
       const spec = compile({
         width: 'container',
+        height: 'container',
         autosize: 'pad',
         data: {url: 'foo.csv'},
         mark: 'point',
         encoding: {}
       }).spec;
-      expect(localLogger.warns[0]).toEqual(log.message.CONTAINER_SIZE_NOT_COMPATIBLE_WITH_AUTOSIZE);
+      expect(localLogger.warns[0]).toEqual(log.message.containerSizeNotCompatibleWithAutosize('width'));
+      expect(localLogger.warns[0]).toEqual(log.message.containerSizeNotCompatibleWithAutosize('height'));
       expect(spec.autosize).toBe('pad');
     });
   });

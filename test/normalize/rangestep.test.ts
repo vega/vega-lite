@@ -28,6 +28,7 @@ describe('RangeStepNormalizer', () => {
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
       data: {name: 'test'},
+      autosize: {type: 'pad'},
       width: {step: 12},
       height: {step: 24},
       mark: 'rect',

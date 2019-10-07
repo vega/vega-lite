@@ -72,6 +72,7 @@ describe('normalize()', () => {
           name: 'faceted',
           description: 'faceted spec',
           data: {url: 'data/movies.json'},
+          autosize: {type: 'pad'},
           spacing: channel === 'facet' ? 13 : {[channel]: 13},
           facet: expectedFacet,
           spec: {
@@ -105,6 +106,7 @@ describe('normalize()', () => {
           const config = initConfig(spec.config);
           expect(normalize(spec, config)).toEqual({
             data: {url: 'data/movies.json'},
+            autosize: {type: 'pad'},
             facet: {
               [channel]: {field: 'MPAA_Rating', type: 'ordinal'}
             },
@@ -183,6 +185,7 @@ describe('normalize()', () => {
         data: {
           url: 'data/population.json'
         },
+        autosize: {type: 'pad'},
         transform: [
           {
             calculate: "(datum.sex==1) ? 'Men':'Women'",
@@ -278,6 +281,7 @@ describe('normalize()', () => {
 
       expect(output).toEqual({
         data: {url: 'data/population.json'},
+        autosize: {type: 'pad'},
         layer: [
           {
             projection: {type: 'mercator'},
@@ -348,6 +352,7 @@ describe('normalize()', () => {
 
         expect(output).toEqual({
           data: {url: 'data/population.json'},
+          autosize: {type: 'pad'},
           layer: [
             {
               projection: {type: 'albersUsa'},
