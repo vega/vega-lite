@@ -336,6 +336,23 @@ describe('compile/compile', () => {
   );
 
   it(
+    'warn if use container for height for composed spec',
+    log.wrap(localLogger => {
+      const spec = compile({
+        height: 'container',
+        vconcat: [
+          {
+            mark: 'point',
+            encoding: {}
+          }
+        ]
+      }).spec;
+      expect(localLogger.warns[0]).toEqual(log.message.containerSizeNonSingle('height'));
+      expect(spec.autosize).toBeUndefined();
+    })
+  );
+
+  it(
     'warn if trying to fit composed spec',
     log.wrap(localLogger => {
       const spec = compile({

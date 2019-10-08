@@ -149,18 +149,15 @@ function getTopLevelProperties(
     }
   }
 
-  const topLevelProperties: TopLevelProperties & LayoutSizeMixins = {
+  return {
+    ...(keys(autosize).length === 1 && autosize.type
+      ? autosize.type == 'pad'
+        ? {}
+        : {autosize: autosize.type}
+      : {autosize}),
     ...extractTopLevelProperties(config),
     ...extractTopLevelProperties(inputSpec)
   };
-  if (keys(autosize).length === 1 && autosize.type) {
-    if (autosize.type != 'pad') {
-      topLevelProperties.autosize = autosize.type;
-    }
-  } else {
-    topLevelProperties.autosize = autosize;
-  }
-  return topLevelProperties;
 }
 
 /*

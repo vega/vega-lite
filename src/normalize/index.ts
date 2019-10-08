@@ -42,10 +42,7 @@ const normalizer = new CoreNormalizer();
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
-function normalizeGenericSpec(
-  spec: GenericSpec<UnitSpec, ExtendedLayerSpec> | FacetedUnitSpec,
-  config: Config = {}
-): NormalizedSpec {
+function normalizeGenericSpec(spec: GenericSpec<UnitSpec, ExtendedLayerSpec> | FacetedUnitSpec, config: Config = {}) {
   return normalizer.map(spec, {config});
 }
 
