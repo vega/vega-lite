@@ -62,9 +62,10 @@ export function normalizeAutoSize(
   let {width, height} = sizeInfo;
 
   const isFitCompatible = isUnitSpec(spec) || isLayerSpec(spec);
+  const autosizeDefault: AutoSizeParams = {};
 
-  // Don't attempt to change autosize if spec is not compatible with autosize == "fit"
   if (!isFitCompatible) {
+    // If spec is not compatible with autosize == "fit", discard width/height == container
     if (width == 'container') {
       log.warn(log.message.containerSizeNonSingle('width'));
       width = undefined;
@@ -73,19 +74,18 @@ export function normalizeAutoSize(
       log.warn(log.message.containerSizeNonSingle('height'));
       height = undefined;
     }
-  }
-
-  // Default autosize parameters to fit when width/height is "container"
-  const autosizeDefault: AutoSizeParams = {};
-  if (width == 'container' && height == 'container') {
-    autosizeDefault.type = 'fit';
-    autosizeDefault.contains = 'padding';
-  } else if (width == 'container') {
-    autosizeDefault.type = 'fit-x';
-    autosizeDefault.contains = 'padding';
-  } else if (height == 'container') {
-    autosizeDefault.type = 'fit-y';
-    autosizeDefault.contains = 'padding';
+  } else {
+    // Default autosize parameters to fit when width/height is "container"
+    if (width == 'container' && height == 'container') {
+      autosizeDefault.type = 'fit';
+      autosizeDefault.contains = 'padding';
+    } else if (width == 'container') {
+      autosizeDefault.type = 'fit-x';
+      autosizeDefault.contains = 'padding';
+    } else if (height == 'container') {
+      autosizeDefault.type = 'fit-y';
+      autosizeDefault.contains = 'padding';
+    }
   }
 
   const autosize: AutoSizeParams = {
@@ -95,11 +95,9 @@ export function normalizeAutoSize(
     ..._normalizeAutoSize(spec.autosize)
   };
 
-  if (autosize.type === 'fit') {
-    if (!isFitCompatible) {
-      log.warn(log.message.FIT_NON_SINGLE);
-      autosize.type = 'pad';
-    }
+  if (autosize.type === 'fit' && !isFitCompatible) {
+    log.warn(log.message.FIT_NON_SINGLE);
+    autosize.type = 'pad';
   }
 
   if (width == 'container' && !(autosize.type == 'fit' || autosize.type == 'fit-x')) {
