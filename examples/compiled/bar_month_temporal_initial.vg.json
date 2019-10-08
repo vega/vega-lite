@@ -1,7 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Using `labelExpr` to show only initial letters of month names.",
-  "autosize": "pad",
   "background": "white",
   "padding": 5,
   "width": 200,

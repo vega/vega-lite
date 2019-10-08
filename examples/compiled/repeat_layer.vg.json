@@ -1,7 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Summarized and per year weather information for Seatle and New York.",
-  "autosize": "pad",
   "background": "white",
   "padding": 5,
   "height": 200,

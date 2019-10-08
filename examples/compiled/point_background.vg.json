@@ -1,7 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A scatterplot with orange overall background and yellow view background.",
-  "autosize": "pad",
   "background": "orange",
   "padding": 5,
   "width": 200,

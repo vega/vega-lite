@@ -1,7 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": {"type": "fit-x", "contains": "padding"},
+  "background": "white",
   "padding": 5,
+  "autosize": {"type": "fit-x", "contains": "padding"},
   "height": 250,
   "style": "cell",
   "data": [
@@ -100,5 +101,6 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }
