@@ -302,7 +302,8 @@ describe('compile/compile', () => {
     expect(spec.height).toBeUndefined();
   });
 
-  it('warn if use container for width and pad for autosize', () => {
+  it(
+    'warn if use container for width and pad for autosize',
     log.wrap(localLogger => {
       const spec = compile({
         width: 'container',
@@ -313,12 +314,13 @@ describe('compile/compile', () => {
         encoding: {}
       }).spec;
       expect(localLogger.warns[0]).toEqual(log.message.containerSizeNotCompatibleWithAutosize('width'));
-      expect(localLogger.warns[0]).toEqual(log.message.containerSizeNotCompatibleWithAutosize('height'));
-      expect(spec.autosize).toBe('pad');
-    });
-  });
+      expect(localLogger.warns[1]).toEqual(log.message.containerSizeNotCompatibleWithAutosize('height'));
+      expect(spec.autosize).toBeUndefined();
+    })
+  );
 
-  it('warn if use container for width for composed spec', () => {
+  it(
+    'warn if use container for width for composed spec',
     log.wrap(localLogger => {
       const spec = compile({
         width: 'container',
@@ -330,9 +332,9 @@ describe('compile/compile', () => {
         ]
       }).spec;
       expect(localLogger.warns[0]).toEqual(log.message.containerSizeNonSingle('width'));
-      expect(spec.autosize).toBe('pad');
-    });
-  });
+      expect(spec.autosize).toBeUndefined();
+    })
+  );
 
   it(
     'warn if trying to fit composed spec',
