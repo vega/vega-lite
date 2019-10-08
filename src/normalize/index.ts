@@ -15,6 +15,7 @@ import {TopLevelSpec} from '../spec/index';
 import {AutoSizeParams, AutosizeType, TopLevel} from '../spec/toplevel';
 import {NormalizerParams} from './base';
 import {CoreNormalizer} from './core';
+import {deepEqual} from '../util';
 
 export function normalize(
   spec: TopLevelSpec & LayoutSizeMixins,
@@ -113,6 +114,12 @@ export function normalizeAutoSize(
     if (result.width === undefined && width !== undefined) result.width = width;
     if (result.height === undefined && height !== undefined) result.height = height;
   }
+
+  // Delete autosize property if it's Vega's default
+  if (deepEqual(result.autosize, {type: 'pad'})) {
+    delete result.autosize;
+  }
+
   return result;
 }
 

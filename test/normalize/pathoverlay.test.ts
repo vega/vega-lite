@@ -24,7 +24,6 @@ describe('PathOverlayNormalizer', () => {
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
-      autosize: {type: 'pad'},
       layer: [
         {
           mark: 'line',
@@ -57,7 +56,6 @@ describe('PathOverlayNormalizer', () => {
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
-      autosize: {type: 'pad'},
       layer: [
         {
           mark: {type: 'line', tooltip: ''},
@@ -89,7 +87,6 @@ describe('PathOverlayNormalizer', () => {
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
-      autosize: {type: 'pad'},
       layer: [
         {
           mark: 'line',
@@ -123,7 +120,6 @@ describe('PathOverlayNormalizer', () => {
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
-      autosize: {type: 'pad'},
       facet: {
         row: {field: 'symbol', type: 'nominal'}
       },
@@ -162,7 +158,6 @@ describe('PathOverlayNormalizer', () => {
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
-      autosize: {type: 'pad'},
       layer: [
         {
           mark: {type: 'area', opacity: 0.7},
@@ -203,7 +198,6 @@ describe('PathOverlayNormalizer', () => {
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
-      autosize: {type: 'pad'},
       layer: [
         {
           mark: {type: 'area', opacity: 0.7, interpolate: 'monotone'},
@@ -240,7 +234,6 @@ describe('PathOverlayNormalizer', () => {
       const normalizedSpec = normalize(spec);
       expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
-        autosize: {type: 'pad'},
         mark: 'area',
         encoding: {
           x: {field: 'date', type: 'temporal'},
@@ -267,7 +260,6 @@ describe('PathOverlayNormalizer', () => {
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
-      autosize: {type: 'pad'},
       layer: [
         {
           mark: {type: 'area', opacity: 0.7},
@@ -305,7 +297,6 @@ describe('PathOverlayNormalizer', () => {
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
-      autosize: {type: 'pad'},
       layer: [
         {
           mark: {type: 'area', opacity: 0.7},

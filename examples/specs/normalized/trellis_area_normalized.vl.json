@@ -23,6 +23,5 @@
       },
       "color": {"field": "symbol", "type": "nominal", "legend": null}
     }
-  },
-  "autosize": {"type": "pad"}
+  }
 }

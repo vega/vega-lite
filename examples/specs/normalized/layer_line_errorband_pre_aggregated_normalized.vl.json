@@ -53,6 +53,5 @@
         "x": {"field": "Year", "type": "temporal", "timeUnit": "year"}
       }
     }
-  ],
-  "autosize": {"type": "pad"}
+  ]
 }

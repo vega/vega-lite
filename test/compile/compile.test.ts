@@ -19,7 +19,7 @@ describe('compile/compile', () => {
     }).spec;
 
     expect(spec.padding).toEqual(5);
-    expect(spec.autosize).toBe('pad');
+    expect(spec.autosize).toBeUndefined();
     expect(spec.width).toEqual(20);
     expect(spec.height).toEqual(20);
     expect(spec.title).toEqual({text: 'test', frame: 'group'});
@@ -39,7 +39,7 @@ describe('compile/compile', () => {
     }).spec;
 
     expect(spec.padding).toEqual(123);
-    expect(spec.autosize).toBe('pad');
+    expect(spec.autosize).toBeUndefined();
     expect(spec.width).toEqual(20);
     expect(spec.height).toEqual(20);
 
@@ -63,7 +63,7 @@ describe('compile/compile', () => {
       }).spec;
 
       expect(localLogger.warns[0]).toEqual(log.message.droppingFit());
-      expect(spec.autosize).toBe('pad');
+      expect(spec.autosize).toBeUndefined();
     })
   );
 
@@ -318,6 +318,22 @@ describe('compile/compile', () => {
     });
   });
 
+  it('warn if use container for width for composed spec', () => {
+    log.wrap(localLogger => {
+      const spec = compile({
+        width: 'container',
+        vconcat: [
+          {
+            mark: 'point',
+            encoding: {}
+          }
+        ]
+      }).spec;
+      expect(localLogger.warns[0]).toEqual(log.message.containerSizeNonSingle('width'));
+      expect(spec.autosize).toBe('pad');
+    });
+  });
+
   it(
     'warn if trying to fit composed spec',
     log.wrap(localLogger => {
@@ -332,7 +348,7 @@ describe('compile/compile', () => {
         ]
       }).spec;
       expect(localLogger.warns[0]).toEqual(log.message.FIT_NON_SINGLE);
-      expect(spec.autosize).toBe('pad');
+      expect(spec.autosize).toBeUndefined();
     })
   );
 

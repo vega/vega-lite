@@ -18,6 +18,5 @@
         "y": {"aggregate": "sum", "field": "count", "type": "quantitative"}
       }
     }
-  ],
-  "autosize": {"type": "pad"}
+  ]
 }

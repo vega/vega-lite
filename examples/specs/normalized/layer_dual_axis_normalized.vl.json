@@ -47,6 +47,5 @@
       }
     }
   ],
-  "resolve": {"scale": {"y": "independent"}},
-  "autosize": {"type": "pad"}
+  "resolve": {"scale": {"y": "independent"}}
 }

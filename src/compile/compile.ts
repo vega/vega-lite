@@ -1,11 +1,19 @@
-import {LoggerInterface, Spec as VgSpec} from 'vega';
+import {AutoSizeType, LoggerInterface, Spec as VgSpec} from 'vega';
+import {isString} from 'vega-util';
 import {getPositionScaleChannel} from '../channel';
 import * as vlFieldDef from '../channeldef';
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
 import * as log from '../log';
 import {normalize} from '../normalize/index';
 import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec';
-import {Datasets, extractTopLevelProperties, getFitType, isFitType, TopLevelProperties} from '../spec/toplevel';
+import {
+  AutoSizeParams,
+  Datasets,
+  extractTopLevelProperties,
+  getFitType,
+  isFitType,
+  TopLevelProperties
+} from '../spec/toplevel';
 import {keys, mergeDeep} from '../util';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
@@ -97,7 +105,7 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     // 6. Assemble: convert model components --> Vega Spec.
     return assembleTopLevelModel(
       model,
-      getTopLevelProperties(inputSpec, spec, config, model),
+      getTopLevelProperties(inputSpec, spec.autosize, config, model),
       inputSpec.datasets,
       inputSpec.usermeta
     );
@@ -113,10 +121,16 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
   }
 }
 
-function getTopLevelProperties(inputSpec: TopLevel<any>, spec: TopLevel<any>, config: Config, model: Model) {
+function getTopLevelProperties(
+  inputSpec: TopLevel<any>,
+  autosize: AutoSizeType | AutoSizeParams,
+  config: Config,
+  model: Model
+) {
   const width = model.component.layoutSize.get('width');
   const height = model.component.layoutSize.get('height');
-  const autosize = spec.autosize;
+  if (autosize === undefined) autosize = 'pad';
+  if (isString(autosize)) autosize = {type: autosize};
   if (width && height && isFitType(autosize.type)) {
     if (width === 'step' && height === 'step') {
       log.warn(log.message.droppingFit());
@@ -135,11 +149,18 @@ function getTopLevelProperties(inputSpec: TopLevel<any>, spec: TopLevel<any>, co
     }
   }
 
-  return {
-    autosize: keys(autosize).length === 1 && autosize.type ? autosize.type : autosize,
+  const topLevelProperties: TopLevelProperties & LayoutSizeMixins = {
     ...extractTopLevelProperties(config),
     ...extractTopLevelProperties(inputSpec)
   };
+  if (keys(autosize).length === 1 && autosize.type) {
+    if (autosize.type != 'pad') {
+      topLevelProperties.autosize = autosize.type;
+    }
+  } else {
+    topLevelProperties.autosize = autosize;
+  }
+  return topLevelProperties;
 }
 
 /*
