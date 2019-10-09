@@ -666,7 +666,7 @@ export abstract class ModelWithField extends Model {
 
   protected abstract getMapping(): {[key in Channel]?: any};
 
-  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T, t?: any) {
+  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T): T {
     return reduce(
       this.getMapping(),
       (acc: U, cd: ChannelDef, c: Channel) => {
@@ -676,8 +676,7 @@ export abstract class ModelWithField extends Model {
         }
         return acc;
       },
-      init,
-      t
+      init
     );
   }
 
