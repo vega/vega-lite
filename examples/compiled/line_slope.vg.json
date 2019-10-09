@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Slope graph showing the change in yield for different barley sites. It shows the error in the year labels for the Morris site.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "style": "cell",
@@ -131,5 +132,6 @@
       "symbolType": "stroke",
       "title": "site"
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

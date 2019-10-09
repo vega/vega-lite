@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "style": "cell",
@@ -119,5 +120,6 @@
       "title": "gender",
       "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

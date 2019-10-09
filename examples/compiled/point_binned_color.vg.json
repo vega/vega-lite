@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on color.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -139,5 +140,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

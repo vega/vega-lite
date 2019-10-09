@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A Wilkinson Dot Plot",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 100,
   "style": "cell",
@@ -82,5 +83,6 @@
       "labelOverlap": true,
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

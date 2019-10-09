@@ -1,6 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "data": [
@@ -236,6 +237,7 @@
     }
   ],
   "config": {
+    "background": "white",
     "axis": {"domain": false, "ticks": false, "labels": false, "grid": false},
     "style": {"cell": {"stroke": ""}}
   }

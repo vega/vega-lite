@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Plots two functions using a generated sequence.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 300,
   "height": 150,
@@ -132,5 +133,6 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "stroke"
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

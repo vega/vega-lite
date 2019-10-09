@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock prices of four large companies as a small multiples of area charts.",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "data": [
     {
@@ -178,5 +179,6 @@
       "domain": {"data": "source_0", "field": "symbol", "sort": true},
       "range": "category"
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A ranged dot plot that uses 'layer' to convey changing life expectancy for the five most populous countries (between 1955 and 2000).",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "style": "cell",
@@ -174,5 +175,6 @@
       "symbolType": "circle",
       "encode": {"symbols": {"update": {"opacity": {"value": 1}}}}
     }
-  ]
+  ],
+  "config": {"background": "white"}
 }

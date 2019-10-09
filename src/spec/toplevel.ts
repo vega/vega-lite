@@ -1,4 +1,6 @@
+import {Color} from 'vega';
 import {isString} from 'vega-util';
+import {getPositionScaleChannel} from '../channel';
 import {Config} from '../config';
 import {InlineDataset} from '../data';
 import * as log from '../log';
@@ -6,7 +8,6 @@ import {Dict} from '../util';
 import {BaseSpec, TopLevelSpec} from './index';
 import {isLayerSpec} from './layer';
 import {isUnitSpec} from './unit';
-import {getPositionScaleChannel} from '../channel';
 
 /**
  * @minimum 0
@@ -45,9 +46,9 @@ export interface TopLevelProperties {
   /**
    * CSS color property to use as the background of the entire view.
    *
-   * __Default value:__ none (transparent)
+   * __Default value:__ `"white"`
    */
-  background?: string;
+  background?: Color;
 
   /**
    * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.

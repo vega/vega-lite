@@ -1,6 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 900,
   "height": 560,
@@ -63,5 +64,5 @@
       }
     }
   ],
-  "config": {"style": {"cell": {"stroke": null}}}
+  "config": {"background": "white", "style": {"cell": {"stroke": null}}}
 }
