@@ -106,7 +106,7 @@
     "svg2png-many": "^0.0.7",
     "terser": "^4.3.4",
     "ts-jest": "^24.1.0",
-    "ts-json-schema-generator": "^0.53.0",
+    "ts-json-schema-generator": "^0.54.0",
     "typescript": "~3.6.3",
     "vega-cli": "^5.7.0",
     "vega-datasets": "^1.26.0",
@@ -125,7 +125,7 @@
     "tslib": "~1.10.0",
     "vega-event-selector": "~2.0.1",
     "vega-expression": "~2.6.1",
-    "vega-typings": "~0.10.0",
+    "vega-typings": "~0.10.1",
     "vega-util": "~1.11.2",
     "yargs": "~14.0.0"
   },
