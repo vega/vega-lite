@@ -69,6 +69,7 @@ describe('normalize()', () => {
               };
 
         expect(normalize(spec, config)).toEqual({
+          autosize: {type: 'pad'},
           name: 'faceted',
           description: 'faceted spec',
           data: {url: 'data/movies.json'},
@@ -104,6 +105,7 @@ describe('normalize()', () => {
 
           const config = initConfig(spec.config);
           expect(normalize(spec, config)).toEqual({
+            autosize: {type: 'pad'},
             data: {url: 'data/movies.json'},
             facet: {
               [channel]: {field: 'MPAA_Rating', type: 'ordinal'}
@@ -178,6 +180,7 @@ describe('normalize()', () => {
           defaultConfig
         )
       ).toEqual({
+        autosize: {type: 'pad'},
         description:
           'A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.',
         data: {
@@ -277,6 +280,7 @@ describe('normalize()', () => {
       );
 
       expect(output).toEqual({
+        autosize: {type: 'pad'},
         data: {url: 'data/population.json'},
         layer: [
           {
@@ -347,6 +351,7 @@ describe('normalize()', () => {
         expect(localLogger.warns[1]).toEqual(log.message.encodingOverridden(['x']));
 
         expect(output).toEqual({
+          autosize: {type: 'pad'},
           data: {url: 'data/population.json'},
           layer: [
             {
