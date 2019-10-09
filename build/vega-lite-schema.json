@@ -1772,106 +1772,8 @@
       },
       "type": "object"
     },
-    "BaseTitleConfig": {
-      "additionalProperties": false,
-      "properties": {
-        "align": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment for title text. One of `\"left\"`, `\"center\"`, or `\"right\"`."
-        },
-        "anchor": {
-          "$ref": "#/definitions/TitleAnchor",
-          "description": "The anchor position for placing the title and subtitle text. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
-        },
-        "angle": {
-          "description": "Angle in degrees of title and subtitle text.",
-          "type": "number"
-        },
-        "baseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for title and subtitle text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
-        },
-        "color": {
-          "$ref": "#/definitions/Color",
-          "description": "Text color for title text."
-        },
-        "dx": {
-          "description": "Delta offset for title and subtitle text x-coordinate.",
-          "type": "number"
-        },
-        "dy": {
-          "description": "Delta offset for title and subtitle text y-coordinate.",
-          "type": "number"
-        },
-        "font": {
-          "description": "Font name for title text.",
-          "type": "string"
-        },
-        "fontSize": {
-          "description": "Font size in pixels for title text.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "fontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "Font style for title text."
-        },
-        "fontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "Font weight for title text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
-        },
-        "frame": {
-          "$ref": "#/definitions/TitleFrame",
-          "description": "The reference frame for the anchor position, one of `\"bounds\"` (to anchor relative to the full bounding box) or `\"group\"` (to anchor relative to the group width or height)."
-        },
-        "limit": {
-          "description": "The maximum allowed length in pixels of title and subtitle text.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "lineHeight": {
-          "description": "Line height in pixels for multi-line title text.",
-          "type": "number"
-        },
-        "offset": {
-          "description": "The orthogonal offset in pixels by which to displace the title group from its position along the edge of the chart.",
-          "type": "number"
-        },
-        "orient": {
-          "$ref": "#/definitions/TitleOrient",
-          "description": "Default title orientation (`\"top\"`, `\"bottom\"`, `\"left\"`, or `\"right\"`)"
-        },
-        "subtitleColor": {
-          "$ref": "#/definitions/Color",
-          "description": "Text color for subtitle text."
-        },
-        "subtitleFont": {
-          "description": "Font name for subtitle text.",
-          "type": "string"
-        },
-        "subtitleFontSize": {
-          "description": "Font size in pixels for subtitle text.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "subtitleFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "Font style for subtitle text."
-        },
-        "subtitleFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "Font weight for subtitle text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
-        },
-        "subtitleLineHeight": {
-          "description": "Line height in pixels for multi-line subtitle text.",
-          "type": "number"
-        },
-        "subtitlePadding": {
-          "description": "The padding in pixels between title and subtitle text.",
-          "type": "number"
-        }
-      },
-      "type": "object"
+    "BaseTitleNoSignals": {
+      "$ref": "#/definitions/ExcludeMappedValueRef<BaseTitle>"
     },
     "Baseline": {
       "enum": [
@@ -5645,6 +5547,128 @@
         "wheel"
       ],
       "type": "string"
+    },
+    "ExcludeMappedValueRef<BaseTitle>": {
+      "additionalProperties": false,
+      "properties": {
+        "align": {
+          "$ref": "#/definitions/Align",
+          "description": "Horizontal text alignment for title text. One of `\"left\"`, `\"center\"`, or `\"right\"`."
+        },
+        "anchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor position for placing the title and subtitle text. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
+        },
+        "angle": {
+          "description": "Angle in degrees of title and subtitle text.",
+          "type": "number"
+        },
+        "baseline": {
+          "$ref": "#/definitions/TextBaseline",
+          "description": "Vertical text baseline for title and subtitle text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+        },
+        "color": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
+          "description": "Text color for title text."
+        },
+        "dx": {
+          "description": "Delta offset for title and subtitle text x-coordinate.",
+          "type": "number"
+        },
+        "dy": {
+          "description": "Delta offset for title and subtitle text y-coordinate.",
+          "type": "number"
+        },
+        "font": {
+          "description": "Font name for title text.",
+          "type": "string"
+        },
+        "fontSize": {
+          "description": "Font size in pixels for title text.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "fontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "Font style for title text."
+        },
+        "fontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight for title text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "frame": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TitleFrame"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "The reference frame for the anchor position, one of `\"bounds\"` (to anchor relative to the full bounding box) or `\"group\"` (to anchor relative to the group width or height)."
+        },
+        "limit": {
+          "description": "The maximum allowed length in pixels of title and subtitle text.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "lineHeight": {
+          "description": "Line height in pixels for multi-line title text.",
+          "type": "number"
+        },
+        "offset": {
+          "description": "The orthogonal offset in pixels by which to displace the title group from its position along the edge of the chart.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/TitleOrient",
+          "description": "Default title orientation (`\"top\"`, `\"bottom\"`, `\"left\"`, or `\"right\"`)"
+        },
+        "subtitleColor": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
+          "description": "Text color for subtitle text."
+        },
+        "subtitleFont": {
+          "description": "Font name for subtitle text.",
+          "type": "string"
+        },
+        "subtitleFontSize": {
+          "description": "Font size in pixels for subtitle text.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "subtitleFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "Font style for subtitle text."
+        },
+        "subtitleFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight for subtitle text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "subtitleLineHeight": {
+          "description": "Line height in pixels for multi-line subtitle text.",
+          "type": "number"
+        },
+        "subtitlePadding": {
+          "description": "The padding in pixels between title and subtitle text.",
+          "type": "number"
+        }
+      },
+      "type": "object"
     },
     "Expr": {
       "type": "string"
@@ -14633,7 +14657,7 @@
       ]
     },
     "TitleConfig": {
-      "$ref": "#/definitions/BaseTitleConfig"
+      "$ref": "#/definitions/BaseTitleNoSignals"
     },
     "TitleFrame": {
       "enum": [
@@ -14672,7 +14696,14 @@
           "description": "Vertical text baseline for title and subtitle text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
         },
         "color": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Text color for title text."
         },
         "dx": {
@@ -14701,7 +14732,14 @@
           "description": "Font weight for title text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "frame": {
-          "$ref": "#/definitions/TitleFrame",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TitleFrame"
+            },
+            {
+              "type": "string"
+            }
+          ],
           "description": "The reference frame for the anchor position, one of `\"bounds\"` (to anchor relative to the full bounding box) or `\"group\"` (to anchor relative to the group width or height)."
         },
         "limit": {
@@ -14736,7 +14774,14 @@
           "description": "A [mark style property](https://vega.github.io/vega-lite/docs/config.html#style) to apply to the title text mark.\n\n__Default value:__ `\"group-title\"`."
         },
         "subtitleColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Text color for subtitle text."
         },
         "subtitleFont": {

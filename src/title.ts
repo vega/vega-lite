@@ -1,28 +1,7 @@
-import {
-  Align,
-  BaseTitle,
-  Color,
-  FontStyle,
-  FontWeight,
-  TextBaseline,
-  TextEncodeEntry,
-  TitleAnchor,
-  TitleFrame,
-  TitleOrient
-} from 'vega';
-import {BaseMarkConfig} from './vega.schema';
-type BaseTitleNoSignals = BaseTitle<
-  number,
-  string,
-  Color,
-  FontWeight,
-  FontStyle,
-  Align,
-  TextBaseline,
-  TitleFrame,
-  TitleAnchor,
-  TitleOrient
->;
+import {BaseTitle, TextEncodeEntry, TitleAnchor} from 'vega';
+import {BaseMarkConfig, ExcludeMappedValueRef} from './vega.schema';
+
+export type BaseTitleNoSignals = ExcludeMappedValueRef<BaseTitle>;
 
 export type TitleConfig = BaseTitleNoSignals;
 
