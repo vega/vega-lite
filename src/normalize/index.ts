@@ -27,7 +27,7 @@ export function normalize(
 
   let normalizedSpec = normalizeGenericSpec(spec, config);
 
-  normalizedSpec = normalize:(
+  normalizedSpec = normalizeAutoSize(
     normalizedSpec,
     {width: spec.width, height: spec.height, autosize: spec.autosize},
     config
