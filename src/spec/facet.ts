@@ -1,6 +1,6 @@
 import {LayoutAlign} from 'vega';
 import {BinParams} from '../bin';
-import {ChannelDef, Field, FieldDef, TypedFieldDef} from '../channeldef';
+import {ChannelDef, VlField, FieldDef, TypedFieldDef} from '../channeldef';
 import {Header} from '../header';
 import {EncodingSortField, SortArray, SortOrder} from '../sort';
 import {StandardType} from '../type';
@@ -9,7 +9,7 @@ import {FacetMapping} from './facet';
 import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
-export interface FacetFieldDef<F extends Field> extends TypedFieldDef<F, StandardType, boolean | BinParams | null> {
+export interface FacetFieldDef<F extends VlField> extends TypedFieldDef<F, StandardType, boolean | BinParams | null> {
   /**
    * An object defining properties of a facet's header.
    */
@@ -35,9 +35,9 @@ export interface FacetFieldDef<F extends Field> extends TypedFieldDef<F, Standar
   sort?: SortArray | SortOrder | EncodingSortField<F> | null;
 }
 
-export type FacetEncodingFieldDef<F extends Field> = FacetFieldDef<F> & GenericCompositionLayoutWithColumns;
+export type FacetEncodingFieldDef<F extends VlField> = FacetFieldDef<F> & GenericCompositionLayoutWithColumns;
 
-export interface RowColumnEncodingFieldDef<F extends Field> extends FacetFieldDef<F> {
+export interface RowColumnEncodingFieldDef<F extends VlField> extends FacetFieldDef<F> {
   // Manually declarae this separated from GenericCompositionLayout as we don't support RowCol object in RowColumnEncodingFieldDef
 
   /**
@@ -67,7 +67,7 @@ export interface RowColumnEncodingFieldDef<F extends Field> extends FacetFieldDe
   spacing?: number;
 }
 
-export interface FacetMapping<F extends Field, FD extends FacetFieldDef<F> = FacetFieldDef<F>> {
+export interface FacetMapping<F extends VlField, FD extends FacetFieldDef<F> = FacetFieldDef<F>> {
   /**
    * A field definition for the vertical facet of trellis plots.
    */
@@ -79,14 +79,14 @@ export interface FacetMapping<F extends Field, FD extends FacetFieldDef<F> = Fac
   column?: FD;
 }
 
-export function isFacetMapping<F extends Field>(f: FacetFieldDef<F> | FacetMapping<F>): f is FacetMapping<F> {
+export function isFacetMapping<F extends VlField>(f: FacetFieldDef<F> | FacetMapping<F>): f is FacetMapping<F> {
   return !!f['row'] || !!f['column'];
 }
 
 /**
  * Facet mapping for encoding macro
  */
-export interface EncodingFacetMapping<F extends Field> extends FacetMapping<F, RowColumnEncodingFieldDef<F>> {
+export interface EncodingFacetMapping<F extends VlField> extends FacetMapping<F, RowColumnEncodingFieldDef<F>> {
   /**
    * A field definition for the (flexible) facet of trellis plots.
    *
@@ -95,7 +95,9 @@ export interface EncodingFacetMapping<F extends Field> extends FacetMapping<F, R
   facet?: FacetEncodingFieldDef<F>;
 }
 
-export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is FacetFieldDef<F> {
+export function isFacetFieldDef<F extends VlField>(
+  channelDef: ChannelDef<FieldDef<F>>
+): channelDef is FacetFieldDef<F> {
   return !!channelDef && !!channelDef['header'];
 }
 
@@ -111,7 +113,7 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends
    * 1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)
    * 2) [An object that maps `row` and `column` channels to their field definitions](https://vega.github.io/vega-lite/docs/facet.html#mapping)
    */
-  facet: FacetFieldDef<Field> | FacetMapping<Field>;
+  facet: FacetFieldDef<VlField> | FacetMapping<VlField>;
 
   /**
    * A specification of the view that gets faceted.

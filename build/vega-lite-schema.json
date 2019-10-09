@@ -525,7 +525,14 @@
           "type": "boolean"
         },
         "domainColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Color of axis domain line.\n\n__Default value:__ `\"gray\"`."
         },
         "domainDash": {
@@ -566,11 +573,18 @@
         "gridColor": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Color",
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)2086385775|null)>"
             }
           ]
         },
@@ -584,7 +598,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number[]|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number[]|undefined)927251285|null)>"
             }
           ]
         },
@@ -595,7 +609,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)1806960624|null)>"
             }
           ]
         },
@@ -608,7 +622,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)702672441|null)>"
             }
           ]
         },
@@ -620,7 +634,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)742391737|null)>"
             }
           ]
         },
@@ -631,7 +645,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-6039-6088-981995915-0-10055|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-1198409216-6039-6088-1198409216-0-10055|undefined)870796116|null)>"
             }
           ]
         },
@@ -648,7 +662,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8592-8644-981995915-0-10055|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-1198409216-8592-8644-1198409216-0-10055|undefined)186452232|null)>"
             }
           ]
         },
@@ -662,11 +676,18 @@
         "labelColor": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Color",
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)1719818830|null)>"
             }
           ]
         },
@@ -692,7 +713,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(string|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((string|undefined)1723860780|null)>"
             }
           ]
         },
@@ -704,7 +725,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)720879958|null)>"
             }
           ]
         },
@@ -715,7 +736,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8836-8977-981995915-0-10055|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-1198409216-8836-8977-1198409216-0-10055|undefined)679934267|null)>"
             }
           ]
         },
@@ -726,7 +747,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8687-8836-981995915-0-10055|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-1198409216-8687-8836-1198409216-0-10055|undefined)1209375024|null)>"
             }
           ]
         },
@@ -741,7 +762,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)377890894|null)>"
             }
           ]
         },
@@ -784,11 +805,18 @@
         "tickColor": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Color",
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)565543918|null)>"
             }
           ]
         },
@@ -806,7 +834,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number[]|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number[]|undefined)105503503|null)>"
             }
           ]
         },
@@ -817,7 +845,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)61636408|null)>"
             }
           ]
         },
@@ -840,7 +868,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)1791665056|null)>"
             }
           ]
         },
@@ -861,7 +889,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)1626350768|null)>"
             }
           ]
         },
@@ -893,7 +921,14 @@
           "description": "Vertical text baseline for axis titles."
         },
         "titleColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Color of the title, can be in hex color code or regular color name."
         },
         "titleFont": {
@@ -987,7 +1022,14 @@
           "type": "boolean"
         },
         "domainColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Color of axis domain line.\n\n__Default value:__ `\"gray\"`."
         },
         "domainDash": {
@@ -1016,11 +1058,18 @@
         "gridColor": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Color",
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)2086385775|null)>"
             }
           ]
         },
@@ -1034,7 +1083,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number[]|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number[]|undefined)927251285|null)>"
             }
           ]
         },
@@ -1045,7 +1094,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)1806960624|null)>"
             }
           ]
         },
@@ -1058,7 +1107,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)702672441|null)>"
             }
           ]
         },
@@ -1070,7 +1119,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)742391737|null)>"
             }
           ]
         },
@@ -1081,7 +1130,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-6039-6088-981995915-0-10055|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-1198409216-6039-6088-1198409216-0-10055|undefined)870796116|null)>"
             }
           ]
         },
@@ -1098,7 +1147,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8592-8644-981995915-0-10055|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-1198409216-8592-8644-1198409216-0-10055|undefined)186452232|null)>"
             }
           ]
         },
@@ -1112,11 +1161,18 @@
         "labelColor": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Color",
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)1719818830|null)>"
             }
           ]
         },
@@ -1138,7 +1194,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(string|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((string|undefined)1723860780|null)>"
             }
           ]
         },
@@ -1150,7 +1206,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)720879958|null)>"
             }
           ]
         },
@@ -1161,7 +1217,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8836-8977-981995915-0-10055|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-1198409216-8836-8977-1198409216-0-10055|undefined)679934267|null)>"
             }
           ]
         },
@@ -1172,7 +1228,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-981995915-8687-8836-981995915-0-10055|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-1198409216-8687-8836-1198409216-0-10055|undefined)1209375024|null)>"
             }
           ]
         },
@@ -1187,7 +1243,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)377890894|null)>"
             }
           ]
         },
@@ -1226,11 +1282,18 @@
         "tickColor": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Color",
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)565543918|null)>"
             }
           ]
         },
@@ -1244,7 +1307,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number[]|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number[]|undefined)105503503|null)>"
             }
           ]
         },
@@ -1255,7 +1318,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)61636408|null)>"
             }
           ]
         },
@@ -1274,7 +1337,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)1791665056|null)>"
             }
           ]
         },
@@ -1295,7 +1358,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(number|undefined|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)1626350768|null)>"
             }
           ]
         },
@@ -1324,7 +1387,14 @@
           "description": "Vertical text baseline for axis titles."
         },
         "titleColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Color of the title, can be in hex color code or regular color name."
         },
         "titleFont": {
@@ -2874,50 +2944,17 @@
         }
       ]
     },
-    "ConditionalAxisProperty<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>": {
+    "ConditionalAxisProperty<((def-alias-1198409216-6039-6088-1198409216-0-10055|undefined)870796116|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-1198409216-6039-6088-1198409216-0-10055|undefined)870796116|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Color",
-              "description": "The color of the tick label, can be in hex color code or regular color name."
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "condition"
-      ],
-      "type": "object"
-    },
-    "ConditionalAxisProperty<(def-alias-981995915-6039-6088-981995915-0-10055|undefined|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-6039-6088-981995915-0-10055|undefined|null)>>"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-6039-6088-981995915-0-10055|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-1198409216-6039-6088-1198409216-0-10055|undefined)870796116|null)>>"
               },
               "type": "array"
             }
@@ -2932,7 +2969,8 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -2940,17 +2978,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-8592-8644-981995915-0-10055|undefined|null)>": {
+    "ConditionalAxisProperty<((def-alias-1198409216-8592-8644-1198409216-0-10055|undefined)186452232|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8592-8644-981995915-0-10055|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-1198409216-8592-8644-1198409216-0-10055|undefined)186452232|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8592-8644-981995915-0-10055|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-1198409216-8592-8644-1198409216-0-10055|undefined)186452232|null)>>"
               },
               "type": "array"
             }
@@ -2965,7 +3003,8 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -2973,17 +3012,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-8687-8836-981995915-0-10055|undefined|null)>": {
+    "ConditionalAxisProperty<((def-alias-1198409216-8687-8836-1198409216-0-10055|undefined)1209375024|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8687-8836-981995915-0-10055|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-1198409216-8687-8836-1198409216-0-10055|undefined)1209375024|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8687-8836-981995915-0-10055|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-1198409216-8687-8836-1198409216-0-10055|undefined)1209375024|null)>>"
               },
               "type": "array"
             }
@@ -2998,7 +3037,8 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -3006,17 +3046,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(def-alias-981995915-8836-8977-981995915-0-10055|undefined|null)>": {
+    "ConditionalAxisProperty<((def-alias-1198409216-8836-8977-1198409216-0-10055|undefined)679934267|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8836-8977-981995915-0-10055|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-1198409216-8836-8977-1198409216-0-10055|undefined)679934267|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(def-alias-981995915-8836-8977-981995915-0-10055|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-1198409216-8836-8977-1198409216-0-10055|undefined)679934267|null)>>"
               },
               "type": "array"
             }
@@ -3031,7 +3071,8 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -3039,17 +3080,177 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(number[]|undefined|null)>": {
+    "ConditionalAxisProperty<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)1719818830|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)1719818830|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)1719818830|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)2086385775|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)2086385775|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)2086385775|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)565543918|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)565543918|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)565543918|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<((number[]|undefined)105503503|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number[]|undefined)105503503|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number[]|undefined)105503503|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<((number[]|undefined)927251285|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number[]|undefined)927251285|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number[]|undefined)927251285|null)>>"
               },
               "type": "array"
             }
@@ -3067,7 +3268,8 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -3075,17 +3277,224 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(number|undefined|null)>": {
+    "ConditionalAxisProperty<((number|undefined)1626350768|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)1626350768|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)1626350768|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<((number|undefined)1791665056|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)1791665056|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)1791665056|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "Opacity of the ticks.",
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<((number|undefined)1806960624|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)1806960624|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)1806960624|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the grid dash array.",
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<((number|undefined)377890894|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)377890894|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)377890894|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The opacity of the labels.",
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<((number|undefined)61636408|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)61636408|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)61636408|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the tick mark dash array.",
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<((number|undefined)702672441|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)702672441|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)702672441|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<((number|undefined)720879958|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)720879958|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)720879958|null)>>"
               },
               "type": "array"
             }
@@ -3101,7 +3510,8 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -3109,17 +3519,52 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(string|undefined|null)>": {
+    "ConditionalAxisProperty<((number|undefined)742391737|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|undefined|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)742391737|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|undefined|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)742391737|null)>>"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionalAxisProperty<((string|undefined)1723860780|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((string|undefined)1723860780|null)>>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((string|undefined)1723860780|null)>>"
               },
               "type": "array"
             }
@@ -3134,7 +3579,8 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -3164,7 +3610,7 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -3241,7 +3687,7 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -3324,7 +3770,7 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "format": {
@@ -3369,6 +3815,488 @@
       ],
       "type": "object"
     },
+    "ConditionalPredicate<ValueDef<((def-alias-1198409216-6039-6088-1198409216-0-10055|undefined)870796116|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((def-alias-1198409216-8592-8644-1198409216-0-10055|undefined)186452232|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((def-alias-1198409216-8687-8836-1198409216-0-10055|undefined)1209375024|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "Font weight of axis tick labels."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((def-alias-1198409216-8836-8977-1198409216-0-10055|undefined)679934267|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "Font style of the title."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)1719818830|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)2086385775|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)565543918|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((number[]|undefined)105503503|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((number[]|undefined)927251285|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((number|undefined)1626350768|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((number|undefined)1791665056|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "Opacity of the ticks.",
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((number|undefined)1806960624|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the grid dash array.",
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((number|undefined)377890894|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The opacity of the labels.",
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((number|undefined)61636408|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the tick mark dash array.",
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((number|undefined)702672441|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((number|undefined)720879958|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The font size of the label, in pixels.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((number|undefined)742391737|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<((string|undefined)1723860780|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "description": "The font of the tick label.",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test"
+      ],
+      "type": "object"
+    },
     "ConditionalPredicate<ValueDef<(Gradient|string|null)>>": {
       "additionalProperties": false,
       "properties": {
@@ -3397,178 +4325,6 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(def-alias-1203634144-2468-2565-1203634144-0-2566|undefined|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Color",
-              "description": "The color of the tick label, can be in hex color code or regular color name."
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "test"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-6039-6088-981995915-0-10055|undefined|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Align",
-              "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "test"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-8592-8644-981995915-0-10055|undefined|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextBaseline",
-              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "test"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-8687-8836-981995915-0-10055|undefined|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontWeight",
-              "description": "Font weight of axis tick labels."
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "test"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(def-alias-981995915-8836-8977-981995915-0-10055|undefined|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontStyle",
-              "description": "Font style of the title."
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "test"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(number[]|undefined|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "test"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(number|undefined|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The font size of the label, in pixels.",
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "test"
-      ],
-      "type": "object"
-    },
     "ConditionalPredicate<StringValueDef>": {
       "additionalProperties": false,
       "properties": {
@@ -3587,30 +4343,6 @@
       "required": [
         "test",
         "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(string|undefined|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The font of the tick label.",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "test"
       ],
       "type": "object"
     },
@@ -3672,7 +4404,7 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -3749,7 +4481,7 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -3832,7 +4564,7 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "format": {
@@ -4538,7 +5270,7 @@
       "description": "A sort definition for sorting a discrete scale in an encoding field definition.",
       "properties": {
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "The data [field](https://vega.github.io/vega-lite/docs/field.html) to sort by.\n\n__Default value:__ If unspecified, defaults to the field specified in the outer data reference."
         },
         "op": {
@@ -4973,7 +5705,7 @@
           "type": "number"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "header": {
@@ -5051,7 +5783,7 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "header": {
@@ -5543,16 +6275,6 @@
       ],
       "type": "object"
     },
-    "Field": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/FieldName"
-        },
-        {
-          "$ref": "#/definitions/RepeatRef"
-        }
-      ]
-    },
     "FieldDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
@@ -5590,7 +6312,7 @@
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -5677,7 +6399,7 @@
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -5764,7 +6486,7 @@
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -5857,7 +6579,7 @@
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "format": {
@@ -7771,7 +8493,7 @@
           "type": "null"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
@@ -7946,7 +8668,14 @@
           "description": "The direction of the legend, one of `\"vertical\"` or `\"horizontal\"`.\n\n__Default value:__\n- For top-/bottom-`orient`ed legends, `\"horizontal\"`\n- For left-/right-`orient`ed legends, `\"vertical\"`\n- For top/bottom-left/right-`orient`ed legends, `\"horizontal\"` for gradient legends and `\"vertical\"` for symbol legends."
         },
         "fillColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Background fill color for the full legend."
         },
         "format": {
@@ -7971,7 +8700,14 @@
           "type": "number"
         },
         "gradientStrokeColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "The color of the gradient stroke, can be in hex color code or regular color name.\n\n__Default value:__ `\"lightGray\"`."
         },
         "gradientStrokeWidth": {
@@ -7997,7 +8733,14 @@
           "description": "The position of the baseline of legend label, can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`.\n\n__Default value:__ `\"middle\"`."
         },
         "labelColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "The color of the legend label, can be in hex color code or regular color name."
         },
         "labelExpr": {
@@ -8070,7 +8813,14 @@
           "type": "number"
         },
         "strokeColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Border stroke color for the full legend."
         },
         "symbolDash": {
@@ -8085,7 +8835,14 @@
           "type": "number"
         },
         "symbolFillColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "The color of the legend symbol,"
         },
         "symbolLimit": {
@@ -8106,7 +8863,14 @@
           "type": "number"
         },
         "symbolStrokeColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Stroke color for legend symbols."
         },
         "symbolStrokeWidth": {
@@ -8119,7 +8883,14 @@
           "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
         },
         "tickCount": {
-          "$ref": "#/definitions/TickCount",
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/TimeInterval"
+            }
+          ],
           "description": "The desired number of tick values for quantitative legends."
         },
         "tickMinStep": {
@@ -8146,7 +8917,14 @@
           "description": "Vertical text baseline for legend titles.\n\n__Default value:__ `\"top\"`."
         },
         "titleColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "The color of the legend title, can be in hex color code or regular color name."
         },
         "titleFont": {
@@ -8242,7 +9020,14 @@
           "type": "number"
         },
         "fillColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Background fill color for the full legend."
         },
         "gradientDirection": {
@@ -8275,7 +9060,14 @@
           "type": "number"
         },
         "gradientStrokeColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "The color of the gradient stroke, can be in hex color code or regular color name.\n\n__Default value:__ `\"lightGray\"`."
         },
         "gradientStrokeWidth": {
@@ -8309,7 +9101,14 @@
           "description": "The position of the baseline of legend label, can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`.\n\n__Default value:__ `\"middle\"`."
         },
         "labelColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "The color of the legend label, can be in hex color code or regular color name."
         },
         "labelFont": {
@@ -8386,7 +9185,14 @@
           "type": "boolean"
         },
         "strokeColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Border stroke color for the full legend."
         },
         "strokeDash": {
@@ -8401,11 +9207,25 @@
           "type": "number"
         },
         "symbolBaseFillColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Default fill color for legend symbols. Only applied if there is no `\"fill\"` scale color encoding for the legend.\n\n__Default value:__ `\"transparent\"`."
         },
         "symbolBaseStrokeColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Default stroke color for legend symbols. Only applied if there is no `\"fill\"` scale color encoding for the legend.\n\n__Default value:__ `\"gray\"`."
         },
         "symbolDash": {
@@ -8424,7 +9244,14 @@
           "description": "The default direction (`\"horizontal\"` or `\"vertical\"`) for symbol legends.\n\n__Default value:__ `\"vertical\"`."
         },
         "symbolFillColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "The color of the legend symbol,"
         },
         "symbolLimit": {
@@ -8445,7 +9272,14 @@
           "type": "number"
         },
         "symbolStrokeColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "Stroke color for legend symbols."
         },
         "symbolStrokeWidth": {
@@ -8458,7 +9292,14 @@
           "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
         },
         "tickCount": {
-          "$ref": "#/definitions/TickCount",
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/TimeInterval"
+            }
+          ],
           "description": "The desired number of tick values for quantitative legends."
         },
         "title": {
@@ -8478,7 +9319,14 @@
           "description": "Vertical text baseline for legend titles.\n\n__Default value:__ `\"top\"`."
         },
         "titleColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
           "description": "The color of the legend title, can be in hex color code or regular color name."
         },
         "titleFont": {
@@ -10285,7 +11133,7 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "sort": {
@@ -10911,7 +11759,7 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "impute": {
@@ -11833,7 +12681,7 @@
           "type": "boolean"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "header": {
@@ -12331,7 +13179,7 @@
           "type": "null"
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
@@ -13364,7 +14212,7 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "format": {
@@ -13715,19 +14563,6 @@
         }
       },
       "type": "object"
-    },
-    "TickCount": {
-      "anyOf": [
-        {
-          "type": "number"
-        },
-        {
-          "$ref": "#/definitions/TimeInterval"
-        },
-        {
-          "$ref": "#/definitions/SignalRef"
-        }
-      ]
     },
     "TimeInterval": {
       "enum": [
@@ -15030,7 +15865,7 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
-          "$ref": "#/definitions/Field",
+          "$ref": "#/definitions/VlField",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
@@ -15584,6 +16419,16 @@
         }
       },
       "type": "object"
+    },
+    "VlField": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/FieldName"
+        },
+        {
+          "$ref": "#/definitions/RepeatRef"
+        }
+      ]
     },
     "WindowEventType": {
       "anyOf": [

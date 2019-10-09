@@ -1,6 +1,6 @@
 import {AggregateOp, Orientation} from 'vega';
 import {PositionChannel} from '../channel';
-import {Field, isContinuous, isFieldDef, PositionFieldDef, SecondaryFieldDef, title, ValueDef} from '../channeldef';
+import {VlField, isContinuous, isFieldDef, PositionFieldDef, SecondaryFieldDef, title, ValueDef} from '../channeldef';
 import {Config} from '../config';
 import {Data} from '../data';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
@@ -39,7 +39,7 @@ const ERRORBAR_PART_INDEX: Flag<ErrorBarPart> = {
   rule: 1
 };
 
-export interface ErrorExtraEncoding<F extends Field> {
+export interface ErrorExtraEncoding<F extends VlField> {
   /**
    * Error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
    */
@@ -63,7 +63,7 @@ export interface ErrorExtraEncoding<F extends Field> {
   yError2?: SecondaryFieldDef<F> | ValueDef<number>;
 }
 
-export type ErrorEncoding<F extends Field> = Pick<Encoding<F>, PositionChannel | 'color' | 'detail' | 'opacity'> &
+export type ErrorEncoding<F extends VlField> = Pick<Encoding<F>, PositionChannel | 'color' | 'detail' | 'opacity'> &
   ErrorExtraEncoding<F>;
 
 export const ERRORBAR_PARTS = keys(ERRORBAR_PART_INDEX);
@@ -77,7 +77,7 @@ export interface ErrorBarConfig extends ErrorBarPartsMixins {
    * - `"median"`: the median of the data points.
    *
    * __Default value:__ `"mean"`.
-   * @hide
+   * @hidden
    */
 
   // center is not needed right now but will be added back to the schema if future features require it.
@@ -165,7 +165,7 @@ export function normalizeErrorBar(
 }
 
 function errorBarOrientAndInputType(
-  spec: GenericUnitSpec<ErrorEncoding<Field>, ErrorBar | ErrorBand | ErrorBarDef | ErrorBandDef>,
+  spec: GenericUnitSpec<ErrorEncoding<VlField>, ErrorBar | ErrorBand | ErrorBarDef | ErrorBandDef>,
   compositeMark: ErrorBar | ErrorBand
 ): {
   orient: Orientation;
@@ -259,7 +259,7 @@ function errorBarOrientAndInputType(
   }
 }
 
-function errorBarIsInputTypeRaw(encoding: ErrorEncoding<Field>): boolean {
+function errorBarIsInputTypeRaw(encoding: ErrorEncoding<VlField>): boolean {
   return (
     (isFieldDef(encoding.x) || isFieldDef(encoding.y)) &&
     !isFieldDef(encoding.x2) &&
@@ -271,11 +271,11 @@ function errorBarIsInputTypeRaw(encoding: ErrorEncoding<Field>): boolean {
   );
 }
 
-function errorBarIsInputTypeAggregatedUpperLower(encoding: ErrorEncoding<Field>): boolean {
+function errorBarIsInputTypeAggregatedUpperLower(encoding: ErrorEncoding<VlField>): boolean {
   return isFieldDef(encoding.x2) || isFieldDef(encoding.y2);
 }
 
-function errorBarIsInputTypeAggregatedError(encoding: ErrorEncoding<Field>): boolean {
+function errorBarIsInputTypeAggregatedError(encoding: ErrorEncoding<VlField>): boolean {
   return (
     isFieldDef(encoding.xError) ||
     isFieldDef(encoding.xError2) ||

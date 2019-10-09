@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-perl -pi -e s,'<Field>','',g build/vega-lite-schema.json
-perl -pi -e s,'<Field\,','<',g build/vega-lite-schema.json
+perl -pi -e s,'<VlField>','',g build/vega-lite-schema.json
+perl -pi -e s,'<VlField\,','<',g build/vega-lite-schema.json
 perl -pi -e s,'<StandardType>','',g build/vega-lite-schema.json
 
 perl -pi -e s,'CompositeEncoding','Encoding',g build/vega-lite-schema.json

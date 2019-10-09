@@ -1,6 +1,6 @@
 import {isBinned} from '../bin';
 import {getMainRangeChannel, SECONDARY_RANGE_CHANNEL} from '../channel';
-import {Field, isFieldDef} from '../channeldef';
+import {VlField, isFieldDef} from '../channeldef';
 import {Encoding} from '../encoding';
 import * as log from '../log';
 import {GenericSpec} from '../spec/index';
@@ -8,14 +8,14 @@ import {GenericUnitSpec, isUnitSpec} from '../spec/unit';
 import {NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams} from './base';
 
 interface EncodingX2Mixins {
-  x2: Encoding<Field>['x2'];
+  x2: Encoding<VlField>['x2'];
 }
 
 interface EncodingY2Mixins {
-  y2: Encoding<Field>['y2'];
+  y2: Encoding<VlField>['y2'];
 }
 
-type RangedLineSpec = GenericUnitSpec<Encoding<Field> & (EncodingX2Mixins | EncodingY2Mixins), 'line'>;
+type RangedLineSpec = GenericUnitSpec<Encoding<VlField> & (EncodingX2Mixins | EncodingY2Mixins), 'line'>;
 
 export class RuleForRangedLineNormalizer implements NonFacetUnitNormalizer<RangedLineSpec> {
   public name = 'RuleForRangedLine';

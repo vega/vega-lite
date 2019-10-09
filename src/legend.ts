@@ -1,43 +1,21 @@
 import {
-  Align,
   BaseLegend,
-  Color,
-  FontStyle,
-  FontWeight,
   LabelOverlap,
   Legend as VgLegend,
   LegendConfig as VgLegendConfig,
   LegendOrient,
-  Orient,
-  Orientation,
-  SymbolShape,
-  TextBaseline,
-  TitleAnchor
+  Orientation
 } from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {LayoutAlign} from './vega.schema';
+import {ExcludeMappedValueRef} from './vega.schema';
+
+type BaseLegendNoSignals = ExcludeMappedValueRef<BaseLegend>;
 
 export type LegendConfig = LegendMixins &
   VlOnlyGuideConfig &
-  VgLegendConfig<
-    number,
-    number,
-    string,
-    Color,
-    FontWeight,
-    FontStyle,
-    Align,
-    TextBaseline,
-    LayoutAlign,
-    LabelOverlap,
-    SymbolShape,
-    number[],
-    Orient,
-    TitleAnchor,
-    LegendOrient
-  > & {
+  ExcludeMappedValueRef<VgLegendConfig> & {
     /**
      * Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
      *
@@ -83,30 +61,11 @@ export type LegendConfig = LegendMixins &
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend
-  extends BaseLegend<
-      number,
-      number,
-      string,
-      Color,
-      FontWeight,
-      FontStyle,
-      Align,
-      TextBaseline,
-      LayoutAlign,
-      LabelOverlap,
-      SymbolShape,
-      number[],
-      Orient,
-      TitleAnchor,
-      LegendOrient
-    >,
-    LegendMixins,
-    Guide {
+export interface Legend extends BaseLegendNoSignals, LegendMixins, Guide {
   /**
    * Mark definitions for custom legend encoding.
    *
-   * @hide
+   * @hidden
    */
   encoding?: LegendEncoding;
 

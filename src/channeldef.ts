@@ -73,26 +73,26 @@ export type ValueDefWithCondition<F extends FieldDef<any>, V extends ValueOrGrad
   condition?: Conditional<F> | Conditional<ValueDef<V>> | Conditional<ValueDef<V>>[];
 };
 
-export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
+export type StringValueDefWithCondition<F extends VlField, T extends Type = StandardType> = ValueDefWithCondition<
   MarkPropFieldDef<F, T>,
   string | null
 >;
 
-export type ColorGradientValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
-  MarkPropFieldDef<F, T>,
-  Gradient | string | null
->;
+export type ColorGradientValueDefWithCondition<
+  F extends VlField,
+  T extends Type = StandardType
+> = ValueDefWithCondition<MarkPropFieldDef<F, T>, Gradient | string | null>;
 
-export type NumericValueDefWithCondition<F extends Field> = ValueDefWithCondition<
+export type NumericValueDefWithCondition<F extends VlField> = ValueDefWithCondition<
   MarkPropFieldDef<F, StandardType>,
   number
 >;
 
 export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
-export type ShapeValueDefWithCondition<F extends Field> = StringValueDefWithCondition<F, TypeForShape>;
+export type ShapeValueDefWithCondition<F extends VlField> = StringValueDefWithCondition<F, TypeForShape>;
 
-export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<TextFieldDef<F>, Value>;
+export type TextValueDefWithCondition<F extends VlField> = ValueDefWithCondition<TextFieldDef<F>, Value>;
 
 export type Conditional<CD extends FieldDef<any> | ValueDef<any>> = ConditionalPredicate<CD> | ConditionalSelection<CD>;
 
@@ -136,22 +136,22 @@ export interface ConditionValueDefMixins<V extends ValueOrGradient = Value> {
 export type FieldDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradient = Value> = F &
   ConditionValueDefMixins<V>;
 
-export type ColorGradientFieldDefWithCondition<F extends Field, T extends Type = StandardType> = FieldDefWithCondition<
-  MarkPropFieldDef<F, T>,
-  Gradient | string | null
->;
+export type ColorGradientFieldDefWithCondition<
+  F extends VlField,
+  T extends Type = StandardType
+> = FieldDefWithCondition<MarkPropFieldDef<F, T>, Gradient | string | null>;
 
-export type NumericFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
+export type NumericFieldDefWithCondition<F extends VlField> = FieldDefWithCondition<
   MarkPropFieldDef<F, StandardType>,
   number
 >;
 
-export type ShapeFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
+export type ShapeFieldDefWithCondition<F extends VlField> = FieldDefWithCondition<
   MarkPropFieldDef<F, TypeForShape>,
   string | null
 >;
 
-export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<TextFieldDef<F>, Value>;
+export type TextFieldDefWithCondition<F extends VlField> = FieldDefWithCondition<TextFieldDef<F>, Value>;
 
 /**
  * A ValueDef with optional Condition<ValueDef | FieldDef>
@@ -169,13 +169,13 @@ export interface RepeatRef {
 }
 
 export type FieldName = string;
-export type Field = FieldName | RepeatRef;
+export type VlField = FieldName | RepeatRef;
 
-export function isRepeatRef(field: Field): field is RepeatRef {
+export function isRepeatRef(field: VlField): field is RepeatRef {
   return field && !isString(field) && 'repeat' in field;
 }
 
-/** @hide */
+/** @@hidden */
 export type HiddenCompositeAggregate = CompositeAggregate;
 
 export interface FieldDefBase<F, B extends Bin = Bin> {
@@ -263,13 +263,13 @@ export interface TypeMixins<T extends Type> {
  *  Definition object for a data field, its type and transformation of an encoding channel.
  */
 export type TypedFieldDef<
-  F extends Field,
+  F extends VlField,
   T extends Type = Type,
   B extends Bin = boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
 > = FieldDefBase<F, B> & TitleMixins & TypeMixins<T>;
 
 export interface SortableFieldDef<
-  F extends Field,
+  F extends VlField,
   T extends Type = StandardType,
   B extends Bin = boolean | BinParams | null
 > extends TypedFieldDef<F, T, B> {
@@ -294,12 +294,12 @@ export interface SortableFieldDef<
   sort?: Sort<F>;
 }
 
-export function isSortableFieldDef<F extends Field>(fieldDef: FieldDef<F>): fieldDef is SortableFieldDef<F> {
+export function isSortableFieldDef<F extends VlField>(fieldDef: FieldDef<F>): fieldDef is SortableFieldDef<F> {
   return isTypedFieldDef(fieldDef) && !!fieldDef['sort'];
 }
 
 export interface ScaleFieldDef<
-  F extends Field,
+  F extends VlField,
   T extends Type = StandardType,
   B extends Bin = boolean | BinParams | null
 > extends SortableFieldDef<F, T, B> {
@@ -318,18 +318,18 @@ export interface ScaleFieldDef<
 /**
  * A field definition of a secondary channel that shares a scale with another primary channel.  For example, `x2`, `xError` and `xError2` share the same scale with `x`.
  */
-export type SecondaryFieldDef<F extends Field> = FieldDefBase<F, null> & TitleMixins; // x2/y2 shouldn't have bin, but we keep bin property for simplicity of the codebase.
+export type SecondaryFieldDef<F extends VlField> = FieldDefBase<F, null> & TitleMixins; // x2/y2 shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
 /**
  * Field Def without scale (and without bin: "binned" support).
  */
-export type FieldDefWithoutScale<F extends Field, T extends Type = StandardType> = TypedFieldDef<F, T>;
+export type FieldDefWithoutScale<F extends VlField, T extends Type = StandardType> = TypedFieldDef<F, T>;
 
-export type LatLongFieldDef<F extends Field> = FieldDefBase<F, null> &
+export type LatLongFieldDef<F extends VlField> = FieldDefBase<F, null> &
   TitleMixins &
   Partial<TypeMixins<'quantitative'>>; // Lat long shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
-export interface PositionFieldDef<F extends Field>
+export interface PositionFieldDef<F extends VlField>
   extends ScaleFieldDef<
     F,
     StandardType,
@@ -426,7 +426,7 @@ export function hasBand(
 /**
  * Field definition of a mark property, which can contain a legend.
  */
-export type MarkPropFieldDef<F extends Field, T extends Type = Type> = ScaleFieldDef<
+export type MarkPropFieldDef<F extends VlField, T extends Type = Type> = ScaleFieldDef<
   F,
   T,
   boolean | BinParams | null
@@ -446,22 +446,22 @@ export type MarkPropFieldDef<F extends Field, T extends Type = Type> = ScaleFiel
 
 // Order Path have no scale
 
-export interface OrderFieldDef<F extends Field> extends FieldDefWithoutScale<F> {
+export interface OrderFieldDef<F extends VlField> extends FieldDefWithoutScale<F> {
   /**
    * The sort order. One of `"ascending"` (default) or `"descending"`.
    */
   sort?: SortOrder;
 }
 
-export interface TextFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
+export interface TextFieldDef<F extends VlField> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
 
-export type FieldDef<F extends Field> = SecondaryFieldDef<F> | TypedFieldDef<F>;
+export type FieldDef<F extends VlField> = SecondaryFieldDef<F> | TypedFieldDef<F>;
 export type ChannelDef<
   FD extends FieldDef<any> = FieldDef<string>,
   V extends ValueOrGradient = ValueOrGradient
 > = ChannelDefWithCondition<FD, V>;
 
-export function isConditionalDef<F extends Field, V extends ValueOrGradient>(
+export function isConditionalDef<F extends VlField, V extends ValueOrGradient>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is ChannelDefWithCondition<FieldDef<F>, V> {
   return !!channelDef && !!channelDef.condition;
@@ -470,19 +470,19 @@ export function isConditionalDef<F extends Field, V extends ValueOrGradient>(
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-export function hasConditionalFieldDef<F extends Field, V extends ValueOrGradient>(
+export function hasConditionalFieldDef<F extends VlField, V extends ValueOrGradient>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is Partial<ValueDef<V>> & {condition: Conditional<TypedFieldDef<F>>} {
   return !!channelDef && !!channelDef.condition && !isArray(channelDef.condition) && isFieldDef(channelDef.condition);
 }
 
-export function hasConditionalValueDef<F extends Field, V extends ValueOrGradient>(
+export function hasConditionalValueDef<F extends VlField, V extends ValueOrGradient>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is ValueDef<V> & {condition: Conditional<ValueDef<V>> | Conditional<ValueDef<V>>[]} {
   return !!channelDef && !!channelDef.condition && (isArray(channelDef.condition) || isValueDef(channelDef.condition));
 }
 
-export function isFieldDef<F extends Field>(
+export function isFieldDef<F extends VlField>(
   channelDef: ChannelDef<FieldDef<F>>
 ): channelDef is
   | TypedFieldDef<F>
@@ -495,25 +495,29 @@ export function isFieldDef<F extends Field>(
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
-export function isTypedFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is TypedFieldDef<F> {
+export function isTypedFieldDef<F extends VlField>(
+  channelDef: ChannelDef<FieldDef<F>>
+): channelDef is TypedFieldDef<F> {
   return !!channelDef && ((!!channelDef['field'] && !!channelDef['type']) || channelDef['aggregate'] === 'count');
 }
 
-export function isStringFieldDef(channelDef: ChannelDef<FieldDef<Field>>): channelDef is TypedFieldDef<string> {
+export function isStringFieldDef(channelDef: ChannelDef<FieldDef<VlField>>): channelDef is TypedFieldDef<string> {
   return isFieldDef(channelDef) && isString(channelDef.field);
 }
 
-export function isValueDef<F extends Field, V extends ValueOrGradient>(
+export function isValueDef<F extends VlField, V extends ValueOrGradient>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is ValueDef<V> {
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
 
-export function isScaleFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is ScaleFieldDef<F> {
+export function isScaleFieldDef<F extends VlField>(
+  channelDef: ChannelDef<FieldDef<F>>
+): channelDef is ScaleFieldDef<F> {
   return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
 }
 
-export function isPositionFieldDef<F extends Field>(
+export function isPositionFieldDef<F extends VlField>(
   channelDef: ChannelDef<FieldDef<F>>
 ): channelDef is PositionFieldDef<F> {
   return (
@@ -522,13 +526,13 @@ export function isPositionFieldDef<F extends Field>(
   );
 }
 
-export function isMarkPropFieldDef<F extends Field>(
+export function isMarkPropFieldDef<F extends VlField>(
   channelDef: ChannelDef<FieldDef<F>>
 ): channelDef is MarkPropFieldDef<F> {
   return !!channelDef && !!channelDef['legend'];
 }
 
-export function isTextFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is TextFieldDef<F> {
+export function isTextFieldDef<F extends VlField>(channelDef: ChannelDef<FieldDef<F>>): channelDef is TextFieldDef<F> {
   return !!channelDef && !!channelDef['format'];
 }
 
@@ -623,7 +627,7 @@ export function vgField(
   }
 }
 
-export function isDiscrete(fieldDef: TypedFieldDef<Field>) {
+export function isDiscrete(fieldDef: TypedFieldDef<VlField>) {
   switch (fieldDef.type) {
     case 'nominal':
     case 'ordinal':
@@ -637,11 +641,11 @@ export function isDiscrete(fieldDef: TypedFieldDef<Field>) {
   throw new Error(log.message.invalidFieldType(fieldDef.type));
 }
 
-export function isContinuous(fieldDef: TypedFieldDef<Field>) {
+export function isContinuous(fieldDef: TypedFieldDef<VlField>) {
   return !isDiscrete(fieldDef);
 }
 
-export function isCount(fieldDef: FieldDefBase<Field>) {
+export function isCount(fieldDef: FieldDefBase<VlField>) {
   return fieldDef.aggregate === 'count';
 }
 
@@ -745,7 +749,7 @@ export function format(fieldDef: TypedFieldDef<string>) {
   }
 }
 
-export function defaultType(fieldDef: TypedFieldDef<Field>, channel: Channel): Type {
+export function defaultType(fieldDef: TypedFieldDef<VlField>, channel: Channel): Type {
   if (fieldDef.timeUnit) {
     return 'temporal';
   }
@@ -769,7 +773,7 @@ export function defaultType(fieldDef: TypedFieldDef<Field>, channel: Channel): T
  * @param channelDef
  */
 
-export function getFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): FieldDef<F> {
+export function getFieldDef<F extends VlField>(channelDef: ChannelDef<FieldDef<F>>): FieldDef<F> {
   if (isFieldDef(channelDef)) {
     return channelDef;
   } else if (hasConditionalFieldDef(channelDef)) {
@@ -778,7 +782,7 @@ export function getFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>
   return undefined;
 }
 
-export function getTypedFieldDef<F extends Field>(channelDef: ChannelDef<TypedFieldDef<F>>): TypedFieldDef<F> {
+export function getTypedFieldDef<F extends VlField>(channelDef: ChannelDef<TypedFieldDef<F>>): TypedFieldDef<F> {
   if (isFieldDef(channelDef)) {
     return channelDef;
   } else if (hasConditionalFieldDef(channelDef)) {
@@ -902,7 +906,7 @@ export function normalizeBin(bin: BinParams | boolean | 'binned', channel: Chann
 
 const COMPATIBLE = {compatible: true};
 export function channelCompatibility(
-  fieldDef: TypedFieldDef<Field>,
+  fieldDef: TypedFieldDef<VlField>,
   channel: Channel
 ): {compatible: boolean; warning?: string} {
   const type = fieldDef.type;

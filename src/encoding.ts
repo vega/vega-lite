@@ -8,7 +8,7 @@ import {
   ChannelDef,
   ColorGradientFieldDefWithCondition,
   ColorGradientValueDefWithCondition,
-  Field,
+  VlField,
   FieldDef,
   FieldDefWithoutScale,
   getFieldDef,
@@ -47,7 +47,7 @@ import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {TEMPORAL} from './type';
 import {keys, some} from './util';
 
-export interface Encoding<F extends Field> {
+export interface Encoding<F extends VlField> {
   /**
    * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without specified `x2` or `width`.
    *
@@ -227,21 +227,21 @@ export interface Encoding<F extends Field> {
   order?: OrderFieldDef<F> | OrderFieldDef<F>[] | ValueDef<number>;
 }
 
-export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
+export interface EncodingWithFacet<F extends VlField> extends Encoding<F>, EncodingFacetMapping<F> {}
 
-export function channelHasField<F extends Field>(encoding: EncodingWithFacet<F>, channel: Channel): boolean {
+export function channelHasField<F extends VlField>(encoding: EncodingWithFacet<F>, channel: Channel): boolean {
   const channelDef = encoding && encoding[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
       return some(channelDef, fieldDef => !!fieldDef.field);
     } else {
-      return isFieldDef(channelDef) || hasConditionalFieldDef<Field, ValueOrGradient>(channelDef);
+      return isFieldDef(channelDef) || hasConditionalFieldDef<VlField, ValueOrGradient>(channelDef);
     }
   }
   return false;
 }
 
-export function isAggregate(encoding: EncodingWithFacet<Field>) {
+export function isAggregate(encoding: EncodingWithFacet<VlField>) {
   return some(CHANNELS, channel => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
@@ -256,7 +256,7 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
   });
 }
 
-export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, config: Config) {
+export function extractTransformsFromEncoding(oldEncoding: Encoding<VlField>, config: Config) {
   const groupby: string[] = [];
   const bins: BinTransform[] = [];
   const timeUnits: TimeUnitTransform[] = [];
@@ -448,7 +448,7 @@ export function normalizeEncoding(encoding: Encoding<string>, markDef: MarkDef):
   }, {});
 }
 
-export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): FieldDef<F>[] {
+export function fieldDefs<F extends VlField>(encoding: EncodingWithFacet<F>): FieldDef<F>[] {
   const arr: FieldDef<F>[] = [];
   for (const channel of keys(encoding)) {
     if (channelHasField(encoding, channel)) {

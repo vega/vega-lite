@@ -1,5 +1,5 @@
 import {Orientation} from 'vega';
-import {Field} from '../channeldef';
+import {VlField} from '../channeldef';
 import {Encoding} from '../encoding';
 import * as log from '../log';
 import {MarkDef} from '../mark';
@@ -13,7 +13,7 @@ import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './e
 
 export type ErrorBandUnitSpec<
   EE = {} // extra encoding parameter (for faceted composite unit spec)
-> = GenericUnitSpec<ErrorEncoding<Field> & EE, ErrorBand | ErrorBandDef>;
+> = GenericUnitSpec<ErrorEncoding<VlField> & EE, ErrorBand | ErrorBandDef>;
 
 export const ERRORBAND: 'errorband' = 'errorband';
 export type ErrorBand = typeof ERRORBAND;
@@ -36,7 +36,7 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
    * - `"median"`: the median of the data points.
    *
    * __Default value:__ `"mean"`.
-   * @hide
+   * @hidden
    */
 
   // center is not needed right now but will be added back to the schema if future features require it.

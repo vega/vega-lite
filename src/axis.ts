@@ -3,9 +3,9 @@ import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {OmitValueRef, VgEncodeChannel} from './vega.schema';
+import {ExcludeMappedValueRef, VgEncodeChannel} from './vega.schema';
 
-export type BaseAxisNoSignals = AxisMixins & OmitValueRef<BaseAxis>;
+export type BaseAxisNoSignals = AxisMixins & ExcludeMappedValueRef<BaseAxis>;
 
 export type ConditionalAxisProp =
   | 'labelAlign'
@@ -213,7 +213,7 @@ export interface Axis extends AxisOrientMixins, VgAxisConfigNoSignals, Guide {
   /**
    * Mark definitions for custom axis encoding.
    *
-   * @hide
+   * @hidden
    */
   encoding?: AxisEncoding;
 }

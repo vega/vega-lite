@@ -2,7 +2,7 @@ import {Orientation} from 'vega';
 import {isArray, isBoolean, isString} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from '.';
 import {
-  Field,
+  VlField,
   FieldDefBase,
   isContinuous,
   isFieldDef,
@@ -45,7 +45,7 @@ export interface CompositeMarkTooltipSummary {
   titlePrefix: string;
 }
 
-export function filterTooltipWithAggregatedField<F extends Field>(
+export function filterTooltipWithAggregatedField<F extends VlField>(
   oldEncoding: Encoding<F>
 ): {
   customTooltipWithoutAggregatedField?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F> | TextFieldDef<F>[];
@@ -248,7 +248,7 @@ function filterAggregateFromChannelDef<M extends CompositeMark, F extends FieldD
 }
 
 export function compositeMarkOrient<M extends CompositeMark>(
-  spec: GenericUnitSpec<Encoding<Field>, CompositeMark | CompositeMarkDef>,
+  spec: GenericUnitSpec<Encoding<VlField>, CompositeMark | CompositeMarkDef>,
   compositeMark: M
 ): Orientation {
   const {mark, encoding} = spec;

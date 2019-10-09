@@ -57,7 +57,7 @@ export interface TitleBase extends BaseTitleNoSignals {
   /**
    * Mark definitions for custom axis encoding.
    *
-   * @hide
+   * @hidden
    */
   encoding?: TextEncodeEntry;
 }

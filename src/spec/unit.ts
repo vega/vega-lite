@@ -1,4 +1,4 @@
-import {Field} from '../channeldef';
+import {VlField} from '../channeldef';
 import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark/index';
 import {Encoding} from '../encoding';
 import {AnyMark, Mark, MarkDef} from '../mark';
@@ -37,7 +37,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
 /**
  * A unit specification without any shortcut/expansion syntax.
  */
-export type NormalizedUnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef>;
+export type NormalizedUnitSpec = GenericUnitSpec<Encoding<VlField>, Mark | MarkDef>;
 
 /**
  * A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types).

@@ -2,7 +2,7 @@ import {isArray, isBoolean} from 'vega-util';
 import {SUM_OPS} from './aggregate';
 import {NonPositionChannel, NONPOSITION_CHANNELS, X, X2, Y2} from './channel';
 import {
-  Field,
+  VlField,
   getTypedFieldDef,
   isFieldDef,
   isStringFieldDef,
@@ -55,7 +55,7 @@ export interface StackProperties {
 export const STACKABLE_MARKS = [BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK];
 export const STACK_BY_DEFAULT_MARKS = [BAR, AREA];
 
-function potentialStackedChannel(encoding: Encoding<Field>): 'x' | 'y' | undefined {
+function potentialStackedChannel(encoding: Encoding<VlField>): 'x' | 'y' | undefined {
   const xDef = encoding.x;
   const yDef = encoding.y;
 
@@ -87,7 +87,7 @@ function potentialStackedChannel(encoding: Encoding<Field>): 'x' | 'y' | undefin
 // If required properties change, make sure to update CompassQL.
 export function stack(
   m: Mark | MarkDef,
-  encoding: Encoding<Field>,
+  encoding: Encoding<VlField>,
   opt: {
     disallowNonLinearStack?: boolean; // This option is for CompassQL
   } = {}

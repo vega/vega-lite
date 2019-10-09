@@ -1,4 +1,4 @@
-import {Field} from '../channeldef';
+import {VlField} from '../channeldef';
 import {Encoding} from '../encoding';
 import {NormalizerParams} from '../normalize/index';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
@@ -52,8 +52,8 @@ export function remove(mark: string) {
   delete compositeMarkRegistry[mark];
 }
 
-export type CompositeEncoding = Encoding<Field> & ErrorExtraEncoding<Field>;
-export type FacetedCompositeEncoding = Encoding<Field> & ErrorExtraEncoding<Field> & EncodingFacetMapping<Field>;
+export type CompositeEncoding = Encoding<VlField> & ErrorExtraEncoding<VlField>;
+export type FacetedCompositeEncoding = Encoding<VlField> & ErrorExtraEncoding<VlField> & EncodingFacetMapping<VlField>;
 
 export type CompositeMark = BoxPlot | ErrorBar | ErrorBand;
 
