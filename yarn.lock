@@ -1652,7 +1652,7 @@ commander@2, commander@^2.11.0, commander@^2.18.0, commander@^2.20.0, commander@
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.1.tgz#3863ce3ca92d0831dcf2a102f5fb4b5926afd0f9"
   integrity sha512-cCuLsMhJeWQ/ZpsFTbE765kvVfoeSddc4nU3up4fV+fDBcfUXnbITJ+JzhkdjzOqhURjZgujxaioam4RM9yGUg==
 
-commander@^3.0.0, commander@~3.0.1:
+commander@^3.0.0, commander@~3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/commander/-/commander-3.0.2.tgz#6837c3fb677ad9933d1cfba42dd14d5117d6b39e"
   integrity sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==
@@ -6828,13 +6828,13 @@ ts-jest@^24.1.0:
     semver "^5.5"
     yargs-parser "10.x"
 
-ts-json-schema-generator@^0.53.0:
-  version "0.53.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.53.0.tgz#4548dfca1d3f9cca2ec2438cda6ca5d0713d5e0d"
-  integrity sha512-xFZznDZStSP5lBbUy2IjfOQQSoVqdsI2OaSpLzxkhczW/1hPtxry1laoa9G/OCLJS0EFkDcO7X30PbC/nII/cQ==
+ts-json-schema-generator@^0.54.0:
+  version "0.54.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.54.0.tgz#d2a37847085b2194e780815126fa5bb23b88f681"
+  integrity sha512-EXOsX0/fr7BxZgiruO53by/VoUMA0IDzKDQ4XE9ttrM9tEbUnjkpdCD+xbN8itZ8Wq7Kv1dj1kHZJOP1ZApbgQ==
   dependencies:
     "@types/json-schema" "^7.0.3"
-    commander "~3.0.1"
+    commander "~3.0.2"
     glob "~7.1.4"
     json-stable-stringify "^1.0.1"
     typescript "~3.6.3"
@@ -7220,10 +7220,10 @@ vega-transforms@^4.4.0:
     vega-statistics "^1.6.0"
     vega-util "^1.11.2"
 
-vega-typings@^0.10.0, vega-typings@~0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.10.0.tgz#59545610aa6310b7468829c23563ba3e033b5c1d"
-  integrity sha512-hrhv871TpPklR8Kq1ooeydUFmbJ+DItJ4va2sEx56w44VpNKTUuWS8IRubCrTHPm1GqZ0VMO4n+u+XM2t2b60g==
+vega-typings@^0.10.0, vega-typings@~0.10.1:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.10.1.tgz#25e130935d1d914fe726578c4c164606cf20deea"
+  integrity sha512-wKNeTXtBzffIgYRscKKRbC139jWTqymJs0veNuYN3fLr7wCqLzGlWbJ8WqMR/ICSB2L6qvTNZMvuIODuc50jRA==
   dependencies:
     vega-util "^1.11.0"
 

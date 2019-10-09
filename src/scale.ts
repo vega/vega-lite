@@ -470,7 +470,7 @@ export interface Scale {
    * If true, reverses the order of the scale range.
    * __Default value:__ `false`.
    *
-   * @hide
+   * @hidden
    */
   reverse?: boolean;
 

@@ -175,7 +175,7 @@ export function isRepeatRef(field: Field): field is RepeatRef {
   return field && !isString(field) && 'repeat' in field;
 }
 
-/** @hide */
+/** @@hidden */
 export type HiddenCompositeAggregate = CompositeAggregate;
 
 export interface FieldDefBase<F, B extends Bin = Bin> {
