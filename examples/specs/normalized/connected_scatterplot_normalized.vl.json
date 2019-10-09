@@ -26,5 +26,6 @@
         "order": {"field": "year", "type": "temporal"}
       }
     }
-  ]
+  ],
+  "autosize": {"type": "pad"}
 }

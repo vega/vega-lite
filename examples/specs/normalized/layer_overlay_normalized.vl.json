@@ -62,5 +62,6 @@
       ]
     }
   ],
-  "config": {"line": {"point": true}}
+  "config": {"line": {"point": true}},
+  "autosize": {"type": "pad"}
 }
