@@ -1,4 +1,5 @@
-import {isObject} from 'vega-util';
+import {Color} from 'vega';
+import {isObject, mergeConfig} from 'vega-util';
 import {AxisConfigMixins} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
 import {VL_ONLY_GUIDE_CONFIG, VL_ONLY_LEGEND_CONFIG} from './guide';
@@ -18,9 +19,8 @@ import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './select
 import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} from './spec/base';
 import {TopLevelProperties} from './spec/toplevel';
 import {extractTitleConfig, TitleConfig} from './title';
-import {duplicate, getFirstDefined, keys, mergeDeep} from './util';
+import {duplicate, getFirstDefined, keys} from './util';
 import {BaseMarkConfig, SchemeConfig} from './vega.schema';
-import {Color} from 'vega';
 
 export interface ViewConfig extends BaseViewBackground {
   /**
@@ -290,7 +290,7 @@ export const defaultConfig: Config = {
 };
 
 export function initConfig(config: Config) {
-  return mergeDeep(duplicate(defaultConfig), config);
+  return mergeConfig({}, defaultConfig, config);
 }
 
 const MARK_STYLES = ['view', ...PRIMITIVE_MARKS] as ('view' | Mark)[];
