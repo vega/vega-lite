@@ -65,7 +65,7 @@ describe('Layered Selections', () => {
             fill: [
               {
                 test:
-                  'datum["Horsepower"] === null || !isFinite(datum["Horsepower"]) || datum["Miles_per_Gallon"] === null || !isFinite(datum["Miles_per_Gallon"])',
+                  '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
                 value: null
               },
               {
@@ -106,7 +106,7 @@ describe('Layered Selections', () => {
             fill: [
               {
                 test:
-                  'datum["Horsepower"] === null || !isFinite(datum["Horsepower"]) || datum["Miles_per_Gallon"] === null || !isFinite(datum["Miles_per_Gallon"])',
+                  '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
                 value: null
               },
               {
