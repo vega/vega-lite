@@ -85,7 +85,7 @@ export interface TooltipContent {
   content: 'encoding' | 'data';
 }
 
-/** @hide */
+/** @hidden */
 export type Hide = 'hide';
 
 export interface MarkConfig extends ColorMixins, BaseMarkConfig {
