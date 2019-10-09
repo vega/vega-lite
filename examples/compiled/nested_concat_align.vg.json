@@ -1,7 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Nested concatenation aligned by setting axis minExtent",
-  "autosize": "pad",
   "background": "white",
   "padding": 5,
   "width": 150,

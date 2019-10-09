@@ -6208,10 +6208,16 @@
               "type": "number"
             },
             {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
               "$ref": "#/definitions/Step"
             }
           ],
-          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number.\n- For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.)\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number.\n- For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.)\n- To enable responsive sizing on height, it should be set to `\"container\"`.\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         },
         "mark": {
           "$ref": "#/definitions/AnyMark",
@@ -6264,10 +6270,16 @@
               "type": "number"
             },
             {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
               "$ref": "#/definitions/Step"
             }
           ],
-          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number.\n- For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.)\n\n__Default value:__\nBased on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number.\n- For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.)\n- To enable responsive sizing on width, it should be set to `\"container\"`.\n\n__Default value:__\nBased on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         }
       },
       "required": [
@@ -7482,10 +7494,16 @@
               "type": "number"
             },
             {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
               "$ref": "#/definitions/Step"
             }
           ],
-          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number.\n- For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.)\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number.\n- For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.)\n- To enable responsive sizing on height, it should be set to `\"container\"`.\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         },
         "mark": {
           "$ref": "#/definitions/AnyMark",
@@ -7534,10 +7552,16 @@
               "type": "number"
             },
             {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
               "$ref": "#/definitions/Step"
             }
           ],
-          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number.\n- For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.)\n\n__Default value:__\nBased on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number.\n- For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.)\n- To enable responsive sizing on width, it should be set to `\"container\"`.\n\n__Default value:__\nBased on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         }
       },
       "required": [
@@ -8556,10 +8580,16 @@
               "type": "number"
             },
             {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
               "$ref": "#/definitions/Step"
             }
           ],
-          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number.\n- For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.)\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number.\n- For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.)\n- To enable responsive sizing on height, it should be set to `\"container\"`.\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         },
         "layer": {
           "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.",
@@ -8615,10 +8645,16 @@
               "type": "number"
             },
             {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
               "$ref": "#/definitions/Step"
             }
           ],
-          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number.\n- For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.)\n\n__Default value:__\nBased on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number.\n- For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.)\n- To enable responsive sizing on width, it should be set to `\"container\"`.\n\n__Default value:__\nBased on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         }
       },
       "required": [
@@ -15357,10 +15393,16 @@
               "type": "number"
             },
             {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
               "$ref": "#/definitions/Step"
             }
           ],
-          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number.\n- For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.)\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number.\n- For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.)\n- To enable responsive sizing on height, it should be set to `\"container\"`.\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         },
         "layer": {
           "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.",
@@ -15424,10 +15466,16 @@
               "type": "number"
             },
             {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
               "$ref": "#/definitions/Step"
             }
           ],
-          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number.\n- For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.)\n\n__Default value:__\nBased on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number.\n- For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.)\n- To enable responsive sizing on width, it should be set to `\"container\"`.\n\n__Default value:__\nBased on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         }
       },
       "required": [
@@ -15672,10 +15720,16 @@
               "type": "number"
             },
             {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
               "$ref": "#/definitions/Step"
             }
           ],
-          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number.\n- For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.)\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number.\n- For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.)\n- To enable responsive sizing on height, it should be set to `\"container\"`.\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         },
         "mark": {
           "$ref": "#/definitions/AnyMark",
@@ -15736,10 +15790,16 @@
               "type": "number"
             },
             {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
               "$ref": "#/definitions/Step"
             }
           ],
-          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number.\n- For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.)\n\n__Default value:__\nBased on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number.\n- For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.)\n- To enable responsive sizing on width, it should be set to `\"container\"`.\n\n__Default value:__\nBased on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         }
       },
       "required": [

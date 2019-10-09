@@ -1,7 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Cars from Japan compared to all cars. Demonstrates independent legends in layers.",
-  "autosize": "pad",
   "background": "white",
   "padding": 5,
   "width": 200,

@@ -1,7 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A scatterplot with custom star shapes.",
-  "autosize": "pad",
   "background": "white",
   "padding": 5,
   "width": 200,

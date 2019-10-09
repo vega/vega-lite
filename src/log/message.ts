@@ -27,6 +27,16 @@ export function invalidSpec(spec: GenericSpec<any, any>) {
 // FIT
 export const FIT_NON_SINGLE = 'Autosize "fit" only works for single views and layered views.';
 
+export function containerSizeNonSingle(name: 'width' | 'height') {
+  const uName = name == 'width' ? 'Width' : 'Height';
+  return `${uName} "container" only works for single views and layered views.`;
+}
+
+export function containerSizeNotCompatibleWithAutosize(name: 'width' | 'height') {
+  const uName = name == 'width' ? 'Width' : 'Height';
+  return `${uName} "container" only works well with autosize "fit" or "fit-x".`;
+}
+
 export function droppingFit(channel?: PositionScaleChannel) {
   return channel
     ? `Dropping "fit-${channel}" because spec has discrete ${getSizeType(channel)}.`

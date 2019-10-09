@@ -19,7 +19,7 @@ describe('compile/compile', () => {
     }).spec;
 
     expect(spec.padding).toEqual(5);
-    expect(spec.autosize).toBe('pad');
+    expect(spec.autosize).toBeUndefined();
     expect(spec.width).toEqual(20);
     expect(spec.height).toEqual(20);
     expect(spec.title).toEqual({text: 'test', frame: 'group'});
@@ -39,7 +39,7 @@ describe('compile/compile', () => {
     }).spec;
 
     expect(spec.padding).toEqual(123);
-    expect(spec.autosize).toBe('pad');
+    expect(spec.autosize).toBeUndefined();
     expect(spec.width).toEqual(20);
     expect(spec.height).toEqual(20);
 
@@ -63,7 +63,7 @@ describe('compile/compile', () => {
       }).spec;
 
       expect(localLogger.warns[0]).toEqual(log.message.droppingFit());
-      expect(spec.autosize).toBe('pad');
+      expect(spec.autosize).toBeUndefined();
     })
   );
 
@@ -232,6 +232,126 @@ describe('compile/compile', () => {
     expect(spec.autosize).toBe('fit');
   });
 
+  it('should use containerSize for width and autosize to fit-x/padding', () => {
+    const spec = compile({
+      width: 'container',
+      data: {url: 'foo.csv'},
+      mark: 'point',
+      encoding: {}
+    }).spec;
+
+    expect(spec.autosize).toEqual({type: 'fit-x', contains: 'padding'});
+    expect(spec.signals).toEqual([
+      {
+        name: 'width',
+        init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 200',
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 200'}]
+      }
+    ]);
+    expect(spec.width).toBeUndefined();
+  });
+
+  it('should use containerSize for width and autosize to fit-y/padding', () => {
+    const spec = compile({
+      height: 'container',
+      data: {url: 'foo.csv'},
+      mark: 'point',
+      encoding: {}
+    }).spec;
+
+    expect(spec.autosize).toEqual({type: 'fit-y', contains: 'padding'});
+    expect(spec.signals).toEqual([
+      {
+        name: 'height',
+        init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 200',
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 200'}]
+      }
+    ]);
+    expect(spec.height).toBeUndefined();
+  });
+
+  it('should use containerSize for width/height and autosize to fit/padding, and respect default view width/height', () => {
+    const spec = compile({
+      width: 'container',
+      height: 'container',
+      data: {url: 'foo.csv'},
+      mark: 'point',
+      encoding: {},
+      config: {
+        view: {
+          continuousWidth: 500,
+          continuousHeight: 300
+        }
+      }
+    }).spec;
+
+    expect(spec.autosize).toEqual({type: 'fit', contains: 'padding'});
+    expect(spec.signals).toEqual([
+      {
+        name: 'width',
+        init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500',
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'}]
+      },
+      {
+        name: 'height',
+        init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300',
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'}]
+      }
+    ]);
+    expect(spec.width).toBeUndefined();
+    expect(spec.height).toBeUndefined();
+  });
+
+  it(
+    'warn if use container for width and pad for autosize',
+    log.wrap(localLogger => {
+      compile({
+        width: 'container',
+        height: 'container',
+        autosize: 'pad',
+        data: {url: 'foo.csv'},
+        mark: 'point',
+        encoding: {}
+      });
+      expect(localLogger.warns[0]).toEqual(log.message.containerSizeNotCompatibleWithAutosize('width'));
+      expect(localLogger.warns[1]).toEqual(log.message.containerSizeNotCompatibleWithAutosize('height'));
+    })
+  );
+
+  it(
+    'warn if use container for width for composed spec',
+    log.wrap(localLogger => {
+      const spec = compile({
+        width: 'container',
+        vconcat: [
+          {
+            mark: 'point',
+            encoding: {}
+          }
+        ]
+      }).spec;
+      expect(localLogger.warns[0]).toEqual(log.message.containerSizeNonSingle('width'));
+      expect(spec.autosize).toBeUndefined();
+    })
+  );
+
+  it(
+    'warn if use container for height for composed spec',
+    log.wrap(localLogger => {
+      const spec = compile({
+        height: 'container',
+        vconcat: [
+          {
+            mark: 'point',
+            encoding: {}
+          }
+        ]
+      }).spec;
+      expect(localLogger.warns[0]).toEqual(log.message.containerSizeNonSingle('height'));
+      expect(spec.autosize).toBeUndefined();
+    })
+  );
+
   it(
     'warn if trying to fit composed spec',
     log.wrap(localLogger => {
@@ -246,7 +366,7 @@ describe('compile/compile', () => {
         ]
       }).spec;
       expect(localLogger.warns[0]).toEqual(log.message.FIT_NON_SINGLE);
-      expect(spec.autosize).toBe('pad');
+      expect(spec.autosize).toBeUndefined();
     })
   );
 

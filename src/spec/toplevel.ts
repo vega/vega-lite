@@ -1,13 +1,9 @@
 import {Color} from 'vega';
-import {isString} from 'vega-util';
 import {getPositionScaleChannel} from '../channel';
 import {Config} from '../config';
 import {InlineDataset} from '../data';
-import * as log from '../log';
 import {Dict} from '../util';
-import {BaseSpec, TopLevelSpec} from './index';
-import {isLayerSpec} from './layer';
-import {isUnitSpec} from './unit';
+import {BaseSpec} from './index';
 
 /**
  * @minimum 0
@@ -100,27 +96,6 @@ export interface AutoSizeParams {
    * __Default value__: `"content"`
    */
   contains?: 'content' | 'padding';
-}
-
-function _normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {
-  return isString(autosize) ? {type: autosize} : autosize || {};
-}
-
-export function normalizeAutoSize(spec: TopLevelSpec, config?: Config): AutoSizeParams {
-  const autosize: AutoSizeParams = {
-    type: 'pad',
-    ...(config ? _normalizeAutoSize(config.autosize) : {}),
-    ..._normalizeAutoSize(spec.autosize)
-  };
-
-  if (autosize.type === 'fit') {
-    if (!(isLayerSpec(spec) || isUnitSpec(spec))) {
-      log.warn(log.message.FIT_NON_SINGLE);
-      autosize.type = 'pad';
-    }
-  }
-
-  return autosize;
 }
 
 const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [
