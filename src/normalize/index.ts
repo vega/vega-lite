@@ -27,7 +27,6 @@ export function normalize(
 
   let normalizedSpec = normalizeGenericSpec(spec, config);
 
-  // Normalize autosize and deal with width or height == "container"
   normalizedSpec = normalizeAutoSize(
     normalizedSpec,
     {width: spec.width, height: spec.height, autosize: spec.autosize},
@@ -46,11 +45,13 @@ function normalizeGenericSpec(spec: GenericSpec<UnitSpec, ExtendedLayerSpec> | F
   return normalizer.map(spec, {config});
 }
 
-/** Helper function for normalizeAutoSize */
 function _normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {
   return isString(autosize) ? {type: autosize} : autosize || {};
 }
 
+/**
+ * Normalize autosize and deal with width or height == "container".
+ */
 export function normalizeAutoSize(
   spec: TopLevel<NormalizedSpec>,
   sizeInfo: {autosize: AutosizeType | AutoSizeParams} & LayoutSizeMixins,
