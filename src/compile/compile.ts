@@ -154,7 +154,7 @@ function getTopLevelProperties(
 
   return {
     ...(keys(autosize).length === 1 && autosize.type
-      ? autosize.type == 'pad'
+      ? autosize.type === 'pad'
         ? {}
         : {autosize: autosize.type}
       : {autosize}),

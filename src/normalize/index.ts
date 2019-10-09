@@ -107,8 +107,12 @@ export function normalizeAutoSize(
 
   const result: TopLevel<NormalizedSpec> & LayoutSizeMixins = {...spec, autosize};
   if (isFitCompatible) {
-    if (result.width === undefined && width !== undefined) result.width = width;
-    if (result.height === undefined && height !== undefined) result.height = height;
+    if (result.width === undefined && width !== undefined) {
+      result.width = width;
+    }
+    if (result.height === undefined && height !== undefined) {
+      result.height = height;
+    }
   }
 
   // Delete autosize property if it's Vega's default
