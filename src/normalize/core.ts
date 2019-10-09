@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
 import {COLUMN, FACET, ROW} from '../channel';
-import {VlField} from '../channeldef';
+import {Field} from '../channeldef';
 import {boxPlotNormalizer} from '../compositemark/boxplot';
 import {errorBandNormalizer} from '../compositemark/errorband';
 import {errorBarNormalizer} from '../compositemark/errorbar';
@@ -152,10 +152,10 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
   }
 
   private getFacetMappingAndLayout(facets: {
-    row: FacetEncodingFieldDef<VlField>;
-    column: FacetEncodingFieldDef<VlField>;
-    facet: FacetEncodingFieldDef<VlField>;
-  }): {facetMapping: FacetMapping<VlField> | FacetFieldDef<VlField>; layout: GenericCompositionLayoutWithColumns} {
+    row: FacetEncodingFieldDef<Field>;
+    column: FacetEncodingFieldDef<Field>;
+    facet: FacetEncodingFieldDef<Field>;
+  }): {facetMapping: FacetMapping<Field> | FacetFieldDef<Field>; layout: GenericCompositionLayoutWithColumns} {
     const {row, column, facet} = facets;
 
     if (row || column) {

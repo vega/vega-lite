@@ -1,5 +1,5 @@
 import {Orientation} from 'vega';
-import {VlField} from '../channeldef';
+import {Field} from '../channeldef';
 import {Encoding} from '../encoding';
 import * as log from '../log';
 import {MarkDef} from '../mark';
@@ -13,7 +13,7 @@ import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './e
 
 export type ErrorBandUnitSpec<
   EE = {} // extra encoding parameter (for faceted composite unit spec)
-> = GenericUnitSpec<ErrorEncoding<VlField> & EE, ErrorBand | ErrorBandDef>;
+> = GenericUnitSpec<ErrorEncoding<Field> & EE, ErrorBand | ErrorBandDef>;
 
 export const ERRORBAND: 'errorband' = 'errorband';
 export type ErrorBand = typeof ERRORBAND;
