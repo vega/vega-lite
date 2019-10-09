@@ -27,7 +27,7 @@ export function normalize(
 
   let normalizedSpec = normalizeGenericSpec(spec, config);
 
-  normalizedSpec = normalizeAutoSize(
+  normalizedSpec = normalize:(
     normalizedSpec,
     {width: spec.width, height: spec.height, autosize: spec.autosize},
     config
@@ -105,7 +105,7 @@ export function normalizeAutoSize(
     log.warn(log.message.containerSizeNotCompatibleWithAutosize('height'));
   }
 
-  const result: TopLevel<NormalizedSpec> & LayoutSizeMixins = {...spec, autosize: autosize};
+  const result: TopLevel<NormalizedSpec> & LayoutSizeMixins = {...spec, autosize};
   if (isFitCompatible) {
     if (result.width === undefined && width !== undefined) result.width = width;
     if (result.height === undefined && height !== undefined) result.height = height;
