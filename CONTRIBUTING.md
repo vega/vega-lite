@@ -10,13 +10,13 @@ If you find a bug in the code or a mistake in the [documentation](https://vega.g
 
   - One way to use GitHub for this purpose is to submit a pull request (PR) with a ":construction: WIP" (work in progress) label.
 
-- Generally we name a branch using this pattern `<your 2-3 letters initial>/<topic>`. For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
+- Generally, we name a branch using this pattern `<your 2-3 letters initial>/<topic>`. For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
 
 See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUEST_TEMPLATE.md) templates for more information.
 
 ### Looking for a Task to Contribute
 
-You can find [tasks with the "Help wanted" label in the issue tracker :pray:](https://github.com/vega/vega-lite/labels/Help%20wanted%20%3Apray%3A). Please add a comment in an issues if you are planning to work on a major task.
+You can find [tasks with the "Help wanted" label in the issue tracker :pray:](https://github.com/vega/vega-lite/labels/Help%20wanted%20%3Apray%3A). Please add a comment in issues if you are planning to work on a major task.
 
 ### Help Create New Examples
 
@@ -26,7 +26,7 @@ To submit a new example, fork our [example Block](https://bl.ocks.org/domoritz/4
 
 The website is under `site/` and the documentation is under `site/docs/`. We use Github Pages to publish our documentation when we release a new version. To contribute changes to the documentation or website, simply submit a pull request that changes the corresponding markdown files in `site/`.
 
-Since we only publish the Github Pages when we release a new version, it might be slightly outdated compared to `master`. For development, once you have [setup the repository](#repository-setup), you can run `yarn site` to serve the github page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
+Since we only publish the Github Pages when we release a new version, it might be slightly outdated compared to `master`. For development, once you have [setup the repository](#repository-setup), you can run `yarn site` to serve the Github page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
 
 Note that when you checkout different branches, the compiled JavaScript for the website might be reset. You might have to run `yarn build:site` to recompile the JavaScript so that interactive examples work.
 
@@ -39,7 +39,7 @@ General Guides for Markdown Files:
 
 #### Property Table
 
-To generate a property tables from the JSON schema (which is in turn generated from the Typescript interfaces, you can include the `table.html` template. For example, to generate a table that includes `rangeStep`, `scheme`, and `padding` from `Scale`, you can use
+To generate property tables from the JSON schema (which is in turn generated from the Typescript interfaces, you can include the `table.html` template. For example, to generate a table that includes `rangeStep`, `scheme`, and `padding` from `Scale`, you can use
 
 ```
 {% include table.html props="rangeStep,scheme,padding" source="Scale" %}
@@ -66,13 +66,13 @@ To name the example file:
 - For interactive example, begin with either `interactive_` or `selection_`.
 - For examples that are only for regression test, begin with `test_`.
 
-After you push a new branch to GitHub, the CI will automatically run `yarn build:examples` to recompile all examples and push the changed Vega specs and SVG files in `examples/compiled` , so that your branch includes these changes. When you add a new example or update the code, you may run `yarn build:examples` or `yarn build:example <examplename>` (e.g., `yarn build:example bar_1d`) to see the change locally. However, do **not** include these changes in your commit as different systems produces slightly different SVGs (mainly due to floating point differences). To avoid unnecessary SVG diffs, we should just let the CI generate the images. You're still encouraged to run `yarn build:examples` to make sure that your code does not cause unnecessary changes.
+After you push a new branch to GitHub, the CI will automatically run `yarn build:examples` to recompile all examples and push the changed Vega specs and SVG files in `examples/compiled` , so that your branch includes these changes. When you add a new example or update the code, you may run `yarn build:examples` or `yarn build:example <examplename>` (e.g., `yarn build:example bar_1d`) to see the change locally. However, do **not** include these changes in your commit as different systems produce slightly different SVGs (mainly due to floating point differences). To avoid unnecessary SVG diffs, we should just let the CI generate the images. You're still encouraged to run `yarn build:examples` to make sure that your code does not cause unnecessary changes.
 
 **Notes:**
 
 1. `yarn build:examples` only re-compile SVGs if the output Vega file changes (so it runs way faster). If you want to enforce re-compilation of all SVGs, use `yarn build:examples-full`.
 2. To make Travis run `yarn build:examples-full`, include `[SVG]` in your commit message of the last commit in your branch.
-3. To run `yarn build:examples`, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac,you can simply do `brew install parallel`.)
+3. To run `yarn build:examples`, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
 
 # Development Guide
 
