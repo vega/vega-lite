@@ -90,5 +90,6 @@
   ],
   "width": 900,
   "height": 500,
-  "config": {"view": {"stroke": null}}
+  "config": {"view": {"stroke": null}},
+  "autosize": {"type": "pad"}
 }

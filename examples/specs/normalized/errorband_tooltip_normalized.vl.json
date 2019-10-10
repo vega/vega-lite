@@ -46,5 +46,6 @@
         "tooltip": {"field": "Miles_per_Gallon", "type": "quantitative"}
       }
     }
-  ]
+  ],
+  "autosize": {"type": "pad"}
 }

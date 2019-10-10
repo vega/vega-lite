@@ -232,7 +232,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"median\"] !== null && isFinite(datum[\"median\"])"
+          "expr": "isValid(datum[\"median\"]) && isFinite(+datum[\"median\"])"
         }
       ]
     },
@@ -252,7 +252,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"value\"] !== null && isFinite(datum[\"value\"])"
+          "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
         }
       ]
     }

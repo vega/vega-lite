@@ -40,7 +40,7 @@
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "y"},
           "defined": {
-            "signal": "datum[\"x\"] !== null && isFinite(datum[\"x\"]) && datum[\"y\"] !== null && isFinite(datum[\"y\"])"
+            "signal": "isValid(datum[\"x\"]) && isFinite(+datum[\"x\"]) && isValid(datum[\"y\"]) && isFinite(+datum[\"y\"])"
           }
         }
       }

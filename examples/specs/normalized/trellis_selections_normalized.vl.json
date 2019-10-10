@@ -38,5 +38,6 @@
         "bind": {"input": "number"}
       }
     }
-  }
+  },
+  "autosize": {"type": "pad"}
 }

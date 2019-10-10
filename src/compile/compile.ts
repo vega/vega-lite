@@ -17,9 +17,10 @@ import {
 import {keys} from '../util';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
-// import {draw} from './data/debug';
 import {optimizeDataflow} from './data/optimize';
 import {Model} from './model';
+
+// import {draw} from './data/debug';
 
 export interface CompileOptions {
   config?: Config;
@@ -129,11 +130,11 @@ function getTopLevelProperties(
 ) {
   const width = model.component.layoutSize.get('width');
   const height = model.component.layoutSize.get('height');
-  if (autosize === undefined) {
-    autosize = {type: 'pad'};
-  } else if (isString(autosize)) {
+
+  if (isString(autosize)) {
     autosize = {type: autosize};
   }
+
   if (width && height && isFitType(autosize.type)) {
     if (width === 'step' && height === 'step') {
       log.warn(log.message.droppingFit());

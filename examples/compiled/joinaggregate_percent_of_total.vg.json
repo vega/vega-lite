@@ -33,7 +33,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"PercentOfTotal\"] !== null && isFinite(datum[\"PercentOfTotal\"])"
+          "expr": "isValid(datum[\"PercentOfTotal\"]) && isFinite(+datum[\"PercentOfTotal\"])"
         }
       ]
     }

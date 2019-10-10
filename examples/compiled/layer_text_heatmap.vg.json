@@ -24,7 +24,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"num_cars\"] !== null && isFinite(datum[\"num_cars\"])"
+          "expr": "isValid(datum[\"num_cars\"]) && isFinite(+datum[\"num_cars\"])"
         }
       ]
     }

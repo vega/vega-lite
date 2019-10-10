@@ -32,7 +32,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"year_date\"] !== null && isFinite(datum[\"year_date\"])"
+          "expr": "(isDate(datum[\"year_date\"]) || (isValid(datum[\"year_date\"]) && isFinite(+datum[\"year_date\"])))"
         }
       ]
     }
@@ -67,7 +67,7 @@
               "x": {"scale": "x", "field": "year_date"},
               "y": {"scale": "y", "field": "mean_price"},
               "defined": {
-                "signal": "datum[\"year_date\"] !== null && isFinite(datum[\"year_date\"]) && datum[\"mean_price\"] !== null && isFinite(datum[\"mean_price\"])"
+                "signal": "isValid(datum[\"year_date\"]) && isFinite(+datum[\"year_date\"]) && isValid(datum[\"mean_price\"]) && isFinite(+datum[\"mean_price\"])"
               }
             }
           }

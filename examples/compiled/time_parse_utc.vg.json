@@ -26,7 +26,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"year_Year\"] !== null && isFinite(datum[\"year_Year\"])"
+          "expr": "(isDate(datum[\"year_Year\"]) || (isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"])))"
         }
       ]
     }

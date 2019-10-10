@@ -72,7 +72,7 @@
                     "field": "mean_temp_max"
                   },
                   "defined": {
-                    "signal": "datum[\"month_date\"] !== null && isFinite(datum[\"month_date\"]) && datum[\"mean_temp_max\"] !== null && isFinite(datum[\"mean_temp_max\"])"
+                    "signal": "isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]) && isValid(datum[\"mean_temp_max\"]) && isFinite(+datum[\"mean_temp_max\"])"
                   }
                 }
               }
@@ -176,7 +176,7 @@
                     "field": "mean_precipitation"
                   },
                   "defined": {
-                    "signal": "datum[\"month_date\"] !== null && isFinite(datum[\"month_date\"]) && datum[\"mean_precipitation\"] !== null && isFinite(datum[\"mean_precipitation\"])"
+                    "signal": "isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]) && isValid(datum[\"mean_precipitation\"]) && isFinite(+datum[\"mean_precipitation\"])"
                   }
                 }
               }
@@ -278,7 +278,7 @@
                     "field": "mean_wind"
                   },
                   "defined": {
-                    "signal": "datum[\"month_date\"] !== null && isFinite(datum[\"month_date\"]) && datum[\"mean_wind\"] !== null && isFinite(datum[\"mean_wind\"])"
+                    "signal": "isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]) && isValid(datum[\"mean_wind\"]) && isFinite(+datum[\"mean_wind\"])"
                   }
                 }
               }

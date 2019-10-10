@@ -74,7 +74,7 @@ export class FilterInvalidNode extends DataFlowNode {
 
         if (fieldDef !== null) {
           if (fieldDef.type === 'temporal') {
-            vegaFilters.push(`(isDate(${ref}) || isValid(${ref}) && isFinite(+${ref}))`);
+            vegaFilters.push(`(isDate(${ref}) || (isValid(${ref}) && isFinite(+${ref})))`);
           } else if (fieldDef.type === 'quantitative') {
             vegaFilters.push(`isValid(${ref})`);
             vegaFilters.push(`isFinite(+${ref})`);

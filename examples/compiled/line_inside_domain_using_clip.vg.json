@@ -42,7 +42,7 @@
           "x": {"scale": "x", "field": "wavelength"},
           "y": {"scale": "y", "field": "power"},
           "defined": {
-            "signal": "datum[\"wavelength\"] !== null && isFinite(datum[\"wavelength\"]) && datum[\"power\"] !== null && isFinite(datum[\"power\"])"
+            "signal": "isValid(datum[\"wavelength\"]) && isFinite(+datum[\"wavelength\"]) && isValid(datum[\"power\"]) && isFinite(+datum[\"power\"])"
           }
         }
       }

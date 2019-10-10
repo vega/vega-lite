@@ -28,7 +28,7 @@
         {"type": "filter", "expr": "datum.b2 > 60"},
         {
           "type": "filter",
-          "expr": "datum[\"b2\"] !== null && isFinite(datum[\"b2\"])"
+          "expr": "isValid(datum[\"b2\"]) && isFinite(+datum[\"b2\"])"
         }
       ]
     }

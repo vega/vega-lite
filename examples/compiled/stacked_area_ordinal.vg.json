@@ -75,7 +75,7 @@
               "y": {"scale": "y", "field": "sum_Weight_in_lbs_end"},
               "y2": {"scale": "y", "field": "sum_Weight_in_lbs_start"},
               "defined": {
-                "signal": "datum[\"year_Year\"] !== null && isFinite(datum[\"year_Year\"]) && datum[\"sum_Weight_in_lbs\"] !== null && isFinite(datum[\"sum_Weight_in_lbs\"])"
+                "signal": "isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"]) && isValid(datum[\"sum_Weight_in_lbs\"]) && isFinite(+datum[\"sum_Weight_in_lbs\"])"
               }
             }
           }

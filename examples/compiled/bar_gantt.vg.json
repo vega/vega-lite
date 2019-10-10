@@ -20,7 +20,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"start\"] !== null && isFinite(datum[\"start\"])"
+          "expr": "isValid(datum[\"start\"]) && isFinite(+datum[\"start\"])"
         }
       ]
     }

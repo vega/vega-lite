@@ -19,5 +19,6 @@
         "text": {"field": "b", "type": "quantitative"}
       }
     }
-  ]
+  ],
+  "autosize": {"type": "pad"}
 }

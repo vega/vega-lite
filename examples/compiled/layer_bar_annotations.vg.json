@@ -36,7 +36,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Value\"] !== null && isFinite(datum[\"Value\"])"
+          "expr": "isValid(datum[\"Value\"]) && isFinite(+datum[\"Value\"])"
         }
       ]
     },
@@ -48,7 +48,7 @@
         {"type": "formula", "expr": "300", "as": "baseline"},
         {
           "type": "filter",
-          "expr": "datum[\"baseline\"] !== null && isFinite(datum[\"baseline\"])"
+          "expr": "isValid(datum[\"baseline\"]) && isFinite(+datum[\"baseline\"])"
         }
       ]
     },
@@ -58,7 +58,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"ThresholdValue\"] !== null && isFinite(datum[\"ThresholdValue\"])"
+          "expr": "isValid(datum[\"ThresholdValue\"]) && isFinite(+datum[\"ThresholdValue\"])"
         }
       ]
     },
@@ -68,7 +68,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"ThresholdValue\"] !== null && isFinite(datum[\"ThresholdValue\"])"
+          "expr": "isValid(datum[\"ThresholdValue\"]) && isFinite(+datum[\"ThresholdValue\"])"
         }
       ]
     }

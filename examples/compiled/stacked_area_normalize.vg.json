@@ -74,7 +74,7 @@
               "y": {"scale": "y", "field": "sum_count_end"},
               "y2": {"scale": "y", "field": "sum_count_start"},
               "defined": {
-                "signal": "datum[\"yearmonth_date\"] !== null && isFinite(datum[\"yearmonth_date\"]) && datum[\"sum_count\"] !== null && isFinite(datum[\"sum_count\"])"
+                "signal": "isValid(datum[\"yearmonth_date\"]) && isFinite(+datum[\"yearmonth_date\"]) && isValid(datum[\"sum_count\"]) && isFinite(+datum[\"sum_count\"])"
               }
             }
           }

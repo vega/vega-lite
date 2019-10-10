@@ -39,7 +39,7 @@
           "x": {"scale": "x", "field": "month_date"},
           "y": {"scale": "y", "field": "mean_precipitation"},
           "defined": {
-            "signal": "datum[\"month_date\"] !== null && isFinite(datum[\"month_date\"]) && datum[\"mean_precipitation\"] !== null && isFinite(datum[\"mean_precipitation\"])"
+            "signal": "isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]) && isValid(datum[\"mean_precipitation\"]) && isFinite(+datum[\"mean_precipitation\"])"
           }
         }
       }

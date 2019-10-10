@@ -61,5 +61,6 @@
         "y": {"field": "variety", "type": "ordinal"}
       }
     }
-  ]
+  ],
+  "autosize": {"type": "pad"}
 }

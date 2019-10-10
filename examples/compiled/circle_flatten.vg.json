@@ -19,7 +19,7 @@
         {"type": "flatten", "fields": ["foo", "bar"], "as": ["foo", "bar"]},
         {
           "type": "filter",
-          "expr": "datum[\"foo\"] !== null && isFinite(datum[\"foo\"])"
+          "expr": "isValid(datum[\"foo\"]) && isFinite(+datum[\"foo\"])"
         }
       ]
     }

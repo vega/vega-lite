@@ -25,7 +25,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"lower_yield\"] !== null && isFinite(datum[\"lower_yield\"])"
+          "expr": "isValid(datum[\"lower_yield\"]) && isFinite(+datum[\"lower_yield\"])"
         }
       ]
     }
@@ -48,14 +48,14 @@
           },
           "x": [
             {
-              "test": "datum[\"lower_yield\"] === null || !isFinite(datum[\"lower_yield\"])",
+              "test": "!isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"])",
               "value": 0
             },
             {"scale": "x", "field": "lower_yield"}
           ],
           "x2": [
             {
-              "test": "datum[\"upper_yield\"] === null || !isFinite(datum[\"upper_yield\"])",
+              "test": "!isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"])",
               "value": 0
             },
             {"scale": "x", "field": "upper_yield"}
@@ -74,7 +74,7 @@
           "fill": {"value": "black"},
           "x": [
             {
-              "test": "datum[\"mean_yield\"] === null || !isFinite(datum[\"mean_yield\"])",
+              "test": "!isValid(datum[\"mean_yield\"]) || !isFinite(+datum[\"mean_yield\"])",
               "value": 0
             },
             {"scale": "x", "field": "mean_yield"}

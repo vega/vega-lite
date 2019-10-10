@@ -51,7 +51,7 @@
               "y": {"scale": "concat_0_y", "field": "price"},
               "y2": {"scale": "concat_0_y", "value": 0},
               "defined": {
-                "signal": "datum[\"date\"] !== null && isFinite(datum[\"date\"]) && datum[\"price\"] !== null && isFinite(datum[\"price\"])"
+                "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
               }
             }
           }
@@ -331,7 +331,7 @@
               "y": {"scale": "concat_1_y", "field": "price"},
               "y2": {"scale": "concat_1_y", "value": 0},
               "defined": {
-                "signal": "datum[\"date\"] !== null && isFinite(datum[\"date\"]) && datum[\"price\"] !== null && isFinite(datum[\"price\"])"
+                "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
               }
             }
           }

@@ -25,5 +25,6 @@
         "detail": {"aggregate": "count", "type": "quantitative"}
       }
     }
-  ]
+  ],
+  "autosize": {"type": "pad"}
 }

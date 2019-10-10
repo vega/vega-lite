@@ -31,7 +31,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"gold\"] !== null && isFinite(datum[\"gold\"])"
+          "expr": "isValid(datum[\"gold\"]) && isFinite(+datum[\"gold\"])"
         }
       ]
     }

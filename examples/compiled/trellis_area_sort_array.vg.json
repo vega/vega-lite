@@ -185,7 +185,7 @@
                   "y": {"scale": "y", "field": "price_end"},
                   "y2": {"scale": "y", "field": "price_start"},
                   "defined": {
-                    "signal": "datum[\"date\"] !== null && isFinite(datum[\"date\"]) && datum[\"price\"] !== null && isFinite(datum[\"price\"])"
+                    "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
                   }
                 }
               }
