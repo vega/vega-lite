@@ -13,5 +13,6 @@
       "color": {"field": "Cylinders", "type": "nominal"},
       "shape": {"field": "Origin", "type": "nominal"}
     }
-  }
+  },
+  "autosize": {"type": "pad"}
 }

@@ -33,6 +33,7 @@ describe('normalizeErrorBar with raw data input', () => {
     );
 
     expect(output).toEqual({
+      autosize: {type: 'pad'},
       data: {url: 'data/population.json'},
       transform: [
         {
@@ -762,6 +763,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
       )
     ).toEqual({
       data,
+      autosize: {type: 'pad'},
       transform: [
         {calculate: 'datum["people2"]', as: 'upper_people'},
         {calculate: 'datum["people"]', as: 'lower_people'}
@@ -953,6 +955,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
       )
     ).toEqual({
       data,
+      autosize: {type: 'pad'},
       transform: [
         {calculate: 'datum["people"] + datum["people_error"]', as: 'upper_people'},
         {calculate: 'datum["people"] - datum["people_error"]', as: 'lower_people'}

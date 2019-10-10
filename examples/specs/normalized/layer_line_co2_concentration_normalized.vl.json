@@ -87,5 +87,6 @@
       }
     }
   ],
-  "config": {"text": {"align": "left", "dx": 3, "dy": 1}}
+  "config": {"text": {"align": "left", "dx": 3, "dy": 1}},
+  "autosize": {"type": "pad"}
 }

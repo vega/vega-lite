@@ -15,7 +15,6 @@ import {TopLevelSpec} from '../spec/index';
 import {AutoSizeParams, AutosizeType, TopLevel} from '../spec/toplevel';
 import {NormalizerParams} from './base';
 import {CoreNormalizer} from './core';
-import {deepEqual} from '../util';
 
 export function normalize(
   spec: TopLevelSpec & LayoutSizeMixins,
@@ -25,15 +24,14 @@ export function normalize(
     config = initConfig(spec.config);
   }
 
-  let normalizedSpec = normalizeGenericSpec(spec, config);
+  const normalizedSpec = normalizeGenericSpec(spec, config);
 
-  normalizedSpec = normalizeAutoSize(
-    normalizedSpec,
-    {width: spec.width, height: spec.height, autosize: spec.autosize},
-    config
-  );
+  const {width, height, autosize} = spec;
 
-  return normalizedSpec;
+  return {
+    ...normalizedSpec,
+    autosize: normalizeAutoSize(normalizedSpec, {width, height, autosize}, config)
+  };
 }
 
 const normalizer = new CoreNormalizer();
@@ -56,7 +54,7 @@ export function normalizeAutoSize(
   spec: TopLevel<NormalizedSpec>,
   sizeInfo: {autosize: AutosizeType | AutoSizeParams} & LayoutSizeMixins,
   config?: Config
-): TopLevel<NormalizedSpec> & LayoutSizeMixins {
+) {
   let {width, height} = sizeInfo;
 
   const isFitCompatible = isUnitSpec(spec) || isLayerSpec(spec);
@@ -105,22 +103,7 @@ export function normalizeAutoSize(
     log.warn(log.message.containerSizeNotCompatibleWithAutosize('height'));
   }
 
-  const result: TopLevel<NormalizedSpec> & LayoutSizeMixins = {...spec, autosize};
-  if (isFitCompatible) {
-    if (result.width === undefined && width !== undefined) {
-      result.width = width;
-    }
-    if (result.height === undefined && height !== undefined) {
-      result.height = height;
-    }
-  }
-
-  // Delete autosize property if it's Vega's default
-  if (deepEqual(result.autosize, {type: 'pad'})) {
-    delete result.autosize;
-  }
-
-  return result;
+  return autosize;
 }
 
 export {NormalizerParams};
