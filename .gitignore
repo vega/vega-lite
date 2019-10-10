@@ -1,3 +1,4 @@
+_site/
 !build/vega-lite-schema.json
 !site/examples/index.md
 .DS_Store
