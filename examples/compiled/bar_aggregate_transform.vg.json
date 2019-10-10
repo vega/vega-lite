@@ -19,7 +19,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"mean_acc\"] !== null && isFinite(datum[\"mean_acc\"])"
+          "expr": "isValid(datum[\"mean_acc\"]) && isFinite(+datum[\"mean_acc\"])"
         }
       ]
     }

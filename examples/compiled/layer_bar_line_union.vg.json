@@ -25,7 +25,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"c\"] !== null && isFinite(datum[\"c\"])"
+          "expr": "isValid(datum[\"c\"]) && isFinite(+datum[\"c\"])"
         }
       ]
     }
@@ -65,7 +65,7 @@
           "x": {"scale": "x", "field": "b", "band": 0.5},
           "y": {"scale": "y", "field": "c"},
           "defined": {
-            "signal": "datum[\"c\"] !== null && isFinite(datum[\"c\"])"
+            "signal": "isValid(datum[\"c\"]) && isFinite(+datum[\"c\"])"
           }
         }
       }

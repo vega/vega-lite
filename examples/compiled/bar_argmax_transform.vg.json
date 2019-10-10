@@ -25,7 +25,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"argmax_US_Gross.Production_Budget\"] !== null && isFinite(datum[\"argmax_US_Gross.Production_Budget\"])"
+          "expr": "isValid(datum[\"argmax_US_Gross.Production_Budget\"]) && isFinite(+datum[\"argmax_US_Gross.Production_Budget\"])"
         }
       ]
     }

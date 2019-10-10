@@ -99,7 +99,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"nx\"] !== null && isFinite(datum[\"nx\"]) && datum[\"ny\"] !== null && isFinite(datum[\"ny\"]) && datum[\"Cylinders\"] !== null && isFinite(datum[\"Cylinders\"])"
+          "expr": "isValid(datum[\"nx\"]) && isFinite(+datum[\"nx\"]) && isValid(datum[\"ny\"]) && isFinite(+datum[\"ny\"]) && isValid(datum[\"Cylinders\"]) && isFinite(+datum[\"Cylinders\"])"
         }
       ]
     },
@@ -109,7 +109,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"xc\"] !== null && isFinite(datum[\"xc\"]) && datum[\"yc\"] !== null && isFinite(datum[\"yc\"])"
+          "expr": "isValid(datum[\"xc\"]) && isFinite(+datum[\"xc\"]) && isValid(datum[\"yc\"]) && isFinite(+datum[\"yc\"])"
         }
       ]
     }

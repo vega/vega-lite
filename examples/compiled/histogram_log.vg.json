@@ -52,7 +52,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"x1\"] !== null && isFinite(datum[\"x1\"])"
+          "expr": "isValid(datum[\"x1\"]) && isFinite(+datum[\"x1\"])"
         }
       ]
     }

@@ -42,7 +42,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"minutes_date\"] !== null && isFinite(datum[\"minutes_date\"]) && datum[\"price\"] !== null && isFinite(datum[\"price\"])"
+          "expr": "(isDate(datum[\"minutes_date\"]) || (isValid(datum[\"minutes_date\"]) && isFinite(+datum[\"minutes_date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
         }
       ]
     },
@@ -52,7 +52,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"seconds_date\"] !== null && isFinite(datum[\"seconds_date\"]) && datum[\"price\"] !== null && isFinite(datum[\"price\"])"
+          "expr": "(isDate(datum[\"seconds_date\"]) || (isValid(datum[\"seconds_date\"]) && isFinite(+datum[\"seconds_date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
         }
       ]
     }

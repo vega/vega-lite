@@ -148,7 +148,7 @@
                   "x": {"scale": "child_x", "field": "age"},
                   "y": {"scale": "y", "field": "sum_people"},
                   "defined": {
-                    "signal": "datum[\"sum_people\"] !== null && isFinite(datum[\"sum_people\"])"
+                    "signal": "isValid(datum[\"sum_people\"]) && isFinite(+datum[\"sum_people\"])"
                   }
                 }
               }

@@ -15,7 +15,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"health\"] !== null && isFinite(datum[\"health\"]) && datum[\"income\"] !== null && isFinite(datum[\"income\"]) && datum[\"population\"] !== null && isFinite(datum[\"population\"])"
+          "expr": "isValid(datum[\"health\"]) && isFinite(+datum[\"health\"]) && isValid(datum[\"income\"]) && isFinite(+datum[\"income\"]) && isValid(datum[\"population\"]) && isFinite(+datum[\"population\"])"
         }
       ]
     }
@@ -141,7 +141,7 @@
           "x": {"scale": "x", "field": "income"},
           "y": [
             {
-              "test": "datum[\"health\"] === null || !isFinite(datum[\"health\"])",
+              "test": "!isValid(datum[\"health\"]) || !isFinite(+datum[\"health\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "health"}

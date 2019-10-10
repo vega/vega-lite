@@ -28,7 +28,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"b\"] !== null && isFinite(datum[\"b\"])"
+          "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
         }
       ]
     }

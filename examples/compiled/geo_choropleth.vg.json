@@ -25,7 +25,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"rate\"] !== null && isFinite(datum[\"rate\"])"
+          "expr": "isValid(datum[\"rate\"]) && isFinite(+datum[\"rate\"])"
         }
       ]
     }

@@ -30,7 +30,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"Release_Date\"] !== null && isFinite(datum[\"Release_Date\"]) && datum[\"RatingDelta\"] !== null && isFinite(datum[\"RatingDelta\"])"
+          "expr": "(isDate(datum[\"Release_Date\"]) || (isValid(datum[\"Release_Date\"]) && isFinite(+datum[\"Release_Date\"]))) && isValid(datum[\"RatingDelta\"]) && isFinite(+datum[\"RatingDelta\"])"
         }
       ]
     }

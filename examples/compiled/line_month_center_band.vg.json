@@ -48,7 +48,7 @@
           },
           "y": {"scale": "y", "field": "mean_temp"},
           "defined": {
-            "signal": "datum[\"month_date\"] !== null && isFinite(datum[\"month_date\"]) && datum[\"mean_temp\"] !== null && isFinite(datum[\"mean_temp\"])"
+            "signal": "isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]) && isValid(datum[\"mean_temp\"]) && isFinite(+datum[\"mean_temp\"])"
           }
         }
       }

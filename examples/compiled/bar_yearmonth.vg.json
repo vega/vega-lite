@@ -31,7 +31,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"yearmonth_date\"] !== null && isFinite(datum[\"yearmonth_date\"])"
+          "expr": "(isDate(datum[\"yearmonth_date\"]) || (isValid(datum[\"yearmonth_date\"]) && isFinite(+datum[\"yearmonth_date\"])))"
         }
       ]
     }
@@ -47,14 +47,14 @@
           "fill": {"value": "#4c78a8"},
           "x2": [
             {
-              "test": "datum[\"yearmonth_date\"] === null || !isFinite(datum[\"yearmonth_date\"])",
+              "test": "!isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"])",
               "value": 0
             },
             {"scale": "x", "field": "yearmonth_date", "offset": 1}
           ],
           "x": [
             {
-              "test": "datum[\"yearmonth_date\"] === null || !isFinite(datum[\"yearmonth_date\"])",
+              "test": "!isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"])",
               "value": 0
             },
             {"scale": "x", "field": "yearmonth_date_end"}

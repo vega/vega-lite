@@ -14,7 +14,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"X\"] !== null && isFinite(datum[\"X\"]) && datum[\"Y\"] !== null && isFinite(datum[\"Y\"])"
+          "expr": "isValid(datum[\"X\"]) && isFinite(+datum[\"X\"]) && isValid(datum[\"Y\"]) && isFinite(+datum[\"Y\"])"
         }
       ]
     },
@@ -465,14 +465,14 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"X\"] === null || !isFinite(datum[\"X\"])",
+                  "test": "!isValid(datum[\"X\"]) || !isFinite(+datum[\"X\"])",
                   "value": 0
                 },
                 {"scale": "x", "field": "X"}
               ],
               "y": [
                 {
-                  "test": "datum[\"Y\"] === null || !isFinite(datum[\"Y\"])",
+                  "test": "!isValid(datum[\"Y\"]) || !isFinite(+datum[\"Y\"])",
                   "field": {"group": "height"}
                 },
                 {"scale": "y", "field": "Y"}
