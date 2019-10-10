@@ -22,5 +22,6 @@
       "y": {"field": "variety", "type": "ordinal", "sort": "-x"},
       "color": {"field": "year", "type": "nominal"}
     }
-  }
+  },
+  "autosize": {"type": "pad"}
 }

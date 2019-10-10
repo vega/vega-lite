@@ -28,5 +28,6 @@
       },
       "color": {"field": "symbol", "type": "nominal"}
     }
-  }
+  },
+  "autosize": {"type": "pad"}
 }

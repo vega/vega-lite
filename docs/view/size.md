@@ -43,6 +43,19 @@ For a discrete axis, specifying a fixed size (e.g., width in the following plot)
 
 <span class="vl-example" data-name="bar_size_explicit_bad"></span>
 
+### Specifying Responsive Width and Height
+
+You can set the top-level `width` or `height` properties to `"container"` to indicate that the width or height of the plot should be the same as its surrounding container. The `width` and `height` can be set independently, for example, you can have a responsive `width` and a fixed `height` by setting `width` to `"container"` and `height` to a number.
+
+After setting `width` or `height` to `"container"`, you need to ensure that the container's width or height is determined outside the plot. For example, the container can be a `<div>` element that has style `width: 100%; height: 300px`. When the container is not available or its size is not defined (e.g., in server-side rendering), the default width and height are `config.view.continuousWidth` and `config.view.continuousHeight`, respectively.
+
+<span class="vl-example vl-example-responsive" data-name="bar_size_responsive"></span>
+
+**Limitations:**
+
+- This responsive mode is available only for single view or layer specifications.
+- Vega listens to the `window.resize` event to update plot size from container size. This should cover many use cases. However, if you change the container size programmatically (e.g., you build a custom divider view), you'll need to trigger `window.resize` manually. In a modern browser, you can do: `window.dispatchEvent(new Event('resize'));`.
+
 ### Specifying Width and Height per Discrete Step
 
 For a discrete x-field or discrete y-field, we can also set `width` (or `height`) to be an object indicating the width (or height) per discrete `step`.

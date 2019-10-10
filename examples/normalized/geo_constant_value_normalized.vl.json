@@ -34,5 +34,6 @@
       },
       "projection": {"type": "albersUsa"}
     }
-  ]
+  ],
+  "autosize": {"type": "pad"}
 }

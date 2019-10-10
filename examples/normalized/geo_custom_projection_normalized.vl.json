@@ -30,5 +30,6 @@
       }
     }
   ],
-  "config": {"view": {"stroke": null}}
+  "config": {"view": {"stroke": null}},
+  "autosize": {"type": "pad"}
 }
