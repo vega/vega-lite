@@ -124,7 +124,7 @@
               "y": {"scale": "y", "field": "density"},
               "y2": {"scale": "y", "value": 0},
               "defined": {
-                "signal": "datum[\"value\"] !== null && isFinite(datum[\"value\"]) && datum[\"density\"] !== null && isFinite(datum[\"density\"])"
+                "signal": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"]) && isValid(datum[\"density\"]) && isFinite(+datum[\"density\"])"
               }
             }
           }

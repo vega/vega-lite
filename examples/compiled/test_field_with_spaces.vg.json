@@ -27,7 +27,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"a b\"] !== null && isFinite(datum[\"a b\"]) && datum[\"c d\"] !== null && isFinite(datum[\"c d\"])"
+          "expr": "isValid(datum[\"a b\"]) && isFinite(+datum[\"a b\"]) && isValid(datum[\"c d\"]) && isFinite(+datum[\"c d\"])"
         }
       ]
     }

@@ -62,7 +62,7 @@
           "y": {"scale": "y", "field": "y"},
           "y2": {"scale": "y", "value": 0},
           "defined": {
-            "signal": "datum[\"x\"] !== null && isFinite(datum[\"x\"]) && datum[\"y\"] !== null && isFinite(datum[\"y\"])"
+            "signal": "isValid(datum[\"x\"]) && isFinite(+datum[\"x\"]) && isValid(datum[\"y\"]) && isFinite(+datum[\"y\"])"
           }
         }
       }
@@ -83,7 +83,7 @@
           "y": {"scale": "y", "field": "ny"},
           "y2": {"scale": "y", "value": 0},
           "defined": {
-            "signal": "datum[\"x\"] !== null && isFinite(datum[\"x\"]) && datum[\"ny\"] !== null && isFinite(datum[\"ny\"])"
+            "signal": "isValid(datum[\"x\"]) && isFinite(+datum[\"x\"]) && isValid(datum[\"ny\"]) && isFinite(+datum[\"ny\"])"
           }
         }
       }

@@ -34,7 +34,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"population\"] !== null && isFinite(datum[\"population\"])"
+          "expr": "isValid(datum[\"population\"]) && isFinite(+datum[\"population\"])"
         }
       ]
     },
@@ -56,7 +56,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"engineers\"] !== null && isFinite(datum[\"engineers\"])"
+          "expr": "isValid(datum[\"engineers\"]) && isFinite(+datum[\"engineers\"])"
         }
       ]
     },
@@ -78,7 +78,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"hurricanes\"] !== null && isFinite(datum[\"hurricanes\"])"
+          "expr": "isValid(datum[\"hurricanes\"]) && isFinite(+datum[\"hurricanes\"])"
         }
       ]
     }

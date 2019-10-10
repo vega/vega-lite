@@ -54,7 +54,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"score\"] !== null && isFinite(datum[\"score\"])"
+          "expr": "isValid(datum[\"score\"]) && isFinite(+datum[\"score\"])"
         }
       ]
     }

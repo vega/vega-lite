@@ -32,7 +32,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"source.reco\"] !== null && isFinite(datum[\"source.reco\"]) && datum[\"source.yes\"] !== null && isFinite(datum[\"source.yes\"])"
+          "expr": "isValid(datum[\"source.reco\"]) && isFinite(+datum[\"source.reco\"]) && isValid(datum[\"source.yes\"]) && isFinite(+datum[\"source.yes\"])"
         }
       ]
     }

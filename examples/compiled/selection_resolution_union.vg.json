@@ -13,7 +13,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Miles_per_Gallon\"] !== null && isFinite(datum[\"Miles_per_Gallon\"]) && datum[\"Horsepower\"] !== null && isFinite(datum[\"Horsepower\"])"
+          "expr": "isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"]) && isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"])"
         }
       ]
     },
@@ -23,7 +23,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Acceleration\"] !== null && isFinite(datum[\"Acceleration\"]) && datum[\"Horsepower\"] !== null && isFinite(datum[\"Horsepower\"])"
+          "expr": "isValid(datum[\"Acceleration\"]) && isFinite(+datum[\"Acceleration\"]) && isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"])"
         }
       ]
     },
@@ -33,7 +33,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && isFinite(datum[\"Horsepower\"])"
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"])"
         }
       ]
     },
@@ -43,7 +43,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Miles_per_Gallon\"] !== null && isFinite(datum[\"Miles_per_Gallon\"]) && datum[\"Acceleration\"] !== null && isFinite(datum[\"Acceleration\"])"
+          "expr": "isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"]) && isValid(datum[\"Acceleration\"]) && isFinite(+datum[\"Acceleration\"])"
         }
       ]
     },
@@ -53,7 +53,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Acceleration\"] !== null && isFinite(datum[\"Acceleration\"])"
+          "expr": "isValid(datum[\"Acceleration\"]) && isFinite(+datum[\"Acceleration\"])"
         }
       ]
     },
@@ -63,7 +63,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Miles_per_Gallon\"] !== null && isFinite(datum[\"Miles_per_Gallon\"])"
+          "expr": "isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
         }
       ]
     }

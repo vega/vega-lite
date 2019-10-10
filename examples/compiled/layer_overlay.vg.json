@@ -40,7 +40,7 @@
           "x": {"scale": "x", "field": "Cylinders"},
           "y": {"scale": "y", "field": "max_Horsepower"},
           "defined": {
-            "signal": "datum[\"max_Horsepower\"] !== null && isFinite(datum[\"max_Horsepower\"])"
+            "signal": "isValid(datum[\"max_Horsepower\"]) && isFinite(+datum[\"max_Horsepower\"])"
           }
         }
       }
@@ -71,7 +71,7 @@
           "x": {"scale": "x", "field": "Cylinders"},
           "y": {"scale": "y", "field": "min_Horsepower"},
           "defined": {
-            "signal": "datum[\"min_Horsepower\"] !== null && isFinite(datum[\"min_Horsepower\"])"
+            "signal": "isValid(datum[\"min_Horsepower\"]) && isFinite(+datum[\"min_Horsepower\"])"
           }
         }
       }

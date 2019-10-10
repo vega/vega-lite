@@ -500,7 +500,7 @@
               "y": {"scale": "y", "field": "fps"},
               "strokeWidth": {"value": 1},
               "defined": {
-                "signal": "datum[\"row\"] !== null && isFinite(datum[\"row\"]) && datum[\"fps\"] !== null && isFinite(datum[\"fps\"])"
+                "signal": "isValid(datum[\"row\"]) && isFinite(+datum[\"row\"]) && isValid(datum[\"fps\"]) && isFinite(+datum[\"fps\"])"
               }
             }
           }
@@ -537,7 +537,7 @@
               "y": {"scale": "y", "field": "fps"},
               "strokeWidth": {"value": 1},
               "defined": {
-                "signal": "datum[\"row\"] !== null && isFinite(datum[\"row\"]) && datum[\"fps\"] !== null && isFinite(datum[\"fps\"])"
+                "signal": "isValid(datum[\"row\"]) && isFinite(+datum[\"row\"]) && isValid(datum[\"fps\"]) && isFinite(+datum[\"fps\"])"
               }
             }
           }

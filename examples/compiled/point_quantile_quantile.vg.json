@@ -20,7 +20,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"unif\"] !== null && isFinite(datum[\"unif\"]) && datum[\"v\"] !== null && isFinite(datum[\"v\"])"
+          "expr": "isValid(datum[\"unif\"]) && isFinite(+datum[\"unif\"]) && isValid(datum[\"v\"]) && isFinite(+datum[\"v\"])"
         }
       ]
     },
@@ -30,7 +30,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"norm\"] !== null && isFinite(datum[\"norm\"]) && datum[\"v\"] !== null && isFinite(datum[\"v\"])"
+          "expr": "isValid(datum[\"norm\"]) && isFinite(+datum[\"norm\"]) && isValid(datum[\"v\"]) && isFinite(+datum[\"v\"])"
         }
       ]
     }

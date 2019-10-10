@@ -50,7 +50,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"lo\"] !== null && isFinite(datum[\"lo\"])"
+          "expr": "isValid(datum[\"lo\"]) && isFinite(+datum[\"lo\"])"
         }
       ]
     },
@@ -60,7 +60,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"mean\"] !== null && isFinite(datum[\"mean\"])"
+          "expr": "isValid(datum[\"mean\"]) && isFinite(+datum[\"mean\"])"
         }
       ]
     },
@@ -70,7 +70,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"from\"] !== null && isFinite(datum[\"from\"])"
+          "expr": "isValid(datum[\"from\"]) && isFinite(+datum[\"from\"])"
         }
       ]
     },
@@ -80,7 +80,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"to\"] !== null && isFinite(datum[\"to\"])"
+          "expr": "isValid(datum[\"to\"]) && isFinite(+datum[\"to\"])"
         }
       ]
     },
@@ -91,7 +91,7 @@
         {"type": "filter", "expr": "datum.label === 'PoleStar'"},
         {
           "type": "filter",
-          "expr": "datum[\"from\"] !== null && isFinite(datum[\"from\"])"
+          "expr": "isValid(datum[\"from\"]) && isFinite(+datum[\"from\"])"
         }
       ]
     },
@@ -102,7 +102,7 @@
         {"type": "filter", "expr": "datum.label !== 'PoleStar'"},
         {
           "type": "filter",
-          "expr": "datum[\"from\"] !== null && isFinite(datum[\"from\"])"
+          "expr": "isValid(datum[\"from\"]) && isFinite(+datum[\"from\"])"
         }
       ]
     }
@@ -226,14 +226,14 @@
               "stroke": {"value": "black"},
               "x": [
                 {
-                  "test": "datum[\"from\"] === null || !isFinite(datum[\"from\"])",
+                  "test": "!isValid(datum[\"from\"]) || !isFinite(+datum[\"from\"])",
                   "value": 0
                 },
                 {"scale": "concat_1_x", "field": "from"}
               ],
               "x2": [
                 {
-                  "test": "datum[\"to\"] === null || !isFinite(datum[\"to\"])",
+                  "test": "!isValid(datum[\"to\"]) || !isFinite(+datum[\"to\"])",
                   "value": 0
                 },
                 {"scale": "concat_1_x", "field": "to"}
@@ -254,7 +254,7 @@
               "size": {"value": 60},
               "x": [
                 {
-                  "test": "datum[\"to\"] === null || !isFinite(datum[\"to\"])",
+                  "test": "!isValid(datum[\"to\"]) || !isFinite(+datum[\"to\"])",
                   "value": 0
                 },
                 {"scale": "concat_1_x", "field": "to"}
@@ -278,7 +278,7 @@
               "fill": {"value": "black"},
               "x": [
                 {
-                  "test": "datum[\"from\"] === null || !isFinite(datum[\"from\"])",
+                  "test": "!isValid(datum[\"from\"]) || !isFinite(+datum[\"from\"])",
                   "value": 0
                 },
                 {"scale": "concat_1_x", "field": "from"}
@@ -300,7 +300,7 @@
               "fill": {"value": "black"},
               "x": [
                 {
-                  "test": "datum[\"from\"] === null || !isFinite(datum[\"from\"])",
+                  "test": "!isValid(datum[\"from\"]) || !isFinite(+datum[\"from\"])",
                   "value": 0
                 },
                 {"scale": "concat_1_x", "field": "from"}
@@ -322,7 +322,7 @@
               "fill": {"value": "black"},
               "x": [
                 {
-                  "test": "datum[\"from\"] === null || !isFinite(datum[\"from\"])",
+                  "test": "!isValid(datum[\"from\"]) || !isFinite(+datum[\"from\"])",
                   "value": 0
                 },
                 {"scale": "concat_1_x", "field": "from"}
@@ -344,7 +344,7 @@
               "fill": {"value": "black"},
               "x": [
                 {
-                  "test": "datum[\"from\"] === null || !isFinite(datum[\"from\"])",
+                  "test": "!isValid(datum[\"from\"]) || !isFinite(+datum[\"from\"])",
                   "value": 0
                 },
                 {"scale": "concat_1_x", "field": "from"}

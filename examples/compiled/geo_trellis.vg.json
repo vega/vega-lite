@@ -23,7 +23,7 @@
         {"type": "geojson", "geojson": "geo", "signal": "child_geojson_0"},
         {
           "type": "filter",
-          "expr": "datum[\"pct\"] !== null && isFinite(datum[\"pct\"])"
+          "expr": "isValid(datum[\"pct\"]) && isFinite(+datum[\"pct\"])"
         }
       ]
     },

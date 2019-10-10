@@ -31,7 +31,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"x\"] !== null && isFinite(datum[\"x\"]) && datum[\"y\"] !== null && isFinite(datum[\"y\"])"
+          "expr": "isValid(datum[\"x\"]) && isFinite(+datum[\"x\"]) && isValid(datum[\"y\"]) && isFinite(+datum[\"y\"])"
         }
       ]
     }
@@ -49,7 +49,7 @@
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "y"},
           "defined": {
-            "signal": "datum[\"x\"] !== null && isFinite(datum[\"x\"]) && datum[\"y\"] !== null && isFinite(datum[\"y\"])"
+            "signal": "isValid(datum[\"x\"]) && isFinite(+datum[\"x\"]) && isValid(datum[\"y\"]) && isFinite(+datum[\"y\"])"
           }
         }
       }
@@ -65,7 +65,7 @@
           "fill": {"value": "#4c78a8"},
           "x": [
             {
-              "test": "datum[\"x\"] === null || !isFinite(datum[\"x\"])",
+              "test": "!isValid(datum[\"x\"]) || !isFinite(+datum[\"x\"])",
               "value": 0
             },
             {"scale": "x", "field": "x"}

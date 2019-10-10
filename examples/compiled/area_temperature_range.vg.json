@@ -46,7 +46,7 @@
           "y": {"scale": "y", "field": "max_temp_max"},
           "y2": {"scale": "y", "field": "min_temp_min"},
           "defined": {
-            "signal": "datum[\"monthdate_date\"] !== null && isFinite(datum[\"monthdate_date\"]) && datum[\"max_temp_max\"] !== null && isFinite(datum[\"max_temp_max\"])"
+            "signal": "isValid(datum[\"monthdate_date\"]) && isFinite(+datum[\"monthdate_date\"]) && isValid(datum[\"max_temp_max\"]) && isFinite(+datum[\"max_temp_max\"])"
           }
         }
       }

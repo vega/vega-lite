@@ -43,7 +43,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"x\"] !== null && isFinite(datum[\"x\"]) && datum[\"y\"] !== null && isFinite(datum[\"y\"]) && datum[\"Cylinders\"] !== null && isFinite(datum[\"Cylinders\"])"
+          "expr": "isValid(datum[\"x\"]) && isFinite(+datum[\"x\"]) && isValid(datum[\"y\"]) && isFinite(+datum[\"y\"]) && isValid(datum[\"Cylinders\"]) && isFinite(+datum[\"Cylinders\"])"
         }
       ]
     }

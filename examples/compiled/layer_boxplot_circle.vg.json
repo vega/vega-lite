@@ -70,7 +70,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"people\"] !== null && isFinite(datum[\"people\"])"
+          "expr": "isValid(datum[\"people\"]) && isFinite(+datum[\"people\"])"
         }
       ]
     }

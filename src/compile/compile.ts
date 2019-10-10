@@ -17,9 +17,10 @@ import {
 import {keys, mergeDeep} from '../util';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
-// import {draw} from './data/debug';
 import {optimizeDataflow} from './data/optimize';
 import {Model} from './model';
+
+// import {draw} from './data/debug';
 
 export interface CompileOptions {
   config?: Config;

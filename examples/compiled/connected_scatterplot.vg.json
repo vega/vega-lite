@@ -17,7 +17,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"miles\"] !== null && isFinite(datum[\"miles\"]) && datum[\"gas\"] !== null && isFinite(datum[\"gas\"])"
+          "expr": "isValid(datum[\"miles\"]) && isFinite(+datum[\"miles\"]) && isValid(datum[\"gas\"]) && isFinite(+datum[\"gas\"])"
         }
       ]
     }
@@ -35,7 +35,7 @@
           "x": {"scale": "x", "field": "miles"},
           "y": {"scale": "y", "field": "gas"},
           "defined": {
-            "signal": "datum[\"miles\"] !== null && isFinite(datum[\"miles\"]) && datum[\"gas\"] !== null && isFinite(datum[\"gas\"])"
+            "signal": "isValid(datum[\"miles\"]) && isFinite(+datum[\"miles\"]) && isValid(datum[\"gas\"]) && isFinite(+datum[\"gas\"])"
           }
         }
       }
@@ -52,14 +52,14 @@
           "fill": {"value": "#4c78a8"},
           "x": [
             {
-              "test": "datum[\"miles\"] === null || !isFinite(datum[\"miles\"])",
+              "test": "!isValid(datum[\"miles\"]) || !isFinite(+datum[\"miles\"])",
               "value": 0
             },
             {"scale": "x", "field": "miles"}
           ],
           "y": [
             {
-              "test": "datum[\"gas\"] === null || !isFinite(datum[\"gas\"])",
+              "test": "!isValid(datum[\"gas\"]) || !isFinite(+datum[\"gas\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "gas"}

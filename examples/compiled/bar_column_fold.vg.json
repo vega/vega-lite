@@ -17,7 +17,7 @@
         {"type": "fold", "fields": ["gold", "silver"], "as": ["key", "value"]},
         {
           "type": "filter",
-          "expr": "datum[\"value\"] !== null && isFinite(datum[\"value\"])"
+          "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
         }
       ]
     },

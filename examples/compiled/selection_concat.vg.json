@@ -13,7 +13,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Miles_per_Gallon\"] !== null && isFinite(datum[\"Miles_per_Gallon\"]) && datum[\"Horsepower\"] !== null && isFinite(datum[\"Horsepower\"])"
+          "expr": "isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"]) && isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"])"
         }
       ]
     },
@@ -23,7 +23,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Displacement\"] !== null && isFinite(datum[\"Displacement\"]) && datum[\"Acceleration\"] !== null && isFinite(datum[\"Acceleration\"])"
+          "expr": "isValid(datum[\"Displacement\"]) && isFinite(+datum[\"Displacement\"]) && isValid(datum[\"Acceleration\"]) && isFinite(+datum[\"Acceleration\"])"
         }
       ]
     }

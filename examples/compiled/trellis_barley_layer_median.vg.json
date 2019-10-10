@@ -183,7 +183,7 @@
               "stroke": {"scale": "trellis_barley_color", "field": "year"},
               "x": [
                 {
-                  "test": "datum[\"median_yield\"] === null || !isFinite(datum[\"median_yield\"])",
+                  "test": "!isValid(datum[\"median_yield\"]) || !isFinite(+datum[\"median_yield\"])",
                   "value": 0
                 },
                 {"scale": "trellis_barley_x", "field": "median_yield"}
@@ -202,7 +202,7 @@
               "stroke": {"value": "black"},
               "x": [
                 {
-                  "test": "datum[\"median_yield\"] === null || !isFinite(datum[\"median_yield\"])",
+                  "test": "!isValid(datum[\"median_yield\"]) || !isFinite(+datum[\"median_yield\"])",
                   "value": 0
                 },
                 {"scale": "trellis_barley_x", "field": "median_yield"}

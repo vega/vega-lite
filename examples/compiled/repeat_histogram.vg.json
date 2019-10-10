@@ -109,7 +109,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_Displacement\"] !== null && isFinite(datum[\"bin_maxbins_10_Displacement\"])"
+          "expr": "isValid(datum[\"bin_maxbins_10_Displacement\"]) && isFinite(+datum[\"bin_maxbins_10_Displacement\"])"
         }
       ]
     },
@@ -141,7 +141,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_Horsepower\"] !== null && isFinite(datum[\"bin_maxbins_10_Horsepower\"])"
+          "expr": "isValid(datum[\"bin_maxbins_10_Horsepower\"]) && isFinite(+datum[\"bin_maxbins_10_Horsepower\"])"
         }
       ]
     },
@@ -173,7 +173,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_Miles_per_Gallon\"] !== null && isFinite(datum[\"bin_maxbins_10_Miles_per_Gallon\"])"
+          "expr": "isValid(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) && isFinite(+datum[\"bin_maxbins_10_Miles_per_Gallon\"])"
         }
       ]
     },
@@ -205,7 +205,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_Acceleration\"] !== null && isFinite(datum[\"bin_maxbins_10_Acceleration\"])"
+          "expr": "isValid(datum[\"bin_maxbins_10_Acceleration\"]) && isFinite(+datum[\"bin_maxbins_10_Acceleration\"])"
         }
       ]
     }
@@ -230,7 +230,7 @@
               "fill": {"scale": "color", "field": "Origin"},
               "x2": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || !isFinite(datum[\"bin_maxbins_10_Horsepower\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_10_Horsepower\"])",
                   "value": 0
                 },
                 {
@@ -241,7 +241,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || !isFinite(datum[\"bin_maxbins_10_Horsepower\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_10_Horsepower\"])",
                   "value": 0
                 },
                 {
@@ -314,7 +314,7 @@
               "fill": {"scale": "color", "field": "Origin"},
               "x2": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || !isFinite(datum[\"bin_maxbins_10_Miles_per_Gallon\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) || !isFinite(+datum[\"bin_maxbins_10_Miles_per_Gallon\"])",
                   "value": 0
                 },
                 {
@@ -325,7 +325,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || !isFinite(datum[\"bin_maxbins_10_Miles_per_Gallon\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) || !isFinite(+datum[\"bin_maxbins_10_Miles_per_Gallon\"])",
                   "value": 0
                 },
                 {
@@ -398,7 +398,7 @@
               "fill": {"scale": "color", "field": "Origin"},
               "x2": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || !isFinite(datum[\"bin_maxbins_10_Acceleration\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"])",
                   "value": 0
                 },
                 {
@@ -409,7 +409,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || !isFinite(datum[\"bin_maxbins_10_Acceleration\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"])",
                   "value": 0
                 },
                 {
@@ -482,7 +482,7 @@
               "fill": {"scale": "color", "field": "Origin"},
               "x2": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Displacement\"] === null || !isFinite(datum[\"bin_maxbins_10_Displacement\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_10_Displacement\"])",
                   "value": 0
                 },
                 {
@@ -493,7 +493,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Displacement\"] === null || !isFinite(datum[\"bin_maxbins_10_Displacement\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_10_Displacement\"])",
                   "value": 0
                 },
                 {

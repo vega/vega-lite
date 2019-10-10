@@ -244,9 +244,9 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
 
 export function fieldValidPredicate(fieldExpr: string, valid = true) {
   if (valid) {
-    return `${fieldExpr} !== null && isFinite(${fieldExpr})`;
+    return `isValid(${fieldExpr}) && isFinite(+${fieldExpr})`;
   } else {
-    return `${fieldExpr} === null || !isFinite(${fieldExpr})`;
+    return `!isValid(${fieldExpr}) || !isFinite(+${fieldExpr})`;
   }
 }
 

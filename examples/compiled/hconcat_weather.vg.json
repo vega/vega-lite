@@ -73,7 +73,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_temp_min\"] !== null && isFinite(datum[\"bin_maxbins_10_temp_min\"]) && datum[\"bin_maxbins_10_temp_max\"] !== null && isFinite(datum[\"bin_maxbins_10_temp_max\"])"
+          "expr": "isValid(datum[\"bin_maxbins_10_temp_min\"]) && isFinite(+datum[\"bin_maxbins_10_temp_min\"]) && isValid(datum[\"bin_maxbins_10_temp_max\"]) && isFinite(+datum[\"bin_maxbins_10_temp_max\"])"
         }
       ]
     }
@@ -178,7 +178,7 @@
               "stroke": {"value": "#4c78a8"},
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_10_temp_min\"] === null || !isFinite(datum[\"bin_maxbins_10_temp_min\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_temp_min\"]) || !isFinite(+datum[\"bin_maxbins_10_temp_min\"])",
                   "value": 0
                 },
                 {
@@ -187,7 +187,7 @@
               ],
               "y": [
                 {
-                  "test": "datum[\"bin_maxbins_10_temp_max\"] === null || !isFinite(datum[\"bin_maxbins_10_temp_max\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_temp_max\"]) || !isFinite(+datum[\"bin_maxbins_10_temp_max\"])",
                   "field": {"group": "height"}
                 },
                 {

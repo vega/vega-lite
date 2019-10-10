@@ -14,7 +14,7 @@
         {"type": "filter", "expr": "datum.Entity !== 'All natural disasters'"},
         {
           "type": "filter",
-          "expr": "datum[\"Deaths\"] !== null && isFinite(datum[\"Deaths\"])"
+          "expr": "isValid(datum[\"Deaths\"]) && isFinite(+datum[\"Deaths\"])"
         }
       ]
     }

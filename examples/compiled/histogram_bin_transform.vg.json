@@ -33,7 +33,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_IMDB_Rating\"] !== null && isFinite(datum[\"bin_IMDB_Rating\"])"
+          "expr": "isValid(datum[\"bin_IMDB_Rating\"]) && isFinite(+datum[\"bin_IMDB_Rating\"])"
         }
       ]
     }

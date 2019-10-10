@@ -30,7 +30,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"life_expect\"] !== null && isFinite(datum[\"life_expect\"])"
+          "expr": "isValid(datum[\"life_expect\"]) && isFinite(+datum[\"life_expect\"])"
         }
       ]
     }
@@ -72,7 +72,7 @@
               "x": {"scale": "x", "field": "life_expect"},
               "y": {"scale": "y", "field": "country"},
               "defined": {
-                "signal": "datum[\"life_expect\"] !== null && isFinite(datum[\"life_expect\"])"
+                "signal": "isValid(datum[\"life_expect\"]) && isFinite(+datum[\"life_expect\"])"
               }
             }
           }
