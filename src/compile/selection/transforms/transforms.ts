@@ -14,7 +14,7 @@ import translate from './translate';
 import zoom from './zoom';
 
 export interface TransformCompiler {
-  has: (selCmpt: SelectionComponent | SelectionDef) => boolean;
+  has: (selCmpt: SelectionComponent) => boolean;
   parse?: (model: UnitModel, selCmpt: SelectionComponent, def: SelectionDef, origDef: SelectionDef) => void;
   signals?: (model: UnitModel, selCmpt: SelectionComponent, signals: NewSignal[]) => Signal[]; // the output can be a new or a push signal
   topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: NewSignal[]) => NewSignal[];

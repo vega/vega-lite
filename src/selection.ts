@@ -1,4 +1,5 @@
 import {Binding, Color, Vector2} from 'vega';
+import {isObject} from 'vega-util';
 import {SingleDefUnitChannel} from './channel';
 import {FieldName, Value} from './channeldef';
 import {DateTime} from './datetime';
@@ -16,6 +17,9 @@ export type SelectionInitInterval = Vector2<boolean> | Vector2<number> | Vector2
 
 export type SelectionInitMapping = Dict<SelectionInit>;
 export type SelectionInitIntervalMapping = Dict<SelectionInitInterval>;
+
+export type LegendStreamBinding = {legend: string | Stream};
+export type LegendBinding = 'legend' | LegendStreamBinding;
 
 export interface BaseSelectionConfig {
   /**
@@ -71,14 +75,18 @@ export interface BaseSelectionConfig {
 
 export interface SingleSelectionConfig extends BaseSelectionConfig {
   /**
-   * Establish a two-way binding between a single selection and input elements
-   * (also known as dynamic query widgets). A binding takes the form of
-   * Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)
+   * When set, a selection is populated by input elements (also known as dynamic query widgets)
+   * or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;
+   * to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.
+   *
+   * Legend bindings are restricted to selections that only specify a single field or encoding.
+   *
+   * Query widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)
    * or can be a mapping between projected field/encodings and binding definitions.
    *
    * __See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.
    */
-  bind?: Binding | {[key: string]: Binding};
+  bind?: Binding | {[key: string]: Binding} | LegendBinding;
 
   /**
    * When true, an invisible voronoi diagram is computed to accelerate discrete
@@ -94,12 +102,6 @@ export interface SingleSelectionConfig extends BaseSelectionConfig {
    * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
   init?: SelectionInitMapping;
-  /**
-   * When true, any legends that match the encodings/fields this selection operates over are automatically made interactive.
-   *
-   * __Default value:__ `true`.
-   */
-  legends?: boolean;
 }
 
 export interface MultiSelectionConfig extends BaseSelectionConfig {
@@ -132,11 +134,12 @@ export interface MultiSelectionConfig extends BaseSelectionConfig {
   init?: SelectionInitMapping[];
 
   /**
-   * When true, any legends that match the encodings/fields this selection operates over are automatically made interactive.
+   * When set, a selection is populated by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;
+   * to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.
    *
-   * __Default value:__ `true`.
+   * Legend bindings are restricted to selections that only specify a single field or encoding.
    */
-  legends?: boolean;
+  bind?: LegendBinding;
 }
 
 export interface BrushConfig {
@@ -283,8 +286,7 @@ export const defaultConfig: SelectionConfig = {
     fields: [SELECTION_ID],
     resolve: 'global',
     empty: 'all',
-    clear: 'dblclick',
-    legends: true
+    clear: 'dblclick'
   },
   multi: {
     on: 'click',
@@ -292,8 +294,7 @@ export const defaultConfig: SelectionConfig = {
     toggle: 'event.shiftKey',
     resolve: 'global',
     empty: 'all',
-    clear: 'dblclick',
-    legends: true
+    clear: 'dblclick'
   },
   interval: {
     on: '[mousedown, window:mouseup] > window:mousemove!',
@@ -305,3 +306,11 @@ export const defaultConfig: SelectionConfig = {
     clear: 'dblclick'
   }
 };
+
+export function isLegendBinding(bind: any): bind is LegendBinding {
+  return bind && (bind === 'legend' || !!bind.legend);
+}
+
+export function isLegendStreamBinding(bind: any): bind is LegendStreamBinding {
+  return isLegendBinding(bind) && isObject(bind);
+}

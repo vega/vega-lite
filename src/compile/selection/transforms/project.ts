@@ -21,6 +21,7 @@ export interface SelectionProjection {
   field: string;
   channel?: SingleDefUnitChannel;
   signals?: {data?: string; visual?: string};
+  hasLegend?: boolean;
 }
 
 export class SelectionProjectionComponent {
@@ -168,7 +169,7 @@ const project: TransformCompiler = {
       : allSignals.concat({
           name,
           value: selCmpt.project.items.map(proj => {
-            const {signals, ...rest} = proj;
+            const {signals, hasLegend, ...rest} = proj;
             return rest;
           })
         });

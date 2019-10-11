@@ -55,6 +55,9 @@ export const SCALE_BINDINGS_CONTINUOUS =
 
 export const NO_INIT_SCALE_BINDINGS = 'Selections bound to scales cannot be separately initialized.';
 
+export const LEGEND_BINDINGS_PROJECT_LENGTH =
+  'Legend bindings are only supported for selections over an individual field or encoding channel.';
+
 // REPEAT
 export function noSuchRepeatedValue(field: string) {
   return `Unknown repeated value "${field}".`;

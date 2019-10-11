@@ -4,12 +4,17 @@ import {assembleInit} from '../assemble';
 import nearest from './nearest';
 import {TUPLE_FIELDS} from './project';
 import {TransformCompiler} from './transforms';
-import legendsTx from './legends';
-import {isObject, stringValue} from 'vega-util';
+import {isLegendBinding} from '../../../selection';
 
 const inputBindings: TransformCompiler = {
   has: selCmpt => {
-    return selCmpt.type === 'single' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind !== 'scales';
+    return (
+      selCmpt.type === 'single' &&
+      selCmpt.resolve === 'global' &&
+      selCmpt.bind &&
+      selCmpt.bind !== 'scales' &&
+      !isLegendBinding(selCmpt.bind)
+    );
   },
 
   parse: (model, selCmpt, selDef, origDef) => {
@@ -25,7 +30,6 @@ const inputBindings: TransformCompiler = {
     const bind = selCmpt.bind;
     const init = selCmpt.init && selCmpt.init[0]; // Can only exist on single selections (one initial value).
     const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
-    const legends = legendsTx.has(selCmpt) && isObject(selCmpt.legends) && Object.keys(selCmpt.legends);
 
     proj.items.forEach((p, i) => {
       const sgname = varName(`${name}_${p.field}`);
@@ -40,13 +44,6 @@ const inputBindings: TransformCompiler = {
               }
             ]
           : [];
-
-        if (legends) {
-          on.push({
-            events: {signal: `${name}_legend`} as any,
-            update: `${name}_legend.fields[0] === ${stringValue(p.field)} ? ${name}_legend.values[0] : null`
-          });
-        }
 
         signals.unshift({
           name: sgname,

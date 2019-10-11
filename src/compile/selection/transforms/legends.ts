@@ -1,84 +1,104 @@
+import {selector as parseSelector} from 'vega-event-selector';
 import {TransformCompiler} from './transforms';
 import {UnitModel} from '../../unit';
 import {NonPositionScaleChannel} from '../../../channel';
 import {LegendComponent} from '../../legend/component';
-import {forEachSelection, SelectionComponent, STORE} from '..';
-import {isObject, stringValue, array} from 'vega-util';
-import toggleTx from './toggle';
-import {OnEvent} from 'vega';
+import {forEachSelection, SelectionComponent, TUPLE} from '..';
+import {array, isString} from 'vega-util';
+import {Stream, MergedStream} from 'vega';
+import {SELECTION_ID, isLegendBinding, isLegendStreamBinding} from '../../../selection';
+import * as log from '../../../log';
+import {duplicate, varName} from '../../../util';
+import {TUPLE_FIELDS} from './project';
+import {TOGGLE} from './toggle';
 
 const legendBindings: TransformCompiler = {
-  has: selCmpt => selCmpt.type !== 'interval' && selCmpt.legends !== false,
-
-  parse: (model, selCmpt) => {
-    const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
-    for (const evt of selCmpt.events) {
-      evt.filter = array(evt.filter || []);
-      if (evt.filter.indexOf(legendFilter) < 0) {
-        evt.filter.push(legendFilter);
-      }
+  has: (selCmpt: SelectionComponent<'single' | 'multi'>) => {
+    const projLen = selCmpt.project.items.length === 1 && selCmpt.project.items[0].field !== SELECTION_ID;
+    if (!projLen) {
+      log.warn(log.message.LEGEND_BINDINGS_PROJECT_LENGTH);
     }
+
+    return selCmpt.resolve === 'global' && isLegendBinding(selCmpt.bind) && projLen;
   },
 
-  topLevelSignals: (model, selCmpt: SelectionComponent<'single' | 'multi'>, sg) => {
+  parse: (model, selCmpt, selDef, origDef) => {
+    // Binding a selection to a legend disables default direct manipulation interaction.
+    // A user can choose to re-enable it by explicitly specifying triggering input events.
+    if (!origDef.on) delete selCmpt.events;
+    if (!origDef.clear) delete selCmpt.clear;
+
+    if (origDef.on || origDef.clear) {
+      const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
+      for (const evt of selCmpt.events) {
+        evt.filter = array(evt.filter || []);
+        if (evt.filter.indexOf(legendFilter) < 0) {
+          evt.filter.push(legendFilter);
+        }
+      }
+    }
+
+    const evt = isLegendStreamBinding(selCmpt.bind) ? selCmpt.bind.legend : 'click';
+    const stream: Stream[] = isString(evt) ? parseSelector(evt, 'view') : array(evt);
+    selCmpt.bind = {legend: {merge: stream}};
+  },
+
+  topLevelSignals: (model, selCmpt: SelectionComponent<'single' | 'multi'>, signals) => {
     const selName = selCmpt.name;
-    const name = `${selName}_legend`;
-    if (!isObject(selCmpt.legends)) return sg;
-    if (sg.some(s => s.name.indexOf(name) >= 0)) return sg;
+    const stream = isLegendStreamBinding(selCmpt.bind) && (selCmpt.bind.legend as MergedStream);
+    const markName = (name: string) => (s: Stream) => {
+      const ds = duplicate(s);
+      ds.markname = name;
+      return ds;
+    };
 
-    const hasToggle = toggleTx.has(selCmpt);
-    const toggle = selCmpt.toggle;
-    const store = stringValue(selName + STORE);
+    for (const proj of selCmpt.project.items) {
+      if (!proj.hasLegend) continue;
+      const prefix = `${proj.field}_legend`;
+      const sgName = `${selName}_${prefix}`;
+      const hasSignal = signals.filter(s => s.name === sgName);
 
-    const on: OnEvent[] = [];
-
-    for (const field of Object.keys(selCmpt.legends)) {
-      const {signals, ...proj} = selCmpt.legends[field];
-      const prefix = `${field}_legend`;
-      const events = `@${prefix}_symbols:click, @${prefix}_labels:click`;
-      const tpl = `{unit: "${prefix}", fields: [${JSON.stringify(proj)}], values: [datum.value], legend: true}`;
-
-      if (hasToggle) {
-        // Taken from toggleTx.modifyExpr
-        on.push({
-          events,
-          update:
-            `modify(${store}, ` +
-            `${toggle} ? null : ${tpl}, ` +
-            (selCmpt.resolve === 'global'
-              ? `${toggle} ? null : true, `
-              : `${toggle} ? null : {unit: ${stringValue(prefix)}}, `) +
-            `${toggle} ? ${tpl} : null) && ${tpl}`,
-          force: true
-        });
-      } else {
-        // Taken from single/multi compiler.
-        on.push({
-          events,
-          update:
-            `modify(${store}, ${tpl}, ` +
-            (selCmpt.resolve === 'global'
-              ? selCmpt.type === 'single'
-                ? 'true'
-                : 'null'
-              : `{unit: ${stringValue(prefix)}}`) +
-            `) && ${tpl}`,
-          force: true
+      if (!hasSignal.length) {
+        const events = stream.merge
+          .map(markName(`${prefix}_symbols`))
+          .concat(stream.merge.map(markName(`${prefix}_labels`)));
+        signals.unshift({
+          name: sgName,
+          value: null,
+          on: [
+            {events, update: 'datum.value', force: true},
+            {events: stream, update: `!event.item || !datum ? null : ${sgName}`, force: true}
+          ]
         });
       }
     }
 
-    // An event stream to clear out any legend selections made. To respect the
-    // resolution scheme, we treat all legends as a single, separate view.
-    on.push({
-      events: 'click',
-      update:
-        `!event.item || !datum ? modify(${store}, null, ` +
-        (selCmpt.resolve === 'global' ? (hasToggle ? `${toggle} ? null : true)` : 'true)') : '{legend: true})') +
-        `: ${name}`
-    });
+    return signals;
+  },
 
-    return sg.concat({name, on});
+  signals: (model, selCmpt, signals) => {
+    const name = selCmpt.name;
+    const proj = selCmpt.project;
+    const tuple = signals.find(s => s.name === name + TUPLE);
+    const fields = name + TUPLE_FIELDS;
+    const values = proj.items.filter(p => p.hasLegend).map(p => varName(`${name}_${p.field}_legend`));
+    const valid = values.map(v => `${v} !== null`).join(' && ');
+
+    if (values.length) {
+      tuple.update = `${valid} ? {fields: ${fields}, values: [${values.join(', ')}]} : null`;
+    }
+
+    delete tuple.value;
+    delete tuple.on;
+
+    const toggle = signals.find(s => s.name === name + TOGGLE);
+    const events = isLegendStreamBinding(selCmpt.bind) && selCmpt.bind.legend;
+    if (toggle) {
+      if (!selCmpt.events) toggle.on[0].events = events;
+      else toggle.on.push({...toggle.on[0], events});
+    }
+
+    return signals;
   }
 };
 
@@ -96,8 +116,7 @@ export function parseInteractiveLegend(
       const legendSelections = legendCmpt.get('selections') || [];
       legendSelections.push(selCmpt);
       legendCmpt.set('selections', legendSelections, false);
-      selCmpt.legends = isObject(selCmpt.legends) ? selCmpt.legends : {};
-      selCmpt.legends[field] = proj;
+      proj.hasLegend = true;
     }
   });
 }

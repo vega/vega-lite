@@ -7,7 +7,8 @@ import {
   SelectionInitInterval,
   SelectionResolution,
   SelectionType,
-  SELECTION_ID
+  SELECTION_ID,
+  LegendBinding
 } from '../../selection';
 import {accessPathWithDatum, Dict} from '../../util';
 import {FacetModel} from '../facet';
@@ -36,7 +37,7 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
     ? SelectionInit | SelectionInit[]
     : never)[];
   events: Stream[];
-  bind?: 'scales' | Binding | Dict<Binding>;
+  bind?: 'scales' | Binding | Dict<Binding> | LegendBinding;
   resolve: SelectionResolution;
   empty: 'all' | 'none';
   mark?: BrushConfig;
@@ -44,7 +45,6 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   // Transforms
   project?: SelectionProjectionComponent;
   scales?: SelectionProjection[];
-  legends?: boolean | {[k: string]: SelectionProjection};
   toggle?: any;
   translate?: any;
   zoom?: any;
