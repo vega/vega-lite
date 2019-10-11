@@ -81,13 +81,7 @@ describe('Single Selection', () => {
         name: 'thr_ee_tuple',
         on: [
           {
-            events: [
-              {
-                source: 'scope',
-                type: 'click',
-                filter: ['event.item && indexof(event.item.mark.role, "legend") < 0']
-              }
-            ],
+            events: [{source: 'scope', type: 'click'}],
             update:
               'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: thr_ee_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"]]} : null',
             force: true
@@ -102,13 +96,7 @@ describe('Single Selection', () => {
         name: 'four_tuple',
         on: [
           {
-            events: [
-              {
-                source: 'scope',
-                type: 'click',
-                filter: ['event.item && indexof(event.item.mark.role, "legend") < 0']
-              }
-            ],
+            events: [{source: 'scope', type: 'click'}],
             update:
               'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: four_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
             force: true

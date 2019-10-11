@@ -1,6 +1,8 @@
 import {parseUnitModel} from '../../util';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import {assembleTopLevelSignals} from '../../../src/compile/selection/assemble';
+import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
+import legends from '../../../src/compile/selection/transforms/legends';
+import * as log from '../../../src/log';
 
 describe('Interactive Legends', () => {
   const model = parseUnitModel({
@@ -14,46 +16,220 @@ describe('Interactive Legends', () => {
   });
 
   model.parseScale();
-  model.component.selection = parseUnitSelection(model, {
-    one: {type: 'single', fields: ['Origin']},
-    two: {type: 'multi', fields: ['Origin']},
-    three: {type: 'multi', fields: ['Origin', 'Cylinders']},
-    four: {type: 'single', encodings: ['color']},
-    five: {type: 'single', encodings: ['color', 'size']},
-    six: {type: 'multi', fields: ['Origin', 'Year']}
-  });
+  const selCmpts = (model.component.selection = parseUnitSelection(model, {
+    one: {type: 'single', fields: ['Origin'], bind: 'legend'},
+    two: {type: 'multi', fields: ['Origin'], bind: {legend: 'dblclick, mouseover'}},
+    three: {type: 'multi', fields: ['Origin', 'Cylinders'], bind: 'legend'},
+    four: {type: 'single', encodings: ['color'], bind: 'legend'},
+    five: {type: 'single', encodings: ['color', 'size'], bind: 'legend'},
+    six: {type: 'multi', bind: 'legend'},
+    seven: {type: 'multi', fields: ['Origin'], bind: {legend: 'mouseover'}, on: 'click'},
+    eight: {type: 'multi', encodings: ['color'], bind: {legend: 'mouseover'}, on: 'click', clear: 'dblclick'},
+    nine: {
+      type: 'single',
+      bind: {input: 'range', min: 0, max: 10, step: 1}
+    },
+    ten: {
+      type: 'multi',
+      fields: ['Origin'],
+      bind: 'legend',
+      init: [{Origin: 'USA'}, {Origin: 'Japan'}]
+    }
+  }));
   model.parseLegends();
 
-  it('should match single field projections', () => {
+  it('identifies transform invocation', () => {
+    log.wrap(localLogger => {
+      expect(legends.has(selCmpts['one'])).toBeTruthy();
+      expect(legends.has(selCmpts['two'])).toBeTruthy();
+
+      expect(legends.has(selCmpts['three'])).toBeFalsy();
+      expect(localLogger.warns[0]).toEqual(log.message.LEGEND_BINDINGS_PROJECT_LENGTH);
+
+      expect(legends.has(selCmpts['four'])).toBeTruthy();
+
+      expect(legends.has(selCmpts['five'])).toBeFalsy();
+      expect(localLogger.warns[1]).toEqual(log.message.LEGEND_BINDINGS_PROJECT_LENGTH);
+
+      expect(legends.has(selCmpts['six'])).toBeFalsy();
+      expect(localLogger.warns[2]).toEqual(log.message.LEGEND_BINDINGS_PROJECT_LENGTH);
+
+      expect(legends.has(selCmpts['seven'])).toBeTruthy();
+      expect(legends.has(selCmpts['eight'])).toBeTruthy();
+      expect(legends.has(selCmpts['nine'])).toBeFalsy();
+      expect(legends.has(selCmpts['ten'])).toBeTruthy();
+    });
+  });
+
+  it('adds legend binding top-level signal', () => {
     expect(assembleTopLevelSignals(model, [])).toEqual(
       expect.arrayContaining([
         {
-          name: 'one_legend',
+          name: 'one_Origin_legend',
+          value: null,
           on: [
             {
-              events: '@Origin_legend_symbols:click, @Origin_legend_labels:click',
-              update:
-                'modify("one_store", {unit: "Origin_legend", fields: [{"type":"E","field":"Origin"}], values: [datum.value], legend: true}, true) && {unit: "Origin_legend", fields: [{"type":"E","field":"Origin"}], values: [datum.value], legend: true}',
+              events: [
+                {
+                  source: 'view',
+                  type: 'click',
+                  markname: 'Origin_legend_symbols'
+                },
+                {
+                  source: 'view',
+                  type: 'click',
+                  markname: 'Origin_legend_labels'
+                }
+              ],
+              update: 'datum.value',
               force: true
             },
             {
-              events: 'click',
-              update: '!event.item || !datum ? modify("one_store", null, true): one_legend'
+              events: [{source: 'view', type: 'click'}],
+              update: '!event.item || !datum ? null : one_Origin_legend',
+              force: true
             }
           ]
         },
         {
-          name: 'two_legend',
+          name: 'two_Origin_legend',
+          value: null,
           on: [
             {
-              events: '@Origin_legend_symbols:click, @Origin_legend_labels:click',
-              update:
-                'modify("two_store", event.shiftKey ? null : {unit: "Origin_legend", fields: [{"type":"E","field":"Origin"}], values: [datum.value], legend: true}, event.shiftKey ? null : true, event.shiftKey ? {unit: "Origin_legend", fields: [{"type":"E","field":"Origin"}], values: [datum.value], legend: true} : null) && {unit: "Origin_legend", fields: [{"type":"E","field":"Origin"}], values: [datum.value], legend: true}',
+              events: [
+                {
+                  source: 'view',
+                  type: 'dblclick',
+                  markname: 'Origin_legend_symbols'
+                },
+                {
+                  source: 'view',
+                  type: 'mouseover',
+                  markname: 'Origin_legend_symbols'
+                },
+                {
+                  source: 'view',
+                  type: 'dblclick',
+                  markname: 'Origin_legend_labels'
+                },
+                {
+                  source: 'view',
+                  type: 'mouseover',
+                  markname: 'Origin_legend_labels'
+                }
+              ],
+              update: 'datum.value',
               force: true
             },
             {
-              events: 'click',
-              update: '!event.item || !datum ? modify("two_store", null, event.shiftKey ? null : true): two_legend'
+              events: [
+                {
+                  source: 'view',
+                  type: 'dblclick'
+                },
+                {
+                  source: 'view',
+                  type: 'mouseover'
+                }
+              ],
+              update: '!event.item || !datum ? null : two_Origin_legend',
+              force: true
+            }
+          ]
+        },
+        {
+          name: 'four_Origin_legend',
+          value: null,
+          on: [
+            {
+              events: [
+                {
+                  source: 'view',
+                  type: 'click',
+                  markname: 'Origin_legend_symbols'
+                },
+                {
+                  source: 'view',
+                  type: 'click',
+                  markname: 'Origin_legend_labels'
+                }
+              ],
+              update: 'datum.value',
+              force: true
+            },
+            {
+              events: [
+                {
+                  source: 'view',
+                  type: 'click'
+                }
+              ],
+              update: '!event.item || !datum ? null : four_Origin_legend',
+              force: true
+            }
+          ]
+        },
+        {
+          name: 'seven_Origin_legend',
+          value: null,
+          on: [
+            {
+              events: [
+                {
+                  source: 'view',
+                  type: 'mouseover',
+                  markname: 'Origin_legend_symbols'
+                },
+                {
+                  source: 'view',
+                  type: 'mouseover',
+                  markname: 'Origin_legend_labels'
+                }
+              ],
+              update: 'datum.value',
+              force: true
+            },
+            {
+              events: [
+                {
+                  source: 'view',
+                  type: 'mouseover'
+                }
+              ],
+              update: '!event.item || !datum ? null : seven_Origin_legend',
+              force: true
+            }
+          ]
+        },
+        {
+          name: 'eight_Origin_legend',
+          value: null,
+          on: [
+            {
+              events: [
+                {
+                  source: 'view',
+                  type: 'mouseover',
+                  markname: 'Origin_legend_symbols'
+                },
+                {
+                  source: 'view',
+                  type: 'mouseover',
+                  markname: 'Origin_legend_labels'
+                }
+              ],
+              update: 'datum.value',
+              force: true
+            },
+            {
+              events: [
+                {
+                  source: 'view',
+                  type: 'mouseover'
+                }
+              ],
+              update: '!event.item || !datum ? null : eight_Origin_legend',
+              force: true
             }
           ]
         }
@@ -61,27 +237,119 @@ describe('Interactive Legends', () => {
     );
   });
 
-  it('should match multiple field projections', () => {
+  it('updates tuple signal to use bound top-level signal', () => {
+    expect(assembleUnitSelectionSignals(model, [])).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'one_tuple',
+          update: 'one_Origin_legend !== null ? {fields: one_tuple_fields, values: [one_Origin_legend]} : null'
+        },
+        {
+          name: 'two_tuple',
+          update: 'two_Origin_legend !== null ? {fields: two_tuple_fields, values: [two_Origin_legend]} : null'
+        },
+        {
+          name: 'four_tuple',
+          update: 'four_Origin_legend !== null ? {fields: four_tuple_fields, values: [four_Origin_legend]} : null'
+        }
+      ])
+    );
+  });
+
+  it('preserves explicit event triggers', () => {
+    expect(assembleUnitSelectionSignals(model, [])).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'seven_tuple',
+          on: [
+            {
+              events: [
+                {
+                  source: 'scope',
+                  type: 'click',
+                  filter: ['event.item && indexof(event.item.mark.role, "legend") < 0']
+                }
+              ],
+              update:
+                'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: seven_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+              force: true
+            },
+            {
+              events: [
+                {
+                  signal: 'seven_Origin_legend'
+                }
+              ],
+              update:
+                'seven_Origin_legend !== null ? {fields: seven_tuple_fields, values: [seven_Origin_legend]} : null'
+            }
+          ]
+        },
+        {
+          name: 'eight_tuple',
+          on: [
+            {
+              events: [
+                {
+                  source: 'scope',
+                  type: 'click',
+                  filter: ['event.item && indexof(event.item.mark.role, "legend") < 0']
+                }
+              ],
+              update:
+                'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: eight_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+              force: true
+            },
+            {
+              events: [
+                {
+                  signal: 'eight_Origin_legend'
+                }
+              ],
+              update:
+                'eight_Origin_legend !== null ? {fields: eight_tuple_fields, values: [eight_Origin_legend]} : null'
+            },
+            {
+              events: [
+                {
+                  source: 'scope',
+                  type: 'dblclick'
+                }
+              ],
+              update: 'null'
+            }
+          ]
+        }
+      ])
+    );
+  });
+
+  it('respects initialization', () => {
     expect(assembleTopLevelSignals(model, [])).toEqual(
       expect.arrayContaining([
         {
-          name: 'three_legend',
+          name: 'ten_Origin_legend',
           on: [
             {
-              events: '@Origin_legend_symbols:click, @Origin_legend_labels:click',
-              update:
-                'modify("three_store", event.shiftKey ? null : {unit: "Origin_legend", fields: [{"type":"E","field":"Origin"}], values: [datum.value], legend: true}, event.shiftKey ? null : true, event.shiftKey ? {unit: "Origin_legend", fields: [{"type":"E","field":"Origin"}], values: [datum.value], legend: true} : null) && {unit: "Origin_legend", fields: [{"type":"E","field":"Origin"}], values: [datum.value], legend: true}',
+              events: [
+                {
+                  source: 'view',
+                  type: 'click',
+                  markname: 'Origin_legend_symbols'
+                },
+                {
+                  source: 'view',
+                  type: 'click',
+                  markname: 'Origin_legend_labels'
+                }
+              ],
+              update: 'datum.value',
               force: true
             },
             {
-              events: '@Cylinders_legend_symbols:click, @Cylinders_legend_labels:click',
-              update:
-                'modify("three_store", event.shiftKey ? null : {unit: "Cylinders_legend", fields: [{"type":"E","field":"Cylinders"}], values: [datum.value], legend: true}, event.shiftKey ? null : true, event.shiftKey ? {unit: "Cylinders_legend", fields: [{"type":"E","field":"Cylinders"}], values: [datum.value], legend: true} : null) && {unit: "Cylinders_legend", fields: [{"type":"E","field":"Cylinders"}], values: [datum.value], legend: true}',
+              events: [{source: 'view', type: 'click'}],
+              update: '!event.item || !datum ? null : ten_Origin_legend',
               force: true
-            },
-            {
-              events: 'click',
-              update: '!event.item || !datum ? modify("three_store", null, event.shiftKey ? null : true): three_legend'
             }
           ]
         }

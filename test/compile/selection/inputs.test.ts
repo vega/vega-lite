@@ -62,7 +62,8 @@ describe('Inputs Selection Transform', () => {
       on: 'click',
       clear: 'dblclick',
       bind: {input: 'range', min: 0, max: 10, step: 1}
-    }
+    },
+    ten: {type: 'single', bind: 'legend'}
   });
 
   it('identifies transform invocation', () => {
@@ -74,6 +75,7 @@ describe('Inputs Selection Transform', () => {
     expect(inputs.has(selCmpts['seven'])).toBeTruthy();
     expect(inputs.has(selCmpts['eight'])).toBeTruthy();
     expect(inputs.has(selCmpts['nine'])).toBeTruthy();
+    expect(inputs.has(selCmpts['ten'])).toBeFalsy();
   });
 
   it('adds widget binding for default projection', () => {
@@ -116,7 +118,6 @@ describe('Inputs Selection Transform', () => {
 
   it('adds projection-specific widget bindings', () => {
     model.component.selection = {three: selCmpts['three']};
-    model.parseLegends();
     expect(assembleUnitSelectionSignals(model, [])).toContainEqual({
       name: 'three_tuple',
       update:
@@ -128,12 +129,6 @@ describe('Inputs Selection Transform', () => {
         {
           name: 'three_Origin',
           value: null,
-          on: [
-            {
-              events: {signal: 'three_legend'},
-              update: 'three_legend.values[0]'
-            }
-          ],
           bind: {
             input: 'select',
             options: ['Japan', 'USA', 'Europe']
@@ -186,14 +181,8 @@ describe('Inputs Selection Transform', () => {
           value: null,
           on: [
             {
-              events: [
-                {
-                  source: 'scope',
-                  type: 'click',
-                  filter: ['event.item && indexof(event.item.mark.role, "legend") < 0']
-                }
-              ],
-              update: 'datum && item().mark.marktype !== \'group\' ? datum["Year"] : null'
+              events: [{source: 'scope', type: 'dblclick'}],
+              update: 'datum && item().mark.marktype !== \'group\' ? datum["_vgsid_"] : null'
             }
           ],
           bind: {input: 'range', min: 0, max: 10, step: 1}

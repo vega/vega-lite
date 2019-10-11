@@ -14,12 +14,13 @@ import {TOGGLE} from './toggle';
 
 const legendBindings: TransformCompiler = {
   has: (selCmpt: SelectionComponent<'single' | 'multi'>) => {
+    const spec = selCmpt.resolve === 'global' && selCmpt.bind && isLegendBinding(selCmpt.bind);
     const projLen = selCmpt.project.items.length === 1 && selCmpt.project.items[0].field !== SELECTION_ID;
-    if (!projLen) {
+    if (spec && !projLen) {
       log.warn(log.message.LEGEND_BINDINGS_PROJECT_LENGTH);
     }
 
-    return selCmpt.resolve === 'global' && isLegendBinding(selCmpt.bind) && projLen;
+    return spec && projLen;
   },
 
   parse: (model, selCmpt, selDef, origDef) => {
@@ -62,12 +63,13 @@ const legendBindings: TransformCompiler = {
         const events = stream.merge
           .map(markName(`${prefix}_symbols`))
           .concat(stream.merge.map(markName(`${prefix}_labels`)));
+
         signals.unshift({
           name: sgName,
-          value: null,
+          ...(!selCmpt.init ? {value: null} : {}),
           on: [
             {events, update: 'datum.value', force: true},
-            {events: stream, update: `!event.item || !datum ? null : ${sgName}`, force: true}
+            {events: stream.merge, update: `!event.item || !datum ? null : ${sgName}`, force: true}
           ]
         });
       }
@@ -83,13 +85,18 @@ const legendBindings: TransformCompiler = {
     const fields = name + TUPLE_FIELDS;
     const values = proj.items.filter(p => p.hasLegend).map(p => varName(`${name}_${p.field}_legend`));
     const valid = values.map(v => `${v} !== null`).join(' && ');
+    const update = `${valid} ? {fields: ${fields}, values: [${values.join(', ')}]} : null`;
 
-    if (values.length) {
-      tuple.update = `${valid} ? {fields: ${fields}, values: [${values.join(', ')}]} : null`;
+    if (selCmpt.events && values.length) {
+      tuple.on.push({
+        events: values.map(signal => ({signal})),
+        update
+      });
+    } else if (values.length) {
+      tuple.update = update;
+      delete tuple.value;
+      delete tuple.on;
     }
-
-    delete tuple.value;
-    delete tuple.on;
 
     const toggle = signals.find(s => s.name === name + TOGGLE);
     const events = isLegendStreamBinding(selCmpt.bind) && selCmpt.bind.legend;

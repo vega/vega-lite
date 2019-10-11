@@ -45,7 +45,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
     const selCmpt = (selCmpts[name] = {
       ...selDef,
       name: name,
-      events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on
+      events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : duplicate(selDef.on)
     } as any);
 
     forEachTransform(selCmpt, txCompiler => {

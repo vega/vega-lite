@@ -29,9 +29,7 @@ describe('Selection', () => {
     expect(component['one'].project.items).toEqual(
       expect.arrayContaining([{field: '_vgsid_', type: 'E', signals: {data: 'one__vgsid_'}}])
     );
-    expect(component['one'].events).toEqual(
-      parseSelector('click[event.item && indexof(event.item.mark.role, "legend") < 0]', 'scope')
-    );
+    expect(component['one'].events).toEqual(parseSelector('click', 'scope'));
 
     expect(component.two.name).toBe('two');
     expect(component.two.type).toBe('multi');
@@ -39,9 +37,7 @@ describe('Selection', () => {
     expect(component['two'].project.items).toEqual(
       expect.arrayContaining([{field: '_vgsid_', type: 'E', signals: {data: 'two__vgsid_'}}])
     );
-    expect(component['two'].events).toEqual(
-      parseSelector('click[event.item && indexof(event.item.mark.role, "legend") < 0]', 'scope')
-    );
+    expect(component['two'].events).toEqual(parseSelector('click', 'scope'));
 
     expect(component.three.name).toBe('three');
     expect(component.three.type).toBe('interval');
@@ -92,9 +88,7 @@ describe('Selection', () => {
     expect(component['one'].project.items).toEqual(
       expect.arrayContaining([{field: 'Cylinders', type: 'E', signals: {data: 'one_Cylinders'}}])
     );
-    expect(component['one'].events).toEqual(
-      parseSelector('dblclick[event.item && indexof(event.item.mark.role, "legend") < 0]', 'scope')
-    );
+    expect(component['one'].events).toEqual(parseSelector('dblclick', 'scope'));
 
     expect(component.two.name).toBe('two');
     expect(component.two.type).toBe('multi');
@@ -104,9 +98,7 @@ describe('Selection', () => {
         {field: 'Origin', channel: 'color', type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}}
       ])
     );
-    expect(component['two'].events).toEqual(
-      parseSelector('mouseover[event.item && indexof(event.item.mark.role, "legend") < 0]', 'scope')
-    );
+    expect(component['two'].events).toEqual(parseSelector('mouseover', 'scope'));
 
     expect(component.three.name).toBe('three');
     expect(component.three.type).toBe('interval');
@@ -151,9 +143,7 @@ describe('Selection', () => {
     expect(component['one'].project.items).toEqual(
       expect.arrayContaining([{field: 'Cylinders', type: 'E', signals: {data: 'one_Cylinders'}}])
     );
-    expect(component['one'].events).toEqual(
-      parseSelector('dblclick[event.item && indexof(event.item.mark.role, "legend") < 0]', 'scope')
-    );
+    expect(component['one'].events).toEqual(parseSelector('dblclick', 'scope'));
 
     expect(component.two.name).toBe('two');
     expect(component.two.type).toBe('multi');
@@ -163,9 +153,7 @@ describe('Selection', () => {
         {field: 'Origin', channel: 'color', type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}}
       ])
     );
-    expect(component['two'].events).toEqual(
-      parseSelector('mouseover[event.item && indexof(event.item.mark.role, "legend") < 0]', 'scope')
-    );
+    expect(component['two'].events).toEqual(parseSelector('mouseover', 'scope'));
 
     expect(component.three.name).toBe('three');
     expect(component.three.type).toBe('interval');
