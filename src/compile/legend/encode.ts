@@ -96,13 +96,10 @@ export function symbols(
   }
 
   if (channel !== OPACITY) {
-    if (opacity) {
-      // only apply opacity if it is neither zero or undefined
-      if (condition) {
-        out.opacity = [{test: condition, value: opacity}, {value: config.legend.unselectedOpacity}];
-      } else {
-        out.opacity = {value: opacity};
-      }
+    if (condition) {
+      out.opacity = [{test: condition, value: opacity || 1}, {value: config.legend.unselectedOpacity}];
+    } else if (opacity) {
+      out.opacity = {value: opacity};
     }
   }
 
