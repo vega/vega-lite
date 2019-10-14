@@ -4,7 +4,7 @@ import {MAIN} from '../../data';
 import {isAggregate, pathGroupingFields} from '../../encoding';
 import {AREA, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortByEncoding, isSortField} from '../../sort';
-import {contains, getFirstDefined, isNullOrFalse} from '../../util';
+import {contains, getFirstDefined, isNullOrFalse, keys} from '../../util';
 import {VgCompare} from '../../vega.schema';
 import {getMarkConfig, getStyles, sortParams} from '../common';
 import {UnitModel} from '../unit';
@@ -150,6 +150,7 @@ function getMarkGroups(
   const style = getStyles(model.markDef);
   const key = model.encoding.key;
   const sort = getSort(model);
+  const interactive = interactiveFlag(model);
 
   const postEncodingTransform = markCompiler[mark].postEncodingTransform
     ? markCompiler[mark].postEncodingTransform(model)
@@ -163,6 +164,7 @@ function getMarkGroups(
       ...(style ? {style} : {}),
       ...(key ? {key: key.field} : {}),
       ...(sort ? {sort} : {}),
+      ...(interactive ? interactive : {}),
       from: {data: opt.fromPrefix + model.requestDataName(MAIN)},
       encode: {
         update: markCompiler[mark].encodeEntry(model)
@@ -194,4 +196,19 @@ function scaleClip(model: UnitModel) {
 function projectionClip(model: UnitModel) {
   const projection = model.component.projection;
   return projection && !projection.isFit ? true : undefined;
+}
+
+/**
+ * Only output interactive flags if we have selections defined somewhere in our model hierarchy.
+ */
+function interactiveFlag(model: UnitModel) {
+  if (!model.component.selection) return null;
+  const unitCount = keys(model.component.selection).length;
+  let parentCount = unitCount;
+  let parent = model.parent;
+  while (parent && parentCount === 0) {
+    parentCount = keys(parent.component.selection).length;
+    parent = parent.parent;
+  }
+  return parentCount ? {interactive: unitCount > 0} : null;
 }

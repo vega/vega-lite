@@ -21,6 +21,7 @@ const nearest: TransformCompiler = {
     const cellDef = {
       name: model.getName(VORONOI),
       type: 'path',
+      interactive: true,
       from: {data: model.getName('marks')},
       encode: {
         update: {

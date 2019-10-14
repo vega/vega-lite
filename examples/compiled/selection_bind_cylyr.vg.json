@@ -60,6 +60,7 @@
       "name": "marks",
       "type": "symbol",
       "style": ["circle"],
+      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {

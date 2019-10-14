@@ -69,6 +69,7 @@
       "name": "marks",
       "type": "symbol",
       "style": ["point"],
+      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -90,6 +91,7 @@
     {
       "name": "voronoi",
       "type": "path",
+      "interactive": true,
       "from": {"data": "marks"},
       "encode": {
         "update": {

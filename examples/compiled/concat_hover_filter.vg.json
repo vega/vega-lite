@@ -113,6 +113,7 @@
           "name": "concat_0_layer_0_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_0"},
           "encode": {
             "update": {
@@ -128,6 +129,7 @@
           "name": "concat_0_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": false,
           "from": {"data": "data_2"},
           "encode": {
             "update": {
@@ -227,6 +229,7 @@
           "name": "concat_1_layer_0_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_4"},
           "encode": {
             "update": {
@@ -242,6 +245,7 @@
           "name": "concat_1_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": false,
           "from": {"data": "data_3"},
           "encode": {
             "update": {

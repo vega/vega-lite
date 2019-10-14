@@ -16,7 +16,6 @@ function getModel(markType: any) {
     }
   });
   model.parseScale();
-  model.parseMarkGroup();
   model.component.selection = parseUnitSelection(model, {
     one: {type: 'single', nearest: true},
     two: {type: 'multi', nearest: true},
@@ -31,6 +30,7 @@ function getModel(markType: any) {
     singleNearestOnMouseover: {type: 'single', nearest: true, on: 'mouseover'},
     multiNearestOnMouseover: {type: 'multi', nearest: true, on: 'mouseover'}
   });
+  model.parseMarkGroup();
 
   return model;
 }
@@ -41,6 +41,7 @@ function voronoiMark(x?: string | {expr: string}, y?: string | {expr: string}, t
     {
       name: 'voronoi',
       type: 'path',
+      interactive: true,
       from: {data: 'marks'},
       encode: {
         update: {

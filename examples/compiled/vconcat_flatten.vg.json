@@ -139,6 +139,7 @@
           "name": "concat_0_marks",
           "type": "symbol",
           "style": ["circle"],
+          "interactive": true,
           "from": {"data": "data_1"},
           "encode": {
             "update": {
@@ -246,6 +247,7 @@
               "type": "line",
               "style": ["line"],
               "sort": {"field": "datum[\"lc.time\"]"},
+              "interactive": false,
               "from": {"data": "faceted_path_concat_1_main"},
               "encode": {
                 "update": {

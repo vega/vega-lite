@@ -93,6 +93,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
+      "interactive": true,
       "from": {"data": "data_0"},
       "encode": {
         "update": {
@@ -115,6 +116,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["circle"],
+      "interactive": false,
       "from": {"data": "data_1"},
       "encode": {
         "update": {

@@ -133,6 +133,7 @@
       "type": "symbol",
       "clip": true,
       "style": ["circle"],
+      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {

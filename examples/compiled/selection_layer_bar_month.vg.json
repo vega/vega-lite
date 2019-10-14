@@ -259,6 +259,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
+      "interactive": true,
       "from": {"data": "data_1"},
       "encode": {
         "update": {
@@ -281,6 +282,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
+      "interactive": false,
       "from": {"data": "data_0"},
       "encode": {
         "update": {
