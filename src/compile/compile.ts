@@ -1,5 +1,5 @@
 import {AutoSizeType, LoggerInterface, Spec as VgSpec} from 'vega';
-import {isString} from 'vega-util';
+import {isString, mergeConfig} from 'vega-util';
 import {getPositionScaleChannel} from '../channel';
 import * as vlFieldDef from '../channeldef';
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
@@ -14,7 +14,7 @@ import {
   isFitType,
   TopLevelProperties
 } from '../spec/toplevel';
-import {keys, mergeDeep} from '../util';
+import {keys} from '../util';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
 import {optimizeDataflow} from './data/optimize';
@@ -70,7 +70,7 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
 
   try {
     // 1. Initialize config by deep merging default config with the config provided via option and the input spec.
-    const config = initConfig(mergeDeep({}, opt.config, inputSpec.config));
+    const config = initConfig(mergeConfig({}, opt.config, inputSpec.config));
 
     // 2. Normalize: Convert input spec -> normalized spec
 
