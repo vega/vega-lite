@@ -124,20 +124,25 @@ export class RemoveUnusedSubtrees extends BottomUpOptimizer {
  * Removes duplicate time unit nodes (as determined by the name of the
  * output field) that may be generated due to selections projected over
  * time units.
+ *
+ * TODO: Try to make this a top down optimizer that keeps only the first
+ * insance of a time unit node.
+ * TODO: Try to make a generic version of this that only keeps one node per hash.
  */
-
 export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
   private fields = new Set<string>();
+  private prev: DataFlowNode = null;
   public run(node: DataFlowNode): OptimizerFlags {
     this.setContinue();
     if (node instanceof TimeUnitNode) {
       const pfields = node.producedFields();
       if (hasIntersection(pfields, this.fields)) {
         this.setMutated();
-        node.remove();
+        this.prev.remove();
       } else {
         this.fields = new Set([...this.fields, ...pfields]);
       }
+      this.prev = node;
     }
     return this.flags;
   }

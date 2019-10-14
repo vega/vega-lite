@@ -10,16 +10,22 @@
     {
       "name": "source_0",
       "url": "data/unemployment-across-industries.json",
-      "format": {"type": "json", "parse": {"date": "date"}}
+      "format": {"type": "json", "parse": {"date": "date"}},
+      "transform": [
+        {
+          "type": "formula",
+          "as": "yearmonth_date",
+          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+        }
+      ]
     },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
         {
-          "type": "formula",
-          "as": "yearmonth_date",
-          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+          "type": "filter",
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -34,15 +40,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
-        },
-        {
-          "type": "formula",
-          "as": "yearmonth_date",
-          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-        },
         {
           "type": "aggregate",
           "groupby": ["yearmonth_date"],
@@ -262,7 +259,7 @@
       "type": "area",
       "style": ["area"],
       "sort": {"field": "datum[\"yearmonth_date\"]"},
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "orient": {"value": "vertical"},
@@ -281,7 +278,7 @@
       "type": "area",
       "style": ["area"],
       "sort": {"field": "datum[\"yearmonth_date\"]"},
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "orient": {"value": "vertical"},
@@ -344,8 +341,8 @@
       "type": "time",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "yearmonth_date"},
-          {"data": "data_1", "field": "yearmonth_date"}
+          {"data": "data_1", "field": "yearmonth_date"},
+          {"data": "data_0", "field": "yearmonth_date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -355,8 +352,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "sum_count"},
-          {"data": "data_1", "field": "sum_count"}
+          {"data": "data_1", "field": "sum_count"},
+          {"data": "data_0", "field": "sum_count"}
         ]
       },
       "range": [{"signal": "height"}, 0],
