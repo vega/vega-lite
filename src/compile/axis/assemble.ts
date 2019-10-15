@@ -1,4 +1,4 @@
-import {Axis as VgAxis, AxisEncode, NewSignal} from 'vega';
+import {Axis as VgAxis, AxisEncode, NewSignal, Text} from 'vega';
 import {isArray} from 'vega-util';
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isConditionalAxisValue} from '../../axis';
 import {POSITION_SCALE_CHANNELS} from '../../channel';
@@ -9,9 +9,13 @@ import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {Model} from '../model';
 import {expression} from '../predicate';
 import {AxisComponent, AxisComponentIndex} from './component';
+import {isText} from '../../title';
 
-function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {
-  if (isArray<FieldDefBase<string>>(title)) {
+function assembleTitle(title: Text | FieldDefBase<string>[], config: Config): Text {
+  if (!title) {
+    return undefined;
+  }
+  if (!isText(title)) {
     return title.map(fieldDef => defaultTitle(fieldDef, config)).join(', ');
   }
   return title;

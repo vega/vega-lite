@@ -1,4 +1,4 @@
-import {Color} from 'vega';
+import {Color, Text} from 'vega';
 import {isArray, isNumber, isObject} from 'vega-util';
 import {Config} from '../config';
 import {Data} from '../data';
@@ -21,7 +21,7 @@ export interface BaseSpec {
   /**
    * Title for the plot.
    */
-  title?: string | TitleParams;
+  title?: Text | TitleParams;
 
   /**
    * Name of the visualization for later reference.

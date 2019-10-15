@@ -1,5 +1,5 @@
 import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
-import {hasOwnProperty, isString} from 'vega-util';
+import {hasOwnProperty} from 'vega-util';
 import {
   Channel,
   FACET_CHANNELS,
@@ -25,7 +25,7 @@ import {
   ViewBackground
 } from '../spec/base';
 import {NormalizedSpec} from '../spec/index';
-import {extractTitleConfig, TitleParams} from '../title';
+import {extractTitleConfig, TitleParams, isText} from '../title';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection} from '../vega.schema';
@@ -190,7 +190,7 @@ export abstract class Model {
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this.name = spec.name || parentGivenName;
-    this.title = isString(spec.title) ? {text: spec.title} : spec.title;
+    this.title = isText(spec.title) ? {text: spec.title} : (spec.title as TitleParams);
 
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();

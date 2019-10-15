@@ -1,3 +1,4 @@
+import {Text} from 'vega';
 // Declaration and utility for variants of a field definition object
 import {LinearGradient, RadialGradient} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
@@ -36,10 +37,12 @@ export type Value = number | string | boolean | null;
 export type Gradient = LinearGradient | RadialGradient;
 export type ValueOrGradient = Value | Gradient;
 
+export type ValueOrGradientOrText = Value | Gradient | Text;
+
 /**
  * Definition object for a constant value (primitive value or gradient definition) of an encoding channel.
  */
-export interface ValueDef<V extends ValueOrGradient | number[] = Value> {
+export interface ValueDef<V extends ValueOrGradient | Value[] = Value> {
   /**
    * A constant value in visual domain (e.g., `"red"` / `"#0099ff"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).
    */
@@ -51,7 +54,7 @@ export interface ValueDef<V extends ValueOrGradient | number[] = Value> {
  * F defines the underlying FieldDef type.
  */
 
-export type ChannelDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradient = Value> =
+export type ChannelDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradientOrText = Value> =
   | FieldDefWithCondition<F, V>
   | ValueDefWithCondition<F, V>;
 
@@ -66,7 +69,9 @@ export type ChannelDefWithCondition<F extends FieldDef<any>, V extends ValueOrGr
 /**
  * @minProperties 1
  */
-export type ValueDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradient = Value> = Partial<ValueDef<V>> & {
+export type ValueDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradientOrText = Value> = Partial<
+  ValueDef<V>
+> & {
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
@@ -92,7 +97,7 @@ export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
 export type ShapeValueDefWithCondition<F extends Field> = StringValueDefWithCondition<F, TypeForShape>;
 
-export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<TextFieldDef<F>, Value>;
+export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<StringFieldDef<F>, Text>;
 
 export type Conditional<CD extends FieldDef<any> | ValueDef<any>> = ConditionalPredicate<CD> | ConditionalSelection<CD>;
 
@@ -114,7 +119,7 @@ export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSe
   return c['selection'];
 }
 
-export interface ConditionValueDefMixins<V extends ValueOrGradient = Value> {
+export interface ConditionValueDefMixins<V extends ValueOrGradientOrText = Value> {
   /**
    * One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).
    *
@@ -133,7 +138,7 @@ export interface ConditionValueDefMixins<V extends ValueOrGradient = Value> {
  * }
  */
 
-export type FieldDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradient = Value> = F &
+export type FieldDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradientOrText = Value> = F &
   ConditionValueDefMixins<V>;
 
 export type ColorGradientFieldDefWithCondition<F extends Field, T extends Type = StandardType> = FieldDefWithCondition<
@@ -151,7 +156,9 @@ export type ShapeFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
   string | null
 >;
 
-export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<TextFieldDef<F>, Value>;
+export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<StringFieldDef<F>, Text>;
+
+export type StringFieldDefWithCondition<F extends Field> = FieldDefWithCondition<StringFieldDef<F>, string>;
 
 /**
  * A ValueDef with optional Condition<ValueDef | FieldDef>
@@ -453,15 +460,15 @@ export interface OrderFieldDef<F extends Field> extends FieldDefWithoutScale<F> 
   sort?: SortOrder;
 }
 
-export interface TextFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
+export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
 
 export type FieldDef<F extends Field> = SecondaryFieldDef<F> | TypedFieldDef<F>;
 export type ChannelDef<
   FD extends FieldDef<any> = FieldDef<string>,
-  V extends ValueOrGradient = ValueOrGradient
+  V extends ValueOrGradientOrText = ValueOrGradientOrText
 > = ChannelDefWithCondition<FD, V>;
 
-export function isConditionalDef<F extends Field, V extends ValueOrGradient>(
+export function isConditionalDef<F extends Field, V extends ValueOrGradientOrText>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is ChannelDefWithCondition<FieldDef<F>, V> {
   return !!channelDef && !!channelDef.condition;
@@ -470,7 +477,7 @@ export function isConditionalDef<F extends Field, V extends ValueOrGradient>(
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-export function hasConditionalFieldDef<F extends Field, V extends ValueOrGradient>(
+export function hasConditionalFieldDef<F extends Field, V extends ValueOrGradientOrText>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is Partial<ValueDef<V>> & {condition: Conditional<TypedFieldDef<F>>} {
   return !!channelDef && !!channelDef.condition && !isArray(channelDef.condition) && isFieldDef(channelDef.condition);
@@ -491,7 +498,7 @@ export function isFieldDef<F extends Field>(
   | ScaleFieldDef<F>
   | MarkPropFieldDef<F>
   | OrderFieldDef<F>
-  | TextFieldDef<F> {
+  | StringFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
@@ -503,7 +510,7 @@ export function isStringFieldDef(channelDef: ChannelDef<FieldDef<Field>>): chann
   return isFieldDef(channelDef) && isString(channelDef.field);
 }
 
-export function isValueDef<F extends Field, V extends ValueOrGradient>(
+export function isValueDef<F extends Field, V extends ValueOrGradientOrText>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is ValueDef<V> {
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
@@ -528,7 +535,7 @@ export function isMarkPropFieldDef<F extends Field>(
   return !!channelDef && !!channelDef['legend'];
 }
 
-export function isTextFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is TextFieldDef<F> {
+export function isTextFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is StringFieldDef<F> {
   return !!channelDef && !!channelDef['format'];
 }
 

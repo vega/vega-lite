@@ -1,5 +1,6 @@
-import {BaseTitle, TextEncodeEntry, TitleAnchor} from 'vega';
+import {BaseTitle, TextEncodeEntry, TitleAnchor, Text} from 'vega';
 import {BaseMarkConfig, ExcludeMappedValueRef} from './vega.schema';
+import {isString, isArray} from 'vega-util';
 
 export type BaseTitleNoSignals = ExcludeMappedValueRef<BaseTitle>;
 
@@ -34,7 +35,7 @@ export interface TitleBase extends BaseTitleNoSignals {
   zindex?: number;
 
   /**
-   * Mark definitions for custom axis encoding.
+   * Mark definitions for custom encoding.
    *
    * @hidden
    */
@@ -45,7 +46,12 @@ export interface TitleParams extends TitleBase {
   /**
    * The title text.
    */
-  text: string;
+  text: Text;
+
+  /**
+   * The subtitle Text.
+   */
+  subtitle?: Text;
 }
 
 export function extractTitleConfig(
@@ -79,4 +85,8 @@ export function extractTitleConfig(
   };
 
   return {mark, nonMark};
+}
+
+export function isText(v: any): v is Text {
+  return isString(v) || (isArray(v) && isString(v[0]));
 }

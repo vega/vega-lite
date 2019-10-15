@@ -1,4 +1,4 @@
-import {AggregateOp, Orientation} from 'vega';
+import {AggregateOp, Orientation, Text} from 'vega';
 import {PositionChannel} from '../channel';
 import {Field, isContinuous, isFieldDef, PositionFieldDef, SecondaryFieldDef, title, ValueDef} from '../channeldef';
 import {Config} from '../config';
@@ -301,7 +301,7 @@ export function errorBarParams<
   markDef: MD;
   outerSpec: {
     data?: Data;
-    title?: string | TitleParams;
+    title?: Text | TitleParams;
     name?: string;
     description?: string;
     transform?: Transform[];
