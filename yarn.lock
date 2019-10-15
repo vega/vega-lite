@@ -924,13 +924,13 @@
     eslint-scope "^5.0.0"
 
 "@typescript-eslint/parser@^2.3.3":
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-2.3.3.tgz#af519d6572bdee3e9610e21c8362766858976bc1"
-  integrity sha512-+cV53HuYFeeyrNW8x/rgPmbVrzzp/rpRmwbJnNtwn4K8mroL1BdjxwQh7X9cUHp9rm4BBiEWmD3cSBjKG7d5mw==
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-2.4.0.tgz#fe43ed5fec14af03d3594fce2c3b7ec4c8df0243"
+  integrity sha512-IouAKi/grJ4MFrwdXIJ1GHAwbPWYgkT3b/x8Q49F378c9nwgxVkO76e0rZeUVpwHMaUuoKG2sUeK0XGkwdlwkw==
   dependencies:
     "@types/eslint-visitor-keys" "^1.0.0"
-    "@typescript-eslint/experimental-utils" "2.3.3"
-    "@typescript-eslint/typescript-estree" "2.3.3"
+    "@typescript-eslint/experimental-utils" "2.4.0"
+    "@typescript-eslint/typescript-estree" "2.4.0"
     eslint-visitor-keys "^1.1.0"
 
 "@typescript-eslint/typescript-estree@2.3.3":
