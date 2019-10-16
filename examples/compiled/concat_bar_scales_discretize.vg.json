@@ -1,3 +1,4 @@
+foo
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Horizontally concatenated charts that show different types of discretizing scales.",

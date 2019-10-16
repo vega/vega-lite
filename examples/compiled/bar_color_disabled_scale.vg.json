@@ -1,3 +1,4 @@
+foo
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar chart that directly encodes color names in the data.",

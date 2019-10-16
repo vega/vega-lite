@@ -1,3 +1,4 @@
+foo
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "the population per state, engineers per state, and hurricanes per state",

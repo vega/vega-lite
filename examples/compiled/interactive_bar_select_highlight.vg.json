@@ -1,3 +1,4 @@
+foo
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar chart with highlighting on hover and selecting on click. (Inspired by Tableau's interaction style.)",

@@ -1,3 +1,4 @@
+foo
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Line drawn between airports in the U.S. simulating a flight itinerary",

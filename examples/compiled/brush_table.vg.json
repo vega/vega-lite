@@ -1,3 +1,4 @@
+foo
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Drag a rectangular brush to show (first 20) selected points in a table.",

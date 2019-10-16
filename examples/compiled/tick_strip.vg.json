@@ -1,3 +1,4 @@
+foo
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Shows the relationship between horsepower and the numbver of cylinders using tick marks.",

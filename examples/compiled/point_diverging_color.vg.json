@@ -1,3 +1,4 @@
+foo
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bubbleplot showing horsepower on x, miles per gallons on y, and weight with a diverging color scale.",
