@@ -42,6 +42,5 @@
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]
     }
-  ],
-  "config": {"background": "white"}
+  ]
 }

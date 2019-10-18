@@ -224,5 +224,5 @@
       "zero": true
     }
   ],
-  "config": {"background": "white", "style": {"cell": {"stroke": null}}}
+  "config": {"style": {"cell": {"stroke": null}}}
 }

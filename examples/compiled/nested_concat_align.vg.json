@@ -612,9 +612,5 @@
       "zero": true
     }
   ],
-  "config": {
-    "background": "white",
-    "axisX": {"titleLimit": 150},
-    "axisY": {"minExtent": 40}
-  }
+  "config": {"axisX": {"titleLimit": 150}, "axisY": {"minExtent": 40}}
 }

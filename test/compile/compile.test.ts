@@ -488,7 +488,7 @@ describe('compile/compile', () => {
         }
       }
     ).spec;
-    expect(spec.config.background).toBe('blue');
+    expect(spec.background).toBe('blue');
   });
 
   it('should merge spec and provided config.', () => {
@@ -507,7 +507,7 @@ describe('compile/compile', () => {
         }
       }
     ).spec;
-    expect(spec.config.background).toBe('red');
+    expect(spec.background).toBe('red');
   });
 
   it('should return a spec with projections (implicit)', () => {

@@ -2,7 +2,7 @@ import {AutoSizeType, LoggerInterface, Spec as VgSpec} from 'vega';
 import {isString, mergeConfig} from 'vega-util';
 import {getPositionScaleChannel} from '../channel';
 import * as vlFieldDef from '../channeldef';
-import {Config, initConfig, stripAndRedirectConfig} from '../config';
+import {initConfig, stripAndRedirectConfig} from '../config';
 import * as log from '../log';
 import {normalize} from '../normalize/index';
 import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec';
@@ -15,6 +15,7 @@ import {
   TopLevelProperties
 } from '../spec/toplevel';
 import {keys} from '../util';
+import {Config} from './../config';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
 import {optimizeDataflow} from './data/optimize';
@@ -100,7 +101,7 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
 
     // draw(model.component.data.sources);
 
-    // 5. Optimize the dataflow.  This will modify the data component of the model.
+    // 5. Optimize the dataflow. This will modify the data component of the model.
     optimizeDataflow(model.component.data, model);
 
     // 6. Assemble: convert model components --> Vega Spec.

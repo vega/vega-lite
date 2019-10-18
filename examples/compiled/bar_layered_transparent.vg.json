@@ -119,6 +119,5 @@
       "title": "gender",
       "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
     }
-  ],
-  "config": {"background": "white"}
+  ]
 }

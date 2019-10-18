@@ -232,5 +232,5 @@
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
   ],
-  "config": {"background": "white", "style": {"cell": {"fill": "yellow"}}}
+  "config": {"style": {"cell": {"fill": "yellow"}}}
 }

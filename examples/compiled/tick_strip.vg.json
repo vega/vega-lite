@@ -92,6 +92,5 @@
       "labelOverlap": true,
       "zindex": 0
     }
-  ],
-  "config": {"background": "white"}
+  ]
 }

@@ -110,7 +110,6 @@
     }
   ],
   "config": {
-    "background": "white",
     "style": {"label": {"align": "left", "baseline": "middle", "dx": 3}}
   }
 }

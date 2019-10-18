@@ -176,6 +176,5 @@
       "title": "year",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
-  ],
-  "config": {"background": "white"}
+  ]
 }

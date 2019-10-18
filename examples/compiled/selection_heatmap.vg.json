@@ -154,7 +154,6 @@
     }
   ],
   "config": {
-    "background": "white",
     "axis": {"domain": false, "zindex": 0},
     "range": {"ramp": {"scheme": "yellowgreenblue"}}
   }

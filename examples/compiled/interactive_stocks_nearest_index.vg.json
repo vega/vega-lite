@@ -257,8 +257,5 @@
       "title": "symbol"
     }
   ],
-  "config": {
-    "background": "white",
-    "style": {"text": {"align": "right", "dx": -5, "dy": 5}}
-  }
+  "config": {"style": {"text": {"align": "right", "dx": -5, "dy": 5}}}
 }

@@ -234,8 +234,5 @@
       "zindex": 0
     }
   ],
-  "config": {
-    "background": "white",
-    "style": {"text": {"align": "left", "dx": 3, "dy": 1}}
-  }
+  "config": {"style": {"text": {"align": "left", "dx": 3, "dy": 1}}}
 }

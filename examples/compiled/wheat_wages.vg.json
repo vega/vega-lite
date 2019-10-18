@@ -335,7 +335,6 @@
     }
   ],
   "config": {
-    "background": "white",
     "axis": {
       "title": null,
       "gridColor": "white",

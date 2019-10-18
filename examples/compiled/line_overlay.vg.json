@@ -188,6 +188,5 @@
       "fill": "color",
       "encode": {"symbols": {"update": {"opacity": {"value": 1}}}}
     }
-  ],
-  "config": {"background": "white"}
+  ]
 }

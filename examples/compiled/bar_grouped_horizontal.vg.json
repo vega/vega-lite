@@ -155,7 +155,6 @@
     }
   ],
   "config": {
-    "background": "white",
     "axis": {"domainWidth": 1},
     "style": {"cell": {"stroke": "transparent"}}
   }

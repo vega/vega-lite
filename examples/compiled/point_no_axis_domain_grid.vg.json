@@ -75,5 +75,5 @@
       "zindex": 0
     }
   ],
-  "config": {"background": "white", "axis": {"domain": false, "grid": false}}
+  "config": {"axis": {"domain": false, "grid": false}}
 }
