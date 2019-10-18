@@ -3,9 +3,9 @@
   "author": "Dominik Moritz, Kanit \"Ham\" Wongsuphasawat, Arvind Satyanarayan, Jeffrey Heer",
   "version": "4.0.0-beta.10",
   "collaborators": [
-    "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
-    "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
-    "Arvind Satyanarayan (https://arvindsatya.com/)",
+    "Kanit Wongsuphasawat (http://kanitw.yellowpigz.com)",
+    "Dominik Moritz (https://www.domoritz.de)",
+    "Arvind Satyanarayan (https://arvindsatya.com)",
     "Jeffrey Heer (https://jheer.org)"
   ],
   "homepage": "https://vega.github.io/vega-lite/",
