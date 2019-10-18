@@ -1,3 +1,5 @@
+import {ValueOrGradientOrText} from './../../channeldef';
+import {array} from 'vega-util';
 /**
  * Utility files for producing Vega ValueRef for marks
  */
@@ -26,7 +28,6 @@ import {
   title,
   TypedFieldDef,
   Value,
-  ValueOrGradient,
   vgField
 } from '../../channeldef';
 import {Config} from '../../config';
@@ -378,7 +379,7 @@ export function midPoint({
 /**
  * Convert special "width" and "height" values in Vega-Lite into Vega value ref.
  */
-export function vgValueRef(channel: Channel, value: ValueOrGradient) {
+export function vgValueRef(channel: Channel, value: ValueOrGradientOrText) {
   if (contains(['x', 'x2'], channel) && value === 'width') {
     return {field: {group: 'width'}};
   } else if (contains(['y', 'y2'], channel) && value === 'height') {
@@ -408,7 +409,7 @@ export function tooltipForEncoding(
           type: encoding[mainChannel].type // for secondary field def, copy type from main channel
         };
 
-    const key = title(fieldDef, config, {allowDisabling: false});
+    const key = array(title(fieldDef, config, {allowDisabling: false})).join(', ');
 
     let value = text(fieldDef, config, expr).signal;
 
@@ -446,7 +447,7 @@ export function tooltipForEncoding(
 }
 
 export function text(
-  channelDef: ChannelDefWithCondition<FieldDef<string>, Value>,
+  channelDef: ChannelDefWithCondition<FieldDef<string>, Value | string[]>,
   config: Config,
   expr: 'datum' | 'datum.datum' = 'datum'
 ): VgValueRef {

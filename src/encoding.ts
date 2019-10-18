@@ -29,13 +29,15 @@ import {
   SecondaryFieldDef,
   ShapeFieldDefWithCondition,
   ShapeValueDefWithCondition,
-  TextFieldDef,
+  StringFieldDef,
+  StringFieldDefWithCondition,
+  StringValueDefWithCondition,
   TextFieldDefWithCondition,
   TextValueDefWithCondition,
   title,
   TypedFieldDef,
   ValueDef,
-  ValueOrGradient,
+  ValueOrGradientOrText,
   vgField
 } from './channeldef';
 import {Config} from './config';
@@ -204,17 +206,17 @@ export interface Encoding<F extends Field> {
    *
    * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite.
    */
-  tooltip?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F> | TextFieldDef<F>[] | null;
+  tooltip?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | StringFieldDef<F>[] | null;
 
   /**
    * A URL to load upon mouse click.
    */
-  href?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
+  href?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
 
   /**
    * The URL of an image mark.
    */
-  url?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
+  url?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
 
   /**
    * Order of the marks.
@@ -235,7 +237,7 @@ export function channelHasField<F extends Field>(encoding: EncodingWithFacet<F>,
     if (isArray(channelDef)) {
       return some(channelDef, fieldDef => !!fieldDef.field);
     } else {
-      return isFieldDef(channelDef) || hasConditionalFieldDef<Field, ValueOrGradient>(channelDef);
+      return isFieldDef(channelDef) || hasConditionalFieldDef<Field, ValueOrGradientOrText>(channelDef);
     }
   }
   return false;
@@ -457,7 +459,7 @@ export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): Fiel
       for (const def of channelDefArray) {
         if (isFieldDef(def)) {
           arr.push(def);
-        } else if (hasConditionalFieldDef<F, ValueOrGradient>(def)) {
+        } else if (hasConditionalFieldDef<F, ValueOrGradientOrText>(def)) {
           arr.push(def.condition);
         }
       }

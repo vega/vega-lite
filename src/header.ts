@@ -13,6 +13,7 @@ export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof CoreHeader]: keyof TitleC
   titleFontStyle: 'fontStyle',
   titleFontWeight: 'fontWeight',
   titleLimit: 'limit',
+  titleLineHeight: 'lineHeight',
   titleOrient: 'orient',
   titlePadding: 'offset'
 };
@@ -97,6 +98,11 @@ export interface CoreHeader extends FormatMixins {
    * __Default value:__ `0`, indicating no limit
    */
   titleLimit?: number;
+
+  /**
+   * Line height in pixels for multi-line title text.
+   */
+  titleLineHeight?: number;
 
   /**
    * The orientation of the header title. One of `"top"`, `"bottom"`, `"left"` or `"right"`.

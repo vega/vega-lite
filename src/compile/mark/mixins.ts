@@ -1,3 +1,4 @@
+import {ValueOrGradientOrText} from './../../channeldef';
 import {Align} from 'vega';
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
@@ -233,7 +234,7 @@ export function nonPosition(
  * Return a mixin that includes a Vega production rule for a Vega-Lite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
-export function wrapCondition<FD extends FieldDef<any>, V extends ValueOrGradient>(
+export function wrapCondition<FD extends FieldDef<any>, V extends ValueOrGradientOrText>(
   model: UnitModel,
   channelDef: ChannelDef<FD, V>,
   vgChannel: string,

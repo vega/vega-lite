@@ -1,6 +1,7 @@
 import {ConditionValueDefMixins, ValueDef} from './channeldef';
 import {LegendConfig} from './legend';
 import {VgEncodeChannel} from './vega.schema';
+import {Text} from 'vega';
 
 export interface TitleMixins {
   /**
@@ -14,7 +15,7 @@ export interface TitleMixins {
    *
    * 2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.
    */
-  title?: string | null;
+  title?: Text | null;
 }
 
 export interface FormatMixins {

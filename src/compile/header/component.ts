@@ -1,7 +1,7 @@
 /**
  * Utility for generating row / column headers
  */
-import {Axis as VgAxis} from 'vega';
+import {Axis as VgAxis, Text} from 'vega';
 import {FacetFieldDef} from '../../spec/facet';
 
 export type HeaderChannel = 'row' | 'column';
@@ -20,7 +20,7 @@ export interface LayoutHeaderComponentIndex {
  * A component that represents all header, footers and title of a Vega group with layout directive.
  */
 export interface LayoutHeaderComponent {
-  title?: string;
+  title?: Text;
 
   // TODO: repeat and concat can have multiple header / footer.
   // Need to redesign this part a bit.
