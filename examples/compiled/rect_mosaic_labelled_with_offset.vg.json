@@ -273,7 +273,6 @@
     }
   ],
   "config": {
-    "background": "white",
     "axis": {"domain": false, "ticks": false, "labels": false, "grid": false},
     "style": {"cell": {"stroke": ""}}
   }

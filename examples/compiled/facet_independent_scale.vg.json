@@ -208,5 +208,5 @@
       "title": "gender"
     }
   ],
-  "config": {"background": "white", "style": {"cell": {"fill": "yellow"}}}
+  "config": {"style": {"cell": {"fill": "yellow"}}}
 }

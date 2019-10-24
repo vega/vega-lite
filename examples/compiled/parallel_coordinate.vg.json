@@ -250,7 +250,6 @@
     }
   ],
   "config": {
-    "background": "white",
     "axisX": {
       "domain": false,
       "labelAngle": 0,

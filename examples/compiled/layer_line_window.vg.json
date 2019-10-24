@@ -612,6 +612,5 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "stroke"
     }
-  ],
-  "config": {"background": "white"}
+  ]
 }

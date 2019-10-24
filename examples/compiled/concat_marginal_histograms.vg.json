@@ -428,8 +428,5 @@
       "title": "Count of Records"
     }
   ],
-  "config": {
-    "background": "white",
-    "style": {"cell": {"stroke": "transparent"}}
-  }
+  "config": {"style": {"cell": {"stroke": "transparent"}}}
 }

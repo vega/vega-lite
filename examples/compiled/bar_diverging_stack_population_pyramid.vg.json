@@ -117,9 +117,5 @@
       "symbolType": "square"
     }
   ],
-  "config": {
-    "background": "white",
-    "axis": {"grid": false},
-    "style": {"cell": {"stroke": null}}
-  }
+  "config": {"axis": {"grid": false}, "style": {"cell": {"stroke": null}}}
 }

@@ -301,5 +301,5 @@
       "zindex": 0
     }
   ],
-  "config": {"background": "white", "style": {"text": {"fontWeight": "bold"}}}
+  "config": {"style": {"text": {"fontWeight": "bold"}}}
 }

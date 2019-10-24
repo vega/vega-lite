@@ -120,9 +120,5 @@
       "symbolType": "square"
     }
   ],
-  "config": {
-    "background": "white",
-    "axis": {"domain": false},
-    "style": {"cell": {"strokeWidth": 0}}
-  }
+  "config": {"axis": {"domain": false}, "style": {"cell": {"strokeWidth": 0}}}
 }

@@ -159,8 +159,5 @@
       "zindex": 0
     }
   ],
-  "config": {
-    "background": "white",
-    "style": {"area": {"interpolate": "monotone"}}
-  }
+  "config": {"style": {"area": {"interpolate": "monotone"}}}
 }

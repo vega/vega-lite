@@ -144,5 +144,5 @@
       ]
     }
   ],
-  "config": {"background": "white", "style": {"cell": {"stroke": ""}}}
+  "config": {"style": {"cell": {"stroke": ""}}}
 }

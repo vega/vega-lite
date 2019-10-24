@@ -156,6 +156,5 @@
         "labels": {"update": {"text": {"signal": "'Q' + quarter(datum.value)"}}}
       }
     }
-  ],
-  "config": {"background": "white"}
+  ]
 }

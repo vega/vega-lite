@@ -141,8 +141,5 @@
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
   ],
-  "config": {
-    "background": "white",
-    "style": {"cell": {"stroke": "transparent"}}
-  }
+  "config": {"style": {"cell": {"stroke": "transparent"}}}
 }
