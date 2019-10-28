@@ -3137,10 +3137,10 @@ glob-parent@^5.0.0, glob-parent@^5.1.0:
   dependencies:
     is-glob "^4.0.1"
 
-glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@~7.1.4:
-  version "7.1.4"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.4.tgz#aa608a2f6c577ad357e1ae5a5c26d9a8d1969255"
-  integrity sha512-hkLPepehmnKk41pUGm3sYxoFs/umurYfYJCerbXEyFIWcAzvpipAgVkBqqT9RBKMGjnq6kMuyYwha6csxbiM1A==
+glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@~7.1.5:
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.5.tgz#6714c69bee20f3c3e64c4dd905553e532b40cdc0"
+  integrity sha512-J9dlskqUXK1OeTOYBEn5s8aMukWMwWfs+rPTn/jn50Ux4MNXVhubL1wu/j2t+H4NVI+cXEcCaYellqaPVGXNqQ==
   dependencies:
     fs.realpath "^1.0.0"
     inflight "^1.0.4"
@@ -6867,16 +6867,16 @@ ts-jest@^24.1.0:
     semver "^5.5"
     yargs-parser "10.x"
 
-ts-json-schema-generator@^0.54.0:
-  version "0.54.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.54.0.tgz#d2a37847085b2194e780815126fa5bb23b88f681"
-  integrity sha512-EXOsX0/fr7BxZgiruO53by/VoUMA0IDzKDQ4XE9ttrM9tEbUnjkpdCD+xbN8itZ8Wq7Kv1dj1kHZJOP1ZApbgQ==
+ts-json-schema-generator@^0.55.0:
+  version "0.55.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.55.0.tgz#66ea47a6cf20c26d9d4858abf59579a1bc39ea85"
+  integrity sha512-6bEVSVhvNnhYXZxutN2j96tabfEiu0OPeq5Z5i+h0N5zDm2lyYhr/zNc/K2Rx/FPPf02LLg5//NsCiX+U1wcpg==
   dependencies:
     "@types/json-schema" "^7.0.3"
     commander "~3.0.2"
-    glob "~7.1.4"
+    glob "~7.1.5"
     json-stable-stringify "^1.0.1"
-    typescript "~3.6.3"
+    typescript "~3.6.4"
 
 tslib@^1.8.1, tslib@^1.9.0, tslib@~1.10.0:
   version "1.10.0"
@@ -6924,7 +6924,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@~3.6.3, typescript@~3.6.4:
+typescript@~3.6.4:
   version "3.6.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.4.tgz#b18752bb3792bc1a0281335f7f6ebf1bbfc5b91d"
   integrity sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==
