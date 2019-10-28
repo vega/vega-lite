@@ -7,7 +7,6 @@ import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {normalizePredicate, Predicate} from './predicate';
 import {SortField} from './sort';
 import {TimeUnit} from './timeunit';
-import {JoinAggregateTransform} from './transform';
 
 export interface FilterTransform {
   /**

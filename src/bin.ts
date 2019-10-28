@@ -1,5 +1,4 @@
 import {isBoolean, isObject} from 'vega-util';
-import {BinParams} from './bin';
 import {
   Channel,
   COLOR,

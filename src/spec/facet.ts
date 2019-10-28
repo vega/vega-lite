@@ -5,7 +5,6 @@ import {Header} from '../header';
 import {EncodingSortField, SortArray, SortOrder} from '../sort';
 import {StandardType} from '../type';
 import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
-import {FacetMapping} from './facet';
 import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
