@@ -106,7 +106,7 @@
     "svg2png-many": "^0.0.7",
     "terser": "^4.3.9",
     "ts-jest": "^24.1.0",
-    "ts-json-schema-generator": "^0.54.0",
+    "ts-json-schema-generator": "^0.55.0",
     "typescript": "~3.6.4",
     "vega-cli": "^5.7.3",
     "vega-datasets": "^1.26.0",
