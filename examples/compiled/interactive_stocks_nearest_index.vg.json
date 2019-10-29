@@ -50,7 +50,13 @@
       "name": "index_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "mousemove"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "mousemove",
+              "markname": "layer_1_voronoi"
+            }
+          ],
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", fields: index_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
         },

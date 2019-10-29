@@ -37,7 +37,9 @@
       "name": "paintbrush_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
+          "events": [
+            {"source": "scope", "type": "mouseover", "markname": "voronoi"}
+          ],
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: paintbrush_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
         },
@@ -53,7 +55,9 @@
       "value": false,
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
+          "events": [
+            {"source": "scope", "type": "mouseover", "markname": "voronoi"}
+          ],
           "update": "event.shiftKey"
         },
         {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
