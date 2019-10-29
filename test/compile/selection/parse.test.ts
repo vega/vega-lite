@@ -1,8 +1,10 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {keys} from '../../../src/util';
-import {parseUnitModel} from '../../util';
+import {parseUnitModel, parseModelWithScale} from '../../util';
 import project from '../../../src/compile/selection/transforms/project';
+import {assembleRootData} from '../../../src/compile/data/assemble';
+import {optimizeDataflow} from '../../../src/compile/data/optimize';
 
 describe('Selection', () => {
   const model = parseUnitModel({
@@ -304,5 +306,72 @@ describe('Selection', () => {
         }
       ]);
     });
+  });
+
+  it('materializes a selection', () => {
+    const lookupModel = parseModelWithScale({
+      data: {url: 'data/stocks.csv'},
+      layer: [
+        {
+          selection: {
+            index: {
+              type: 'single',
+              on: 'mouseover',
+              encodings: ['x'],
+              nearest: true,
+              init: {x: {year: 2005, month: 1, date: 1}}
+            }
+          },
+          mark: 'point',
+          encoding: {
+            x: {field: 'price', type: 'quantitative', axis: null}
+          }
+        },
+        {
+          transform: [
+            {
+              lookup: 'symbol',
+              from: {selection: 'index', key: 'symbol'}
+            }
+          ],
+          mark: 'line',
+          encoding: {
+            x: {field: 'price', type: 'quantitative', axis: null}
+          }
+        }
+      ]
+    });
+
+    lookupModel.parseSelections();
+    lookupModel.parseData();
+    optimizeDataflow(lookupModel.component.data, lookupModel);
+
+    expect(assembleRootData(lookupModel.component.data, {})).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'data_1',
+          source: 'data_0',
+          transform: [
+            {
+              type: 'filter',
+              expr: '!(length(data("index_store"))) || (vlSelectionTest("index_store", datum))'
+            }
+          ]
+        },
+        {
+          name: 'data_2',
+          source: 'source_0',
+          transform: [
+            {
+              type: 'lookup',
+              from: 'data_1',
+              key: 'symbol',
+              fields: ['symbol'],
+              as: ['index']
+            }
+          ]
+        }
+      ])
+    );
   });
 });
