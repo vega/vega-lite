@@ -365,6 +365,7 @@
           "name": "child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_0"},
           "encode": {
             "update": {
@@ -766,6 +767,7 @@
           "name": "child__repeat_row_Horsepower__repeat_column_Acceleration_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_1"},
           "encode": {
             "update": {
@@ -1102,6 +1104,7 @@
           "name": "child__repeat_row_Horsepower__repeat_column_Horsepower_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_2"},
           "encode": {
             "update": {
@@ -1502,6 +1505,7 @@
           "name": "child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_3"},
           "encode": {
             "update": {
@@ -1838,6 +1842,7 @@
           "name": "child__repeat_row_Acceleration__repeat_column_Acceleration_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_4"},
           "encode": {
             "update": {
@@ -2236,6 +2241,7 @@
           "name": "child__repeat_row_Acceleration__repeat_column_Horsepower_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_1"},
           "encode": {
             "update": {
@@ -2572,6 +2578,7 @@
           "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_5"},
           "encode": {
             "update": {
@@ -2972,6 +2979,7 @@
           "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_3"},
           "encode": {
             "update": {
@@ -3375,6 +3383,7 @@
           "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_0"},
           "encode": {
             "update": {

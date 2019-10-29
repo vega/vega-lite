@@ -408,6 +408,7 @@
           "name": "child__repeat_column_distance_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
+          "interactive": true,
           "from": {"data": "data_6"},
           "encode": {
             "update": {
@@ -445,6 +446,7 @@
           "name": "child__repeat_column_distance_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
+          "interactive": false,
           "from": {"data": "data_5"},
           "encode": {
             "update": {
@@ -770,6 +772,7 @@
           "name": "child__repeat_column_delay_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
+          "interactive": true,
           "from": {"data": "data_7"},
           "encode": {
             "update": {
@@ -807,6 +810,7 @@
           "name": "child__repeat_column_delay_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
+          "interactive": false,
           "from": {"data": "data_4"},
           "encode": {
             "update": {
@@ -1132,6 +1136,7 @@
           "name": "child__repeat_column_time_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
+          "interactive": true,
           "from": {"data": "data_2"},
           "encode": {
             "update": {
@@ -1166,6 +1171,7 @@
           "name": "child__repeat_column_time_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
+          "interactive": false,
           "from": {"data": "data_1"},
           "encode": {
             "update": {

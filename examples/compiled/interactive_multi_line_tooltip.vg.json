@@ -66,6 +66,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"yearmonthdate_date\"]"},
+      "interactive": false,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -86,6 +87,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"yearmonthdate_date\"]"},
+      "interactive": false,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -105,6 +107,7 @@
       "name": "layer_2_marks",
       "type": "rule",
       "style": ["rule"],
+      "interactive": true,
       "from": {"data": "data_0"},
       "encode": {
         "update": {

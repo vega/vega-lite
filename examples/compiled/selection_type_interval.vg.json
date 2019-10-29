@@ -284,6 +284,7 @@
       "name": "marks",
       "type": "rect",
       "style": ["rect"],
+      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {

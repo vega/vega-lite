@@ -108,6 +108,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"date\"]"},
+          "interactive": false,
           "from": {"data": "faceted_path_layer_0_layer_0_main"},
           "encode": {
             "update": {
@@ -126,6 +127,7 @@
       "name": "layer_0_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
+      "interactive": true,
       "from": {"data": "data_0"},
       "encode": {
         "update": {
@@ -143,6 +145,7 @@
     {
       "name": "layer_0_layer_1_voronoi",
       "type": "path",
+      "interactive": true,
       "from": {"data": "layer_0_layer_1_marks"},
       "encode": {
         "update": {
@@ -165,6 +168,7 @@
       "name": "layer_1_layer_0_marks",
       "type": "rule",
       "style": ["rule"],
+      "interactive": false,
       "from": {"data": "data_2"},
       "encode": {
         "update": {
@@ -179,6 +183,7 @@
       "name": "layer_1_layer_1_layer_0_marks",
       "type": "text",
       "style": ["text"],
+      "interactive": false,
       "from": {"data": "data_3"},
       "encode": {
         "update": {
@@ -199,6 +204,7 @@
       "name": "layer_1_layer_1_layer_1_marks",
       "type": "text",
       "style": ["text"],
+      "interactive": false,
       "from": {"data": "data_3"},
       "encode": {
         "update": {

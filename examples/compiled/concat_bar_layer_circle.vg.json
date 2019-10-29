@@ -141,6 +141,7 @@
           "name": "concat_0_layer_0_marks",
           "type": "symbol",
           "style": ["circle"],
+          "interactive": false,
           "from": {"data": "data_2"},
           "encode": {
             "update": {
@@ -173,6 +174,7 @@
           "name": "concat_0_layer_1_marks",
           "type": "symbol",
           "style": ["circle"],
+          "interactive": false,
           "from": {"data": "data_1"},
           "encode": {
             "update": {
@@ -293,6 +295,7 @@
           "name": "concat_1_marks",
           "type": "rect",
           "style": ["bar"],
+          "interactive": true,
           "from": {"data": "data_3"},
           "encode": {
             "update": {

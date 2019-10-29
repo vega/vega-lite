@@ -104,6 +104,7 @@
       "name": "marks",
       "type": "rect",
       "style": ["bar"],
+      "interactive": true,
       "from": {"data": "data_0"},
       "encode": {
         "update": {

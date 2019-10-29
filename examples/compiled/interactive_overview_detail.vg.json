@@ -42,6 +42,7 @@
           "clip": true,
           "style": ["area"],
           "sort": {"field": "datum[\"date\"]"},
+          "interactive": false,
           "from": {"data": "source_0"},
           "encode": {
             "update": {
@@ -322,6 +323,7 @@
           "type": "area",
           "style": ["area"],
           "sort": {"field": "datum[\"date\"]"},
+          "interactive": true,
           "from": {"data": "source_0"},
           "encode": {
             "update": {

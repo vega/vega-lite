@@ -156,6 +156,7 @@
       "name": "layer_0_marks",
       "type": "shape",
       "style": ["geoshape"],
+      "interactive": false,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -170,6 +171,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
+      "interactive": false,
       "from": {"data": "data_0"},
       "encode": {
         "update": {
@@ -187,6 +189,7 @@
       "type": "symbol",
       "style": ["circle"],
       "sort": {"field": ["datum[\"routes\"]"], "order": ["descending"]},
+      "interactive": true,
       "from": {"data": "data_1"},
       "encode": {
         "update": {
@@ -202,6 +205,7 @@
     {
       "name": "layer_2_voronoi",
       "type": "path",
+      "interactive": true,
       "from": {"data": "layer_2_marks"},
       "encode": {
         "update": {
