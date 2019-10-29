@@ -129,7 +129,13 @@
       "name": "single_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "mouseover",
+              "markname": "layer_2_voronoi"
+            }
+          ],
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_2\", fields: single_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"origin\"]]} : null",
           "force": true
         },

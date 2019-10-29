@@ -27,9 +27,8 @@ function getModel(markType: any) {
     seven: {type: 'single', nearest: true, encodings: ['x']},
     eight: {type: 'single', nearest: true, encodings: ['y']},
     nine: {type: 'single', nearest: true, encodings: ['color']},
-
-    singleNearestOnMouseover: {type: 'single', nearest: true, on: 'mouseover'},
-    multiNearestOnMouseover: {type: 'multi', nearest: true, on: 'mouseover'}
+    ten: {type: 'single', nearest: true, on: 'mouseover'},
+    eleven: {type: 'multi', nearest: true, on: 'mouseover, dblclick'}
   });
 
   return model;
@@ -72,6 +71,16 @@ describe('Nearest Selection Transform', () => {
     expect(nearest.has(selCmpts['four'])).not.toBe(true);
     expect(nearest.has(selCmpts['five'])).not.toBe(true);
     expect(nearest.has(selCmpts['six'])).not.toBe(true);
+  });
+
+  it('scopes events to the voronoi mark', () => {
+    const selCmpts = getModel('circle').component.selection;
+    expect(selCmpts['one'].events).toEqual([{source: 'scope', type: 'click', markname: 'voronoi'}]);
+    expect(selCmpts['ten'].events).toEqual([{source: 'scope', type: 'mouseover', markname: 'voronoi'}]);
+    expect(selCmpts['eleven'].events).toEqual([
+      {source: 'scope', type: 'mouseover', markname: 'voronoi'},
+      {source: 'scope', type: 'dblclick', markname: 'voronoi'}
+    ]);
   });
 
   it('adds voronoi with tooltip for non-path marks', () => {

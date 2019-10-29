@@ -10,6 +10,16 @@ const nearest: TransformCompiler = {
     return selCmpt.type !== 'interval' && selCmpt.nearest;
   },
 
+  parse: (model, selCmpt) => {
+    // Scope selection events to the voronoi mark to prevent capturing
+    // events that occur on the group mark (https://github.com/vega/vega/issues/2112).
+    if (selCmpt.events) {
+      for (const s of selCmpt.events) {
+        s.markname = model.getName(VORONOI);
+      }
+    }
+  },
+
   marks: (model, selCmpt, marks) => {
     const {x, y} = selCmpt.project.has;
     const markType = model.mark;

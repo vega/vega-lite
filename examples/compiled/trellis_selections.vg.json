@@ -39,7 +39,13 @@
       "value": null,
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "mouseover",
+              "markname": "child_voronoi"
+            }
+          ],
           "update": "datum && item().mark.marktype !== 'group' ? (item().isVoronoi ? datum.datum : datum)[\"X\"] : null"
         }
       ],
