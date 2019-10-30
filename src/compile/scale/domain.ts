@@ -7,7 +7,7 @@ import {
   SHARED_DOMAIN_OP_INDEX,
   MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX
 } from '../../aggregate';
-import {isBinning} from '../../bin';
+import {isBinning, isSelectionExtent, isBinParams} from '../../bin';
 import {getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
 import {binRequiresRange, hasBand, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
 import {MAIN, RAW} from '../../data';
@@ -48,32 +48,13 @@ export function parseScaleDomain(model: Model) {
 }
 
 function parseUnitScaleDomain(model: UnitModel) {
-  const scales = model.specifiedScales;
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
   util.keys(localScaleComponents).forEach((channel: ScaleChannel) => {
-    const specifiedScale = scales[channel];
-    const specifiedDomain = specifiedScale ? specifiedScale.domain : undefined;
-
     const domains = parseDomainForChannel(model, channel);
     const localScaleCmpt = localScaleComponents[channel];
     localScaleCmpt.setWithExplicit('domains', domains);
-
-    if (isSelectionDomain(specifiedDomain)) {
-      // As scale parsing occurs before selection parsing, we use a temporary
-      // signal here and append the scale.domain definition. This is replaced
-      // with the correct domainRaw signal during scale assembly.
-      // For more information, see isRawSelectionDomain in selection.ts.
-
-      // FIXME: replace this with a special property in the scaleComponent
-      localScaleCmpt.set(
-        'domainRaw',
-        {
-          signal: SELECTION_DOMAIN + util.hash(specifiedDomain)
-        },
-        true
-      );
-    }
+    parseSelectionDomain(model, channel);
 
     if (model.component.data.isFaceted) {
       // get resolve from closest facet parent as this decides whether we need to refer to cloned subtree or not
@@ -370,6 +351,30 @@ function normalizeSortField(sort: EncodingSortField<string>, isStacked: boolean)
 
     ...(order ? {order} : {})
   };
+}
+
+function parseSelectionDomain(model: UnitModel, channel: ScaleChannel) {
+  const scale = model.component.scales[channel];
+  const spec = model.specifiedScales[channel].domain;
+  const bin = model.fieldDef(channel).bin;
+  const domain = isSelectionDomain(spec) && spec;
+  const extent = isBinParams(bin) && isSelectionExtent(bin.extent) && bin.extent;
+
+  if (domain || extent) {
+    // As scale parsing occurs before selection parsing, we use a temporary
+    // signal here and append the scale.domain definition. This is replaced
+    // with the correct domainRaw signal during scale assembly.
+    // For more information, see isRawSelectionDomain in selection.ts.
+
+    // FIXME: replace this with a special property in the scaleComponent
+    scale.set(
+      'domainRaw',
+      {
+        signal: SELECTION_DOMAIN + util.hash(domain || extent)
+      },
+      true
+    );
+  }
 }
 
 export function domainSort(
