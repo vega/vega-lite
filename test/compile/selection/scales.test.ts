@@ -9,7 +9,7 @@ import {parseConcatModel, parseRepeatModel, parseUnitModelWithScale} from '../..
 import {Model} from '../../../src/compile/model';
 
 describe('Selection + Scales', () => {
-  describe('domainRaw', () => {
+  describe('selectionExtent', () => {
     it('is assembled from selection parameter', () => {
       const model = parseConcatModel({
         vconcat: [
@@ -84,7 +84,7 @@ describe('Selection + Scales', () => {
 
       expect(typeof oscale.domain).toBe('object');
       expect('domainRaw' in oscale).toBeTruthy();
-      expect(oscale.domainRaw.signal).toBe('null');
+      expect(oscale.domainRaw.signal).toBe('brush3["date"]');
     });
 
     it('should bind both scales in diagonal repeated views', () => {

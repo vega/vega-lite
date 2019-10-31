@@ -1,6 +1,5 @@
 import {toSet} from 'vega-util';
 import {parseScaleCore, parseScales} from '../../../src/compile/scale/parse';
-import {SELECTION_DOMAIN} from '../../../src/compile/selection';
 import * as log from '../../../src/log';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale';
 import {without} from '../../../src/util';
@@ -448,16 +447,16 @@ describe('src/compile', () => {
       });
 
       const xScale = model.getScaleComponent('x');
-      const yscale = model.getScaleComponent('y');
+      const yScale = model.getScaleComponent('y');
 
-      it('should add a raw selection domain', () => {
-        expect('domainRaw' in xScale.explicit).toBeTruthy();
-        expect(xScale.explicit.domainRaw['signal']).toBe(SELECTION_DOMAIN + '{"encoding":"x","selection":"brush"}');
+      it('should add a selection extent', () => {
+        expect('selectionExtent' in xScale.explicit).toBeTruthy();
+        expect(xScale.explicit.selectionExtent.selection).toEqual('brush');
+        expect(xScale.explicit.selectionExtent['encoding']).toEqual('x');
 
-        expect('domainRaw' in yscale.explicit).toBeTruthy();
-        expect(yscale.explicit.domainRaw['signal']).toBe(
-          SELECTION_DOMAIN + '{"field":"Miles_per_Gallon","selection":"foobar"}'
-        );
+        expect('selectionExtent' in yScale.explicit).toBeTruthy();
+        expect(yScale.explicit.selectionExtent.selection).toEqual('foobar');
+        expect(yScale.explicit.selectionExtent['field']).toEqual('Miles_per_Gallon');
       });
     });
   });

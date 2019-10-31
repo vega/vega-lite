@@ -1,10 +1,9 @@
 import {Signal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
-import {forEachSelection, MODIFY, SELECTION_DOMAIN, STORE, unitName, VL_SELECTION_RESOLVE} from '.';
+import {forEachSelection, MODIFY, STORE, unitName, VL_SELECTION_RESOLVE} from '.';
 import {dateTimeExpr, isDateTime} from '../../datetime';
-import {warn} from '../../log';
-import {SelectionInit, SelectionInitInterval} from '../../selection';
+import {SelectionInit, SelectionInitInterval, SelectionExtent} from '../../selection';
 import {keys, varName} from '../../util';
 import {VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
@@ -160,25 +159,10 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
   return marks;
 }
 
-// Selections are parsed _after_ scales. If a scale domain is set to
-// use a selection, the SELECTION_DOMAIN constant is used as the
-// domainRaw.signal during scale.parse and then replaced with the necessary
-// selection expression function during scale.assemble. To not pollute the
-// type signatures to account for this setup, the selection domain definition
-// is coerced to a string and appended to SELECTION_DOMAIN.
-export function assembleSelectionScaleDomain(model: Model, domainRaw: SignalRef): SignalRef {
-  const selDomain = JSON.parse(domainRaw.signal.replace(SELECTION_DOMAIN, ''));
-  const name = varName(selDomain.selection);
-
-  let selCmpt = model.component.selection && model.component.selection[name];
-  if (selCmpt) {
-    warn('Use "bind": "scales" to setup a binding for scales and selections within the same view.');
-  } else {
-    selCmpt = model.getSelectionComponent(name, selDomain.selection);
-    return {signal: parseSelectionBinExtent(selCmpt, selDomain)};
-  }
-
-  return {signal: 'null'};
+export function assembleSelectionScaleDomain(model: Model, extent: SelectionExtent): SignalRef {
+  const name = extent.selection;
+  const selCmpt = model.getSelectionComponent(name, varName(name));
+  return {signal: parseSelectionBinExtent(selCmpt, extent)};
 }
 
 function cleanupEmptyOnArray(signals: Signal[]) {

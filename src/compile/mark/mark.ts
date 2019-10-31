@@ -181,12 +181,12 @@ function getMarkGroups(
 /**
  * If scales are bound to interval selections, we want to automatically clip
  * marks to account for panning/zooming interactions. We identify bound scales
- * by the domainRaw property, which gets added during scale parsing.
+ * by the selectionExtent property, which gets added during scale parsing.
  */
 function scaleClip(model: UnitModel) {
   const xScale = model.getScaleComponent('x');
   const yScale = model.getScaleComponent('y');
-  return (xScale && xScale.get('domainRaw')) || (yScale && yScale.get('domainRaw')) ? true : undefined;
+  return (xScale && xScale.get('selectionExtent')) || (yScale && yScale.get('selectionExtent')) ? true : undefined;
 }
 
 /**

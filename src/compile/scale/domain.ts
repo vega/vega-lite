@@ -33,7 +33,6 @@ import {getBinSignalName} from '../data/bin';
 import {sortArrayIndexField} from '../data/calculate';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
-import {SELECTION_DOMAIN} from '../selection';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
@@ -87,7 +86,7 @@ function parseNonUnitScaleDomain(model: Model) {
 
   util.keys(localScaleComponents).forEach((channel: ScaleChannel) => {
     let domains: Explicit<VgNonUnionDomain[]>;
-    let domainRaw = null;
+    let selectionExtent = null;
 
     for (const child of model.children) {
       const childComponent = child.component.scales[channel];
@@ -104,18 +103,18 @@ function parseNonUnitScaleDomain(model: Model) {
           );
         }
 
-        const dr = childComponent.get('domainRaw');
-        if (domainRaw && dr && domainRaw.signal !== dr.signal) {
+        const se = childComponent.get('selectionExtent');
+        if (selectionExtent && se && selectionExtent.selection !== se.selection) {
           log.warn('The same selection must be used to override scale domains in a layered view.');
         }
-        domainRaw = dr;
+        selectionExtent = se;
       }
     }
 
     localScaleComponents[channel].setWithExplicit('domains', domains);
 
-    if (domainRaw) {
-      localScaleComponents[channel].set('domainRaw', domainRaw, true);
+    if (selectionExtent) {
+      localScaleComponents[channel].set('selectionExtent', selectionExtent, true);
     }
   });
 }
@@ -361,19 +360,10 @@ function parseSelectionDomain(model: UnitModel, channel: ScaleChannel) {
   const extent = isBinParams(bin) && isSelectionExtent(bin.extent) && bin.extent;
 
   if (domain || extent) {
-    // As scale parsing occurs before selection parsing, we use a temporary
-    // signal here and append the scale.domain definition. This is replaced
-    // with the correct domainRaw signal during scale assembly.
-    // For more information, see isRawSelectionDomain in selection.ts.
-
-    // FIXME: replace this with a special property in the scaleComponent
-    scale.set(
-      'domainRaw',
-      {
-        signal: SELECTION_DOMAIN + util.hash(domain || extent)
-      },
-      true
-    );
+    // As scale parsing occurs before selection parsing, we cannot set
+    // domainRaw directly. So instead, we store the selectionExtent on
+    // the scale component, and then add domainRaw during scale assembly.
+    scale.set('selectionExtent', domain || extent, true);
   }
 }
 
