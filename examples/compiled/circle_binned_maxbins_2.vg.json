@@ -21,8 +21,8 @@
           "field": "IMDB_Rating",
           "as": ["bin_maxbins_2_IMDB_Rating", "bin_maxbins_2_IMDB_Rating_end"],
           "signal": "bin_maxbins_2_IMDB_Rating_bins",
-          "maxbins": 2,
-          "extent": {"signal": "bin_maxbins_2_IMDB_Rating_extent"}
+          "extent": {"signal": "bin_maxbins_2_IMDB_Rating_extent"},
+          "maxbins": 2
         },
         {
           "type": "extent",
@@ -37,8 +37,8 @@
             "bin_maxbins_2_Rotten_Tomatoes_Rating_end"
           ],
           "signal": "bin_maxbins_2_Rotten_Tomatoes_Rating_bins",
-          "maxbins": 2,
-          "extent": {"signal": "bin_maxbins_2_Rotten_Tomatoes_Rating_extent"}
+          "extent": {"signal": "bin_maxbins_2_Rotten_Tomatoes_Rating_extent"},
+          "maxbins": 2
         },
         {
           "type": "aggregate",
