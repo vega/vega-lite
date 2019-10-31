@@ -1,7 +1,7 @@
 ---
 layout: docs
 menu: docs
-title: Initialzing a Selection
+title: Initializing a Selection
 permalink: /docs/init.html
 ---
 
