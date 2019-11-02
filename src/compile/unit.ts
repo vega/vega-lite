@@ -114,7 +114,7 @@ export class UnitModel extends ModelWithField {
   }
 
   /**
-   * Return specified Vega-lite scale domain for a particular channel
+   * Return specified Vega-Lite scale domain for a particular channel
    * @param channel
    */
   public scaleDomain(channel: ScaleChannel): Domain {
