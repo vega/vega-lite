@@ -4,7 +4,7 @@ import {ImputeMethod} from './vega.schema';
 export interface ImputeParams {
   /**
    * The imputation method to use for the field value of imputed data objects.
-   * One of `value`, `mean`, `median`, `max` or `min`.
+   * One of `"value"`, `"mean"`, `"median"`, `"max"` or `"min"`.
    *
    * __Default value:__  `"value"`
    */

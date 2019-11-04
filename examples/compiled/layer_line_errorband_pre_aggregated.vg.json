@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -75,7 +75,7 @@
           "y": {"scale": "y", "field": "lower_ci1"},
           "y2": {"scale": "y", "field": "upper_ci1"},
           "defined": {
-            "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"lower_ci1\"] !== null && !isNaN(datum[\"lower_ci1\"])"
+            "signal": "isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"]) && isValid(datum[\"lower_ci1\"]) && isFinite(+datum[\"lower_ci1\"])"
           }
         }
       }
@@ -92,7 +92,7 @@
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "center"},
           "defined": {
-            "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"center\"] !== null && !isNaN(datum[\"center\"])"
+            "signal": "isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"]) && isValid(datum[\"center\"]) && isFinite(+datum[\"center\"])"
           }
         }
       }

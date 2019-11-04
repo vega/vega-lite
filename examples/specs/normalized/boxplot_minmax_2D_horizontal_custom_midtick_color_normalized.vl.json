@@ -17,7 +17,7 @@
   ],
   "layer": [
     {
-      "mark": {"type": "rule", "style": "boxplot-rule"},
+      "mark": {"type": "rule", "invalid": null, "style": "boxplot-rule"},
       "encoding": {
         "x": {
           "field": "lower_whisker_people",
@@ -57,7 +57,7 @@
       }
     },
     {
-      "mark": {"type": "rule", "style": "boxplot-rule"},
+      "mark": {"type": "rule", "invalid": null, "style": "boxplot-rule"},
       "encoding": {
         "x": {
           "field": "upper_box_people",
@@ -101,6 +101,7 @@
         "type": "bar",
         "size": 14,
         "orient": "horizontal",
+        "invalid": null,
         "style": "boxplot-box"
       },
       "encoding": {
@@ -145,6 +146,7 @@
       "mark": {
         "color": "orange",
         "type": "tick",
+        "invalid": null,
         "size": 14,
         "orient": "vertical",
         "style": "boxplot-median"
@@ -186,5 +188,6 @@
         ]
       }
     }
-  ]
+  ],
+  "autosize": {"type": "pad"}
 }

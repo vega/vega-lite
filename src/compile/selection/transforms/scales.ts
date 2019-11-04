@@ -3,17 +3,18 @@ import {VL_SELECTION_RESOLVE} from '..';
 import {Channel, isScaleChannel, X, Y} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
-import {accessPathWithDatum, varName} from '../../../util';
+import {varName} from '../../../util';
 import {UnitModel} from '../../unit';
 import {SelectionProjection} from './project';
 import {TransformCompiler} from './transforms';
+import {isLayerModel, Model} from '../../model';
 
 const scaleBindings: TransformCompiler = {
   has: selCmpt => {
     return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
   },
 
-  parse: (model, selDef, selCmpt) => {
+  parse: (model, selCmpt) => {
     const name = varName(selCmpt.name);
     const bound: SelectionProjection[] = (selCmpt.scales = []);
 
@@ -32,13 +33,13 @@ const scaleBindings: TransformCompiler = {
         continue;
       }
 
-      scale.set('domainRaw', {signal: accessPathWithDatum(proj.field, name)}, true);
+      scale.set('domainRaw', {signal: `${name}[${stringValue(proj.field)}]`}, true);
       bound.push(proj);
 
       // Bind both x/y for diag plot of repeated views.
       if (model.repeater && model.repeater.row === model.repeater.column) {
         const scale2 = model.getScaleComponent(channel === X ? Y : X);
-        scale2.set('domainRaw', {signal: accessPathWithDatum(proj.field, name)}, true);
+        scale2.set('domainRaw', {signal: `${name}[${stringValue(proj.field)}]`}, true);
       }
     }
   },
@@ -48,7 +49,7 @@ const scaleBindings: TransformCompiler = {
 
     // Top-level signals are only needed for multiview displays and if this
     // view's top-level signals haven't already been generated.
-    if (!model.parent || !bound.length) {
+    if (!model.parent || isTopLevelLayer(model) || !bound.length) {
       return signals;
     }
 
@@ -77,7 +78,7 @@ const scaleBindings: TransformCompiler = {
 
   signals: (model, selCmpt, signals) => {
     // Nested signals need only push to top-level signals with multiview displays.
-    if (model.parent) {
+    if (model.parent && !isTopLevelLayer(model)) {
       for (const proj of selCmpt.scales) {
         const signal: any = signals.filter(s => s.name === proj.signals.data)[0];
         signal.push = 'outer';
@@ -95,4 +96,8 @@ export default scaleBindings;
 export function domain(model: UnitModel, channel: Channel) {
   const scale = stringValue(model.scaleName(channel));
   return `domain(${scale})`;
+}
+
+function isTopLevelLayer(model: Model): boolean {
+  return model.parent && isLayerModel(model.parent) && (!model.parent.parent || isTopLevelLayer(model.parent.parent));
 }

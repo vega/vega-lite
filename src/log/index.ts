@@ -8,13 +8,13 @@ import * as message_ from './message';
 export const message = message_;
 
 /**
- * Main (default) Vega Logger instance for Vega-Lite
+ * Main (default) Vega Logger instance for Vega-Lite.
  */
 const main = logger(Warn);
 let current: LoggerInterface = main;
 
 /**
- * Logger tool for checking if the code throws correct warning
+ * Logger tool for checking if the code throws correct warning.
  */
 export class LocalLogger implements LoggerInterface {
   public warns: any[] = [];
@@ -25,24 +25,23 @@ export class LocalLogger implements LoggerInterface {
     return this;
   }
 
-  public warn(...args: any[]) {
+  public warn(...args: readonly any[]) {
     this.warns.push(...args);
     return this;
   }
 
-  public info(...args: any[]) {
+  public info(...args: readonly any[]) {
     this.infos.push(...args);
     return this;
   }
 
-  public debug(...args: any[]) {
+  public debug(...args: readonly any[]) {
     this.debugs.push(...args);
     return this;
   }
 
-  public error(...args: any[]) {
+  public error(...args: readonly any[]): this {
     throw Error(...args);
-    return this; // @ts-ignore
   }
 }
 
@@ -55,7 +54,7 @@ export function wrap(f: (logger: LocalLogger) => void) {
 }
 
 /**
- * Set the singleton logger to be a custom logger
+ * Set the singleton logger to be a custom logger.
  */
 export function set(newLogger: LoggerInterface) {
   current = newLogger;
@@ -63,24 +62,21 @@ export function set(newLogger: LoggerInterface) {
 }
 
 /**
- * Reset the main logger to use the default Vega Logger
+ * Reset the main logger to use the default Vega Logger.
  */
 export function reset() {
   current = main;
   return current;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function warn(..._: any[]) {
-  current.warn.apply(current, arguments);
+export function warn(...args: readonly any[]) {
+  current.warn(...args);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function info(..._: any[]) {
-  current.info.apply(current, arguments);
+export function info(...args: readonly any[]) {
+  current.info(...args);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function debug(..._: any[]) {
-  current.debug.apply(current, arguments);
+export function debug(...args: readonly any[]) {
+  current.debug(...args);
 }

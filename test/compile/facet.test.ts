@@ -74,7 +74,7 @@ describe('FacetModel', () => {
     it('applies number format for fieldref of a quantitative field', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'quantitative', format: 'd'}
+          column: {field: 'a', type: 'quantitative', header: {format: 'd'}}
         },
         spec: {
           mark: 'point',
@@ -159,7 +159,7 @@ describe('FacetModel', () => {
     it('should sort headers in ascending order', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'ordinal', format: 'd'}
+          column: {field: 'a', type: 'ordinal'}
         },
         spec: {
           mark: 'point',

@@ -163,7 +163,7 @@ export class AggregateNode extends DataFlowNode {
     }
   }
 
-  public addDimensions(fields: string[]) {
+  public addDimensions(fields: readonly string[]) {
     fields.forEach(this.dimensions.add, this.dimensions);
   }
 

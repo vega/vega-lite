@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "style": "cell",
@@ -50,7 +50,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"lower_upper_yield\"] !== null && !isNaN(datum[\"lower_upper_yield\"])"
+          "expr": "isValid(datum[\"lower_upper_yield\"]) && isFinite(+datum[\"lower_upper_yield\"])"
         }
       ]
     },
@@ -60,7 +60,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"center\"] !== null && !isNaN(datum[\"center\"])"
+          "expr": "isValid(datum[\"center\"]) && isFinite(+datum[\"center\"])"
         }
       ]
     }
@@ -83,14 +83,14 @@
           },
           "x": [
             {
-              "test": "datum[\"lower_upper_yield\"] === null || isNaN(datum[\"lower_upper_yield\"])",
+              "test": "!isValid(datum[\"lower_upper_yield\"]) || !isFinite(+datum[\"lower_upper_yield\"])",
               "value": 0
             },
             {"scale": "x", "field": "lower_upper_yield"}
           ],
           "x2": [
             {
-              "test": "datum[\"upper_upper_yield\"] === null || isNaN(datum[\"upper_upper_yield\"])",
+              "test": "!isValid(datum[\"upper_upper_yield\"]) || !isFinite(+datum[\"upper_upper_yield\"])",
               "value": 0
             },
             {"scale": "x", "field": "upper_upper_yield"}
@@ -110,7 +110,7 @@
           "fill": {"value": "black"},
           "x": [
             {
-              "test": "datum[\"center\"] === null || isNaN(datum[\"center\"])",
+              "test": "!isValid(datum[\"center\"]) || !isFinite(+datum[\"center\"])",
               "value": 0
             },
             {"scale": "x", "field": "center"}

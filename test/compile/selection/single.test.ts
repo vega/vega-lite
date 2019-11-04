@@ -41,6 +41,11 @@ describe('Single Selection', () => {
       clear: false,
       encodings: ['x', 'color'],
       init: {x: 50, Origin: 'Japan'}
+    },
+    five: {
+      type: 'single',
+      fields: ['nested.a', 'nested.b'],
+      clear: false
     }
   }));
 
@@ -105,8 +110,23 @@ describe('Single Selection', () => {
       }
     ]);
 
+    const fiveSg = single.signals(model, selCmpts['five']);
+    expect(fiveSg).toEqual([
+      {
+        name: 'five_tuple',
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update:
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: five_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["nested.a"], (item().isVoronoi ? datum.datum : datum)["nested.b"]]} : null',
+            force: true
+          }
+        ]
+      }
+    ]);
+
     const signals = assembleUnitSelectionSignals(model, []);
-    expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg]));
+    expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg, ...fiveSg]));
   });
 
   it('builds modify signals', () => {
@@ -161,7 +181,7 @@ describe('Single Selection', () => {
         name: 'thr_ee_store',
         values: [
           {
-            unit: '""',
+            unit: '',
             fields: [{type: 'E', field: 'Horsepower'}],
             values: [50]
           }
@@ -171,12 +191,13 @@ describe('Single Selection', () => {
         name: 'four_store',
         values: [
           {
-            unit: '""',
+            unit: '',
             fields: [{field: 'Horsepower', channel: 'x', type: 'E'}, {field: 'Origin', channel: 'color', type: 'E'}],
             values: [50, 'Japan']
           }
         ]
-      }
+      },
+      {name: 'five_store'}
     ]);
   });
 

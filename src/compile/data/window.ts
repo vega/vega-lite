@@ -55,6 +55,7 @@ export class WindowTransformNode extends DataFlowNode {
     const ops: (AggregateOp | WindowOnlyOp)[] = [];
     const as: string[] = [];
     const params = [];
+
     for (const window of this.transform.window) {
       ops.push(window.op);
       as.push(this.getDefaultName(window));

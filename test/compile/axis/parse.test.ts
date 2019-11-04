@@ -187,7 +187,6 @@ describe('Axis', () => {
           },
           x2: {
             field: 'b',
-            type: 'quantitative',
             title: 'bar'
           }
         }
@@ -207,7 +206,6 @@ describe('Axis', () => {
           },
           x2: {
             field: 'b',
-            type: 'quantitative',
             title: 'bar'
           }
         }
@@ -222,7 +220,7 @@ describe('Axis', () => {
         mark: 'rule',
         encoding: {
           x: {field: 'a', type: 'quantitative'},
-          x2: {field: 'a2', type: 'quantitative'}
+          x2: {field: 'a2'}
         }
       });
       const axisComponent = parseUnitAxes(model);
@@ -315,6 +313,47 @@ describe('Axis', () => {
         {aggregate: 'max', field: 'Horsepower'},
         {aggregate: 'min', field: 'Horsepower'}
       ]);
+    });
+
+    it('correctly combines different title with null', () => {
+      const model = parseLayerModel({
+        $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
+        data: {url: 'data/cars.json'},
+        layer: [
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'Cylinders', type: 'ordinal', title: 'Hello'},
+              y: {
+                aggregate: 'max',
+                field: 'Horsepower',
+                type: 'quantitative',
+                title: 'HP'
+              },
+              color: {value: 'darkred'}
+            }
+          },
+          {
+            data: {url: 'data/cars.json'},
+            mark: 'line',
+            encoding: {
+              x: {field: 'Cylinders', type: 'ordinal', title: 'World'},
+              y: {
+                aggregate: 'min',
+                field: 'Horsepower',
+                type: 'quantitative',
+                title: null // remove the title entirely
+              }
+            }
+          }
+        ]
+      });
+      model.parseScale();
+      parseLayerAxes(model);
+      const axisComponents = model.component.axes;
+
+      expect(axisComponents.x[0].get('title')).toEqual('Hello, World');
+      expect(axisComponents.y[0].get('title')).toEqual(null);
     });
   });
 });

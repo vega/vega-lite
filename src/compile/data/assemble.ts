@@ -21,6 +21,7 @@ import {ImputeNode} from './impute';
 import {JoinAggregateTransformNode} from './joinaggregate';
 import {LoessTransformNode} from './loess';
 import {LookupNode} from './lookup';
+import {QuantileTransformNode} from './quantile';
 import {RegressionTransformNode} from './regression';
 import {PivotTransformNode} from './pivot';
 import {SampleTransformNode} from './sample';
@@ -102,6 +103,7 @@ function makeWalkTree(data: VgData[]) {
       node instanceof FlattenTransformNode ||
       node instanceof DensityTransformNode ||
       node instanceof LoessTransformNode ||
+      node instanceof QuantileTransformNode ||
       node instanceof RegressionTransformNode ||
       node instanceof IdentifierNode ||
       node instanceof SampleTransformNode ||

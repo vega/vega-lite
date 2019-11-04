@@ -13,6 +13,7 @@ export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof CoreHeader]: keyof TitleC
   titleFontStyle: 'fontStyle',
   titleFontWeight: 'fontWeight',
   titleLimit: 'limit',
+  titleLineHeight: 'lineHeight',
   titleOrient: 'orient',
   titlePadding: 'offset'
 };
@@ -99,6 +100,11 @@ export interface CoreHeader extends FormatMixins {
   titleLimit?: number;
 
   /**
+   * Line height in pixels for multi-line title text.
+   */
+  titleLineHeight?: number;
+
+  /**
    * The orientation of the header title. One of `"top"`, `"bottom"`, `"left"` or `"right"`.
    */
   titleOrient?: Orient;
@@ -120,7 +126,7 @@ export interface CoreHeader extends FormatMixins {
   labels?: boolean;
 
   /**
-   * Horizontal text alignment of header labels.
+   * Horizontal text alignment of header labels. One of `"left"`, `"center"`, or `"right"`.
    */
   labelAlign?: Align;
 
@@ -128,6 +134,13 @@ export interface CoreHeader extends FormatMixins {
    * The anchor position for placing the labels. One of `"start"`, `"middle"`, or `"end"`. For example, with a label orientation of top these anchor positions map to a left-, center-, or right-aligned label.
    */
   labelAnchor?: TitleAnchor;
+
+  /**
+   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.
+   *
+   * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the header's backing `datum` object.
+   */
+  labelExpr?: string;
 
   /**
    * The rotation angle of the header labels.

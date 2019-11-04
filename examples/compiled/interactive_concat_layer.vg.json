@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A dashboard with cross-highlighting.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "data": [
     {"name": "pts_store"},
@@ -70,7 +70,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) && datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])"
+          "expr": "isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"]) && isValid(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) && isFinite(+datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])"
         }
       ]
     },
@@ -92,7 +92,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) && datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])"
+          "expr": "isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"]) && isValid(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) && isFinite(+datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])"
         }
       ]
     },
@@ -141,20 +141,21 @@
           "name": "concat_0_layer_0_marks",
           "type": "rect",
           "style": ["rect"],
+          "interactive": false,
           "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "__count"},
               "x2": [
                 {
-                  "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])",
                   "value": 0
                 },
                 {"scale": "concat_0_x", "field": "bin_maxbins_10_IMDB_Rating"}
               ],
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])",
                   "value": 0
                 },
                 {
@@ -164,7 +165,7 @@
               ],
               "y2": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])",
                   "field": {"group": "height"}
                 },
                 {
@@ -174,7 +175,7 @@
               ],
               "y": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])",
                   "field": {"group": "height"}
                 },
                 {
@@ -189,6 +190,7 @@
           "name": "concat_0_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": false,
           "from": {"data": "data_1"},
           "encode": {
             "update": {
@@ -196,7 +198,7 @@
               "stroke": {"value": "#666"},
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])",
                   "value": 0
                 },
                 {
@@ -205,7 +207,7 @@
               ],
               "y": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])",
                   "field": {"group": "height"}
                 },
                 {
@@ -301,6 +303,7 @@
           "name": "concat_1_marks",
           "type": "rect",
           "style": ["bar"],
+          "interactive": true,
           "from": {"data": "data_3"},
           "encode": {
             "update": {

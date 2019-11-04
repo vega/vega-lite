@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Temperature in Seattle as a bar chart with yearmonth time unit.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -31,7 +31,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"])"
+          "expr": "(isDate(datum[\"yearmonth_date\"]) || (isValid(datum[\"yearmonth_date\"]) && isFinite(+datum[\"yearmonth_date\"])))"
         }
       ]
     }
@@ -47,14 +47,14 @@
           "fill": {"value": "#4c78a8"},
           "x2": [
             {
-              "test": "datum[\"yearmonth_date\"] === null || isNaN(datum[\"yearmonth_date\"])",
+              "test": "!isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"])",
               "value": 0
             },
             {"scale": "x", "field": "yearmonth_date", "offset": 1}
           ],
           "x": [
             {
-              "test": "datum[\"yearmonth_date\"] === null || isNaN(datum[\"yearmonth_date\"])",
+              "test": "!isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"])",
               "value": 0
             },
             {"scale": "x", "field": "yearmonth_date_end"}

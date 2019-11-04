@@ -1,13 +1,13 @@
 import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
-import {isString} from 'vega-util';
+import {hasOwnProperty} from 'vega-util';
 import {
   Channel,
   FACET_CHANNELS,
+  getPositionScaleChannel,
   isChannel,
   isScaleChannel,
   ScaleChannel,
-  SingleDefChannel,
-  getPositionScaleChannel
+  SingleDefChannel
 } from '../channel';
 import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
@@ -25,7 +25,7 @@ import {
   ViewBackground
 } from '../spec/base';
 import {NormalizedSpec} from '../spec/index';
-import {extractTitleConfig, TitleParams} from '../title';
+import {extractTitleConfig, TitleParams, isText} from '../title';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection} from '../vega.schema';
@@ -190,7 +190,7 @@ export abstract class Model {
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this.name = spec.name || parentGivenName;
-    this.title = isString(spec.title) ? {text: spec.title} : spec.title;
+    this.title = isText(spec.title) ? {text: spec.title} : (spec.title as TitleParams);
 
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
@@ -289,7 +289,7 @@ export abstract class Model {
   public abstract assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
   public abstract assembleSignals(): NewSignal[];
 
-  public abstract assembleSelectionData(data: VgData[]): VgData[];
+  public abstract assembleSelectionData(data: readonly VgData[]): readonly VgData[];
 
   public assembleGroupStyle(): string | string[] {
     if (this.type === 'unit' || this.type === 'layer') {
@@ -304,7 +304,7 @@ export abstract class Model {
 
     const e = {};
     for (const property in baseView) {
-      if (baseView.hasOwnProperty(property)) {
+      if (hasOwnProperty(baseView, property)) {
         const value = baseView[property];
         if (value !== undefined) {
           e[property] = {value};
@@ -510,7 +510,7 @@ export abstract class Model {
               signal: sizeExpr(scaleName, scaleComponent, fieldRef)
             };
           } else {
-            log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
+            log.warn(`Unknown field for ${channel}. Cannot calculate view size.`);
             return null;
           }
         }
@@ -556,7 +556,7 @@ export abstract class Model {
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
    */
-  public scaleName(originalScaleName: Channel | string, parse?: boolean): string {
+  public scaleName(originalScaleName: ScaleChannel | string, parse?: boolean): string {
     if (parse) {
       // During the parse phase always return a value
       // No need to refer to rename map because a scale can't be renamed
@@ -666,7 +666,7 @@ export abstract class ModelWithField extends Model {
 
   protected abstract getMapping(): {[key in Channel]?: any};
 
-  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T, t?: any) {
+  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T): T {
     return reduce(
       this.getMapping(),
       (acc: U, cd: ChannelDef, c: Channel) => {
@@ -676,8 +676,7 @@ export abstract class ModelWithField extends Model {
         }
         return acc;
       },
-      init,
-      t
+      init
     );
   }
 

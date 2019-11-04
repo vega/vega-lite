@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -71,7 +71,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_time\"] !== null && !isNaN(datum[\"bin_maxbins_20_time\"])"
+          "expr": "isValid(datum[\"bin_maxbins_20_time\"]) && isFinite(+datum[\"bin_maxbins_20_time\"])"
         }
       ]
     },
@@ -88,7 +88,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_delay\"] !== null && !isNaN(datum[\"bin_maxbins_20_delay\"])"
+          "expr": "isValid(datum[\"bin_maxbins_20_delay\"]) && isFinite(+datum[\"bin_maxbins_20_delay\"])"
         }
       ]
     },
@@ -105,7 +105,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
+          "expr": "isValid(datum[\"bin_maxbins_20_distance\"]) && isFinite(+datum[\"bin_maxbins_20_distance\"])"
         }
       ]
     }
@@ -130,7 +130,7 @@
               "fill": {"value": "#4c78a8"},
               "x2": [
                 {
-                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_20_distance\"]) || !isFinite(+datum[\"bin_maxbins_20_distance\"])",
                   "value": 0
                 },
                 {
@@ -141,7 +141,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_20_distance\"]) || !isFinite(+datum[\"bin_maxbins_20_distance\"])",
                   "value": 0
                 },
                 {
@@ -211,7 +211,7 @@
               "fill": {"value": "#4c78a8"},
               "x2": [
                 {
-                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_20_delay\"]) || !isFinite(+datum[\"bin_maxbins_20_delay\"])",
                   "value": 0
                 },
                 {
@@ -222,7 +222,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_20_delay\"]) || !isFinite(+datum[\"bin_maxbins_20_delay\"])",
                   "value": 0
                 },
                 {
@@ -292,7 +292,7 @@
               "fill": {"value": "#4c78a8"},
               "x2": [
                 {
-                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_20_time\"]) || !isFinite(+datum[\"bin_maxbins_20_time\"])",
                   "value": 0
                 },
                 {
@@ -303,7 +303,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_20_time\"]) || !isFinite(+datum[\"bin_maxbins_20_time\"])",
                   "value": 0
                 },
                 {

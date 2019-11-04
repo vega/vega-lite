@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Area chart showing weight of cars over time (vertical).",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -43,7 +43,7 @@
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "year_Year"},
           "defined": {
-            "signal": "datum[\"sum_Weight_in_lbs\"] !== null && !isNaN(datum[\"sum_Weight_in_lbs\"]) && datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
+            "signal": "isValid(datum[\"sum_Weight_in_lbs\"]) && isFinite(+datum[\"sum_Weight_in_lbs\"]) && isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"])"
           }
         }
       }

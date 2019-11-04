@@ -926,7 +926,7 @@ describe('Mark: Bar', () => {
         encoding: {
           x: {field: 'age', type: 'ordinal'},
           y: {field: 'people', aggregate: 'q1', type: 'quantitative'},
-          y2: {field: 'people', aggregate: 'q3', type: 'quantitative'}
+          y2: {field: 'people', aggregate: 'q3'}
         }
       });
 
@@ -943,7 +943,7 @@ describe('Mark: Bar', () => {
         encoding: {
           y: {field: 'age', type: 'ordinal'},
           x: {field: 'people', aggregate: 'q1', type: 'quantitative'},
-          x2: {field: 'people', aggregate: 'q3', type: 'quantitative'}
+          x2: {field: 'people', aggregate: 'q3'}
         }
       });
 
@@ -968,8 +968,7 @@ describe('Mark: Bar', () => {
             }
           },
           x2: {
-            field: 'bin_end',
-            type: 'quantitative'
+            field: 'bin_end'
           },
           y: {
             field: 'count',
@@ -1001,8 +1000,7 @@ describe('Mark: Bar', () => {
             }
           },
           x2: {
-            field: 'bin_end',
-            type: 'quantitative'
+            field: 'bin_end'
           },
           y: {
             field: 'count',
@@ -1036,8 +1034,7 @@ describe('Mark: Bar', () => {
             }
           },
           y2: {
-            field: 'bin_end',
-            type: 'quantitative'
+            field: 'bin_end'
           },
           x: {
             field: 'count',
@@ -1069,8 +1066,7 @@ describe('Mark: Bar', () => {
             }
           },
           y2: {
-            field: 'bin_end',
-            type: 'quantitative'
+            field: 'bin_end'
           },
           x: {
             field: 'count',

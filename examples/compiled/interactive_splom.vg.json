@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -14,7 +14,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+          "expr": "isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"]) && isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"])"
         }
       ]
     },
@@ -24,7 +24,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+          "expr": "isValid(datum[\"Acceleration\"]) && isFinite(+datum[\"Acceleration\"]) && isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"])"
         }
       ]
     },
@@ -34,7 +34,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"])"
         }
       ]
     },
@@ -44,7 +44,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+          "expr": "isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"]) && isValid(datum[\"Acceleration\"]) && isFinite(+datum[\"Acceleration\"])"
         }
       ]
     },
@@ -54,7 +54,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+          "expr": "isValid(datum[\"Acceleration\"]) && isFinite(+datum[\"Acceleration\"])"
         }
       ]
     },
@@ -64,7 +64,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Acceleration\"]) && isFinite(+datum[\"Acceleration\"])"
         }
       ]
     },
@@ -74,7 +74,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+          "expr": "isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
         }
       ]
     },
@@ -84,7 +84,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+          "expr": "isValid(datum[\"Acceleration\"]) && isFinite(+datum[\"Acceleration\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
         }
       ]
     },
@@ -94,7 +94,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
         }
       ]
     }
@@ -522,6 +522,7 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_0"},
           "encode": {
             "update": {
@@ -1014,6 +1015,7 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_1"},
           "encode": {
             "update": {
@@ -1418,6 +1420,7 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_2"},
           "encode": {
             "update": {
@@ -1911,6 +1914,7 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_3"},
           "encode": {
             "update": {
@@ -2315,6 +2319,7 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_4"},
           "encode": {
             "update": {
@@ -2804,6 +2809,7 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_5"},
           "encode": {
             "update": {
@@ -3208,6 +3214,7 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_6"},
           "encode": {
             "update": {
@@ -3701,6 +3708,7 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_7"},
           "encode": {
             "update": {
@@ -4197,6 +4205,7 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_8"},
           "encode": {
             "update": {

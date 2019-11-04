@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -10,16 +10,22 @@
     {
       "name": "source_0",
       "url": "data/unemployment-across-industries.json",
-      "format": {"type": "json", "parse": {"date": "date"}}
+      "format": {"type": "json", "parse": {"date": "date"}},
+      "transform": [
+        {
+          "type": "formula",
+          "as": "yearmonth_date",
+          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+        }
+      ]
     },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
         {
-          "type": "formula",
-          "as": "yearmonth_date",
-          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+          "type": "filter",
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -34,15 +40,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
-        },
-        {
-          "type": "formula",
-          "as": "yearmonth_date",
-          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-        },
         {
           "type": "aggregate",
           "groupby": ["yearmonth_date"],
@@ -265,7 +262,8 @@
       "type": "area",
       "style": ["area"],
       "sort": {"field": "datum[\"yearmonth_date\"]"},
-      "from": {"data": "data_0"},
+      "interactive": true,
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "orient": {"value": "vertical"},
@@ -274,7 +272,7 @@
           "y": {"scale": "y", "field": "sum_count"},
           "y2": {"scale": "y", "value": 0},
           "defined": {
-            "signal": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"]) && datum[\"sum_count\"] !== null && !isNaN(datum[\"sum_count\"])"
+            "signal": "isValid(datum[\"yearmonth_date\"]) && isFinite(+datum[\"yearmonth_date\"]) && isValid(datum[\"sum_count\"]) && isFinite(+datum[\"sum_count\"])"
           }
         }
       }
@@ -284,7 +282,8 @@
       "type": "area",
       "style": ["area"],
       "sort": {"field": "datum[\"yearmonth_date\"]"},
-      "from": {"data": "data_1"},
+      "interactive": false,
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "orient": {"value": "vertical"},
@@ -293,7 +292,7 @@
           "y": {"scale": "y", "field": "sum_count"},
           "y2": {"scale": "y", "value": 0},
           "defined": {
-            "signal": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"]) && datum[\"sum_count\"] !== null && !isNaN(datum[\"sum_count\"])"
+            "signal": "isValid(datum[\"yearmonth_date\"]) && isFinite(+datum[\"yearmonth_date\"]) && isValid(datum[\"sum_count\"]) && isFinite(+datum[\"sum_count\"])"
           }
         }
       }
@@ -347,8 +346,8 @@
       "type": "time",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "yearmonth_date"},
-          {"data": "data_1", "field": "yearmonth_date"}
+          {"data": "data_1", "field": "yearmonth_date"},
+          {"data": "data_0", "field": "yearmonth_date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -358,8 +357,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "sum_count"},
-          {"data": "data_1", "field": "sum_count"}
+          {"data": "data_1", "field": "sum_count"},
+          {"data": "data_0", "field": "sum_count"}
         ]
       },
       "range": [{"signal": "height"}, 0],

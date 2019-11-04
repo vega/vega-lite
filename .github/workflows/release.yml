@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    name: Release
+
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+
+      - name: Setup Git remote
+        run: ./scripts/setup-git-ci.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add schema repo
+        run: |
+          pushd ..
+          git clone https://x-access-token:${GH_PAT}@github.com/vega/schema.git
+          popd
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+
+      - name: Check NPM deployment
+        run: ./scripts/check-npm.sh
+
+      - uses: actions/setup-node@v1
+        with:
+          registry-url: 'https://registry.npmjs.org'
+      - name: Publish to NPM registry
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Prebuild website
+        run: predeploy:site
+
+      - name: Publish website
+        uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
+        with:
+          repo-token: ${{ secrets.GH_PAT }}
+          site-directory: 'site/'
+
+      - name: Publish schema
+        run: ./scripts/deploy-schema.sh

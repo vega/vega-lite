@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "The PM2.5 value of Beijing observed 15 days, highlighting the days when PM2.5 level is hazardous to human health. Data source https://chartaccent.github.io/chartaccent.html",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "style": "cell",
@@ -36,7 +36,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Value\"] !== null && !isNaN(datum[\"Value\"])"
+          "expr": "isValid(datum[\"Value\"]) && isFinite(+datum[\"Value\"])"
         }
       ]
     },
@@ -48,7 +48,7 @@
         {"type": "formula", "expr": "300", "as": "baseline"},
         {
           "type": "filter",
-          "expr": "datum[\"baseline\"] !== null && !isNaN(datum[\"baseline\"])"
+          "expr": "isValid(datum[\"baseline\"]) && isFinite(+datum[\"baseline\"])"
         }
       ]
     },
@@ -58,7 +58,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"ThresholdValue\"] !== null && !isNaN(datum[\"ThresholdValue\"])"
+          "expr": "isValid(datum[\"ThresholdValue\"]) && isFinite(+datum[\"ThresholdValue\"])"
         }
       ]
     },
@@ -68,7 +68,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"ThresholdValue\"] !== null && !isNaN(datum[\"ThresholdValue\"])"
+          "expr": "isValid(datum[\"ThresholdValue\"]) && isFinite(+datum[\"ThresholdValue\"])"
         }
       ]
     }

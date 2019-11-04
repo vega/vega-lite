@@ -1,3 +1,4 @@
+import {ValueOrGradientOrText} from './../../channeldef';
 import {Align} from 'vega';
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
@@ -106,6 +107,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
   };
 }
 
+// TODO: mark VgValueRef[] as readonly after https://github.com/vega/vega/pull/1987
 function wrapAllFieldsInvalid(model: UnitModel, channel: Channel, valueRef: VgValueRef | VgValueRef[]): VgEncodeEntry {
   const {config, mark, markDef} = model;
 
@@ -232,7 +234,7 @@ export function nonPosition(
  * Return a mixin that includes a Vega production rule for a Vega-Lite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
-export function wrapCondition<FD extends FieldDef<any>, V extends ValueOrGradient>(
+export function wrapCondition<FD extends FieldDef<any>, V extends ValueOrGradientOrText>(
   model: UnitModel,
   channelDef: ChannelDef<FD, V>,
   vgChannel: string,
@@ -241,7 +243,7 @@ export function wrapCondition<FD extends FieldDef<any>, V extends ValueOrGradien
   const condition = channelDef && channelDef.condition;
   const valueRef = refFn(channelDef);
   if (condition) {
-    const conditions = isArray(condition) ? condition : [condition];
+    const conditions = array(condition);
     const vgConditions = conditions.map(c => {
       const conditionValueRef = refFn(c);
       const test = isConditionalSelection(c) ? parseSelectionPredicate(model, c.selection) : expression(model, c.test);
@@ -399,7 +401,7 @@ export function binPosition({
     x2: reverse ? 0 : spacing,
     y: reverse ? 0 : spacing,
     y2: reverse ? spacing : 0
-  };
+  } as const;
   const channel2 = channel === X ? X2 : Y2;
   if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {
@@ -486,13 +488,13 @@ const ALIGNED_X_CHANNEL: {[a in Align]: VgEncodeChannel} = {
   left: 'x',
   center: 'xc',
   right: 'x2'
-};
+} as const;
 
 const BASELINED_Y_CHANNEL = {
   top: 'y',
   middle: 'yc',
   bottom: 'y2'
-};
+} as const;
 
 export function pointOrRangePosition(
   channel: 'x' | 'y',

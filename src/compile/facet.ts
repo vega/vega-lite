@@ -130,7 +130,7 @@ export class FacetModel extends ModelWithField {
     return [];
   }
 
-  public assembleSelectionData(data: VgData[]): VgData[] {
+  public assembleSelectionData(data: readonly VgData[]): readonly VgData[] {
     return this.child.assembleSelectionData(data);
   }
 
@@ -268,7 +268,7 @@ export class FacetModel extends ModelWithField {
               ops.push('distinct');
               as.push(`distinct_${field}`);
             } else {
-              log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
+              log.warn(`Unknown field for ${channel}. Cannot calculate view size.`);
             }
           }
         }

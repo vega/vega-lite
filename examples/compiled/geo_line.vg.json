@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Line drawn between airports in the U.S. simulating a flight itinerary",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 800,
   "height": 500,

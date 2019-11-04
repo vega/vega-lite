@@ -1,4 +1,5 @@
-import {isObject} from 'vega-util';
+import {Color} from 'vega';
+import {isObject, mergeConfig} from 'vega-util';
 import {AxisConfigMixins} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
 import {VL_ONLY_GUIDE_CONFIG, VL_ONLY_LEGEND_CONFIG} from './guide';
@@ -18,7 +19,7 @@ import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './select
 import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} from './spec/base';
 import {TopLevelProperties} from './spec/toplevel';
 import {extractTitleConfig, TitleConfig} from './title';
-import {duplicate, getFirstDefined, keys, mergeDeep} from './util';
+import {duplicate, getFirstDefined, keys} from './util';
 import {BaseMarkConfig, SchemeConfig} from './vega.schema';
 
 export interface ViewConfig extends BaseViewBackground {
@@ -182,11 +183,11 @@ export interface Config
     HeaderConfigMixins,
     CompositionConfigMixins {
   /**
-   * CSS color property to use as the background of the whole Vega-Lite view
+   * CSS color property to use as the background of the entire view.
    *
-   * __Default value:__ none (transparent)
+   * __Default value:__ `"white"`
    */
-  background?: string;
+  background?: Color;
 
   /**
    * An object hash that defines default range arrays or schemes for using with scales.
@@ -209,11 +210,13 @@ export interface Config
    */
   projection?: ProjectionConfig;
 
-  /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](https://vega.github.io/vega-lite/docs/mark.html#mark-def).  The keys represent styles names; the values have to be valid [mark configuration objects](https://vega.github.io/vega-lite/docs/mark.html#config).  */
+  /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](https://vega.github.io/vega-lite/docs/mark.html#mark-def). The keys represent styles names; the values have to be valid [mark configuration objects](https://vega.github.io/vega-lite/docs/mark.html#config).  */
   style?: StyleConfigIndex;
 }
 
 export const defaultConfig: Config = {
+  background: 'white',
+
   padding: 5,
   timeFormat: '%b %d, %Y',
   countTitle: 'Count of Records',
@@ -287,12 +290,13 @@ export const defaultConfig: Config = {
 };
 
 export function initConfig(config: Config) {
-  return mergeDeep(duplicate(defaultConfig), config);
+  return mergeConfig({}, defaultConfig, config);
 }
 
 const MARK_STYLES = ['view', ...PRIMITIVE_MARKS] as ('view' | Mark)[];
 
 const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
+  'background', // We apply background to the spec directly.
   'padding',
   'facet',
   'concat',
@@ -370,7 +374,7 @@ export function stripAndRedirectConfig(config: Config) {
   // affect header labels, which also uses `title` directive to implement.
   redirectConfig(config, 'title', 'group-title');
 
-  // Remove empty config objects
+  // Remove empty config objects.
   for (const prop in config) {
     if (isObject(config[prop]) && keys(config[prop]).length === 0) {
       delete config[prop];

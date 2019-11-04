@@ -83,5 +83,6 @@
       "opacity": {"value": 1},
       "size": {"value": 200}
     }
-  }
+  },
+  "autosize": {"type": "pad"}
 }

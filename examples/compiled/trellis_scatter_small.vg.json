@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "data": [
     {
@@ -10,7 +10,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Worldwide_Gross\"] !== null && !isNaN(datum[\"Worldwide_Gross\"]) && datum[\"US_DVD_Sales\"] !== null && !isNaN(datum[\"US_DVD_Sales\"])"
+          "expr": "isValid(datum[\"Worldwide_Gross\"]) && isFinite(+datum[\"Worldwide_Gross\"]) && isValid(datum[\"US_DVD_Sales\"]) && isFinite(+datum[\"US_DVD_Sales\"])"
         }
       ]
     },

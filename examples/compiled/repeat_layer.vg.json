@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Summarized and per year weather information for Seatle and New York.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "data": [
@@ -117,7 +117,7 @@
                     "field": "mean_temp_max"
                   },
                   "defined": {
-                    "signal": "datum[\"mean_temp_max\"] !== null && !isNaN(datum[\"mean_temp_max\"])"
+                    "signal": "isValid(datum[\"mean_temp_max\"]) && isFinite(+datum[\"mean_temp_max\"])"
                   }
                 }
               }
@@ -161,7 +161,7 @@
                     "field": "mean_temp_max"
                   },
                   "defined": {
-                    "signal": "datum[\"mean_temp_max\"] !== null && !isNaN(datum[\"mean_temp_max\"])"
+                    "signal": "isValid(datum[\"mean_temp_max\"]) && isFinite(+datum[\"mean_temp_max\"])"
                   }
                 }
               }
@@ -259,7 +259,7 @@
                     "field": "mean_precipitation"
                   },
                   "defined": {
-                    "signal": "datum[\"mean_precipitation\"] !== null && !isNaN(datum[\"mean_precipitation\"])"
+                    "signal": "isValid(datum[\"mean_precipitation\"]) && isFinite(+datum[\"mean_precipitation\"])"
                   }
                 }
               }
@@ -303,7 +303,7 @@
                     "field": "mean_precipitation"
                   },
                   "defined": {
-                    "signal": "datum[\"mean_precipitation\"] !== null && !isNaN(datum[\"mean_precipitation\"])"
+                    "signal": "isValid(datum[\"mean_precipitation\"]) && isFinite(+datum[\"mean_precipitation\"])"
                   }
                 }
               }
@@ -401,7 +401,7 @@
                     "field": "mean_wind"
                   },
                   "defined": {
-                    "signal": "datum[\"mean_wind\"] !== null && !isNaN(datum[\"mean_wind\"])"
+                    "signal": "isValid(datum[\"mean_wind\"]) && isFinite(+datum[\"mean_wind\"])"
                   }
                 }
               }
@@ -445,7 +445,7 @@
                     "field": "mean_wind"
                   },
                   "defined": {
-                    "signal": "datum[\"mean_wind\"] !== null && !isNaN(datum[\"mean_wind\"])"
+                    "signal": "isValid(datum[\"mean_wind\"]) && isFinite(+datum[\"mean_wind\"])"
                   }
                 }
               }

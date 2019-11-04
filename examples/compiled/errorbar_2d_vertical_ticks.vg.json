@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -39,7 +39,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"lower_Miles_per_Gallon\"] !== null && !isNaN(datum[\"lower_Miles_per_Gallon\"]) && datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
+          "expr": "isValid(datum[\"lower_Miles_per_Gallon\"]) && isFinite(+datum[\"lower_Miles_per_Gallon\"]) && (isDate(datum[\"year_Year\"]) || (isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"])))"
         }
       ]
     },
@@ -49,7 +49,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"upper_Miles_per_Gallon\"] !== null && !isNaN(datum[\"upper_Miles_per_Gallon\"]) && datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"])"
+          "expr": "isValid(datum[\"upper_Miles_per_Gallon\"]) && isFinite(+datum[\"upper_Miles_per_Gallon\"]) && (isDate(datum[\"year_Year\"]) || (isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"])))"
         }
       ]
     }
@@ -70,7 +70,7 @@
           "xc": {"scale": "x", "field": "year_Year"},
           "yc": [
             {
-              "test": "datum[\"lower_Miles_per_Gallon\"] === null || isNaN(datum[\"lower_Miles_per_Gallon\"])",
+              "test": "!isValid(datum[\"lower_Miles_per_Gallon\"]) || !isFinite(+datum[\"lower_Miles_per_Gallon\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "lower_Miles_per_Gallon"}
@@ -95,7 +95,7 @@
           "xc": {"scale": "x", "field": "year_Year"},
           "yc": [
             {
-              "test": "datum[\"upper_Miles_per_Gallon\"] === null || isNaN(datum[\"upper_Miles_per_Gallon\"])",
+              "test": "!isValid(datum[\"upper_Miles_per_Gallon\"]) || !isFinite(+datum[\"upper_Miles_per_Gallon\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "upper_Miles_per_Gallon"}
@@ -119,14 +119,14 @@
           "x": {"scale": "x", "field": "year_Year"},
           "y": [
             {
-              "test": "datum[\"lower_Miles_per_Gallon\"] === null || isNaN(datum[\"lower_Miles_per_Gallon\"])",
+              "test": "!isValid(datum[\"lower_Miles_per_Gallon\"]) || !isFinite(+datum[\"lower_Miles_per_Gallon\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "lower_Miles_per_Gallon"}
           ],
           "y2": [
             {
-              "test": "datum[\"upper_Miles_per_Gallon\"] === null || isNaN(datum[\"upper_Miles_per_Gallon\"])",
+              "test": "!isValid(datum[\"upper_Miles_per_Gallon\"]) || !isFinite(+datum[\"upper_Miles_per_Gallon\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "upper_Miles_per_Gallon"}

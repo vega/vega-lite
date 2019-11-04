@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "data": [
@@ -12,7 +12,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
         }
       ]
     },
@@ -26,7 +26,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"]) && datum[\"Displacement\"] !== null && !isNaN(datum[\"Displacement\"])"
+          "expr": "isValid(datum[\"Acceleration\"]) && isFinite(+datum[\"Acceleration\"]) && isValid(datum[\"Displacement\"]) && isFinite(+datum[\"Displacement\"])"
         }
       ]
     }
@@ -329,6 +329,7 @@
           "name": "concat_0_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_0"},
           "encode": {
             "update": {
@@ -449,6 +450,7 @@
           "name": "concat_1_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": false,
           "from": {"data": "data_1"},
           "encode": {
             "update": {

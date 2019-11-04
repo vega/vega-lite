@@ -1,39 +1,11 @@
-import {
-  Align,
-  Axis as VgAxis,
-  AxisEncode,
-  AxisOrient,
-  BaseAxis,
-  Color,
-  FontStyle,
-  FontWeight,
-  LabelOverlap,
-  TextBaseline,
-  TitleAnchor
-} from 'vega';
+import {Axis as VgAxis, AxisEncode, AxisOrient, BaseAxis, LabelOverlap} from 'vega';
 import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {Flag, keys, Omit} from './util';
-import {LayoutAlign, VgEncodeChannel} from './vega.schema';
+import {Flag, keys} from './util';
+import {ExcludeMappedValueRef, VgEncodeChannel} from './vega.schema';
 
-export type BaseAxisNoSignals = AxisMixins &
-  BaseAxis<
-    number,
-    number,
-    boolean,
-    number | boolean,
-    string,
-    Color,
-    FontWeight,
-    FontStyle,
-    Align,
-    TextBaseline,
-    LayoutAlign,
-    LabelOverlap,
-    number[],
-    TitleAnchor
-  >;
+export type BaseAxisNoSignals = AxisMixins & ExcludeMappedValueRef<BaseAxis>;
 
 export type ConditionalAxisProp =
   | 'labelAlign'
@@ -67,7 +39,7 @@ export const CONDITIONAL_AXIS_PROP_INDEX: {
   },
   labelBaseline: {
     part: 'labels',
-    vgProp: 'align'
+    vgProp: 'baseline'
   },
   labelColor: {
     part: 'labels',
@@ -186,7 +158,7 @@ export type AxisConfig = VlOnlyGuideConfig & AxisOrientMixins & VgAxisConfigNoSi
 
 export interface Axis extends AxisOrientMixins, VgAxisConfigNoSignals, Guide {
   /**
-   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.
+   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.
    *
    * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
    */
@@ -241,7 +213,7 @@ export interface Axis extends AxisOrientMixins, VgAxisConfigNoSignals, Guide {
   /**
    * Mark definitions for custom axis encoding.
    *
-   * @hide
+   * @hidden
    */
   encoding?: AxisEncoding;
 }
@@ -308,6 +280,7 @@ export const AXIS_PROPERTY_TYPE: {
   titleFontSize: 'main',
   titleFontWeight: 'main',
   titleLimit: 'main',
+  titleLineHeight: 'main',
   titleOpacity: 'main',
   titlePadding: 'main',
   titleX: 'main',
@@ -414,6 +387,7 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   titleFontStyle: 1,
   titleFontWeight: 1,
   titleLimit: 1,
+  titleLineHeight: 1,
   titleOpacity: 1,
   titlePadding: 1,
   titleX: 1,

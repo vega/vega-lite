@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A simple bar chart with embedded data that uses a filter and calculate.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "style": "cell",
@@ -28,7 +28,7 @@
         {"type": "filter", "expr": "datum.b2 > 60"},
         {
           "type": "filter",
-          "expr": "datum[\"b2\"] !== null && !isNaN(datum[\"b2\"])"
+          "expr": "isValid(datum[\"b2\"]) && isFinite(+datum[\"b2\"])"
         }
       ]
     }

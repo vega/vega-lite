@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 800,
   "height": 400,
@@ -18,7 +18,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
         }
       ]
     },
@@ -35,7 +35,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"])))"
         }
       ]
     },
@@ -45,7 +45,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
         }
       ]
     }
@@ -66,7 +66,13 @@
       "name": "label_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "mouseover",
+              "markname": "layer_0_layer_1_voronoi"
+            }
+          ],
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0_layer_1\", fields: label_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
         },
@@ -105,6 +111,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"date\"]"},
+          "interactive": false,
           "from": {"data": "faceted_path_layer_0_layer_0_main"},
           "encode": {
             "update": {
@@ -112,7 +119,7 @@
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
               "defined": {
-                "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
               }
             }
           }
@@ -123,6 +130,7 @@
       "name": "layer_0_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
+      "interactive": true,
       "from": {"data": "data_0"},
       "encode": {
         "update": {
@@ -140,6 +148,7 @@
     {
       "name": "layer_0_layer_1_voronoi",
       "type": "path",
+      "interactive": true,
       "from": {"data": "layer_0_layer_1_marks"},
       "encode": {
         "update": {
@@ -162,6 +171,7 @@
       "name": "layer_1_layer_0_marks",
       "type": "rule",
       "style": ["rule"],
+      "interactive": false,
       "from": {"data": "data_2"},
       "encode": {
         "update": {
@@ -176,6 +186,7 @@
       "name": "layer_1_layer_1_layer_0_marks",
       "type": "text",
       "style": ["text"],
+      "interactive": false,
       "from": {"data": "data_3"},
       "encode": {
         "update": {
@@ -196,6 +207,7 @@
       "name": "layer_1_layer_1_layer_1_marks",
       "type": "text",
       "style": ["text"],
+      "interactive": false,
       "from": {"data": "data_3"},
       "encode": {
         "update": {

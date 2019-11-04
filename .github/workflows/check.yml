@@ -1,0 +1,91 @@
+name: Check
+
+on:
+  push:
+    branches:
+      - '*'
+      - '*/*'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    name: Lint, Format, Schema, and Examples
+
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 10
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Install Parallel
+        run: |
+          # Faster than "sudo apt-get install parallel"
+          wget https://raw.githubusercontent.com/martinda/gnu-parallel/master/src/parallel
+          chmod +x parallel
+          cp parallel sem
+          sudo mv parallel sem /usr/local/bin
+
+      - name: Lint
+        if: github.ref == 'refs/heads/master'
+        run: yarn lint
+
+      - name: Format
+        if: github.ref != 'refs/heads/master'
+        run: yarn format
+
+      - name: Build Schema
+        run: yarn schema
+
+      - name: Check Schema
+        run: ./scripts/check-schema.sh
+
+      - name: Setup Git remote
+        run: ./scripts/setup-git-ci.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check and Commit
+        run: ./scripts/check-and-commit.sh
+
+  toc:
+    runs-on: ubuntu-latest
+
+    name: TOC
+
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 10
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.x'
+
+      - name: Setup data
+        run: yarn data
+
+      - name: Build Jekyll
+        run: |
+          gem install bundler
+          pushd site
+          bundle install
+          bundle exec jekyll build -q
+          popd
+
+      - name: Build TOC
+        run: scripts/generate-toc
+
+      - name: Setup Git remote
+        run: ./scripts/setup-git-ci.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check and Commit
+        run: ./scripts/check-and-commit-toc.sh

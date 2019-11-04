@@ -6,11 +6,11 @@ import {uniqueId} from '../../../src/util';
  */
 export class PlaceholderDataFlowNode extends DataFlowNode {
   public dependentFields() {
-    return new Set();
+    return new Set<string>();
   }
 
   public producedFields() {
-    return new Set();
+    return new Set<string>();
   }
 
   public hash(): string | number {

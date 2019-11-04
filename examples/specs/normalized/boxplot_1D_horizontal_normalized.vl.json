@@ -21,7 +21,13 @@
             }
           ],
           "mark": {"type": "point", "style": "boxplot-outliers"},
-          "encoding": {"x": {"field": "people", "type": "quantitative"}}
+          "encoding": {
+            "x": {
+              "field": "people",
+              "type": "quantitative",
+              "axis": {"title": "population"}
+            }
+          }
         },
         {
           "transform": [
@@ -48,7 +54,11 @@
           ],
           "layer": [
             {
-              "mark": {"type": "rule", "style": "boxplot-rule"},
+              "mark": {
+                "type": "rule",
+                "invalid": null,
+                "style": "boxplot-rule"
+              },
               "encoding": {
                 "x": {
                   "field": "lower_whisker_people",
@@ -71,7 +81,11 @@
               }
             },
             {
-              "mark": {"type": "rule", "style": "boxplot-rule"},
+              "mark": {
+                "type": "rule",
+                "invalid": null,
+                "style": "boxplot-rule"
+              },
               "encoding": {
                 "x": {
                   "field": "upper_box_people",
@@ -116,6 +130,7 @@
             "type": "bar",
             "size": 14,
             "orient": "horizontal",
+            "invalid": null,
             "style": "boxplot-box"
           },
           "encoding": {
@@ -158,6 +173,7 @@
           "mark": {
             "color": "white",
             "type": "tick",
+            "invalid": null,
             "size": 14,
             "orient": "vertical",
             "style": "boxplot-median"
@@ -199,5 +215,6 @@
         }
       ]
     }
-  ]
+  ],
+  "autosize": {"type": "pad"}
 }

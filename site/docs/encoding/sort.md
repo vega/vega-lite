@@ -52,7 +52,7 @@ If the channel has a discrete scale (ordinal or nominal), `sort` can be one of: 
 
 ### Sort by the Field's Natural Order
 
-To order the data by the values' natural order in Javascript (e.g.,`"a"` < `"b"`), the `sort` property can be:
+To order the data by the values' natural order in JavaScript (e.g.,`"a"` < `"b"`), the `sort` property can be:
 
 - `"ascending"` (Default) – sort by the field's value in ascending order.
 - `"descending"` – sort by the field's value in descending order.

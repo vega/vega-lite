@@ -7,7 +7,6 @@ import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {normalizePredicate, Predicate} from './predicate';
 import {SortField} from './sort';
 import {TimeUnit} from './timeunit';
-import {JoinAggregateTransform} from './transform';
 
 export interface FilterTransform {
   /**
@@ -97,7 +96,7 @@ export interface AggregateTransform {
 
 export interface AggregatedFieldDef {
   /**
-   * The aggregation operation to apply to the fields (e.g., sum, average or count).
+   * The aggregation operation to apply to the fields (e.g., `"sum"`, `"average"`, or `"count"`).
    * See the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops)
    * for more information.
    */
@@ -135,10 +134,8 @@ export interface StackTransform {
    */
   sort?: SortField[];
   /**
-   * Output field names. This can be either a string or an array of strings with
-   * two elements denoting the name for the fields for stack start and stack end
-   * respectively.
-   * If a single string(eg."val") is provided, the end field will be "val_end".
+   * Output field names. This can be either a string or an array of strings with two elements denoting the name for the fields for stack start and stack end respectively.
+   * If a single string(e.g., `"val"`) is provided, the end field will be `"val_end"`.
    */
   as: FieldName | FieldName[];
 }
@@ -158,7 +155,7 @@ export type WindowOnlyOp =
 
 export interface WindowFieldDef {
   /**
-   * The window or aggregation operation to apply within a window (e.g., `rank`, `lead`, `sum`, `average` or `count`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops).
+   * The window or aggregation operation to apply within a window (e.g., `"rank"`, `"lead"`, `"sum"`, `"average"` or `"count"`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops).
    */
   op: AggregateOp | WindowOnlyOp;
 
@@ -170,7 +167,7 @@ export interface WindowFieldDef {
   param?: number;
 
   /**
-   * The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `count`, `rank`, `dense_rank`.
+   * The data field for which to compute the aggregate or window function. This can be omitted for window functions that do not operate over a field such as `"count"`, `"rank"`, `"dense_rank"`.
    */
   field?: FieldName;
 
@@ -213,12 +210,12 @@ export interface WindowTransform {
 
 export interface JoinAggregateFieldDef {
   /**
-   * The aggregation operation to apply (e.g., sum, average or count). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/aggregate.html#ops).
+   * The aggregation operation to apply (e.g., `"sum"`, `"average"` or `"count"`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/aggregate.html#ops).
    */
   op: AggregateOp;
 
   /**
-   * The data field for which to compute the aggregate function. This can be omitted for functions that do not operate over a field such as `count`.
+   * The data field for which to compute the aggregate function. This can be omitted for functions that do not operate over a field such as `"count"`.
    */
   field?: FieldName;
 
@@ -365,17 +362,17 @@ export interface PivotTransform {
   /**
    * The data field to pivot on. The unique values of this field become new field names in the output stream.
    */
-  pivot: string;
+  pivot: FieldName;
 
   /**
    * The data field to populate pivoted fields. The aggregate values of this field become the values of the new pivoted fields.
    */
-  value: string;
+  value: FieldName;
 
   /**
    * The optional data fields to group by. If not specified, a single group containing all data objects will be used.
    */
-  groupby?: string[];
+  groupby?: FieldName[];
 
   /**
    * An optional parameter indicating the maximum number of pivoted fields to generate.
@@ -399,12 +396,12 @@ export interface DensityTransform {
   /**
    * The data field for which to perform density estimation.
    */
-  density: string;
+  density: FieldName;
 
   /**
    * The data fields to group by. If not specified, a single group containing all data objects will be used.
    */
-  groupby?: string[];
+  groupby?: FieldName[];
 
   /**
    * A boolean flag indicating whether to produce density estimates (false) or cumulative density estimates (true).
@@ -454,31 +451,64 @@ export interface DensityTransform {
    *
    * __Default value:__ `["value", "density"]`
    */
-  as?: [string, string];
+  as?: [FieldName, FieldName];
 }
 
 export function isDensity(t: Transform): t is DensityTransform {
   return t['density'] !== undefined;
 }
 
-export interface RegressionTransform {
+export interface QuantileTransform {
   /**
-   * The data field of the dependent variable to predict.
+   * The data field for which to perform quantile estimation.
    */
-  regression: string;
-
-  /**
-   * The data field of the independent variable to use a predictor.
-   */
-  on: string;
+  quantile: FieldName;
 
   /**
    * The data fields to group by. If not specified, a single group containing all data objects will be used.
    */
-  groupby?: string[];
+  groupby?: FieldName[];
 
   /**
-   * The functional form of the regression model. One of "linear", "log", "exp", "pow", "quad", or "poly".
+   * An array of probabilities in the range (0, 1) for which to compute quantile values. If not specified, the *step* parameter will be used.
+   */
+  probs?: number[];
+
+  /**
+   * A probability step size (default 0.01) for sampling quantile values. All values from one-half the step size up to 1 (exclusive) will be sampled. This parameter is only used if the *probs* parameter is not provided.
+   */
+  step?: number;
+
+  /**
+   * The output field names for the probability and quantile values.
+   *
+   * __Default value:__ `["prob", "value"]`
+   */
+  as?: [FieldName, FieldName];
+}
+
+export function isQuantile(t: Transform): t is QuantileTransform {
+  return t['quantile'] !== undefined;
+}
+
+export interface RegressionTransform {
+  /**
+   * The data field of the dependent variable to predict.
+   */
+  regression: FieldName;
+
+  /**
+   * The data field of the independent variable to use a predictor.
+   */
+  on: FieldName;
+
+  /**
+   * The data fields to group by. If not specified, a single group containing all data objects will be used.
+   */
+  groupby?: FieldName[];
+
+  /**
+   * The functional form of the regression model. One of `"linear"`, `"log"`, `"exp"`, `"pow"`, `"quad"`, or `"poly"`.
    *
    * __Default value:__ `"linear"`
    */
@@ -510,7 +540,7 @@ export interface RegressionTransform {
    *
    * __Default value:__ The field names of the input x and y values.
    */
-  as?: [string, string];
+  as?: [FieldName, FieldName];
 }
 
 export function isRegression(t: Transform): t is RegressionTransform {
@@ -521,20 +551,20 @@ export interface LoessTransform {
   /**
    * The data field of the dependent variable to smooth.
    */
-  loess: string;
+  loess: FieldName;
 
   /**
    * The data field of the independent variable to use a predictor.
    */
-  on: string;
+  on: FieldName;
 
   /**
    * The data fields to group by. If not specified, a single group containing all data objects will be used.
    */
-  groupby?: string[];
+  groupby?: FieldName[];
 
   /**
-   * A bandwidth parameter in the range [0, 1] that determines the amount of smoothing.
+   * A bandwidth parameter in the range `[0, 1]` that determines the amount of smoothing.
    *
    * __Default value:__ `0.3`
    */
@@ -545,7 +575,7 @@ export interface LoessTransform {
    *
    * __Default value:__ The field names of the input x and y values.
    */
-  as?: [string, string];
+  as?: [FieldName, FieldName];
 }
 
 export function isLoess(t: Transform): t is LoessTransform {
@@ -611,6 +641,7 @@ export type Transform =
   | JoinAggregateTransform
   | LoessTransform
   | LookupTransform
+  | QuantileTransform
   | RegressionTransform
   | TimeUnitTransform
   | SampleTransform

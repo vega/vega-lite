@@ -4,22 +4,20 @@ import {
   accessPathDepth,
   accessPathWithDatum,
   deleteNestedProperty,
-  differArray,
   entries,
   fieldIntersection,
-  fill,
   flatAccessWithDatum,
   hash,
   hasIntersection,
   isEqual,
-  isNumeric,
   prefixGenerator,
   replacePathInField,
   setEqual,
   stringify,
   unique,
   uniqueId,
-  varName
+  varName,
+  replaceAll
 } from '../src/util';
 
 describe('util', () => {
@@ -68,6 +66,7 @@ describe('util', () => {
       expect(hash({foo: 42})).toBe('{"foo":42}');
     });
   });
+
   describe('deleteNestedProperty', () => {
     it('removes a property from an object', () => {
       const originalObject = {
@@ -254,13 +253,6 @@ describe('util', () => {
     });
   });
 
-  describe('fill', () => {
-    it('should return array of right length and filled with the right values', () => {
-      const arr = fill(42, 5);
-      expect(arr).toHaveLength(5);
-      expect(arr).toEqual([42, 42, 42, 42, 42]);
-    });
-  });
   describe('isEqual', () => {
     it('should return false when dict is a subset of other', () => {
       expect(isEqual({a: 1}, {a: 1, b: 2})).toBe(false);
@@ -275,35 +267,15 @@ describe('util', () => {
       expect(isEqual({a: 1}, {a: 2})).toBe(false);
     });
   });
-  describe('differArray', () => {
-    it('should return false when both arrays are empty', () => {
-      expect(differArray([], [])).toBe(false);
+
+  describe('replaceAll', () => {
+    it('should replace all ocurrences', () => {
+      expect(replaceAll('abababa', 'a', 'c')).toBe('cbcbcbc');
     });
-    it('should return true when lengths differ', () => {
-      const a = [1, 2, 3];
-      const b = [1, 2];
-      expect(differArray(a, b)).toBe(true);
-    });
-    it('should return false when arrays are same sorted', () => {
-      const a = [3, 2, 1];
-      const b = [1, 2, 3];
-      expect(differArray(a, b)).toBe(false);
-    });
-  });
-  describe('isNumeric', () => {
-    it('should return true for integers', () => {
-      expect(isNumeric(1)).toBe(true);
-      expect(isNumeric(-1)).toBe(true);
-    });
-    it('should be true for real numbers', () => {
-      expect(isNumeric(0.0)).toBe(true);
-      expect(isNumeric(3.14)).toBe(true);
-    });
-    it('should return false for NaN', () => {
-      expect(isNumeric(NaN)).toBe(false);
-    });
-    it('should return false for text', () => {
-      expect(isNumeric('foo')).toBe(false);
+    it('should work with special characters', () => {
+      expect(replaceAll('a/c', '/', 'b')).toBe('abc');
+      expect(replaceAll('a\\c', '\\', 'b')).toBe('abc');
+      expect(replaceAll('a[c', '[', 'b')).toBe('abc');
     });
   });
 });

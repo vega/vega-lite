@@ -40,6 +40,7 @@ Vega-Lite includes all cartographic projections provided by the [d3-geo](https:/
 | [conicConformal](https://github.com/d3/d3-geo#geoConicConformal) | The conic conformal projection. The parallels default to [30&deg;, 30&deg;] resulting in flat top. |
 | [conicEqualArea](https://github.com/d3/d3-geo#geoConicEqualArea) | The Albers’ equal-area conic projection. |
 | [conicEquidistant](https://github.com/d3/d3-geo#geoConicEquidistant) | The conic equidistant projection. |
+| [equalEarth](https://github.com/d3/d3-geo#equal-earth) | The Equal Earth projection, by Bojan Šavrič et al., 2018. |
 | [equirectangular](https://github.com/d3/d3-geo#geoEquirectangular) | The equirectangular (plate carr&eacute;e) projection, akin to use longitude, latitude directly. |
 | [gnomonic](https://github.com/d3/d3-geo#geoGnomonic) | The gnomonic projection. |
 | [identity](https://github.com/d3/d3-geo#geoIdentity) | The identity projection. Also supports additional boolean `reflectX` and `reflectY` parameters. |

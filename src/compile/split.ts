@@ -58,7 +58,7 @@ export class Split<T extends object> {
       this.set(key, s.implicit[key], false);
     }
   }
-  public copyKeyFromObject<S extends Partial<T>>(key: keyof T, s: S) {
+  public copyKeyFromObject<S extends T>(key: keyof T, s: Partial<S>) {
     // Explicit has higher precedence
     if (s[key] !== undefined) {
       this.set(key, s[key], true);

@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -40,7 +40,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_distance\"] !== null && !isNaN(datum[\"bin_maxbins_10_distance\"])"
+          "expr": "isValid(datum[\"bin_maxbins_10_distance\"]) && isFinite(+datum[\"bin_maxbins_10_distance\"])"
         }
       ]
     },
@@ -57,7 +57,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_distance\"] !== null && !isNaN(datum[\"bin_maxbins_10_distance\"])"
+          "expr": "isValid(datum[\"bin_maxbins_10_distance\"]) && isFinite(+datum[\"bin_maxbins_10_distance\"])"
         }
       ]
     }
@@ -73,14 +73,14 @@
           "fill": {"value": "#4c78a8"},
           "x2": [
             {
-              "test": "datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"])",
+              "test": "!isValid(datum[\"bin_maxbins_10_distance\"]) || !isFinite(+datum[\"bin_maxbins_10_distance\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_maxbins_10_distance", "offset": 1}
           ],
           "x": [
             {
-              "test": "datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"])",
+              "test": "!isValid(datum[\"bin_maxbins_10_distance\"]) || !isFinite(+datum[\"bin_maxbins_10_distance\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_maxbins_10_distance_end"}
@@ -100,14 +100,14 @@
           "fill": {"value": "goldenrod"},
           "x2": [
             {
-              "test": "datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"])",
+              "test": "!isValid(datum[\"bin_maxbins_10_distance\"]) || !isFinite(+datum[\"bin_maxbins_10_distance\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_maxbins_10_distance", "offset": 1}
           ],
           "x": [
             {
-              "test": "datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"])",
+              "test": "!isValid(datum[\"bin_maxbins_10_distance\"]) || !isFinite(+datum[\"bin_maxbins_10_distance\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_maxbins_10_distance_end"}

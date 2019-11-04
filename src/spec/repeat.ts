@@ -1,7 +1,6 @@
 import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
 import {GenericSpec} from './index';
 import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
-import {RepeatMapping} from './repeat';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
 export interface RepeatMapping {

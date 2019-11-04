@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 400,
   "height": 400,
@@ -392,6 +392,7 @@
       "name": "marks",
       "type": "symbol",
       "style": ["point"],
+      "interactive": true,
       "from": {"data": "data_0"},
       "encode": {
         "update": {

@@ -70,7 +70,7 @@ describe('Mark: Text', () => {
 
     it('should output correct bin range', () => {
       expect(props.text).toEqual({
-        signal: `datum["bin_maxbins_10_foo"] === null || isNaN(datum["bin_maxbins_10_foo"]) ? "null" : format(datum["bin_maxbins_10_foo"], "d") + " - " + format(datum["bin_maxbins_10_foo_end"], "d")`
+        signal: `!isValid(datum["bin_maxbins_10_foo"]) || !isFinite(+datum["bin_maxbins_10_foo"]) ? "null" : format(datum["bin_maxbins_10_foo"], "d") + " - " + format(datum["bin_maxbins_10_foo_end"], "d")`
       });
     });
   });
@@ -210,7 +210,7 @@ describe('Mark: Text', () => {
     it('should map color to fill', () => {
       expect(props.fill).toEqual([
         {
-          test: 'datum["mean_Acceleration"] === null || isNaN(datum["mean_Acceleration"])',
+          test: '!isValid(datum["mean_Acceleration"]) || !isFinite(+datum["mean_Acceleration"])',
           value: null
         },
         {

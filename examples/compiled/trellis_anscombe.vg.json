@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Anscombe's Quartet",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "data": [
     {
@@ -11,7 +11,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"X\"] !== null && !isNaN(datum[\"X\"]) && datum[\"Y\"] !== null && !isNaN(datum[\"Y\"])"
+          "expr": "isValid(datum[\"X\"]) && isFinite(+datum[\"X\"]) && isValid(datum[\"Y\"]) && isFinite(+datum[\"Y\"])"
         }
       ]
     },
@@ -116,14 +116,14 @@
               "fill": {"value": "#4c78a8"},
               "x": [
                 {
-                  "test": "datum[\"X\"] === null || isNaN(datum[\"X\"])",
+                  "test": "!isValid(datum[\"X\"]) || !isFinite(+datum[\"X\"])",
                   "value": 0
                 },
                 {"scale": "x", "field": "X"}
               ],
               "y": [
                 {
-                  "test": "datum[\"Y\"] === null || isNaN(datum[\"Y\"])",
+                  "test": "!isValid(datum[\"Y\"]) || !isFinite(+datum[\"Y\"])",
                   "field": {"group": "height"}
                 },
                 {"scale": "y", "field": "Y"}

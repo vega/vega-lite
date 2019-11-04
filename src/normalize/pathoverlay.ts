@@ -18,11 +18,12 @@ function dropLineAndPoint(markDef: MarkDef): MarkDef | Mark {
 }
 
 function dropLineAndPointFromConfig(config: Config) {
-  for (const mark of ['line', 'area', 'rule', 'trail']) {
+  for (const mark of ['line', 'area', 'rule', 'trail'] as const) {
     if (config[mark]) {
       config = {
         ...config,
-        [mark]: omit(config[mark], ['point', 'line'])
+        // TODO: remove as any
+        [mark]: omit(config[mark], ['point', 'line'] as any)
       };
     }
   }

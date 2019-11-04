@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -26,7 +26,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"yearmonthdate_date\"] !== null && !isNaN(datum[\"yearmonthdate_date\"])"
+          "expr": "(isDate(datum[\"yearmonthdate_date\"]) || (isValid(datum[\"yearmonthdate_date\"]) && isFinite(+datum[\"yearmonthdate_date\"])))"
         }
       ]
     }
@@ -69,6 +69,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"yearmonthdate_date\"]"},
+      "interactive": false,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -79,7 +80,7 @@
           "x": {"scale": "x", "field": "yearmonthdate_date"},
           "y": {"scale": "y", "field": "temp_max"},
           "defined": {
-            "signal": "datum[\"yearmonthdate_date\"] !== null && !isNaN(datum[\"yearmonthdate_date\"]) && datum[\"temp_max\"] !== null && !isNaN(datum[\"temp_max\"])"
+            "signal": "isValid(datum[\"yearmonthdate_date\"]) && isFinite(+datum[\"yearmonthdate_date\"]) && isValid(datum[\"temp_max\"]) && isFinite(+datum[\"temp_max\"])"
           }
         }
       }
@@ -89,6 +90,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"yearmonthdate_date\"]"},
+      "interactive": false,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -99,7 +101,7 @@
           "x": {"scale": "x", "field": "yearmonthdate_date"},
           "y": {"scale": "y", "field": "temp_min"},
           "defined": {
-            "signal": "datum[\"yearmonthdate_date\"] !== null && !isNaN(datum[\"yearmonthdate_date\"]) && datum[\"temp_min\"] !== null && !isNaN(datum[\"temp_min\"])"
+            "signal": "isValid(datum[\"yearmonthdate_date\"]) && isFinite(+datum[\"yearmonthdate_date\"]) && isValid(datum[\"temp_min\"]) && isFinite(+datum[\"temp_min\"])"
           }
         }
       }
@@ -108,6 +110,7 @@
       "name": "layer_2_marks",
       "type": "rule",
       "style": ["rule"],
+      "interactive": true,
       "from": {"data": "data_0"},
       "encode": {
         "update": {

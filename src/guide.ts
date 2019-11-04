@@ -1,6 +1,7 @@
 import {ConditionValueDefMixins, ValueDef} from './channeldef';
 import {LegendConfig} from './legend';
 import {VgEncodeChannel} from './vega.schema';
+import {Text} from 'vega';
 
 export interface TitleMixins {
   /**
@@ -14,7 +15,7 @@ export interface TitleMixins {
    *
    * 2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.
    */
-  title?: string | null;
+  title?: Text | null;
 }
 
 export interface FormatMixins {
@@ -38,6 +39,13 @@ export interface FormatMixins {
    * - `"number"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.
    */
   formatType?: 'number' | 'time';
+
+  /**
+   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.
+   *
+   * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
+   */
+  labelExpr?: string;
 }
 
 export interface Guide extends TitleMixins, FormatMixins {}

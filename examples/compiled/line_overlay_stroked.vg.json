@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock prices of 5 Tech Companies over Time.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -32,7 +32,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"year_date\"] !== null && !isNaN(datum[\"year_date\"])"
+          "expr": "(isDate(datum[\"year_date\"]) || (isValid(datum[\"year_date\"]) && isFinite(+datum[\"year_date\"])))"
         }
       ]
     }
@@ -67,7 +67,7 @@
               "x": {"scale": "x", "field": "year_date"},
               "y": {"scale": "y", "field": "mean_price"},
               "defined": {
-                "signal": "datum[\"year_date\"] !== null && !isNaN(datum[\"year_date\"]) && datum[\"mean_price\"] !== null && !isNaN(datum[\"mean_price\"])"
+                "signal": "isValid(datum[\"year_date\"]) && isFinite(+datum[\"year_date\"]) && isValid(datum[\"mean_price\"]) && isFinite(+datum[\"mean_price\"])"
               }
             }
           }

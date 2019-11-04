@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -25,7 +25,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"bin_start\"] !== null && !isNaN(datum[\"bin_start\"]) && datum[\"count\"] !== null && !isNaN(datum[\"count\"])"
+          "expr": "isValid(datum[\"bin_start\"]) && isFinite(+datum[\"bin_start\"]) && isValid(datum[\"count\"]) && isFinite(+datum[\"count\"])"
         }
       ]
     }

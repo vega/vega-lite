@@ -12,7 +12,7 @@ export class IdentifierNode extends DataFlowNode {
   }
 
   public dependentFields() {
-    return new Set();
+    return new Set<string>();
   }
 
   public producedFields() {

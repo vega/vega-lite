@@ -43,7 +43,12 @@ export interface DateTime {
    */
   quarter?: number;
 
-  /** One of: (1) integer value representing the month from `1`-`12`. `1` represents January;  (2) case-insensitive month name (e.g., `"January"`);  (3) case-insensitive, 3-character short month name (e.g., `"Jan"`). */
+  /**
+   * One of:
+   * (1) integer value representing the month from `1`-`12`. `1` represents January;
+   * (2) case-insensitive month name (e.g., `"January"`);
+   * (3) case-insensitive, 3-character short month name (e.g., `"Jan"`).
+   */
   month?: Month | string;
 
   /**
@@ -55,7 +60,12 @@ export interface DateTime {
   date?: number;
 
   /**
-   * Value representing the day of a week.  This can be one of: (1) integer value -- `1` represents Monday; (2) case-insensitive day name (e.g., `"Monday"`);  (3) case-insensitive, 3-character short day name (e.g., `"Mon"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`.
+   * Value representing the day of a week.  This can be one of:
+   * (1) integer value -- `1` represents Monday;
+   * (2) case-insensitive day name (e.g., `"Monday"`);
+   * (3) case-insensitive, 3-character short day name (e.g., `"Mon"`).
+   *
+   * **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`.
    */
   day?: Day | string;
 
@@ -253,7 +263,7 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false, toJS
 
   // Note: can't use TimeUnit enum here as importing it will create
   // circular dependency problem!
-  for (const timeUnit of ['hours', 'minutes', 'seconds', 'milliseconds']) {
+  for (const timeUnit of ['hours', 'minutes', 'seconds', 'milliseconds'] as const) {
     if (d[timeUnit] !== undefined) {
       units.push(d[timeUnit]);
     } else {
@@ -265,9 +275,9 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false, toJS
 
   if (toJSON) {
     if (d.utc) {
-      return new Function(`return new Date(Date.UTC(${unitsString}))`)().toJSON();
+      return new Function(`return +new Date(Date.UTC(${unitsString}))`)();
     } else {
-      return new Function(`return new Date(${unitsString})`)().toJSON();
+      return new Function(`return +new Date(${unitsString})`)();
     }
   }
 

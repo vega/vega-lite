@@ -57,7 +57,7 @@ export class GeoJSONNode extends DataFlowNode {
   }
 
   public producedFields() {
-    return new Set();
+    return new Set<string>();
   }
 
   public hash() {

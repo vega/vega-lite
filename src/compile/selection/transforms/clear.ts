@@ -1,5 +1,6 @@
 import {Update} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
+import {isString} from 'vega-util';
 import {TUPLE} from '..';
 import {varName} from '../../../util';
 import inputBindings from './inputs';
@@ -8,12 +9,12 @@ import {TransformCompiler} from './transforms';
 
 const clear: TransformCompiler = {
   has: selCmpt => {
-    return selCmpt.clear !== false;
+    return selCmpt.clear !== undefined && selCmpt.clear !== false;
   },
 
-  parse: (model, selDef, selCmpt) => {
+  parse: (model, selCmpt, selDef) => {
     if (selDef.clear) {
-      selCmpt.clear = parseSelector(selDef.clear, 'scope');
+      selCmpt.clear = isString(selDef.clear) ? parseSelector(selDef.clear, 'scope') : selDef.clear;
     }
   },
 

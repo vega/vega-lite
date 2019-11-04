@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "data": [
     {
@@ -34,7 +34,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_15_Horsepower\"] !== null && !isNaN(datum[\"bin_maxbins_15_Horsepower\"])"
+          "expr": "isValid(datum[\"bin_maxbins_15_Horsepower\"]) && isFinite(+datum[\"bin_maxbins_15_Horsepower\"])"
         }
       ]
     },
@@ -136,7 +136,7 @@
               "fill": {"value": "#4c78a8"},
               "x2": [
                 {
-                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_15_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_15_Horsepower\"])",
                   "value": 0
                 },
                 {
@@ -147,7 +147,7 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_15_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_15_Horsepower\"])",
                   "value": 0
                 },
                 {"scale": "x", "field": "bin_maxbins_15_Horsepower_end"}

@@ -15,7 +15,7 @@ import {
 } from '../../header';
 import {isSortField} from '../../sort';
 import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
-import {contains, keys} from '../../util';
+import {contains, keys, replaceAll} from '../../util';
 import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema';
 import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties';
 import {formatSignalRef} from '../common';
@@ -113,16 +113,26 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): 
 }
 
 export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel: FacetChannel, config: Config) {
-  const {format, labelAngle, labelAnchor, labelOrient} = getHeaderProperties(
-    ['format', 'labelAngle', 'labelAnchor', 'labelOrient'],
+  const {format, labelAngle, labelAnchor, labelOrient, labelExpr} = getHeaderProperties(
+    ['format', 'labelAngle', 'labelAnchor', 'labelOrient', 'labelExpr'],
     facetFieldDef,
     config,
     channel
   );
 
+  const titleTextExpr = formatSignalRef(facetFieldDef, format, 'parent', config).signal;
   const headerChannel = getHeaderChannel(channel, labelOrient);
+
   return {
-    text: formatSignalRef(facetFieldDef, format, 'parent', config),
+    text: {
+      signal: labelExpr
+        ? replaceAll(
+            replaceAll(labelExpr, 'datum.label', titleTextExpr),
+            'datum.value',
+            vgField(facetFieldDef, {expr: 'parent'})
+          )
+        : titleTextExpr
+    },
     ...(channel === 'row' ? {orient: 'left'} : {}),
     style: 'guide-label',
     frame: 'group',

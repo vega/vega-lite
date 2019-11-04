@@ -117,7 +117,7 @@ describe('filter', () => {
 
     it('should return correct expression for valid', () => {
       const expr = expression(null, {field: 'x', valid: true});
-      expect(expr).toBe('datum["x"]!==null&&!isNaN(datum["x"])');
+      expect(expr).toBe('isValid(datum["x"]) && isFinite(+datum["x"])');
     });
 
     it('should return a correct expression for an EqualFilter with datetime object', () => {

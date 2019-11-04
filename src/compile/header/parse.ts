@@ -7,6 +7,7 @@ import {FacetModel} from '../facet';
 import {parseGuideResolve} from '../resolve';
 import {getHeaderProperty} from './common';
 import {HeaderChannel, HeaderComponent} from './component';
+import {isArray} from 'vega-util';
 
 export function getHeaderType(orient: AxisOrient) {
   if (orient === 'top' || orient === 'left') {
@@ -34,6 +35,9 @@ function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
     });
 
     if (model.child.component.layoutHeaders[channel].title) {
+      // TODO: better handle multiline titles
+      title = isArray(title) ? title.join(', ') : title;
+
       // merge title with child to produce "Title / Subtitle / Sub-subtitle"
       title += ' / ' + model.child.component.layoutHeaders[channel].title;
       model.child.component.layoutHeaders[channel].title = null;

@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -42,7 +42,7 @@
           "x": {"scale": "x", "field": "yearmonth_date"},
           "y": {"scale": "y", "field": "max_temp_max"},
           "defined": {
-            "signal": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"]) && datum[\"max_temp_max\"] !== null && !isNaN(datum[\"max_temp_max\"])"
+            "signal": "isValid(datum[\"yearmonth_date\"]) && isFinite(+datum[\"yearmonth_date\"]) && isValid(datum[\"max_temp_max\"]) && isFinite(+datum[\"max_temp_max\"])"
           }
         }
       }

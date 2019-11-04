@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -49,7 +49,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"]) && datum[\"cumulative_count\"] !== null && !isNaN(datum[\"cumulative_count\"])"
+          "expr": "isValid(datum[\"bin_IMDB_Rating\"]) && isFinite(+datum[\"bin_IMDB_Rating\"]) && isValid(datum[\"cumulative_count\"]) && isFinite(+datum[\"cumulative_count\"])"
         }
       ]
     },
@@ -59,7 +59,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"]) && datum[\"count\"] !== null && !isNaN(datum[\"count\"])"
+          "expr": "isValid(datum[\"bin_IMDB_Rating\"]) && isFinite(+datum[\"bin_IMDB_Rating\"]) && isValid(datum[\"count\"]) && isFinite(+datum[\"count\"])"
         }
       ]
     }
@@ -75,14 +75,14 @@
           "fill": {"value": "#4c78a8"},
           "x": [
             {
-              "test": "datum[\"bin_IMDB_Rating\"] === null || isNaN(datum[\"bin_IMDB_Rating\"])",
+              "test": "!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_IMDB_Rating"}
           ],
           "x2": [
             {
-              "test": "datum[\"bin_IMDB_Rating_end\"] === null || isNaN(datum[\"bin_IMDB_Rating_end\"])",
+              "test": "!isValid(datum[\"bin_IMDB_Rating_end\"]) || !isFinite(+datum[\"bin_IMDB_Rating_end\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_IMDB_Rating_end"}
@@ -103,14 +103,14 @@
           "fill": {"value": "yellow"},
           "x": [
             {
-              "test": "datum[\"bin_IMDB_Rating\"] === null || isNaN(datum[\"bin_IMDB_Rating\"])",
+              "test": "!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_IMDB_Rating"}
           ],
           "x2": [
             {
-              "test": "datum[\"bin_IMDB_Rating_end\"] === null || isNaN(datum[\"bin_IMDB_Rating_end\"])",
+              "test": "!isValid(datum[\"bin_IMDB_Rating_end\"]) || !isFinite(+datum[\"bin_IMDB_Rating_end\"])",
               "value": 0
             },
             {"scale": "x", "field": "bin_IMDB_Rating_end"}

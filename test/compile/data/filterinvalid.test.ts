@@ -99,7 +99,7 @@ describe('compile/data/filterinvalid', () => {
 
         expect(parse(model).assemble()).toEqual({
           type: 'filter',
-          expr: 'datum["foo"] !== null && !isNaN(datum["foo"])'
+          expr: 'isValid(datum["foo"]) && isFinite(+datum["foo"])'
         });
       });
 
@@ -113,7 +113,7 @@ describe('compile/data/filterinvalid', () => {
 
         expect(parse(model).assemble()).toEqual({
           type: 'filter',
-          expr: 'datum["foo.bar"] !== null && !isNaN(datum["foo.bar"])'
+          expr: 'isValid(datum["foo.bar"]) && isFinite(+datum["foo.bar"])'
         });
       });
     });

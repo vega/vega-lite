@@ -1,4 +1,4 @@
-import {Orientation} from 'vega';
+import {Orientation, Text} from 'vega';
 import {isArray, isBoolean, isString} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from '.';
 import {
@@ -8,14 +8,15 @@ import {
   isFieldDef,
   PositionFieldDef,
   SecondaryFieldDef,
-  TextFieldDef,
-  TextFieldDefWithCondition,
-  TextValueDefWithCondition
+  StringFieldDef,
+  StringFieldDefWithCondition,
+  StringValueDefWithCondition
 } from '../channeldef';
 import {Encoding, fieldDefs} from '../encoding';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
+import {getFirstDefined} from '../util';
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 
@@ -41,13 +42,16 @@ export interface CompositeMarkTooltipSummary {
   /**
    * The title prefix to show, corresponding to the field with field prefix `fieldPrefix`
    */
-  titlePrefix: string;
+  titlePrefix: Text;
 }
 
 export function filterTooltipWithAggregatedField<F extends Field>(
   oldEncoding: Encoding<F>
 ): {
-  customTooltipWithoutAggregatedField?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F> | TextFieldDef<F>[];
+  customTooltipWithoutAggregatedField?:
+    | StringFieldDefWithCondition<F>
+    | StringValueDefWithCondition<F>
+    | StringFieldDef<F>[];
   filteredEncoding: Encoding<F>;
 } {
   const {tooltip, ...filteredEncoding} = oldEncoding;
@@ -55,24 +59,27 @@ export function filterTooltipWithAggregatedField<F extends Field>(
     return {filteredEncoding: oldEncoding};
   }
 
-  let customTooltipWithAggregatedField: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F> | TextFieldDef<F>[];
+  let customTooltipWithAggregatedField:
+    | StringFieldDefWithCondition<F>
+    | StringValueDefWithCondition<F>
+    | StringFieldDef<F>[];
   let customTooltipWithoutAggregatedField:
-    | TextFieldDefWithCondition<F>
-    | TextValueDefWithCondition<F>
-    | TextFieldDef<F>[];
+    | StringFieldDefWithCondition<F>
+    | StringValueDefWithCondition<F>
+    | StringFieldDef<F>[];
 
   if (isArray(tooltip)) {
-    tooltip.forEach((t: TextFieldDef<F>) => {
+    tooltip.forEach((t: StringFieldDef<F>) => {
       if (t.aggregate) {
         if (!customTooltipWithAggregatedField) {
           customTooltipWithAggregatedField = [];
         }
-        (customTooltipWithAggregatedField as TextFieldDef<F>[]).push(t);
+        (customTooltipWithAggregatedField as StringFieldDef<F>[]).push(t);
       } else {
         if (!customTooltipWithoutAggregatedField) {
           customTooltipWithoutAggregatedField = [];
         }
-        (customTooltipWithoutAggregatedField as TextFieldDef<F>[]).push(t);
+        (customTooltipWithoutAggregatedField as StringFieldDef<F>[]).push(t);
       }
     });
 
@@ -97,14 +104,14 @@ export function getCompositeMarkTooltip(
   tooltipSummary: CompositeMarkTooltipSummary[],
   continuousAxisChannelDef: PositionFieldDef<string>,
   encodingWithoutContinuousAxis: Encoding<string>,
-  withFieldName: boolean = true
+  withFieldName = true
 ): Encoding<string> {
   if ('tooltip' in encodingWithoutContinuousAxis) {
     return {tooltip: encodingWithoutContinuousAxis.tooltip};
   }
 
-  const fiveSummaryTooltip: TextFieldDef<string>[] = tooltipSummary.map(
-    ({fieldPrefix, titlePrefix}): TextFieldDef<string> => ({
+  const fiveSummaryTooltip: StringFieldDef<string>[] = tooltipSummary.map(
+    ({fieldPrefix, titlePrefix}): StringFieldDef<string> => ({
       field: fieldPrefix + continuousAxisChannelDef.field,
       type: continuousAxisChannelDef.type,
       title: titlePrefix + (withFieldName ? ' of ' + continuousAxisChannelDef.field : '')
@@ -115,9 +122,14 @@ export function getCompositeMarkTooltip(
     tooltip: [
       ...fiveSummaryTooltip,
       // need to cast because TextFieldDef support fewer types of bin
-      ...(fieldDefs(encodingWithoutContinuousAxis) as TextFieldDef<string>[])
+      ...(fieldDefs(encodingWithoutContinuousAxis) as StringFieldDef<string>[])
     ]
   };
+}
+
+export function getTitle(continuousAxisChannelDef: PositionFieldDef<string>) {
+  const {axis, title, field} = continuousAxisChannelDef;
+  return axis && axis.title !== undefined ? undefined : getFirstDefined(title, field);
 }
 
 export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
@@ -142,12 +154,7 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
     endPositionPrefix?: string;
     extraEncoding?: Encoding<string>;
   }) => {
-    const title =
-      axis && axis.title !== undefined
-        ? undefined
-        : continuousAxisChannelDef.title !== undefined
-        ? continuousAxisChannelDef.title
-        : continuousAxisChannelDef.field;
+    const title = getTitle(continuousAxisChannelDef);
 
     return partLayerMixins<P>(compositeMarkDef, partName, compositeMarkConfig, {
       mark, // TODO better remove this method and just have mark as a parameter of the method
@@ -155,9 +162,9 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
         [continuousAxis]: {
           field: positionPrefix + '_' + continuousAxisChannelDef.field,
           type: continuousAxisChannelDef.type,
-          ...(title ? {title} : {}),
-          ...(scale ? {scale} : {}),
-          ...(axis ? {axis} : {})
+          ...(title !== undefined ? {title} : {}),
+          ...(scale !== undefined ? {scale} : {}),
+          ...(axis !== undefined ? {axis} : {})
         },
         ...(isString(endPositionPrefix)
           ? {

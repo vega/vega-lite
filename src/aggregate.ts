@@ -27,6 +27,12 @@ const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   variancep: 1
 };
 
+export const MULTIDOMAIN_SORT_OP_INDEX = {
+  count: 1,
+  min: 1,
+  max: 1
+};
+
 export interface ArgminDef {
   argmin: string;
 }

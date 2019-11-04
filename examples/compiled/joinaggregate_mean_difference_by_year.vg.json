@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Bar graph showing the best films for the year they were produced, where best is defined by at least 2.5 points above average for that year. The red point shows the average rating for a film in that year, and the bar is the rating that the film recieved.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "style": "cell",
@@ -36,7 +36,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
+          "expr": "isValid(datum[\"IMDB_Rating\"]) && isFinite(+datum[\"IMDB_Rating\"])"
         }
       ]
     },
@@ -46,7 +46,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"AverageYearRating\"] !== null && !isNaN(datum[\"AverageYearRating\"])"
+          "expr": "isValid(datum[\"AverageYearRating\"]) && isFinite(+datum[\"AverageYearRating\"])"
         }
       ]
     }

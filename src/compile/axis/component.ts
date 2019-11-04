@@ -1,4 +1,4 @@
-import {Axis as VgAxis} from 'vega';
+import {Axis as VgAxis, Text} from 'vega';
 import {
   Axis,
   AxisPart,
@@ -8,7 +8,7 @@ import {
   ConditionalAxisProperty
 } from '../../axis';
 import {FieldDefBase} from '../../channeldef';
-import {duplicate, Flag, keys, Omit} from '../../util';
+import {duplicate, Flag, keys} from '../../util';
 import {Split} from '../split';
 
 function isFalseOrNull(v: any) {
@@ -16,7 +16,7 @@ function isFalseOrNull(v: any) {
 }
 
 export type AxisComponentProps = Omit<VgAxis, 'title' | ConditionalAxisProp> & {
-  title: string | FieldDefBase<string>[];
+  title: Text | FieldDefBase<string>[];
   labelExpr: string;
 } & {
     [k in ConditionalAxisProp]?: BaseAxisNoSignals[k] | ConditionalAxisProperty<BaseAxisNoSignals[k]>;

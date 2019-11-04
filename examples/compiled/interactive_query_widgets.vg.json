@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Drag the sliders to highlight points.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -11,7 +11,7 @@
       "name": "CylYr_store",
       "values": [
         {
-          "unit": "\"layer_0\"",
+          "unit": "layer_0",
           "fields": [
             {"type": "E", "field": "Cylinders"},
             {"type": "E", "field": "Year"}
@@ -34,7 +34,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
         }
       ]
     },
@@ -48,7 +48,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
         }
       ]
     }
@@ -64,25 +64,11 @@
     {
       "name": "CylYr_Year",
       "init": "1977",
-      "on": [
-        {
-          "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? datum[\"Year\"] : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
-      ],
       "bind": {"input": "range", "min": 1969, "max": 1981, "step": 1}
     },
     {
       "name": "CylYr_Cylinders",
       "init": "4",
-      "on": [
-        {
-          "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? datum[\"Cylinders\"] : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
-      ],
       "bind": {"input": "range", "min": 3, "max": 8, "step": 1}
     },
     {
@@ -110,6 +96,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
+      "interactive": true,
       "from": {"data": "data_0"},
       "encode": {
         "update": {
@@ -132,6 +119,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["circle"],
+      "interactive": false,
       "from": {"data": "data_1"},
       "encode": {
         "update": {

@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "style": "cell",
@@ -19,7 +19,7 @@
         {"type": "flatten", "fields": ["foo", "bar"], "as": ["foo", "bar"]},
         {
           "type": "filter",
-          "expr": "datum[\"foo\"] !== null && !isNaN(datum[\"foo\"])"
+          "expr": "isValid(datum[\"foo\"]) && isFinite(+datum[\"foo\"])"
         }
       ]
     }

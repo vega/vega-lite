@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A dual axis chart, created by setting y's scale resolution to `\"independent\"`",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 400,
   "height": 300,
@@ -48,7 +48,7 @@
           "y": {"scale": "layer_0_y", "field": "average_temp_max"},
           "y2": {"scale": "layer_0_y", "field": "average_temp_min"},
           "defined": {
-            "signal": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"]) && datum[\"average_temp_max\"] !== null && !isNaN(datum[\"average_temp_max\"])"
+            "signal": "isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]) && isValid(datum[\"average_temp_max\"]) && isFinite(+datum[\"average_temp_max\"])"
           }
         }
       }
@@ -66,7 +66,7 @@
           "x": {"scale": "x", "field": "month_date"},
           "y": {"scale": "layer_1_y", "field": "average_precipitation"},
           "defined": {
-            "signal": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"]) && datum[\"average_precipitation\"] !== null && !isNaN(datum[\"average_precipitation\"])"
+            "signal": "isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]) && isValid(datum[\"average_precipitation\"]) && isFinite(+datum[\"average_precipitation\"])"
           }
         }
       }

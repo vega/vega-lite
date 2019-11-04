@@ -15,7 +15,7 @@ export class PivotTransformNode extends DataFlowNode {
     super(parent);
   }
 
-  public addDimensions(fields: string[]) {
+  public addDimensions(fields: readonly string[]) {
     this.transform.groupby = unique((this.transform.groupby || []).concat(fields), d => d);
   }
 

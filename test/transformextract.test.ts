@@ -43,6 +43,7 @@ describe('extractTransforms()', () => {
     'histogram_ordinal.vl.json',
     'histogram_sort_mean.vl.json',
     'histogram.vl.json',
+    'interactive_area_brush.vl.json',
     'interactive_concat_layer.vl.json',
     'interactive_layered_crossfilter_discrete.vl.json',
     'interactive_layered_crossfilter.vl.json',

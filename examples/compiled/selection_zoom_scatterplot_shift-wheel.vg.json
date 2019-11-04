@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -14,7 +14,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"]) && isValid(datum[\"Cylinders\"]) && isFinite(+datum[\"Cylinders\"])"
         }
       ]
     }
@@ -146,6 +146,7 @@
       "type": "symbol",
       "clip": true,
       "style": ["circle"],
+      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -153,14 +154,14 @@
           "fill": {"value": "#4c78a8"},
           "x": [
             {
-              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
+              "test": "!isValid(datum[\"Horsepower\"]) || !isFinite(+datum[\"Horsepower\"])",
               "value": 0
             },
             {"scale": "x", "field": "Horsepower"}
           ],
           "y": [
             {
-              "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+              "test": "!isValid(datum[\"Miles_per_Gallon\"]) || !isFinite(+datum[\"Miles_per_Gallon\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "Miles_per_Gallon"}

@@ -20,7 +20,7 @@ export function debug(node: DataFlowNode) {
  *
  * Render the output in http://viz-js.com/.
  */
-export function draw(roots: DataFlowNode[]) {
+export function draw(roots: readonly DataFlowNode[]) {
   // check the graph before printing it since the logic below assumes a consistent graph
   checkLinks(roots);
 
@@ -100,7 +100,7 @@ export function draw(roots: DataFlowNode[]) {
 /**
  * Iterates over a dataflow graph and checks whether all links are consistent.
  */
-export function checkLinks(nodes: DataFlowNode[]): boolean {
+export function checkLinks(nodes: readonly DataFlowNode[]): boolean {
   for (const node of nodes) {
     for (const child of node.children) {
       if (child.parent !== node) {

@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 600,
   "height": 400,
@@ -14,7 +14,7 @@
         {"type": "filter", "expr": "datum.Entity !== 'All natural disasters'"},
         {
           "type": "filter",
-          "expr": "datum[\"Deaths\"] !== null && !isNaN(datum[\"Deaths\"])"
+          "expr": "isValid(datum[\"Deaths\"]) && isFinite(+datum[\"Deaths\"])"
         }
       ]
     }

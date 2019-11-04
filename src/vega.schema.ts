@@ -2,6 +2,7 @@ import {
   AggregateOp,
   Align,
   Color,
+  ColorValueRef,
   Compare as VgCompare,
   ExprRef as VgExprRef,
   Field as VgField,
@@ -12,19 +13,23 @@ import {
   KDETransform as VgKDETransform,
   LayoutAlign,
   LoessTransform as VgLoessTransform,
+  NumericValueRef,
   Orientation,
   ProjectionType,
+  QuantileTransform as VgQuantileTransform,
   RegressionTransform as VgRegressionTransform,
   SampleTransform as VgSampleTransform,
+  ScaledValueRef,
   SignalRef,
   SortField as VgSortField,
   TextBaseline as VgTextBaseline,
   Title as VgTitle,
-  UnionSortField as VgUnionSortField
+  UnionSortField as VgUnionSortField,
+  Text
 } from 'vega';
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
-import {Gradient, ValueOrGradient} from './channeldef';
+import {Gradient, ValueOrGradientOrText} from './channeldef';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {StackOffset} from './stack';
@@ -32,6 +37,12 @@ import {WindowOnlyOp} from './transform';
 import {Flag, keys} from './util';
 
 export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
+
+type ExcludeMapped<T, E> = {
+  [P in keyof T]: Exclude<T[P], E>;
+};
+
+export type ExcludeMappedValueRef<T> = ExcludeMapped<T, ScaledValueRef<any> | NumericValueRef | ColorValueRef>;
 
 export interface VgData {
   name: string;
@@ -58,11 +69,9 @@ export function isSignalRef(o: any): o is SignalRef {
   return !!o['signal'];
 }
 
-export type EventStream = any;
-
 // TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
 export interface VgValueRef {
-  value?: ValueOrGradient | number[];
+  value?: ValueOrGradientOrText | number[];
   field?:
     | string
     | {
@@ -423,6 +432,7 @@ export type VgTransform =
   | VgSequenceTransform
   | VgKDETransform
   | VgLoessTransform
+  | VgQuantileTransform
   | VgRegressionTransform
   | VgPivotTransform;
 
@@ -574,7 +584,7 @@ export interface BaseMarkConfig {
    *
    * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y2?: number | 'width';
+  y2?: number | 'height';
 
   /**
    * Whether to keep aspect ratio of image marks.
@@ -805,6 +815,17 @@ export interface BaseMarkConfig {
    * The font style (e.g., `"italic"`).
    */
   fontStyle?: VgFontStyle;
+
+  /**
+   * A delimiter, such as a newline character, upon which to break text strings into multiple lines. This property will be ignored if the text property is array-valued.
+   */
+  lineBreak?: string;
+
+  /**
+   * The height, in pixels, of each line of text in a multi-line text mark.
+   */
+  lineHeight?: number;
+
   /**
    * The font weight.
    * This can be either a string (e.g `"bold"`, `"normal"`) or a number (`100`, `200`, `300`, ..., `900` where `"normal"` = `400` and `"bold"` = `700`).
@@ -814,7 +835,7 @@ export interface BaseMarkConfig {
   /**
    * Placeholder text if the `text` channel is not specified
    */
-  text?: string;
+  text?: Text;
 
   /**
    * A URL to load upon mouse click. If defined, the mark acts as a hyperlink.
@@ -875,6 +896,8 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
   fontSize: 1,
   fontWeight: 1,
   fontStyle: 1,
+  lineBreak: 1,
+  lineHeight: 1,
   cursor: 1,
   href: 1,
   tooltip: 1,

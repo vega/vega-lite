@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -15,7 +15,7 @@
         {"type": "formula", "expr": "year(datum.Year)", "as": "Year"},
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
         }
       ]
     }
@@ -31,25 +31,11 @@
     {
       "name": "CylYr_Year",
       "value": null,
-      "on": [
-        {
-          "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? datum[\"Year\"] : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
-      ],
       "bind": {"input": "range", "min": 1969, "max": 1981, "step": 1}
     },
     {
       "name": "CylYr_Cylinders",
       "value": null,
-      "on": [
-        {
-          "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? datum[\"Cylinders\"] : null"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
-      ],
       "bind": {"input": "range", "min": 3, "max": 8, "step": 1}
     },
     {
@@ -77,6 +63,7 @@
       "name": "marks",
       "type": "symbol",
       "style": ["circle"],
+      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {

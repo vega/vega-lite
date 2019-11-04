@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "style": "cell",
@@ -34,7 +34,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
+          "expr": "isValid(datum[\"people\"]) && isFinite(+datum[\"people\"])"
         }
       ]
     }

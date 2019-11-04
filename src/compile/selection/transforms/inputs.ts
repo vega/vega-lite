@@ -1,5 +1,6 @@
+import {stringValue} from 'vega-util';
 import {TUPLE} from '..';
-import {accessPathWithDatum, varName} from '../../../util';
+import {varName} from '../../../util';
 import {assembleInit} from '../assemble';
 import nearest from './nearest';
 import {TUPLE_FIELDS} from './project';
@@ -8,6 +9,13 @@ import {TransformCompiler} from './transforms';
 const inputBindings: TransformCompiler = {
   has: selCmpt => {
     return selCmpt.type === 'single' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind !== 'scales';
+  },
+
+  parse: (model, selCmpt, selDef, origDef) => {
+    // Binding a selection to input widgets disables default direct manipulation interaction.
+    // A user can choose to re-enable it by explicitly specifying triggering input events.
+    if (!origDef.on) delete selCmpt.events;
+    if (!origDef.clear) delete selCmpt.clear;
   },
 
   topLevelSignals: (model, selCmpt, signals) => {
@@ -24,12 +32,14 @@ const inputBindings: TransformCompiler = {
         signals.unshift({
           name: sgname,
           ...(init ? {init: assembleInit(init[i])} : {value: null}),
-          on: [
-            {
-              events: selCmpt.events,
-              update: `datum && item().mark.marktype !== 'group' ? ${accessPathWithDatum(p.field, datum)} : null`
-            }
-          ],
+          on: selCmpt.events
+            ? [
+                {
+                  events: selCmpt.events,
+                  update: `datum && item().mark.marktype !== 'group' ? ${datum}[${stringValue(p.field)}] : null`
+                }
+              ]
+            : [],
           bind: bind[p.field] || bind[p.channel] || bind
         });
       }

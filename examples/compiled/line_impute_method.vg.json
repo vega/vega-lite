@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -78,7 +78,7 @@
               "x": {"scale": "x", "field": "a"},
               "y": {"scale": "y", "field": "b"},
               "defined": {
-                "signal": "datum[\"a\"] !== null && !isNaN(datum[\"a\"]) && datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
+                "signal": "isValid(datum[\"a\"]) && isFinite(+datum[\"a\"]) && isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
               }
             }
           }

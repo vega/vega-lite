@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Drag out a rectangular brush to highlight points.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -11,7 +11,7 @@
       "name": "brush_store",
       "values": [
         {
-          "unit": "\"\"",
+          "unit": "",
           "fields": [
             {"field": "Horsepower", "channel": "x", "type": "R"},
             {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
@@ -27,7 +27,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
         }
       ]
     }
@@ -308,6 +308,7 @@
       "name": "marks",
       "type": "symbol",
       "style": ["point"],
+      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {

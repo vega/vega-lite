@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -17,7 +17,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
+          "expr": "isValid(datum[\"miles\"]) && isFinite(+datum[\"miles\"]) && isValid(datum[\"gas\"]) && isFinite(+datum[\"gas\"])"
         }
       ]
     }
@@ -35,7 +35,7 @@
           "x": {"scale": "x", "field": "miles"},
           "y": {"scale": "y", "field": "gas"},
           "defined": {
-            "signal": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
+            "signal": "isValid(datum[\"miles\"]) && isFinite(+datum[\"miles\"]) && isValid(datum[\"gas\"]) && isFinite(+datum[\"gas\"])"
           }
         }
       }
@@ -52,14 +52,14 @@
           "fill": {"value": "#4c78a8"},
           "x": [
             {
-              "test": "datum[\"miles\"] === null || isNaN(datum[\"miles\"])",
+              "test": "!isValid(datum[\"miles\"]) || !isFinite(+datum[\"miles\"])",
               "value": 0
             },
             {"scale": "x", "field": "miles"}
           ],
           "y": [
             {
-              "test": "datum[\"gas\"] === null || isNaN(datum[\"gas\"])",
+              "test": "!isValid(datum[\"gas\"]) || !isFinite(+datum[\"gas\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "gas"}

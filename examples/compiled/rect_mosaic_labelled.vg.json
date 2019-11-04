@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "data": [
@@ -62,7 +62,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
+          "expr": "isValid(datum[\"x\"]) && isFinite(+datum[\"x\"]) && isValid(datum[\"y\"]) && isFinite(+datum[\"y\"]) && isValid(datum[\"Cylinders\"]) && isFinite(+datum[\"Cylinders\"])"
         }
       ]
     },
@@ -72,7 +72,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"xc\"] !== null && !isNaN(datum[\"xc\"]) && datum[\"yc\"] !== null && !isNaN(datum[\"yc\"])"
+          "expr": "isValid(datum[\"xc\"]) && isFinite(+datum[\"xc\"]) && isValid(datum[\"yc\"]) && isFinite(+datum[\"yc\"])"
         }
       ]
     }

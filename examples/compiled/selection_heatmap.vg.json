@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "style": "cell",
   "data": [
@@ -26,7 +26,7 @@
         {"type": "identifier", "as": "_vgsid_"},
         {
           "type": "filter",
-          "expr": "datum[\"count\"] !== null && !isNaN(datum[\"count\"])"
+          "expr": "isValid(datum[\"count\"]) && isFinite(+datum[\"count\"])"
         }
       ]
     }
@@ -74,11 +74,20 @@
     {
       "name": "marks",
       "type": "rect",
-      "style": ["bar"],
+      "style": ["rect"],
+      "interactive": true,
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "count"},
+          "strokeWidth": {"value": 2},
+          "fill": {"scale": "fill", "field": "count"},
+          "stroke": [
+            {
+              "test": "(!(length(data(\"highlight_store\"))) || (vlSelectionTest(\"highlight_store\", datum))) && (length(data(\"highlight_store\")))",
+              "value": "black"
+            },
+            {"value": null}
+          ],
           "opacity": [
             {
               "test": "!(length(data(\"highlight_store\"))) || (vlSelectionTest(\"highlight_store\", datum))",
@@ -112,10 +121,10 @@
       "paddingOuter": 0
     },
     {
-      "name": "color",
+      "name": "fill",
       "type": "linear",
       "domain": {"data": "data_0", "field": "count"},
-      "range": "ramp",
+      "range": "heatmap",
       "interpolate": "hcl",
       "zero": false
     }
@@ -141,12 +150,15 @@
   ],
   "legends": [
     {
-      "fill": "color",
+      "fill": "fill",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "square",
       "title": "count",
       "encode": {"gradient": {"update": {"opacity": {"value": 1}}}}
     }
   ],
-  "config": {"range": {"ramp": {"scheme": "yellowgreenblue"}}}
+  "config": {
+    "axis": {"domain": false, "zindex": 0},
+    "range": {"ramp": {"scheme": "yellowgreenblue"}}
+  }
 }

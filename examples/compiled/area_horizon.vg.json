@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Horizon Graph with 2 layers. (See https://idl.cs.washington.edu/papers/horizon/ for more details on Horizon Graphs.)",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 300,
   "height": 50,
@@ -62,7 +62,7 @@
           "y": {"scale": "y", "field": "y"},
           "y2": {"scale": "y", "value": 0},
           "defined": {
-            "signal": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
+            "signal": "isValid(datum[\"x\"]) && isFinite(+datum[\"x\"]) && isValid(datum[\"y\"]) && isFinite(+datum[\"y\"])"
           }
         }
       }
@@ -83,7 +83,7 @@
           "y": {"scale": "y", "field": "ny"},
           "y2": {"scale": "y", "value": 0},
           "defined": {
-            "signal": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"ny\"] !== null && !isNaN(datum[\"ny\"])"
+            "signal": "isValid(datum[\"x\"]) && isFinite(+datum[\"x\"]) && isValid(datum[\"ny\"]) && isFinite(+datum[\"ny\"])"
           }
         }
       }

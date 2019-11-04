@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 20,
@@ -13,7 +13,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
+          "expr": "isValid(datum[\"IMDB_Rating\"]) && isFinite(+datum[\"IMDB_Rating\"])"
         }
       ]
     }

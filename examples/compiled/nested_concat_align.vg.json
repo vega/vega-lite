@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Nested concatenation aligned by setting axis minExtent",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 150,
   "data": [
@@ -97,7 +97,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_Worldwide_Gross\"] !== null && !isNaN(datum[\"bin_maxbins_20_Worldwide_Gross\"])"
+          "expr": "isValid(datum[\"bin_maxbins_20_Worldwide_Gross\"]) && isFinite(+datum[\"bin_maxbins_20_Worldwide_Gross\"])"
         }
       ]
     },
@@ -117,7 +117,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"])"
+          "expr": "isValid(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"]) && isFinite(+datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"])"
         }
       ]
     },
@@ -137,7 +137,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_20_IMDB_Rating\"])"
+          "expr": "isValid(datum[\"bin_maxbins_20_IMDB_Rating\"]) && isFinite(+datum[\"bin_maxbins_20_IMDB_Rating\"])"
         }
       ]
     },
@@ -154,7 +154,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_US_Gross\"] !== null && !isNaN(datum[\"bin_maxbins_20_US_Gross\"])"
+          "expr": "isValid(datum[\"bin_maxbins_20_US_Gross\"]) && isFinite(+datum[\"bin_maxbins_20_US_Gross\"])"
         }
       ]
     }
@@ -192,7 +192,7 @@
                   "fill": {"value": "#4c78a8"},
                   "x2": [
                     {
-                      "test": "datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"])",
+                      "test": "!isValid(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"])",
                       "value": 0
                     },
                     {
@@ -203,7 +203,7 @@
                   ],
                   "x": [
                     {
-                      "test": "datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"])",
+                      "test": "!isValid(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"])",
                       "value": 0
                     },
                     {
@@ -279,7 +279,7 @@
                   "fill": {"value": "#4c78a8"},
                   "x2": [
                     {
-                      "test": "datum[\"bin_maxbins_20_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_20_IMDB_Rating\"])",
+                      "test": "!isValid(datum[\"bin_maxbins_20_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_IMDB_Rating\"])",
                       "value": 0
                     },
                     {
@@ -290,7 +290,7 @@
                   ],
                   "x": [
                     {
-                      "test": "datum[\"bin_maxbins_20_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_20_IMDB_Rating\"])",
+                      "test": "!isValid(datum[\"bin_maxbins_20_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_IMDB_Rating\"])",
                       "value": 0
                     },
                     {
@@ -374,7 +374,7 @@
                   "fill": {"value": "#4c78a8"},
                   "x2": [
                     {
-                      "test": "datum[\"bin_maxbins_20_US_Gross\"] === null || isNaN(datum[\"bin_maxbins_20_US_Gross\"])",
+                      "test": "!isValid(datum[\"bin_maxbins_20_US_Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_US_Gross\"])",
                       "value": 0
                     },
                     {
@@ -385,7 +385,7 @@
                   ],
                   "x": [
                     {
-                      "test": "datum[\"bin_maxbins_20_US_Gross\"] === null || isNaN(datum[\"bin_maxbins_20_US_Gross\"])",
+                      "test": "!isValid(datum[\"bin_maxbins_20_US_Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_US_Gross\"])",
                       "value": 0
                     },
                     {
@@ -461,7 +461,7 @@
                   "fill": {"value": "#4c78a8"},
                   "x2": [
                     {
-                      "test": "datum[\"bin_maxbins_20_Worldwide_Gross\"] === null || isNaN(datum[\"bin_maxbins_20_Worldwide_Gross\"])",
+                      "test": "!isValid(datum[\"bin_maxbins_20_Worldwide_Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_Worldwide_Gross\"])",
                       "value": 0
                     },
                     {
@@ -472,7 +472,7 @@
                   ],
                   "x": [
                     {
-                      "test": "datum[\"bin_maxbins_20_Worldwide_Gross\"] === null || isNaN(datum[\"bin_maxbins_20_Worldwide_Gross\"])",
+                      "test": "!isValid(datum[\"bin_maxbins_20_Worldwide_Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_Worldwide_Gross\"])",
                       "value": 0
                     },
                     {
