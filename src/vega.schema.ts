@@ -589,7 +589,7 @@ export interface BaseMarkConfig {
    * __Default value:__ (None)
    *
    */
-  fill?: Color | Gradient;
+  fill?: Color | Gradient | null;
 
   /**
    * Default Stroke Color.  This has higher precedence than `config.color`.
@@ -597,7 +597,7 @@ export interface BaseMarkConfig {
    * __Default value:__ (None)
    *
    */
-  stroke?: Color | Gradient;
+  stroke?: Color | Gradient | null;
 
   // ---------- Opacity ----------
   /**
