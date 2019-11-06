@@ -187,7 +187,7 @@ export function defined(model: UnitModel): VgEncodeEntry {
 }
 
 /**
- * Return mixins for non-positional channels with scales.  (Text doesn't have scale.)
+ * Return mixins for non-positional channels with scales. (Text doesn't have scale.)
  */
 export function nonPosition(
   channel: NonPositionScaleChannel,

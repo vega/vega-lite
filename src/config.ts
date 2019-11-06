@@ -138,7 +138,7 @@ export interface VLOnlyConfig {
   countTitle?: string;
 
   /**
-   * Defines how Vega-Lite generates title for fields.  There are three possible styles:
+   * Defines how Vega-Lite generates title for fields. There are three possible styles:
    * - `"verbal"` (Default) - displays function in a verbal style (e.g., "Sum of field", "Year-month of date", "field (binned)").
    * - `"function"` - displays function using parentheses and capitalized texts (e.g., "SUM(field)", "YEARMONTH(date)", "BIN(field)").
    * - `"plain"` - displays only the field name without functions (e.g., "field", "date", "field").
@@ -210,7 +210,7 @@ export interface Config
    */
   projection?: ProjectionConfig;
 
-  /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](https://vega.github.io/vega-lite/docs/mark.html#mark-def). The keys represent styles names; the values have to be valid [mark configuration objects](https://vega.github.io/vega-lite/docs/mark.html#config).  */
+  /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](https://vega.github.io/vega-lite/docs/mark.html#mark-def). The keys represent styles names; the values have to be valid [mark configuration objects](https://vega.github.io/vega-lite/docs/mark.html#config). */
   style?: StyleConfigIndex;
 }
 

@@ -21,7 +21,7 @@ export type TopLevel<S extends BaseSpec> = S &
     $schema?: string;
 
     /**
-     * Vega-Lite configuration object.  This property can only be defined at the top-level of a specification.
+     * Vega-Lite configuration object. This property can only be defined at the top-level of a specification.
      */
     config?: Config;
 
@@ -47,7 +47,7 @@ export interface TopLevelProperties {
   background?: Color;
 
   /**
-   * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.
+   * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.
    * If an object, the value should have the format `{"left": 5, "top": 5, "right": 5, "bottom": 5}` to specify padding for each side of the visualization.
    *
    * __Default value__: `5`

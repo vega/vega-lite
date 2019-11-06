@@ -112,7 +112,7 @@ export interface Encoding<F extends Field> {
    * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
    *
    * _Note:_
-   * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
+   * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    * 2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme).
    */
   color?: ColorGradientFieldDefWithCondition<F> | ColorGradientValueDefWithCondition<F>;
@@ -221,7 +221,7 @@ export interface Encoding<F extends Field> {
   /**
    * Order of the marks.
    * - For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).
-   * - For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).  Setting `order` to `{"value": null}` makes the line marks use the original order in the data sources.
+   * - For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html). Setting `order` to `{"value": null}` makes the line marks use the original order in the data sources.
    * - Otherwise, this `order` channel encodes layer order of the marks.
    *
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.

@@ -24,7 +24,7 @@ export interface FacetFieldDef<F extends Field> extends TypedFieldDef<F, Standar
    * For discrete fields, `sort` can be one of the following:
    * - `"ascending"` or `"descending"` -- for sorting by the values' natural order in JavaScript.
    * - [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.
-   * - [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `"month"` and `"day"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `"Mon"`, `"Tue"`).
+   * - [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `"month"` and `"day"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `"Mon"`, `"Tue"`).
    * - `null` indicating no sort.
    *
    * __Default value:__ `"ascending"`
@@ -106,7 +106,7 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends
     GenericCompositionLayoutWithColumns,
     ResolveMixins {
   /**
-   * Definition for how to facet the data.  One of:
+   * Definition for how to facet the data. One of:
    * 1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)
    * 2) [An object that maps `row` and `column` channels to their field definitions](https://vega.github.io/vega-lite/docs/facet.html#mapping)
    */

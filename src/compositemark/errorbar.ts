@@ -98,7 +98,7 @@ export interface ErrorBarConfig extends ErrorBarPartsMixins {
 export type ErrorBarDef = GenericCompositeMarkDef<ErrorBar> &
   ErrorBarConfig & {
     /**
-     * Orientation of the error bar.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
+     * Orientation of the error bar. This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
      */
     orient?: Orientation;
   };
