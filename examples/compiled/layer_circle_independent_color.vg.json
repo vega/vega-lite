@@ -25,8 +25,8 @@
             "bin_maxbins_10_Acceleration_end"
           ],
           "signal": "layer_1_bin_maxbins_10_Acceleration_bins",
-          "maxbins": 10,
-          "extent": {"signal": "layer_1_bin_maxbins_10_Acceleration_extent"}
+          "extent": {"signal": "layer_1_bin_maxbins_10_Acceleration_extent"},
+          "maxbins": 10
         },
         {
           "type": "extent",
@@ -38,8 +38,8 @@
           "field": "Horsepower",
           "as": ["bin_maxbins_10_Horsepower", "bin_maxbins_10_Horsepower_end"],
           "signal": "layer_1_bin_maxbins_10_Horsepower_bins",
-          "maxbins": 10,
-          "extent": {"signal": "layer_1_bin_maxbins_10_Horsepower_extent"}
+          "extent": {"signal": "layer_1_bin_maxbins_10_Horsepower_extent"},
+          "maxbins": 10
         }
       ]
     },

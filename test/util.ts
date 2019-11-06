@@ -40,6 +40,13 @@ export function parseUnitModelWithScale(spec: TopLevel<NormalizedUnitSpec>) {
   return model;
 }
 
+export function parseUnitModelWithScaleAndSelection(spec: TopLevel<NormalizedUnitSpec>) {
+  const model = parseUnitModel(spec);
+  model.parseScale();
+  model.parseSelections();
+  return model;
+}
+
 export function parseUnitModelWithScaleExceptRange(spec: TopLevel<NormalizedUnitSpec>) {
   const model = parseUnitModel(spec);
   parseScales(model, {ignoreRange: true});

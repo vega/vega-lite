@@ -1,4 +1,4 @@
-import {Binding, NewSignal, SignalRef, Stream} from 'vega';
+import {Binding, NewSignal, Stream} from 'vega';
 import {hasOwnProperty, stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel';
 import {
@@ -105,8 +105,4 @@ export function requiresSelectionId(model: Model) {
     identifier = identifier || selCmpt.project.items.some(proj => proj.field === SELECTION_ID);
   });
   return identifier;
-}
-
-export function isRawSelectionDomain(domainRaw: SignalRef) {
-  return domainRaw.signal.indexOf(SELECTION_DOMAIN) >= 0;
 }

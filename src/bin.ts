@@ -15,6 +15,7 @@ import {
 } from './channel';
 import {normalizeBin} from './channeldef';
 import {keys, varName} from './util';
+import {SelectionExtent} from './selection';
 
 export interface BaseBin {
   /**
@@ -46,7 +47,7 @@ export interface BaseBin {
    *
    * @minItems 1
    */
-  divide?: number[];
+  divide?: [number, number];
   /**
    * Maximum number of bins.
    *
@@ -75,10 +76,8 @@ export interface BaseBin {
 export interface BinParams extends BaseBin {
   /**
    * A two-element (`[min, max]`) array indicating the range of desired bin values.
-   * @minItems 2
-   * @maxItems 2
    */
-  extent?: number[]; // VgBinTransform uses a different extent so we need to pull this out.
+  extent?: BinExtent; // VgBinTransform uses a different extent so we need to pull this out.
 
   /**
    * When set to `true`, Vega-Lite treats the input data as already binned.
@@ -87,6 +86,8 @@ export interface BinParams extends BaseBin {
 }
 
 export type Bin = boolean | BinParams | 'binned' | null;
+
+export type BinExtent = [number, number] | SelectionExtent;
 
 /**
  * Create a key for the bin configuration. Not for prebinned bin.
@@ -98,7 +99,7 @@ export function binToString(bin: BinParams | true) {
   return (
     'bin' +
     keys(bin)
-      .map(p => varName(`_${p}_${bin[p]}`))
+      .map(p => (isSelectionExtent(bin[p]) ? varName(`_${p}_${Object.entries(bin[p])}`) : varName(`_${p}_${bin[p]}`)))
       .join('')
   );
 }
@@ -119,6 +120,10 @@ export function isBinned(bin: BinParams | boolean | 'binned'): bin is 'binned' {
 
 export function isBinParams(bin: BinParams | boolean | 'binned'): bin is BinParams {
   return isObject(bin);
+}
+
+export function isSelectionExtent(extent: BinExtent): extent is SelectionExtent {
+  return extent && extent['selection'];
 }
 
 export function autoMaxBins(channel: Channel): number {

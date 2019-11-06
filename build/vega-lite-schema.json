@@ -1803,6 +1803,26 @@
       ],
       "type": "string"
     },
+    "BinExtent": {
+      "anyOf": [
+        {
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        {
+          "$ref": "#/definitions/SelectionExtent"
+        }
+      ]
+    },
     "BinParams": {
       "additionalProperties": false,
       "description": "Binning properties or boolean flag for determining whether to bin data or not.",
@@ -1821,20 +1841,21 @@
         },
         "divide": {
           "description": "Scale factors indicating allowable subdivisions. The default value is [5, 2], which indicates that for base 10 numbers (the default base), the method may consider dividing bin sizes by 5 and/or 2. For example, for an initial step size of 10, the method can check if bin sizes of 2 (= 10/5), 5 (= 10/2), or 1 (= 10/(5*2)) might also satisfy the given constraints.\n\n__Default value:__ `[5, 2]`",
-          "items": {
-            "type": "number"
-          },
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "maxItems": 2,
           "minItems": 1,
           "type": "array"
         },
         "extent": {
-          "description": "A two-element (`[min, max]`) array indicating the range of desired bin values.",
-          "items": {
-            "type": "number"
-          },
-          "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "$ref": "#/definitions/BinExtent",
+          "description": "A two-element (`[min, max]`) array indicating the range of desired bin values."
         },
         "maxbins": {
           "description": "Maximum number of bins.\n\n__Default value:__ `6` for `row`, `column` and `shape` channels; `10` for other channels",
@@ -13145,7 +13166,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/SelectionDomain"
+              "$ref": "#/definitions/SelectionExtent"
             }
           ],
           "description": "Customized domain values.\n\nFor _quantitative_ fields, `domain` can take the form of a two-element array with minimum and maximum values.  [Piecewise scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise) can be created by providing a `domain` with more than two entries.\nIf the input field is aggregated, `domain` can also be a string value `\"unaggregated\"`, indicating that the domain should include the raw data values prior to the aggregation.\n\nFor _temporal_ fields, `domain` can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](https://vega.github.io/vega-lite/docs/types.html#datetime).\n\nFor _ordinal_ and _nominal_ fields, `domain` can be an array that lists valid input values.\n\nThe `selection` property can be used to [interactively determine](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain."
@@ -13574,7 +13595,7 @@
         }
       ]
     },
-    "SelectionDomain": {
+    "SelectionExtent": {
       "anyOf": [
         {
           "additionalProperties": false,
@@ -13597,8 +13618,8 @@
           "additionalProperties": false,
           "properties": {
             "encoding": {
-              "description": "The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)\nover multiple fields or encodings.",
-              "type": "string"
+              "$ref": "#/definitions/SingleDefUnitChannel",
+              "description": "The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)\nover multiple fields or encodings."
             },
             "selection": {
               "description": "The name of a selection.",

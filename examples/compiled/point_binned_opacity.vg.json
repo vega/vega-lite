@@ -25,8 +25,8 @@
             "bin_maxbins_6_Acceleration_end"
           ],
           "signal": "bin_maxbins_6_Acceleration_bins",
-          "maxbins": 6,
-          "extent": {"signal": "bin_maxbins_6_Acceleration_extent"}
+          "extent": {"signal": "bin_maxbins_6_Acceleration_extent"},
+          "maxbins": 6
         },
         {
           "type": "filter",

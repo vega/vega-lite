@@ -2,7 +2,6 @@ import {Channel, ScaleChannel} from '../../channel';
 import {keys} from '../../util';
 import {isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
 import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
-import {isRawSelectionDomain} from '../selection';
 import {assembleSelectionScaleDomain} from '../selection/assemble';
 import {assembleDomain} from './domain';
 
@@ -29,19 +28,12 @@ export function assembleScalesForModel(model: Model): VgScale[] {
       }
 
       const scale = scaleComponent.combine();
-
-      // need to separate const and non const object destruction
-      let {domainRaw} = scale;
-      const {name, type, domains: _d, domainRaw: _dr, range: _r, ...otherScaleProps} = scale;
-
+      const {name, type, selectionExtent, domains: _d, range: _r, ...otherScaleProps} = scale;
       const range = assembleScaleRange(scale.range, name, channel);
 
-      // As scale parsing occurs before selection parsing, a temporary signal
-      // is used for domainRaw. Here, we detect if this temporary signal
-      // is set, and replace it with the correct domainRaw signal.
-      // For more information, see isRawSelectionDomain in selection.ts.
-      if (domainRaw && isRawSelectionDomain(domainRaw)) {
-        domainRaw = assembleSelectionScaleDomain(model, domainRaw);
+      let domainRaw;
+      if (selectionExtent) {
+        domainRaw = assembleSelectionScaleDomain(model, selectionExtent);
       }
 
       const domain = assembleDomain(model, channel);

@@ -18,8 +18,8 @@
           "field": "Horsepower",
           "as": ["bin_maxbins_15_Horsepower", "bin_maxbins_15_Horsepower_end"],
           "signal": "child_bin_maxbins_15_Horsepower_bins",
-          "maxbins": 15,
-          "extent": {"signal": "child_bin_maxbins_15_Horsepower_extent"}
+          "extent": {"signal": "child_bin_maxbins_15_Horsepower_extent"},
+          "maxbins": 15
         },
         {
           "type": "aggregate",

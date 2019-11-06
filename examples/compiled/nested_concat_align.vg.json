@@ -23,10 +23,10 @@
             "bin_maxbins_20_Worldwide_Gross_end"
           ],
           "signal": "concat_1_child__repeat_column_Worldwide_Gross_bin_maxbins_20_Worldwide_Gross_bins",
-          "maxbins": 20,
           "extent": {
             "signal": "concat_1_child__repeat_column_Worldwide_Gross_bin_maxbins_20_Worldwide_Gross_extent"
-          }
+          },
+          "maxbins": 20
         },
         {
           "type": "extent",
@@ -41,10 +41,10 @@
             "bin_maxbins_20_Rotten_Tomatoes_Rating_end"
           ],
           "signal": "concat_0_child__repeat_column_Rotten_Tomatoes_Rating_bin_maxbins_20_Rotten_Tomatoes_Rating_bins",
-          "maxbins": 20,
           "extent": {
             "signal": "concat_0_child__repeat_column_Rotten_Tomatoes_Rating_bin_maxbins_20_Rotten_Tomatoes_Rating_extent"
-          }
+          },
+          "maxbins": 20
         },
         {
           "type": "extent",
@@ -59,10 +59,10 @@
             "bin_maxbins_20_IMDB_Rating_end"
           ],
           "signal": "concat_0_child__repeat_column_IMDB_Rating_bin_maxbins_20_IMDB_Rating_bins",
-          "maxbins": 20,
           "extent": {
             "signal": "concat_0_child__repeat_column_IMDB_Rating_bin_maxbins_20_IMDB_Rating_extent"
-          }
+          },
+          "maxbins": 20
         },
         {
           "type": "extent",
@@ -74,10 +74,10 @@
           "field": "US_Gross",
           "as": ["bin_maxbins_20_US_Gross", "bin_maxbins_20_US_Gross_end"],
           "signal": "concat_1_child__repeat_column_US_Gross_bin_maxbins_20_US_Gross_bins",
-          "maxbins": 20,
           "extent": {
             "signal": "concat_1_child__repeat_column_US_Gross_bin_maxbins_20_US_Gross_extent"
-          }
+          },
+          "maxbins": 20
         }
       ]
     },

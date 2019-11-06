@@ -24,8 +24,8 @@
             "bin_maxbins_30_IMDB_Rating_end"
           ],
           "signal": "bin_maxbins_30_IMDB_Rating_bins",
-          "maxbins": 30,
-          "extent": {"signal": "bin_maxbins_30_IMDB_Rating_extent"}
+          "extent": {"signal": "bin_maxbins_30_IMDB_Rating_extent"},
+          "maxbins": 30
         },
         {
           "type": "aggregate",

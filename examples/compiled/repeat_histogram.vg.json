@@ -23,10 +23,10 @@
             "bin_maxbins_10_Displacement_end"
           ],
           "signal": "child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_bins",
-          "maxbins": 10,
           "extent": {
             "signal": "child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_extent"
-          }
+          },
+          "maxbins": 10
         },
         {
           "type": "extent",
@@ -38,10 +38,10 @@
           "field": "Horsepower",
           "as": ["bin_maxbins_10_Horsepower", "bin_maxbins_10_Horsepower_end"],
           "signal": "child__repeat_repeat_Horsepower_bin_maxbins_10_Horsepower_bins",
-          "maxbins": 10,
           "extent": {
             "signal": "child__repeat_repeat_Horsepower_bin_maxbins_10_Horsepower_extent"
-          }
+          },
+          "maxbins": 10
         },
         {
           "type": "extent",
@@ -56,10 +56,10 @@
             "bin_maxbins_10_Miles_per_Gallon_end"
           ],
           "signal": "child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins",
-          "maxbins": 10,
           "extent": {
             "signal": "child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_extent"
-          }
+          },
+          "maxbins": 10
         },
         {
           "type": "extent",
@@ -74,10 +74,10 @@
             "bin_maxbins_10_Acceleration_end"
           ],
           "signal": "child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_bins",
-          "maxbins": 10,
           "extent": {
             "signal": "child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_extent"
-          }
+          },
+          "maxbins": 10
         }
       ]
     },

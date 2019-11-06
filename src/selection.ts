@@ -238,6 +238,30 @@ export interface IntervalSelection extends BaseSelectionDef<'interval'>, Interva
 
 export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
 
+export type SelectionExtent =
+  | {
+      /**
+       * The name of a selection.
+       */
+      selection: string;
+      /**
+       * The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
+       * over multiple fields or encodings.
+       */
+      field?: FieldName;
+    }
+  | {
+      /**
+       * The name of a selection.
+       */
+      selection: string;
+      /**
+       * The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
+       * over multiple fields or encodings.
+       */
+      encoding?: SingleDefUnitChannel;
+    };
+
 export interface SelectionConfig {
   /**
    * The default definition for a [`single`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations

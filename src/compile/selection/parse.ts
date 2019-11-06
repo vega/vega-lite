@@ -2,12 +2,13 @@ import {selector as parseSelector} from 'vega-event-selector';
 import {hasOwnProperty, isString, stringValue} from 'vega-util';
 import {SelectionComponent, STORE} from '.';
 import {LogicalOperand} from '../../logical';
-import {SelectionDef} from '../../selection';
+import {SelectionDef, SelectionExtent} from '../../selection';
 import {Dict, duplicate, logicalExpr, varName} from '../../util';
 import {DataFlowNode} from '../data/dataflow';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {forEachTransform} from './transforms/transforms';
+import {warn} from '../../log';
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
@@ -92,4 +93,33 @@ export function parseSelectionPredicate(
   return (
     (stores.length ? '!(' + stores.map(s => `length(data(${s}))`).join(' || ') + ') || ' : '') + `(${predicateStr})`
   );
+}
+
+export function parseSelectionBinExtent(selCmpt: SelectionComponent, extent: SelectionExtent) {
+  const encoding = extent['encoding'];
+  let field = extent['field'];
+
+  if (!encoding && !field) {
+    field = selCmpt.project.items[0].field;
+    if (selCmpt.project.items.length > 1) {
+      warn(
+        'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
+          `Using "field": ${stringValue(field)}.`
+      );
+    }
+  } else if (encoding && !field) {
+    const encodings = selCmpt.project.items.filter(p => p.channel === encoding);
+    if (!encodings.length || encodings.length > 1) {
+      field = selCmpt.project.items[0].field;
+      warn(
+        (!encodings.length ? 'No ' : 'Multiple ') +
+          `matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.selection)}. ` +
+          `Using "field": ${stringValue(field)}.`
+      );
+    } else {
+      field = encodings[0].field;
+    }
+  }
+
+  return `${selCmpt.name}[${stringValue(field)}]`;
 }
