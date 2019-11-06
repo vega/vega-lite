@@ -187,6 +187,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -319,6 +322,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -1592,6 +1598,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -1674,6 +1683,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -9880,6 +9892,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -10001,6 +10016,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -10516,6 +10534,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -10620,6 +10641,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -10829,6 +10853,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -10961,6 +10988,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -11584,6 +11614,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -11688,6 +11721,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -12600,6 +12636,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -12704,6 +12743,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -14406,6 +14448,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -14514,6 +14559,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -14725,6 +14773,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -14829,6 +14880,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color.  This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
