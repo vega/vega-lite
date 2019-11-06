@@ -137,7 +137,7 @@ export interface StackTransform {
    * Output field names. This can be either a string or an array of strings with two elements denoting the name for the fields for stack start and stack end respectively.
    * If a single string(e.g., `"val"`) is provided, the end field will be `"val_end"`.
    */
-  as: FieldName | FieldName[];
+  as: FieldName | [FieldName, FieldName];
 }
 
 export type WindowOnlyOp =

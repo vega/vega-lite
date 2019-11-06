@@ -1,9 +1,9 @@
+import {FormulaTransform as VgFormulaTransform} from 'vega';
 import {getSecondaryRangeChannel} from '../../channel';
 import {hasBand, vgField} from '../../channeldef';
 import {fieldExpr} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, vals} from '../../util';
-import {VgFormulaTransform} from '../../vega.schema';
 import {isUnitModel, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 

@@ -1,10 +1,10 @@
+import {Transforms as VgTransform} from 'vega';
 import {isArray, isString} from 'vega-util';
 import {FieldName, getTypedFieldDef, isFieldDef, PositionFieldDef, vgField} from '../../channeldef';
 import {SortFields, SortOrder} from '../../sort';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate, getFirstDefined, hash} from '../../util';
-import {VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
@@ -65,7 +65,7 @@ export interface StackComponent {
   /**
    * Output field names of each stack field.
    */
-  as: FieldName[];
+  as: [FieldName, FieldName];
 }
 
 function isValidAsArray(as: string[] | string): as is string[] {
@@ -100,7 +100,7 @@ export class StackNode extends DataFlowNode {
       field: sortFields,
       order: sortOrder
     };
-    let normalizedAs: string[];
+    let normalizedAs: [string, string];
     if (isValidAsArray(as)) {
       normalizedAs = as;
     } else if (isString(as)) {

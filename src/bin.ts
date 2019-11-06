@@ -14,8 +14,8 @@ import {
   STROKEWIDTH
 } from './channel';
 import {normalizeBin} from './channeldef';
-import {keys, varName} from './util';
 import {SelectionExtent} from './selection';
+import {keys, varName} from './util';
 
 export interface BaseBin {
   /**

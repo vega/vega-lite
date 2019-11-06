@@ -1,7 +1,7 @@
 import {LogicalOperand} from '../../logical';
 import {Predicate} from '../../predicate';
 import {duplicate} from '../../util';
-import {VgFilterTransform} from '../../vega.schema';
+import {FilterTransform as VgFilterTransform} from 'vega';
 import {Model} from '../model';
 import {expression} from '../predicate';
 import {DataFlowNode} from './dataflow';
