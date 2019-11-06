@@ -1855,9 +1855,7 @@
         },
         "extent": {
           "$ref": "#/definitions/BinExtent",
-          "description": "A two-element (`[min, max]`) array indicating the range of desired bin values.",
-          "maxItems": 2,
-          "minItems": 2
+          "description": "A two-element (`[min, max]`) array indicating the range of desired bin values."
         },
         "maxbins": {
           "description": "Maximum number of bins.\n\n__Default value:__ `6` for `row`, `column` and `shape` channels; `10` for other channels",
