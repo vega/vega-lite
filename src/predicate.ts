@@ -183,7 +183,7 @@ function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], tim
   return vals.map(v => predicateValueExpr(v, timeUnit));
 }
 
-// This method is used by Voyager.  Do not change its behavior without changing Voyager.
+// This method is used by Voyager. Do not change its behavior without changing Voyager.
 export function fieldFilterExpression(predicate: FieldPredicate, useInRange = true) {
   const {field, timeUnit} = predicate;
   const fieldExpr = timeUnit
