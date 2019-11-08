@@ -143,7 +143,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "gender", "sort": true},
-      "range": ["#EA98D2", "#659CCA"]
+      "range": ["#9955fb", "#00c475"]
     }
   ],
   "legends": [
