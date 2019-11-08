@@ -48,7 +48,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Prebuild website
-        run: predeploy:site
+        run: yarn predeploy:site
 
       - name: Publish website
         uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
