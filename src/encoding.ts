@@ -403,7 +403,7 @@ export function normalizeEncoding(encoding: Encoding<string>, markDef: MarkDef):
     // Drop line's size if the field is aggregated.
     if (channel === 'size' && mark === 'line') {
       const fieldDef = getTypedFieldDef(encoding[channel]);
-      if (fieldDef && fieldDef.aggregate) {
+      if (fieldDef?.aggregate) {
         log.warn(log.message.LINE_WITH_VARYING_SIZE);
         return normalizedEncoding;
       }

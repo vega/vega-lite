@@ -123,7 +123,7 @@ export function isBinParams(bin: BinParams | boolean | 'binned'): bin is BinPara
 }
 
 export function isSelectionExtent(extent: BinExtent): extent is SelectionExtent {
-  return extent && extent['selection'];
+  return extent?.['selection'];
 }
 
 export function autoMaxBins(channel: Channel): number {

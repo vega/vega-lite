@@ -38,7 +38,7 @@ export interface SelectionPredicate {
 }
 
 export function isSelectionPredicate(predicate: LogicalOperand<Predicate>): predicate is SelectionPredicate {
-  return predicate && predicate['selection'];
+  return predicate?.['selection'];
 }
 
 export interface FieldPredicateBase {
