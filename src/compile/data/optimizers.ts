@@ -14,6 +14,8 @@ import * as optimizers from './optimizers';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
+import {IdentifierNode} from './identifier';
+import {requiresSelectionId} from '../selection';
 
 export interface OptimizerFlags {
   /**
@@ -255,12 +257,31 @@ function moveMainDownToFacet(node: DataFlowNode) {
  * Remove nodes that are not required starting from a root.
  */
 export class RemoveUnnecessaryNodes extends TopDownOptimizer {
+  private requiresSelectionId: boolean;
+  constructor(model: Model) {
+    super();
+    this.requiresSelectionId = model && requiresSelectionId(model);
+  }
+
   public run(node: DataFlowNode): boolean {
     // remove output nodes that are not required
     if (node instanceof OutputNode && !node.isRequired()) {
       this.setMutated();
       node.remove();
+    } else if (node instanceof IdentifierNode) {
+      // Only preserve IdentifierNodes if we have default discrete selections
+      // in our model tree, and if the nodes come after tuple producing nodes.
+      if (
+        !(
+          this.requiresSelectionId &&
+          (isDataSourceNode(node.parent) || node.parent instanceof AggregateNode || node.parent instanceof ParseNode)
+        )
+      ) {
+        this.setMutated();
+        node.remove();
+      }
     }
+
     for (const child of node.children) {
       this.run(child);
     }
@@ -366,7 +387,7 @@ export class MergeAggregates extends BottomUpOptimizer {
 }
 
 /**
- * Merge bin nodes and move them up through forks. Stop at filters and parse as we want them to stay before the bin node.
+ * Merge bin nodes and move them up through forks. Stop at filters, parse, identifier as we want them to stay before the bin node.
  */
 export class MergeBins extends BottomUpOptimizer {
   constructor(private model: Model) {
@@ -374,7 +395,12 @@ export class MergeBins extends BottomUpOptimizer {
   }
   public run(node: DataFlowNode): OptimizerFlags {
     const parent = node.parent;
-    const moveBinsUp = !(isDataSourceNode(parent) || parent instanceof FilterNode || parent instanceof ParseNode);
+    const moveBinsUp = !(
+      isDataSourceNode(parent) ||
+      parent instanceof FilterNode ||
+      parent instanceof ParseNode ||
+      parent instanceof IdentifierNode
+    );
 
     const promotableBins: BinNode[] = [];
     const remainingBins: BinNode[] = [];

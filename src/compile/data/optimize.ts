@@ -54,7 +54,7 @@ function optimizationDataflowHelper(dataComponent: DataComponent, model: Model) 
   let roots = dataComponent.sources;
   const mutatedFlags: Set<boolean> = new Set();
 
-  mutatedFlags.add(runOptimizer(new optimizers.RemoveUnnecessaryNodes(), roots));
+  mutatedFlags.add(runOptimizer(new optimizers.RemoveUnnecessaryNodes(model), roots));
 
   // remove source nodes that don't have any children because they also don't have output nodes
   roots = roots.filter(r => r.numChildren() > 0);

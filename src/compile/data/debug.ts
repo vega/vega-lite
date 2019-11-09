@@ -1,5 +1,5 @@
 import {entries, uniqueId} from './../../util';
-import {DataFlowNode} from './dataflow';
+import {DataFlowNode, OutputNode} from './dataflow';
 import {SourceNode} from './source';
 
 /**
@@ -54,6 +54,9 @@ export function draw(roots: readonly DataFlowNode[]) {
     const prod = node.producedFields();
     if (prod && prod.size) {
       out.push(`<font color="grey" point-size="10">OUT:</font> ${[...node.producedFields()].join(', ')}`);
+    }
+    if (node instanceof OutputNode) {
+      out.push(`<font color="grey" point-size="10">required:</font> ${node.isRequired()}`);
     }
     return out.join('<br/>');
   }
