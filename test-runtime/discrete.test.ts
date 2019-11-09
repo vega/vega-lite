@@ -46,12 +46,18 @@ for (const type of ['single', 'multi']) {
 
       encodings = ['x', 'color'];
       fields = ['a', 'c'];
-      values = [[2, 1], [6, 0]];
+      values = [
+        [2, 1],
+        [6, 0]
+      ];
       await test(async (i: number) => await embed(spec('unit', i, {type, encodings})));
 
       encodings = [];
       fields = ['c', 'a', 'b'];
-      values = [[1, 2, 53], [0, 6, 87]];
+      values = [
+        [1, 2, 53],
+        [0, 6, 87]
+      ];
       await test(async (i: number) => await embed(spec('unit', i, {type, fields})));
     });
 
@@ -71,7 +77,10 @@ for (const type of ['single', 'multi']) {
       const encodings = ['x', 'color', 'y'];
       const fields = ['a', 'c', 'b'];
       const types = ['R-RE', 'E', 'R-RE'];
-      const values = [[[1, 2], 0, [40, 50]], [[8, 9], 1, [10, 20]]];
+      const values = [
+        [[1, 2], 0, [40, 50]],
+        [[8, 9], 1, [10, 20]]
+      ];
 
       for (let i = 0; i < hits.bins.length; i++) {
         await embed(spec('unit', i, {type, encodings}, {x: {bin: true}, y: {bin: true}}));

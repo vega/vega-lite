@@ -9,11 +9,17 @@ describe('compile/data/source', () => {
   describe('compileUnit', () => {
     describe('with explicit values', () => {
       const source = parse({
-        values: [{a: 1, b: 2, c: 3}, {a: 4, b: 5, c: 6}]
+        values: [
+          {a: 1, b: 2, c: 3},
+          {a: 4, b: 5, c: 6}
+        ]
       });
 
       it('should have values', () => {
-        expect(source.data.values).toEqual([{a: 1, b: 2, c: 3}, {a: 4, b: 5, c: 6}]);
+        expect(source.data.values).toEqual([
+          {a: 1, b: 2, c: 3},
+          {a: 4, b: 5, c: 6}
+        ]);
       });
 
       it('should have no source.format.type', () => {

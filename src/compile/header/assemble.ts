@@ -169,7 +169,7 @@ export function assembleHeaderGroup(
 
     const axes = headerCmpt.axes;
 
-    const hasAxes = axes && axes.length > 0;
+    const hasAxes = axes?.length > 0;
     if (title || hasAxes) {
       const sizeChannel = channel === 'row' ? 'height' : 'width';
 
@@ -230,7 +230,7 @@ export function assembleLayoutTitleBand(
 
   for (const channel of FACET_CHANNELS) {
     const headerComponent = headerComponentIndex[channel];
-    if (headerComponent && headerComponent.facetFieldDef) {
+    if (headerComponent?.facetFieldDef) {
       const {titleAnchor, titleOrient} = getHeaderProperties(
         ['titleAnchor', 'titleOrient'],
         headerComponent.facetFieldDef,

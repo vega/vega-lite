@@ -88,7 +88,8 @@ export function getSort(model: UnitModel): VgCompare {
   const order = encoding.order;
   if (
     (!isArray(order) && isValueDef(order) && isNullOrFalse(order.value)) ||
-    ((!order && isNullOrFalse(markDef.order)) || isNullOrFalse(getMarkConfig('order', markDef, config)))
+    (!order && isNullOrFalse(markDef.order)) ||
+    isNullOrFalse(getMarkConfig('order', markDef, config))
   ) {
     return undefined;
   } else if ((isArray(order) || isFieldDef(order)) && !stack) {

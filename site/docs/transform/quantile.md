@@ -32,7 +32,11 @@ The quantile transform calculates empirical [quantile](https://en.wikipedia.org/
 Computes the [quartile](https://en.wikipedia.org/wiki/Quartile) boundaries for the `"measure"` field. The output data is of the form:
 
 ```js
-[{prob: 0.25, value: 1.34}, {prob: 0.5, value: 5.82}, {prob: 0.75, value: 9.31}];
+[
+  {prob: 0.25, value: 1.34},
+  {prob: 0.5, value: 5.82},
+  {prob: 0.75, value: 9.31}
+];
 ```
 
 ```json

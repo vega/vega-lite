@@ -80,7 +80,7 @@ export function findSource(data: Data, sources: SourceNode[]) {
     }
 
     // feature and mesh are mutually exclusive
-    if (data['format'] && data['format'].mesh && otherData.format && otherData.format.feature) {
+    if (data['format']?.mesh && otherData.format?.feature) {
       continue;
     }
 
@@ -298,7 +298,7 @@ export function parseData(model: Model): DataComponent {
     }
     // no parsing necessary for generator
     ancestorParse.parseNothing = true;
-  } else if (data && data.format && data.format.parse === null) {
+  } else if (data?.format?.parse === null) {
     // format.parse: null means disable parsing
     ancestorParse.parseNothing = true;
   }

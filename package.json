@@ -95,7 +95,7 @@
     "jest-puppeteer": "^4.3.0",
     "lint-staged": "^9.4.2",
     "mkdirp": "^0.5.1",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "puppeteer": "^2.0.0",
     "rollup": "^1.26.3",
     "rollup-plugin-commonjs": "^10.1.0",

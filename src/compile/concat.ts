@@ -23,7 +23,7 @@ export class ConcatModel extends BaseConcatModel {
   ) {
     super(spec, 'concat', parent, parentGivenName, config, repeater, spec.resolve);
 
-    if (spec.resolve && spec.resolve.axis && (spec.resolve.axis.x === 'shared' || spec.resolve.axis.y === 'shared')) {
+    if (spec.resolve?.axis?.x === 'shared' || spec.resolve?.axis?.y === 'shared') {
       log.warn(log.message.CONCAT_CANNOT_SHARE_AXIS);
     }
 

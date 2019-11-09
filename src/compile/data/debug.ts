@@ -48,11 +48,11 @@ export function draw(roots: readonly DataFlowNode[]) {
     }
 
     const dep = node.dependentFields();
-    if (dep && dep.size) {
+    if (dep?.size) {
       out.push(`<font color="grey" point-size="10">IN:</font> ${[...node.dependentFields()].join(', ')}`);
     }
     const prod = node.producedFields();
-    if (prod && prod.size) {
+    if (prod?.size) {
       out.push(`<font color="grey" point-size="10">OUT:</font> ${[...node.producedFields()].join(', ')}`);
     }
     if (node instanceof OutputNode) {

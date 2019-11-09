@@ -410,7 +410,7 @@ export function isExtendedScheme(scheme: string | SchemeParams): scheme is Schem
 }
 
 export function isSelectionDomain(domain: Domain): domain is SelectionExtent {
-  return domain && domain['selection'];
+  return domain?.['selection'];
 }
 
 export interface Scale {

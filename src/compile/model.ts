@@ -130,23 +130,23 @@ export class NameMap implements NameMapInterface {
 */
 
 export function isUnitModel(model: Model): model is UnitModel {
-  return model && model.type === 'unit';
+  return model?.type === 'unit';
 }
 
 export function isFacetModel(model: Model): model is FacetModel {
-  return model && model.type === 'facet';
+  return model?.type === 'facet';
 }
 
 export function isRepeatModel(model: Model): model is RepeatModel {
-  return model && model.type === 'repeat';
+  return model?.type === 'repeat';
 }
 
 export function isConcatModel(model: Model): model is ConcatModel {
-  return model && model.type === 'concat';
+  return model?.type === 'concat';
 }
 
 export function isLayerModel(model: Model): model is LayerModel {
-  return model && model.type === 'layer';
+  return model?.type === 'layer';
 }
 
 export abstract class Model {
@@ -293,7 +293,7 @@ export abstract class Model {
 
   public assembleGroupStyle(): string | string[] {
     if (this.type === 'unit' || this.type === 'layer') {
-      return (this.view && this.view.style) || 'cell';
+      return this.view?.style || 'cell';
     }
     return undefined;
   }
