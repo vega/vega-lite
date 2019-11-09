@@ -254,9 +254,28 @@ function moveMainDownToFacet(node: DataFlowNode) {
 }
 
 /**
- * Remove nodes that are not required starting from a root.
+ * Remove output nodes that are not required. Starting from a root.
  */
-export class RemoveUnnecessaryNodes extends TopDownOptimizer {
+export class RemoveUnnecessaryOutputNodes extends TopDownOptimizer {
+  constructor() {
+    super();
+  }
+
+  public run(node: DataFlowNode): boolean {
+    if (node instanceof OutputNode && !node.isRequired()) {
+      this.setMutated();
+      node.remove();
+    }
+
+    for (const child of node.children) {
+      this.run(child);
+    }
+
+    return this.mutatedFlag;
+  }
+}
+
+export class RemoveUnnecessaryIdentifierNodes extends TopDownOptimizer {
   private requiresSelectionId: boolean;
   constructor(model: Model) {
     super();
@@ -264,11 +283,7 @@ export class RemoveUnnecessaryNodes extends TopDownOptimizer {
   }
 
   public run(node: DataFlowNode): boolean {
-    // remove output nodes that are not required
-    if (node instanceof OutputNode && !node.isRequired()) {
-      this.setMutated();
-      node.remove();
-    } else if (node instanceof IdentifierNode) {
+    if (node instanceof IdentifierNode) {
       // Only preserve IdentifierNodes if we have default discrete selections
       // in our model tree, and if the nodes come after tuple producing nodes.
       if (
