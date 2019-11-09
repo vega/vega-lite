@@ -92,7 +92,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "data_0", "field": "gender", "sort": true},
-      "range": ["#e377c2", "#1f77b4"]
+      "range": ["#9955fb", "#00c475"]
     }
   ],
   "axes": [

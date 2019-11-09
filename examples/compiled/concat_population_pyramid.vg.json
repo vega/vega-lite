@@ -220,7 +220,7 @@
         ],
         "sort": true
       },
-      "range": ["#e377c2", "#1f77b4"]
+      "range": ["#9955fb", "#00c475"]
     },
     {
       "name": "concat_0_x",
