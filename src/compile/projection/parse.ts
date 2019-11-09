@@ -37,7 +37,10 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
 function gatherFitData(model: UnitModel) {
   const data: (SignalRef | string)[] = [];
 
-  [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach(posssiblePair => {
+  [
+    [LONGITUDE, LATITUDE],
+    [LONGITUDE2, LATITUDE2]
+  ].forEach(posssiblePair => {
     if (model.channelHasField(posssiblePair[0]) || model.channelHasField(posssiblePair[1])) {
       data.push({
         signal: model.getName(`geojson_${data.length}`)

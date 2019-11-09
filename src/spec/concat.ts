@@ -32,7 +32,7 @@ export interface GenericConcatSpec<U extends GenericUnitSpec<any, any>, L extend
   /**
    * A list of views to be concatenated.
    */
-  concat: (GenericSpec<U, L>)[];
+  concat: GenericSpec<U, L>[];
 }
 
 /**
@@ -44,7 +44,7 @@ export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>, L exten
   /**
    * A list of views to be concatenated and put into a column.
    */
-  vconcat: (GenericSpec<U, L>)[];
+  vconcat: GenericSpec<U, L>[];
 }
 
 /**
@@ -56,7 +56,7 @@ export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>, L exten
   /**
    * A list of views to be concatenated and put into a row.
    */
-  hconcat: (GenericSpec<U, L>)[];
+  hconcat: GenericSpec<U, L>[];
 }
 
 /** A concat spec without any shortcut/expansion syntax */

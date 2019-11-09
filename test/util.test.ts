@@ -243,7 +243,10 @@ describe('util', () => {
 
   describe('entries', () => {
     it('should return entries', () => {
-      expect(entries({a: 12, b: 42})).toEqual([{key: 'a', value: 12}, {key: 'b', value: 42}]);
+      expect(entries({a: 12, b: 42})).toEqual([
+        {key: 'a', value: 12},
+        {key: 'b', value: 42}
+      ]);
     });
   });
 

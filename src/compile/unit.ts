@@ -131,29 +131,26 @@ export class UnitModel extends ModelWithField {
   }
 
   private initScales(mark: Mark, encoding: Encoding<string>): ScaleIndex {
-    return SCALE_CHANNELS.reduce(
-      (scales, channel) => {
-        let fieldDef: TypedFieldDef<string>;
-        let specifiedScale: Scale;
+    return SCALE_CHANNELS.reduce((scales, channel) => {
+      let fieldDef: TypedFieldDef<string>;
+      let specifiedScale: Scale;
 
-        const channelDef = encoding[channel];
+      const channelDef = encoding[channel];
 
-        if (isFieldDef(channelDef)) {
-          fieldDef = channelDef;
-          specifiedScale = channelDef.scale;
-        } else if (hasConditionalFieldDef<string, any>(channelDef)) {
-          // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
-          fieldDef = channelDef.condition;
-          specifiedScale = channelDef.condition['scale'];
-        }
+      if (isFieldDef(channelDef)) {
+        fieldDef = channelDef;
+        specifiedScale = channelDef.scale;
+      } else if (hasConditionalFieldDef<string, any>(channelDef)) {
+        // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
+        fieldDef = channelDef.condition;
+        specifiedScale = channelDef.condition['scale'];
+      }
 
-        if (fieldDef) {
-          scales[channel] = specifiedScale || {};
-        }
-        return scales;
-      },
-      {} as ScaleIndex
-    );
+      if (fieldDef) {
+        scales[channel] = specifiedScale || {};
+      }
+      return scales;
+    }, {} as ScaleIndex);
   }
 
   private initAxes(encoding: Encoding<string>): AxisIndex {

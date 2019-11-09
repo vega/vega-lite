@@ -25,7 +25,10 @@ export class GeoPointNode extends DataFlowNode {
       return parent;
     }
 
-    [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((coordinates: GeoPositionChannel[]) => {
+    [
+      [LONGITUDE, LATITUDE],
+      [LONGITUDE2, LATITUDE2]
+    ].forEach((coordinates: GeoPositionChannel[]) => {
       const pair = coordinates.map(channel =>
         model.channelHasField(channel)
           ? model.fieldDef(channel).field

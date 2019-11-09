@@ -13,7 +13,11 @@ describe('compile/data/calculate', () => {
     it('produces correct formula transform', () => {
       const model = parseUnitModel({
         data: {
-          values: [{a: 'A', b: 28}, {a: 'B', b: 55}, {a: 'C', b: 43}]
+          values: [
+            {a: 'A', b: 28},
+            {a: 'B', b: 55},
+            {a: 'C', b: 43}
+          ]
         },
         mark: 'bar',
         encoding: {
@@ -46,7 +50,11 @@ describe('compile/data/calculate', () => {
     it('should generate the correct hash', () => {
       const model = parseUnitModel({
         data: {
-          values: [{a: 'A', b: 28}, {a: 'B', b: 55}, {a: 'C', b: 43}]
+          values: [
+            {a: 'A', b: 28},
+            {a: 'B', b: 55},
+            {a: 'C', b: 43}
+          ]
         },
         mark: 'bar',
         encoding: {

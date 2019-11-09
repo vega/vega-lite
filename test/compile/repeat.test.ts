@@ -41,13 +41,19 @@ describe('Repeat', () => {
     it('should support arrays fo field defs', () => {
       const resolved = replaceRepeaterInEncoding(
         {
-          detail: [{field: {repeat: 'row'}, type: 'quantitative'}, {field: 'bar', type: 'quantitative'}]
+          detail: [
+            {field: {repeat: 'row'}, type: 'quantitative'},
+            {field: 'bar', type: 'quantitative'}
+          ]
         },
         {row: 'foo'}
       );
 
       expect(resolved).toEqual({
-        detail: [{field: 'foo', type: 'quantitative'}, {field: 'bar', type: 'quantitative'}]
+        detail: [
+          {field: 'foo', type: 'quantitative'},
+          {field: 'bar', type: 'quantitative'}
+        ]
       });
     });
 

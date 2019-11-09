@@ -38,7 +38,10 @@ _Note:_ The `fold` transform only applies to a list of known fields (set using t
 This example folds the `"gold"` and `"silver"` properties. Given the input data
 
 ```json
-[{"country": "USA", "gold": 10, "silver": 20}, {"country": "Canada", "gold": 7, "silver": 26}]
+[
+  {"country": "USA", "gold": 10, "silver": 20},
+  {"country": "Canada", "gold": 7, "silver": 26}
+]
 ```
 
 this example produces the output:
