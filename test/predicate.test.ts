@@ -224,7 +224,10 @@ describe('filter', () => {
     expect(expr).toBe('!(datum["color"]==="red")');
 
     expr = expression(null, {
-      and: [{field: 'color', equal: 'red'}, {field: 'x', range: [0, 5]}]
+      and: [
+        {field: 'color', equal: 'red'},
+        {field: 'x', range: [0, 5]}
+      ]
     });
 
     expect(expr).toBe('(datum["color"]==="red") && (inrange(datum["x"], [0, 5]))');

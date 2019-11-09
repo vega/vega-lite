@@ -295,7 +295,13 @@ describe('Selection', () => {
       ]);
 
       expect(project.signals(null, component['one'], [])).toEqual([
-        {name: 'one_tuple_fields', value: [{field: 'nested\\.a', type: 'E'}, {field: 'nested\\.b\\.aa', type: 'E'}]}
+        {
+          name: 'one_tuple_fields',
+          value: [
+            {field: 'nested\\.a', type: 'E'},
+            {field: 'nested\\.b\\.aa', type: 'E'}
+          ]
+        }
       ]);
     });
   });

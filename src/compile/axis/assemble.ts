@@ -113,12 +113,7 @@ export function assembleAxis(
 
     if (labelExpr !== undefined) {
       let expr = labelExpr;
-      if (
-        axis.encode &&
-        axis.encode.labels &&
-        axis.encode.labels.update &&
-        isSignalRef(axis.encode.labels.update.text)
-      ) {
+      if (axis.encode?.labels?.update && isSignalRef(axis.encode.labels.update.text)) {
         expr = replaceAll(labelExpr, 'datum.label', axis.encode.labels.update.text.signal);
       }
 

@@ -210,7 +210,10 @@ describe('compile/mark/mixins', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
         encoding: {
-          tooltip: [{field: 'Horsepower', type: 'quantitative'}, {field: 'Acceleration', type: 'quantitative'}]
+          tooltip: [
+            {field: 'Horsepower', type: 'quantitative'},
+            {field: 'Acceleration', type: 'quantitative'}
+          ]
         }
       });
       const props = tooltip(model);
@@ -264,7 +267,10 @@ describe('compile/mark/mixins', () => {
         encoding: {
           x: {field: 'Cylinders', type: 'quantitative'},
           y: {field: 'Displacement', type: 'quantitative'},
-          tooltip: [{field: 'Horsepower', type: 'quantitative'}, {field: 'Acceleration', type: 'quantitative'}]
+          tooltip: [
+            {field: 'Horsepower', type: 'quantitative'},
+            {field: 'Acceleration', type: 'quantitative'}
+          ]
         }
       });
       const props = tooltip(model);

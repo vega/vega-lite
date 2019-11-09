@@ -16,15 +16,12 @@ import * as encode from './encode';
 import * as properties from './properties';
 
 export function parseUnitAxes(model: UnitModel): AxisComponentIndex {
-  return POSITION_SCALE_CHANNELS.reduce(
-    (axis, channel) => {
-      if (model.component.scales[channel] && model.axis(channel)) {
-        axis[channel] = [parseAxis(channel, model)];
-      }
-      return axis;
-    },
-    {} as AxisComponentIndex
-  );
+  return POSITION_SCALE_CHANNELS.reduce((axis, channel) => {
+    if (model.component.scales[channel] && model.axis(channel)) {
+      axis[channel] = [parseAxis(channel, model)];
+    }
+    return axis;
+  }, {} as AxisComponentIndex);
 }
 
 const OPPOSITE_ORIENT: {[K in AxisOrient]: AxisOrient} = {
@@ -254,24 +251,21 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
   // 2) Add guide encode definition groups
   const axisEncoding = axis.encoding || {};
-  const axisEncode = AXIS_PARTS.reduce(
-    (e: VgAxisEncode, part) => {
-      if (!axisComponent.hasAxisPart(part)) {
-        // No need to create encode for a disabled part.
-        return e;
-      }
-
-      const axisEncodingPart = guideEncodeEntry(axisEncoding[part] || {}, model);
-
-      const value = part === 'labels' ? encode.labels(model, channel, axisEncodingPart) : axisEncodingPart;
-
-      if (value !== undefined && keys(value).length > 0) {
-        e[part] = {update: value};
-      }
+  const axisEncode = AXIS_PARTS.reduce((e: VgAxisEncode, part) => {
+    if (!axisComponent.hasAxisPart(part)) {
+      // No need to create encode for a disabled part.
       return e;
-    },
-    {} as VgAxisEncode
-  );
+    }
+
+    const axisEncodingPart = guideEncodeEntry(axisEncoding[part] || {}, model);
+
+    const value = part === 'labels' ? encode.labels(model, channel, axisEncodingPart) : axisEncodingPart;
+
+    if (value !== undefined && keys(value).length > 0) {
+      e[part] = {update: value};
+    }
+    return e;
+  }, {} as VgAxisEncode);
 
   // FIXME: By having encode as one property, we won't have fine grained encode merging.
   if (keys(axisEncode).length > 0) {

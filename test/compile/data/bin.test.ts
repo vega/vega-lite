@@ -385,7 +385,16 @@ describe('compile/data/bin', () => {
 
       binNodeA.merge(binNodeB, () => {});
       expect(binNodeA).toEqual(
-        new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}})
+        new BinNode(parent, {
+          foo: {
+            bin: {},
+            field: 'foo',
+            as: [
+              ['foo', 'foo_end'],
+              ['bar', 'bar_end']
+            ]
+          }
+        })
       );
     });
 
@@ -393,18 +402,43 @@ describe('compile/data/bin', () => {
       const parent = new PlaceholderDataFlowNode(null);
       const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
       const binNodeB = new BinNode(parent, {
-        foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}
+        foo: {
+          bin: {},
+          field: 'foo',
+          as: [
+            ['foo', 'foo_end'],
+            ['bar', 'bar_end']
+          ]
+        }
       });
 
       binNodeA.merge(binNodeB, () => {});
       expect(binNodeA).toEqual(
-        new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}})
+        new BinNode(parent, {
+          foo: {
+            bin: {},
+            field: 'foo',
+            as: [
+              ['foo', 'foo_end'],
+              ['bar', 'bar_end']
+            ]
+          }
+        })
       );
     });
 
     it('should create formulas for members of "as" when assembled', () => {
       const parent = new PlaceholderDataFlowNode(null);
-      const binNode = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}});
+      const binNode = new BinNode(parent, {
+        foo: {
+          bin: {},
+          field: 'foo',
+          as: [
+            ['foo', 'foo_end'],
+            ['bar', 'bar_end']
+          ]
+        }
+      });
       const transforms = binNode.assemble();
 
       expect(transforms[1]).toEqual({type: 'formula', expr: 'datum["foo"]', as: 'bar'});
