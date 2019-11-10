@@ -893,7 +893,7 @@ export function normalizeFieldDef(fd: FieldDef<string>, channel: Channel) {
   return fieldDef;
 }
 
-export function normalizeBin(bin: BinParams | boolean | 'binned', channel: Channel) {
+export function normalizeBin(bin: BinParams | boolean | 'binned', channel?: Channel) {
   if (isBoolean(bin)) {
     return {maxbins: autoMaxBins(channel)};
   } else if (bin === 'binned') {

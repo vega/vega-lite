@@ -406,7 +406,7 @@ export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregate
 export type Scheme = string | SchemeParams;
 
 export function isExtendedScheme(scheme: string | SchemeParams): scheme is SchemeParams {
-  return scheme && !!scheme['name'];
+  return typeof scheme !== 'string' && !!scheme['name'];
 }
 
 export function isSelectionDomain(domain: Domain): domain is SelectionExtent {

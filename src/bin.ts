@@ -115,7 +115,7 @@ export function isBinning(bin: BinParams | boolean | 'binned'): bin is BinParams
  * The data is already binned and so Vega-Lite should not bin it again.
  */
 export function isBinned(bin: BinParams | boolean | 'binned'): bin is 'binned' {
-  return bin === 'binned' || (isBinParams(bin) && bin.binned);
+  return bin === 'binned' || (isBinParams(bin) && bin.binned === true);
 }
 
 export function isBinParams(bin: BinParams | boolean | 'binned'): bin is BinParams {
@@ -126,7 +126,7 @@ export function isSelectionExtent(extent: BinExtent): extent is SelectionExtent 
   return extent?.['selection'];
 }
 
-export function autoMaxBins(channel: Channel): number {
+export function autoMaxBins(channel?: Channel): number {
   switch (channel) {
     case ROW:
     case COLUMN:
