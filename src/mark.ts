@@ -193,7 +193,7 @@ export const STROKE_CONFIG = [
 
 export const FILL_CONFIG = ['fill', 'fillOpacity'];
 
-export const FILL_STROKE_CONFIG = STROKE_CONFIG.concat(FILL_CONFIG);
+export const FILL_STROKE_CONFIG = ([] as string[]).concat(STROKE_CONFIG, FILL_CONFIG);
 
 export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = [
   'filled',
