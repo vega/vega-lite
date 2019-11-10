@@ -3,7 +3,8 @@
   // see https://github.com/microsoft/TypeScript/issues/26913
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "strictNullChecks": true
   },
   "files": [
     "src/index.ts"
