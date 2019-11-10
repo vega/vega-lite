@@ -118,7 +118,9 @@ export function isConditionalAxisValue<V extends Value | number[]>(v: any): v is
 // Vega axis config is the same as Vega axis base. If this is not the case, add specific type.
 export type VgAxisConfigNoSignals = Omit<BaseAxisNoSignals, ConditionalAxisProp> &
   {
-    [k in ConditionalAxisProp]?: BaseAxisNoSignals[k] | ConditionalAxisProperty<BaseAxisNoSignals[k] | null>;
+    [k in ConditionalAxisProp]?:
+      | BaseAxisNoSignals[k]
+      | ConditionalAxisProperty<Exclude<BaseAxisNoSignals[k], undefined> | null>;
   };
 
 // Change comments to be Vega-Lite specific
