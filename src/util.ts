@@ -282,7 +282,7 @@ export function deleteNestedProperty(obj: any, orderedProps: string[]) {
   if (orderedProps.length === 0) {
     return true;
   }
-  const prop = orderedProps.shift() as string;
+  const prop = orderedProps.shift()!;
   if (deleteNestedProperty(obj[prop], orderedProps)) {
     delete obj[prop];
   }
