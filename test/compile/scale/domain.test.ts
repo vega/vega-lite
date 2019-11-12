@@ -30,10 +30,16 @@ describe('compile/scale', () => {
       });
 
       const xDomain = testParseDomainForChannel(model, 'x');
-      expect(xDomain).toEqual([{data: 'main', field: 'a'}, {data: 'main', field: 'b'}]);
+      expect(xDomain).toEqual([
+        {data: 'main', field: 'a'},
+        {data: 'main', field: 'b'}
+      ]);
 
       const yDomain = testParseDomainForChannel(model, 'y');
-      expect(yDomain).toEqual([{data: 'main', field: 'c'}, {data: 'main', field: 'd'}]);
+      expect(yDomain).toEqual([
+        {data: 'main', field: 'c'},
+        {data: 'main', field: 'd'}
+      ]);
     });
 
     it('should have correct domain for color', () => {
@@ -1003,10 +1009,16 @@ describe('compile/scale', () => {
     );
 
     it('should not sort explicit domains', () => {
-      const domain = mergeDomains([[1, 2, 3, 4], [3, 4, 5, 6]]);
+      const domain = mergeDomains([
+        [1, 2, 3, 4],
+        [3, 4, 5, 6]
+      ]);
 
       expect(domain).toEqual({
-        fields: [[1, 2, 3, 4], [3, 4, 5, 6]]
+        fields: [
+          [1, 2, 3, 4],
+          [3, 4, 5, 6]
+        ]
       });
     });
 

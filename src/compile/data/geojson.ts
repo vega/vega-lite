@@ -20,7 +20,10 @@ export class GeoJSONNode extends DataFlowNode {
 
     let geoJsonCounter = 0;
 
-    for (const coordinates of [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]] as Vector2<GeoPositionChannel>[]) {
+    for (const coordinates of [
+      [LONGITUDE, LATITUDE],
+      [LONGITUDE2, LATITUDE2]
+    ] as Vector2<GeoPositionChannel>[]) {
       const pair = coordinates.map(channel =>
         model.channelHasField(channel)
           ? model.fieldDef(channel).field

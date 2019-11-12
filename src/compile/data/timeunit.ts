@@ -22,27 +22,24 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   public static makeFromEncoding(parent: DataFlowNode, model: ModelWithField) {
-    const formula = model.reduceFieldDef(
-      (timeUnitComponent: TimeUnitComponent, fieldDef, channel) => {
-        const {timeUnit, field} = fieldDef;
+    const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef, channel) => {
+      const {timeUnit, field} = fieldDef;
 
-        const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;
+      const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;
 
-        const band = isUnitModel(model) && hasBand(channel, fieldDef, channelDef2, model.markDef, model.config);
+      const band = isUnitModel(model) && hasBand(channel, fieldDef, channelDef2, model.markDef, model.config);
 
-        if (timeUnit) {
-          const as = vgField(fieldDef, {forAs: true});
-          timeUnitComponent[hash({as, timeUnit, field})] = {
-            as,
-            timeUnit,
-            field,
-            ...(band ? {band: true} : {})
-          };
-        }
-        return timeUnitComponent;
-      },
-      {} as Dict<TimeUnitComponent>
-    );
+      if (timeUnit) {
+        const as = vgField(fieldDef, {forAs: true});
+        timeUnitComponent[hash({as, timeUnit, field})] = {
+          as,
+          timeUnit,
+          field,
+          ...(band ? {band: true} : {})
+        };
+      }
+      return timeUnitComponent;
+    }, {} as Dict<TimeUnitComponent>);
 
     if (keys(formula).length === 0) {
       return null;

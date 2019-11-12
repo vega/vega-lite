@@ -19,38 +19,35 @@ export function assembleScales(model: Model): VgScale[] {
 }
 
 export function assembleScalesForModel(model: Model): VgScale[] {
-  return keys(model.component.scales).reduce(
-    (scales: VgScale[], channel: ScaleChannel) => {
-      const scaleComponent = model.component.scales[channel];
-      if (scaleComponent.merged) {
-        // Skipped merged scales
-        return scales;
-      }
-
-      const scale = scaleComponent.combine();
-      const {name, type, selectionExtent, domains: _d, range: _r, ...otherScaleProps} = scale;
-      const range = assembleScaleRange(scale.range, name, channel);
-
-      let domainRaw;
-      if (selectionExtent) {
-        domainRaw = assembleSelectionScaleDomain(model, selectionExtent);
-      }
-
-      const domain = assembleDomain(model, channel);
-
-      scales.push({
-        name,
-        type,
-        ...(domain ? {domain} : {}),
-        ...(domainRaw ? {domainRaw} : {}),
-        range: range,
-        ...otherScaleProps
-      });
-
+  return keys(model.component.scales).reduce((scales: VgScale[], channel: ScaleChannel) => {
+    const scaleComponent = model.component.scales[channel];
+    if (scaleComponent.merged) {
+      // Skipped merged scales
       return scales;
-    },
-    [] as VgScale[]
-  );
+    }
+
+    const scale = scaleComponent.combine();
+    const {name, type, selectionExtent, domains: _d, range: _r, ...otherScaleProps} = scale;
+    const range = assembleScaleRange(scale.range, name, channel);
+
+    let domainRaw;
+    if (selectionExtent) {
+      domainRaw = assembleSelectionScaleDomain(model, selectionExtent);
+    }
+
+    const domain = assembleDomain(model, channel);
+
+    scales.push({
+      name,
+      type,
+      ...(domain ? {domain} : {}),
+      ...(domainRaw ? {domainRaw} : {}),
+      range: range,
+      ...otherScaleProps
+    });
+
+    return scales;
+  }, [] as VgScale[]);
 }
 
 export function assembleScaleRange(scaleRange: VgRange, scaleName: string, channel: Channel): VgRange {

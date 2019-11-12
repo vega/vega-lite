@@ -314,7 +314,8 @@ export function parseData(model: Model): DataComponent {
   if (
     requiresSelectionId(model) &&
     // only add identifier to unit/layer models that do not have layer parents to avoid redundant identifier transforms
-    ((isUnitModel(model) || isLayerModel(model)) && (!model.parent || !isLayerModel(model.parent)))
+    (isUnitModel(model) || isLayerModel(model)) &&
+    (!model.parent || !isLayerModel(model.parent))
   ) {
     head = new IdentifierNode(head);
   }

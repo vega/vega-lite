@@ -74,7 +74,12 @@ describe('legend/assemble', () => {
 
   it('merges legend of the same field and favor symbol legend over gradient', () => {
     const model = parseUnitModelWithScale({
-      data: {values: [{a: 'A', b: 28}, {a: 'B', b: 55}]},
+      data: {
+        values: [
+          {a: 'A', b: 28},
+          {a: 'B', b: 55}
+        ]
+      },
       mark: 'bar',
       encoding: {
         x: {field: 'a', type: 'ordinal'},

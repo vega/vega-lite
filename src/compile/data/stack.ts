@@ -10,18 +10,15 @@ import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
 function getStackByFields(model: UnitModel): string[] {
-  return model.stack.stackBy.reduce(
-    (fields, by) => {
-      const fieldDef = by.fieldDef;
+  return model.stack.stackBy.reduce((fields, by) => {
+    const fieldDef = by.fieldDef;
 
-      const _field = vgField(fieldDef);
-      if (_field) {
-        fields.push(_field);
-      }
-      return fields;
-    },
-    [] as string[]
-  );
+    const _field = vgField(fieldDef);
+    if (_field) {
+      fields.push(_field);
+    }
+    return fields;
+  }, [] as string[]);
 }
 
 export interface StackComponent {
