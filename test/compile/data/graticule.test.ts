@@ -1,3 +1,4 @@
+import {GraticuleParams} from './../../../src/data';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {GraticuleNode} from '../../../src/compile/data/graticule';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
@@ -9,7 +10,7 @@ describe('compile/data/graticule', () => {
         const params = {
           stepMinor: [15, 10],
           precision: 2
-        };
+        } as GraticuleParams;
         const graticule = new GraticuleNode(null, params);
         expect(graticule.assemble()).toEqual({
           type: 'graticule',
@@ -51,14 +52,7 @@ describe('compile/data/graticule', () => {
     });
     model.parseData();
 
-    const node = model.component.data.raw.parent;
-    expect(node).toBeInstanceOf(GraticuleNode);
-
-    expect(assembleRootData(model.component.data, {})).toEqual([
-      {
-        name: 'source_0',
-        transform: [{type: 'graticule'}]
-      }
-    ]);
+    const data = assembleRootData(model.component.data, {});
+    expect(data[0].transform[0]).toEqual({type: 'graticule'});
   });
 });

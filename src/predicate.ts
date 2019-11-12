@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
-import {DateTime} from './datetime';
 import {FieldName, valueExpr, vgField} from './channeldef';
+import {DateTime} from './datetime';
 import {LogicalOperand} from './logical';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit} from './timeunit';
 
@@ -38,7 +38,7 @@ export interface SelectionPredicate {
 }
 
 export function isSelectionPredicate(predicate: LogicalOperand<Predicate>): predicate is SelectionPredicate {
-  return predicate && predicate['selection'];
+  return predicate?.['selection'];
 }
 
 export interface FieldPredicateBase {
@@ -183,7 +183,7 @@ function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], tim
   return vals.map(v => predicateValueExpr(v, timeUnit));
 }
 
-// This method is used by Voyager.  Do not change its behavior without changing Voyager.
+// This method is used by Voyager. Do not change its behavior without changing Voyager.
 export function fieldFilterExpression(predicate: FieldPredicate, useInRange = true) {
   const {field, timeUnit} = predicate;
   const fieldExpr = timeUnit
@@ -210,7 +210,7 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
   } else if (isFieldOneOfPredicate(predicate)) {
     return `indexof([${predicateValuesExpr(predicate.oneOf, timeUnit).join(',')}], ${fieldExpr}) !== -1`;
   } else if (isFieldValidPredicate(predicate)) {
-    return predicate.valid ? `${fieldExpr}!==null&&!isNaN(${fieldExpr})` : `${fieldExpr}===null||isNaN(${fieldExpr})`;
+    return fieldValidPredicate(fieldExpr, predicate.valid);
   } else if (isFieldRangePredicate(predicate)) {
     const lower = predicate.range[0];
     const upper = predicate.range[1];
@@ -240,6 +240,14 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
 
   /* istanbul ignore next: it should never reach here */
   throw new Error(`Invalid field predicate: ${JSON.stringify(predicate)}`);
+}
+
+export function fieldValidPredicate(fieldExpr: string, valid = true) {
+  if (valid) {
+    return `isValid(${fieldExpr}) && isFinite(+${fieldExpr})`;
+  } else {
+    return `!isValid(${fieldExpr}) || !isFinite(+${fieldExpr})`;
+  }
 }
 
 export function normalizePredicate(f: Predicate): Predicate {

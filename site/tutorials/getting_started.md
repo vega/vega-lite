@@ -49,7 +49,7 @@ We can represent this data as a [JSON array](http://www.json.org/) in which each
 ]
 ```
 
-To visualize this data with Vega-Lite, we can add it directly to the `data` property in a Vega-Lite specification. (Note that we reformatted the array to make it more compact.)
+To visualize this data with Vega-Lite, we can add it directly to the `data` property in a Vega-Lite specification.
 
 ```json
 {
@@ -126,7 +126,7 @@ Great! You computed the aggregate values for each category and visualized the re
 
 <div class="vl-example" data-name="bar_array_aggregate"></div>
 
-Since the quantitative value is on y, you automatically get a vertical bar chart. If we swap the `x` and `y` channel, we get a horizontal bar chart instead.
+Since the quantitative value is on `y`, you automatically get a vertical bar chart. If we swap the `x` and `y` channel, we get a horizontal bar chart instead.
 
 <div class="vl-example" data-name="bar_swap_axes"></div>
 
@@ -153,9 +153,9 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
     <title>Vega-Lite Bar Chart</title>
     <meta charset="utf-8" />
 
-    <script src="https://cdn.jsdelivr.net/npm/vega@{{ site.data.versions.vega }}/build/vega.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@{{ site.data.versions.vega-lite }}/build/vega-lite.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-embed@{{ site.data.versions.vega-embed }}/build/vega-embed.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega@{{ site.data.versions.vega }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@{{ site.data.versions.vega-lite }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@{{ site.data.versions.vega-embed }}"></script>
 
     <style media="screen">
       /* Add space between Vega-Embed links  */
@@ -211,7 +211,7 @@ In this webpage, we first load the dependencies for Vega-Lite (Vega-Embed, Vega,
 
 In the JavaScript code, we create a variable `vlSpec` that holds the Vega-Lite specification in JSON format. The `vegaEmbed` method translates a Vega-Lite specification into a Vega specification and then calls the [Vega Runtime](https://vega.github.io/vega/usage/) to display visualization in the container `<div/>` element.
 
-If viewed in a browser, this page displays our bar chart like on our [demo page]({{site.baseurl}}/site/demo.html). You can also fork our [Vega-Lite Block example](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9).
+If viewed in a browser, this page displays our bar chart like on our [demo page]({{site.baseurl}}/demo.html). You can also fork our [Vega-Lite Block example](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9).
 
 ## Next Steps
 

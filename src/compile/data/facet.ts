@@ -87,7 +87,7 @@ export class FacetNode extends DataFlowNode {
     const f: string[] = [];
 
     for (const channel of FACET_CHANNELS) {
-      if (this[channel] && this[channel].fields) {
+      if (this[channel]?.fields) {
         f.push(...this[channel].fields);
       }
     }
@@ -138,7 +138,7 @@ export class FacetNode extends DataFlowNode {
           if (field) {
             childIndependentFieldsWithStep[channel] = field;
           } else {
-            log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
+            log.warn(`Unknown field for ${channel}. Cannot calculate view size.`);
           }
         }
       }
@@ -215,7 +215,7 @@ export class FacetNode extends DataFlowNode {
       for (const headerType of HEADER_TYPES) {
         const headers = (layoutHeaders[headerChannel] && layoutHeaders[headerChannel][headerType]) || [];
         for (const header of headers) {
-          if (header.axes && header.axes.length > 0) {
+          if (header.axes?.length > 0) {
             hasSharedAxis[headerChannel] = true;
             break;
           }

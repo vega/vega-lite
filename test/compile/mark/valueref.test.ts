@@ -75,7 +75,7 @@ describe('compile/mark/valueref', () => {
         )
       ).toEqual({
         signal:
-          '{"IMDB_Rating (binned)": datum["bin_maxbins_10_IMDB_Rating"] === null || isNaN(datum["bin_maxbins_10_IMDB_Rating"]) ? "null" : format(datum["bin_maxbins_10_IMDB_Rating"], "") + " - " + format(datum["bin_maxbins_10_IMDB_Rating_end"], "")}'
+          '{"IMDB_Rating (binned)": !isValid(datum["bin_maxbins_10_IMDB_Rating"]) || !isFinite(+datum["bin_maxbins_10_IMDB_Rating"]) ? "null" : format(datum["bin_maxbins_10_IMDB_Rating"], "") + " - " + format(datum["bin_maxbins_10_IMDB_Rating_end"], "")}'
       });
     });
 
@@ -97,7 +97,7 @@ describe('compile/mark/valueref', () => {
         )
       ).toEqual({
         signal:
-          '{"IMDB_Rating (binned)": datum["bin_IMDB_rating"] === null || isNaN(datum["bin_IMDB_rating"]) ? "null" : format(datum["bin_IMDB_rating"], "") + " - " + format(datum["bin_IMDB_rating_end"], "")}'
+          '{"IMDB_Rating (binned)": !isValid(datum["bin_IMDB_rating"]) || !isFinite(+datum["bin_IMDB_rating"]) ? "null" : format(datum["bin_IMDB_rating"], "") + " - " + format(datum["bin_IMDB_rating_end"], "")}'
       });
     });
   });

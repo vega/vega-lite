@@ -71,18 +71,38 @@ export const hits = {
   },
 
   interval: {
-    drag: [[5, 14], [18, 26]],
+    drag: [
+      [5, 14],
+      [18, 26]
+    ],
     drag_clear: [[5], [16]],
-    translate: [[6, 16], [24, 8]],
+    translate: [
+      [6, 16],
+      [24, 8]
+    ],
 
-    bins: [[4, 8], [2, 7]],
+    bins: [
+      [4, 8],
+      [2, 7]
+    ],
     bins_clear: [[5], [9]],
-    bins_translate: [[5, 7], [1, 8]],
+    bins_translate: [
+      [5, 7],
+      [1, 8]
+    ],
 
-    repeat: [[8, 29], [11, 26], [7, 21]],
+    repeat: [
+      [8, 29],
+      [11, 26],
+      [7, 21]
+    ],
     repeat_clear: [[8], [11], [17]],
 
-    facet: [[1, 9], [2, 8], [4, 10]],
+    facet: [
+      [1, 9],
+      [2, 8],
+      [4, 10]
+    ],
     facet_clear: [[3], [5], [7]]
   }
   /* eslint-enable @typescript-eslint/camelcase */
@@ -213,4 +233,12 @@ export function testRenderFn(page: Page, path: string) {
     const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);
     expect(render).toBe(file.toString());
   };
+}
+
+export function fill<T>(val: T, len: number) {
+  const arr = new Array<T>(len);
+  for (let i = 0; i < len; ++i) {
+    arr[i] = val;
+  }
+  return arr;
 }

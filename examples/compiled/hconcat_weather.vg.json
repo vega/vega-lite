@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Two horizonally concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "data": [
@@ -43,8 +43,8 @@
           "field": "temp_min",
           "as": ["bin_maxbins_10_temp_min", "bin_maxbins_10_temp_min_end"],
           "signal": "concat_1_bin_maxbins_10_temp_min_bins",
-          "maxbins": 10,
-          "extent": {"signal": "concat_1_bin_maxbins_10_temp_min_extent"}
+          "extent": {"signal": "concat_1_bin_maxbins_10_temp_min_extent"},
+          "maxbins": 10
         },
         {
           "type": "extent",
@@ -56,8 +56,8 @@
           "field": "temp_max",
           "as": ["bin_maxbins_10_temp_max", "bin_maxbins_10_temp_max_end"],
           "signal": "concat_1_bin_maxbins_10_temp_max_bins",
-          "maxbins": 10,
-          "extent": {"signal": "concat_1_bin_maxbins_10_temp_max_extent"}
+          "extent": {"signal": "concat_1_bin_maxbins_10_temp_max_extent"},
+          "maxbins": 10
         },
         {
           "type": "aggregate",
@@ -73,7 +73,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_temp_min\"] !== null && !isNaN(datum[\"bin_maxbins_10_temp_min\"]) && datum[\"bin_maxbins_10_temp_max\"] !== null && !isNaN(datum[\"bin_maxbins_10_temp_max\"])"
+          "expr": "isValid(datum[\"bin_maxbins_10_temp_min\"]) && isFinite(+datum[\"bin_maxbins_10_temp_min\"]) && isValid(datum[\"bin_maxbins_10_temp_max\"]) && isFinite(+datum[\"bin_maxbins_10_temp_max\"])"
         }
       ]
     }
@@ -178,7 +178,7 @@
               "stroke": {"value": "#4c78a8"},
               "x": [
                 {
-                  "test": "datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_temp_min\"]) || !isFinite(+datum[\"bin_maxbins_10_temp_min\"])",
                   "value": 0
                 },
                 {
@@ -187,7 +187,7 @@
               ],
               "y": [
                 {
-                  "test": "datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"])",
+                  "test": "!isValid(datum[\"bin_maxbins_10_temp_max\"]) || !isFinite(+datum[\"bin_maxbins_10_temp_max\"])",
                   "field": {"group": "height"}
                 },
                 {

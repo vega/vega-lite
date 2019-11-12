@@ -1,39 +1,11 @@
-import {
-  Align,
-  Axis as VgAxis,
-  AxisEncode,
-  AxisOrient,
-  BaseAxis,
-  Color,
-  FontStyle,
-  FontWeight,
-  LabelOverlap,
-  TextBaseline,
-  TitleAnchor
-} from 'vega';
+import {Axis as VgAxis, AxisEncode, AxisOrient, BaseAxis, LabelOverlap} from 'vega';
 import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {LayoutAlign, VgEncodeChannel} from './vega.schema';
+import {ExcludeMappedValueRef, VgEncodeChannel} from './vega.schema';
 
-export type BaseAxisNoSignals = AxisMixins &
-  BaseAxis<
-    number,
-    number,
-    boolean,
-    number | boolean,
-    string,
-    Color,
-    FontWeight,
-    FontStyle,
-    Align,
-    TextBaseline,
-    LayoutAlign,
-    LabelOverlap,
-    number[],
-    TitleAnchor
-  >;
+export type BaseAxisNoSignals = AxisMixins & ExcludeMappedValueRef<BaseAxis>;
 
 export type ConditionalAxisProp =
   | 'labelAlign'
@@ -67,7 +39,7 @@ export const CONDITIONAL_AXIS_PROP_INDEX: {
   },
   labelBaseline: {
     part: 'labels',
-    vgProp: 'align'
+    vgProp: 'baseline'
   },
   labelColor: {
     part: 'labels',
@@ -146,7 +118,9 @@ export function isConditionalAxisValue<V extends Value | number[]>(v: any): v is
 // Vega axis config is the same as Vega axis base. If this is not the case, add specific type.
 export type VgAxisConfigNoSignals = Omit<BaseAxisNoSignals, ConditionalAxisProp> &
   {
-    [k in ConditionalAxisProp]?: BaseAxisNoSignals[k] | ConditionalAxisProperty<BaseAxisNoSignals[k] | null>;
+    [k in ConditionalAxisProp]?:
+      | BaseAxisNoSignals[k]
+      | ConditionalAxisProperty<Exclude<BaseAxisNoSignals[k], undefined> | null>;
   };
 
 // Change comments to be Vega-Lite specific
@@ -241,7 +215,7 @@ export interface Axis extends AxisOrientMixins, VgAxisConfigNoSignals, Guide {
   /**
    * Mark definitions for custom axis encoding.
    *
-   * @hide
+   * @hidden
    */
   encoding?: AxisEncoding;
 }
@@ -308,6 +282,7 @@ export const AXIS_PROPERTY_TYPE: {
   titleFontSize: 'main',
   titleFontWeight: 'main',
   titleLimit: 'main',
+  titleLineHeight: 'main',
   titleOpacity: 'main',
   titlePadding: 'main',
   titleX: 'main',
@@ -403,6 +378,7 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   ticks: 1,
   tickSize: 1,
   tickWidth: 1,
+  tickBand: 1,
   title: 1,
   titleAlign: 1,
   titleAnchor: 1,
@@ -414,11 +390,13 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   titleFontStyle: 1,
   titleFontWeight: 1,
   titleLimit: 1,
+  titleLineHeight: 1,
   titleOpacity: 1,
   titlePadding: 1,
   titleX: 1,
   titleY: 1,
   values: 1,
+  translate: 1,
   zindex: 1
 };
 

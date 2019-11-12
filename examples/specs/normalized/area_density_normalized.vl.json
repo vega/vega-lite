@@ -17,5 +17,6 @@
       "x": {"field": "value", "type": "quantitative"},
       "y": {"field": "density", "type": "quantitative"}
     }
-  }
+  },
+  "autosize": {"type": "pad"}
 }

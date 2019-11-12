@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 600,
   "title": {"text": "Seattle Weather, 2012-2015", "anchor": "start"},
@@ -49,7 +49,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"precipitation\"] !== null && !isNaN(datum[\"precipitation\"]) && datum[\"monthdate_date\"] !== null && !isNaN(datum[\"monthdate_date\"]) && datum[\"temp_max\"] !== null && !isNaN(datum[\"temp_max\"])"
+          "expr": "isValid(datum[\"precipitation\"]) && isFinite(+datum[\"precipitation\"]) && (isDate(datum[\"monthdate_date\"]) || (isValid(datum[\"monthdate_date\"]) && isFinite(+datum[\"monthdate_date\"]))) && isValid(datum[\"temp_max\"]) && isFinite(+datum[\"temp_max\"])"
         }
       ]
     }
@@ -68,8 +68,14 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"},
-    {"name": "click", "update": "vlSelectionResolve(\"click_store\")"}
+    {
+      "name": "brush",
+      "update": "vlSelectionResolve(\"brush_store\", \"union\")"
+    },
+    {
+      "name": "click",
+      "update": "vlSelectionResolve(\"click_store\", \"union\", true)"
+    }
   ],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
@@ -290,6 +296,7 @@
           "name": "concat_0_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_1"},
           "encode": {
             "update": {
@@ -458,6 +465,7 @@
           "name": "concat_1_marks",
           "type": "rect",
           "style": ["bar"],
+          "interactive": true,
           "from": {"data": "data_0"},
           "encode": {
             "update": {

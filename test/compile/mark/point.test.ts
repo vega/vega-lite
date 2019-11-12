@@ -92,7 +92,7 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     expect(props.x).toEqual([
-      {test: 'datum["bin_maxbins_10_a"] === null || isNaN(datum["bin_maxbins_10_a"])', value: 0},
+      {test: '!isValid(datum["bin_maxbins_10_a"]) || !isFinite(+datum["bin_maxbins_10_a"])', value: 0},
       {signal: 'scale("x", 0.6 * datum["bin_maxbins_10_a"] + 0.4 * datum["bin_maxbins_10_a_end"])'}
     ]);
   });

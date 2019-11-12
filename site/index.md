@@ -60,7 +60,7 @@ Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uw
     <div class="slide video-demo">
       <div class="vl-example" data-name="selection_layer_bar_month"></div>
       <video loop>
-        <source src="{{ site.baseurl }}/site/static/moving-avg.mp4" type="video/mp4">
+        <source src="{{ site.baseurl }}/static/moving-avg.mp4" type="video/mp4">
       </video>
     </div>
   </div>

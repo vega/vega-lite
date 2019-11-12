@@ -2,36 +2,41 @@ import {
   AggregateOp,
   Align,
   Color,
+  ColorValueRef,
   Compare as VgCompare,
   ExprRef as VgExprRef,
   Field as VgField,
-  FlattenTransform as VgFlattenTransform,
-  FoldTransform as VgFoldTransform,
   FontStyle as VgFontStyle,
   FontWeight as VgFontWeight,
-  KDETransform as VgKDETransform,
   LayoutAlign,
-  LoessTransform as VgLoessTransform,
+  NumericValueRef,
   Orientation,
   ProjectionType,
-  RegressionTransform as VgRegressionTransform,
-  SampleTransform as VgSampleTransform,
+  ScaledValueRef,
   SignalRef,
   SortField as VgSortField,
+  Text,
   TextBaseline as VgTextBaseline,
   Title as VgTitle,
-  UnionSortField as VgUnionSortField
+  Transforms as VgTransform,
+  UnionSortField as VgUnionSortField,
+  GeoShapeTransform as VgGeoShapeTransform,
+  Interpolate,
+  Cursor
 } from 'vega';
 import {isArray} from 'vega-util';
-import {BaseBin} from './bin';
-import {Gradient, ValueOrGradient} from './channeldef';
+import {Gradient, ValueOrGradientOrText} from './channeldef';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
-import {StackOffset} from './stack';
-import {WindowOnlyOp} from './transform';
 import {Flag, keys} from './util';
 
 export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
+
+type ExcludeMapped<T, E> = {
+  [P in keyof T]: Exclude<T[P], E>;
+};
+
+export type ExcludeMappedValueRef<T> = ExcludeMapped<T, ScaledValueRef<any> | NumericValueRef | ColorValueRef>;
 
 export interface VgData {
   name: string;
@@ -60,7 +65,7 @@ export function isSignalRef(o: any): o is SignalRef {
 
 // TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
 export interface VgValueRef {
-  value?: ValueOrGradient | number[];
+  value?: ValueOrGradientOrText | number[];
   field?:
     | string
     | {
@@ -326,211 +331,10 @@ export type VgEncodeEntry = {[k in VgEncodeChannel]?: VgValueRef | (VgValueRef &
 //  ...
 // }
 
-export interface VgBinTransform extends BaseBin {
-  type: 'bin';
-  extent?: number[] | {signal: string};
-  field: string;
-  as: string[];
-  signal?: string;
-}
-
-export interface VgExtentTransform {
-  type: 'extent';
-  field: string;
-  signal: string;
-}
-
-export interface VgFormulaTransform {
-  type: 'formula';
-  as: string;
-  expr: string;
-}
-
-export interface VgFilterTransform {
-  type: 'filter';
-  expr: string;
-}
-
-export interface VgAggregateTransform {
-  type: 'aggregate';
-  groupby?: VgField[];
-  fields?: VgField[];
-  ops?: AggregateOp[];
-  as?: string[];
-  cross?: boolean;
-  drop?: boolean;
-}
-
-export interface VgCollectTransform {
-  type: 'collect';
-  sort: VgCompare;
-}
-
-export interface VgLookupTransform {
-  type: 'lookup';
-  from: string;
-  key: string;
-  fields: string[];
-  values?: string[];
-  as?: string[];
-  default?: string;
-}
-
-export interface VgStackTransform {
-  type: 'stack';
-  offset?: StackOffset;
-  groupby: string[];
-  field: string;
-  sort: VgCompare;
-  as: string[];
-}
-
-export interface VgIdentifierTransform {
-  type: 'identifier';
-  as: string;
-}
-
-export interface VgPivotTransform {
-  type: 'pivot';
-  field: string;
-  value: string;
-  groupby?: string[];
-  limit?: number;
-  op?: string;
-}
-
-export type VgTransform =
-  | VgBinTransform
-  | VgExtentTransform
-  | VgFormulaTransform
-  | VgAggregateTransform
-  | VgFilterTransform
-  | VgFlattenTransform
-  | VgImputeTransform
-  | VgStackTransform
-  | VgCollectTransform
-  | VgLookupTransform
-  | VgIdentifierTransform
-  | VgGeoPointTransform
-  | VgGeoJSONTransform
-  | VgGraticuleTransform
-  | VgWindowTransform
-  | VgJoinAggregateTransform
-  | VgFoldTransform
-  | VgSampleTransform
-  | VgSequenceTransform
-  | VgKDETransform
-  | VgLoessTransform
-  | VgRegressionTransform
-  | VgPivotTransform;
-
-export interface VgGraticuleTransform {
-  type: 'graticule';
-  extentMajor?: number[][];
-  extentMinor?: number[][];
-  extent?: number[][];
-  stepMajor?: number[];
-  stepMinor?: number[];
-  step?: number[];
-  precision?: number;
-}
-
-export interface VgSequenceTransform {
-  type: 'sequence';
-  start: number | SignalRef;
-  stop: number | SignalRef;
-  step?: number | SignalRef;
-  as?: string | SignalRef;
-}
-
-export interface VgGeoPointTransform {
-  type: 'geopoint';
-  projection: string; // projection name
-  fields: (VgField | VgExprRef)[];
-  as?: [string, string];
-}
-
-export interface VgGeoShapeTransform {
-  type: 'geoshape';
-  projection: string; // projection name
-  field?: VgField;
-  as?: string;
-}
-
-export interface VgGeoJSONTransform {
-  type: 'geojson';
-  fields?: (VgField | VgExprRef)[];
-  geojson?: VgField;
-  signal: string;
-}
-
 export type VgPostEncodingTransform = VgGeoShapeTransform;
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
 
-export type ImputeMethod = 'value' | 'median' | 'max' | 'min' | 'mean';
-
-export interface VgImputeTransform {
-  type: 'impute';
-  groupby?: string[];
-  field: string;
-  key: string;
-  keyvals?: any[] | SignalRef;
-  method?: ImputeMethod;
-  value?: any;
-}
-
-export type Interpolate =
-  | 'linear'
-  | 'linear-closed'
-  | 'step'
-  | 'step-before'
-  | 'step-after'
-  | 'basis'
-  | 'basis-open'
-  | 'basis-closed'
-  | 'cardinal'
-  | 'cardinal-open'
-  | 'cardinal-closed'
-  | 'bundle'
-  | 'monotone';
-export type Cursor =
-  | 'auto'
-  | 'default'
-  | 'none'
-  | 'context-menu'
-  | 'help'
-  | 'pointer'
-  | 'progress'
-  | 'wait'
-  | 'cell'
-  | 'crosshair'
-  | 'text'
-  | 'vertical-text'
-  | 'alias'
-  | 'copy'
-  | 'move'
-  | 'no-drop'
-  | 'not-allowed'
-  | 'e-resize'
-  | 'n-resize'
-  | 'ne-resize'
-  | 'nw-resize'
-  | 's-resize'
-  | 'se-resize'
-  | 'sw-resize'
-  | 'w-resize'
-  | 'ew-resize'
-  | 'ns-resize'
-  | 'nesw-resize'
-  | 'nwse-resize'
-  | 'col-resize'
-  | 'row-resize'
-  | 'all-scroll'
-  | 'zoom-in'
-  | 'zoom-out'
-  | 'grab'
-  | 'grabbing';
 export type StrokeCap = 'butt' | 'round' | 'square';
 export type StrokeJoin = 'miter' | 'round' | 'bevel';
 export type Dir = 'ltr' | 'rtl';
@@ -580,20 +384,20 @@ export interface BaseMarkConfig {
   aspect?: boolean;
 
   /**
-   * Default Fill Color.  This has higher precedence than `config.color`.
+   * Default Fill Color. This has higher precedence than `config.color`.
    *
    * __Default value:__ (None)
    *
    */
-  fill?: Color | Gradient;
+  fill?: Color | Gradient | null;
 
   /**
-   * Default Stroke Color.  This has higher precedence than `config.color`.
+   * Default Stroke Color. This has higher precedence than `config.color`.
    *
    * __Default value:__ (None)
    *
    */
-  stroke?: Color | Gradient;
+  stroke?: Color | Gradient | null;
 
   // ---------- Opacity ----------
   /**
@@ -803,6 +607,17 @@ export interface BaseMarkConfig {
    * The font style (e.g., `"italic"`).
    */
   fontStyle?: VgFontStyle;
+
+  /**
+   * A delimiter, such as a newline character, upon which to break text strings into multiple lines. This property will be ignored if the text property is array-valued.
+   */
+  lineBreak?: string;
+
+  /**
+   * The height, in pixels, of each line of text in a multi-line text mark.
+   */
+  lineHeight?: number;
+
   /**
    * The font weight.
    * This can be either a string (e.g `"bold"`, `"normal"`) or a number (`100`, `200`, `300`, ..., `900` where `"normal"` = `400` and `"bold"` = `700`).
@@ -812,7 +627,7 @@ export interface BaseMarkConfig {
   /**
    * Placeholder text if the `text` channel is not specified
    */
-  text?: string;
+  text?: Text;
 
   /**
    * A URL to load upon mouse click. If defined, the mark acts as a hyperlink.
@@ -873,6 +688,8 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
   fontSize: 1,
   fontWeight: 1,
   fontStyle: 1,
+  lineBreak: 1,
+  lineHeight: 1,
   cursor: 1,
   href: 1,
   tooltip: 1,
@@ -901,18 +718,6 @@ export const VG_MARK_CONFIGS = keys(VG_MARK_CONFIG_INDEX);
 export interface VgComparator {
   field?: string | string[];
   order?: SortOrder | SortOrder[];
-}
-
-export interface VgWindowTransform {
-  type: 'window';
-  params?: number[];
-  as?: string[];
-  ops?: (AggregateOp | WindowOnlyOp)[];
-  fields?: string[];
-  frame?: number[];
-  ignorePeers?: boolean;
-  groupby?: string[];
-  sort?: VgComparator;
 }
 
 export interface VgJoinAggregateTransform {

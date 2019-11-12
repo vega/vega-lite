@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Anscombe's Quartet",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "data": [
     {"name": "brush_store"},
@@ -14,7 +14,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"X\"] !== null && !isNaN(datum[\"X\"]) && datum[\"Y\"] !== null && !isNaN(datum[\"Y\"])"
+          "expr": "isValid(datum[\"X\"]) && isFinite(+datum[\"X\"]) && isValid(datum[\"Y\"]) && isFinite(+datum[\"Y\"])"
         }
       ]
     },
@@ -39,7 +39,13 @@
       "value": null,
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "mouseover",
+              "markname": "child_voronoi"
+            }
+          ],
           "update": "datum && item().mark.marktype !== 'group' ? (item().isVoronoi ? datum.datum : datum)[\"X\"] : null"
         }
       ],
@@ -52,7 +58,7 @@
     {"name": "grid", "update": "{\"X\": grid_X, \"Y\": grid_Y}"},
     {"name": "grid_X"},
     {"name": "grid_Y"},
-    {"name": "xenc", "update": "vlSelectionResolve(\"xenc_store\")"}
+    {"name": "xenc", "update": "vlSelectionResolve(\"xenc_store\", \"union\")"}
   ],
   "layout": {
     "padding": 20,
@@ -452,6 +458,7 @@
           "type": "symbol",
           "clip": true,
           "style": ["circle"],
+          "interactive": true,
           "from": {"data": "facet"},
           "encode": {
             "update": {
@@ -465,14 +472,14 @@
               ],
               "x": [
                 {
-                  "test": "datum[\"X\"] === null || isNaN(datum[\"X\"])",
+                  "test": "!isValid(datum[\"X\"]) || !isFinite(+datum[\"X\"])",
                   "value": 0
                 },
                 {"scale": "x", "field": "X"}
               ],
               "y": [
                 {
-                  "test": "datum[\"Y\"] === null || isNaN(datum[\"Y\"])",
+                  "test": "!isValid(datum[\"Y\"]) || !isFinite(+datum[\"Y\"])",
                   "field": {"group": "height"}
                 },
                 {"scale": "y", "field": "Y"}
@@ -491,6 +498,7 @@
         {
           "name": "child_voronoi",
           "type": "path",
+          "interactive": true,
           "from": {"data": "child_marks"},
           "encode": {
             "update": {

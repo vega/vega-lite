@@ -473,7 +473,10 @@ describe('encoding', () => {
             value: 'red'
           }
         })
-      ).toEqual([{field: 'foo', type: 'quantitative'}, {field: 'bar', test: 'datum.val > 12', type: 'quantitative'}]);
+      ).toEqual([
+        {field: 'foo', type: 'quantitative'},
+        {field: 'bar', test: 'datum.val > 12', type: 'quantitative'}
+      ]);
     });
   });
 });

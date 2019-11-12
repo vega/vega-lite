@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -42,7 +42,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"source.reco\"] !== null && !isNaN(datum[\"source.reco\"]) && datum[\"source.yes\"] !== null && !isNaN(datum[\"source.yes\"])"
+          "expr": "isValid(datum[\"source.reco\"]) && isFinite(+datum[\"source.reco\"]) && isValid(datum[\"source.yes\"]) && isFinite(+datum[\"source.yes\"])"
         }
       ]
     }

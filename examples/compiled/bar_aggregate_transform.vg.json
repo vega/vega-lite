@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "style": "cell",
@@ -19,7 +19,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"mean_acc\"] !== null && !isNaN(datum[\"mean_acc\"])"
+          "expr": "isValid(datum[\"mean_acc\"]) && isFinite(+datum[\"mean_acc\"])"
         }
       ]
     }

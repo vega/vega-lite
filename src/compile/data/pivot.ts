@@ -1,6 +1,6 @@
 import {PivotTransform} from '../../transform';
 import {duplicate, hash, unique} from '../../util';
-import {VgPivotTransform} from '../../vega.schema';
+import {PivotTransform as VgPivotTransform} from 'vega';
 import {DataFlowNode} from './dataflow';
 
 /**
@@ -15,7 +15,7 @@ export class PivotTransformNode extends DataFlowNode {
     super(parent);
   }
 
-  public addDimensions(fields: string[]) {
+  public addDimensions(fields: readonly string[]) {
     this.transform.groupby = unique((this.transform.groupby || []).concat(fields), d => d);
   }
 

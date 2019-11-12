@@ -1,6 +1,6 @@
 import {DateTimeExpr, dateTimeExpr} from './datetime';
 import * as log from './log';
-import {accessPathWithDatum, Flag, keys} from './util';
+import {accessPathWithDatum, Flag, keys, replaceAll} from './util';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
@@ -318,16 +318,13 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string, {end}: {end: bo
 
   let lastTimeUnit: TimeUnit;
 
-  const d = TIMEUNIT_PARTS.reduce(
-    (dateExpr: DateTimeExpr, tu: TimeUnit) => {
-      if (containsTimeUnit(fullTimeUnit, tu)) {
-        dateExpr[tu] = func(tu);
-        lastTimeUnit = tu;
-      }
-      return dateExpr;
-    },
-    {} as {[key in SingleTimeUnit]: string}
-  );
+  const d = TIMEUNIT_PARTS.reduce((dateExpr: DateTimeExpr, tu: TimeUnit) => {
+    if (containsTimeUnit(fullTimeUnit, tu)) {
+      dateExpr[tu] = func(tu);
+      lastTimeUnit = tu;
+    }
+    return dateExpr;
+  }, {} as {[key in SingleTimeUnit]: string});
 
   if (end) {
     d[lastTimeUnit] += '+1';
@@ -429,7 +426,7 @@ export function formatExpression(
 export function normalizeTimeUnit(timeUnit: TimeUnit): TimeUnit {
   if (timeUnit !== 'day' && timeUnit.indexOf('day') >= 0) {
     log.warn(log.message.dayReplacedWithDate(timeUnit));
-    return timeUnit.replace('day', 'date') as TimeUnit;
+    return replaceAll(timeUnit, 'day', 'date') as TimeUnit;
   }
   return timeUnit;
 }

@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -30,7 +30,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"])"
+          "expr": "(isDate(datum[\"month_date\"]) || (isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"])))"
         }
       ]
     }
@@ -46,7 +46,7 @@
           "fill": {"value": "#4c78a8"},
           "x2": [
             {
-              "test": "datum[\"month_date\"] === null || isNaN(datum[\"month_date\"])",
+              "test": "!isValid(datum[\"month_date\"]) || !isFinite(+datum[\"month_date\"])",
               "value": 0
             },
             {
@@ -56,7 +56,7 @@
           ],
           "x": [
             {
-              "test": "datum[\"month_date\"] === null || isNaN(datum[\"month_date\"])",
+              "test": "!isValid(datum[\"month_date\"]) || !isFinite(+datum[\"month_date\"])",
               "value": 0
             },
             {

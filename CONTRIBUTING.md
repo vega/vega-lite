@@ -10,13 +10,13 @@ If you find a bug in the code or a mistake in the [documentation](https://vega.g
 
   - One way to use GitHub for this purpose is to submit a pull request (PR) with a ":construction: WIP" (work in progress) label.
 
-- Generally we name a branch using this pattern `<your 2-3 letters initial>/<topic>`. For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
+- Generally, we name a branch using this pattern `<your 2-3 letters initial>/<topic>`. For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
 
 See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUEST_TEMPLATE.md) templates for more information.
 
 ### Looking for a Task to Contribute
 
-You can find [tasks with the "Help wanted" label in the issue tracker :pray:](https://github.com/vega/vega-lite/labels/Help%20wanted%20%3Apray%3A). Please add a comment in an issues if you are planning to work on a major task.
+You can find [tasks with the "Help wanted" label in the issue tracker :pray:](https://github.com/vega/vega-lite/labels/Help%20wanted%20%3Apray%3A). Please add a comment in issues if you are planning to work on a major task.
 
 ### Help Create New Examples
 
@@ -24,9 +24,9 @@ To submit a new example, fork our [example Block](https://bl.ocks.org/domoritz/4
 
 ## Documentation and Website
 
-The website is under `site/` and the documentation is under `site/docs/`. We use Github Pages to publish our documentation when we release a new version. To contribute changes to the documentation or website, simply submit a pull request that changes the corresponding markdown files in `site/`.
+The website is under `site/` and the documentation is under `site/docs/`. We use GitHub Pages to publish our documentation when we release a new version. To contribute changes to the documentation or website, simply submit a pull request that changes the corresponding markdown files in `site/`.
 
-Since we only publish the Github Pages when we release a new version, it might be slightly outdated compared to `master`. For development, once you have [setup the repository](#repository-setup), you can run `yarn site` to serve the github page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
+Since we only publish the GitHub Pages when we release a new version, it might be slightly outdated compared to `master`. For development, once you have [setup the repository](#repository-setup), you can run `yarn site` to serve the GitHub page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
 
 Note that when you checkout different branches, the compiled JavaScript for the website might be reset. You might have to run `yarn build:site` to recompile the JavaScript so that interactive examples work.
 
@@ -39,7 +39,7 @@ General Guides for Markdown Files:
 
 #### Property Table
 
-To generate a property tables from the JSON schema (which is in turn generated from the Typescript interfaces, you can include the `table.html` template. For example, to generate a table that includes `rangeStep`, `scheme`, and `padding` from `Scale`, you can use
+To generate property tables from the JSON schema (which is in turn generated from the Typescript interfaces, you can include the `table.html` template. For example, to generate a table that includes `rangeStep`, `scheme`, and `padding` from `Scale`, you can use
 
 ```
 {% include table.html props="rangeStep,scheme,padding" source="Scale" %}
@@ -66,13 +66,13 @@ To name the example file:
 - For interactive example, begin with either `interactive_` or `selection_`.
 - For examples that are only for regression test, begin with `test_`.
 
-After you push a new branch to GitHub, Travis will automatically run `yarn build:examples` to recompile all examples and push the changed Vega specs and SVG files in `examples/compiled` , so that your branch includes these changes. When you add a new example or update the code, you may run `yarn build:examples` or `yarn build:example <examplename>` (e.g., `yarn build:example bar_1d`) to see the change locally. However, do **not** include these changes in your commit as different systems produces slightly different SVGs (mainly due to floating point differences). To avoid unnecessary SVG diffs, we should just let Travis always generate the images. You're still encouraged to run `yarn build:examples` to make sure that your code does not cause unnecessary changes.
+After you push a new branch to GitHub, the CI will automatically run `yarn build:examples` to recompile all examples and push the changed Vega specs and SVG files in `examples/compiled` , so that your branch includes these changes. When you add a new example or update the code, you may run `yarn build:examples` or `yarn build:example <examplename>` (e.g., `yarn build:example bar_1d`) to see the change locally. However, do **not** include these changes in your commit as different systems produce slightly different SVGs (mainly due to floating point differences). To avoid unnecessary SVG diffs, we should just let the CI generate the images. You're still encouraged to run `yarn build:examples` to make sure that your code does not cause unnecessary changes.
 
 **Notes:**
 
 1. `yarn build:examples` only re-compile SVGs if the output Vega file changes (so it runs way faster). If you want to enforce re-compilation of all SVGs, use `yarn build:examples-full`.
 2. To make Travis run `yarn build:examples-full`, include `[SVG]` in your commit message of the last commit in your branch.
-3. To run `yarn build:examples`, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac,you can simply do `brew install parallel`.)
+3. To run `yarn build:examples`, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
 
 # Development Guide
 
@@ -108,18 +108,24 @@ For bundler:
 gem install bundler
 ```
 
-For jekyll and its dependencies, because we already have the `Gemfile` in the repo, you can simply run:
+For Jekyll and its dependencies, because we already have the `Gemfile` in the repo, you can simply run:
 
 ```sh
-bundle install
+pushd site && bundle install && popd
 ```
 
 ## Directory Structure
 
-- `_layouts/` – Our website and documentation's Jekyll layout files.
 - `bin/` – Scripts for using Vega-Lite with command line.
-- `data/` – Example data.
 - `site/` – Vega-Lite website including documentation.
+
+  - `_data/` – Jekyll data.
+  - `_includes/` – Jekyll includes.
+  - `_layouts/` – Jekyll layout files.
+  - `data/` – Example data.
+  - `examples/` – Example images, specifications, and pages for the website.
+  - `static/` – Static files for the website.
+
 - `examples/` – Example Vega-Lite specifications.
 
   - `specs` Vega-Lite examples.
@@ -168,7 +174,7 @@ During development, it can be convenient to rebuild automatically or to run test
 
 ### Deployment
 
-(For team members only) `yarn deploy` will publish latest code to NPM and also update GitHub Pages, which contains our webpage and documentation. If you want to update only GitHub Pages, use `yarn deploy:gh`.
+To make a new release, bump the version number with `scripts/bump.sh v4.0.0` (you can get the current version with `scripts/bump.sh`). Then push the tagged commit that the script creates, make a new GitHub release for the tag, and update the changelog. GitHub will run checks and make a release. This will also update the website and schema. If you want to update only GitHub Pages, use `yarn deploy:site`.
 
 ## Suggested Programming Environment.
 
@@ -185,10 +191,10 @@ To manually test your changes locally, you should have a local instance of [Vega
 
 To update the Vega-Lite code in the editor, you need to compile TypeScript to JavaScript. The easiest way is to run `yarn tsc:src -w` in the Vega-Lite directory. This command will automatically recompile the code whenever you make changes.
 
-## Pull Requests and Travis
+## Pull Requests and Continuous Integration (CI)
 
-All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `yarn test`, generate Vega specs and SVG files from your updated code, compare them with the existing compiled outputs in `examples/compiled/`, and check code coverage of your code. (See `.travis.yml` for the commands it executes.) If you don't want your PR reviewed until Travis checks pass, just add the ":construction: WIP" label. Once you're ready for review, remove the label and comment that the PR is ready for review.
+All pull requests will be tested on [GitHub Actions](https://github.com/features/actions). If your PR does not pass the checks, your PR will not be approved. The CI will run `yarn test`, generate Vega specs and SVG files from your updated code, compare them with the existing compiled outputs in `examples/compiled/`, and check code coverage of your code. If you don't want your PR reviewed until checks pass, just add the ":construction: WIP" label. Once you're ready for review, remove the label and comment that the PR is ready for review.
 
 ### Code Coverage
 
-When checking for code coverage, we require that your PR tests cover at least the same percentage of code that was being covered before. To check the code coverage, you can see the link in the job log of your Travis test, from the GitHub page of your PR, or on `https://codecov.io/gh/vega/vega-lite/commits`. It'll be usually in the form of `https://codecov.io/gh/vega/vega-lite/commit/your-full-head-commit-number`. Under the _Files_ and _Diff_ tab, you can check your code coverage differences and total. In _Files_, you can check which lines in your files are being tested (marked in green) and which are not (marked in red). We appreciate PRs that improve our overall code coverage!
+When checking for code coverage, we require that your PR tests cover at least the same percentage of code that was being covered before. To check the code coverage, you can see the link in the job log of your CI test, from the GitHub page of your PR, or on `https://codecov.io/gh/vega/vega-lite/commits`. It'll be usually in the form of `https://codecov.io/gh/vega/vega-lite/commit/your-full-head-commit-number`. Under the _Files_ and _Diff_ tab, you can check your code coverage differences and total. In _Files_, you can check which lines in your files are being tested (marked in green) and which are not (marked in red). We appreciate PRs that improve our overall code coverage!

@@ -7,7 +7,7 @@ var fs = require('fs'),
 
 var URL = '{{site.baseurl}}/docs/';
 
-var DIR = __dirname + '/..';
+var DIR = __dirname + '/../site/';
 var DOCS_LAYOUT = DIR + '/_layouts/docs.html';
 var COMPILED_DOCS = DIR + '/_site/docs';
 var TOC = DIR + '/_includes/docs_toc.md';

@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 800,
   "height": 450,
@@ -88,7 +88,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"previous_sum\"] !== null && !isNaN(datum[\"previous_sum\"])"
+          "expr": "isValid(datum[\"previous_sum\"]) && isFinite(+datum[\"previous_sum\"])"
         }
       ]
     },
@@ -98,7 +98,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"sum\"] !== null && !isNaN(datum[\"sum\"])"
+          "expr": "isValid(datum[\"sum\"]) && isFinite(+datum[\"sum\"])"
         }
       ]
     },
@@ -108,7 +108,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"sum_inc\"] !== null && !isNaN(datum[\"sum_inc\"])"
+          "expr": "isValid(datum[\"sum_inc\"]) && isFinite(+datum[\"sum_inc\"])"
         }
       ]
     },
@@ -118,7 +118,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"sum_dec\"] !== null && !isNaN(datum[\"sum_dec\"])"
+          "expr": "isValid(datum[\"sum_dec\"]) && isFinite(+datum[\"sum_dec\"])"
         }
       ]
     },
@@ -128,7 +128,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"center\"] !== null && !isNaN(datum[\"center\"])"
+          "expr": "isValid(datum[\"center\"]) && isFinite(+datum[\"center\"])"
         }
       ]
     }

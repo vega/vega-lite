@@ -107,7 +107,7 @@ function getSpec(el: d3.BaseType) {
   const name = sel.attr('data-name');
   if (name) {
     const dir = sel.attr('data-dir');
-    const fullUrl = BASEURL + '/examples/specs/' + (dir ? dir + '/' : '') + name + '.vl.json';
+    const fullUrl = BASEURL + '/examples/' + (dir ? dir + '/' : '') + name + '.vl.json';
 
     fetch(fullUrl)
       .then(response => {

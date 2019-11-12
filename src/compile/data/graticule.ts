@@ -1,6 +1,6 @@
+import {GraticuleTransform as VgGraticuleTransform} from 'vega';
 import {GraticuleParams} from '../../data';
 import {hash} from '../../util';
-import {VgGraticuleTransform} from '../../vega.schema';
 import {DataFlowNode} from './dataflow';
 
 export class GraticuleNode extends DataFlowNode {

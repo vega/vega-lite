@@ -1,7 +1,8 @@
 import {
   assembleUnitSelectionData,
   assembleUnitSelectionMarks,
-  assembleUnitSelectionSignals
+  assembleUnitSelectionSignals,
+  assembleTopLevelSignals
 } from '../../../src/compile/selection/assemble';
 import multi from '../../../src/compile/selection/multi';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
@@ -25,7 +26,8 @@ describe('Multi Selection', () => {
       clear: false,
       on: 'mouseover',
       toggle: 'event.ctrlKey',
-      encodings: ['y', 'color']
+      encodings: ['y', 'color'],
+      resolve: 'intersect'
     },
     'thr-ee': {
       type: 'multi',
@@ -53,6 +55,11 @@ describe('Multi Selection', () => {
           Year: {year: 1980, month: 1, day: 1}
         }
       ]
+    },
+    six: {
+      type: 'multi',
+      fields: ['nested.a', 'nested.b'],
+      clear: false
     }
   }));
 
@@ -132,8 +139,44 @@ describe('Multi Selection', () => {
       }
     ]);
 
+    const sixSg = multi.signals(model, selCmpts['six']);
+    expect(sixSg).toEqual([
+      {
+        name: 'six_tuple',
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update:
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: six_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["nested.a"], (item().isVoronoi ? datum.datum : datum)["nested.b"]]} : null',
+            force: true
+          }
+        ]
+      }
+    ]);
+
     const signals = assembleUnitSelectionSignals(model, []);
-    expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg, ...fiveSg]));
+    expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg, ...fiveSg, ...sixSg]));
+  });
+
+  it('builds top-level signals', () => {
+    const signals = assembleTopLevelSignals(model, []);
+    expect(signals).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'one',
+          update: 'vlSelectionResolve("one_store", "union", true)'
+        },
+        {
+          name: 'two',
+          update: 'vlSelectionResolve("two_store", "intersect", true)'
+        },
+        {
+          name: 'unit',
+          value: {},
+          on: [{events: 'mousemove', update: 'isTuple(group()) ? group() : unit'}]
+        }
+      ])
+    );
   });
 
   it('builds unit datasets', () => {
@@ -155,7 +198,10 @@ describe('Multi Selection', () => {
         values: [
           {
             unit: '',
-            fields: [{field: 'Horsepower', channel: 'x', type: 'E'}, {field: 'Origin', channel: 'color', type: 'E'}],
+            fields: [
+              {field: 'Horsepower', channel: 'x', type: 'E'},
+              {field: 'Origin', channel: 'color', type: 'E'}
+            ],
             values: [50, 'Japan']
           }
         ]
@@ -165,16 +211,23 @@ describe('Multi Selection', () => {
         values: [
           {
             unit: '',
-            fields: [{type: 'E', field: 'Year'}, {type: 'E', field: 'Origin'}],
+            fields: [
+              {type: 'E', field: 'Year'},
+              {type: 'E', field: 'Origin'}
+            ],
             values: [+new Date(1970, 1, 2, 0, 0, 0, 0), 'Japan']
           },
           {
             unit: '',
-            fields: [{type: 'E', field: 'Year'}, {type: 'E', field: 'Origin'}],
+            fields: [
+              {type: 'E', field: 'Year'},
+              {type: 'E', field: 'Origin'}
+            ],
             values: [+new Date(1980, 1, 2, 0, 0, 0, 0), 'USA']
           }
         ]
-      }
+      },
+      {name: 'six_store'}
     ]);
   });
 

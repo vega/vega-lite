@@ -1,8 +1,8 @@
+import {BinTransform as VgBinTransform} from 'vega';
 import {BinNode, getBinSignalName} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';
-import {VgBinTransform} from '../../../src/vega.schema';
-import {parseUnitModelWithScale} from '../../util';
+import {parseUnitModelWithScale, parseUnitModelWithScaleAndSelection} from '../../util';
 import {PlaceholderDataFlowNode} from './util';
 
 function assembleFromEncoding(model: ModelWithField) {
@@ -16,6 +16,25 @@ function assembleFromTransform(model: Model, t: BinTransform) {
 function makeMovieExample(t: BinTransform) {
   return parseUnitModelWithScale({
     data: {url: 'data/movies.json'},
+    mark: 'circle',
+    transform: [t],
+    encoding: {
+      x: {
+        field: 'Rotten_Tomatoes_Rating',
+        type: 'quantitative'
+      },
+      color: {
+        field: 'Rotten_Tomatoes_Rating',
+        type: 'quantitative'
+      }
+    }
+  });
+}
+
+function makeMovieExampleWithSelection(t: BinTransform) {
+  return parseUnitModelWithScaleAndSelection({
+    data: {url: 'data/movies.json'},
+    selection: {foo: {type: 'interval'}},
     mark: 'circle',
     transform: [t],
     encoding: {
@@ -83,6 +102,72 @@ describe('compile/data/bin', () => {
       });
     });
 
+    it('should add bin transform and correctly apply bin for binned field with selection extent', () => {
+      const model = parseUnitModelWithScaleAndSelection({
+        selection: {foo: {type: 'interval'}},
+        mark: 'point',
+        encoding: {
+          y: {
+            bin: {extent: {selection: 'foo'}},
+            field: 'Acceleration',
+            type: 'quantitative'
+          }
+        }
+      });
+      const transform = assembleFromEncoding(model);
+      expect(transform).toHaveLength(2);
+      expect(transform[0]).toEqual({
+        type: 'extent',
+        field: 'Acceleration',
+        signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_extent'
+      });
+      expect(transform[1]).toEqual({
+        type: 'bin',
+        field: 'Acceleration',
+        as: [
+          'bin_extent_selection_foo_maxbins_10_Acceleration',
+          'bin_extent_selection_foo_maxbins_10_Acceleration_end'
+        ],
+        maxbins: 10,
+        signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_bins',
+        extent: {signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_extent'},
+        span: {signal: 'span(foo["Acceleration"])'}
+      });
+    });
+
+    it('should add bin transform and correctly apply bin for binned field with selection extent', () => {
+      const model = parseUnitModelWithScaleAndSelection({
+        selection: {foo: {type: 'interval'}},
+        mark: 'point',
+        encoding: {
+          y: {
+            bin: {extent: {selection: 'foo', field: 'bar'}},
+            field: 'Acceleration',
+            type: 'quantitative'
+          }
+        }
+      });
+      const transform = assembleFromEncoding(model);
+      expect(transform).toHaveLength(2);
+      expect(transform[0]).toEqual({
+        type: 'extent',
+        field: 'Acceleration',
+        signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_extent'
+      });
+      expect(transform[1]).toEqual({
+        type: 'bin',
+        field: 'Acceleration',
+        as: [
+          'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration',
+          'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_end'
+        ],
+        maxbins: 10,
+        signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_bins',
+        extent: {signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_extent'},
+        span: {signal: 'span(foo["bar"])'}
+      });
+    });
+
     it('should apply the bin transform only once for a binned field encoded in multiple channels', () => {
       const model = parseUnitModelWithScale({
         data: {url: 'data/movies.json'},
@@ -118,7 +203,7 @@ describe('compile/data/bin', () => {
       expect(transform[2]).toEqual({
         type: 'formula',
         as: 'bin_maxbins_10_Rotten_Tomatoes_Rating_range',
-        expr: `datum["bin_maxbins_10_Rotten_Tomatoes_Rating"] === null || isNaN(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) ? "null" : format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"], "") + " - " + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], "")`
+        expr: `!isValid(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) || !isFinite(+datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) ? "null" : format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"], "") + " - " + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], "")`
       });
     });
   });
@@ -157,6 +242,56 @@ describe('compile/data/bin', () => {
         as: ['binned_acceleration', 'binned_acceleration_end'],
         extent: [0, 100],
         signal: 'bin_extent_0_100_maxbins_20_Acceleration_bins'
+      });
+    });
+
+    it('should add bin transform from transform array and correctly apply bin with selection extent', () => {
+      const t: BinTransform = {
+        bin: {extent: {selection: 'foo'}},
+        field: 'Acceleration',
+        as: 'binned_acceleration'
+      };
+      const model = makeMovieExampleWithSelection(t);
+
+      const transform = assembleFromTransform(model, t);
+      expect(transform[0]).toEqual({
+        type: 'extent',
+        field: 'Acceleration',
+        signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_extent'
+      });
+      expect(transform[1]).toEqual({
+        type: 'bin',
+        field: 'Acceleration',
+        as: ['binned_acceleration', 'binned_acceleration_end'],
+        maxbins: 10,
+        signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_bins',
+        extent: {signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_extent'},
+        span: {signal: 'span(foo["Rotten_Tomatoes_Rating"])'}
+      });
+    });
+
+    it('should add bin transform from transform array and correctly apply bin with selection extent', () => {
+      const t: BinTransform = {
+        bin: {extent: {selection: 'foo', field: 'bar'}},
+        field: 'Acceleration',
+        as: 'binned_acceleration'
+      };
+      const model = makeMovieExampleWithSelection(t);
+
+      const transform = assembleFromTransform(model, t);
+      expect(transform[0]).toEqual({
+        type: 'extent',
+        field: 'Acceleration',
+        signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_extent'
+      });
+      expect(transform[1]).toEqual({
+        type: 'bin',
+        field: 'Acceleration',
+        as: ['binned_acceleration', 'binned_acceleration_end'],
+        maxbins: 10,
+        signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_bins',
+        extent: {signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_extent'},
+        span: {signal: 'span(foo["bar"])'}
       });
     });
 
@@ -250,7 +385,16 @@ describe('compile/data/bin', () => {
 
       binNodeA.merge(binNodeB, () => {});
       expect(binNodeA).toEqual(
-        new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}})
+        new BinNode(parent, {
+          foo: {
+            bin: {},
+            field: 'foo',
+            as: [
+              ['foo', 'foo_end'],
+              ['bar', 'bar_end']
+            ]
+          }
+        })
       );
     });
 
@@ -258,18 +402,43 @@ describe('compile/data/bin', () => {
       const parent = new PlaceholderDataFlowNode(null);
       const binNodeA = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]}});
       const binNodeB = new BinNode(parent, {
-        foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}
+        foo: {
+          bin: {},
+          field: 'foo',
+          as: [
+            ['foo', 'foo_end'],
+            ['bar', 'bar_end']
+          ]
+        }
       });
 
       binNodeA.merge(binNodeB, () => {});
       expect(binNodeA).toEqual(
-        new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}})
+        new BinNode(parent, {
+          foo: {
+            bin: {},
+            field: 'foo',
+            as: [
+              ['foo', 'foo_end'],
+              ['bar', 'bar_end']
+            ]
+          }
+        })
       );
     });
 
     it('should create formulas for members of "as" when assembled', () => {
       const parent = new PlaceholderDataFlowNode(null);
-      const binNode = new BinNode(parent, {foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end'], ['bar', 'bar_end']]}});
+      const binNode = new BinNode(parent, {
+        foo: {
+          bin: {},
+          field: 'foo',
+          as: [
+            ['foo', 'foo_end'],
+            ['bar', 'bar_end']
+          ]
+        }
+      });
       const transforms = binNode.assemble();
 
       expect(transforms[1]).toEqual({type: 'formula', expr: 'datum["foo"]', as: 'bar'});

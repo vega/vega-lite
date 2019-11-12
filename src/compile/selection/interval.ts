@@ -241,14 +241,11 @@ function channelSignals(
 }
 
 function events(selCmpt: SelectionComponent<'interval'>, cb: (def: OnEvent[], evt: Stream) => OnEvent[]): OnEvent[] {
-  return selCmpt.events.reduce(
-    (on, evt) => {
-      if (!evt.between) {
-        warn(`${evt} is not an ordered event stream for interval selections.`);
-        return on;
-      }
-      return cb(on, evt);
-    },
-    [] as OnEvent[]
-  );
+  return selCmpt.events.reduce((on, evt) => {
+    if (!evt.between) {
+      warn(`${evt} is not an ordered event stream for interval selections.`);
+      return on;
+    }
+    return cb(on, evt);
+  }, [] as OnEvent[]);
 }

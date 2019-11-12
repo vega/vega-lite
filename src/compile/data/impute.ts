@@ -1,11 +1,12 @@
-import {SignalRef} from 'vega';
+import {FormulaTransform as VgFormulaTransform, SignalRef} from 'vega';
 import {isFieldDef} from '../../channeldef';
 import {pathGroupingFields} from '../../encoding';
 import {ImputeSequence, ImputeTransform, isImputeSequence} from '../../transform';
 import {duplicate, hash} from '../../util';
-import {VgFormulaTransform, VgImputeTransform, VgWindowTransform} from '../../vega.schema';
+import {ImputeTransform as VgImputeTransform} from 'vega';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
+import {WindowTransform as VgWindowTransform} from 'vega';
 
 export class ImputeNode extends DataFlowNode {
   public clone() {
@@ -67,7 +68,7 @@ export class ImputeNode extends DataFlowNode {
   }
 
   public assemble() {
-    const {impute, key, keyvals, method, groupby, value, frame = [null, null]} = this.transform;
+    const {impute, key, keyvals, method, groupby, value, frame = [null, null] as [null, null]} = this.transform;
 
     const initialImpute: VgImputeTransform = {
       type: 'impute',

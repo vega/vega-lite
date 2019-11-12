@@ -18,7 +18,7 @@ export class RangeStepNormalizer implements NonFacetUnitNormalizer<UnitSpecWithR
       for (const channel of POSITION_SCALE_CHANNELS) {
         const def = spec.encoding[channel];
         if (def && isFieldDef(def)) {
-          if (def && def.scale && def.scale['rangeStep']) {
+          if (def?.scale?.['rangeStep']) {
             return true;
           }
         }
@@ -35,7 +35,7 @@ export class RangeStepNormalizer implements NonFacetUnitNormalizer<UnitSpecWithR
       const sizeType = getSizeType(channel);
       const def = encoding[channel];
       if (def && isFieldDef(def)) {
-        if (def && def.scale && def.scale['rangeStep']) {
+        if (def?.scale?.['rangeStep']) {
           const {scale, ...defWithoutScale} = def;
 
           const {rangeStep, ...scaleWithoutRangeStep} = scale as Scale & {rangeStep: number};

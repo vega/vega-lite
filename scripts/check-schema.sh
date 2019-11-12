@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 if grep 'Generic[^U].*Spec<' ./build/vega-lite-schema.json
 then
   echo "Non-Unit Generic Spec in the schema have not been replaced."

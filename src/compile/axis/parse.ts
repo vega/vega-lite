@@ -1,4 +1,4 @@
-import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 'vega';
+import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef, Text} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty} from '../../axis';
 import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
@@ -16,15 +16,12 @@ import * as encode from './encode';
 import * as properties from './properties';
 
 export function parseUnitAxes(model: UnitModel): AxisComponentIndex {
-  return POSITION_SCALE_CHANNELS.reduce(
-    (axis, channel) => {
-      if (model.component.scales[channel] && model.axis(channel)) {
-        axis[channel] = [parseAxis(channel, model)];
-      }
-      return axis;
-    },
-    {} as AxisComponentIndex
-  );
+  return POSITION_SCALE_CHANNELS.reduce((axis, channel) => {
+    if (model.component.scales[channel] && model.axis(channel)) {
+      axis[channel] = [parseAxis(channel, model)];
+    }
+    return axis;
+  }, {} as AxisComponentIndex);
 }
 
 const OPPOSITE_ORIENT: {[K in AxisOrient]: AxisOrient} = {
@@ -105,7 +102,10 @@ export function parseLayerAxes(model: LayerModel) {
   }
 }
 
-function mergeAxisComponents(mergedAxisCmpts: AxisComponent[], childAxisCmpts: AxisComponent[]): AxisComponent[] {
+function mergeAxisComponents(
+  mergedAxisCmpts: AxisComponent[],
+  childAxisCmpts: readonly AxisComponent[]
+): AxisComponent[] {
   if (mergedAxisCmpts) {
     // FIXME: this is a bit wrong once we support multiple axes
     if (mergedAxisCmpts.length !== childAxisCmpts.length) {
@@ -251,24 +251,21 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
   // 2) Add guide encode definition groups
   const axisEncoding = axis.encoding || {};
-  const axisEncode = AXIS_PARTS.reduce(
-    (e: VgAxisEncode, part) => {
-      if (!axisComponent.hasAxisPart(part)) {
-        // No need to create encode for a disabled part.
-        return e;
-      }
-
-      const axisEncodingPart = guideEncodeEntry(axisEncoding[part] || {}, model);
-
-      const value = part === 'labels' ? encode.labels(model, channel, axisEncodingPart) : axisEncodingPart;
-
-      if (value !== undefined && keys(value).length > 0) {
-        e[part] = {update: value};
-      }
+  const axisEncode = AXIS_PARTS.reduce((e: VgAxisEncode, part) => {
+    if (!axisComponent.hasAxisPart(part)) {
+      // No need to create encode for a disabled part.
       return e;
-    },
-    {} as VgAxisEncode
-  );
+    }
+
+    const axisEncodingPart = guideEncodeEntry(axisEncoding[part] || {}, model);
+
+    const value = part === 'labels' ? encode.labels(model, channel, axisEncodingPart) : axisEncodingPart;
+
+    if (value !== undefined && keys(value).length > 0) {
+      e[part] = {update: value};
+    }
+    return e;
+  }, {} as VgAxisEncode);
 
   // FIXME: By having encode as one property, we won't have fine grained encode merging.
   if (keys(axisEncode).length > 0) {
@@ -362,7 +359,7 @@ function getProperty<K extends keyof AxisComponentProps>(
       const fieldDef2 = model.fieldDef(channel2);
       // Keep undefined so we use default if title is unspecified.
       // For other falsy value, keep them so we will hide the title.
-      return getFirstDefined<string | FieldDefBase<string>[]>(
+      return getFirstDefined<Text | FieldDefBase<string>[]>(
         specifiedAxis.title,
         getFieldDefTitle(model, channel), // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
         mergeTitleFieldDefs([toFieldDefBase(fieldDef)], fieldDef2 ? [toFieldDefBase(fieldDef2)] : [])

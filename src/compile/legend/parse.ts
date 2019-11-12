@@ -49,7 +49,7 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
       if (
         model.legend(channel) &&
         model.getScaleComponent(channel) &&
-        !(isFieldDef(def) && (channel === SHAPE && def.type === GEOJSON))
+        !(isFieldDef(def) && channel === SHAPE && def.type === GEOJSON)
       ) {
         legendComponent[channel] = parseLegendForChannel(model, channel);
       }

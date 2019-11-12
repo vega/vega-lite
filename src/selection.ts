@@ -1,12 +1,9 @@
-import {Binding, Color, Vector2} from 'vega';
+import {Binding, Color, Stream, Vector2} from 'vega';
 import {isObject} from 'vega-util';
 import {SingleDefUnitChannel} from './channel';
 import {FieldName, Value} from './channeldef';
 import {DateTime} from './datetime';
 import {Dict} from './util';
-
-// TODO: import from Vega once we update to Vega 5.5
-import {Stream} from 'vega-typings';
 
 export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'single' | 'multi' | 'interval';
@@ -146,7 +143,7 @@ export interface BrushConfig {
   /**
    * The fill color of the interval mark.
    *
-   * __Default value:__ `#333333`
+   * __Default value:__ `"#333333"`
    *
    */
   fill?: Color;
@@ -159,11 +156,11 @@ export interface BrushConfig {
   /**
    * The stroke color of the interval mark.
    *
-   * __Default value:__ `#ffffff`
+   * __Default value:__ `"#ffffff"`
    */
   stroke?: Color;
   /**
-   * The stroke opacity of the interval mark (a value between 0 and 1).
+   * The stroke opacity of the interval mark (a value between `0` and `1`).
    */
   strokeOpacity?: number;
   /**
@@ -239,9 +236,9 @@ export interface BaseSelectionDef<T extends 'single' | 'multi' | 'interval'> {
   /**
    * Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:
    *
-   * - `single` -- to select a single discrete data value on `click`.
-   * - `multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.
-   * - `interval` -- to select a continuous range of data values on `drag`.
+   * - `"single"` -- to select a single discrete data value on `click`.
+   * - `"multi"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.
+   * - `"interval"` -- to select a continuous range of data values on `drag`.
    */
   type: T;
 }
@@ -253,6 +250,30 @@ export interface MultiSelection extends BaseSelectionDef<'multi'>, MultiSelectio
 export interface IntervalSelection extends BaseSelectionDef<'interval'>, IntervalSelectionConfig {}
 
 export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
+
+export type SelectionExtent =
+  | {
+      /**
+       * The name of a selection.
+       */
+      selection: string;
+      /**
+       * The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
+       * over multiple fields or encodings.
+       */
+      field?: FieldName;
+    }
+  | {
+      /**
+       * The name of a selection.
+       */
+      selection: string;
+      /**
+       * The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
+       * over multiple fields or encodings.
+       */
+      encoding?: SingleDefUnitChannel;
+    };
 
 export interface SelectionConfig {
   /**

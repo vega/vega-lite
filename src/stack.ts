@@ -42,7 +42,7 @@ export interface StackProperties {
   }[];
 
   /**
-   * See `"stack"` property of Position Field Def.
+   * See `stack` property of Position Field Def.
    */
   offset: StackOffset;
 

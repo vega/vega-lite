@@ -114,7 +114,7 @@ export class UnitModel extends ModelWithField {
   }
 
   /**
-   * Return specified Vega-lite scale domain for a particular channel
+   * Return specified Vega-Lite scale domain for a particular channel
    * @param channel
    */
   public scaleDomain(channel: ScaleChannel): Domain {
@@ -131,29 +131,26 @@ export class UnitModel extends ModelWithField {
   }
 
   private initScales(mark: Mark, encoding: Encoding<string>): ScaleIndex {
-    return SCALE_CHANNELS.reduce(
-      (scales, channel) => {
-        let fieldDef: TypedFieldDef<string>;
-        let specifiedScale: Scale;
+    return SCALE_CHANNELS.reduce((scales, channel) => {
+      let fieldDef: TypedFieldDef<string>;
+      let specifiedScale: Scale;
 
-        const channelDef = encoding[channel];
+      const channelDef = encoding[channel];
 
-        if (isFieldDef(channelDef)) {
-          fieldDef = channelDef;
-          specifiedScale = channelDef.scale;
-        } else if (hasConditionalFieldDef<string, any>(channelDef)) {
-          // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
-          fieldDef = channelDef.condition;
-          specifiedScale = channelDef.condition['scale'];
-        }
+      if (isFieldDef(channelDef)) {
+        fieldDef = channelDef;
+        specifiedScale = channelDef.scale;
+      } else if (hasConditionalFieldDef<string, any>(channelDef)) {
+        // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
+        fieldDef = channelDef.condition;
+        specifiedScale = channelDef.condition['scale'];
+      }
 
-        if (fieldDef) {
-          scales[channel] = specifiedScale || {};
-        }
-        return scales;
-      },
-      {} as ScaleIndex
-    );
+      if (fieldDef) {
+        scales[channel] = specifiedScale || {};
+      }
+      return scales;
+    }, {} as ScaleIndex);
   }
 
   private initAxes(encoding: Encoding<string>): AxisIndex {
@@ -226,7 +223,7 @@ export class UnitModel extends ModelWithField {
     return [...assembleAxisSignals(this), ...assembleUnitSelectionSignals(this, [])];
   }
 
-  public assembleSelectionData(data: VgData[]): VgData[] {
+  public assembleSelectionData(data: readonly VgData[]): VgData[] {
     return assembleUnitSelectionData(this, data);
   }
 

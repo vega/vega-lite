@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Log-scaled Histogram.  We may improve the support of this. See https://github.com/vega/vega-lite/issues/4792.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -38,8 +38,8 @@
           "field": "log_x",
           "as": ["bin_log_x", "bin_log_x_end"],
           "signal": "bin_maxbins_10_log_x_bins",
-          "maxbins": 10,
-          "extent": {"signal": "bin_maxbins_10_log_x_extent"}
+          "extent": {"signal": "bin_maxbins_10_log_x_extent"},
+          "maxbins": 10
         },
         {"type": "formula", "expr": "pow(10, datum.bin_log_x)", "as": "x1"},
         {"type": "formula", "expr": "pow(10, datum.bin_log_x_end)", "as": "x2"},
@@ -52,7 +52,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"x1\"] !== null && !isNaN(datum[\"x1\"])"
+          "expr": "isValid(datum[\"x1\"]) && isFinite(+datum[\"x1\"])"
         }
       ]
     }

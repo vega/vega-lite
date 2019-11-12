@@ -42,7 +42,10 @@ describe('compile/axis/assemble', () => {
     it('correctly assemble title fieldDefs', () => {
       const axisCmpt = new AxisComponent({
         orient: 'left',
-        title: [{aggregate: 'max', field: 'a'}, {aggregate: 'min', field: 'b'}]
+        title: [
+          {aggregate: 'max', field: 'a'},
+          {aggregate: 'min', field: 'b'}
+        ]
       });
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
       expect(axis.title).toBe('Max of a, Min of b');

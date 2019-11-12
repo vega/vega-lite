@@ -1,13 +1,13 @@
+import {Transforms as VgTransform} from 'vega';
 import {assembleRootData} from '../../../src/compile/data/assemble';
+import {IdentifierNode} from '../../../src/compile/data/identifier';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {Mark} from '../../../src/mark';
-import {VgTransform} from '../../../src/vega.schema';
-import {parseModel} from '../../util';
-import {IdentifierNode} from '../../../src/compile/data/identifier';
 import {SELECTION_ID} from '../../../src/selection';
+import {parseConcatModel, parseUnitModelWithScaleAndSelection} from '../../util';
 
 function getVgData(selection: any, x?: any, y?: any, mark?: Mark, enc?: any, transform?: any) {
-  const model = parseModel({
+  const model = parseUnitModelWithScaleAndSelection({
     data: {url: 'data/cars.json'},
     transform,
     selection,
@@ -19,8 +19,8 @@ function getVgData(selection: any, x?: any, y?: any, mark?: Mark, enc?: any, tra
       ...enc
     }
   });
-  model.parse();
-  optimizeDataflow(model.component.data, null);
+  model.parseData();
+  optimizeDataflow(model.component.data, model);
   return assembleRootData(model.component.data, {});
 }
 
@@ -72,6 +72,43 @@ describe('compile/data/identifier', () => {
         data[0].transform.some((t, i) => ((calc = i), t.type === 'formula' && t.as === 'foo'));
         expect(data[0].transform[calc - 1].type).toBe('identifier');
       }
+    });
+
+    it('is added to the source dataset in multi-views', () => {
+      const vgData = (bin: boolean) => {
+        const model = parseConcatModel({
+          data: {url: 'data/cars.json'},
+          hconcat: [
+            {
+              selection: {
+                pt: {type: 'single'}
+              },
+              mark: 'circle',
+              encoding: {
+                x: {field: 'Horsepower', type: 'quantitative'},
+                y: {field: 'Miles-per-Gallon', type: 'quantitative'},
+                color: {field: 'Year', type: 'temporal'}
+              }
+            },
+            {
+              mark: 'circle',
+              encoding: {
+                x: {field: 'Horsepower', type: 'quantitative', bin},
+                y: {field: 'Miles-per-Gallon', type: 'quantitative'},
+                color: {field: 'Origin', type: 'nominal'}
+              }
+            }
+          ]
+        });
+        model.parseScale();
+        model.parseSelections();
+        model.parseData();
+        optimizeDataflow(model.component.data, model);
+        return assembleRootData(model.component.data, {});
+      };
+
+      expect(vgData(false)[0].transform[0].type).toBe('identifier');
+      expect(vgData(true)[0].transform[0].type).toBe('identifier');
     });
   });
 

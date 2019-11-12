@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "style": "cell",
@@ -35,7 +35,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
+          "expr": "isValid(datum[\"lower_yield\"]) && isFinite(+datum[\"lower_yield\"])"
         }
       ]
     }
@@ -59,14 +59,14 @@
           "x": {"scale": "x", "field": "variety", "band": 0.5},
           "y": [
             {
-              "test": "datum[\"lower_yield\"] === null || isNaN(datum[\"lower_yield\"])",
+              "test": "!isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "lower_yield"}
           ],
           "y2": [
             {
-              "test": "datum[\"upper_yield\"] === null || isNaN(datum[\"upper_yield\"])",
+              "test": "!isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "upper_yield"}
@@ -85,7 +85,7 @@
           "x": {"scale": "x", "field": "variety", "band": 0.5},
           "y": [
             {
-              "test": "datum[\"mean_yield\"] === null || isNaN(datum[\"mean_yield\"])",
+              "test": "!isValid(datum[\"mean_yield\"]) || !isFinite(+datum[\"mean_yield\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "mean_yield"}

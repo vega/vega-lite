@@ -2,7 +2,7 @@ import 'array-flat-polyfill';
 import {default as clone_} from 'clone';
 import deepEqual_ from 'fast-deep-equal';
 import stableStringify from 'fast-json-stable-stringify';
-import {hasOwnProperty, isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
+import {hasOwnProperty, isNumber, isString, splitAccessPath, stringValue, writeConfig} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
 
 export const deepEqual = deepEqual_;
@@ -14,13 +14,11 @@ export const duplicate = clone_;
  * var object = {'a': 1, 'b': '2', 'c': 3};
  * pick(object, ['a', 'c']);
  * // → {'a': 1, 'c': 3}
- *
  */
-export function pick<T extends object, K extends keyof T>(obj: T, props: K[]): Pick<T, K> {
+export function pick<T extends object, K extends keyof T>(obj: T, props: readonly K[]): Pick<T, K> {
   const copy: any = {};
   for (const prop of props) {
-    // TODO: remove as any when https://github.com/vega/vega/issues/1975 is out
-    if (hasOwnProperty(obj, prop as any)) {
+    if (hasOwnProperty(obj, prop)) {
       copy[prop] = obj[prop];
     }
   }
@@ -31,7 +29,7 @@ export function pick<T extends object, K extends keyof T>(obj: T, props: K[]): P
  * The opposite of _.pick; this method creates an object composed of the own
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
-export function omit<T extends object, K extends keyof T>(obj: T, props: K[]): Omit<T, K> {
+export function omit<T extends object, K extends keyof T>(obj: T, props: readonly K[]): Omit<T, K> {
   const copy = {...(obj as any)};
   for (const prop of props) {
     delete copy[prop];
@@ -80,23 +78,23 @@ export function isNullOrFalse(x: any): x is false | null {
   return x === false || x === null;
 }
 
-export function contains<T>(array: T[], item: T) {
+export function contains<T>(array: readonly T[], item: T) {
   return array.indexOf(item) > -1;
 }
 
 /** Returns the array without the elements in item */
-export function without<T>(array: T[], excludedItems: T[]) {
+export function without<T>(array: readonly T[], excludedItems: readonly T[]) {
   return array.filter(item => !contains(excludedItems, item));
 }
 
-export function union<T>(array: T[], other: T[]) {
+export function union<T>(array: readonly T[], other: readonly T[]) {
   return array.concat(without(other, array));
 }
 
 /**
  * Returns true if any item returns true.
  */
-export function some<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
+export function some<T>(arr: readonly T[], f: (d: T, k?: any, i?: any) => boolean) {
   let i = 0;
   for (const [k, a] of arr.entries()) {
     if (f(a, k, i++)) {
@@ -109,7 +107,7 @@ export function some<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
 /**
  * Returns true if all items return true.
  */
-export function every<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
+export function every<T>(arr: readonly T[], f: (d: T, k?: any, i?: any) => boolean) {
   let i = 0;
   for (const [k, a] of arr.entries()) {
     if (!f(a, k, i++)) {
@@ -117,14 +115,6 @@ export function every<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
     }
   }
   return true;
-}
-
-export function fill<T>(val: T, len: number) {
-  const arr = new Array<T>(len);
-  for (let i = 0; i < len; ++i) {
-    arr[i] = val;
-  }
-  return arr;
 }
 
 /**
@@ -135,38 +125,20 @@ export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>};
 /**
  * recursively merges src into dest
  */
-export function mergeDeep<T>(dest: T, ...src: DeepPartial<T>[]): T {
+export function mergeDeep<T>(dest: T, ...src: readonly DeepPartial<T>[]): T {
   for (const s of src) {
-    dest = deepMerge_(dest, s);
+    deepMerge_(dest, s || {});
   }
   return dest;
 }
 
-// recursively merges src into dest
 function deepMerge_(dest: any, src: any) {
-  if (typeof src !== 'object' || src === null) {
-    return dest;
+  for (const property of Object.keys(src)) {
+    writeConfig(dest, property, src[property], true);
   }
-
-  for (const p in src) {
-    if (!hasOwnProperty(src, p)) {
-      continue;
-    }
-    if (src[p] === undefined) {
-      continue;
-    }
-    if (typeof src[p] !== 'object' || isArray(src[p]) || src[p] === null) {
-      dest[p] = src[p];
-    } else if (typeof dest[p] !== 'object' || dest[p] === null) {
-      dest[p] = mergeDeep(isArray(src[p].constructor) ? [] : {}, src[p]);
-    } else {
-      mergeDeep(dest[p], src[p]);
-    }
-  }
-  return dest;
 }
 
-export function unique<T>(values: T[], f: (item: T) => string | number): T[] {
+export function unique<T>(values: readonly T[], f: (item: T) => string | number): T[] {
   const results: T[] = [];
   const u = {};
   let v: string | number;
@@ -214,7 +186,7 @@ export function setEqual<T>(a: Set<T>, b: Set<T>) {
   return true;
 }
 
-export function hasIntersection<T>(a: Set<T>, b: Set<T>) {
+export function hasIntersection<T>(a: ReadonlySet<T>, b: ReadonlySet<T>) {
   for (const key of a) {
     if (b.has(key)) {
       return true;
@@ -223,7 +195,7 @@ export function hasIntersection<T>(a: Set<T>, b: Set<T>) {
   return false;
 }
 
-export function prefixGenerator(a: Set<string>): Set<string> {
+export function prefixGenerator(a: ReadonlySet<string>): ReadonlySet<string> {
   const prefixes = new Set<string>();
   for (const x of a) {
     const splitField = splitAccessPath(x);
@@ -239,36 +211,15 @@ export function prefixGenerator(a: Set<string>): Set<string> {
  * Returns true if a and b have an intersection. Also return true if a or b are undefined
  * since this means we don't know what fields a node produces or depends on.
  */
-export function fieldIntersection(a: Set<string>, b: Set<string>): boolean {
+export function fieldIntersection(a: ReadonlySet<string>, b: ReadonlySet<string>): boolean {
   if (a === undefined || b === undefined) {
     return true;
   }
   return hasIntersection(prefixGenerator(a), prefixGenerator(b));
 }
 
-export function isNumeric(num: string | number) {
-  return !isNaN(num as any);
-}
-
-export function differArray<T>(array: T[], other: T[]) {
-  if (array.length !== other.length) {
-    return true;
-  }
-
-  array.sort();
-  other.sort();
-
-  for (let i = 0; i < array.length; i++) {
-    if (other[i] !== array[i]) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
 // This is a stricter version of Object.keys but with better types. See https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
-export const keys = Object.keys as <T>(o: T) => (Extract<keyof T, string>)[];
+export const keys = Object.keys as <T>(o: T) => Extract<keyof T, string>[];
 
 export function vals<T>(x: {[key: string]: T}): T[] {
   const _vals: T[] = [];
@@ -312,7 +263,7 @@ export function varName(s: string): string {
   return (s.match(/^\d+/) ? '_' : '') + alphanumericS;
 }
 
-export function logicalExpr<T>(op: LogicalOperand<T>, cb: (...args: any[]) => string): string {
+export function logicalExpr<T>(op: LogicalOperand<T>, cb: (...args: readonly any[]) => string): string {
   if (isLogicalNot(op)) {
     return '!(' + logicalExpr(op.not, cb) + ')';
   } else if (isLogicalAnd(op)) {
@@ -376,8 +327,19 @@ export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' | 'd
  */
 export function replacePathInField(path: string) {
   return `${splitAccessPath(path)
-    .map(p => p.replace('.', '\\.'))
+    .map(p => replaceAll(p, '.', '\\.'))
     .join('\\.')}`;
+}
+
+/**
+ * Replace all ocurrences of a string with another string.
+ *
+ * @param string the string to replace in
+ * @param find the string to replace
+ * @param replacement the replacement
+ */
+export function replaceAll(string: string, find: string, replacement: string) {
+  return string.replace(new RegExp(find.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), replacement);
 }
 
 /**
@@ -401,7 +363,7 @@ export function accessPathDepth(path: string) {
 /**
  * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
  */
-export function getFirstDefined<T>(...args: T[]): T {
+export function getFirstDefined<T>(...args: readonly T[]): T {
   for (const arg of args) {
     if (arg !== undefined) {
       return arg;

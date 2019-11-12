@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "style": "cell",
@@ -46,7 +46,7 @@
           "x": {"scale": "x", "field": "rank"},
           "y": {"scale": "y", "field": "options\\.price"},
           "defined": {
-            "signal": "datum[\"options.price\"] !== null && !isNaN(datum[\"options.price\"])"
+            "signal": "isValid(datum[\"options.price\"]) && isFinite(+datum[\"options.price\"])"
           }
         }
       }

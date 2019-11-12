@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "style": "cell",
@@ -62,7 +62,10 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"},
+    {
+      "name": "brush",
+      "update": "vlSelectionResolve(\"brush_store\", \"union\")"
+    },
     {
       "name": "brush_x",
       "value": [],
@@ -259,6 +262,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
+      "interactive": true,
       "from": {"data": "data_1"},
       "encode": {
         "update": {
@@ -281,6 +285,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
+      "interactive": false,
       "from": {"data": "data_0"},
       "encode": {
         "update": {

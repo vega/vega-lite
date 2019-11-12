@@ -19,5 +19,6 @@
         "shape": {"value": "square"}
       }
     }
-  ]
+  ],
+  "autosize": {"type": "pad"}
 }

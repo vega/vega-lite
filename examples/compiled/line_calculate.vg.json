@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -44,7 +44,7 @@
           "x": {"scale": "x", "field": "month_date"},
           "y": {"scale": "y", "field": "mean_temp_range"},
           "defined": {
-            "signal": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"]) && datum[\"mean_temp_range\"] !== null && !isNaN(datum[\"mean_temp_range\"])"
+            "signal": "isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]) && isValid(datum[\"mean_temp_range\"]) && isFinite(+datum[\"mean_temp_range\"])"
           }
         }
       }

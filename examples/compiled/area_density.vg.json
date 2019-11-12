@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "data": [
     {
@@ -124,7 +124,7 @@
               "y": {"scale": "y", "field": "density"},
               "y2": {"scale": "y", "value": 0},
               "defined": {
-                "signal": "datum[\"value\"] !== null && !isNaN(datum[\"value\"]) && datum[\"density\"] !== null && !isNaN(datum[\"density\"])"
+                "signal": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"]) && isValid(datum[\"density\"]) && isFinite(+datum[\"density\"])"
               }
             }
           }

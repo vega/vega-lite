@@ -1,6 +1,6 @@
-import {Scale} from '../../build/src/scale';
 import {normalize} from '../../src/normalize/index';
 import {RangeStepNormalizer} from '../../src/normalize/rangestep';
+import {Scale} from '../../src/scale';
 import {TopLevelUnitSpec} from '../../src/spec/unit';
 describe('RangeStepNormalizer', () => {
   const rangeStepNormalizer = new RangeStepNormalizer();
@@ -27,6 +27,7 @@ describe('RangeStepNormalizer', () => {
 
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
+      autosize: {type: 'pad'},
       data: {name: 'test'},
       width: {step: 12},
       height: {step: 24},

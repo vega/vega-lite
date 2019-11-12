@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Select multiple points with the shift key.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -16,7 +16,7 @@
         {"type": "identifier", "as": "_vgsid_"},
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
         }
       ]
     }
@@ -31,13 +31,15 @@
     },
     {
       "name": "paintbrush",
-      "update": "vlSelectionResolve(\"paintbrush_store\")"
+      "update": "vlSelectionResolve(\"paintbrush_store\", \"union\", true)"
     },
     {
       "name": "paintbrush_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
+          "events": [
+            {"source": "scope", "type": "mouseover", "markname": "voronoi"}
+          ],
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: paintbrush_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
         },
@@ -53,7 +55,9 @@
       "value": false,
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
+          "events": [
+            {"source": "scope", "type": "mouseover", "markname": "voronoi"}
+          ],
           "update": "event.shiftKey"
         },
         {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
@@ -69,6 +73,7 @@
       "name": "marks",
       "type": "symbol",
       "style": ["point"],
+      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -90,6 +95,7 @@
     {
       "name": "voronoi",
       "type": "path",
+      "interactive": true,
       "from": {"data": "marks"},
       "encode": {
         "update": {

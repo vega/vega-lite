@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Google's stock price over time. Used to demonstrate the time unit transform.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -43,7 +43,7 @@
           "x": {"scale": "x", "field": "month"},
           "y": {"scale": "y", "field": "max_temp_max"},
           "defined": {
-            "signal": "datum[\"month\"] !== null && !isNaN(datum[\"month\"]) && datum[\"max_temp_max\"] !== null && !isNaN(datum[\"max_temp_max\"])"
+            "signal": "isValid(datum[\"month\"]) && isFinite(+datum[\"month\"]) && isValid(datum[\"max_temp_max\"]) && isFinite(+datum[\"max_temp_max\"])"
           }
         }
       }

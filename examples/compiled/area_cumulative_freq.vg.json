@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -38,7 +38,7 @@
           "y": {"scale": "y", "field": "cumulative_count"},
           "y2": {"scale": "y", "value": 0},
           "defined": {
-            "signal": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"]) && datum[\"cumulative_count\"] !== null && !isNaN(datum[\"cumulative_count\"])"
+            "signal": "isValid(datum[\"IMDB_Rating\"]) && isFinite(+datum[\"IMDB_Rating\"]) && isValid(datum[\"cumulative_count\"]) && isFinite(+datum[\"cumulative_count\"])"
           }
         }
       }

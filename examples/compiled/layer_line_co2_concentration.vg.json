@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 800,
   "height": 500,
@@ -42,7 +42,7 @@
         {"type": "filter", "expr": "datum[\"end\"]===\"first\""},
         {
           "type": "filter",
-          "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
+          "expr": "isValid(datum[\"scaled_date\"]) && isFinite(+datum[\"scaled_date\"]) && isValid(datum[\"CO2\"]) && isFinite(+datum[\"CO2\"])"
         }
       ]
     },
@@ -53,7 +53,7 @@
         {"type": "filter", "expr": "datum[\"end\"]===\"last\""},
         {
           "type": "filter",
-          "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
+          "expr": "isValid(datum[\"scaled_date\"]) && isFinite(+datum[\"scaled_date\"]) && isValid(datum[\"CO2\"]) && isFinite(+datum[\"CO2\"])"
         }
       ]
     }
@@ -88,7 +88,7 @@
               "x": {"scale": "x", "field": "scaled_date"},
               "y": {"scale": "y", "field": "CO2"},
               "defined": {
-                "signal": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
+                "signal": "isValid(datum[\"scaled_date\"]) && isFinite(+datum[\"scaled_date\"]) && isValid(datum[\"CO2\"]) && isFinite(+datum[\"CO2\"])"
               }
             }
           }
@@ -106,14 +106,14 @@
           "fill": {"value": "black"},
           "x": [
             {
-              "test": "datum[\"scaled_date\"] === null || isNaN(datum[\"scaled_date\"])",
+              "test": "!isValid(datum[\"scaled_date\"]) || !isFinite(+datum[\"scaled_date\"])",
               "value": 0
             },
             {"scale": "x", "field": "scaled_date"}
           ],
           "y": [
             {
-              "test": "datum[\"CO2\"] === null || isNaN(datum[\"CO2\"])",
+              "test": "!isValid(datum[\"CO2\"]) || !isFinite(+datum[\"CO2\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "CO2"}
@@ -133,14 +133,14 @@
           "fill": {"value": "black"},
           "x": [
             {
-              "test": "datum[\"scaled_date\"] === null || isNaN(datum[\"scaled_date\"])",
+              "test": "!isValid(datum[\"scaled_date\"]) || !isFinite(+datum[\"scaled_date\"])",
               "value": 0
             },
             {"scale": "x", "field": "scaled_date"}
           ],
           "y": [
             {
-              "test": "datum[\"CO2\"] === null || isNaN(datum[\"CO2\"])",
+              "test": "!isValid(datum[\"CO2\"]) || !isFinite(+datum[\"CO2\"])",
               "field": {"group": "height"}
             },
             {"scale": "y", "field": "CO2"}

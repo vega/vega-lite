@@ -10,6 +10,16 @@ const nearest: TransformCompiler = {
     return selCmpt.type !== 'interval' && selCmpt.nearest;
   },
 
+  parse: (model, selCmpt) => {
+    // Scope selection events to the voronoi mark to prevent capturing
+    // events that occur on the group mark (https://github.com/vega/vega/issues/2112).
+    if (selCmpt.events) {
+      for (const s of selCmpt.events) {
+        s.markname = model.getName(VORONOI);
+      }
+    }
+  },
+
   marks: (model, selCmpt, marks) => {
     const {x, y} = selCmpt.project.hasChannel;
     const markType = model.mark;
@@ -21,6 +31,7 @@ const nearest: TransformCompiler = {
     const cellDef = {
       name: model.getName(VORONOI),
       type: 'path',
+      interactive: true,
       from: {data: model.getName('marks')},
       encode: {
         update: {
@@ -34,8 +45,8 @@ const nearest: TransformCompiler = {
       transform: [
         {
           type: 'voronoi',
-          x: {expr: x || (!x && !y) ? 'datum.datum.x || 0' : '0'},
-          y: {expr: y || (!x && !y) ? 'datum.datum.y || 0' : '0'},
+          x: {expr: x || !y ? 'datum.datum.x || 0' : '0'},
+          y: {expr: y || !x ? 'datum.datum.y || 0' : '0'},
           size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')]
         }
       ]

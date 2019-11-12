@@ -65,9 +65,9 @@ An integral part of the data visualization process is encoding data with visual 
 
 ## Encoding Channels
 
-The keys in the `encoding` object are encoding channels. Vega-lite supports the following groups of encoding channels
+The keys in the `encoding` object are encoding channels. Vega-Lite supports the following groups of encoding channels
 
-- [Position Channels](#position): `x`, `y`, `x2`, `y2`
+- [Position Channels](#position): `x`, `y`, `x2`, `y2`, `xError`, `yError`, `xError2`, `yError2`
 - [Geographic Position Channels](#geo): `longitude`, `latitude`, `longitude2`, `latitude2`
 - [Mark Property Channels](#mark-prop): `color`, `opacity`, `fillOpacity`, `strokeOpacity`, `shape`, `size`, `strokeWidth`
 - [Text and Tooltip Channels](#text): `text`, `tooltip`

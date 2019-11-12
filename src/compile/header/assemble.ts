@@ -15,7 +15,7 @@ import {
 } from '../../header';
 import {isSortField} from '../../sort';
 import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
-import {contains, keys} from '../../util';
+import {contains, keys, replaceAll} from '../../util';
 import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema';
 import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties';
 import {formatSignalRef} from '../common';
@@ -126,9 +126,11 @@ export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel
   return {
     text: {
       signal: labelExpr
-        ? labelExpr
-            .replace('datum.label', titleTextExpr)
-            .replace('datum.value', vgField(facetFieldDef, {expr: 'parent'}))
+        ? replaceAll(
+            replaceAll(labelExpr, 'datum.label', titleTextExpr),
+            'datum.value',
+            vgField(facetFieldDef, {expr: 'parent'})
+          )
         : titleTextExpr
     },
     ...(channel === 'row' ? {orient: 'left'} : {}),
@@ -167,7 +169,7 @@ export function assembleHeaderGroup(
 
     const axes = headerCmpt.axes;
 
-    const hasAxes = axes && axes.length > 0;
+    const hasAxes = axes?.length > 0;
     if (title || hasAxes) {
       const sizeChannel = channel === 'row' ? 'height' : 'width';
 
@@ -228,7 +230,7 @@ export function assembleLayoutTitleBand(
 
   for (const channel of FACET_CHANNELS) {
     const headerComponent = headerComponentIndex[channel];
-    if (headerComponent && headerComponent.facetFieldDef) {
+    if (headerComponent?.facetFieldDef) {
       const {titleAnchor, titleOrient} = getHeaderProperties(
         ['titleAnchor', 'titleOrient'],
         headerComponent.facetFieldDef,

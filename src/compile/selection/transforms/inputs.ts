@@ -1,5 +1,6 @@
+import {stringValue} from 'vega-util';
 import {TUPLE} from '..';
-import {accessPathWithDatum, varName} from '../../../util';
+import {varName} from '../../../util';
 import {assembleInit} from '../assemble';
 import nearest from './nearest';
 import {TUPLE_FIELDS} from './project';
@@ -36,19 +37,17 @@ const inputBindings: TransformCompiler = {
       const hasSignal = signals.filter(s => s.name === sgname);
 
       if (!hasSignal.length) {
-        const on = selCmpt.events
-          ? [
-              {
-                events: selCmpt.events,
-                update: `datum && item().mark.marktype !== 'group' ? ${accessPathWithDatum(p.field, datum)} : null`
-              }
-            ]
-          : [];
-
         signals.unshift({
           name: sgname,
           ...(init ? {init: assembleInit(init[i])} : {value: null}),
-          on,
+          on: selCmpt.events
+            ? [
+                {
+                  events: selCmpt.events,
+                  update: `datum && item().mark.marktype !== 'group' ? ${datum}[${stringValue(p.field)}] : null`
+                }
+              ]
+            : [],
           bind: bind[p.field] || bind[p.channel] || bind
         });
       }

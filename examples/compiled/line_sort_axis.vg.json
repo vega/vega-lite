@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "style": "cell",
@@ -45,7 +45,7 @@
           "x": {"scale": "x", "field": "Name"},
           "y": {"scale": "y", "field": "Score"},
           "defined": {
-            "signal": "datum[\"Score\"] !== null && !isNaN(datum[\"Score\"])"
+            "signal": "isValid(datum[\"Score\"]) && isFinite(+datum[\"Score\"])"
           }
         }
       }

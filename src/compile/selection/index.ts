@@ -1,4 +1,4 @@
-import {Binding, NewSignal, SignalRef, Stream} from 'vega';
+import {Binding, NewSignal, Stream} from 'vega';
 import {hasOwnProperty, stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel';
 import {
@@ -10,7 +10,7 @@ import {
   SELECTION_ID,
   LegendBinding
 } from '../../selection';
-import {accessPathWithDatum, Dict} from '../../util';
+import {Dict} from '../../util';
 import {FacetModel} from '../facet';
 import {isFacetModel, Model} from '../model';
 import {UnitModel} from '../unit';
@@ -66,11 +66,13 @@ export function forEachSelection(
   cb: (selCmpt: SelectionComponent, selCompiler: SelectionCompiler) => void | boolean
 ) {
   const selections = model.component.selection;
-  for (const name in selections) {
-    if (hasOwnProperty(selections, name)) {
-      const sel = selections[name];
-      const success = cb(sel, compilers[sel.type]);
-      if (success === true) break;
+  if (selections) {
+    for (const name in selections) {
+      if (hasOwnProperty(selections, name)) {
+        const sel = selections[name];
+        const success = cb(sel, compilers[sel.type]);
+        if (success === true) break;
+      }
     }
   }
 }
@@ -94,7 +96,7 @@ export function unitName(model: Model, {escape} = {escape: true}) {
     const {facet} = facetModel;
     for (const channel of FACET_CHANNELS) {
       if (facet[channel]) {
-        name += ` + '__facet_${channel}_' + (${accessPathWithDatum(facetModel.vgField(channel), 'facet')})`;
+        name += ` + '__facet_${channel}_' + (facet[${stringValue(facetModel.vgField(channel))}])`;
       }
     }
   }
@@ -107,8 +109,4 @@ export function requiresSelectionId(model: Model) {
     identifier = identifier || selCmpt.project.items.some(proj => proj.field === SELECTION_ID);
   });
   return identifier;
-}
-
-export function isRawSelectionDomain(domainRaw: SignalRef) {
-  return domainRaw.signal.indexOf(SELECTION_DOMAIN) >= 0;
 }

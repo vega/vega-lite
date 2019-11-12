@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A dot plot showing each movie in the database, and the difference from the average movie rating. The display is sorted by year to visualize everything in sequential order. The graph is for all Movies before 2019.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -30,7 +30,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"Release_Date\"] !== null && !isNaN(datum[\"Release_Date\"]) && datum[\"RatingDelta\"] !== null && !isNaN(datum[\"RatingDelta\"])"
+          "expr": "(isDate(datum[\"Release_Date\"]) || (isValid(datum[\"Release_Date\"]) && isFinite(+datum[\"Release_Date\"]))) && isValid(datum[\"RatingDelta\"]) && isFinite(+datum[\"RatingDelta\"])"
         }
       ]
     }

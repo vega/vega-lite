@@ -1,12 +1,35 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "data": [
     {"name": "brush_store"},
     {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
     {
       "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["Name"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_2",
       "source": "source_0",
       "transform": [
         {
@@ -35,7 +58,10 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
+    {
+      "name": "brush",
+      "update": "vlSelectionResolve(\"brush_store\", \"union\")"
+    }
   ],
   "layout": {"padding": 20, "bounds": "full", "align": "each"},
   "marks": [
@@ -53,9 +79,9 @@
         {
           "name": "concat_0_marks",
           "type": "rect",
-          "clip": true,
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "interactive": false,
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -314,7 +340,8 @@
           "name": "concat_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "interactive": true,
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -383,11 +410,10 @@
       "name": "concat_0_y",
       "type": "band",
       "domain": {
-        "data": "source_0",
+        "data": "data_0",
         "field": "Name",
         "sort": {"op": "count", "order": "descending"}
       },
-      "domainRaw": {"signal": "brush[\"Name\"]"},
       "range": {"step": {"signal": "concat_0_y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -395,7 +421,7 @@
     {
       "name": "concat_1_x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "__count"},
+      "domain": {"data": "data_2", "field": "__count"},
       "range": [0, {"signal": "concat_1_width"}],
       "nice": true,
       "zero": true

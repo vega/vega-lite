@@ -1,5 +1,5 @@
 import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
-import {hasOwnProperty, isString} from 'vega-util';
+import {hasOwnProperty} from 'vega-util';
 import {
   Channel,
   FACET_CHANNELS,
@@ -25,7 +25,7 @@ import {
   ViewBackground
 } from '../spec/base';
 import {NormalizedSpec} from '../spec/index';
-import {extractTitleConfig, TitleParams} from '../title';
+import {extractTitleConfig, TitleParams, isText} from '../title';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection} from '../vega.schema';
@@ -57,7 +57,7 @@ import {UnitModel} from './unit';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
- * compilations.  The components represents parts of the specification in a form that
+ * compilations. The components represents parts of the specification in a form that
  * can be easily merged (during parsing for composite specs).
  * In addition, these components are easily transformed into Vega specifications
  * during the "assemble" phase, which is the last phase of the compilation step.
@@ -130,23 +130,23 @@ export class NameMap implements NameMapInterface {
 */
 
 export function isUnitModel(model: Model): model is UnitModel {
-  return model && model.type === 'unit';
+  return model?.type === 'unit';
 }
 
 export function isFacetModel(model: Model): model is FacetModel {
-  return model && model.type === 'facet';
+  return model?.type === 'facet';
 }
 
 export function isRepeatModel(model: Model): model is RepeatModel {
-  return model && model.type === 'repeat';
+  return model?.type === 'repeat';
 }
 
 export function isConcatModel(model: Model): model is ConcatModel {
-  return model && model.type === 'concat';
+  return model?.type === 'concat';
 }
 
 export function isLayerModel(model: Model): model is LayerModel {
-  return model && model.type === 'layer';
+  return model?.type === 'layer';
 }
 
 export abstract class Model {
@@ -190,7 +190,7 @@ export abstract class Model {
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this.name = spec.name || parentGivenName;
-    this.title = isString(spec.title) ? {text: spec.title} : spec.title;
+    this.title = isText(spec.title) ? {text: spec.title} : (spec.title as TitleParams);
 
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
@@ -289,11 +289,11 @@ export abstract class Model {
   public abstract assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
   public abstract assembleSignals(): NewSignal[];
 
-  public abstract assembleSelectionData(data: VgData[]): VgData[];
+  public abstract assembleSelectionData(data: readonly VgData[]): readonly VgData[];
 
   public assembleGroupStyle(): string | string[] {
     if (this.type === 'unit' || this.type === 'layer') {
-      return (this.view && this.view.style) || 'cell';
+      return this.view?.style || 'cell';
     }
     return undefined;
   }
@@ -417,7 +417,7 @@ export abstract class Model {
   }
 
   /**
-   * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
+   * Assemble the mark group for this model. We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
    */
   public assembleGroup(signals: NewSignal[] = []) {
     const group: VgMarkGroup = {};
@@ -510,7 +510,7 @@ export abstract class Model {
               signal: sizeExpr(scaleName, scaleComponent, fieldRef)
             };
           } else {
-            log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
+            log.warn(`Unknown field for ${channel}. Cannot calculate view size.`);
             return null;
           }
         }
@@ -556,7 +556,7 @@ export abstract class Model {
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
    */
-  public scaleName(originalScaleName: Channel | string, parse?: boolean): string {
+  public scaleName(originalScaleName: ScaleChannel | string, parse?: boolean): string {
     if (parse) {
       // During the parse phase always return a value
       // No need to refer to rename map because a scale can't be renamed
@@ -623,7 +623,7 @@ export abstract class Model {
     /* istanbul ignore next: This is warning for debugging test */
     if (!this.component.scales) {
       throw new Error(
-        'getScaleComponent cannot be called before parseScale().  Make sure you have called parseScale or use parseUnitModelWithScale().'
+        'getScaleComponent cannot be called before parseScale(). Make sure you have called parseScale or use parseUnitModelWithScale().'
       );
     }
 
@@ -649,7 +649,7 @@ export abstract class Model {
   }
 }
 
-/** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
+/** Abstract class for UnitModel and FacetModel. Both of which can contain fieldDefs as a part of its own specification. */
 export abstract class ModelWithField extends Model {
   public abstract fieldDef(channel: SingleDefChannel): FieldDef<any>;
 
@@ -666,7 +666,7 @@ export abstract class ModelWithField extends Model {
 
   protected abstract getMapping(): {[key in Channel]?: any};
 
-  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T, t?: any) {
+  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T): T {
     return reduce(
       this.getMapping(),
       (acc: U, cd: ChannelDef, c: Channel) => {
@@ -676,8 +676,7 @@ export abstract class ModelWithField extends Model {
         }
         return acc;
       },
-      init,
-      t
+      init
     );
   }
 

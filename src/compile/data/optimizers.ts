@@ -14,6 +14,8 @@ import * as optimizers from './optimizers';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
+import {IdentifierNode} from './identifier';
+import {requiresSelectionId} from '../selection';
 
 export interface OptimizerFlags {
   /**
@@ -124,20 +126,25 @@ export class RemoveUnusedSubtrees extends BottomUpOptimizer {
  * Removes duplicate time unit nodes (as determined by the name of the
  * output field) that may be generated due to selections projected over
  * time units.
+ *
+ * TODO: Try to make this a top down optimizer that keeps only the first
+ * insance of a time unit node.
+ * TODO: Try to make a generic version of this that only keeps one node per hash.
  */
-
 export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
   private fields = new Set<string>();
+  private prev: DataFlowNode = null;
   public run(node: DataFlowNode): OptimizerFlags {
     this.setContinue();
     if (node instanceof TimeUnitNode) {
       const pfields = node.producedFields();
       if (hasIntersection(pfields, this.fields)) {
         this.setMutated();
-        node.remove();
+        this.prev.remove();
       } else {
         this.fields = new Set([...this.fields, ...pfields]);
       }
+      this.prev = node;
     }
     return this.flags;
   }
@@ -247,15 +254,49 @@ function moveMainDownToFacet(node: DataFlowNode) {
 }
 
 /**
- * Remove nodes that are not required starting from a root.
+ * Remove output nodes that are not required. Starting from a root.
  */
-export class RemoveUnnecessaryNodes extends TopDownOptimizer {
+export class RemoveUnnecessaryOutputNodes extends TopDownOptimizer {
+  constructor() {
+    super();
+  }
+
   public run(node: DataFlowNode): boolean {
-    // remove output nodes that are not required
     if (node instanceof OutputNode && !node.isRequired()) {
       this.setMutated();
       node.remove();
     }
+
+    for (const child of node.children) {
+      this.run(child);
+    }
+
+    return this.mutatedFlag;
+  }
+}
+
+export class RemoveUnnecessaryIdentifierNodes extends TopDownOptimizer {
+  private requiresSelectionId: boolean;
+  constructor(model: Model) {
+    super();
+    this.requiresSelectionId = model && requiresSelectionId(model);
+  }
+
+  public run(node: DataFlowNode): boolean {
+    if (node instanceof IdentifierNode) {
+      // Only preserve IdentifierNodes if we have default discrete selections
+      // in our model tree, and if the nodes come after tuple producing nodes.
+      if (
+        !(
+          this.requiresSelectionId &&
+          (isDataSourceNode(node.parent) || node.parent instanceof AggregateNode || node.parent instanceof ParseNode)
+        )
+      ) {
+        this.setMutated();
+        node.remove();
+      }
+    }
+
     for (const child of node.children) {
       this.run(child);
     }
@@ -361,7 +402,7 @@ export class MergeAggregates extends BottomUpOptimizer {
 }
 
 /**
- * Merge bin nodes and move them up through forks. Stop at filters and parse as we want them to stay before the bin node.
+ * Merge bin nodes and move them up through forks. Stop at filters, parse, identifier as we want them to stay before the bin node.
  */
 export class MergeBins extends BottomUpOptimizer {
   constructor(private model: Model) {
@@ -369,7 +410,12 @@ export class MergeBins extends BottomUpOptimizer {
   }
   public run(node: DataFlowNode): OptimizerFlags {
     const parent = node.parent;
-    const moveBinsUp = !(isDataSourceNode(parent) || parent instanceof FilterNode || parent instanceof ParseNode);
+    const moveBinsUp = !(
+      isDataSourceNode(parent) ||
+      parent instanceof FilterNode ||
+      parent instanceof ParseNode ||
+      parent instanceof IdentifierNode
+    );
 
     const promotableBins: BinNode[] = [];
     const remainingBins: BinNode[] = [];

@@ -26,6 +26,14 @@ describe('Layered Selections', () => {
           y: {field: 'Miles_per_Gallon', type: 'quantitative'},
           color: {field: 'Origin', type: 'nominal'}
         }
+      },
+      {
+        mark: 'point',
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+          color: {field: 'Origin', type: 'nominal'}
+        }
       }
     ],
     config: {mark: {tooltip: null, invalid: 'hide'}}
@@ -48,6 +56,7 @@ describe('Layered Selections', () => {
         name: 'layer_0_marks',
         type: 'symbol',
         style: ['circle'],
+        interactive: true,
         from: {
           data: 'layer_0_main'
         },
@@ -65,7 +74,7 @@ describe('Layered Selections', () => {
             fill: [
               {
                 test:
-                  'datum["Horsepower"] === null || isNaN(datum["Horsepower"]) || datum["Miles_per_Gallon"] === null || isNaN(datum["Miles_per_Gallon"])',
+                  '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
                 value: null
               },
               {
@@ -89,6 +98,7 @@ describe('Layered Selections', () => {
         name: 'layer_1_marks',
         type: 'symbol',
         style: ['square'],
+        interactive: true,
         from: {
           data: 'layer_1_main'
         },
@@ -106,7 +116,7 @@ describe('Layered Selections', () => {
             fill: [
               {
                 test:
-                  'datum["Horsepower"] === null || isNaN(datum["Horsepower"]) || datum["Miles_per_Gallon"] === null || isNaN(datum["Miles_per_Gallon"])',
+                  '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
                 value: null
               },
               {
@@ -124,11 +134,61 @@ describe('Layered Selections', () => {
         }
       }
     ]);
+
+    expect(layers.children[2].assembleMarks()).toEqual([
+      {
+        name: 'layer_2_marks',
+        type: 'symbol',
+        style: ['point'],
+        interactive: false,
+        from: {
+          data: 'layer_2_main'
+        },
+        clip: true,
+        encode: {
+          update: {
+            opacity: {
+              value: 0.7
+            },
+            fill: [
+              {
+                test:
+                  '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
+                value: null
+              },
+              {
+                value: 'transparent'
+              }
+            ],
+            stroke: [
+              {
+                test:
+                  '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
+                value: null
+              },
+              {
+                scale: 'color',
+                field: 'Origin'
+              }
+            ],
+            x: {
+              scale: 'x',
+              field: 'Horsepower'
+            },
+            y: {
+              scale: 'y',
+              field: 'Miles_per_Gallon'
+            }
+          }
+        }
+      }
+    ]);
   });
 
   it('should assemble selection marks across layers', () => {
     const child0 = layers.children[0].assembleMarks()[0];
     const child1 = layers.children[1].assembleMarks()[0];
+    const child2 = layers.children[2].assembleMarks()[0];
 
     expect(layers.assembleMarks()).toEqual([
       // Background brush mark for "brush" selection.
@@ -184,6 +244,7 @@ describe('Layered Selections', () => {
       // Layer marks
       {...child0, clip: true},
       {...child1, clip: true},
+      {...child2, clip: true},
       // Foreground brush mark for "brush" selection.
       {
         name: 'brush_brush',

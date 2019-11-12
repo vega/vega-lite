@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on color.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -25,12 +25,12 @@
             "bin_maxbins_6_Acceleration_end"
           ],
           "signal": "bin_maxbins_6_Acceleration_bins",
-          "maxbins": 6,
-          "extent": {"signal": "bin_maxbins_6_Acceleration_extent"}
+          "extent": {"signal": "bin_maxbins_6_Acceleration_extent"},
+          "maxbins": 6
         },
         {
           "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
         }
       ]
     }

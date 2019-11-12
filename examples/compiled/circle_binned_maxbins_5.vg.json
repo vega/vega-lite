@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -21,8 +21,8 @@
           "field": "IMDB_Rating",
           "as": ["bin_maxbins_5_IMDB_Rating", "bin_maxbins_5_IMDB_Rating_end"],
           "signal": "bin_maxbins_5_IMDB_Rating_bins",
-          "maxbins": 5,
-          "extent": {"signal": "bin_maxbins_5_IMDB_Rating_extent"}
+          "extent": {"signal": "bin_maxbins_5_IMDB_Rating_extent"},
+          "maxbins": 5
         },
         {
           "type": "extent",
@@ -37,8 +37,8 @@
             "bin_maxbins_5_Rotten_Tomatoes_Rating_end"
           ],
           "signal": "bin_maxbins_5_Rotten_Tomatoes_Rating_bins",
-          "maxbins": 5,
-          "extent": {"signal": "bin_maxbins_5_Rotten_Tomatoes_Rating_extent"}
+          "extent": {"signal": "bin_maxbins_5_Rotten_Tomatoes_Rating_extent"},
+          "maxbins": 5
         },
         {
           "type": "aggregate",
@@ -54,7 +54,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"bin_maxbins_5_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_5_IMDB_Rating\"]) && datum[\"bin_maxbins_5_Rotten_Tomatoes_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_5_Rotten_Tomatoes_Rating\"])"
+          "expr": "isValid(datum[\"bin_maxbins_5_IMDB_Rating\"]) && isFinite(+datum[\"bin_maxbins_5_IMDB_Rating\"]) && isValid(datum[\"bin_maxbins_5_Rotten_Tomatoes_Rating\"]) && isFinite(+datum[\"bin_maxbins_5_Rotten_Tomatoes_Rating\"])"
         }
       ]
     }
@@ -70,7 +70,7 @@
           "fill": {"value": "#4c78a8"},
           "x": [
             {
-              "test": "datum[\"bin_maxbins_5_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_5_IMDB_Rating\"])",
+              "test": "!isValid(datum[\"bin_maxbins_5_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_5_IMDB_Rating\"])",
               "value": 0
             },
             {
@@ -79,7 +79,7 @@
           ],
           "y": [
             {
-              "test": "datum[\"bin_maxbins_5_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_5_Rotten_Tomatoes_Rating\"])",
+              "test": "!isValid(datum[\"bin_maxbins_5_Rotten_Tomatoes_Rating\"]) || !isFinite(+datum[\"bin_maxbins_5_Rotten_Tomatoes_Rating\"])",
               "field": {"group": "height"}
             },
             {

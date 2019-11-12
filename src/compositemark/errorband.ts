@@ -1,4 +1,4 @@
-import {Orientation} from 'vega';
+import {Interpolate, Orientation} from 'vega';
 import {Field} from '../channeldef';
 import {Encoding} from '../encoding';
 import * as log from '../log';
@@ -6,7 +6,6 @@ import {MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize/index';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {Flag, keys} from '../util';
-import {Interpolate} from '../vega.schema';
 import {CompositeMarkNormalizer} from './base';
 import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins} from './common';
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './errorbar';
@@ -36,7 +35,7 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
    * - `"median"`: the median of the data points.
    *
    * __Default value:__ `"mean"`.
-   * @hide
+   * @hidden
    */
 
   // center is not needed right now but will be added back to the schema if future features require it.

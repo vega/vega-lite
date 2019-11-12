@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Plot showing a 30 day rolling average with raw values in the background.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 400,
   "height": 300,
@@ -29,7 +29,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp_max\"] !== null && !isNaN(datum[\"temp_max\"])"
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"temp_max\"]) && isFinite(+datum[\"temp_max\"])"
         }
       ]
     }
@@ -63,7 +63,7 @@
           "y": {"scale": "y", "field": "rolling_mean"},
           "strokeWidth": {"value": 3},
           "defined": {
-            "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"rolling_mean\"] !== null && !isNaN(datum[\"rolling_mean\"])"
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"rolling_mean\"]) && isFinite(+datum[\"rolling_mean\"])"
           }
         }
       }

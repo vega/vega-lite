@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 480,
   "data": [
@@ -21,7 +21,10 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
+    {
+      "name": "brush",
+      "update": "vlSelectionResolve(\"brush_store\", \"union\")"
+    }
   ],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
@@ -42,6 +45,7 @@
           "clip": true,
           "style": ["area"],
           "sort": {"field": "datum[\"date\"]"},
+          "interactive": false,
           "from": {"data": "source_0"},
           "encode": {
             "update": {
@@ -51,7 +55,7 @@
               "y": {"scale": "concat_0_y", "field": "price"},
               "y2": {"scale": "concat_0_y", "value": 0},
               "defined": {
-                "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
               }
             }
           }
@@ -322,6 +326,7 @@
           "type": "area",
           "style": ["area"],
           "sort": {"field": "datum[\"date\"]"},
+          "interactive": true,
           "from": {"data": "source_0"},
           "encode": {
             "update": {
@@ -331,7 +336,7 @@
               "y": {"scale": "concat_1_y", "field": "price"},
               "y2": {"scale": "concat_1_y", "value": 0},
               "defined": {
-                "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
               }
             }
           }

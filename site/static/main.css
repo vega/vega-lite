@@ -567,6 +567,13 @@ footer .edit-page {
   margin-bottom: 1em;
   align-self: center;
 }
+.vl-example-responsive .example-vis {
+  width: 30%;
+  border: 1px dashed #ddd;
+}
+.vl-example-responsive .example-vis svg {
+  border: none;
+}
 .example .example-code {
   flex: 1.618 1 0;
   margin: 0;
@@ -663,6 +670,7 @@ nav .dropdown-content {
   position: absolute;
   display: none;
   min-width: 141px;
+  top: 54px; /* For Firefox */
 }
 
 nav .dropdown-content a {

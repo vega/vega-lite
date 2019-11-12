@@ -1,3 +1,4 @@
+import {Text} from 'vega';
 // Declaration and utility for variants of a field definition object
 import {LinearGradient, RadialGradient} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
@@ -36,10 +37,12 @@ export type Value = number | string | boolean | null;
 export type Gradient = LinearGradient | RadialGradient;
 export type ValueOrGradient = Value | Gradient;
 
+export type ValueOrGradientOrText = Value | Gradient | Text;
+
 /**
  * Definition object for a constant value (primitive value or gradient definition) of an encoding channel.
  */
-export interface ValueDef<V extends ValueOrGradient | number[] = Value> {
+export interface ValueDef<V extends ValueOrGradient | Value[] = Value> {
   /**
    * A constant value in visual domain (e.g., `"red"` / `"#0099ff"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).
    */
@@ -51,7 +54,7 @@ export interface ValueDef<V extends ValueOrGradient | number[] = Value> {
  * F defines the underlying FieldDef type.
  */
 
-export type ChannelDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradient = Value> =
+export type ChannelDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradientOrText = Value> =
   | FieldDefWithCondition<F, V>
   | ValueDefWithCondition<F, V>;
 
@@ -66,7 +69,9 @@ export type ChannelDefWithCondition<F extends FieldDef<any>, V extends ValueOrGr
 /**
  * @minProperties 1
  */
-export type ValueDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradient = Value> = Partial<ValueDef<V>> & {
+export type ValueDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradientOrText = Value> = Partial<
+  ValueDef<V>
+> & {
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
@@ -92,7 +97,7 @@ export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
 export type ShapeValueDefWithCondition<F extends Field> = StringValueDefWithCondition<F, TypeForShape>;
 
-export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<TextFieldDef<F>, Value>;
+export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<StringFieldDef<F>, Text>;
 
 export type Conditional<CD extends FieldDef<any> | ValueDef<any>> = ConditionalPredicate<CD> | ConditionalSelection<CD>;
 
@@ -114,7 +119,7 @@ export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSe
   return c['selection'];
 }
 
-export interface ConditionValueDefMixins<V extends ValueOrGradient = Value> {
+export interface ConditionValueDefMixins<V extends ValueOrGradientOrText = Value> {
   /**
    * One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).
    *
@@ -133,7 +138,7 @@ export interface ConditionValueDefMixins<V extends ValueOrGradient = Value> {
  * }
  */
 
-export type FieldDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradient = Value> = F &
+export type FieldDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradientOrText = Value> = F &
   ConditionValueDefMixins<V>;
 
 export type ColorGradientFieldDefWithCondition<F extends Field, T extends Type = StandardType> = FieldDefWithCondition<
@@ -151,7 +156,9 @@ export type ShapeFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
   string | null
 >;
 
-export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<TextFieldDef<F>, Value>;
+export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<StringFieldDef<F>, Text>;
+
+export type StringFieldDefWithCondition<F extends Field> = FieldDefWithCondition<StringFieldDef<F>, string>;
 
 /**
  * A ValueDef with optional Condition<ValueDef | FieldDef>
@@ -175,7 +182,7 @@ export function isRepeatRef(field: Field): field is RepeatRef {
   return field && !isString(field) && 'repeat' in field;
 }
 
-/** @hide */
+/** @@hidden */
 export type HiddenCompositeAggregate = CompositeAggregate;
 
 export interface FieldDefBase<F, B extends Bin = Bin> {
@@ -207,7 +214,7 @@ export interface FieldDefBase<F, B extends Bin = Bin> {
 
   /**
    * Aggregation function for the field
-   * (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
+   * (e.g., `"mean"`, `"sum"`, `"median"`, `"min"`, `"max"`, `"count"`).
    *
    * __Default value:__ `undefined` (None)
    *
@@ -220,7 +227,7 @@ export interface FieldDefBase<F, B extends Bin = Bin> {
    *
    * - If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
    *
-   * - If `"binned"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
+   * - If `"binned"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
    *
    * __Default value:__ `false`
    *
@@ -248,7 +255,7 @@ export interface TypeMixins<T extends Type> {
    * __Note:__
    *
    * - Data values for a temporal field can be either a date-time string (e.g., `"2015-03-07 12:32:17"`, `"17:01"`, `"2015-03-16"`. `"2015"`) or a timestamp number (e.g., `1552199579097`).
-   * - Data `type` describes the semantics of the data rather than the primitive data types (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
+   * - Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
    * - When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `"quantitative"` (for using a linear bin scale) or [`"ordinal"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).
    * - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `"temporal"` (for using a temporal scale) or [`"ordinal"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).
    * - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `"cat"` using `{"aggregate": "distinct", "field": "cat", "type": "quantitative"}`. The `"type"` of the aggregate output is `"quantitative"`.
@@ -280,9 +287,9 @@ export interface SortableFieldDef<
    *
    * For discrete fields, `sort` can be one of the following:
    * - `"ascending"` or `"descending"` -- for sorting by the values' natural order in JavaScript.
-   * - [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `"x"` or `"y"`) with an optional minus prefix for descending sort (e.g., `"-x"` to sort by x-field, descending).  This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `"sort": "-x"` is equivalent to `"sort": {"encoding": "x", "order": "descending"}`.
+   * - [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `"x"` or `"y"`) with an optional minus prefix for descending sort (e.g., `"-x"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `"sort": "-x"` is equivalent to `"sort": {"encoding": "x", "order": "descending"}`.
    * - [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.
-   * - [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `"month"` and `"day"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `"Mon"`, `"Tue"`).
+   * - [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `"month"` and `"day"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `"Mon"`, `"Tue"`).
    * - `null` indicating no sort.
    *
    * __Default value:__ `"ascending"`
@@ -316,7 +323,7 @@ export interface ScaleFieldDef<
 }
 
 /**
- * A field definition of a secondary channel that shares a scale with another primary channel.  For example, `x2`, `xError` and `xError2` share the same scale with `x`.
+ * A field definition of a secondary channel that shares a scale with another primary channel. For example, `x2`, `xError` and `xError2` share the same scale with `x`.
  */
 export type SecondaryFieldDef<F extends Field> = FieldDefBase<F, null> & TitleMixins; // x2/y2 shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
@@ -359,7 +366,7 @@ export interface PositionFieldDef<F extends Field>
    * __Default value:__ `zero` for plots with all of the following conditions are true:
    * (1) the mark is `bar` or `area`;
    * (2) the stacked measure channel (x or y) has a linear scale;
-   * (3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, `null` by default.
+   * (3) At least one of non-position channels mapped to an unaggregated field that is different from x and y. Otherwise, `null` by default.
    *
    * __See also:__ [`stack`](https://vega.github.io/vega-lite/docs/stack.html) documentation.
    */
@@ -377,7 +384,7 @@ export interface PositionFieldDef<F extends Field>
   /**
    * For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.
    *
-   * For other marks, relative position on a band of a stacked, binned, time unit or band scale.  If set to `0`, the marks will be positioned at the beginning of the band.  If set to `0.5`, the marks will be positioned in the middle of the band.
+   * For other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.
    *
    * @minimum 0
    * @maximum 1
@@ -453,15 +460,15 @@ export interface OrderFieldDef<F extends Field> extends FieldDefWithoutScale<F> 
   sort?: SortOrder;
 }
 
-export interface TextFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
+export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
 
 export type FieldDef<F extends Field> = SecondaryFieldDef<F> | TypedFieldDef<F>;
 export type ChannelDef<
   FD extends FieldDef<any> = FieldDef<string>,
-  V extends ValueOrGradient = ValueOrGradient
+  V extends ValueOrGradientOrText = ValueOrGradientOrText
 > = ChannelDefWithCondition<FD, V>;
 
-export function isConditionalDef<F extends Field, V extends ValueOrGradient>(
+export function isConditionalDef<F extends Field, V extends ValueOrGradientOrText>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is ChannelDefWithCondition<FieldDef<F>, V> {
   return !!channelDef && !!channelDef.condition;
@@ -470,7 +477,7 @@ export function isConditionalDef<F extends Field, V extends ValueOrGradient>(
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-export function hasConditionalFieldDef<F extends Field, V extends ValueOrGradient>(
+export function hasConditionalFieldDef<F extends Field, V extends ValueOrGradientOrText>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is Partial<ValueDef<V>> & {condition: Conditional<TypedFieldDef<F>>} {
   return !!channelDef && !!channelDef.condition && !isArray(channelDef.condition) && isFieldDef(channelDef.condition);
@@ -491,7 +498,7 @@ export function isFieldDef<F extends Field>(
   | ScaleFieldDef<F>
   | MarkPropFieldDef<F>
   | OrderFieldDef<F>
-  | TextFieldDef<F> {
+  | StringFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
@@ -503,7 +510,7 @@ export function isStringFieldDef(channelDef: ChannelDef<FieldDef<Field>>): chann
   return isFieldDef(channelDef) && isString(channelDef.field);
 }
 
-export function isValueDef<F extends Field, V extends ValueOrGradient>(
+export function isValueDef<F extends Field, V extends ValueOrGradientOrText>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is ValueDef<V> {
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
@@ -528,7 +535,7 @@ export function isMarkPropFieldDef<F extends Field>(
   return !!channelDef && !!channelDef['legend'];
 }
 
-export function isTextFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is TextFieldDef<F> {
+export function isTextFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is StringFieldDef<F> {
   return !!channelDef && !!channelDef['format'];
 }
 

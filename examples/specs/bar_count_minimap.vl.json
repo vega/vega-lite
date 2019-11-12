@@ -3,11 +3,13 @@
   "data": {"url": "data/cars.json"},
   "hconcat": [{
     "mark": "bar",
+    "transform": [{
+      "filter": {"selection": "brush"}
+    }],
     "encoding": {
       "y": {
         "field": "Name",
         "type": "nominal",
-        "scale": {"domain": {"selection": "brush"}},
         "axis": {"minExtent": 200, "title": null},
         "sort": "-x"
       },

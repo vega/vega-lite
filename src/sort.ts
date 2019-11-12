@@ -23,7 +23,7 @@ export interface SortField {
 
 export interface SortFields {
   field: FieldName[];
-  order?: (SortOrder)[];
+  order?: SortOrder[];
 }
 
 export const DEFAULT_SORT_OP = 'mean';

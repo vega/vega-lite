@@ -11,7 +11,7 @@ import {Projection} from '../projection';
 import {ScaleType} from '../scale';
 import {GenericSpec} from '../spec/index';
 import {Type} from '../type';
-import {stringify} from '../util';
+import {stringify, replaceAll} from '../util';
 import {VgSortField} from '../vega.schema';
 
 /**
@@ -21,11 +21,21 @@ import {VgSortField} from '../vega.schema';
 export function invalidSpec(spec: GenericSpec<any, any>) {
   return `Invalid specification ${JSON.stringify(
     spec
-  )}.  Make sure the specification includes at least one of the following properties: "mark", "layer", "facet", "hconcat", "vconcat", "concat", or "repeat".`;
+  )}. Make sure the specification includes at least one of the following properties: "mark", "layer", "facet", "hconcat", "vconcat", "concat", or "repeat".`;
 }
 
 // FIT
 export const FIT_NON_SINGLE = 'Autosize "fit" only works for single views and layered views.';
+
+export function containerSizeNonSingle(name: 'width' | 'height') {
+  const uName = name == 'width' ? 'Width' : 'Height';
+  return `${uName} "container" only works for single views and layered views.`;
+}
+
+export function containerSizeNotCompatibleWithAutosize(name: 'width' | 'height') {
+  const uName = name == 'width' ? 'Width' : 'Height';
+  return `${uName} "container" only works well with autosize "fit" or "fit-x".`;
+}
 
 export function droppingFit(channel?: PositionScaleChannel) {
   return channel
@@ -52,8 +62,6 @@ export function selectionNotFound(name: string) {
 
 export const SCALE_BINDINGS_CONTINUOUS =
   'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
-
-export const NO_INIT_SCALE_BINDINGS = 'Selections bound to scales cannot be separately initialized.';
 
 export const LEGEND_BINDINGS_PROJECT_LENGTH =
   'Legend bindings are only supported for selections over an individual field or encoding channel.';
@@ -260,7 +268,9 @@ export function independentScaleMeansIndependentGuide(channel: Channel) {
 }
 
 export function domainSortDropped(sort: VgSortField) {
-  return `Dropping sort property ${stringify(sort)} as unioned domains only support boolean or op 'count'.`;
+  return `Dropping sort property ${stringify(
+    sort
+  )} as unioned domains only support boolean or op "count", "min", and "max".`;
 }
 
 export const UNABLE_TO_MERGE_DOMAINS = 'Unable to merge domains.';
@@ -290,7 +300,8 @@ export function invalidTimeUnit(unitName: string, value: string | number) {
 }
 
 export function dayReplacedWithDate(fullTimeUnit: string) {
-  return `Time unit "${fullTimeUnit}" is not supported. We are replacing it with ${fullTimeUnit.replace(
+  return `Time unit "${fullTimeUnit}" is not supported. We are replacing it with ${replaceAll(
+    fullTimeUnit,
     'day',
     'date'
   )}.`;

@@ -1,17 +1,21 @@
-import {Axis as VgAxis, AxisEncode, NewSignal} from 'vega';
+import {Axis as VgAxis, AxisEncode, NewSignal, Text} from 'vega';
 import {isArray} from 'vega-util';
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isConditionalAxisValue} from '../../axis';
 import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';
 import {Config} from '../../config';
-import {getFirstDefined, keys} from '../../util';
+import {getFirstDefined, keys, replaceAll} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {Model} from '../model';
 import {expression} from '../predicate';
 import {AxisComponent, AxisComponentIndex} from './component';
+import {isText} from '../../title';
 
-function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {
-  if (isArray(title)) {
+function assembleTitle(title: Text | FieldDefBase<string>[], config: Config): Text {
+  if (!title) {
+    return undefined;
+  }
+  if (!isText(title)) {
     return title.map(fieldDef => defaultTitle(fieldDef, config)).join(', ');
   }
   return title;
@@ -21,7 +25,7 @@ function setAxisEncode(
   axis: Omit<VgAxis, 'orient' | 'scale'>,
   part: keyof AxisEncode,
   vgProp: VgEncodeChannel,
-  vgRef: VgValueRef | VgValueRef[]
+  vgRef: VgValueRef | readonly VgValueRef[]
 ) {
   axis.encode = axis.encode || {};
   axis.encode[part] = axis.encode[part] || {};
@@ -109,13 +113,8 @@ export function assembleAxis(
 
     if (labelExpr !== undefined) {
       let expr = labelExpr;
-      if (
-        axis.encode &&
-        axis.encode.labels &&
-        axis.encode.labels.update &&
-        isSignalRef(axis.encode.labels.update.text)
-      ) {
-        expr = labelExpr.replace('datum.label', axis.encode.labels.update.text.signal);
+      if (axis.encode?.labels?.update && isSignalRef(axis.encode.labels.update.text)) {
+        expr = replaceAll(labelExpr, 'datum.label', axis.encode.labels.update.text.signal);
       }
 
       setAxisEncode(axis, 'labels', 'text', {signal: expr});
@@ -156,7 +155,7 @@ export function assembleAxisSignals(model: Model): NewSignal[] {
     if (axes[channel]) {
       for (const axis of axes[channel]) {
         if (!axis.get('gridScale')) {
-          // If there is x-axis but no y-scale for gridScale, need to set height/weight so x-axis can draw the grid with the right height.  Same for y-axis and width.
+          // If there is x-axis but no y-scale for gridScale, need to set height/weight so x-axis can draw the grid with the right height. Same for y-axis and width.
 
           const sizeType = channel === 'x' ? 'height' : 'width';
           return [

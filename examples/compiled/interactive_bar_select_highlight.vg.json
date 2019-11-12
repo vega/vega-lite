@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar chart with highlighting on hover and selecting on click. (Inspired by Tableau's interaction style.)",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "style": "cell",
@@ -29,7 +29,7 @@
         {"type": "identifier", "as": "_vgsid_"},
         {
           "type": "filter",
-          "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
+          "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
         }
       ]
     }
@@ -47,8 +47,14 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "highlight", "update": "vlSelectionResolve(\"highlight_store\")"},
-    {"name": "select", "update": "vlSelectionResolve(\"select_store\")"},
+    {
+      "name": "highlight",
+      "update": "vlSelectionResolve(\"highlight_store\", \"union\")"
+    },
+    {
+      "name": "select",
+      "update": "vlSelectionResolve(\"select_store\", \"union\", true)"
+    },
     {
       "name": "highlight_tuple",
       "on": [
@@ -104,6 +110,7 @@
       "name": "marks",
       "type": "rect",
       "style": ["bar"],
+      "interactive": true,
       "from": {"data": "data_0"},
       "encode": {
         "update": {

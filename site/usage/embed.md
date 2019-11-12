@@ -64,7 +64,7 @@ vegaEmbed('#vis', yourVlSpec);
 
 Vega-Embed automatically adds links to export an image, view the source, and open the specification in the online editor. These links can be individually disabled. For more information, read the [Vega-Embed documentation](https://github.com/vega/vega-embed).
 
-Here is the final HTML file in the easiest way to embed Vega-Lite (assuming that you use the [CDN approach](#cdn) from above). See the [output in your browser]({{site.baseurl}}/site/demo.html).
+Here is the final HTML file in the easiest way to embed Vega-Lite (assuming that you use the [CDN approach](#cdn) from above). See the [output in your browser]({{site.baseurl}}/demo.html).
 
 ```html
 <!DOCTYPE html>

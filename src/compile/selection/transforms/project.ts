@@ -3,9 +3,8 @@ import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
 import {SelectionInit, SelectionInitInterval} from '../../../selection';
-import {Dict, hash, keys, varName} from '../../../util';
+import {Dict, hash, keys, varName, replacePathInField, duplicate} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
-import scales from './scales';
 import {TransformCompiler} from './transforms';
 
 export const TUPLE_FIELDS = '_tuple_fields';
@@ -140,19 +139,15 @@ const project: TransformCompiler = {
     }
 
     if (selDef.init) {
-      if (scales.has(selCmpt)) {
-        log.warn(log.message.NO_INIT_SCALE_BINDINGS);
-      } else {
-        const parseInit = <T extends SelectionInit | SelectionInitInterval>(i: Dict<T>): T[] => {
-          return proj.items.map(p => (i[p.channel] !== undefined ? i[p.channel] : i[p.field]));
-        };
+      const parseInit = <T extends SelectionInit | SelectionInitInterval>(i: Dict<T>): T[] => {
+        return proj.items.map(p => (i[p.channel] !== undefined ? i[p.channel] : i[p.field]));
+      };
 
-        if (selDef.type === 'interval') {
-          selCmpt.init = parseInit(selDef.init);
-        } else {
-          const init = isArray(selDef.init) ? selDef.init : [selDef.init];
-          selCmpt.init = init.map(parseInit);
-        }
+      if (selDef.type === 'interval') {
+        selCmpt.init = parseInit(selDef.init);
+      } else {
+        const init = isArray(selDef.init) ? selDef.init : [selDef.init];
+        selCmpt.init = init.map(parseInit);
       }
     }
 
@@ -170,7 +165,9 @@ const project: TransformCompiler = {
           name,
           value: selCmpt.project.items.map(proj => {
             const {signals, hasLegend, ...rest} = proj;
-            return rest;
+            const p = duplicate(rest);
+            p.field = replacePathInField(p.field);
+            return p;
           })
         });
   }

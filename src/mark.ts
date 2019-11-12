@@ -85,7 +85,7 @@ export interface TooltipContent {
   content: 'encoding' | 'data';
 }
 
-/** @hide */
+/** @hidden */
 export type Hide = 'hide';
 
 export interface MarkConfig extends ColorMixins, BaseMarkConfig {
@@ -122,7 +122,11 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    * - For `bar`, this represents the band size of the bar, in pixels.
    * - For `text`, this represents the font size, in pixels.
    *
-   * __Default value:__ `30` for point, circle, square marks; width/height's `step` - 2 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.
+   * __Default value:__
+   * - `30` for point, circle, square marks; width/height's `step`
+   * - `2` for bar marks with discrete dimensions;
+   * - `5` for bar marks with continuous dimensions;
+   * - `11` for text marks.
    *
    * @minimum 0
    */
@@ -141,12 +145,13 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
   invalid?: 'filter' | Hide | null;
 
   /**
-   * Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.  If set to `0.5`, the marks will be positioned in the middle of the time unit band step.
+   * Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.
+   * If set to `0.5`, the marks will be positioned in the middle of the time unit band step.
    */
   timeUnitBandPosition?: number;
 
   /**
-   * Default relative band size for a time unit. If set to `1`, the  bandwidth of the marks will be equal to the time unit band step.
+   * Default relative band size for a time unit. If set to `1`, the bandwidth of the marks will be equal to the time unit band step.
    * If set to `0.5`, bandwidth of the marks will be half of the time unit band step.
    */
   timeUnitBand?: number;
@@ -154,7 +159,7 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
 
 export interface RectBinSpacingMixins {
   /**
-   * Offset between bars for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).
+   * Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).
    *
    * __Default value:__ `1`
    *
@@ -272,7 +277,7 @@ export interface RectConfig extends RectBinSpacingMixins, MarkConfig {
   continuousBandSize?: number;
 
   /**
-   * The default size of the bars with discrete dimensions.  If unspecified, the default size is  `step-2`, which provides 2 pixel offset between bars.
+   * The default size of the bars with discrete dimensions. If unspecified, the default size is  `step-2`, which provides 2 pixel offset between bars.
    * @minimum 0
    */
   discreteBandSize?: number;
@@ -337,7 +342,7 @@ export interface MarkDefMixins {
   /**
    * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](https://vega.github.io/vega-lite/docs/encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
    *
-   * __Default value:__ The mark's name.  For example, a bar mark will have style `"bar"` by default.
+   * __Default value:__ The mark's name. For example, a bar mark will have style `"bar"` by default.
    * __Note:__ Any specified style will augment the default style. For example, a bar mark with `"style": "foo"` will receive from `config.style.bar` and `config.style.foo` (the specified style `"foo"` has higher precedence).
    */
   style?: string | string[];

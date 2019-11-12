@@ -2,7 +2,7 @@ import {isString, array} from 'vega-util';
 import * as log from '../../log';
 import {LookupTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
-import {VgLookupTransform} from '../../vega.schema';
+import {LookupTransform as VgLookupTransform} from 'vega';
 import {Model} from '../model';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {findSource} from './parse';

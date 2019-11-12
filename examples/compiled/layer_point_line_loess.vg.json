@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -13,7 +13,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"Rotten_Tomatoes_Rating\"] !== null && !isNaN(datum[\"Rotten_Tomatoes_Rating\"]) && datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
+          "expr": "isValid(datum[\"Rotten_Tomatoes_Rating\"]) && isFinite(+datum[\"Rotten_Tomatoes_Rating\"]) && isValid(datum[\"IMDB_Rating\"]) && isFinite(+datum[\"IMDB_Rating\"])"
         }
       ]
     },
@@ -57,7 +57,7 @@
           "x": {"scale": "x", "field": "Rotten_Tomatoes_Rating"},
           "y": {"scale": "y", "field": "IMDB_Rating"},
           "defined": {
-            "signal": "datum[\"Rotten_Tomatoes_Rating\"] !== null && !isNaN(datum[\"Rotten_Tomatoes_Rating\"]) && datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
+            "signal": "isValid(datum[\"Rotten_Tomatoes_Rating\"]) && isFinite(+datum[\"Rotten_Tomatoes_Rating\"]) && isValid(datum[\"IMDB_Rating\"]) && isFinite(+datum[\"IMDB_Rating\"])"
           }
         }
       }

@@ -1,43 +1,21 @@
 import {
-  Align,
   BaseLegend,
-  Color,
-  FontStyle,
-  FontWeight,
   LabelOverlap,
   Legend as VgLegend,
   LegendConfig as VgLegendConfig,
   LegendOrient,
-  Orient,
-  Orientation,
-  SymbolShape,
-  TextBaseline,
-  TitleAnchor
+  Orientation
 } from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {LayoutAlign} from './vega.schema';
+import {ExcludeMappedValueRef} from './vega.schema';
+
+type BaseLegendNoSignals = ExcludeMappedValueRef<BaseLegend>;
 
 export type LegendConfig = LegendMixins &
   VlOnlyGuideConfig &
-  VgLegendConfig<
-    number,
-    number,
-    string,
-    Color,
-    FontWeight,
-    FontStyle,
-    Align,
-    TextBaseline,
-    LayoutAlign,
-    LabelOverlap,
-    SymbolShape,
-    number[],
-    Orient,
-    TitleAnchor,
-    LegendOrient
-  > & {
+  ExcludeMappedValueRef<VgLegendConfig> & {
     /**
      * Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
      *
@@ -69,7 +47,7 @@ export type LegendConfig = LegendMixins &
     /**
      * The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.
      *
-     * __Default value:__ `undefined`.  If `undefined`, the default gradient will be determined based on the following rules:
+     * __Default value:__ `undefined`. If `undefined`, the default gradient will be determined based on the following rules:
      * - For vertical gradients, `clamp(plot_height, gradientVerticalMinLength, gradientVerticalMaxLength)`
      * - For top-`orient`ed or bottom-`orient`ed horizontal gradients, `clamp(plot_width, gradientHorizontalMinLength, gradientHorizontalMaxLength)`
      * - For other horizontal gradients, `gradientHorizontalMinLength`
@@ -90,30 +68,11 @@ export type LegendConfig = LegendMixins &
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend
-  extends BaseLegend<
-      number,
-      number,
-      string,
-      Color,
-      FontWeight,
-      FontStyle,
-      Align,
-      TextBaseline,
-      LayoutAlign,
-      LabelOverlap,
-      SymbolShape,
-      number[],
-      Orient,
-      TitleAnchor,
-      LegendOrient
-    >,
-    LegendMixins,
-    Guide {
+export interface Legend extends BaseLegendNoSignals, LegendMixins, Guide {
   /**
    * Mark definitions for custom legend encoding.
    *
-   * @hide
+   * @hidden
    */
   encoding?: LegendEncoding;
 
@@ -123,11 +82,6 @@ export interface Legend
    * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the legend's backing `datum` object.
    */
   labelExpr?: string;
-
-  /**
-   * The desired number of tick values for quantitative legends.
-   */
-  tickCount?: number;
 
   /**
    * The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.
@@ -260,6 +214,7 @@ export const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   symbolDash: 1,
   symbolDashOffset: 1,
   symbolFillColor: 1,
+  symbolLimit: 1,
   symbolOffset: 1,
   symbolOpacity: 1,
   symbolSize: 1,
@@ -278,6 +233,7 @@ export const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   titleFontStyle: 1,
   titleFontWeight: 1,
   titleLimit: 1,
+  titleLineHeight: 1,
   titleOpacity: 1,
   titleOrient: 1,
   titlePadding: 1,

@@ -1,12 +1,12 @@
-import {AggregateOp} from 'vega';
+import {AggregateOp, WindowTransform as VgWindowTransform} from 'vega';
 import {isAggregateOp} from '../../aggregate';
 import {vgField} from '../../channeldef';
+import {SortOrder} from '../../sort';
 import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
-import {VgComparator, VgJoinAggregateTransform, VgWindowTransform} from '../../vega.schema';
+import {VgComparator, VgJoinAggregateTransform} from '../../vega.schema';
 import {unique} from './../../util';
 import {DataFlowNode} from './dataflow';
-import {SortOrder} from '../../sort';
 
 /**
  * A class for the window transform nodes
@@ -55,6 +55,7 @@ export class WindowTransformNode extends DataFlowNode {
     const ops: (AggregateOp | WindowOnlyOp)[] = [];
     const as: string[] = [];
     const params = [];
+
     for (const window of this.transform.window) {
       ops.push(window.op);
       as.push(this.getDefaultName(window));

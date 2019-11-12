@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A vertical 2D box plot showing median, min, and max in the US population distribution of age groups in 2000.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "style": "cell",
@@ -25,46 +25,6 @@
           ]
         }
       ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"lower_whisker_people\"] !== null && !isNaN(datum[\"lower_whisker_people\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"upper_box_people\"] !== null && !isNaN(datum[\"upper_box_people\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"lower_box_people\"] !== null && !isNaN(datum[\"lower_box_people\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"mid_box_people\"] !== null && !isNaN(datum[\"mid_box_people\"])"
-        }
-      ]
     }
   ],
   "signals": [
@@ -76,7 +36,7 @@
       "name": "layer_0_marks",
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -93,7 +53,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -110,7 +70,7 @@
       "name": "layer_2_marks",
       "type": "rect",
       "style": ["bar", "boxplot-box"],
-      "from": {"data": "data_2"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -128,7 +88,7 @@
       "name": "layer_3_marks",
       "type": "rect",
       "style": ["tick", "boxplot-median"],
-      "from": {"data": "data_3"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -148,15 +108,7 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "age"},
-          {"data": "data_1", "field": "age"},
-          {"data": "data_2", "field": "age"},
-          {"data": "data_3", "field": "age"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "age", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0,
       "paddingOuter": 0
@@ -165,14 +117,13 @@
       "name": "y",
       "type": "linear",
       "domain": {
+        "data": "source_0",
         "fields": [
-          {"data": "data_0", "field": "lower_whisker_people"},
-          {"data": "data_0", "field": "lower_box_people"},
-          {"data": "data_1", "field": "upper_box_people"},
-          {"data": "data_1", "field": "upper_whisker_people"},
-          {"data": "data_2", "field": "lower_box_people"},
-          {"data": "data_2", "field": "upper_box_people"},
-          {"data": "data_3", "field": "mid_box_people"}
+          "lower_whisker_people",
+          "lower_box_people",
+          "upper_box_people",
+          "upper_whisker_people",
+          "mid_box_people"
         ]
       },
       "range": [{"signal": "height"}, 0],

@@ -1,4 +1,4 @@
-import {array, isArray} from 'vega-util';
+import {array} from 'vega-util';
 import {isBinning} from '../bin';
 import {
   FieldDefBase,
@@ -11,15 +11,19 @@ import {
 } from '../channeldef';
 import {Config, StyleConfigIndex} from '../config';
 import {MarkConfig, MarkDef} from '../mark';
+import {fieldValidPredicate} from '../predicate';
 import {ScaleType} from '../scale';
 import {SortFields} from '../sort';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {getFirstDefined, stringify} from '../util';
+import {getFirstDefined} from '../util';
 import {BaseMarkConfig, VgEncodeEntry} from '../vega.schema';
+import {deepEqual} from './../util';
 import {AxisComponentProps} from './axis/component';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
+import {Text} from 'vega';
+import {isText} from '../title';
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {
   for (const property of propsList) {
@@ -142,7 +146,7 @@ export function numberFormatExpr(field: string, specifiedFormat: string, config:
 }
 
 export function binFormatExpression(startField: string, endField: string, format: string, config: Config) {
-  return `${startField} === null || isNaN(${startField}) ? "null" : ${numberFormatExpr(
+  return `${fieldValidPredicate(startField, false)} ? "null" : ${numberFormatExpr(
     startField,
     format,
     config
@@ -194,13 +198,13 @@ export function sortParams(
 
 export type AxisTitleComponent = AxisComponentProps['title'];
 
-export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase<string>[]) {
+export function mergeTitleFieldDefs(f1: readonly FieldDefBase<string>[], f2: readonly FieldDefBase<string>[]) {
   const merged = [...f1];
 
   f2.forEach(fdToMerge => {
     for (const fieldDef1 of merged) {
       // If already exists, no need to append to merged array
-      if (stringify(fieldDef1) === stringify(fdToMerge)) {
+      if (deepEqual(fieldDef1, fdToMerge)) {
         return;
       }
     }
@@ -209,29 +213,36 @@ export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase
   return merged;
 }
 
-export function mergeTitle(title1: string, title2: string) {
-  if (title1 === title2 || !title2) {
+export function mergeTitle(title1: Text, title2: Text) {
+  if (deepEqual(title1, title2) || !title2) {
     // if titles are the same or title2 is falsy
     return title1;
   } else if (!title1) {
     // if title1 is falsy
     return title2;
   } else {
-    // join title with comma if they are different
-    return title1 + ', ' + title2;
+    return [...array(title1), ...array(title2)].join(', ');
   }
 }
 
 export function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>) {
-  if (isArray(v1.value) && isArray(v2.value)) {
+  const v1Val = v1.value;
+  const v2Val = v2.value;
+
+  if (v1Val == null || v2Val === null) {
     return {
       explicit: v1.explicit,
-      value: mergeTitleFieldDefs(v1.value, v2.value)
+      value: null
     };
-  } else if (!isArray(v1.value) && !isArray(v2.value)) {
+  } else if (isText(v1Val) && isText(v2Val)) {
     return {
-      explicit: v1.explicit, // keep the old explicit
-      value: mergeTitle(v1.value, v2.value)
+      explicit: v1.explicit,
+      value: mergeTitle(v1Val, v2Val)
+    };
+  } else if (!isText(v1Val) && !isText(v2Val)) {
+    return {
+      explicit: v1.explicit,
+      value: mergeTitleFieldDefs(v1Val, v2Val)
     };
   }
   /* istanbul ignore next: Condition should not happen -- only for warning in development. */

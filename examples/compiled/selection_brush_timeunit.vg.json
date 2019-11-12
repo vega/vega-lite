@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "height": 200,
   "data": [
@@ -42,7 +42,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"minutes_date\"] !== null && !isNaN(datum[\"minutes_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+          "expr": "(isDate(datum[\"minutes_date\"]) || (isValid(datum[\"minutes_date\"]) && isFinite(+datum[\"minutes_date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
         }
       ]
     },
@@ -52,7 +52,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"seconds_date\"] !== null && !isNaN(datum[\"seconds_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+          "expr": "(isDate(datum[\"seconds_date\"]) || (isValid(datum[\"seconds_date\"]) && isFinite(+datum[\"seconds_date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
         }
       ]
     }
@@ -67,7 +67,10 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
+    {
+      "name": "brush",
+      "update": "vlSelectionResolve(\"brush_store\", \"union\")"
+    }
   ],
   "layout": {"padding": 20, "bounds": "full", "align": "each"},
   "marks": [
@@ -288,6 +291,7 @@
           "name": "concat_0_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": true,
           "from": {"data": "data_2"},
           "encode": {
             "update": {
@@ -416,6 +420,7 @@
           "name": "concat_1_marks",
           "type": "symbol",
           "style": ["point"],
+          "interactive": false,
           "from": {"data": "data_1"},
           "encode": {
             "update": {

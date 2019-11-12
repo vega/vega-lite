@@ -1,12 +1,9 @@
-import {isString} from 'vega-util';
+import {Color} from 'vega';
+import {getPositionScaleChannel} from '../channel';
 import {Config} from '../config';
 import {InlineDataset} from '../data';
-import * as log from '../log';
 import {Dict} from '../util';
-import {BaseSpec, TopLevelSpec} from './index';
-import {isLayerSpec} from './layer';
-import {isUnitSpec} from './unit';
-import {getPositionScaleChannel} from '../channel';
+import {BaseSpec} from './index';
 
 /**
  * @minimum 0
@@ -24,7 +21,7 @@ export type TopLevel<S extends BaseSpec> = S &
     $schema?: string;
 
     /**
-     * Vega-Lite configuration object.  This property can only be defined at the top-level of a specification.
+     * Vega-Lite configuration object. This property can only be defined at the top-level of a specification.
      */
     config?: Config;
 
@@ -45,12 +42,12 @@ export interface TopLevelProperties {
   /**
    * CSS color property to use as the background of the entire view.
    *
-   * __Default value:__ none (transparent)
+   * __Default value:__ `"white"`
    */
-  background?: string;
+  background?: Color;
 
   /**
-   * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.
+   * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.
    * If an object, the value should have the format `{"left": 5, "top": 5, "right": 5, "bottom": 5}` to specify padding for each side of the visualization.
    *
    * __Default value__: `5`
@@ -99,27 +96,6 @@ export interface AutoSizeParams {
    * __Default value__: `"content"`
    */
   contains?: 'content' | 'padding';
-}
-
-function _normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {
-  return isString(autosize) ? {type: autosize} : autosize || {};
-}
-
-export function normalizeAutoSize(spec: TopLevelSpec, config?: Config): AutoSizeParams {
-  const autosize: AutoSizeParams = {
-    type: 'pad',
-    ...(config ? _normalizeAutoSize(config.autosize) : {}),
-    ..._normalizeAutoSize(spec.autosize)
-  };
-
-  if (autosize.type === 'fit') {
-    if (!(isLayerSpec(spec) || isUnitSpec(spec))) {
-      log.warn(log.message.FIT_NON_SINGLE);
-      autosize.type = 'pad';
-    }
-  }
-
-  return autosize;
 }
 
 const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [

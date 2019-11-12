@@ -5,6 +5,14 @@
   "compilerOptions": {
     "noEmit": true
   },
-  "files": ["src/index.ts"],
-  "include": ["src/**/*.ts", "test/**/*.ts", "test-runtime/**/*.ts", "site/static/**/*.ts"]
+  "files": [
+    "src/index.ts"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "test-runtime/**/*.ts",
+    "site/static/**/*.ts",
+    "examples/*.test.ts"
+  ]
 }

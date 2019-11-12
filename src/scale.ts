@@ -1,13 +1,13 @@
 import {toSet} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, CHANNELS, isColorChannel} from './channel';
-import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
 import * as log from './log';
 import * as TYPE from './type';
 import {Type, TYPE_INDEX} from './type';
 import {contains, Flag, keys} from './util';
 import {ScaleInterpolate, ScaleInterpolateParams} from './vega.schema';
+import {SelectionExtent} from './selection';
 
 export namespace ScaleType {
   // Continuous - Quantitative
@@ -402,44 +402,20 @@ export interface SchemeParams {
   count?: number;
 }
 
-export type SelectionDomain =
-  | {
-      /**
-       * The name of a selection.
-       */
-      selection: string;
-      /**
-       * The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
-       * over multiple fields or encodings.
-       */
-      field?: FieldName;
-    }
-  | {
-      /**
-       * The name of a selection.
-       */
-      selection: string;
-      /**
-       * The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
-       * over multiple fields or encodings.
-       */
-      encoding?: string;
-    };
-
-export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionDomain;
+export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionExtent;
 export type Scheme = string | SchemeParams;
 
 export function isExtendedScheme(scheme: string | SchemeParams): scheme is SchemeParams {
   return scheme && !!scheme['name'];
 }
 
-export function isSelectionDomain(domain: Domain): domain is SelectionDomain {
-  return domain && domain['selection'];
+export function isSelectionDomain(domain: Domain): domain is SelectionExtent {
+  return domain?.['selection'];
 }
 
 export interface Scale {
   /**
-   * The type of scale.  Vega-Lite supports the following categories of scale types:
+   * The type of scale. Vega-Lite supports the following categories of scale types:
    *
    * 1) [**Continuous Scales**](https://vega.github.io/vega-lite/docs/scale.html#continuous) -- mapping continuous domains to continuous output ranges ([`"linear"`](https://vega.github.io/vega-lite/docs/scale.html#linear), [`"pow"`](https://vega.github.io/vega-lite/docs/scale.html#pow), [`"sqrt"`](https://vega.github.io/vega-lite/docs/scale.html#sqrt), [`"symlog"`](https://vega.github.io/vega-lite/docs/scale.html#symlog), [`"log"`](https://vega.github.io/vega-lite/docs/scale.html#log), [`"time"`](https://vega.github.io/vega-lite/docs/scale.html#time), [`"utc"`](https://vega.github.io/vega-lite/docs/scale.html#utc).
    *
@@ -454,7 +430,7 @@ export interface Scale {
   /**
    * Customized domain values.
    *
-   * For _quantitative_ fields, `domain` can take the form of a two-element array with minimum and maximum values.  [Piecewise scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise) can be created by providing a `domain` with more than two entries.
+   * For _quantitative_ fields, `domain` can take the form of a two-element array with minimum and maximum values. [Piecewise scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise) can be created by providing a `domain` with more than two entries.
    * If the input field is aggregated, `domain` can also be a string value `"unaggregated"`, indicating that the domain should include the raw data values prior to the aggregation.
    *
    * For _temporal_ fields, `domain` can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](https://vega.github.io/vega-lite/docs/types.html#datetime).
@@ -463,14 +439,14 @@ export interface Scale {
    *
    * The `selection` property can be used to [interactively determine](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain.
    */
-  domain?: number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionDomain;
+  domain?: number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionExtent;
 
   // Hide because we might not really need this.
   /**
    * If true, reverses the order of the scale range.
    * __Default value:__ `false`.
    *
-   * @hide
+   * @hidden
    */
   reverse?: boolean;
 
@@ -531,7 +507,7 @@ export interface Scale {
    * For _[point](https://vega.github.io/vega-lite/docs/scale.html#point)_ scales, alias for `paddingOuter`.
    *
    * __Default value:__ For _continuous_ scales, derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `continuousPadding`.
-   * For _band and point_ scales, see `paddingInner` and `paddingOuter`.  By default, Vega-Lite sets padding such that _width/height = number of unique values * step_.
+   * For _band and point_ scales, see `paddingInner` and `paddingOuter`. By default, Vega-Lite sets padding such that _width/height = number of unique values * step_.
    *
    * @minimum 0
    */

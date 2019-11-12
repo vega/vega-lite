@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "style": "cell",
   "data": [
@@ -35,7 +35,7 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\")"},
+    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\", \"union\")"},
     {
       "name": "pts_y",
       "value": [],
@@ -227,6 +227,7 @@
       "name": "marks",
       "type": "rect",
       "style": ["rect"],
+      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {

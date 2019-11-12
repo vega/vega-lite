@@ -1,7 +1,6 @@
 import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
 import {GenericSpec} from './index';
 import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
-import {RepeatMapping} from './repeat';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
 export interface RepeatMapping {
@@ -24,8 +23,8 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extend
     GenericCompositionLayoutWithColumns,
     ResolveMixins {
   /**
-   * Definition for fields to be repeated.  One of:
-   * 1) An array of fields to be repeated.  If `"repeat"` is an array, the field can be referred using `{"repeat": "repeat"}`
+   * Definition for fields to be repeated. One of:
+   * 1) An array of fields to be repeated. If `"repeat"` is an array, the field can be referred using `{"repeat": "repeat"}`
    * 2) An object that mapped `"row"` and/or `"column"` to the listed of fields to be repeated along the particular orientations. The objects `{"repeat": "row"}` and `{"repeat": "column"}` can be used to refer to the repeated field respectively.
    */
   repeat: string[] | RepeatMapping;

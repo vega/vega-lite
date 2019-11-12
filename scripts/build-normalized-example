@@ -14,12 +14,12 @@ const vl = require('../build/vega-lite');
 const stableStringify = require('fast-json-stable-stringify');
 const compactStringify = require('json-stringify-pretty-compact');
 
-var args = require('yargs').demand(0).argv;
+const args = require('yargs').demand(0).argv;
 
 const DIR = __dirname + '/..';
 const SPECS = '/examples/specs';
 
-var example = args._[0] || '/dev/stdin';
+const example = args._[0] || '/dev/stdin';
 if (example && example.includes('.vl.json')) {
   const path = DIR + SPECS + '/' + example;
   const spec = JSON.parse(fs.readFileSync(path));

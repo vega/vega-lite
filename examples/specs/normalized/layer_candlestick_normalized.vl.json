@@ -231,5 +231,6 @@
         "size": {"value": 5}
       }
     }
-  ]
+  ],
+  "autosize": {"type": "pad"}
 }

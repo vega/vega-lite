@@ -1,12 +1,12 @@
 codecov:
   notify:
     require_ci_to_pass: true
-comment: false
+comment: true
 coverage:
   precision: 2
   range:
-  - 70.0
-  - 100.0
+    - 70.0
+    - 100.0
   round: down
   status:
     changes: false

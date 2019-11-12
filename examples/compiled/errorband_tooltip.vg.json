@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
@@ -53,7 +53,7 @@
           "y": {"scale": "y", "field": "lower_Miles_per_Gallon"},
           "y2": {"scale": "y", "field": "upper_Miles_per_Gallon"},
           "defined": {
-            "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"lower_Miles_per_Gallon\"] !== null && !isNaN(datum[\"lower_Miles_per_Gallon\"])"
+            "signal": "isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"]) && isValid(datum[\"lower_Miles_per_Gallon\"]) && isFinite(+datum[\"lower_Miles_per_Gallon\"])"
           }
         }
       }

@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A diverging stacked bar chart for sentiments towards a set of eight questions, displayed as percentages with neutral responses straddling the 0% mark",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 200,
   "style": "cell",
@@ -284,7 +284,7 @@
         {"type": "formula", "expr": "datum.v2 - datum.offset", "as": "nx2"},
         {
           "type": "filter",
-          "expr": "datum[\"nx\"] !== null && !isNaN(datum[\"nx\"])"
+          "expr": "isValid(datum[\"nx\"]) && isFinite(+datum[\"nx\"])"
         }
       ]
     }

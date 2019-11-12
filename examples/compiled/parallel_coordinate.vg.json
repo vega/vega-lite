@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Though Vega-Lite supports only one scale per axes, one can create a parallel coordinate plot by folding variables, using `joinaggregate` to normalize their values and using ticks and rules to manually create axes.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 600,
   "height": 300,
@@ -102,7 +102,7 @@
               "x": {"scale": "x", "field": "key", "band": 0.5},
               "y": {"scale": "y", "field": "norm_val"},
               "defined": {
-                "signal": "datum[\"norm_val\"] !== null && !isNaN(datum[\"norm_val\"])"
+                "signal": "isValid(datum[\"norm_val\"]) && isFinite(+datum[\"norm_val\"])"
               }
             }
           }

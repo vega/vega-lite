@@ -3,7 +3,7 @@ import {NonPositionScaleChannel, PositionScaleChannel, ScaleChannel} from './cha
 export type ResolveMode = 'independent' | 'shared';
 
 /**
- * Defines how scales, axes, and legends from different specs should be combined. Resolve is a mapping from `scale`, `axis`, and `legend` to a mapping from channels to resolutions.
+ * Defines how scales, axes, and legends from different specs should be combined. Resolve is a mapping from `scale`, `axis`, and `legend` to a mapping from channels to resolutions. Scales and guides can be resolved to be `"independent"` or `"shared"`.
  */
 export interface Resolve {
   scale?: ScaleResolveMap;

@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "style": "cell",
   "data": [
@@ -36,8 +36,11 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "alex", "update": "vlSelectionResolve(\"alex_store\")"},
-    {"name": "morgan", "update": "vlSelectionResolve(\"morgan_store\")"},
+    {"name": "alex", "update": "vlSelectionResolve(\"alex_store\", \"union\")"},
+    {
+      "name": "morgan",
+      "update": "vlSelectionResolve(\"morgan_store\", \"union\")"
+    },
     {
       "name": "alex_x",
       "value": [],
@@ -556,6 +559,7 @@
       "name": "marks",
       "type": "rect",
       "style": ["rect"],
+      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {

@@ -1,13 +1,14 @@
+import {BinTransform as VgBinTransform, Transforms as VgTransform} from 'vega';
 import {isString} from 'vega-util';
-import {BinParams, binToString, isBinning} from '../../bin';
+import {BinParams, binToString, isBinning, isSelectionExtent} from '../../bin';
 import {Channel} from '../../channel';
 import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
-import {Dict, duplicate, hash, keys, replacePathInField, unique, vals} from '../../util';
-import {VgBinTransform, VgTransform} from '../../vega.schema';
+import {Dict, duplicate, hash, keys, replacePathInField, unique, vals, varName} from '../../util';
 import {binFormatExpression} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
+import {parseSelectionBinExtent} from '../selection/parse';
 import {DataFlowNode} from './dataflow';
 
 function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, channel: Channel, config: Config) {
@@ -50,6 +51,7 @@ function isBinTransform(t: TypedFieldDef<string> | BinTransform): t is BinTransf
 
 function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolean | BinParams, model: Model) {
   let as: [string, string];
+  let span: string;
 
   if (isBinTransform(t)) {
     as = isString(t.as) ? [t.as, `${t.as}_end`] : [t.as[0], t.as[1]];
@@ -57,16 +59,24 @@ function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolea
     as = [vgField(t, {forAs: true}), vgField(t, {binSuffix: 'end', forAs: true})];
   }
 
-  const normalizedBin = normalizeBin(bin, undefined) || {};
+  const normalizedBin = {...normalizeBin(bin, undefined)};
   const key = binKey(normalizedBin, t.field);
   const {signal, extentSignal} = getSignalsFromModel(model, key);
+
+  if (isSelectionExtent(normalizedBin.extent)) {
+    const ext = normalizedBin.extent;
+    const selName = ext.selection;
+    span = parseSelectionBinExtent(model.getSelectionComponent(varName(selName), selName), ext);
+    delete normalizedBin.extent; // Vega-Lite selection extent map to Vega's span property.
+  }
 
   const binComponent: BinComponent = {
     bin: normalizedBin,
     field: t.field,
     as: [as],
     ...(signal ? {signal} : {}),
-    ...(extentSignal ? {extentSignal} : {})
+    ...(extentSignal ? {extentSignal} : {}),
+    ...(span ? {span} : {})
   };
 
   return {key, binComponent};
@@ -77,6 +87,7 @@ export interface BinComponent {
   field: FieldName;
   extentSignal?: string;
   signal?: string;
+  span?: string;
 
   /** Pairs of strings of the names of start and end signals */
   as: [string, string][];
@@ -107,7 +118,7 @@ export class BinNode extends DataFlowNode {
         };
       }
       return binComponentIndex;
-    }, {});
+    }, {} as Dict<BinComponent>);
 
     if (keys(bins).length === 0) {
       return null;
@@ -170,15 +181,18 @@ export class BinNode extends DataFlowNode {
       const transform: VgTransform[] = [];
 
       const [binAs, ...remainingAs] = bin.as;
+      const {extent, ...params} = bin.bin;
       const binTrans: VgBinTransform = {
         type: 'bin',
         field: replacePathInField(bin.field),
         as: binAs,
         signal: bin.signal,
-        ...bin.bin
+        ...(!isSelectionExtent(extent) ? {extent} : {extent: null}),
+        ...(bin.span ? {span: {signal: `span(${bin.span})`}} : {}),
+        ...params
       };
 
-      if (!bin.bin.extent && bin.extentSignal) {
+      if (!extent && bin.extentSignal) {
         transform.push({
           type: 'extent',
           field: replacePathInField(bin.field),

@@ -58,7 +58,7 @@ describe('compile/data/optimize', () => {
 
     it('should rename signals when merging BinNodes', () => {
       const transform = {
-        bin: {extent: [0, 100], anchor: 6},
+        bin: {extent: [0, 100] as [number, number], anchor: 6},
         field: 'Acceleration',
         as: ['binned_acceleration_start', 'binned_acceleration_stop']
       };

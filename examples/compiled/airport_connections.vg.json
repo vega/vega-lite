@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "An interactive visualization of connections among major U.S. airports in 2008. Based on a U.S. airports example by Mike Bostock.",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "width": 900,
   "height": 500,
@@ -101,7 +101,7 @@
         },
         {
           "type": "filter",
-          "expr": "datum[\"routes\"] !== null && !isNaN(datum[\"routes\"])"
+          "expr": "isValid(datum[\"routes\"]) && isFinite(+datum[\"routes\"])"
         }
       ]
     }
@@ -124,12 +124,21 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "single", "update": "vlSelectionResolve(\"single_store\")"},
+    {
+      "name": "single",
+      "update": "vlSelectionResolve(\"single_store\", \"union\")"
+    },
     {
       "name": "single_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "mouseover",
+              "markname": "layer_2_voronoi"
+            }
+          ],
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_2\", fields: single_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"origin\"]]} : null",
           "force": true
         },
@@ -150,6 +159,7 @@
       "name": "layer_0_marks",
       "type": "shape",
       "style": ["geoshape"],
+      "interactive": false,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -164,6 +174,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
+      "interactive": false,
       "from": {"data": "data_0"},
       "encode": {
         "update": {
@@ -181,6 +192,7 @@
       "type": "symbol",
       "style": ["circle"],
       "sort": {"field": ["datum[\"routes\"]"], "order": ["descending"]},
+      "interactive": true,
       "from": {"data": "data_1"},
       "encode": {
         "update": {
@@ -196,6 +208,7 @@
     {
       "name": "layer_2_voronoi",
       "type": "path",
+      "interactive": true,
       "from": {"data": "layer_2_marks"},
       "encode": {
         "update": {
