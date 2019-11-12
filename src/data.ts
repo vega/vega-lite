@@ -210,17 +210,17 @@ export interface GraticuleParams {
   /**
    * The major extent of the graticule as a two-element array of coordinates.
    */
-  extentMajor?: Vector2<number[]>;
+  extentMajor?: Vector2<Vector2<number>>;
 
   /**
    * The minor extent of the graticule as a two-element array of coordinates.
    */
-  extentMinor?: Vector2<number[]>;
+  extentMinor?: Vector2<Vector2<number>>;
 
   /**
    * Sets both the major and minor extents to the same values.
    */
-  extent?: Vector2<number[]>;
+  extent?: Vector2<Vector2<number>>;
 
   /**
    * The major step angles of the graticule.

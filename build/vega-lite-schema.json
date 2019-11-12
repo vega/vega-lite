@@ -8008,15 +8008,15 @@
       "additionalProperties": false,
       "properties": {
         "extent": {
-          "$ref": "#/definitions/Vector2<number[]>",
+          "$ref": "#/definitions/Vector2<Vector2<number>>",
           "description": "Sets both the major and minor extents to the same values."
         },
         "extentMajor": {
-          "$ref": "#/definitions/Vector2<number[]>",
+          "$ref": "#/definitions/Vector2<Vector2<number>>",
           "description": "The major extent of the graticule as a two-element array of coordinates."
         },
         "extentMinor": {
-          "$ref": "#/definitions/Vector2<number[]>",
+          "$ref": "#/definitions/Vector2<Vector2<number>>",
           "description": "The minor extent of the graticule as a two-element array of coordinates."
         },
         "precision": {
@@ -16710,6 +16710,19 @@
       "minItems": 2,
       "type": "array"
     },
+    "Vector2<Vector2<number>>": {
+      "items": [
+        {
+          "$ref": "#/definitions/Vector2<number>"
+        },
+        {
+          "$ref": "#/definitions/Vector2<number>"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
     "Vector2<boolean>": {
       "items": [
         {
@@ -16730,25 +16743,6 @@
         },
         {
           "type": "number"
-        }
-      ],
-      "maxItems": 2,
-      "minItems": 2,
-      "type": "array"
-    },
-    "Vector2<number[]>": {
-      "items": [
-        {
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        {
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
         }
       ],
       "maxItems": 2,

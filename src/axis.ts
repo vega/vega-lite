@@ -378,6 +378,7 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   ticks: 1,
   tickSize: 1,
   tickWidth: 1,
+  tickBand: 1,
   title: 1,
   titleAlign: 1,
   titleAnchor: 1,
@@ -395,6 +396,7 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   titleX: 1,
   titleY: 1,
   values: 1,
+  translate: 1,
   zindex: 1
 };
 
