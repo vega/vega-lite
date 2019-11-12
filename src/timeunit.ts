@@ -318,16 +318,13 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string, {end}: {end: bo
 
   let lastTimeUnit: TimeUnit;
 
-  const d = TIMEUNIT_PARTS.reduce(
-    (dateExpr: DateTimeExpr, tu: TimeUnit) => {
-      if (containsTimeUnit(fullTimeUnit, tu)) {
-        dateExpr[tu] = func(tu);
-        lastTimeUnit = tu;
-      }
-      return dateExpr;
-    },
-    {} as {[key in SingleTimeUnit]: string}
-  );
+  const d = TIMEUNIT_PARTS.reduce((dateExpr: DateTimeExpr, tu: TimeUnit) => {
+    if (containsTimeUnit(fullTimeUnit, tu)) {
+      dateExpr[tu] = func(tu);
+      lastTimeUnit = tu;
+    }
+    return dateExpr;
+  }, {} as {[key in SingleTimeUnit]: string});
 
   if (end) {
     d[lastTimeUnit] += '+1';

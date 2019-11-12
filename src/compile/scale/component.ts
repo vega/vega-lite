@@ -4,14 +4,16 @@ import {Scale, ScaleType} from '../../scale';
 import {some} from '../../util';
 import {VgNonUnionDomain, VgScale} from '../../vega.schema';
 import {Explicit, Split} from '../split';
+import {SelectionExtent} from '../../selection';
 
 /**
  * All VgDomain property except domain.
  * (We exclude domain as we have a special "domains" array that allow us merge them all at once in assemble.)
  */
-// TODO: also exclude domainRaw and properly implement the right scaleComponent for selection domain
-
-export type ScaleComponentProps = Omit<VgScale, 'domain'> & {domains: VgNonUnionDomain[]};
+export type ScaleComponentProps = Omit<VgScale, 'domain' | 'domainRaw'> & {
+  domains: VgNonUnionDomain[];
+  selectionExtent?: SelectionExtent;
+};
 
 export class ScaleComponent extends Split<ScaleComponentProps> {
   public merged = false;

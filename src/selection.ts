@@ -1,11 +1,8 @@
-import {Binding, Color, Vector2} from 'vega';
+import {Binding, Color, Stream, Vector2} from 'vega';
 import {SingleDefUnitChannel} from './channel';
 import {FieldName, Value} from './channeldef';
 import {DateTime} from './datetime';
 import {Dict} from './util';
-
-// TODO: import from Vega once we update to Vega 5.5
-import {Stream} from 'vega-typings';
 
 export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'single' | 'multi' | 'interval';
@@ -237,6 +234,30 @@ export interface MultiSelection extends BaseSelectionDef<'multi'>, MultiSelectio
 export interface IntervalSelection extends BaseSelectionDef<'interval'>, IntervalSelectionConfig {}
 
 export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
+
+export type SelectionExtent =
+  | {
+      /**
+       * The name of a selection.
+       */
+      selection: string;
+      /**
+       * The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
+       * over multiple fields or encodings.
+       */
+      field?: FieldName;
+    }
+  | {
+      /**
+       * The name of a selection.
+       */
+      selection: string;
+      /**
+       * The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
+       * over multiple fields or encodings.
+       */
+      encoding?: SingleDefUnitChannel;
+    };
 
 export interface SelectionConfig {
   /**

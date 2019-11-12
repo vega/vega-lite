@@ -24,8 +24,8 @@
             "bin_maxbins_10_precipitation_end"
           ],
           "signal": "bin_maxbins_10_precipitation_bins",
-          "maxbins": 10,
-          "extent": {"signal": "bin_maxbins_10_precipitation_extent"}
+          "extent": {"signal": "bin_maxbins_10_precipitation_extent"},
+          "maxbins": 10
         },
         {
           "type": "aggregate",

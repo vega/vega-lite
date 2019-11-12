@@ -51,14 +51,7 @@ describe('compile/data/graticule', () => {
     });
     model.parseData();
 
-    const node = model.component.data.raw.parent;
-    expect(node).toBeInstanceOf(GraticuleNode);
-
-    expect(assembleRootData(model.component.data, {})).toEqual([
-      {
-        name: 'source_0',
-        transform: [{type: 'graticule'}]
-      }
-    ]);
+    const data = assembleRootData(model.component.data, {});
+    expect(data[0].transform[0]).toEqual({type: 'graticule'});
   });
 });

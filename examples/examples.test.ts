@@ -31,7 +31,7 @@ function validateVL(spec: TopLevelSpec) {
     console.log(inspect(errors, {depth: 10, colors: true}));
   }
 
-  expect(errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', ')).toBeNull();
+  expect(errors?.map((err: Ajv.ErrorObject) => err.message).join(', ')).toBeUndefined();
   expect(valid).toBe(true);
 
   expect(spec.$schema.substr(0, 42)).toBe('https://vega.github.io/schema/vega-lite/v4');
@@ -44,7 +44,7 @@ function validateVega(vegaSpec: VgSpec) {
     console.log(inspect(errors, {depth: 10, colors: true}));
   }
 
-  expect(errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', ')).toBeNull();
+  expect(errors?.map((err: Ajv.ErrorObject) => err.message).join(', ')).toBeUndefined();
   expect(valid).toBe(true);
 }
 
@@ -73,7 +73,7 @@ describe('Examples', () => {
           expect(jsonSpec).toEqual(originalSpec);
         });
 
-        it('should be valid vega-lite with proper $schema', () => {
+        it('should be valid Vega-Lite with proper $schema', () => {
           if (
             // Ignore all examples with "_future" suffix
             example.lastIndexOf('_future.vl.json', example.length - futureSuffixLength) >= 0

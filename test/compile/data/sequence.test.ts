@@ -64,14 +64,7 @@ describe('compile/data/sequence', () => {
     });
     model.parseData();
 
-    const node = model.component.data.raw.parent;
-    expect(node).toBeInstanceOf(SequenceNode);
-
-    expect(assembleRootData(model.component.data, {})).toEqual([
-      {
-        name: 'source_0',
-        transform: [{type: 'sequence', start: 0, stop: 20, step: 2}]
-      }
-    ]);
+    const data = assembleRootData(model.component.data, {});
+    expect(data[0].transform[0]).toEqual({type: 'sequence', start: 0, stop: 20, step: 2});
   });
 });

@@ -198,7 +198,10 @@ describe('Multi Selection', () => {
         values: [
           {
             unit: '',
-            fields: [{field: 'Horsepower', channel: 'x', type: 'E'}, {field: 'Origin', channel: 'color', type: 'E'}],
+            fields: [
+              {field: 'Horsepower', channel: 'x', type: 'E'},
+              {field: 'Origin', channel: 'color', type: 'E'}
+            ],
             values: [50, 'Japan']
           }
         ]
@@ -208,12 +211,18 @@ describe('Multi Selection', () => {
         values: [
           {
             unit: '',
-            fields: [{type: 'E', field: 'Year'}, {type: 'E', field: 'Origin'}],
+            fields: [
+              {type: 'E', field: 'Year'},
+              {type: 'E', field: 'Origin'}
+            ],
             values: [+new Date(1970, 1, 2, 0, 0, 0, 0), 'Japan']
           },
           {
             unit: '',
-            fields: [{type: 'E', field: 'Year'}, {type: 'E', field: 'Origin'}],
+            fields: [
+              {type: 'E', field: 'Year'},
+              {type: 'E', field: 'Origin'}
+            ],
             values: [+new Date(1980, 1, 2, 0, 0, 0, 0), 'USA']
           }
         ]

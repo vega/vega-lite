@@ -28,8 +28,8 @@
             "bin_maxbins_60_IMDB_Rating_end"
           ],
           "signal": "bin_maxbins_60_IMDB_Rating_bins",
-          "maxbins": 60,
-          "extent": {"signal": "bin_maxbins_60_IMDB_Rating_extent"}
+          "extent": {"signal": "bin_maxbins_60_IMDB_Rating_extent"},
+          "maxbins": 60
         },
         {
           "type": "extent",
@@ -44,8 +44,8 @@
             "bin_maxbins_40_Rotten_Tomatoes_Rating_end"
           ],
           "signal": "bin_maxbins_40_Rotten_Tomatoes_Rating_bins",
-          "maxbins": 40,
-          "extent": {"signal": "bin_maxbins_40_Rotten_Tomatoes_Rating_extent"}
+          "extent": {"signal": "bin_maxbins_40_Rotten_Tomatoes_Rating_extent"},
+          "maxbins": 40
         },
         {
           "type": "aggregate",

@@ -42,8 +42,8 @@
           "field": "temp_min",
           "as": ["bin_maxbins_10_temp_min", "bin_maxbins_10_temp_min_end"],
           "signal": "concat_1_bin_maxbins_10_temp_min_bins",
-          "maxbins": 10,
-          "extent": {"signal": "concat_1_bin_maxbins_10_temp_min_extent"}
+          "extent": {"signal": "concat_1_bin_maxbins_10_temp_min_extent"},
+          "maxbins": 10
         },
         {
           "type": "extent",
@@ -55,8 +55,8 @@
           "field": "temp_max",
           "as": ["bin_maxbins_10_temp_max", "bin_maxbins_10_temp_max_end"],
           "signal": "concat_1_bin_maxbins_10_temp_max_bins",
-          "maxbins": 10,
-          "extent": {"signal": "concat_1_bin_maxbins_10_temp_max_extent"}
+          "extent": {"signal": "concat_1_bin_maxbins_10_temp_max_extent"},
+          "maxbins": 10
         },
         {
           "type": "aggregate",

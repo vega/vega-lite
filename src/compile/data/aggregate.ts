@@ -11,10 +11,10 @@ import {binRequiresRange, FieldDef, hasBand, isTypedFieldDef, vgField} from '../
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util';
-import {VgAggregateTransform} from '../../vega.schema';
 import {isUnitModel, ModelWithField} from '../model';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
+import {AggregateTransform as VgAggregateTransform} from 'vega';
 
 type Measures = Dict<{[key in AggregateOp]?: Set<string>}>;
 

@@ -1,9 +1,10 @@
 import {isFieldDef, vgField} from '../../channeldef';
 import {GEOJSON} from '../../type';
-import {VgGeoShapeTransform, VgPostEncodingTransform} from '../../vega.schema';
+import {VgPostEncodingTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as mixins from './mixins';
+import {GeoShapeTransform as VgGeoShapeTransform} from 'vega';
 
 export const geoshape: MarkCompiler = {
   vgMark: 'shape',

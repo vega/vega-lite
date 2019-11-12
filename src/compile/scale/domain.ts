@@ -7,7 +7,7 @@ import {
   SHARED_DOMAIN_OP_INDEX,
   MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX
 } from '../../aggregate';
-import {isBinning} from '../../bin';
+import {isBinning, isSelectionExtent, isBinParams} from '../../bin';
 import {getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
 import {binRequiresRange, hasBand, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
 import {MAIN, RAW} from '../../data';
@@ -33,7 +33,6 @@ import {getBinSignalName} from '../data/bin';
 import {sortArrayIndexField} from '../data/calculate';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
-import {SELECTION_DOMAIN} from '../selection';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
@@ -48,32 +47,13 @@ export function parseScaleDomain(model: Model) {
 }
 
 function parseUnitScaleDomain(model: UnitModel) {
-  const scales = model.specifiedScales;
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
   util.keys(localScaleComponents).forEach((channel: ScaleChannel) => {
-    const specifiedScale = scales[channel];
-    const specifiedDomain = specifiedScale ? specifiedScale.domain : undefined;
-
     const domains = parseDomainForChannel(model, channel);
     const localScaleCmpt = localScaleComponents[channel];
     localScaleCmpt.setWithExplicit('domains', domains);
-
-    if (isSelectionDomain(specifiedDomain)) {
-      // As scale parsing occurs before selection parsing, we use a temporary
-      // signal here and append the scale.domain definition. This is replaced
-      // with the correct domainRaw signal during scale assembly.
-      // For more information, see isRawSelectionDomain in selection.ts.
-
-      // FIXME: replace this with a special property in the scaleComponent
-      localScaleCmpt.set(
-        'domainRaw',
-        {
-          signal: SELECTION_DOMAIN + util.hash(specifiedDomain)
-        },
-        true
-      );
-    }
+    parseSelectionDomain(model, channel);
 
     if (model.component.data.isFaceted) {
       // get resolve from closest facet parent as this decides whether we need to refer to cloned subtree or not
@@ -106,7 +86,7 @@ function parseNonUnitScaleDomain(model: Model) {
 
   util.keys(localScaleComponents).forEach((channel: ScaleChannel) => {
     let domains: Explicit<VgNonUnionDomain[]>;
-    let domainRaw = null;
+    let selectionExtent = null;
 
     for (const child of model.children) {
       const childComponent = child.component.scales[channel];
@@ -123,18 +103,18 @@ function parseNonUnitScaleDomain(model: Model) {
           );
         }
 
-        const dr = childComponent.get('domainRaw');
-        if (domainRaw && dr && domainRaw.signal !== dr.signal) {
+        const se = childComponent.get('selectionExtent');
+        if (selectionExtent && se && selectionExtent.selection !== se.selection) {
           log.warn('The same selection must be used to override scale domains in a layered view.');
         }
-        domainRaw = dr;
+        selectionExtent = se;
       }
     }
 
     localScaleComponents[channel].setWithExplicit('domains', domains);
 
-    if (domainRaw) {
-      localScaleComponents[channel].set('domainRaw', domainRaw, true);
+    if (selectionExtent) {
+      localScaleComponents[channel].set('selectionExtent', selectionExtent, true);
     }
   });
 }
@@ -372,6 +352,21 @@ function normalizeSortField(sort: EncodingSortField<string>, isStacked: boolean)
   };
 }
 
+function parseSelectionDomain(model: UnitModel, channel: ScaleChannel) {
+  const scale = model.component.scales[channel];
+  const spec = model.specifiedScales[channel].domain;
+  const bin = model.fieldDef(channel).bin;
+  const domain = isSelectionDomain(spec) && spec;
+  const extent = isBinParams(bin) && isSelectionExtent(bin.extent) && bin.extent;
+
+  if (domain || extent) {
+    // As scale parsing occurs before selection parsing, we cannot set
+    // domainRaw directly. So instead, we store the selectionExtent on
+    // the scale component, and then add domainRaw during scale assembly.
+    scale.set('selectionExtent', domain || extent, true);
+  }
+}
+
 export function domainSort(
   model: UnitModel,
   channel: ScaleChannel,
@@ -512,7 +507,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
         if (isDataRefDomain(d)) {
           const s = d.sort;
           if (s !== undefined && !util.isBoolean(s)) {
-            if (s.op === 'count') {
+            if ('op' in s && s.op === 'count') {
               // let's make sure that if op is count, we don't use a field
               delete s.field;
             }
@@ -550,7 +545,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
   // only keep sort properties that work with unioned domains
   const unionDomainSorts = util.unique<VgUnionSortField>(
     sorts.map(s => {
-      if (util.isBoolean(s) || s.op in UNIONDOMAIN_SORT_OP_INDEX) {
+      if (util.isBoolean(s) || !('op' in s) || s.op in UNIONDOMAIN_SORT_OP_INDEX) {
         return s as VgUnionSortField;
       }
       log.warn(log.message.domainSortDropped(s));
@@ -608,19 +603,19 @@ export function getFieldFromDomain(domain: VgDomain): string {
           field = nonUnionDomain.field;
         } else if (field !== nonUnionDomain.field) {
           log.warn(
-            'Detected faceted independent scales that union domain of multiple fields from different data sources.  We will use the first field.  The result view size may be incorrect.'
+            'Detected faceted independent scales that union domain of multiple fields from different data sources. We will use the first field. The result view size may be incorrect.'
           );
           return field;
         }
       }
     }
     log.warn(
-      'Detected faceted independent scales that union domain of identical fields from different source detected.  We will assume that this is the same field from a different fork of the same data source.  However, if this is not case, the result view size maybe incorrect.'
+      'Detected faceted independent scales that union domain of identical fields from different source detected. We will assume that this is the same field from a different fork of the same data source. However, if this is not case, the result view size maybe incorrect.'
     );
     return field;
   } else if (isFieldRefUnionDomain(domain)) {
     log.warn(
-      'Detected faceted independent scales that union domain of multiple fields from the same data source.  We will use the first field.  The result view size may be incorrect.'
+      'Detected faceted independent scales that union domain of multiple fields from the same data source. We will use the first field. The result view size may be incorrect.'
     );
     const field = domain.fields[0];
     return isString(field) ? field : undefined;

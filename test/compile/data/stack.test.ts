@@ -247,7 +247,10 @@ describe('compile/data/stack', () => {
         stack: 'people',
         groupby: ['age', 'gender'],
         offset: 'normalize',
-        sort: [{field: 'height', order: 'ascending'}, {field: 'weight', order: 'descending'}],
+        sort: [
+          {field: 'height', order: 'ascending'},
+          {field: 'weight', order: 'descending'}
+        ],
         as: 'val'
       };
       const stack = StackNode.makeFromTransform(null, transform);

@@ -51,7 +51,7 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### General
 
-{% include table.html props="bandPosition,maxExtent,minExtent,orient,offset,position,zindex" source="Axis" %}
+{% include table.html props="bandPosition,maxExtent,minExtent,orient,offset,position,translate,zindex" source="Axis" %}
 
 #### Example: Using Axis `minExtent` to Align Multi-View Plots
 
@@ -81,7 +81,7 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 ### Ticks
 
-{% include table.html props="tickColor,tickCount,tickExtra,tickOffset,tickOpacity,tickRound,ticks,tickSize,tickWidth,values" source="Axis" %}
+{% include table.html props="tickColor,tickCount,tickExtra,tickOffset,tickOpacity,tickRound,ticks,tickSize,tickWidth,tickBand,values" source="Axis" %}
 
 {:#title}
 

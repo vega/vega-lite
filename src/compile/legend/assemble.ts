@@ -43,7 +43,7 @@ export function assembleLegends(model: Model): VgLegend[] {
     .map((legendCmpt: LegendComponent) => {
       const {labelExpr, ...legend} = legendCmpt.combine();
 
-      if (legend.encode && legend.encode.symbols) {
+      if (legend.encode?.symbols) {
         const out = legend.encode.symbols.update;
         if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
           // For non color channel's legend, we need to override symbol stroke config from Vega config if stroke channel is not used.
@@ -58,12 +58,7 @@ export function assembleLegends(model: Model): VgLegend[] {
 
       if (labelExpr !== undefined) {
         let expr = labelExpr;
-        if (
-          legend.encode &&
-          legend.encode.labels &&
-          legend.encode.labels.update &&
-          isSignalRef(legend.encode.labels.update.text)
-        ) {
+        if (legend.encode?.labels?.update && isSignalRef(legend.encode.labels.update.text)) {
           expr = replaceAll(labelExpr, 'datum.label', legend.encode.labels.update.text.signal);
         }
 

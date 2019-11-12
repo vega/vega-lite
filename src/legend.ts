@@ -47,7 +47,7 @@ export type LegendConfig = LegendMixins &
     /**
      * The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.
      *
-     * __Default value:__ `undefined`.  If `undefined`, the default gradient will be determined based on the following rules:
+     * __Default value:__ `undefined`. If `undefined`, the default gradient will be determined based on the following rules:
      * - For vertical gradients, `clamp(plot_height, gradientVerticalMinLength, gradientVerticalMaxLength)`
      * - For top-`orient`ed or bottom-`orient`ed horizontal gradients, `clamp(plot_width, gradientHorizontalMinLength, gradientHorizontalMaxLength)`
      * - For other horizontal gradients, `gradientHorizontalMinLength`

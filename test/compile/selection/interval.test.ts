@@ -64,7 +64,10 @@ describe('Interval Selections', () => {
       zoom: false,
       encodings: ['x'],
       init: {
-        x: [{year: 2000, month: 10, day: 5}, {year: 2001, month: 1, day: 13}]
+        x: [
+          {year: 2000, month: 10, day: 5},
+          {year: 2001, month: 1, day: 13}
+        ]
       }
     }
   }));

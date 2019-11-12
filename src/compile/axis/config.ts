@@ -19,7 +19,7 @@ export function getAxisConfig(
     'axis'
   ];
   for (const configType of configTypes) {
-    if (config[configType] && config[configType][property] !== undefined) {
+    if (config[configType]?.[property] !== undefined) {
       return config[configType][property];
     }
   }

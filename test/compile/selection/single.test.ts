@@ -192,7 +192,10 @@ describe('Single Selection', () => {
         values: [
           {
             unit: '',
-            fields: [{field: 'Horsepower', channel: 'x', type: 'E'}, {field: 'Origin', channel: 'color', type: 'E'}],
+            fields: [
+              {field: 'Horsepower', channel: 'x', type: 'E'},
+              {field: 'Origin', channel: 'color', type: 'E'}
+            ],
             values: [50, 'Japan']
           }
         ]

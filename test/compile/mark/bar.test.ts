@@ -40,8 +40,14 @@ describe('Mark: Bar', () => {
       }
     });
     const props = bar.encodeEntry(model);
-    expect(props.x).toEqual([{test: fieldInvalidPredicate(x), value: 0}, {scale: 'x', field: 'bin_start'}]);
-    expect(props.x2).toEqual([{test: fieldInvalidPredicate(x2), value: 0}, {scale: 'x', field: 'bin_end'}]);
+    expect(props.x).toEqual([
+      {test: fieldInvalidPredicate(x), value: 0},
+      {scale: 'x', field: 'bin_start'}
+    ]);
+    expect(props.x2).toEqual([
+      {test: fieldInvalidPredicate(x2), value: 0},
+      {scale: 'x', field: 'bin_end'}
+    ]);
     expect(props.y).toEqual({scale: 'y', field: 'Acceleration'});
     expect(props.y2).toEqual({scale: 'y', value: 0});
     expect(props.height).toBeUndefined();
@@ -886,7 +892,10 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should produce horizontal bar using x, x2', () => {
-      expect(props.xc).toEqual([{test: fieldInvalidPredicate(x), value: 0}, {scale: 'x', field: 'Acceleration'}]);
+      expect(props.xc).toEqual([
+        {test: fieldInvalidPredicate(x), value: 0},
+        {scale: 'x', field: 'Acceleration'}
+      ]);
       expect(props.width).toEqual({value: defaultBarConfig.continuousBandSize});
       expect(props.y).toEqual({scale: 'y', field: 'Horsepower'});
       expect(props.y2).toEqual({scale: 'y', value: 0});

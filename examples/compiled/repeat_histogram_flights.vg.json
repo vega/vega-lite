@@ -20,10 +20,10 @@
           "field": "delay",
           "as": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
           "signal": "child__repeat_column_delay_bin_maxbins_20_delay_bins",
-          "maxbins": 20,
           "extent": {
             "signal": "child__repeat_column_delay_bin_maxbins_20_delay_extent"
-          }
+          },
+          "maxbins": 20
         },
         {
           "type": "extent",
@@ -35,10 +35,10 @@
           "field": "distance",
           "as": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
           "signal": "child__repeat_column_distance_bin_maxbins_20_distance_bins",
-          "maxbins": 20,
           "extent": {
             "signal": "child__repeat_column_distance_bin_maxbins_20_distance_extent"
-          }
+          },
+          "maxbins": 20
         },
         {"type": "formula", "expr": "hours(datum.date)", "as": "time"}
       ]
@@ -57,10 +57,10 @@
           "field": "time",
           "as": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
           "signal": "child__repeat_column_time_bin_maxbins_20_time_bins",
-          "maxbins": 20,
           "extent": {
             "signal": "child__repeat_column_time_bin_maxbins_20_time_extent"
-          }
+          },
+          "maxbins": 20
         },
         {
           "type": "aggregate",

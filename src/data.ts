@@ -3,6 +3,7 @@
  */
 import {VgData} from './vega.schema';
 import {FieldName} from './channeldef';
+import {Vector2} from 'vega';
 
 export type ParseValue = null | string | 'string' | 'boolean' | 'date' | 'number';
 
@@ -209,17 +210,17 @@ export interface GraticuleParams {
   /**
    * The major extent of the graticule as a two-element array of coordinates.
    */
-  extentMajor?: number[][];
+  extentMajor?: Vector2<Vector2<number>>;
 
   /**
    * The minor extent of the graticule as a two-element array of coordinates.
    */
-  extentMinor?: number[][];
+  extentMinor?: Vector2<Vector2<number>>;
 
   /**
    * Sets both the major and minor extents to the same values.
    */
-  extent?: number[][];
+  extent?: Vector2<Vector2<number>>;
 
   /**
    * The major step angles of the graticule.
@@ -227,19 +228,19 @@ export interface GraticuleParams {
    *
    * __Default value:__ `[90, 360]`
    */
-  stepMajor?: number[];
+  stepMajor?: Vector2<number>;
 
   /**
    * The minor step angles of the graticule.
    *
    * __Default value:__ `[10, 10]`
    */
-  stepMinor?: number[];
+  stepMinor?: Vector2<number>;
 
   /**
    * Sets both the major and minor step angles to the same values.
    */
-  step?: number[];
+  step?: Vector2<number>;
 
   /**
    * The precision of the graticule in degrees.

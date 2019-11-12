@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Dominik Moritz, Kanit \"Ham\" Wongsuphasawat, Arvind Satyanarayan, Jeffrey Heer",
-  "version": "4.0.0-beta.10",
+  "version": "4.0.0-beta.11",
   "collaborators": [
     "Kanit Wongsuphasawat (http://kanitw.yellowpigz.com)",
     "Dominik Moritz (https://www.domoritz.de)",
@@ -72,12 +72,12 @@
     "@types/chai": "^4.2.4",
     "@types/d3": "^5.7.2",
     "@types/highlight.js": "^9.12.3",
-    "@types/jest": "^24.0.21",
+    "@types/jest": "^24.0.22",
     "@types/jest-environment-puppeteer": "^4.3.1",
     "@types/mkdirp": "^0.5.2",
     "@types/puppeteer": "^1.20.2",
-    "@typescript-eslint/eslint-plugin": "^2.6.1",
-    "@typescript-eslint/parser": "^2.6.1",
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
     "ajv": "^6.10.2",
     "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.2",
@@ -95,21 +95,21 @@
     "jest-puppeteer": "^4.3.0",
     "lint-staged": "^9.4.2",
     "mkdirp": "^0.5.1",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "puppeteer": "^2.0.0",
-    "rollup": "^1.26.3",
+    "rollup": "^1.27.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-terser": "^5.1.2",
     "svg2png-many": "^0.0.7",
-    "terser": "^4.3.9",
+    "terser": "^4.4.0",
     "ts-jest": "^24.1.0",
-    "ts-json-schema-generator": "^0.55.0",
-    "typescript": "~3.7.1-rc",
-    "vega-cli": "^5.7.3",
-    "vega-datasets": "^1.26.0",
+    "ts-json-schema-generator": "^0.56.0",
+    "typescript": "~3.7.2",
+    "vega-cli": "^5.8.0",
+    "vega-datasets": "^1.27.0",
     "vega-embed": "^6.0.0",
     "vega-tooltip": "^0.19.1",
     "yaml-front-matter": "^4.0.0"
@@ -125,12 +125,12 @@
     "tslib": "~1.10.0",
     "vega-event-selector": "~2.0.1",
     "vega-expression": "~2.6.2",
-    "vega-typings": "~0.10.2",
+    "vega-typings": "~0.11.0",
     "vega-util": "~1.12.0",
     "yargs": "~14.2.0"
   },
   "peerDependencies": {
-    "vega": "^5.7.2"
+    "vega": "^5.8.0"
   },
   "husky": {
     "hooks": {
