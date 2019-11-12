@@ -73,7 +73,7 @@ describe('Examples', () => {
           expect(jsonSpec).toEqual(originalSpec);
         });
 
-        it('should be valid vega-lite with proper $schema', () => {
+        it('should be valid Vega-Lite with proper $schema', () => {
           if (
             // Ignore all examples with "_future" suffix
             example.lastIndexOf('_future.vl.json', example.length - futureSuffixLength) >= 0

@@ -5,7 +5,7 @@ title: Customizing Size
 permalink: /docs/size.html
 ---
 
-This page describe how to adjust width and height of visualizations in Vega-lite.
+This page describe how to adjust width and height of visualizations in Vega-Lite.
 
 ## Documentation Overview
 

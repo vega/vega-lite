@@ -31,7 +31,7 @@ export interface CompileOptions {
 }
 
 /**
- * Vega-Lite's main function, for compiling Vega-lite spec into Vega spec.
+ * Vega-Lite's main function, for compiling Vega-Lite spec into Vega spec.
  *
  * At a high-level, we make the following transformations in different phases:
  *
