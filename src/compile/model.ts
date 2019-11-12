@@ -57,7 +57,7 @@ import {UnitModel} from './unit';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
- * compilations.  The components represents parts of the specification in a form that
+ * compilations. The components represents parts of the specification in a form that
  * can be easily merged (during parsing for composite specs).
  * In addition, these components are easily transformed into Vega specifications
  * during the "assemble" phase, which is the last phase of the compilation step.
@@ -130,23 +130,23 @@ export class NameMap implements NameMapInterface {
 */
 
 export function isUnitModel(model: Model): model is UnitModel {
-  return model && model.type === 'unit';
+  return model?.type === 'unit';
 }
 
 export function isFacetModel(model: Model): model is FacetModel {
-  return model && model.type === 'facet';
+  return model?.type === 'facet';
 }
 
 export function isRepeatModel(model: Model): model is RepeatModel {
-  return model && model.type === 'repeat';
+  return model?.type === 'repeat';
 }
 
 export function isConcatModel(model: Model): model is ConcatModel {
-  return model && model.type === 'concat';
+  return model?.type === 'concat';
 }
 
 export function isLayerModel(model: Model): model is LayerModel {
-  return model && model.type === 'layer';
+  return model?.type === 'layer';
 }
 
 export abstract class Model {
@@ -293,7 +293,7 @@ export abstract class Model {
 
   public assembleGroupStyle(): string | string[] {
     if (this.type === 'unit' || this.type === 'layer') {
-      return (this.view && this.view.style) || 'cell';
+      return this.view?.style || 'cell';
     }
     return undefined;
   }
@@ -417,7 +417,7 @@ export abstract class Model {
   }
 
   /**
-   * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
+   * Assemble the mark group for this model. We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
    */
   public assembleGroup(signals: NewSignal[] = []) {
     const group: VgMarkGroup = {};
@@ -623,7 +623,7 @@ export abstract class Model {
     /* istanbul ignore next: This is warning for debugging test */
     if (!this.component.scales) {
       throw new Error(
-        'getScaleComponent cannot be called before parseScale().  Make sure you have called parseScale or use parseUnitModelWithScale().'
+        'getScaleComponent cannot be called before parseScale(). Make sure you have called parseScale or use parseUnitModelWithScale().'
       );
     }
 
@@ -649,7 +649,7 @@ export abstract class Model {
   }
 }
 
-/** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
+/** Abstract class for UnitModel and FacetModel. Both of which can contain fieldDefs as a part of its own specification. */
 export abstract class ModelWithField extends Model {
   public abstract fieldDef(channel: SingleDefChannel): FieldDef<any>;
 

@@ -384,7 +384,7 @@ export interface BaseMarkConfig {
   aspect?: boolean;
 
   /**
-   * Default Fill Color.  This has higher precedence than `config.color`.
+   * Default Fill Color. This has higher precedence than `config.color`.
    *
    * __Default value:__ (None)
    *
@@ -392,7 +392,7 @@ export interface BaseMarkConfig {
   fill?: Color | Gradient;
 
   /**
-   * Default Stroke Color.  This has higher precedence than `config.color`.
+   * Default Stroke Color. This has higher precedence than `config.color`.
    *
    * __Default value:__ (None)
    *

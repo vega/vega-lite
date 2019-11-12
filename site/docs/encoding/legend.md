@@ -27,7 +27,7 @@ Otherwise, symbol legends are generated.
 
 ## Combined Legend
 
-If multiple channels encode the same fields, Vega-lite automatically combines their legends. For example, the following plot uses both `color` and `shape` to encode `Origin`; as a result, its legend shows the encoded colors and shapes.
+If multiple channels encode the same fields, Vega-Lite automatically combines their legends. For example, the following plot uses both `color` and `shape` to encode `Origin`; as a result, its legend shows the encoded colors and shapes.
 
 <div class="vl-example" data-name="point_color_with_shape"></div>
 

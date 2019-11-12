@@ -1,4 +1,4 @@
-import {Color} from 'vega';
+import {Color, SymbolShape} from 'vega';
 import {isObject, mergeConfig} from 'vega-util';
 import {AxisConfigMixins} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
@@ -27,7 +27,6 @@ export interface ViewConfig extends BaseViewBackground {
    * The default width when the plot has a continuous x-field.
    *
    * __Default value:__ `200`
-   *
    */
   continuousWidth?: number;
 
@@ -35,14 +34,12 @@ export interface ViewConfig extends BaseViewBackground {
    * The default width when the plot has either a discrete x-field or no x-field.
    *
    * __Default value:__ a step size based on `config.view.step`.
-   *
    */
   discreteWidth?: number | {step: number};
   /**
    * The default height when the plot has a continuous y-field.
    *
    * __Default value:__ `200`
-   *
    */
   continuousHeight?: number;
 
@@ -50,7 +47,6 @@ export interface ViewConfig extends BaseViewBackground {
    * The default height when the plot has either a discrete y-field or no y-field.
    *
    * __Default value:__ a step size based on `config.view.step`.
-   *
    */
   discreteHeight?: number | {step: number};
 
@@ -120,7 +116,7 @@ export interface RangeConfigProps {
   /**
    * Default range palette for the `shape` channel.
    */
-  symbol?: string[];
+  symbol?: SymbolShape[];
 }
 
 export function isVgScheme(rangeConfig: string[] | SchemeConfig): rangeConfig is SchemeConfig {
@@ -138,7 +134,7 @@ export interface VLOnlyConfig {
   countTitle?: string;
 
   /**
-   * Defines how Vega-Lite generates title for fields.  There are three possible styles:
+   * Defines how Vega-Lite generates title for fields. There are three possible styles:
    * - `"verbal"` (Default) - displays function in a verbal style (e.g., "Sum of field", "Year-month of date", "field (binned)").
    * - `"function"` - displays function using parentheses and capitalized texts (e.g., "SUM(field)", "YEARMONTH(date)", "BIN(field)").
    * - `"plain"` - displays only the field name without functions (e.g., "field", "date", "field").
@@ -210,7 +206,7 @@ export interface Config
    */
   projection?: ProjectionConfig;
 
-  /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](https://vega.github.io/vega-lite/docs/mark.html#mark-def). The keys represent styles names; the values have to be valid [mark configuration objects](https://vega.github.io/vega-lite/docs/mark.html#config).  */
+  /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](https://vega.github.io/vega-lite/docs/mark.html#mark-def). The keys represent styles names; the values have to be valid [mark configuration objects](https://vega.github.io/vega-lite/docs/mark.html#config). */
   style?: StyleConfigIndex;
 }
 

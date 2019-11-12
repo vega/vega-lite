@@ -65,10 +65,12 @@ export function forEachSelection(
   cb: (selCmpt: SelectionComponent, selCompiler: SelectionCompiler) => void
 ) {
   const selections = model.component.selection;
-  for (const name in selections) {
-    if (hasOwnProperty(selections, name)) {
-      const sel = selections[name];
-      cb(sel, compilers[sel.type]);
+  if (selections) {
+    for (const name in selections) {
+      if (hasOwnProperty(selections, name)) {
+        const sel = selections[name];
+        cb(sel, compilers[sel.type]);
+      }
     }
   }
 }

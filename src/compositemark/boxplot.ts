@@ -45,7 +45,7 @@ export interface BoxPlotConfig extends BoxPlotPartsMixins {
   /**
    * The extent of the whiskers. Available options include:
    * - `"min-max"`: min and max are the lower and upper whiskers respectively.
-   * - A number representing multiple of the interquartile range.  This number will be multiplied by the IQR to determine whisker boundary, which spans from the smallest data to the largest data within the range _[Q1 - k * IQR, Q3 + k * IQR]_ where _Q1_ and _Q3_ are the first and third quartiles while _IQR_ is the interquartile range (_Q3-Q1_).
+   * - A number representing multiple of the interquartile range. This number will be multiplied by the IQR to determine whisker boundary, which spans from the smallest data to the largest data within the range _[Q1 - k * IQR, Q3 + k * IQR]_ where _Q1_ and _Q3_ are the first and third quartiles while _IQR_ is the interquartile range (_Q3-Q1_).
    *
    * __Default value:__ `1.5`.
    */
@@ -55,13 +55,13 @@ export interface BoxPlotConfig extends BoxPlotPartsMixins {
 export type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> &
   BoxPlotConfig & {
     /**
-     * Type of the mark.  For box plots, this should always be `"boxplot"`.
+     * Type of the mark. For box plots, this should always be `"boxplot"`.
      * [boxplot](https://vega.github.io/vega-lite/docs/boxplot.html)
      */
     type: BoxPlot;
 
     /**
-     * Orientation of the box plot.  This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous.
+     * Orientation of the box plot. This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous.
      *
      * __Default value:__ `"vertical"`.
      */
@@ -81,7 +81,7 @@ export function getBoxPlotType(extent: number | 'min-max') {
   if (isNumber(extent)) {
     return 'tukey';
   }
-  // Ham: If we ever want to, we could add another extent syntax `{kIQR: number}` for the original [Q1-k*IQR, Q3+k*IQR] whisker and call this boxPlotType = `kIQR`.  However, I'm not exposing this for now.
+  // Ham: If we ever want to, we could add another extent syntax `{kIQR: number}` for the original [Q1-k*IQR, Q3+k*IQR] whisker and call this boxPlotType = `kIQR`. However, I'm not exposing this for now.
   return extent;
 }
 

@@ -31,7 +31,7 @@ export interface CompileOptions {
 }
 
 /**
- * Vega-Lite's main function, for compiling Vega-lite spec into Vega spec.
+ * Vega-Lite's main function, for compiling Vega-Lite spec into Vega spec.
  *
  * At a high-level, we make the following transformations in different phases:
  *
@@ -75,7 +75,7 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
 
     // 2. Normalize: Convert input spec -> normalized spec
 
-    // - Decompose all extended unit specs into composition of unit spec.  For example, a box plot get expanded into multiple layers of bars, ticks, and rules. The shorthand row/column channel is also expanded to a facet spec.
+    // - Decompose all extended unit specs into composition of unit spec. For example, a box plot get expanded into multiple layers of bars, ticks, and rules. The shorthand row/column channel is also expanded to a facet spec.
     // - Normalize autosize and width or height spec
     const spec = normalize(inputSpec, config);
 

@@ -255,7 +255,7 @@ export interface ImputeSequence {
 }
 
 export function isImputeSequence(t: ImputeSequence | any[] | undefined): t is ImputeSequence {
-  return t && t['stop'] !== undefined;
+  return t?.['stop'] !== undefined;
 }
 
 export interface ImputeTransform extends ImputeParams {

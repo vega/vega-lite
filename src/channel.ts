@@ -156,7 +156,7 @@ const {row: _r, column: _c, facet: _f, ...SINGLE_DEF_UNIT_CHANNEL_INDEX} = SINGL
  *
  * (The only two channels that can have an array of channelDefs are "detail" and "order".
  * Since there can be multiple fieldDefs for detail and order, getFieldDef/model.fieldDef
- * are not applicable for them.  Similarly, selection projection won't work with "detail" and "order".)
+ * are not applicable for them. Similarly, selection projection won't work with "detail" and "order".)
  */
 
 export const SINGLE_DEF_CHANNELS = keys(SINGLE_DEF_CHANNEL_INDEX);

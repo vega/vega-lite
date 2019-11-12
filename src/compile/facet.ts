@@ -153,7 +153,7 @@ export class FacetModel extends ModelWithField {
           }
         }
 
-        if (headerComponent && headerComponent[0]) {
+        if (headerComponent?.[0]) {
           // set header/footerBand
           const sizeType = channel === 'row' ? 'height' : 'width';
           const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';

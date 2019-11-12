@@ -11,7 +11,7 @@ For example, this example chart shows all airports in the United States by proje
 
 <span class="vl-example" data-name="geo_point"></span>
 
-See [the example gallery for more examples with geographic projection](../examples/#geographical-maps).
+See [the example gallery for more examples with geographic projection](../examples/#maps-geographic-displays).
 
 {:#properties}
 
