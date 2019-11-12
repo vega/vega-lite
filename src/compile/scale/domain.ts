@@ -507,7 +507,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
         if (isDataRefDomain(d)) {
           const s = d.sort;
           if (s !== undefined && !util.isBoolean(s)) {
-            if (s.op === 'count') {
+            if ('op' in s && s.op === 'count') {
               // let's make sure that if op is count, we don't use a field
               delete s.field;
             }
@@ -545,7 +545,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
   // only keep sort properties that work with unioned domains
   const unionDomainSorts = util.unique<VgUnionSortField>(
     sorts.map(s => {
-      if (util.isBoolean(s) || s.op in UNIONDOMAIN_SORT_OP_INDEX) {
+      if (util.isBoolean(s) || !('op' in s) || s.op in UNIONDOMAIN_SORT_OP_INDEX) {
         return s as VgUnionSortField;
       }
       log.warn(log.message.domainSortDropped(s));

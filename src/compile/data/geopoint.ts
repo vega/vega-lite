@@ -1,8 +1,9 @@
+import {GeoPointTransform as VgGeoPointTransform, Vector2} from 'vega';
 import {isString} from 'vega-util';
 import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2} from '../../channel';
 import {isValueDef, ValueDef} from '../../channeldef';
 import {duplicate, hash} from '../../util';
-import {VgExprRef, VgGeoPointTransform} from '../../vega.schema';
+import {VgExprRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
@@ -14,7 +15,7 @@ export class GeoPointNode extends DataFlowNode {
   constructor(
     parent: DataFlowNode,
     private projection: string,
-    private fields: (string | VgExprRef)[],
+    private fields: [string | VgExprRef, string | VgExprRef],
     private as: [string, string]
   ) {
     super(parent);
@@ -25,17 +26,17 @@ export class GeoPointNode extends DataFlowNode {
       return parent;
     }
 
-    [
+    for (const coordinates of [
       [LONGITUDE, LATITUDE],
       [LONGITUDE2, LATITUDE2]
-    ].forEach((coordinates: GeoPositionChannel[]) => {
+    ] as Vector2<GeoPositionChannel>[]) {
       const pair = coordinates.map(channel =>
         model.channelHasField(channel)
           ? model.fieldDef(channel).field
           : isValueDef(model.encoding[channel])
           ? {expr: (model.encoding[channel] as ValueDef<number>).value + ''}
           : undefined
-      );
+      ) as [GeoPositionChannel, GeoPositionChannel];
 
       const suffix = coordinates[0] === LONGITUDE2 ? '2' : '';
 
@@ -45,7 +46,7 @@ export class GeoPointNode extends DataFlowNode {
           model.getName('y' + suffix)
         ]);
       }
-    });
+    }
 
     return parent;
   }

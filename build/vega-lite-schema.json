@@ -653,7 +653,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10055|undefined)870796116,undefined>870796116|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>"
             }
           ]
         },
@@ -670,7 +670,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8592-8644-981995915-0-10055|undefined)186452232,undefined>186452232|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>"
             }
           ]
         },
@@ -744,7 +744,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8836-8977-981995915-0-10055|undefined)679934267,undefined>679934267|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>"
             }
           ]
         },
@@ -755,7 +755,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8687-8836-981995915-0-10055|undefined)1209375024,undefined>1209375024|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>"
             }
           ]
         },
@@ -809,6 +809,14 @@
         "position": {
           "description": "The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
           "type": "number"
+        },
+        "tickBand": {
+          "description": "For band scales, indicates if ticks and grid lines should be placed at the center of a band (default) or at the band extents to indicate intervals.",
+          "enum": [
+            "center",
+            "extent"
+          ],
+          "type": "string"
         },
         "tickColor": {
           "anyOf": [
@@ -985,6 +993,10 @@
           "description": "Y-coordinate of the axis title relative to the axis group.",
           "type": "number"
         },
+        "translate": {
+          "description": "Translation offset in pixels applied to the axis group mark x and y. If specified, overrides the default behavior of a 0.5 offset to pixel-align stroked lines.",
+          "type": "number"
+        },
         "values": {
           "anyOf": [
             {
@@ -1142,7 +1154,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10055|undefined)870796116,undefined>870796116|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>"
             }
           ]
         },
@@ -1159,7 +1171,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8592-8644-981995915-0-10055|undefined)186452232,undefined>186452232|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>"
             }
           ]
         },
@@ -1229,7 +1241,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8836-8977-981995915-0-10055|undefined)679934267,undefined>679934267|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>"
             }
           ]
         },
@@ -1240,7 +1252,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8687-8836-981995915-0-10055|undefined)1209375024,undefined>1209375024|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>"
             }
           ]
         },
@@ -1290,6 +1302,14 @@
         "shortTimeLabels": {
           "description": "Whether month names and weekday names should be abbreviated.\n\n__Default value:__  `false`",
           "type": "boolean"
+        },
+        "tickBand": {
+          "description": "For band scales, indicates if ticks and grid lines should be placed at the center of a band (default) or at the band extents to indicate intervals.",
+          "enum": [
+            "center",
+            "extent"
+          ],
+          "type": "string"
         },
         "tickColor": {
           "anyOf": [
@@ -1449,6 +1469,10 @@
         },
         "titleY": {
           "description": "Y-coordinate of the axis title relative to the axis group.",
+          "type": "number"
+        },
+        "translate": {
+          "description": "Translation offset in pixels applied to the axis group mark x and y. If specified, overrides the default behavior of a 0.5 offset to pixel-align stroked lines.",
           "type": "number"
         }
       },
@@ -2897,17 +2921,17 @@
         }
       ]
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10055|undefined)870796116,undefined>870796116|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10055|undefined)870796116,undefined>870796116|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10055|undefined)870796116,undefined>870796116|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>>"
               },
               "type": "array"
             }
@@ -2932,17 +2956,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8592-8644-981995915-0-10055|undefined)186452232,undefined>186452232|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8592-8644-981995915-0-10055|undefined)186452232,undefined>186452232|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8592-8644-981995915-0-10055|undefined)186452232,undefined>186452232|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>>"
               },
               "type": "array"
             }
@@ -2967,17 +2991,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8687-8836-981995915-0-10055|undefined)1209375024,undefined>1209375024|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8687-8836-981995915-0-10055|undefined)1209375024,undefined>1209375024|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8687-8836-981995915-0-10055|undefined)1209375024,undefined>1209375024|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>>"
               },
               "type": "array"
             }
@@ -3002,17 +3026,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8836-8977-981995915-0-10055|undefined)679934267,undefined>679934267|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8836-8977-981995915-0-10055|undefined)679934267,undefined>679934267|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8836-8977-981995915-0-10055|undefined)679934267,undefined>679934267|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>>"
               },
               "type": "array"
             }
@@ -3826,7 +3850,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10055|undefined)870796116,undefined>870796116|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3852,7 +3876,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8592-8644-981995915-0-10055|undefined)186452232,undefined>186452232|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3878,7 +3902,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8687-8836-981995915-0-10055|undefined)1209375024,undefined>1209375024|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3904,7 +3928,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-8836-8977-981995915-0-10055|undefined)679934267,undefined>679934267|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -7984,59 +8008,32 @@
       "additionalProperties": false,
       "properties": {
         "extent": {
-          "description": "Sets both the major and minor extents to the same values.",
-          "items": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "description": "Sets both the major and minor extents to the same values."
         },
         "extentMajor": {
-          "description": "The major extent of the graticule as a two-element array of coordinates.",
-          "items": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "description": "The major extent of the graticule as a two-element array of coordinates."
         },
         "extentMinor": {
-          "description": "The minor extent of the graticule as a two-element array of coordinates.",
-          "items": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "description": "The minor extent of the graticule as a two-element array of coordinates."
         },
         "precision": {
           "description": "The precision of the graticule in degrees.\n\n__Default value:__ `2.5`",
           "type": "number"
         },
         "step": {
-          "description": "Sets both the major and minor step angles to the same values.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<number>",
+          "description": "Sets both the major and minor step angles to the same values."
         },
         "stepMajor": {
-          "description": "The major step angles of the graticule.\n\n\n__Default value:__ `[90, 360]`",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<number>",
+          "description": "The major step angles of the graticule.\n\n\n__Default value:__ `[90, 360]`"
         },
         "stepMinor": {
-          "description": "The minor step angles of the graticule.\n\n__Default value:__ `[10, 10]`",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<number>",
+          "description": "The minor step angles of the graticule.\n\n__Default value:__ `[10, 10]`"
         }
       },
       "type": "object"
@@ -8328,12 +8325,22 @@
       "properties": {
         "frame": {
           "description": "A frame specification as a two-element array used to control the window over which the specified method is applied. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. For example, the value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object.\n\n__Default value:__:  `[null, null]` indicating that the window includes all objects.",
-          "items": {
-            "type": [
-              "null",
-              "number"
-            ]
-          },
+          "items": [
+            {
+              "type": [
+                "null",
+                "number"
+              ]
+            },
+            {
+              "type": [
+                "null",
+                "number"
+              ]
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
           "type": "array"
         },
         "keyvals": {
@@ -8385,12 +8392,22 @@
       "properties": {
         "frame": {
           "description": "A frame specification as a two-element array used to control the window over which the specified method is applied. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. For example, the value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object.\n\n__Default value:__:  `[null, null]` indicating that the window includes all objects.",
-          "items": {
-            "type": [
-              "null",
-              "number"
-            ]
-          },
+          "items": [
+            {
+              "type": [
+                "null",
+                "number"
+              ]
+            },
+            {
+              "type": [
+                "null",
+                "number"
+              ]
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
           "type": "array"
         },
         "groupby": {
@@ -8519,20 +8536,24 @@
     },
     "Interpolate": {
       "enum": [
-        "linear",
-        "linear-closed",
-        "step",
-        "step-before",
-        "step-after",
         "basis",
         "basis-open",
         "basis-closed",
+        "bundle",
         "cardinal",
         "cardinal-open",
         "cardinal-closed",
-        "bundle",
-        "monotone"
+        "catmull-rom",
+        "linear",
+        "linear-closed",
+        "monotone",
+        "natural",
+        "step",
+        "step-before",
+        "step-after"
       ],
+      "maximum": 900,
+      "minimum": 100,
       "type": "string"
     },
     "IntervalSelection": {
@@ -14169,9 +14190,16 @@
               "$ref": "#/definitions/FieldName"
             },
             {
-              "items": {
-                "$ref": "#/definitions/FieldName"
-              },
+              "items": [
+                {
+                  "$ref": "#/definitions/FieldName"
+                },
+                {
+                  "$ref": "#/definitions/FieldName"
+                }
+              ],
+              "maxItems": 2,
+              "minItems": 2,
               "type": "array"
             }
           ],
@@ -16676,6 +16704,19 @@
         },
         {
           "$ref": "#/definitions/DateTime"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "Vector2<Vector2<number>>": {
+      "items": [
+        {
+          "$ref": "#/definitions/Vector2<number>"
+        },
+        {
+          "$ref": "#/definitions/Vector2<number>"
         }
       ],
       "maxItems": 2,

@@ -1,5 +1,5 @@
 import {ImputeSequence} from './transform';
-import {ImputeMethod} from './vega.schema';
+import {ImputeMethod} from 'vega';
 
 export interface ImputeParams {
   /**
@@ -30,5 +30,5 @@ export interface ImputeParams {
    *
    * __Default value:__:  `[null, null]` indicating that the window includes all objects.
    */
-  frame?: (null | number)[];
+  frame?: [null | number, null | number];
 }

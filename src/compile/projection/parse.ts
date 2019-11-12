@@ -37,16 +37,16 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
 function gatherFitData(model: UnitModel) {
   const data: (SignalRef | string)[] = [];
 
-  [
+  for (const posssiblePair of [
     [LONGITUDE, LATITUDE],
     [LONGITUDE2, LATITUDE2]
-  ].forEach(posssiblePair => {
+  ]) {
     if (model.channelHasField(posssiblePair[0]) || model.channelHasField(posssiblePair[1])) {
       data.push({
         signal: model.getName(`geojson_${data.length}`)
       });
     }
-  });
+  }
 
   if (model.channelHasField(SHAPE) && model.fieldDef(SHAPE).type === GEOJSON) {
     data.push({

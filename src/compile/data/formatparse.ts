@@ -12,7 +12,7 @@ import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldR
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
 import {accessPathDepth, accessPathWithDatum, duplicate, hash, keys, removePathFromField, Dict} from '../../util';
-import {VgFormulaTransform} from '../../vega.schema';
+import {FormulaTransform as VgFormulaTransform} from 'vega';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
 import {DataFlowNode} from './dataflow';

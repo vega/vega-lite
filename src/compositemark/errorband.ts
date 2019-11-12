@@ -1,4 +1,4 @@
-import {Orientation} from 'vega';
+import {Interpolate, Orientation} from 'vega';
 import {Field} from '../channeldef';
 import {Encoding} from '../encoding';
 import * as log from '../log';
@@ -6,7 +6,6 @@ import {MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize/index';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {Flag, keys} from '../util';
-import {Interpolate} from '../vega.schema';
 import {CompositeMarkNormalizer} from './base';
 import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins} from './common';
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './errorbar';

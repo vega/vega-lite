@@ -1,10 +1,10 @@
 import {assembleRootData} from '../../../src/compile/data/assemble';
+import {IdentifierNode} from '../../../src/compile/data/identifier';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {Mark} from '../../../src/mark';
-import {VgTransform} from '../../../src/vega.schema';
-import {parseUnitModelWithScaleAndSelection, parseConcatModel} from '../../util';
-import {IdentifierNode} from '../../../src/compile/data/identifier';
 import {SELECTION_ID} from '../../../src/selection';
+import {VgTransform} from '../../../src/vega.schema';
+import {parseConcatModel, parseUnitModelWithScaleAndSelection} from '../../util';
 
 function getVgData(selection: any, x?: any, y?: any, mark?: Mark, enc?: any, transform?: any) {
   const model = parseUnitModelWithScaleAndSelection({

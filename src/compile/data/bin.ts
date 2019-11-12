@@ -1,4 +1,4 @@
-import {BinTransform as VgBinTransform} from 'vega';
+import {BinTransform as VgBinTransform, Transforms as VgTransform} from 'vega';
 import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning, isSelectionExtent} from '../../bin';
 import {Channel} from '../../channel';
@@ -6,11 +6,10 @@ import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDe
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, replacePathInField, unique, vals, varName} from '../../util';
-import {VgTransform} from '../../vega.schema';
 import {binFormatExpression} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
-import {DataFlowNode} from './dataflow';
 import {parseSelectionBinExtent} from '../selection/parse';
+import {DataFlowNode} from './dataflow';
 
 function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, channel: Channel, config: Config) {
   if (binRequiresRange(fieldDef, channel)) {
