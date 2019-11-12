@@ -35,7 +35,7 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\")"},
+    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\", \"union\")"},
     {
       "name": "pts_y",
       "value": [],

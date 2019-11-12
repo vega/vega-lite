@@ -58,7 +58,10 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "label", "update": "vlSelectionResolve(\"label_store\")"},
+    {
+      "name": "label",
+      "update": "vlSelectionResolve(\"label_store\", \"union\")"
+    },
     {
       "name": "label_tuple",
       "on": [

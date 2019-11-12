@@ -27,7 +27,7 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "grid", "update": "vlSelectionResolve(\"grid_store\")"},
+    {"name": "grid", "update": "vlSelectionResolve(\"grid_store\", \"union\")"},
     {
       "name": "grid_Horsepower",
       "on": [

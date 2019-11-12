@@ -129,7 +129,10 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "highlight", "update": "vlSelectionResolve(\"highlight_store\")"},
+    {
+      "name": "highlight",
+      "update": "vlSelectionResolve(\"highlight_store\", \"union\")"
+    },
     {
       "name": "highlight_x",
       "value": [],

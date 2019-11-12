@@ -157,7 +157,7 @@ describe('Single Selection', () => {
       expect.arrayContaining([
         {
           name: 'one',
-          update: 'vlSelectionResolve("one_store")'
+          update: 'vlSelectionResolve("one_store", "union")'
         },
         {
           name: 'two',
