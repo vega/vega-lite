@@ -1,7 +1,8 @@
 import {SignalRef} from 'vega';
 import {contains} from '../../util';
-import {isSignalRef, VgProjection} from '../../vega.schema';
+import {isSignalRef} from '../../vega.schema';
 import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
+import {Projection as VgProjection} from 'vega';
 
 export function assembleProjections(model: Model): VgProjection[] {
   if (isLayerModel(model) || isConcatModel(model) || isRepeatModel(model)) {

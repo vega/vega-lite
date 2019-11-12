@@ -55,7 +55,7 @@ export interface TopLevelProperties {
   padding?: Padding;
 
   /**
-   * Sets how the visualization size should be determined. If a string, should be one of `"pad"`, `"fit"` or `"none"`.
+   * How the visualization size should be determined. If a string, should be one of `"pad"`, `"fit"` or `"none"`.
    * Object values can additionally specify parameters for content sizing and automatic resizing.
    *
    * __Default value__: `pad`

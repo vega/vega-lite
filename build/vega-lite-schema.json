@@ -598,7 +598,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)2086385775,undefined>2086385775|null)>"
             }
           ]
         },
@@ -659,7 +659,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-6039-6088-1198409216-0-10466|undefined)870796116,undefined>870796116|null)>"
             }
           ]
         },
@@ -676,7 +676,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9003-9055-1198409216-0-10466|undefined)186452232,undefined>186452232|null)>"
             }
           ]
         },
@@ -701,7 +701,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)1719818830,undefined>1719818830|null)>"
             }
           ]
         },
@@ -750,7 +750,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9247-9388-1198409216-0-10466|undefined)679934267,undefined>679934267|null)>"
             }
           ]
         },
@@ -761,7 +761,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9098-9247-1198409216-0-10466|undefined)1209375024,undefined>1209375024|null)>"
             }
           ]
         },
@@ -838,7 +838,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)565543918,undefined>565543918|null)>"
             }
           ]
         },
@@ -1099,7 +1099,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)2086385775,undefined>2086385775|null)>"
             }
           ]
         },
@@ -1160,7 +1160,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-6039-6088-1198409216-0-10466|undefined)870796116,undefined>870796116|null)>"
             }
           ]
         },
@@ -1177,7 +1177,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9003-9055-1198409216-0-10466|undefined)186452232,undefined>186452232|null)>"
             }
           ]
         },
@@ -1202,7 +1202,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)1719818830,undefined>1719818830|null)>"
             }
           ]
         },
@@ -1247,7 +1247,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9247-9388-1198409216-0-10466|undefined)679934267,undefined>679934267|null)>"
             }
           ]
         },
@@ -1258,7 +1258,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9098-9247-1198409216-0-10466|undefined)1209375024,undefined>1209375024|null)>"
             }
           ]
         },
@@ -1331,7 +1331,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)565543918,undefined>565543918|null)>"
             }
           ]
         },
@@ -2933,17 +2933,17 @@
         }
       ]
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-6039-6088-1198409216-0-10466|undefined)870796116,undefined>870796116|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-6039-6088-1198409216-0-10466|undefined)870796116,undefined>870796116|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-6039-6088-1198409216-0-10466|undefined)870796116,undefined>870796116|null)>>"
               },
               "type": "array"
             }
@@ -2968,17 +2968,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9003-9055-1198409216-0-10466|undefined)186452232,undefined>186452232|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9003-9055-1198409216-0-10466|undefined)186452232,undefined>186452232|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9003-9055-1198409216-0-10466|undefined)186452232,undefined>186452232|null)>>"
               },
               "type": "array"
             }
@@ -3003,17 +3003,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9098-9247-1198409216-0-10466|undefined)1209375024,undefined>1209375024|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9098-9247-1198409216-0-10466|undefined)1209375024,undefined>1209375024|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9098-9247-1198409216-0-10466|undefined)1209375024,undefined>1209375024|null)>>"
               },
               "type": "array"
             }
@@ -3038,17 +3038,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9247-9388-1198409216-0-10466|undefined)679934267,undefined>679934267|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9247-9388-1198409216-0-10466|undefined)679934267,undefined>679934267|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9247-9388-1198409216-0-10466|undefined)679934267,undefined>679934267|null)>>"
               },
               "type": "array"
             }
@@ -3073,17 +3073,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)1719818830,undefined>1719818830|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)1719818830,undefined>1719818830|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)1719818830,undefined>1719818830|null)>>"
               },
               "type": "array"
             }
@@ -3115,17 +3115,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)2086385775,undefined>2086385775|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)2086385775,undefined>2086385775|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)2086385775,undefined>2086385775|null)>>"
               },
               "type": "array"
             }
@@ -3157,17 +3157,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)565543918,undefined>565543918|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)565543918,undefined>565543918|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)565543918,undefined>565543918|null)>>"
               },
               "type": "array"
             }
@@ -3862,7 +3862,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-6039-6088-1198409216-0-10466|undefined)870796116,undefined>870796116|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3888,7 +3888,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9003-9055-1198409216-0-10466|undefined)186452232,undefined>186452232|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3914,7 +3914,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9098-9247-1198409216-0-10466|undefined)1209375024,undefined>1209375024|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3940,7 +3940,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-1198409216-9247-9388-1198409216-0-10466|undefined)679934267,undefined>679934267|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3966,7 +3966,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)1719818830,undefined>1719818830|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3999,7 +3999,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)2086385775,undefined>2086385775|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4032,7 +4032,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-2041899211-2468-2565-2041899211-0-2566|undefined)565543918,undefined>565543918|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4795,7 +4795,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "axis": {
           "$ref": "#/definitions/AxisConfig",
@@ -12299,25 +12299,16 @@
       "additionalProperties": false,
       "properties": {
         "center": {
-          "description": "Sets the projection’s center to the specified center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<number>",
+          "description": "The projection’s center to the specified center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`"
         },
         "clipAngle": {
-          "description": "Sets the projection’s clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
+          "description": "The projection’s clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
           "type": "number"
         },
         "clipExtent": {
-          "description": "Sets the projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed.",
-          "items": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "description": "The projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed."
         },
         "coefficient": {
           "type": "number"
@@ -12334,8 +12325,14 @@
         "parallel": {
           "type": "number"
         },
+        "parallels": {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
         "precision": {
-          "description": "Sets the threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection’s current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
+          "description": "The threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection’s current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
           "type": "number"
         },
         "radius": {
@@ -12351,14 +12348,11 @@
           "type": "boolean"
         },
         "rotate": {
-          "description": "Sets the projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector3<number>",
+          "description": "The projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`"
         },
         "scale": {
-          "description": "Sets the projection's scale (zoom) value, overriding automatic fitting.",
+          "description": "The projection's scale (zoom) value, overriding automatic fitting.",
           "type": "number"
         },
         "spacing": {
@@ -12368,11 +12362,8 @@
           "type": "number"
         },
         "translate": {
-          "description": "Sets the projection's translation (pan) value, overriding automatic fitting.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<number>",
+          "description": "The projection's translation (pan) value, overriding automatic fitting."
         },
         "type": {
           "$ref": "#/definitions/ProjectionType",
@@ -15363,7 +15354,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -15490,7 +15481,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -15610,7 +15601,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -15749,7 +15740,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -15858,7 +15849,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -16015,7 +16006,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -16185,7 +16176,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -16814,6 +16805,22 @@
       ],
       "maxItems": 2,
       "minItems": 2,
+      "type": "array"
+    },
+    "Vector3<number>": {
+      "items": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "maxItems": 3,
+      "minItems": 3,
       "type": "array"
     },
     "ViewBackground": {
