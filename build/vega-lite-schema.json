@@ -12523,7 +12523,7 @@
         "symbol": {
           "description": "Default range palette for the `shape` channel.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/SymbolShape"
           },
           "type": "array"
         }
