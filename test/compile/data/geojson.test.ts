@@ -1,3 +1,4 @@
+import {FieldRef, Vector2} from 'vega';
 import {GeoJSONNode} from '../../../src/compile/data/geojson';
 import {contains, every} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
@@ -34,7 +35,9 @@ describe('compile/data/geojson', () => {
       expect(node).toBeInstanceOf(GeoJSONNode);
       const transform = (node as GeoJSONNode).assemble();
       expect(transform.type).toBe('geojson');
-      expect(every(['longitude', 'latitude'], field => contains(transform.fields, field))).toBe(true);
+      expect(every(['longitude', 'latitude'], field => contains(transform.fields as Vector2<FieldRef>, field))).toBe(
+        true
+      );
       expect(transform.geojson).not.toBeDefined();
 
       expect(node.children.length).toBeLessThanOrEqual(1);
@@ -78,10 +81,9 @@ describe('compile/data/geojson', () => {
   describe('GeoJSONNode', () => {
     describe('dependentFields', () => {
       it('should return fields', () => {
-        const flatten = new GeoJSONNode(null, ['foo', 'bar', {expr: 's'}], null);
-        expect(flatten.dependentFields()).toEqual(new Set(['foo', 'bar']));
+        const flatten = new GeoJSONNode(null, ['foo', {expr: 's'}], null);
+        expect(flatten.dependentFields()).toEqual(new Set(['foo']));
       });
-
       it('should return geojson', () => {
         const flatten = new GeoJSONNode(null, null, 'geo');
         expect(flatten.dependentFields()).toEqual(new Set(['geo']));

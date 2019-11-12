@@ -1,6 +1,6 @@
+import {FieldRef, GeoPointTransform as VgGeoPointTransform, Vector2} from 'vega';
 import {GeoPointNode} from '../../../src/compile/data/geopoint';
 import {contains, every} from '../../../src/util';
-import {VgGeoPointTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 import {PlaceholderDataFlowNode} from './util';
 
@@ -38,8 +38,12 @@ describe('compile/data/geopoint', () => {
 
         const transform: VgGeoPointTransform = (node as GeoPointNode).assemble();
         expect(transform.type).toBe('geopoint');
-        expect(every(['longitude', 'latitude'], field => contains(transform.fields, field))).toBe(true);
-        expect(every([model.getName('x'), model.getName('y')], a => contains(transform.as, a))).toBe(true);
+        expect(every(['longitude', 'latitude'], field => contains(transform.fields as Vector2<FieldRef>, field))).toBe(
+          true
+        );
+        expect(
+          every([model.getName('x'), model.getName('y')], a => contains(transform.as as Vector2<FieldRef>, a))
+        ).toBe(true);
         expect(transform.projection).toBeDefined();
         expect(node.children.length).toBeLessThanOrEqual(1);
         node = node.children[0];

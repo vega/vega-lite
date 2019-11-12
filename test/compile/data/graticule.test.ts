@@ -1,3 +1,4 @@
+import {GraticuleParams} from './../../../src/data';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {GraticuleNode} from '../../../src/compile/data/graticule';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
@@ -9,7 +10,7 @@ describe('compile/data/graticule', () => {
         const params = {
           stepMinor: [15, 10],
           precision: 2
-        };
+        } as GraticuleParams;
         const graticule = new GraticuleNode(null, params);
         expect(graticule.assemble()).toEqual({
           type: 'graticule',
