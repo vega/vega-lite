@@ -135,6 +135,8 @@
       "title": "people",
       "encode": {
         "symbols": {
+          "name": "people_legend_symbols",
+          "interactive": false,
           "update": {
             "fill": {"value": "#4c78a8"},
             "stroke": {"value": "transparent"}

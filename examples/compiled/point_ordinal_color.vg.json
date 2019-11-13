@@ -125,6 +125,8 @@
       "title": "a",
       "encode": {
         "symbols": {
+          "name": "a_legend_symbols",
+          "interactive": false,
           "update": {
             "fill": {"value": "transparent"},
             "opacity": {"value": 0.7}

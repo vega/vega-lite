@@ -188,6 +188,8 @@
       "title": "symbol",
       "encode": {
         "symbols": {
+          "name": "symbol_legend_symbols",
+          "interactive": false,
           "update": {"fill": {"value": "white"}, "opacity": {"value": 1}}
         }
       }

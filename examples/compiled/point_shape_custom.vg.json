@@ -126,6 +126,8 @@
       "title": "Cylinders",
       "encode": {
         "symbols": {
+          "name": "Cylinders_legend_symbols",
+          "interactive": false,
           "update": {
             "fill": {"value": "transparent"},
             "opacity": {"value": 0.7}
@@ -140,6 +142,8 @@
       "title": "Weight_in_lbs",
       "encode": {
         "symbols": {
+          "name": "Weight_in_lbs_legend_symbols",
+          "interactive": false,
           "update": {
             "fill": {"value": "transparent"},
             "opacity": {"value": 0.7}

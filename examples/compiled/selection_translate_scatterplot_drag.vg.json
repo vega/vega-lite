@@ -240,6 +240,8 @@
       "title": "Cylinders",
       "encode": {
         "symbols": {
+          "name": "Cylinders_legend_symbols",
+          "interactive": false,
           "update": {
             "fill": {"value": "#4c78a8"},
             "opacity": {"value": 0.7},

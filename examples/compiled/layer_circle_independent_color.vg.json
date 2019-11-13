@@ -221,6 +221,8 @@
       "symbolType": "circle",
       "encode": {
         "symbols": {
+          "name": "undefined_legend_symbols",
+          "interactive": false,
           "update": {
             "fill": {"value": "#4c78a8"},
             "stroke": {"value": "transparent"}
@@ -235,6 +237,8 @@
       "symbolType": "circle",
       "encode": {
         "symbols": {
+          "name": "undefined_legend_symbols",
+          "interactive": false,
           "update": {
             "fill": {"value": "firebrick"},
             "stroke": {"value": "transparent"}

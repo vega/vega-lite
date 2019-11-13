@@ -117,7 +117,13 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "square",
       "title": "gender",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
+      "encode": {
+        "symbols": {
+          "name": "gender_legend_symbols",
+          "interactive": false,
+          "update": {"opacity": {"value": 0.7}}
+        }
+      }
     }
   ]
 }

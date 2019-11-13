@@ -122,7 +122,13 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
       "title": "Miles_per_Gallon",
-      "encode": {"gradient": {"update": {"opacity": {"value": 0.7}}}},
+      "encode": {
+        "gradient": {
+          "name": "Miles_per_Gallon_legend_gradient",
+          "interactive": false,
+          "update": {"opacity": {"value": 0.7}}
+        }
+      },
       "size": "size"
     }
   ]

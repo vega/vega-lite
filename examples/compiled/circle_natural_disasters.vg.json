@@ -91,6 +91,8 @@
       "symbolType": "circle",
       "encode": {
         "symbols": {
+          "name": "Deaths_legend_symbols",
+          "interactive": false,
           "update": {
             "fill": {"value": "black"},
             "stroke": {"value": "black"},
