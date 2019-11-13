@@ -21,7 +21,7 @@
         },
         "color": {
             "field": "gender", "type": "nominal",
-            "scale": {"range": ["#9955fb", "#00c475"]}
+            "scale": {"range": ["#675193", "#ca8861"]}
         }
       }
 
@@ -37,7 +37,7 @@
         },
         "color": {
             "field": "gender", "type": "nominal",
-            "scale": {"range": ["#9955fb", "#00c475"]}
+            "scale": {"range": ["#675193", "#ca8861"]}
         }
       }
 
