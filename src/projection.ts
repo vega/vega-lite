@@ -41,7 +41,7 @@ export interface Projection {
    *
    * __Default value:__ `[0, 0, 0]`
    */
-  rotate?: Vector3<number>;
+  rotate?: Vector2<number> | Vector3<number>;
 
   /*
    * The desired parallels of the projection.
