@@ -1,7 +1,10 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/population.json"},
-  "transform": [{"filter": "datum.year == 2000"}, {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}],
+  "transform": [
+    {"filter": "datum.year == 2000"},
+    {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
+  ],
   "layer": [
     {
       "mark": {"type": "area", "opacity": 0.7},
