@@ -59,7 +59,7 @@ const legendBindings: TransformCompiler = {
       const sgName = `${selName}_${prefix}`;
       const hasSignal = signals.filter(s => s.name === sgName);
 
-      if (!hasSignal.length) {
+      if (hasSignal.length === 0) {
         const events = stream.merge
           .map(markName(`${prefix}_symbols`))
           .concat(stream.merge.map(markName(`${prefix}_labels`)));
@@ -87,12 +87,12 @@ const legendBindings: TransformCompiler = {
     const valid = values.map(v => `${v} !== null`).join(' && ');
     const update = `${valid} ? {fields: ${fields}, values: [${values.join(', ')}]} : null`;
 
-    if (selCmpt.events && values.length) {
+    if (selCmpt.events && values.length > 0) {
       tuple.on.push({
         events: values.map(signal => ({signal})),
         update
       });
-    } else if (values.length) {
+    } else if (values.length > 0) {
       tuple.update = update;
       delete tuple.value;
       delete tuple.on;

@@ -443,7 +443,7 @@ export function tooltipForEncoding(
     }
   }
 
-  return keyValues.length ? {signal: `{${keyValues.join(', ')}}`} : undefined;
+  return keyValues.length > 0 ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
 
 export function text(

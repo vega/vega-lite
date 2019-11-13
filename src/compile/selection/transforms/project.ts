@@ -151,7 +151,7 @@ const project: TransformCompiler = {
       }
     }
 
-    if (keys(timeUnits).length) {
+    if (keys(timeUnits).length > 0) {
       proj.timeUnit = new TimeUnitNode(null, timeUnits);
     }
   },
@@ -159,7 +159,7 @@ const project: TransformCompiler = {
   signals: (model, selCmpt, allSignals) => {
     const name = selCmpt.name + TUPLE_FIELDS;
     const hasSignal = allSignals.filter(s => s.name === name);
-    return hasSignal.length
+    return hasSignal.length > 0
       ? allSignals
       : allSignals.concat({
           name,

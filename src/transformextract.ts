@@ -14,7 +14,7 @@ class TransformExtractMapper extends SpecMapper<{config: Config}, GenericUnitSpe
         ...(oldTransforms ? oldTransforms : []),
         ...bins,
         ...timeUnits,
-        ...(!aggregate.length ? [] : [{aggregate, groupby}])
+        ...(aggregate.length === 0 ? [] : [{aggregate, groupby}])
       ];
 
       return {

@@ -47,7 +47,7 @@ export class RangeStepNormalizer implements NonFacetUnitNormalizer<UnitSpecWithR
             ...encoding,
             [channel]: {
               ...defWithoutScale,
-              ...(keys(scaleWithoutRangeStep).length ? {scale: scaleWithoutRangeStep} : {})
+              ...(keys(scaleWithoutRangeStep).length > 0 ? {scale: scaleWithoutRangeStep} : {})
             }
           };
         }
