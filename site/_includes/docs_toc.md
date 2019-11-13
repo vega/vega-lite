@@ -318,6 +318,7 @@
     - [Bind]({{site.baseurl}}/docs/bind.html)
         - [Input Element Binding]({{site.baseurl}}/docs/bind.html#input-element-binding)
         - [Scale Binding]({{site.baseurl}}/docs/bind.html#scale-binding)
+        - [Legend Binding]({{site.baseurl}}/docs/bind.html#legend-binding)
     - [Clear]({{site.baseurl}}/docs/clear.html)
         - [Examples]({{site.baseurl}}/docs/clear.html#examples)
     - [Encodings / Fields]({{site.baseurl}}/docs/project.html)
