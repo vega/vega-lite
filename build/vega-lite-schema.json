@@ -9381,6 +9381,19 @@
       },
       "type": "object"
     },
+    "LegendBinding": {
+      "anyOf": [
+        {
+          "enum": [
+            "legend"
+          ],
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/LegendStreamBinding"
+        }
+      ]
+    },
     "LegendConfig": {
       "additionalProperties": false,
       "properties": {
@@ -9746,6 +9759,10 @@
         "titlePadding": {
           "description": "The padding, in pixels, between title and legend.\n\n__Default value:__ `5`.",
           "type": "number"
+        },
+        "unselectedOpacity": {
+          "description": "The opacity of unselected legend entries.\n\n__Default value:__ 0.35.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -9884,6 +9901,25 @@
           "$ref": "#/definitions/ResolveMode"
         }
       },
+      "type": "object"
+    },
+    "LegendStreamBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "legend": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Stream"
+            }
+          ]
+        }
+      },
+      "required": [
+        "legend"
+      ],
       "type": "object"
     },
     "LineConfig": {
@@ -11301,6 +11337,10 @@
     "MultiSelection": {
       "additionalProperties": false,
       "properties": {
+        "bind": {
+          "$ref": "#/definitions/LegendBinding",
+          "description": "When set, a selection is populated by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;\nto re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding."
+        },
         "clear": {
           "anyOf": [
             {
@@ -11386,6 +11426,10 @@
     "MultiSelectionConfig": {
       "additionalProperties": false,
       "properties": {
+        "bind": {
+          "$ref": "#/definitions/LegendBinding",
+          "description": "When set, a selection is populated by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;\nto re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding."
+        },
         "clear": {
           "anyOf": [
             {
@@ -13885,9 +13929,12 @@
                 "$ref": "#/definitions/Binding"
               },
               "type": "object"
+            },
+            {
+              "$ref": "#/definitions/LegendBinding"
             }
           ],
-          "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
+          "description": "When set, a selection is populated by input elements (also known as dynamic query widgets)\nor by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;\nto re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
         },
         "clear": {
           "anyOf": [
@@ -13974,9 +14021,12 @@
                 "$ref": "#/definitions/Binding"
               },
               "type": "object"
+            },
+            {
+              "$ref": "#/definitions/LegendBinding"
             }
           ],
-          "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
+          "description": "When set, a selection is populated by input elements (also known as dynamic query widgets)\nor by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;\nto re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
         },
         "clear": {
           "anyOf": [
