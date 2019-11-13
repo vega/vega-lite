@@ -202,7 +202,7 @@ function getConditionValue<V extends Value | Gradient>(
 
 function selectedCondition(model: UnitModel, legendCmp: LegendComponent, fieldDef: TypedFieldDef<string>) {
   const selections = legendCmp.get('selections');
-  if (!selections || !selections.length) return undefined;
+  if (!selections?.length) return undefined;
 
   const field = stringValue(fieldDef.field);
   return selections
