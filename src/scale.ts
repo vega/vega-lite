@@ -1,4 +1,4 @@
-import {toSet} from 'vega-util';
+import {toSet, isString} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, CHANNELS, isColorChannel} from './channel';
 import {DateTime} from './datetime';
@@ -406,7 +406,7 @@ export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregate
 export type Scheme = string | SchemeParams;
 
 export function isExtendedScheme(scheme: string | SchemeParams): scheme is SchemeParams {
-  return scheme && !!scheme['name'];
+  return !isString(scheme) && !!scheme['name'];
 }
 
 export function isSelectionDomain(domain: Domain): domain is SelectionExtent {

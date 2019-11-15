@@ -282,7 +282,7 @@ export function deleteNestedProperty(obj: any, orderedProps: string[]) {
   if (orderedProps.length === 0) {
     return true;
   }
-  const prop = orderedProps.shift();
+  const prop = orderedProps.shift()!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
   if (deleteNestedProperty(obj[prop], orderedProps)) {
     delete obj[prop];
   }
@@ -363,7 +363,7 @@ export function accessPathDepth(path: string) {
 /**
  * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
  */
-export function getFirstDefined<T>(...args: readonly T[]): T {
+export function getFirstDefined<T>(...args: readonly T[]): T | undefined {
   for (const arg of args) {
     if (arg !== undefined) {
       return arg;
