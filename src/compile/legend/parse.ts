@@ -105,6 +105,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   }
 
   const legendEncoding = legend.encoding || {};
+  const selections = legendCmpt.get('selections');
   const legendEncode = (['labels', 'legend', 'title', 'symbols', 'gradient'] as const).reduce(
     (e: LegendEncode, part) => {
       const legendEncodingPart = guideEncodeEntry(legendEncoding[part] || {}, model);
@@ -113,8 +114,8 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
         : legendEncodingPart; // no rule -- just default values
       if (value !== undefined && keys(value).length > 0) {
         e[part] = {
-          name: `${fieldDef.field}_legend_${part}`,
-          interactive: !!legendCmpt.get('selections'),
+          ...(selections?.length ? {name: `${fieldDef.field}_legend_${part}`} : {}),
+          ...(selections?.length ? {interactive: !!selections} : {}),
           update: value
         };
       }
