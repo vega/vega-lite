@@ -97,6 +97,15 @@ const project: TransformCompiler = {
       const fieldDef = model.fieldDef(channel);
       if (fieldDef) {
         let field = fieldDef.field;
+
+        if (fieldDef.aggregate) {
+          log.warn(log.message.cannotProjectAggregate(channel, fieldDef.aggregate));
+          continue;
+        } else if (!field) {
+          log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
+          continue;
+        }
+
         if (fieldDef.timeUnit) {
           field = model.vgField(channel);
 

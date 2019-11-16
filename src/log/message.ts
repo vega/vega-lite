@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
 import {Aggregate} from '../aggregate';
 import {Channel, FacetChannel, GeoPositionChannel, getSizeType, PositionScaleChannel} from '../channel';
-import {TypedFieldDef, Value} from '../channeldef';
+import {TypedFieldDef, Value, HiddenCompositeAggregate} from '../channeldef';
 import {SplitParentProperty} from '../compile/split';
 import {CompositeMark} from '../compositemark';
 import {ErrorBarCenter, ErrorBarExtent} from '../compositemark/errorbar';
@@ -46,6 +46,10 @@ export function droppingFit(channel?: PositionScaleChannel) {
 // SELECTION
 export function cannotProjectOnChannelWithoutField(channel: Channel) {
   return `Cannot project a selection on encoding channel "${channel}", which has no field.`;
+}
+
+export function cannotProjectAggregate(channel: Channel, aggregate: Aggregate | HiddenCompositeAggregate) {
+  return `Cannot project a selection on encoding channel "${channel}" as it uses an aggregate function ("${aggregate}").`;
 }
 
 export function nearestNotSupportForContinuous(mark: string) {
