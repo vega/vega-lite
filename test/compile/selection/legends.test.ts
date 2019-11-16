@@ -79,9 +79,14 @@ describe('Interactive Legends', () => {
                   source: 'view',
                   type: 'click',
                   markname: 'Origin_legend_labels'
+                },
+                {
+                  source: 'view',
+                  type: 'click',
+                  markname: 'Origin_legend_entries'
                 }
               ],
-              update: 'datum.value',
+              update: 'datum.value || item().items[0].items[0].datum.value',
               force: true
             },
             {
@@ -116,9 +121,19 @@ describe('Interactive Legends', () => {
                   source: 'view',
                   type: 'mouseover',
                   markname: 'Origin_legend_labels'
+                },
+                {
+                  source: 'view',
+                  type: 'dblclick',
+                  markname: 'Origin_legend_entries'
+                },
+                {
+                  source: 'view',
+                  type: 'mouseover',
+                  markname: 'Origin_legend_entries'
                 }
               ],
-              update: 'datum.value',
+              update: 'datum.value || item().items[0].items[0].datum.value',
               force: true
             },
             {
@@ -152,9 +167,14 @@ describe('Interactive Legends', () => {
                   source: 'view',
                   type: 'click',
                   markname: 'Origin_legend_labels'
+                },
+                {
+                  source: 'view',
+                  type: 'click',
+                  markname: 'Origin_legend_entries'
                 }
               ],
-              update: 'datum.value',
+              update: 'datum.value || item().items[0].items[0].datum.value',
               force: true
             },
             {
@@ -184,9 +204,14 @@ describe('Interactive Legends', () => {
                   source: 'view',
                   type: 'mouseover',
                   markname: 'Origin_legend_labels'
+                },
+                {
+                  source: 'view',
+                  type: 'mouseover',
+                  markname: 'Origin_legend_entries'
                 }
               ],
-              update: 'datum.value',
+              update: 'datum.value || item().items[0].items[0].datum.value',
               force: true
             },
             {
@@ -216,9 +241,14 @@ describe('Interactive Legends', () => {
                   source: 'view',
                   type: 'mouseover',
                   markname: 'Origin_legend_labels'
+                },
+                {
+                  source: 'view',
+                  type: 'mouseover',
+                  markname: 'Origin_legend_entries'
                 }
               ],
-              update: 'datum.value',
+              update: 'datum.value || item().items[0].items[0].datum.value',
               force: true
             },
             {
@@ -341,9 +371,14 @@ describe('Interactive Legends', () => {
                   source: 'view',
                   type: 'click',
                   markname: 'Origin_legend_labels'
+                },
+                {
+                  source: 'view',
+                  type: 'click',
+                  markname: 'Origin_legend_entries'
                 }
               ],
-              update: 'datum.value',
+              update: 'datum.value || item().items[0].items[0].datum.value',
               force: true
             },
             {

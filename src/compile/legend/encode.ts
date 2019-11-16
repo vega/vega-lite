@@ -169,6 +169,17 @@ export function labels(
   return keys(out).length > 0 ? out : undefined;
 }
 
+export function entries(
+  fieldDef: TypedFieldDef<string>,
+  entriesSpec: any,
+  model: UnitModel,
+  channel: NonPositionScaleChannel,
+  legendCmp: LegendComponent
+) {
+  const selections = legendCmp.get('selections');
+  return selections?.length ? {fill: {value: 'transparent'}} : undefined;
+}
+
 function getMaxValue(
   channelDef:
     | FieldDefWithCondition<MarkPropFieldDef<string>, number>

@@ -106,7 +106,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
 
   const legendEncoding = legend.encoding || {};
   const selections = legendCmpt.get('selections');
-  const legendEncode = (['labels', 'legend', 'title', 'symbols', 'gradient'] as const).reduce(
+  const legendEncode = (['labels', 'legend', 'title', 'symbols', 'gradient', 'entries'] as const).reduce(
     (e: LegendEncode, part) => {
       const legendEncodingPart = guideEncodeEntry(legendEncoding[part] || {}, model);
       const value = encode[part]

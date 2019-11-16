@@ -62,13 +62,15 @@ const legendBindings: TransformCompiler = {
       if (hasSignal.length === 0) {
         const events = stream.merge
           .map(markName(`${prefix}_symbols`))
-          .concat(stream.merge.map(markName(`${prefix}_labels`)));
+          .concat(stream.merge.map(markName(`${prefix}_labels`)))
+          .concat(stream.merge.map(markName(`${prefix}_entries`)));
 
         signals.unshift({
           name: sgName,
           ...(!selCmpt.init ? {value: null} : {}),
           on: [
-            {events, update: 'datum.value', force: true},
+            // Legend entries do not store values, so we need to walk the scenegraph to the symbol datum.
+            {events, update: 'datum.value || item().items[0].items[0].datum.value', force: true},
             {events: stream.merge, update: `!event.item || !datum ? null : ${sgName}`, force: true}
           ]
         });
