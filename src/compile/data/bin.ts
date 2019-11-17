@@ -15,7 +15,7 @@ function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, ch
   if (binRequiresRange(fieldDef, channel)) {
     // read format from axis or legend, if there is no format then use config.numberFormat
 
-    const guide = isUnitModel(model) ? model.axis(channel) || model.legend(channel) || {} : {};
+    const guide = isUnitModel(model) ? model.axis(channel) ?? model.legend(channel) ?? {} : {};
 
     const startField = vgField(fieldDef, {expr: 'datum'});
     const endField = vgField(fieldDef, {expr: 'datum', binSuffix: 'end'});
@@ -40,7 +40,7 @@ function getSignalsFromModel(model: Model, key: string) {
 }
 
 export function getBinSignalName(model: Model, field: string, bin: boolean | BinParams) {
-  const normalizedBin = normalizeBin(bin, undefined) || {};
+  const normalizedBin = normalizeBin(bin, undefined) ?? {};
   const key = binKey(normalizedBin, field);
   return model.getName(`${key}_bins`);
 }

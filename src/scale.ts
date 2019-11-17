@@ -772,7 +772,7 @@ function generateScaleTypeIndex() {
       for (const scaleType of SCALE_TYPES) {
         const key = generateScaleTypeIndexKey(channel, fieldDefType);
         if (channelSupportScaleType(channel, scaleType) && scaleTypeSupportDataType(scaleType, fieldDefType)) {
-          index[key] = index[key] || [];
+          index[key] = index[key] ?? [];
           index[key].push(scaleType);
         }
       }

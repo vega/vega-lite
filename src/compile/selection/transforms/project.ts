@@ -40,7 +40,7 @@ const project: TransformCompiler = {
 
   parse: (model, selCmpt, selDef) => {
     const name = selCmpt.name;
-    const proj = selCmpt.project || (selCmpt.project = new SelectionProjectionComponent());
+    const proj = selCmpt.project ?? (selCmpt.project = new SelectionProjectionComponent());
     const parsed: Dict<SelectionProjection> = {};
     const timeUnits: Dict<TimeUnitComponent> = {};
 
@@ -83,13 +83,13 @@ const project: TransformCompiler = {
     }
 
     // TODO: find a possible channel mapping for these fields.
-    for (const field of selDef.fields || []) {
+    for (const field of selDef.fields ?? []) {
       const p: SelectionProjection = {type: 'E', field};
       p.signals = {...signalName(p, 'data')};
       proj.items.push(p);
     }
 
-    for (const channel of selDef.encodings || []) {
+    for (const channel of selDef.encodings ?? []) {
       const fieldDef = model.fieldDef(channel);
       if (fieldDef) {
         let field = fieldDef.field;

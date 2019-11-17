@@ -204,7 +204,7 @@ export function nonPosition(
 
   if (defaultRef === undefined) {
     // prettier-ignore
-    defaultValue = defaultValue ||
+    defaultValue = defaultValue ??
       (vgChannel === channel
         ? // When vl channel is the same as Vega's, no need to read from config as Vega will apply them correctly
         markDef[channel]
@@ -315,11 +315,7 @@ export function bandPosition(
   const scaleName = model.scaleName(channel);
   const sizeChannel = channel === 'x' ? 'width' : 'height';
 
-  if (
-    model.encoding.size ||
-    model.markDef.size !== undefined ||
-    (defaultSizeRef && defaultSizeRef.value !== undefined)
-  ) {
+  if (model.encoding.size != null || model.markDef.size != null || defaultSizeRef?.value !== undefined) {
     const orient = model.markDef.orient;
     if (orient) {
       const centeredBandPositionMixins = {
@@ -359,7 +355,7 @@ export function bandPosition(
   return {
     // FIXME: make offset work correctly here when we support group bar (https://github.com/vega/vega-lite/issues/396)
     [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, {band: (1 - band) / 2}),
-    [sizeChannel]: defaultSizeRef || ref.bandRef(scaleName, band)
+    [sizeChannel]: defaultSizeRef ?? ref.bandRef(scaleName, band)
   };
 }
 
@@ -480,7 +476,7 @@ export function pointPosition(
         });
 
   return {
-    [vgChannel || channel]: valueRef
+    [vgChannel ?? channel]: valueRef
   };
 }
 
@@ -544,9 +540,9 @@ function alignedChannel(channel: 'x' | 'y', markDef: MarkDef, config: Config) {
   const alignChannel = channel === 'x' ? 'align' : 'baseline';
   const align = getFirstDefined(markDef[alignChannel], getMarkConfig(alignChannel, markDef, config));
   if (channel === 'x') {
-    return ALIGNED_X_CHANNEL[align || 'center'];
+    return ALIGNED_X_CHANNEL[align ?? 'center'];
   } else {
-    return BASELINED_Y_CHANNEL[align || 'middle'];
+    return BASELINED_Y_CHANNEL[align ?? 'middle'];
   }
 }
 

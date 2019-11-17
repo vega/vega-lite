@@ -34,7 +34,7 @@ export const text: MarkCompiler = {
 };
 
 function align(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
-  const a = markDef.align || getMarkConfig('align', markDef, config);
+  const a = markDef.align ?? getMarkConfig('align', markDef, config);
   if (a === undefined) {
     return 'center';
   }
@@ -43,7 +43,7 @@ function align(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
 }
 
 function baseline(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
-  const b = markDef.baseline || getMarkConfig('baseline', markDef, config);
+  const b = markDef.baseline ?? getMarkConfig('baseline', markDef, config);
   if (b === undefined) {
     return 'middle';
   }

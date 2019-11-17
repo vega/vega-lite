@@ -44,7 +44,7 @@ function normalizeGenericSpec(spec: GenericSpec<UnitSpec, ExtendedLayerSpec> | F
 }
 
 function _normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {
-  return isString(autosize) ? {type: autosize} : autosize || {};
+  return isString(autosize) ? {type: autosize} : autosize ?? {};
 }
 
 /**

@@ -344,7 +344,7 @@ function normalizeSortField(sort: EncodingSortField<string>, isStacked: boolean)
   const {op, field, order} = sort;
   return {
     // Apply default op
-    op: op || (isStacked ? 'sum' : DEFAULT_SORT_OP),
+    op: op ?? (isStacked ? 'sum' : DEFAULT_SORT_OP),
     // flatten nested fields
     ...(field ? {field: util.replacePathInField(field)} : {}),
 
@@ -363,7 +363,7 @@ function parseSelectionDomain(model: UnitModel, channel: ScaleChannel) {
     // As scale parsing occurs before selection parsing, we cannot set
     // domainRaw directly. So instead, we store the selectionExtent on
     // the scale component, and then add domainRaw during scale assembly.
-    scale.set('selectionExtent', domain || extent, true);
+    scale.set('selectionExtent', domain ?? extent, true);
   }
 }
 

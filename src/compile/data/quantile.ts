@@ -14,12 +14,12 @@ export class QuantileTransformNode extends DataFlowNode {
   constructor(parent: DataFlowNode, private transform: QuantileTransform) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
-    const specifiedAs = this.transform.as || [undefined, undefined];
-    this.transform.as = [specifiedAs[0] || 'prob', specifiedAs[1] || 'value'];
+    const specifiedAs = this.transform.as ?? [undefined, undefined];
+    this.transform.as = [specifiedAs[0] ?? 'prob', specifiedAs[1] ?? 'value'];
   }
 
   public dependentFields() {
-    return new Set([this.transform.quantile, ...(this.transform.groupby || [])]);
+    return new Set([this.transform.quantile, ...(this.transform.groupby ?? [])]);
   }
 
   public producedFields() {

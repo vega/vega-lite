@@ -174,7 +174,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
           for (const prop of ['align', 'center', 'spacing'] as const) {
             if (def[prop] !== undefined) {
-              layout[prop] = layout[prop] || {};
+              layout[prop] = layout[prop] ?? {};
               layout[prop][channel] = def[prop];
             }
           }
@@ -228,8 +228,8 @@ function mergeEncoding(opt: {parentEncoding: Encoding<any>; encoding: Encoding<a
   }
 
   const merged = {
-    ...(parentEncoding || {}),
-    ...(encoding || {})
+    ...(parentEncoding ?? {}),
+    ...(encoding ?? {})
   };
   return keys(merged).length > 0 ? merged : undefined;
 }
@@ -239,5 +239,5 @@ function mergeProjection(opt: {parentProjection: Projection; projection: Project
   if (parentProjection && projection) {
     log.warn(log.message.projectionOverridden({parentProjection, projection}));
   }
-  return projection || parentProjection;
+  return projection ?? parentProjection;
 }

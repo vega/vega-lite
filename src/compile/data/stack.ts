@@ -209,7 +209,7 @@ export class StackNode extends DataFlowNode {
       }
       return [vgField(dimensionFieldDef)];
     }
-    return groupby || [];
+    return groupby ?? [];
   }
 
   public assemble(): VgTransform[] {

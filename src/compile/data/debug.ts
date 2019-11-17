@@ -43,7 +43,7 @@ export function draw(roots: readonly DataFlowNode[]) {
       out.push(`<i>${node.debugName}</i>`);
     } else if (node instanceof SourceNode) {
       if (node.data.name || node.data.url) {
-        out.push(`<i>${node.data.name || node.data.url}</i>`);
+        out.push(`<i>${node.data.name ?? node.data.url}</i>`);
       }
     }
 
@@ -68,7 +68,7 @@ export function draw(roots: readonly DataFlowNode[]) {
       label: getLabel(node),
       hash:
         node instanceof SourceNode
-          ? node.data.url || node.data.name || node.debugName
+          ? node.data.url ?? node.data.name ?? node.debugName
           : String(node.hash()).replace(/"/g, '')
     };
 

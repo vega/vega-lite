@@ -48,7 +48,7 @@ export function symbols(
   const {markDef, encoding, config} = model;
   const filled = markDef.filled;
 
-  const opacity = getMaxValue(encoding.opacity) || markDef.opacity;
+  const opacity = getMaxValue(encoding.opacity) ?? markDef.opacity;
 
   if (out.fill) {
     // for fill legend, we don't want any fill in symbol
@@ -60,12 +60,12 @@ export function symbols(
         if (legendCmp.get('symbolFillColor')) {
           delete out.fill;
         } else {
-          out.fill = {value: config.legend.symbolBaseFillColor || 'black'};
-          out.fillOpacity = {value: opacity || 1};
+          out.fill = {value: config.legend.symbolBaseFillColor ?? 'black'};
+          out.fillOpacity = {value: opacity ?? 1};
         }
       } else if (isArray(out.fill)) {
         const fill =
-          getFirstConditionValue(encoding.fill || encoding.color) || markDef.fill || (filled && markDef.color);
+          getFirstConditionValue(encoding.fill ?? encoding.color) ?? markDef.fill ?? (filled && markDef.color);
         if (fill) {
           out.fill = {value: fill} as ColorValueRef;
         }

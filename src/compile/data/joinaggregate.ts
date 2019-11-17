@@ -42,7 +42,7 @@ export class JoinAggregateTransformNode extends DataFlowNode {
   }
 
   private getDefaultName(joinAggregateFieldDef: JoinAggregateFieldDef): string {
-    return joinAggregateFieldDef.as || vgField(joinAggregateFieldDef);
+    return joinAggregateFieldDef.as ?? vgField(joinAggregateFieldDef);
   }
 
   public hash() {

@@ -36,7 +36,7 @@ export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (
 }
 
 export function getStyles(mark: MarkDef): string[] {
-  return [].concat(mark.type, mark.style || []);
+  return [].concat(mark.type, mark.style ?? []);
 }
 
 export function getMarkPropOrConfig<P extends keyof MarkConfig>(channel: P, mark: MarkDef, config: Config) {
@@ -142,7 +142,7 @@ function formatExpr(field: string, format: string) {
 }
 
 export function numberFormatExpr(field: string, specifiedFormat: string, config: Config) {
-  return formatExpr(field, specifiedFormat || config.numberFormat);
+  return formatExpr(field, specifiedFormat ?? config.numberFormat);
 }
 
 export function binFormatExpression(startField: string, endField: string, format: string, config: Config) {
@@ -167,7 +167,7 @@ export function timeFormatExpression(
 ): string {
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.
-    format = format || rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
+    format = format ?? rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
 
     if (format || alwaysReturn) {
       return `${isUTCScale ? 'utc' : 'time'}Format(${field}, '${format}')`;
@@ -189,7 +189,7 @@ export function sortParams(
   return array(orderDef).reduce(
     (s, orderChannelDef) => {
       s.field.push(vgField(orderChannelDef, fieldRefOption));
-      s.order.push(orderChannelDef.sort || 'ascending');
+      s.order.push(orderChannelDef.sort ?? 'ascending');
       return s;
     },
     {field: [], order: []}

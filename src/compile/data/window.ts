@@ -27,8 +27,8 @@ export class WindowTransformNode extends DataFlowNode {
   public dependentFields() {
     const out = new Set<string>();
 
-    (this.transform.groupby || []).forEach(f => out.add(f));
-    (this.transform.sort || []).forEach(m => out.add(m.field));
+    (this.transform.groupby ?? []).forEach(f => out.add(f));
+    (this.transform.sort ?? []).forEach(m => out.add(m.field));
 
     this.transform.window
       .map(w => w.field)
@@ -43,7 +43,7 @@ export class WindowTransformNode extends DataFlowNode {
   }
 
   private getDefaultName(windowFieldDef: WindowFieldDef): string {
-    return windowFieldDef.as || vgField(windowFieldDef);
+    return windowFieldDef.as ?? vgField(windowFieldDef);
   }
 
   public hash() {
@@ -82,7 +82,7 @@ export class WindowTransformNode extends DataFlowNode {
     if (this.transform.sort !== undefined) {
       for (const sortField of this.transform.sort) {
         sortFields.push(sortField.field);
-        sortOrder.push(sortField.order || 'ascending');
+        sortOrder.push(sortField.order ?? 'ascending');
       }
     }
     const sort: VgComparator = {

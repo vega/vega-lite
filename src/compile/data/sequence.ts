@@ -17,7 +17,7 @@ export class SequenceNode extends DataFlowNode {
   }
 
   public producedFields() {
-    return new Set([this.params.as || 'data']);
+    return new Set([this.params.as ?? 'data']);
   }
 
   public hash() {
