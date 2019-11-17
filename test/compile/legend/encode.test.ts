@@ -26,8 +26,8 @@ describe('compile/legend', () => {
         symbolLegend
       );
       expect(symbol.fill).toEqual({value: 'transparent'});
-      expect((symbol || {}).strokeDash).not.toBeDefined();
-      expect((symbol || {}).strokeDashOffset).not.toBeDefined();
+      expect((symbol ?? {}).strokeDash).not.toBeDefined();
+      expect((symbol ?? {}).strokeDashOffset).not.toBeDefined();
     });
 
     it('should have fill if a color encoding exists', () => {

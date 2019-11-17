@@ -16,7 +16,7 @@ export class PivotTransformNode extends DataFlowNode {
   }
 
   public addDimensions(fields: readonly string[]) {
-    this.transform.groupby = unique((this.transform.groupby || []).concat(fields), d => d);
+    this.transform.groupby = unique((this.transform.groupby ?? []).concat(fields), d => d);
   }
 
   public producedFields(): undefined {
@@ -24,7 +24,7 @@ export class PivotTransformNode extends DataFlowNode {
   }
 
   public dependentFields() {
-    return new Set([this.transform.pivot, this.transform.value, ...(this.transform.groupby || [])]);
+    return new Set([this.transform.pivot, this.transform.value, ...(this.transform.groupby ?? [])]);
   }
 
   public hash() {

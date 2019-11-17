@@ -11,9 +11,9 @@ function setLegendEncode(
   vgProp: VgEncodeChannel,
   vgRef: VgValueRef | VgValueRef[]
 ) {
-  legend.encode = legend.encode || {};
-  legend.encode[part] = legend.encode[part] || {};
-  legend.encode[part].update = legend.encode[part].update || {};
+  legend.encode = legend.encode ?? {};
+  legend.encode[part] = legend.encode[part] ?? {};
+  legend.encode[part].update = legend.encode[part].update ?? {};
   // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
   (legend.encode[part].update[vgProp] as any) = vgRef;
 }

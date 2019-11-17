@@ -97,7 +97,7 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): 
   if (isSortField(sort)) {
     return {
       field: vgField(sort, {expr: 'datum'}),
-      order: sort.order || 'ascending'
+      order: sort.order ?? 'ascending'
     };
   } else if (isArray(sort)) {
     return {
@@ -107,7 +107,7 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): 
   } else {
     return {
       field: vgField(facetFieldDef, {expr: 'datum'}),
-      order: sort || 'ascending'
+      order: sort ?? 'ascending'
     };
   }
 }

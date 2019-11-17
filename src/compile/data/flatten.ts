@@ -15,7 +15,7 @@ export class FlattenTransformNode extends DataFlowNode {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
     const {flatten, as = []} = this.transform;
-    this.transform.as = flatten.map((f, i) => as[i] || f);
+    this.transform.as = flatten.map((f, i) => as[i] ?? f);
   }
 
   public dependentFields() {

@@ -102,10 +102,10 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
     }
   }
 
-  const legendEncoding = legend.encoding || {};
+  const legendEncoding = legend.encoding ?? {};
   const legendEncode = (['labels', 'legend', 'title', 'symbols', 'gradient'] as const).reduce(
     (e: LegendEncode, part) => {
-      const legendEncodingPart = guideEncodeEntry(legendEncoding[part] || {}, model);
+      const legendEncodingPart = guideEncodeEntry(legendEncoding[part] ?? {}, model);
       const value = encode[part]
         ? encode[part](fieldDef, legendEncodingPart, model, channel, legendCmpt) // apply rule
         : legendEncodingPart; // no rule -- just default values
@@ -284,10 +284,10 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
     mergedLegend.setWithExplicit(prop, mergedValueWithExplicit);
   }
   if (typeMerged) {
-    if (((mergedLegend.implicit || {}).encode || {}).gradient) {
+    if (mergedLegend.implicit?.encode?.gradient ?? {}) {
       deleteNestedProperty(mergedLegend.implicit, ['encode', 'gradient']);
     }
-    if (((mergedLegend.explicit || {}).encode || {}).gradient) {
+    if (mergedLegend.explicit?.encode?.gradient ?? {}) {
       deleteNestedProperty(mergedLegend.explicit, ['encode', 'gradient']);
     }
   }

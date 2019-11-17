@@ -34,7 +34,7 @@ export function defaultSymbolType(
 ): SymbolShape {
   if (channel !== 'shape') {
     // use the value from the shape encoding or the mark config if they exist
-    const shape = getFirstConditionValue(shapeChannelDef) || markShape;
+    const shape = getFirstConditionValue(shapeChannelDef) ?? markShape;
     if (shape) {
       return shape;
     }

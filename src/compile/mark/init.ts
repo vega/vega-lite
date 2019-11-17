@@ -33,7 +33,7 @@ export function normalizeMarkDef(
   const markDef: MarkDef = isMarkDef(mark) ? {...mark} : {type: mark};
 
   // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
-  const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef, config);
+  const specifiedOrient = markDef.orient ?? getMarkConfig('orient', markDef, config);
   markDef.orient = orient(markDef.type, encoding, specifiedOrient);
   if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
     log.warn(log.message.orientOverridden(markDef.orient, specifiedOrient));
@@ -51,7 +51,7 @@ export function normalizeMarkDef(
   }
 
   // set cursor, which should be pointer if href channel is present unless otherwise specified
-  const specifiedCursor = markDef.cursor || getMarkConfig('cursor', markDef, config);
+  const specifiedCursor = markDef.cursor ?? getMarkConfig('cursor', markDef, config);
   if (specifiedCursor === undefined) {
     markDef.cursor = cursor(markDef, encoding, config);
   }

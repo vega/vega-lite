@@ -188,7 +188,7 @@ export class FacetNode extends DataFlowNode {
     return {
       name: this[channel].name,
       // Use data from the crossed one if it exist
-      source: crossedDataName || this.data,
+      source: crossedDataName ?? this.data,
       transform: [
         {
           type: 'aggregate',
@@ -213,7 +213,7 @@ export class FacetNode extends DataFlowNode {
     const hasSharedAxis: {row?: true; column?: true} = {};
     for (const headerChannel of HEADER_CHANNELS) {
       for (const headerType of HEADER_TYPES) {
-        const headers = (layoutHeaders[headerChannel] && layoutHeaders[headerChannel][headerType]) || [];
+        const headers = (layoutHeaders[headerChannel] && layoutHeaders[headerChannel][headerType]) ?? [];
         for (const header of headers) {
           if (header.axes?.length > 0) {
             hasSharedAxis[headerChannel] = true;
@@ -268,8 +268,8 @@ export class FacetNode extends DataFlowNode {
       crossedDataName = `cross_${this.column.name}_${this.row.name}`;
 
       const fields: string[] = [].concat(
-        childIndependentFieldsWithStep.x || [],
-        childIndependentFieldsWithStep.y || []
+        childIndependentFieldsWithStep.x ?? [],
+        childIndependentFieldsWithStep.y ?? []
       );
       const ops = fields.map((): AggregateOp => 'distinct');
 

@@ -109,7 +109,7 @@ export const hits = {
 };
 
 function base(iter: number, sel: any, opts: any = {}): NormalizedUnitSpec | NormalizedLayerSpec {
-  const data = {values: opts.values || tuples};
+  const data = {values: opts.values ?? tuples};
   const x = {field: 'a', type: 'quantitative', ...opts.x};
   const y = {field: 'b', type: 'quantitative', ...opts.y};
   const color = {field: 'c', type: 'nominal', ...opts.color};

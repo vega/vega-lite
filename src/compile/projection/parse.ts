@@ -23,8 +23,8 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
     return new ProjectionComponent(
       model.projectionName(true),
       {
-        ...(model.config.projection || {}),
-        ...(proj || {})
+        ...(model.config.projection ?? {}),
+        ...(proj ?? {})
       },
       size,
       data

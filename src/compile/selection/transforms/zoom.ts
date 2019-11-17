@@ -98,7 +98,7 @@ function onDelta(
     : 'zoomLinear';
   const update =
     `${zoomFn}(${base}, ${anchor}, ${delta}` +
-    (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') || 1}` : '') +
+    (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') ?? 1}` : '') +
     ')';
 
   signal.on.push({

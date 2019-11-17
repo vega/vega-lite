@@ -69,7 +69,7 @@ export function parseLayerAxes(model: LayerModel) {
 
       if (resolve.axis[channel] === 'independent') {
         // If axes are independent, concat the axisComponent array.
-        axes[channel] = (axes[channel] || []).concat(child.component.axes[channel]);
+        axes[channel] = (axes[channel] ?? []).concat(child.component.axes[channel]);
 
         // Automatically adjust orient
         for (const axisComponent of child.component.axes[channel]) {
@@ -250,14 +250,14 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   });
 
   // 2) Add guide encode definition groups
-  const axisEncoding = axis.encoding || {};
+  const axisEncoding = axis.encoding ?? {};
   const axisEncode = AXIS_PARTS.reduce((e: VgAxisEncode, part) => {
     if (!axisComponent.hasAxisPart(part)) {
       // No need to create encode for a disabled part.
       return e;
     }
 
-    const axisEncodingPart = guideEncodeEntry(axisEncoding[part] || {}, model);
+    const axisEncodingPart = guideEncodeEntry(axisEncoding[part] ?? {}, model);
 
     const value = part === 'labels' ? encode.labels(model, channel, axisEncodingPart) : axisEncodingPart;
 

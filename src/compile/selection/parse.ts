@@ -39,7 +39,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
       }
 
       if (selDef[key] === undefined || selDef[key] === true) {
-        selDef[key] = cfg[key] || selDef[key];
+        selDef[key] = cfg[key] ?? selDef[key];
       }
     }
 
@@ -72,7 +72,7 @@ export function parseSelectionPredicate(
     const store = stringValue(vname + STORE);
 
     if (selCmpt.project.timeUnit) {
-      const child = dfnode || model.component.data.raw;
+      const child = dfnode ?? model.component.data.raw;
       const tunode = selCmpt.project.timeUnit.clone();
       if (child.parent) {
         tunode.insertAsParentOf(child);

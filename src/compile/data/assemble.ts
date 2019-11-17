@@ -57,7 +57,7 @@ function makeWalkTree(data: VgData[]) {
       if (node.parent instanceof SourceNode && !dataSource.source) {
         // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
         dataSource.format = {
-          ...(dataSource.format || {}),
+          ...(dataSource.format ?? {}),
           parse: node.assembleFormatParse()
         };
 
@@ -245,14 +245,14 @@ export function assembleRootData(dataComponent: DataComponent, datasets: Dict<In
   // move sources without transforms (the ones that are potentially used in lookups) to the beginning
   let whereTo = 0;
   for (const [i, d] of data.entries()) {
-    if ((d.transform || []).length === 0 && !d.source) {
+    if ((d.transform ?? []).length === 0 && !d.source) {
       data.splice(whereTo++, 0, data.splice(i, 1)[0]);
     }
   }
 
   // now fix the from references in lookup transforms
   for (const d of data) {
-    for (const t of d.transform || []) {
+    for (const t of d.transform ?? []) {
       if (t.type === 'lookup') {
         t.from = dataComponent.outputNodes[t.from].getSource();
       }

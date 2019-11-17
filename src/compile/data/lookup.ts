@@ -34,7 +34,7 @@ export class LookupNode extends DataFlowNode {
       model.component.data.outputNodes[fromOutputName] = fromOutputNode;
     } else if (isSelectionLookup(transform)) {
       const selName = transform.from.selection;
-      transform.as = transform.as || selName;
+      transform.as = transform.as ?? selName;
       fromOutputNode = model.getSelectionComponent(varName(selName), selName).materialized;
       if (!fromOutputNode) {
         throw new Error(log.message.noSameUnitLookup(selName));
