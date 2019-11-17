@@ -24,9 +24,19 @@ import {Model} from './model';
 // import {draw} from './data/debug';
 
 export interface CompileOptions {
+  /**
+   * Sets a Vega-Lite configuration.
+   */
   config?: Config;
+
+  /**
+   * Sets a custom logger.
+   */
   logger?: LoggerInterface;
 
+  /**
+   * Sets a field title formatter.
+   */
   fieldTitle?: vlFieldDef.FieldTitleFormatter;
 }
 
@@ -56,6 +66,10 @@ export interface CompileOptions {
  *     | (Assemble)
  *     v
  * Vega spec
+ *
+ * @param inputSpec The Vega-Lite specification.
+ * @param opt       Optional arguments passed to the Vega-Lite compiler.
+ * @returns         An object containing the compiled Vega spec and normalized Vega-Lite spec.
  */
 export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
   // 0. Augment opt with default opts
@@ -105,12 +119,17 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     optimizeDataflow(model.component.data, model);
 
     // 6. Assemble: convert model components --> Vega Spec.
-    return assembleTopLevelModel(
+    const vgSpec = assembleTopLevelModel(
       model,
       getTopLevelProperties(inputSpec, spec.autosize, config, model),
       inputSpec.datasets,
       inputSpec.usermeta
     );
+
+    return {
+      spec: vgSpec,
+      normalized: spec
+    };
   } finally {
     // Reset the singleton logger if a logger is provided
     if (opt.logger) {
@@ -166,7 +185,7 @@ function getTopLevelProperties(
 }
 
 /*
- * Assemble the top-level model.
+ * Assemble the top-level model to a Vega spec.
  *
  * Note: this couldn't be `model.assemble()` since the top-level model
  * needs some special treatment to generate top-level properties.
@@ -176,7 +195,7 @@ function assembleTopLevelModel(
   topLevelProperties: TopLevelProperties & LayoutSizeMixins,
   datasets: Datasets = {},
   usermeta: object
-) {
+): VgSpec {
   // Config with Vega-Lite only config removed.
   const vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
 
@@ -202,7 +221,7 @@ function assembleTopLevelModel(
     return true;
   });
 
-  const output: VgSpec = {
+  return {
     $schema: 'https://vega.github.io/schema/vega/v5.json',
     ...(model.description ? {description: model.description} : {}),
     ...topLevelProperties,
@@ -214,10 +233,5 @@ function assembleTopLevelModel(
     ...model.assembleGroup([...layoutSignals, ...model.assembleSelectionTopLevelSignals([])]),
     ...(vgConfig ? {config: vgConfig} : {}),
     ...(usermeta ? {usermeta} : {})
-  };
-
-  return {
-    spec: output
-    // TODO: add warning / errors here
   };
 }
