@@ -32,11 +32,16 @@ import {Flag, keys} from './util';
 
 export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
+// TODO: make recursive
 type ExcludeMapped<T, E> = {
   [P in keyof T]: Exclude<T[P], E>;
 };
 
-export type ExcludeMappedValueRef<T> = ExcludeMapped<T, ScaledValueRef<any> | NumericValueRef | ColorValueRef>;
+// Remove ValueRefs and from mapped types
+export type ExcludeMappedValueRef<T> = ExcludeMapped<
+  T,
+  ScaledValueRef<any> | NumericValueRef | ColorValueRef | SignalRef
+>;
 
 export interface VgData {
   name: string;
