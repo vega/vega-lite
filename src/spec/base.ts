@@ -9,7 +9,7 @@ import {Flag, keys} from '../util';
 import {BaseMarkConfig, LayoutAlign, RowCol} from '../vega.schema';
 import {isConcatSpec} from './concat';
 import {isFacetMapping, isFacetSpec} from './facet';
-import {NormalizedSpec} from './index';
+import {NormalizedSpec} from '.';
 import {isRepeatSpec} from './repeat';
 
 export {TopLevel} from './toplevel';

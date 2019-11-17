@@ -1,4 +1,4 @@
-import {TopLevelSpec} from './../src/spec/index';
+import {TopLevelSpec} from './../src/spec';
 
 import {parse, View} from 'vega';
 import {compile} from '../src';

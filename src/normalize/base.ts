@@ -1,7 +1,7 @@
 import {Config} from '../config';
 import {Encoding} from '../encoding';
 import {Projection} from '../projection';
-import {GenericSpec, NormalizedSpec} from '../spec/index';
+import {GenericSpec, NormalizedSpec} from '../spec';
 import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec/unit';
 

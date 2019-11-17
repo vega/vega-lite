@@ -62,7 +62,7 @@ export interface ViewConfig extends BaseViewBackground {
 }
 
 export function getViewConfigContinuousSize(viewConfig: ViewConfig, channel: 'width' | 'height') {
-  return viewConfig[channel === 'width' ? 'continuousWidth' : 'continuousHeight'];
+  return viewConfig[channel] ?? viewConfig[channel === 'width' ? 'continuousWidth' : 'continuousHeight']; // get width/height for backwards compatibility
 }
 
 export function getViewConfigDiscreteStep(viewConfig: ViewConfig, channel: 'width' | 'height') {
@@ -71,7 +71,7 @@ export function getViewConfigDiscreteStep(viewConfig: ViewConfig, channel: 'widt
 }
 
 export function getViewConfigDiscreteSize(viewConfig: ViewConfig, channel: 'width' | 'height') {
-  const size = viewConfig[channel === 'width' ? 'discreteWidth' : 'discreteHeight'];
+  const size = viewConfig[channel] ?? viewConfig[channel === 'width' ? 'discreteWidth' : 'discreteHeight']; // get width/height for backwards compatibility
   return getFirstDefined(size, {step: viewConfig.step});
 }
 

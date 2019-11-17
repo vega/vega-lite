@@ -3,7 +3,7 @@ import {Field} from '../channeldef';
 import {Encoding} from '../encoding';
 import * as log from '../log';
 import {MarkDef} from '../mark';
-import {NormalizerParams} from '../normalize/index';
+import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {Flag, keys} from '../util';
 import {CompositeMarkNormalizer} from './base';

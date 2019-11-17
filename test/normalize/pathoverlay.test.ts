@@ -1,4 +1,4 @@
-import {normalize} from '../../src/normalize/index';
+import {normalize} from '../../src/normalize';
 import {PathOverlayNormalizer} from '../../src/normalize/pathoverlay';
 import {TopLevelSpec} from '../../src/spec';
 import {DataMixins} from '../../src/spec/base';

@@ -1,4 +1,4 @@
-import {normalize} from '../../src/normalize/index';
+import {normalize} from '../../src/normalize';
 import {TopLevelUnitSpec} from '../../src/spec/unit';
 
 describe('RuleForRangedLineNormalizer', () => {

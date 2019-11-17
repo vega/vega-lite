@@ -1,7 +1,7 @@
 import {Color} from 'vega';
 import {toSet} from 'vega-util';
 import {Gradient, Value} from './channeldef';
-import {CompositeMark, CompositeMarkDef} from './compositemark/index';
+import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {contains, keys, Flag} from './util';
 import {BaseMarkConfig} from './vega.schema';
 

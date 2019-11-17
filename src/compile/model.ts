@@ -24,7 +24,7 @@ import {
   SpecType,
   ViewBackground
 } from '../spec/base';
-import {NormalizedSpec} from '../spec/index';
+import {NormalizedSpec} from '../spec';
 import {extractTitleConfig, TitleParams, isText} from '../title';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';

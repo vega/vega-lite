@@ -1,4 +1,4 @@
-import {normalize} from '../../src/normalize/index';
+import {normalize} from '../../src/normalize';
 import {RangeStepNormalizer} from '../../src/normalize/rangestep';
 import {Scale} from '../../src/scale';
 import {TopLevelUnitSpec} from '../../src/spec/unit';
