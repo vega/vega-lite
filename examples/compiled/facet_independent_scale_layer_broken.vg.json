@@ -229,13 +229,7 @@
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
       "symbolType": "circle",
       "title": "gender",
-      "encode": {
-        "symbols": {
-          "name": "gender_legend_symbols",
-          "interactive": false,
-          "update": {"fill": {"value": "transparent"}}
-        }
-      }
+      "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
   ],
   "config": {"style": {"cell": {"fill": "yellow"}}}

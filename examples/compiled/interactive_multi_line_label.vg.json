@@ -320,8 +320,6 @@
       "title": "symbol",
       "encode": {
         "symbols": {
-          "name": "symbol_legend_symbols",
-          "interactive": false,
           "update": {"fill": {"value": "transparent"}, "opacity": {"value": 1}}
         }
       }

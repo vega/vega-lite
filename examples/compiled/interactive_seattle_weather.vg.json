@@ -570,13 +570,7 @@
       "stroke": "color",
       "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
       "symbolType": "circle",
-      "encode": {
-        "symbols": {
-          "name": "weather_legend_symbols",
-          "interactive": false,
-          "update": {"opacity": {"value": 0.7}}
-        }
-      },
+      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
       "fill": "color"
     },
     {
@@ -586,8 +580,6 @@
       "symbolType": "circle",
       "encode": {
         "symbols": {
-          "name": "precipitation_legend_symbols",
-          "interactive": false,
           "update": {
             "fill": {"value": "transparent"},
             "stroke": {"value": "lightgray"},

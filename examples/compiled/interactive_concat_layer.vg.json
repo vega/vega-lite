@@ -255,8 +255,6 @@
           "symbolType": "circle",
           "encode": {
             "symbols": {
-              "name": "undefined_legend_symbols",
-              "interactive": false,
               "update": {
                 "fill": {"value": "transparent"},
                 "stroke": {"value": "#666"}

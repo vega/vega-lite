@@ -136,8 +136,6 @@
       "title": "Sum of count",
       "encode": {
         "symbols": {
-          "name": "count_legend_symbols",
-          "interactive": false,
           "update": {
             "fill": {"value": "#4c78a8"},
             "stroke": {"value": "transparent"}

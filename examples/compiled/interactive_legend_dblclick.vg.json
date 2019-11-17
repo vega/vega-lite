@@ -66,9 +66,14 @@
               "source": "view",
               "type": "dblclick",
               "markname": "series_legend_labels"
+            },
+            {
+              "source": "view",
+              "type": "dblclick",
+              "markname": "series_legend_entries"
             }
           ],
-          "update": "datum.value",
+          "update": "datum.value || item().items[0].items[0].datum.value",
           "force": true
         },
         {
@@ -242,6 +247,11 @@
               {"value": 0.35}
             ]
           }
+        },
+        "entries": {
+          "name": "series_legend_entries",
+          "interactive": true,
+          "update": {"fill": {"value": "transparent"}}
         }
       }
     }

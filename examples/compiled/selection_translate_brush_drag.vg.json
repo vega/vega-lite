@@ -455,13 +455,7 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
       "title": "Origin",
-      "encode": {
-        "symbols": {
-          "name": "Origin_legend_symbols",
-          "interactive": false,
-          "update": {"opacity": {"value": 0.7}}
-        }
-      }
+      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
     },
     {
       "size": "size",
@@ -470,8 +464,6 @@
       "title": "Cylinders",
       "encode": {
         "symbols": {
-          "name": "Cylinders_legend_symbols",
-          "interactive": false,
           "update": {
             "fill": {"value": "grey"},
             "opacity": {"value": 0.7},

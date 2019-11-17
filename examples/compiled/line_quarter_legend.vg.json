@@ -153,11 +153,7 @@
       "title": "date (quarter)",
       "type": "symbol",
       "encode": {
-        "labels": {
-          "name": "date_legend_labels",
-          "interactive": false,
-          "update": {"text": {"signal": "'Q' + quarter(datum.value)"}}
-        }
+        "labels": {"update": {"text": {"signal": "'Q' + quarter(datum.value)"}}}
       }
     }
   ]

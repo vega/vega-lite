@@ -114,13 +114,7 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
       "title": "Displacement",
-      "encode": {
-        "gradient": {
-          "name": "Displacement_legend_gradient",
-          "interactive": false,
-          "update": {"opacity": {"value": 0.7}}
-        }
-      }
+      "encode": {"gradient": {"update": {"opacity": {"value": 0.7}}}}
     }
   ]
 }

@@ -154,13 +154,7 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "square",
       "title": "count",
-      "encode": {
-        "gradient": {
-          "name": "count_legend_gradient",
-          "interactive": false,
-          "update": {"opacity": {"value": 1}}
-        }
-      }
+      "encode": {"gradient": {"update": {"opacity": {"value": 1}}}}
     }
   ],
   "config": {

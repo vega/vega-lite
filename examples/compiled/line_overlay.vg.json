@@ -186,13 +186,7 @@
       "symbolType": "circle",
       "title": "symbol",
       "fill": "color",
-      "encode": {
-        "symbols": {
-          "name": "symbol_legend_symbols",
-          "interactive": false,
-          "update": {"opacity": {"value": 1}}
-        }
-      }
+      "encode": {"symbols": {"update": {"opacity": {"value": 1}}}}
     }
   ]
 }

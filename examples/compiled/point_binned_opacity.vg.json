@@ -138,8 +138,6 @@
       "title": "Acceleration (binned)",
       "encode": {
         "symbols": {
-          "name": "Acceleration_legend_symbols",
-          "interactive": false,
           "update": {
             "fill": {"value": "transparent"},
             "stroke": {"value": "#4c78a8"}

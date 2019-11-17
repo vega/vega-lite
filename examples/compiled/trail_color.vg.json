@@ -142,8 +142,6 @@
       "title": "price",
       "encode": {
         "symbols": {
-          "name": "price_legend_symbols",
-          "interactive": false,
           "update": {
             "fill": {"value": "black"},
             "fillOpacity": {"value": 1},

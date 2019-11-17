@@ -595,13 +595,7 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "stroke",
       "title": "location",
-      "encode": {
-        "symbols": {
-          "name": "location_legend_symbols",
-          "interactive": false,
-          "update": {"opacity": {"value": 0.2}}
-        }
-      }
+      "encode": {"symbols": {"update": {"opacity": {"value": 0.2}}}}
     }
   ]
 }

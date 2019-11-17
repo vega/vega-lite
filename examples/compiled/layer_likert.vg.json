@@ -395,8 +395,6 @@
       "symbolType": "circle",
       "encode": {
         "symbols": {
-          "name": "undefined_legend_symbols",
-          "interactive": false,
           "update": {
             "fill": {"value": "#6EB4FD"},
             "stroke": {"value": "transparent"}

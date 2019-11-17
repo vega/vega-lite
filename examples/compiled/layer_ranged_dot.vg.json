@@ -172,13 +172,7 @@
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
-      "encode": {
-        "symbols": {
-          "name": "year_legend_symbols",
-          "interactive": false,
-          "update": {"opacity": {"value": 1}}
-        }
-      }
+      "encode": {"symbols": {"update": {"opacity": {"value": 1}}}}
     }
   ]
 }

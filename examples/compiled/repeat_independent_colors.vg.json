@@ -107,8 +107,6 @@
           "title": "Origin",
           "encode": {
             "symbols": {
-              "name": "Origin_legend_symbols",
-              "interactive": false,
               "update": {
                 "fill": {"value": "transparent"},
                 "opacity": {"value": 0.7}
@@ -206,8 +204,6 @@
           "title": "Cylinders",
           "encode": {
             "symbols": {
-              "name": "Cylinders_legend_symbols",
-              "interactive": false,
               "update": {
                 "fill": {"value": "transparent"},
                 "opacity": {"value": 0.7}
