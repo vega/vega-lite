@@ -63,6 +63,13 @@ export function selectionNotFound(name: string) {
 export const SCALE_BINDINGS_CONTINUOUS =
   'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
 
+export function noSameUnitLookup(name: string) {
+  return (
+    `Cannot define and lookup the "${name}" selection in the same view. ` +
+    `Try moving the lookup into a second, layered view?`
+  );
+}
+
 // REPEAT
 export function noSuchRepeatedValue(field: string) {
   return `Unknown repeated value "${field}".`;

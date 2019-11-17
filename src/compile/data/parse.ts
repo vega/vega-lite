@@ -34,6 +34,7 @@ import {
 import {deepEqual, mergeDeep} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection';
+import {materializeSelections} from '../selection/parse';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {CalculateNode} from './calculate';
@@ -374,6 +375,10 @@ export function parseData(model: Model): DataComponent {
   const main = new OutputNode(head, mainName, MAIN, outputNodeRefCounts);
   outputNodes[mainName] = main;
   head = main;
+
+  if (isUnitModel(model)) {
+    materializeSelections(model, main);
+  }
 
   // add facet marker
   let facetRoot = null;

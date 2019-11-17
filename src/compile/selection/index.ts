@@ -17,6 +17,7 @@ import interval from './interval';
 import multi from './multi';
 import single from './single';
 import {SelectionProjection, SelectionProjectionComponent} from './transforms/project';
+import {OutputNode} from '../data/dataflow';
 
 export const STORE = '_store';
 export const TUPLE = '_tuple';
@@ -36,6 +37,8 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
     ? SelectionInit | SelectionInit[]
     : never)[];
   events: Stream[];
+  materialized: OutputNode;
+
   bind?: 'scales' | Binding | Dict<Binding>;
   resolve: SelectionResolution;
   empty: 'all' | 'none';
