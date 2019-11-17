@@ -30,7 +30,7 @@ export type Type = StandardType | typeof GEOJSON;
  * @param  type
  * @return Full type name.
  */
-export function getFullName(type: Type | string): Type {
+export function getFullName(type: Type | string): Type | undefined {
   if (type) {
     type = type.toLowerCase();
     switch (type) {
