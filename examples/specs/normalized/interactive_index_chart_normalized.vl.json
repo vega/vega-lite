@@ -1,0 +1,72 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "data": {
+    "url": "data/stocks.csv",
+    "format": {"type": "csv", "parse": {"date": "date"}}
+  },
+  "width": 650,
+  "height": 300,
+  "layer": [
+    {
+      "selection": {
+        "index": {
+          "type": "single",
+          "on": "mouseover",
+          "encodings": ["x"],
+          "nearest": true,
+          "init": {"x": {"year": 2005, "month": 1, "date": 1}}
+        }
+      },
+      "mark": "point",
+      "encoding": {
+        "x": {"field": "date", "type": "temporal", "axis": null},
+        "opacity": {"value": 0}
+      }
+    },
+    {
+      "transform": [
+        {"lookup": "symbol", "from": {"selection": "index", "key": "symbol"}},
+        {
+          "calculate": "datum.index && datum.index.price > 0 ? (datum.price - datum.index.price)/datum.index.price : 0",
+          "as": "indexed_price"
+        }
+      ],
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date", "type": "temporal", "axis": null},
+        "y": {
+          "field": "indexed_price",
+          "type": "quantitative",
+          "axis": {"format": "%"}
+        },
+        "color": {"field": "symbol", "type": "nominal"}
+      }
+    },
+    {
+      "transform": [{"filter": {"selection": "index"}}],
+      "layer": [
+        {
+          "mark": {"type": "rule", "strokeWidth": 0.5},
+          "encoding": {
+            "x": {"field": "date", "type": "temporal", "axis": null},
+            "color": {"value": "firebrick"}
+          }
+        },
+        {
+          "mark": {"type": "text", "align": "center", "fontWeight": 100},
+          "encoding": {
+            "x": {"field": "date", "type": "temporal", "axis": null},
+            "color": {"value": "firebrick"},
+            "text": {
+              "field": "date",
+              "type": "temporal",
+              "timeUnit": "yearmonth"
+            },
+            "y": {"value": 310}
+          }
+        }
+      ]
+    }
+  ],
+  "autosize": {"type": "pad"}
+}

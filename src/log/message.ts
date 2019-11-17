@@ -69,6 +69,12 @@ export const SCALE_BINDINGS_CONTINUOUS =
 
 export const LEGEND_BINDINGS_PROJECT_LENGTH =
   'Legend bindings are only supported for selections over an individual field or encoding channel.';
+export function noSameUnitLookup(name: string) {
+  return (
+    `Cannot define and lookup the "${name}" selection in the same view. ` +
+    `Try moving the lookup into a second, layered view?`
+  );
+}
 
 // REPEAT
 export function noSuchRepeatedValue(field: string) {
