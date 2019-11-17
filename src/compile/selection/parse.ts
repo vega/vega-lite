@@ -15,7 +15,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
   const selectionConfig = model.config.selection;
 
-  for (let name in selDefs) {
+  for (const name in selDefs) {
     if (!hasOwnProperty(selDefs, name)) {
       continue;
     }
@@ -43,10 +43,10 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
       }
     }
 
-    name = varName(name);
-    const selCmpt = (selCmpts[name] = {
+    const safeName = varName(name);
+    const selCmpt = (selCmpts[safeName] = {
       ...selDef,
-      name: name,
+      name: safeName,
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on
     } as any);
 
