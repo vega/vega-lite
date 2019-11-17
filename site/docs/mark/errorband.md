@@ -19,13 +19,14 @@ An error band summarizes an error range of quantitative values using a set of su
 
 To create an error band, set `mark` to `"errorband"`.
 
+<!-- prettier-ignore-start -->
+
 ## Documentation Overview
 
 {:.no_toc}
 
-<!-- prettier-ignore -->
-- TOC
-{:toc}
+- TOC {:toc}
+  <!-- prettier-ignore-end -->
 
 {:#properties}
 
