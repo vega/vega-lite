@@ -16,13 +16,14 @@ permalink: /docs/point.html
 
 `point` mark represents each data point with a symbol. Point marks are commonly used in visualizations like scatterplots.
 
+<!-- prettier-ignore-start -->
+
 ## Documentation Overview
 
 {:.no_toc}
 
-<!-- prettier-ignore -->
-- TOC
-{:toc}
+- TOC {:toc}
+  <!-- prettier-ignore-end -->
 
 {:#properties}
 

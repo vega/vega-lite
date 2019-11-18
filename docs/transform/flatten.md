@@ -32,7 +32,10 @@ The **flatten** transform maps array-valued _fields_ to a set of individual data
 This example flattens the `"foo"` and `"bar"` array-valued fields. Given the input data
 
 ```json
-[{"key": "alpha", "foo": [1, 2], "bar": ["A", "B"]}, {"key": "beta", "foo": [3, 4, 5], "bar": ["C", "D"]}]
+[
+  {"key": "alpha", "foo": [1, 2], "bar": ["A", "B"]},
+  {"key": "beta", "foo": [3, 4, 5], "bar": ["C", "D"]}
+]
 ```
 
 this example produces the output:

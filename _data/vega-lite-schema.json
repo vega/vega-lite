@@ -160,6 +160,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -187,6 +203,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -319,6 +338,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -592,7 +614,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>"
             }
           ]
         },
@@ -606,7 +628,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number[]|undefined)927251285|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)927251285,undefined>927251285|null)>"
             }
           ]
         },
@@ -617,7 +639,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)1806960624|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1806960624,undefined>1806960624|null)>"
             }
           ]
         },
@@ -630,7 +652,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)702672441|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)702672441,undefined>702672441|null)>"
             }
           ]
         },
@@ -642,7 +664,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)742391737|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)742391737,undefined>742391737|null)>"
             }
           ]
         },
@@ -653,7 +675,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-981995915-6039-6088-981995915-0-10055|undefined)870796116|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>"
             }
           ]
         },
@@ -670,7 +692,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-981995915-8592-8644-981995915-0-10055|undefined)186452232|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>"
             }
           ]
         },
@@ -695,7 +717,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>"
             }
           ]
         },
@@ -721,7 +743,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((string|undefined)1723860780|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(string|undefined)1723860780,undefined>1723860780|null)>"
             }
           ]
         },
@@ -733,7 +755,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)720879958|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)720879958,undefined>720879958|null)>"
             }
           ]
         },
@@ -744,7 +766,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-981995915-8836-8977-981995915-0-10055|undefined)679934267|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>"
             }
           ]
         },
@@ -755,7 +777,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-981995915-8687-8836-981995915-0-10055|undefined)1209375024|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>"
             }
           ]
         },
@@ -770,7 +792,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)377890894|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)377890894,undefined>377890894|null)>"
             }
           ]
         },
@@ -810,6 +832,14 @@
           "description": "The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
           "type": "number"
         },
+        "tickBand": {
+          "description": "For band scales, indicates if ticks and grid lines should be placed at the center of a band (default) or at the band extents to indicate intervals.",
+          "enum": [
+            "center",
+            "extent"
+          ],
+          "type": "string"
+        },
         "tickColor": {
           "anyOf": [
             {
@@ -824,7 +854,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>"
             }
           ]
         },
@@ -842,7 +872,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number[]|undefined)105503503|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)105503503,undefined>105503503|null)>"
             }
           ]
         },
@@ -853,7 +883,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)61636408|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)61636408,undefined>61636408|null)>"
             }
           ]
         },
@@ -876,7 +906,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)1791665056|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1791665056,undefined>1791665056|null)>"
             }
           ]
         },
@@ -897,7 +927,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)1626350768|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1626350768,undefined>1626350768|null)>"
             }
           ]
         },
@@ -983,6 +1013,10 @@
         },
         "titleY": {
           "description": "Y-coordinate of the axis title relative to the axis group.",
+          "type": "number"
+        },
+        "translate": {
+          "description": "Translation offset in pixels applied to the axis group mark x and y. If specified, overrides the default behavior of a 0.5 offset to pixel-align stroked lines.",
           "type": "number"
         },
         "values": {
@@ -1081,7 +1115,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>"
             }
           ]
         },
@@ -1095,7 +1129,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number[]|undefined)927251285|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)927251285,undefined>927251285|null)>"
             }
           ]
         },
@@ -1106,7 +1140,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)1806960624|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1806960624,undefined>1806960624|null)>"
             }
           ]
         },
@@ -1119,7 +1153,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)702672441|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)702672441,undefined>702672441|null)>"
             }
           ]
         },
@@ -1131,7 +1165,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)742391737|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)742391737,undefined>742391737|null)>"
             }
           ]
         },
@@ -1142,7 +1176,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-981995915-6039-6088-981995915-0-10055|undefined)870796116|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>"
             }
           ]
         },
@@ -1159,7 +1193,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-981995915-8592-8644-981995915-0-10055|undefined)186452232|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>"
             }
           ]
         },
@@ -1184,7 +1218,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>"
             }
           ]
         },
@@ -1206,7 +1240,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((string|undefined)1723860780|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(string|undefined)1723860780,undefined>1723860780|null)>"
             }
           ]
         },
@@ -1218,7 +1252,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)720879958|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)720879958,undefined>720879958|null)>"
             }
           ]
         },
@@ -1229,7 +1263,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-981995915-8836-8977-981995915-0-10055|undefined)679934267|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>"
             }
           ]
         },
@@ -1240,7 +1274,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((def-alias-981995915-8687-8836-981995915-0-10055|undefined)1209375024|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>"
             }
           ]
         },
@@ -1255,7 +1289,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)377890894|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)377890894,undefined>377890894|null)>"
             }
           ]
         },
@@ -1291,6 +1325,14 @@
           "description": "Whether month names and weekday names should be abbreviated.\n\n__Default value:__  `false`",
           "type": "boolean"
         },
+        "tickBand": {
+          "description": "For band scales, indicates if ticks and grid lines should be placed at the center of a band (default) or at the band extents to indicate intervals.",
+          "enum": [
+            "center",
+            "extent"
+          ],
+          "type": "string"
+        },
         "tickColor": {
           "anyOf": [
             {
@@ -1305,7 +1347,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>"
             }
           ]
         },
@@ -1319,7 +1361,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number[]|undefined)105503503|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)105503503,undefined>105503503|null)>"
             }
           ]
         },
@@ -1330,7 +1372,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)61636408|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)61636408,undefined>61636408|null)>"
             }
           ]
         },
@@ -1349,7 +1391,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)1791665056|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1791665056,undefined>1791665056|null)>"
             }
           ]
         },
@@ -1370,7 +1412,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<((number|undefined)1626350768|null)>"
+              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1626350768,undefined>1626350768|null)>"
             }
           ]
         },
@@ -1449,6 +1491,10 @@
         },
         "titleY": {
           "description": "Y-coordinate of the axis title relative to the axis group.",
+          "type": "number"
+        },
+        "translate": {
+          "description": "Translation offset in pixels applied to the axis group mark x and y. If specified, overrides the default behavior of a 0.5 offset to pixel-align stroked lines.",
           "type": "number"
         }
       },
@@ -1565,6 +1611,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -1592,6 +1654,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -1674,6 +1739,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -2897,17 +2965,17 @@
         }
       ]
     },
-    "ConditionalAxisProperty<((def-alias-981995915-6039-6088-981995915-0-10055|undefined)870796116|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-981995915-6039-6088-981995915-0-10055|undefined)870796116|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-981995915-6039-6088-981995915-0-10055|undefined)870796116|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>>"
               },
               "type": "array"
             }
@@ -2927,21 +2995,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((def-alias-981995915-8592-8644-981995915-0-10055|undefined)186452232|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-981995915-8592-8644-981995915-0-10055|undefined)186452232|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-981995915-8592-8644-981995915-0-10055|undefined)186452232|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>>"
               },
               "type": "array"
             }
@@ -2961,21 +3030,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((def-alias-981995915-8687-8836-981995915-0-10055|undefined)1209375024|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-981995915-8687-8836-981995915-0-10055|undefined)1209375024|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-981995915-8687-8836-981995915-0-10055|undefined)1209375024|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>>"
               },
               "type": "array"
             }
@@ -2995,21 +3065,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((def-alias-981995915-8836-8977-981995915-0-10055|undefined)679934267|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-981995915-8836-8977-981995915-0-10055|undefined)679934267|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((def-alias-981995915-8836-8977-981995915-0-10055|undefined)679934267|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>>"
               },
               "type": "array"
             }
@@ -3029,21 +3100,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>>"
               },
               "type": "array"
             }
@@ -3070,21 +3142,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>>"
               },
               "type": "array"
             }
@@ -3111,21 +3184,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>>"
               },
               "type": "array"
             }
@@ -3152,21 +3226,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((number[]|undefined)105503503|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)105503503,undefined>105503503|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number[]|undefined)105503503|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)105503503,undefined>105503503|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number[]|undefined)105503503|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)105503503,undefined>105503503|null)>>"
               },
               "type": "array"
             }
@@ -3189,21 +3264,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((number[]|undefined)927251285|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)927251285,undefined>927251285|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number[]|undefined)927251285|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)927251285,undefined>927251285|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number[]|undefined)927251285|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)927251285,undefined>927251285|null)>>"
               },
               "type": "array"
             }
@@ -3226,21 +3302,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((number|undefined)1626350768|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1626350768,undefined>1626350768|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)1626350768|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1626350768,undefined>1626350768|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)1626350768|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1626350768,undefined>1626350768|null)>>"
               },
               "type": "array"
             }
@@ -3261,21 +3338,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((number|undefined)1791665056|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1791665056,undefined>1791665056|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)1791665056|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1791665056,undefined>1791665056|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)1791665056|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1791665056,undefined>1791665056|null)>>"
               },
               "type": "array"
             }
@@ -3295,21 +3373,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((number|undefined)1806960624|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1806960624,undefined>1806960624|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)1806960624|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1806960624,undefined>1806960624|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)1806960624|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1806960624,undefined>1806960624|null)>>"
               },
               "type": "array"
             }
@@ -3329,21 +3408,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((number|undefined)377890894|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)377890894,undefined>377890894|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)377890894|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)377890894,undefined>377890894|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)377890894|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)377890894,undefined>377890894|null)>>"
               },
               "type": "array"
             }
@@ -3363,21 +3443,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((number|undefined)61636408|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)61636408,undefined>61636408|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)61636408|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)61636408,undefined>61636408|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)61636408|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)61636408,undefined>61636408|null)>>"
               },
               "type": "array"
             }
@@ -3397,21 +3478,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((number|undefined)702672441|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)702672441,undefined>702672441|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)702672441|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)702672441,undefined>702672441|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)702672441|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)702672441,undefined>702672441|null)>>"
               },
               "type": "array"
             }
@@ -3433,21 +3515,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((number|undefined)720879958|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)720879958,undefined>720879958|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)720879958|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)720879958,undefined>720879958|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)720879958|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)720879958,undefined>720879958|null)>>"
               },
               "type": "array"
             }
@@ -3468,21 +3551,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((number|undefined)742391737|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)742391737,undefined>742391737|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)742391737|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)742391737,undefined>742391737|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((number|undefined)742391737|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)742391737,undefined>742391737|null)>>"
               },
               "type": "array"
             }
@@ -3503,21 +3587,22 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<((string|undefined)1723860780|null)>": {
+    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(string|undefined)1723860780,undefined>1723860780|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<((string|undefined)1723860780|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(string|undefined)1723860780,undefined>1723860780|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<((string|undefined)1723860780|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(string|undefined)1723860780,undefined>1723860780|null)>>"
               },
               "type": "array"
             }
@@ -3537,7 +3622,8 @@
         }
       },
       "required": [
-        "condition"
+        "condition",
+        "value"
       ],
       "type": "object"
     },
@@ -3560,7 +3646,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -3641,7 +3727,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -3728,7 +3814,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -3780,7 +3866,35 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((def-alias-981995915-6039-6088-981995915-0-10055|undefined)870796116|null)>>": {
+    "ConditionalPredicate<ValueDef<(Gradient|string|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3801,11 +3915,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((def-alias-981995915-8592-8644-981995915-0-10055|undefined)186452232|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3826,11 +3941,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((def-alias-981995915-8687-8836-981995915-0-10055|undefined)1209375024|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3851,11 +3967,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((def-alias-981995915-8836-8977-981995915-0-10055|undefined)679934267|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3876,11 +3993,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3908,11 +4026,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3940,11 +4059,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3972,11 +4092,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((number[]|undefined)105503503|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)105503503,undefined>105503503|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4000,11 +4121,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((number[]|undefined)927251285|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)927251285,undefined>927251285|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4028,11 +4150,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((number|undefined)1626350768|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1626350768,undefined>1626350768|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4054,11 +4177,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((number|undefined)1791665056|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1791665056,undefined>1791665056|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4079,11 +4203,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((number|undefined)1806960624|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1806960624,undefined>1806960624|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4104,11 +4229,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((number|undefined)377890894|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)377890894,undefined>377890894|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4129,11 +4255,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((number|undefined)61636408|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)61636408,undefined>61636408|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4154,11 +4281,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((number|undefined)702672441|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)702672441,undefined>702672441|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4181,11 +4309,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((number|undefined)720879958|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)720879958,undefined>720879958|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4207,11 +4336,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((number|undefined)742391737|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)742391737,undefined>742391737|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4233,11 +4363,12 @@
         }
       },
       "required": [
-        "test"
+        "test",
+        "value"
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<((string|undefined)1723860780|null)>>": {
+    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(string|undefined)1723860780,undefined>1723860780|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4248,33 +4379,6 @@
           "anyOf": [
             {
               "description": "The font of the tick label.",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(Gradient|string|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Gradient"
-            },
-            {
               "type": "string"
             },
             {
@@ -4384,7 +4488,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -4465,7 +4569,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -4552,7 +4656,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -5004,6 +5108,42 @@
           "$ref": "#/definitions/TopoDataFormat"
         }
       ]
+    },
+    "DataLookupTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldName"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/FieldName"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "The output fields on which to store the looked up data values.\n\nFor data lookups, this property may be left blank if `from.fields`\nhas been specified (those field names will be used); if `from.fields`\nhas not been specified, `as` must be a string.\n\nFor selection lookups, this property is optional: if unspecified,\nlooked up values will be stored under a property named for the selection;\nand if specified, it must correspond to `from.fields`."
+        },
+        "default": {
+          "description": "The default value to use if lookup fails.\n\n__Default value:__ `null`",
+          "type": "string"
+        },
+        "from": {
+          "$ref": "#/definitions/LookupData",
+          "description": "Secondary data reference."
+        },
+        "lookup": {
+          "description": "Key in primary data source.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "from",
+        "lookup"
+      ],
+      "type": "object"
     },
     "DataSource": {
       "anyOf": [
@@ -5814,7 +5954,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "bounds": {
           "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
@@ -5919,7 +6059,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -6460,7 +6600,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
           "anyOf": [
@@ -6551,7 +6691,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
           "anyOf": [
@@ -6642,7 +6782,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
           "anyOf": [
@@ -6739,7 +6879,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
           "anyOf": [
@@ -6826,7 +6966,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
           "anyOf": [
@@ -7948,59 +8088,32 @@
       "additionalProperties": false,
       "properties": {
         "extent": {
-          "description": "Sets both the major and minor extents to the same values.",
-          "items": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "description": "Sets both the major and minor extents to the same values."
         },
         "extentMajor": {
-          "description": "The major extent of the graticule as a two-element array of coordinates.",
-          "items": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "description": "The major extent of the graticule as a two-element array of coordinates."
         },
         "extentMinor": {
-          "description": "The minor extent of the graticule as a two-element array of coordinates.",
-          "items": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "description": "The minor extent of the graticule as a two-element array of coordinates."
         },
         "precision": {
           "description": "The precision of the graticule in degrees.\n\n__Default value:__ `2.5`",
           "type": "number"
         },
         "step": {
-          "description": "Sets both the major and minor step angles to the same values.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<number>",
+          "description": "Sets both the major and minor step angles to the same values."
         },
         "stepMajor": {
-          "description": "The major step angles of the graticule.\n\n\n__Default value:__ `[90, 360]`",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<number>",
+          "description": "The major step angles of the graticule.\n\n\n__Default value:__ `[90, 360]`"
         },
         "stepMinor": {
-          "description": "The minor step angles of the graticule.\n\n__Default value:__ `[10, 10]`",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<number>",
+          "description": "The minor step angles of the graticule.\n\n__Default value:__ `[10, 10]`"
         }
       },
       "type": "object"
@@ -8292,12 +8405,22 @@
       "properties": {
         "frame": {
           "description": "A frame specification as a two-element array used to control the window over which the specified method is applied. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. For example, the value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object.\n\n__Default value:__:  `[null, null]` indicating that the window includes all objects.",
-          "items": {
-            "type": [
-              "null",
-              "number"
-            ]
-          },
+          "items": [
+            {
+              "type": [
+                "null",
+                "number"
+              ]
+            },
+            {
+              "type": [
+                "null",
+                "number"
+              ]
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
           "type": "array"
         },
         "keyvals": {
@@ -8349,12 +8472,22 @@
       "properties": {
         "frame": {
           "description": "A frame specification as a two-element array used to control the window over which the specified method is applied. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. For example, the value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object.\n\n__Default value:__:  `[null, null]` indicating that the window includes all objects.",
-          "items": {
-            "type": [
-              "null",
-              "number"
-            ]
-          },
+          "items": [
+            {
+              "type": [
+                "null",
+                "number"
+              ]
+            },
+            {
+              "type": [
+                "null",
+                "number"
+              ]
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
           "type": "array"
         },
         "groupby": {
@@ -8483,20 +8616,24 @@
     },
     "Interpolate": {
       "enum": [
-        "linear",
-        "linear-closed",
-        "step",
-        "step-before",
-        "step-after",
         "basis",
         "basis-open",
         "basis-closed",
+        "bundle",
         "cardinal",
         "cardinal-open",
         "cardinal-closed",
-        "bundle",
-        "monotone"
+        "catmull-rom",
+        "linear",
+        "linear-closed",
+        "monotone",
+        "natural",
+        "step",
+        "step-before",
+        "step-after"
       ],
+      "maximum": 900,
+      "minimum": 100,
       "type": "string"
     },
     "IntervalSelection": {
@@ -8781,7 +8918,7 @@
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation.",
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation.",
           "type": "null"
         },
         "field": {
@@ -9853,6 +9990,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -9880,6 +10033,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -10001,6 +10157,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -10381,7 +10540,7 @@
           "description": "Secondary data source to lookup in."
         },
         "fields": {
-          "description": "Fields in foreign data to lookup.\nIf not specified, the entire object is queried.",
+          "description": "Fields in foreign data or selection to lookup.\nIf not specified, the entire object is queried.",
           "items": {
             "$ref": "#/definitions/FieldName"
           },
@@ -10398,41 +10557,39 @@
       ],
       "type": "object"
     },
-    "LookupTransform": {
+    "LookupSelection": {
       "additionalProperties": false,
       "properties": {
-        "as": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FieldName"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/FieldName"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "The field or fields for storing the computed formula value.\nIf `from.fields` is specified, the transform will use the same names for `as`.\nIf `from.fields` is not specified, `as` has to be a string and we put the whole object into the data under the specified name."
+        "fields": {
+          "description": "Fields in foreign data or selection to lookup.\nIf not specified, the entire object is queried.",
+          "items": {
+            "$ref": "#/definitions/FieldName"
+          },
+          "type": "array"
         },
-        "default": {
-          "description": "The default value to use if lookup fails.\n\n__Default value:__ `null`",
-          "type": "string"
-        },
-        "from": {
-          "$ref": "#/definitions/LookupData",
-          "description": "Secondary data reference."
-        },
-        "lookup": {
+        "key": {
           "$ref": "#/definitions/FieldName",
-          "description": "Key in primary data source."
+          "description": "Key in data to lookup."
+        },
+        "selection": {
+          "type": "string"
         }
       },
       "required": [
-        "lookup",
-        "from"
+        "key",
+        "selection"
       ],
       "type": "object"
+    },
+    "LookupTransform": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/DataLookupTransform"
+        },
+        {
+          "$ref": "#/definitions/SelectionLookupTransform"
+        }
+      ]
     },
     "Mark": {
       "description": "All types of primitive marks.",
@@ -10489,6 +10646,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -10516,6 +10689,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -10620,6 +10796,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -10802,6 +10981,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -10829,6 +11024,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -10961,6 +11159,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -11466,7 +11667,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -11557,6 +11758,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -11584,6 +11801,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -11688,6 +11908,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -12104,7 +12327,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -12487,7 +12710,7 @@
         "symbol": {
           "description": "Default range palette for the `shape` channel.",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/SymbolShape"
           },
           "type": "array"
         }
@@ -12568,6 +12791,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -12600,6 +12839,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -12704,6 +12946,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -13034,7 +13279,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "center": {
           "description": "Boolean flag indicating if facet's subviews should be centered relative to their respective rows or columns.\n\n__Default value:__ `false`",
@@ -13539,7 +13784,7 @@
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "bin": {
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation.",
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation.",
           "type": "null"
         },
         "field": {
@@ -13664,6 +13909,42 @@
     },
     "SelectionInitMapping": {
       "$ref": "#/definitions/Dict<SelectionInit>"
+    },
+    "SelectionLookupTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldName"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/FieldName"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "The output fields on which to store the looked up data values.\n\nFor data lookups, this property may be left blank if `from.fields`\nhas been specified (those field names will be used); if `from.fields`\nhas not been specified, `as` must be a string.\n\nFor selection lookups, this property is optional: if unspecified,\nlooked up values will be stored under a property named for the selection;\nand if specified, it must correspond to `from.fields`."
+        },
+        "default": {
+          "description": "The default value to use if lookup fails.\n\n__Default value:__ `null`",
+          "type": "string"
+        },
+        "from": {
+          "$ref": "#/definitions/LookupSelection",
+          "description": "The selection to use as the secondary data reference."
+        },
+        "lookup": {
+          "description": "Key in primary data source.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "from",
+        "lookup"
+      ],
+      "type": "object"
     },
     "SelectionPredicate": {
       "additionalProperties": false,
@@ -14133,9 +14414,16 @@
               "$ref": "#/definitions/FieldName"
             },
             {
-              "items": {
-                "$ref": "#/definitions/FieldName"
-              },
+              "items": [
+                {
+                  "$ref": "#/definitions/FieldName"
+                },
+                {
+                  "$ref": "#/definitions/FieldName"
+                }
+              ],
+              "maxItems": 2,
+              "minItems": 2,
               "type": "array"
             }
           ],
@@ -14236,7 +14524,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -14379,6 +14667,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -14406,6 +14710,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -14514,6 +14821,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -14698,6 +15008,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -14725,6 +15051,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -14829,6 +15158,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -16318,7 +16650,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite. To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -16640,6 +16972,19 @@
         },
         {
           "$ref": "#/definitions/DateTime"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "Vector2<Vector2<number>>": {
+      "items": [
+        {
+          "$ref": "#/definitions/Vector2<number>"
+        },
+        {
+          "$ref": "#/definitions/Vector2<number>"
         }
       ],
       "maxItems": 2,

@@ -11,13 +11,14 @@ A layered or multi-view display can also be composed with other views. Through t
 
 Vega-Lite's compiler infers how input data should be reused across constituent views, and whether scale domains should be unioned or remain independent.
 
+<!-- prettier-ignore-start -->
+
 ## Documentation Overview
 
 {:.no_toc}
 
-<!-- prettier-ignore -->
-- TOC
-{:toc}
+- TOC {:toc}
+  <!-- prettier-ignore-end -->
 
 ## Faceting
 

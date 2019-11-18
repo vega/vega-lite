@@ -9,13 +9,14 @@ Tooltips can provide details of a particular data point on demand. Tooltips for 
 
 By default, the renderer will generate tooltips via native HTML ["title" attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/title). The [Vega Tooltip plugin](#plugin) can generate nice HTML tooltips.
 
+<!-- prettier-ignore-start -->
+
 ## Documentation Overview
 
 {:.no_toc}
 
-<!-- prettier-ignore -->
-- TOC
-{:toc}
+- TOC {:toc}
+  <!-- prettier-ignore-end -->
 
 {:#encoding}
 
@@ -87,7 +88,7 @@ To disable all tooltips, disable it in the [config](config.html) with
 
 You can further customize the tooltip by specifying a custom event handler via [`tooltipHandler`](https://vega.github.io/vega/docs/api/view/#view_tooltipHandler) of the [`Vega View API`](https://vega.github.io/vega/docs/api/view/). Vega invokes the handler every time a tooltip is shown.
 
-We provide [Vega Tooltip](https://github.com/vega/vega-tooltip/), a tooltip handler that creates a customizable HTML tooltip. Below is an example of Vega-lite visualization with [Vega Tooltip](https://github.com/vega/vega-tooltip/) plugin. Vega Tooltip comes with [Vega Embed](https://github.com/vega/vega-embed) so you might already be using it.
+We provide [Vega Tooltip](https://github.com/vega/vega-tooltip/), a tooltip handler that creates a customizable HTML tooltip. Below is an example of Vega-Lite visualization with [Vega Tooltip](https://github.com/vega/vega-tooltip/) plugin. Vega Tooltip comes with [Vega Embed](https://github.com/vega/vega-embed) so you might already be using it.
 
 <div class="vl-example" data-name="bar_tooltip"></div>
 

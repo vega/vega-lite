@@ -5,15 +5,16 @@ title: Customizing Size
 permalink: /docs/size.html
 ---
 
-This page describe how to adjust width and height of visualizations in Vega-lite.
+This page describe how to adjust width and height of visualizations in Vega-Lite.
+
+<!-- prettier-ignore-start -->
 
 ## Documentation Overview
 
 {:.no_toc}
 
-<!-- prettier-ignore -->
-- TOC
-{:toc}
+- TOC {:toc}
+  <!-- prettier-ignore-end -->
 
 ## Width and Height of Single and Layered Plots
 

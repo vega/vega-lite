@@ -11,13 +11,14 @@ By default, Vega-Lite automatically creates axes with default properties for `x`
 
 Besides `axis` property of a field definition, the configuration object ([`config`](config.html)) also provides [axis config](#config) (`config: {axis: {...}}`) for setting default axis properties for all axes.
 
+<!-- prettier-ignore-start -->
+
 ## Documentation Overview
 
 {:.no_toc}
 
-<!-- prettier-ignore -->
-- TOC
-{:toc}
+- TOC {:toc}
+  <!-- prettier-ignore-end -->
 
 ## Axis Properties
 
@@ -51,7 +52,7 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### General
 
-{% include table.html props="bandPosition,maxExtent,minExtent,orient,offset,position,zindex" source="Axis" %}
+{% include table.html props="bandPosition,maxExtent,minExtent,orient,offset,position,translate,zindex" source="Axis" %}
 
 #### Example: Using Axis `minExtent` to Align Multi-View Plots
 
@@ -69,7 +70,7 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 ### Labels
 
-{% include table.html props="format,formatType,labels,labelAlign,labelAngle,labelBaseline,labelBound,labelColor,labelExpr,labelFlush,labelFlushOffset,labelFont,labelFontSize,labelFontStyle,labelFontWeight,labelLimit,labelOpacity,labelOverlap,labelPadding" source= "Axis" %}
+{% include table.html props="format,formatType,labels,labelAlign,labelAngle,labelBaseline,labelBound,labelColor,labelExpr,labelFlush,labelFlushOffset,labelFont,labelFontSize,labelFontStyle,labelFontWeight,labelLimit,labelOpacity,labelOverlap,labelPadding,labelSeparation" source= "Axis" %}
 
 **See also:** [`guide-label` style config](mark.html#style-config) (common styles for axis, [legend](legend.html), and [header](facet.html#header) labels).
 
@@ -81,7 +82,7 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 ### Ticks
 
-{% include table.html props="tickColor,tickCount,tickExtra,tickOffset,tickOpacity,tickRound,ticks,tickSize,tickWidth,values" source="Axis" %}
+{% include table.html props="ticks,tickBand,tickColor,tickCount,tickDash,tickExtra,tickMinStep,tickOffset,tickOpacity,tickRound,tickSize,tickWidth,values" source="Axis" %}
 
 {:#title}
 
