@@ -4,7 +4,7 @@ import {getPositionScaleChannel} from '../channel';
 import * as vlFieldDef from '../channeldef';
 import {initConfig, stripAndRedirectConfig} from '../config';
 import * as log from '../log';
-import {normalize} from '../normalize/index';
+import {normalize} from '../normalize';
 import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec';
 import {
   AutoSizeParams,

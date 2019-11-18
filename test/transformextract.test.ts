@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import {compile} from '../src/compile/compile';
-import {normalize} from '../src/normalize/index';
+import {normalize} from '../src/normalize';
 import {NormalizedSpec, TopLevelSpec} from '../src/spec';
 import {extractTransforms} from '../src/transformextract';
 import {internalField} from '../src/util';

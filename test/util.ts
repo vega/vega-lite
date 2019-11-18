@@ -7,7 +7,7 @@ import {RepeatModel} from '../src/compile/repeat';
 import {parseScales} from '../src/compile/scale/parse';
 import {UnitModel} from '../src/compile/unit';
 import {initConfig} from '../src/config';
-import {normalize} from '../src/normalize/index';
+import {normalize} from '../src/normalize';
 import {
   NormalizedConcatSpec,
   NormalizedFacetSpec,

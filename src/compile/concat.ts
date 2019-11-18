@@ -1,7 +1,7 @@
 import {Config} from '../config';
 import * as log from '../log';
 import {isHConcatSpec, isVConcatSpec, NormalizedConcatSpec} from '../spec';
-import {NormalizedSpec} from '../spec/index';
+import {NormalizedSpec} from '../spec';
 import {VgLayout} from '../vega.schema';
 import {BaseConcatModel} from './baseconcat';
 import {buildModel} from './buildmodel';

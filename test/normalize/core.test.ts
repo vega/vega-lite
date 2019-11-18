@@ -2,8 +2,8 @@ import {COLUMN, FACET_CHANNELS, ROW} from '../../src/channel';
 import {defaultConfig, initConfig} from '../../src/config';
 import * as log from '../../src/log';
 import {LocalLogger} from '../../src/log';
-import {normalize} from '../../src/normalize/index';
-import {TopLevelSpec} from '../../src/spec/index';
+import {normalize} from '../../src/normalize';
+import {TopLevelSpec} from '../../src/spec';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 

@@ -9,7 +9,7 @@ import {DateTime, DateTimeExpr} from '../datetime';
 import {Mark} from '../mark';
 import {Projection} from '../projection';
 import {ScaleType} from '../scale';
-import {GenericSpec} from '../spec/index';
+import {GenericSpec} from '../spec';
 import {Type} from '../type';
 import {stringify, replaceAll} from '../util';
 import {VgSortField} from '../vega.schema';

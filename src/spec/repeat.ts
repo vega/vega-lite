@@ -1,5 +1,5 @@
 import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
-import {GenericSpec} from './index';
+import {GenericSpec} from '.';
 import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 

@@ -3,7 +3,7 @@ import {getPositionScaleChannel} from '../channel';
 import {Config} from '../config';
 import {InlineDataset} from '../data';
 import {Dict} from '../util';
-import {BaseSpec} from './index';
+import {BaseSpec} from '.';
 
 /**
  * @minimum 0

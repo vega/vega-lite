@@ -1,6 +1,6 @@
 import * as log from '../../src/log';
 import {isMarkDef} from '../../src/mark';
-import {normalize} from '../../src/normalize/index';
+import {normalize} from '../../src/normalize';
 import {isLayerSpec, isUnitSpec} from '../../src/spec';
 import {every, some} from '../../src/util';
 import {defaultConfig} from '.././../src/config';

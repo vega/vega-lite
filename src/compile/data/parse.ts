@@ -56,7 +56,7 @@ import {GeoPointNode} from './geopoint';
 import {GraticuleNode} from './graticule';
 import {IdentifierNode} from './identifier';
 import {ImputeNode} from './impute';
-import {AncestorParse, DataComponent} from './index';
+import {AncestorParse, DataComponent} from '.';
 import {JoinAggregateTransformNode} from './joinaggregate';
 import {makeJoinAggregateFromFacet} from './joinaggregatefacet';
 import {LoessTransformNode} from './loess';
