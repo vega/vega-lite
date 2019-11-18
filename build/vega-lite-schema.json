@@ -160,6 +160,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -1593,6 +1609,22 @@
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -9958,6 +9990,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -10598,6 +10646,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -10915,6 +10979,22 @@
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -11676,6 +11756,22 @@
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -12693,6 +12789,22 @@
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -14555,6 +14667,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -14878,6 +15006,22 @@
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {

@@ -81,7 +81,7 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 ### Ticks
 
-{% include table.html props="tickColor,tickCount,tickExtra,tickOffset,tickOpacity,tickRound,ticks,tickSize,tickWidth,tickBand,values" source="Axis" %}
+{% include table.html props="ticks,tickBand,tickColor,tickCount,tickDash,tickExtra,tickMinStep,tickOffset,tickOpacity,tickRound,tickSize,tickWidth,values" source="Axis" %}
 
 {:#title}
 
