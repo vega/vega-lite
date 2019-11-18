@@ -372,7 +372,7 @@ export function errorBarParams<
 
   return {
     transform: [
-      ...(outerSpec.transform || []),
+      ...(outerSpec.transform ?? []),
       ...bins,
       ...timeUnits,
       ...(aggregate.length === 0 ? [] : [{aggregate, groupby}]),

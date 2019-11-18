@@ -403,7 +403,7 @@ function redirectConfig(
   };
   // set config.style if it is not an empty object
   if (keys(style).length > 0) {
-    config.style[toProp || prop] = style;
+    config.style[toProp ?? prop] = style;
   }
 
   if (!compositeMarkPart) {

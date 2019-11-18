@@ -9,8 +9,8 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
   const model = parseUnitModel({
     mark: 'circle',
     encoding: {
-      x: {field: 'Horsepower', type: 'quantitative', scale: {type: xscale || 'linear'}},
-      y: {field: 'Miles_per_Gallon', type: 'quantitative', scale: {type: yscale || 'linear'}},
+      x: {field: 'Horsepower', type: 'quantitative', scale: {type: xscale ?? 'linear'}},
+      y: {field: 'Miles_per_Gallon', type: 'quantitative', scale: {type: yscale ?? 'linear'}},
       color: {field: 'Origin', type: 'nominal'}
     }
   });

@@ -98,7 +98,7 @@ export function normalizeBoxPlot(
     log.warn(log.message.selectionNotSupported('boxplot'));
   }
 
-  const extent = markDef.extent || config.boxplot.extent;
+  const extent = markDef.extent ?? config.boxplot.extent;
   const sizeValue = getFirstDefined(markDef.size, config.boxplot.size);
   const boxPlotType = getBoxPlotType(extent);
   const {
@@ -319,7 +319,7 @@ export function normalizeBoxPlot(
   }
   return {
     ...outerSpec,
-    transform: (outerSpec.transform || []).concat(transform),
+    transform: (outerSpec.transform ?? []).concat(transform),
     layer: boxLayers
   };
 }

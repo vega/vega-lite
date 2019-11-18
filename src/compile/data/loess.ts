@@ -14,12 +14,12 @@ export class LoessTransformNode extends DataFlowNode {
   constructor(parent: DataFlowNode, private transform: LoessTransform) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
-    const specifiedAs = this.transform.as || [undefined, undefined];
-    this.transform.as = [specifiedAs[0] || transform.on, specifiedAs[1] || transform.loess];
+    const specifiedAs = this.transform.as ?? [undefined, undefined];
+    this.transform.as = [specifiedAs[0] ?? transform.on, specifiedAs[1] ?? transform.loess];
   }
 
   public dependentFields() {
-    return new Set([this.transform.loess, this.transform.on, ...(this.transform.groupby || [])]);
+    return new Set([this.transform.loess, this.transform.on, ...(this.transform.groupby ?? [])]);
   }
 
   public producedFields() {

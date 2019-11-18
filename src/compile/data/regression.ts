@@ -14,12 +14,12 @@ export class RegressionTransformNode extends DataFlowNode {
   constructor(parent: DataFlowNode, private transform: RegressionTransform) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
-    const specifiedAs = this.transform.as || [undefined, undefined];
-    this.transform.as = [specifiedAs[0] || transform.on, specifiedAs[1] || transform.regression];
+    const specifiedAs = this.transform.as ?? [undefined, undefined];
+    this.transform.as = [specifiedAs[0] ?? transform.on, specifiedAs[1] ?? transform.regression];
   }
 
   public dependentFields() {
-    return new Set([this.transform.regression, this.transform.on, ...(this.transform.groupby || [])]);
+    return new Set([this.transform.regression, this.transform.on, ...(this.transform.groupby ?? [])]);
   }
 
   public producedFields() {

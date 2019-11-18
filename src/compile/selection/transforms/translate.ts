@@ -96,7 +96,7 @@ function onDelta(
     : 'panLinear';
   const update =
     `${panFn}(${extent}, ${offset}` +
-    (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') || 1}` : '') +
+    (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') ?? 1}` : '') +
     ')';
 
   signal.on.push({

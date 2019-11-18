@@ -57,7 +57,7 @@ export class GeoJSONNode extends DataFlowNode {
   }
 
   public dependentFields() {
-    const fields = (this.fields || []).filter(isString) as string[];
+    const fields = (this.fields ?? []).filter(isString) as string[];
     return new Set([...(this.geojson ? [this.geojson] : []), ...fields]);
   }
 

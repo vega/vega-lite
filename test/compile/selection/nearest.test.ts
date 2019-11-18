@@ -54,8 +54,8 @@ function voronoiMark(x?: string | {expr: string}, y?: string | {expr: string}, t
       transform: [
         {
           type: 'voronoi',
-          x: x || {expr: 'datum.datum.x || 0'},
-          y: y || {expr: 'datum.datum.y || 0'},
+          x: x ?? {expr: 'datum.datum.x || 0'},
+          y: y ?? {expr: 'datum.datum.y || 0'},
           size: [{signal: 'width'}, {signal: 'height'}]
         }
       ]

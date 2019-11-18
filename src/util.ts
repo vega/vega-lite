@@ -127,7 +127,7 @@ export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>};
  */
 export function mergeDeep<T>(dest: T, ...src: readonly DeepPartial<T>[]): T {
   for (const s of src) {
-    deepMerge_(dest, s || {});
+    deepMerge_(dest, s ?? {});
   }
   return dest;
 }

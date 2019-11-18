@@ -45,7 +45,7 @@ function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
 
     const labelOrient = getHeaderProperty('labelOrient', fieldDef, model.config, channel);
 
-    const header = fieldDef.header || {};
+    const header = fieldDef.header ?? {};
     const labels = getFirstDefined(header.labels, true);
     const headerType = contains(['bottom', 'right'], labelOrient) ? 'footer' : 'header';
 
@@ -80,7 +80,7 @@ function mergeChildAxis(model: FacetModel, channel: 'x' | 'y') {
       const layoutHeader = layoutHeaders[headerChannel];
       for (const axisComponent of child.component.axes[channel]) {
         const headerType = getHeaderType(axisComponent.get('orient'));
-        layoutHeader[headerType] = layoutHeader[headerType] || [makeHeaderComponent(model, headerChannel, false)];
+        layoutHeader[headerType] = layoutHeader[headerType] ?? [makeHeaderComponent(model, headerChannel, false)];
 
         // FIXME: assemble shouldn't be called here, but we do it this way so we only extract the main part of the axes
         const mainAxis = assembleAxis(axisComponent, 'main', model.config, {header: true});

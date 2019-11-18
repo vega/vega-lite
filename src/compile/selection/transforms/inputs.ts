@@ -48,7 +48,7 @@ const inputBindings: TransformCompiler = {
                 }
               ]
             : [],
-          bind: bind[p.field] || bind[p.channel] || bind
+          bind: bind[p.field] ?? bind[p.channel] ?? bind
         });
       }
     });

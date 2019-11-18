@@ -73,7 +73,7 @@ export function getImplicitFromFilterTransform(transform: FilterTransform) {
       } else if (isFieldRangePredicate(filter)) {
         val = filter.range[0];
       } else if (isFieldOneOfPredicate(filter)) {
-        val = (filter.oneOf || filter['in'])[0];
+        val = (filter.oneOf ?? filter['in'])[0];
       } // else -- for filter expression, we can't infer anything
       if (val) {
         if (isDateTime(val)) {
