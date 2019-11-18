@@ -712,6 +712,31 @@ kbd {
   box-shadow: inset 0 -1px 0 #959da5;
 }
 
+/* Logos */
+.logos {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.logos li {
+  flex: 0;
+}
+.logos li img {
+  padding: 18px;
+  height: 50px;
+  transition: all 0.4s;
+  filter: grayscale(100%);
+  opacity: 0.8;
+}
+.logos li img:hover {
+  transition: all 0.4s;
+  opacity: 1;
+  filter: grayscale(0%);
+}
+
 /* Media queries */
 
 @media (max-width: 900px) {
