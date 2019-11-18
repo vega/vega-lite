@@ -9,14 +9,14 @@ describe('compile/compile', () => {
   });
 
   it('should return a spec with default top-level properties, size signals, data, marks, and title', () => {
-    const spec = compile({
+    const {spec} = compile({
       data: {
         values: [{a: 'A', b: 28}]
       },
       title: {text: 'test'},
       mark: 'point',
       encoding: {}
-    }).spec;
+    });
 
     expect(spec.padding).toEqual(5);
     expect(spec.autosize).toBeUndefined();
@@ -29,14 +29,14 @@ describe('compile/compile', () => {
   });
 
   it('should return a spec with specified top-level properties, size signals, data and marks', () => {
-    const spec = compile({
+    const {spec} = compile({
       padding: 123,
       data: {
         values: [{a: 'A', b: 28}]
       },
       mark: 'point',
       encoding: {}
-    }).spec;
+    });
 
     expect(spec.padding).toEqual(123);
     expect(spec.autosize).toBeUndefined();
@@ -50,7 +50,7 @@ describe('compile/compile', () => {
   it(
     'should drop fit in top-level properties for discrete x discrete chart',
     log.wrap(localLogger => {
-      const spec = compile({
+      const {spec} = compile({
         data: {
           values: [{x: 'foo', y: 'bar'}]
         },
@@ -60,7 +60,7 @@ describe('compile/compile', () => {
           x: {field: 'x', type: 'nominal'},
           y: {field: 'y', type: 'nominal'}
         }
-      }).spec;
+      });
 
       expect(localLogger.warns[0]).toEqual(log.message.droppingFit());
       expect(spec.autosize).toBeUndefined();
@@ -70,7 +70,7 @@ describe('compile/compile', () => {
   it(
     'should drop fit-y in top-level properties for quantitative x discrete chart',
     log.wrap(localLogger => {
-      const spec = compile({
+      const {spec} = compile({
         data: {
           values: [{x: 1, y: 'bar'}]
         },
@@ -80,7 +80,7 @@ describe('compile/compile', () => {
           x: {field: 'x', type: 'quantitative'},
           y: {field: 'y', type: 'nominal'}
         }
-      }).spec;
+      });
 
       expect(localLogger.warns[0]).toEqual(log.message.droppingFit('y'));
       expect(spec.autosize).toBe('fit-x');
@@ -90,7 +90,7 @@ describe('compile/compile', () => {
   it(
     'should drop fit-x in top-level properties for discrete x quantitative chart',
     log.wrap(localLogger => {
-      const spec = compile({
+      const {spec} = compile({
         data: {
           values: [{x: 'foo', y: 1}]
         },
@@ -100,7 +100,7 @@ describe('compile/compile', () => {
           x: {field: 'x', type: 'nominal'},
           y: {field: 'y', type: 'quantitative'}
         }
-      }).spec;
+      });
 
       expect(localLogger.warns[0]).toEqual(log.message.droppingFit('x'));
       expect(spec.autosize).toBe('fit-y');
@@ -110,7 +110,7 @@ describe('compile/compile', () => {
   it(
     'should NOT drop fit in top-level properties for specified width/height chart',
     log.wrap(localLogger => {
-      const spec = compile({
+      const {spec} = compile({
         data: {
           values: [{x: 'foo', y: 'bar'}]
         },
@@ -122,7 +122,7 @@ describe('compile/compile', () => {
           x: {field: 'x', type: 'nominal'},
           y: {field: 'y', type: 'nominal'}
         }
-      }).spec;
+      });
 
       expect(localLogger.warns.length).toEqual(0);
       expect(spec.autosize).toBe('fit');
@@ -132,7 +132,7 @@ describe('compile/compile', () => {
   it(
     'should NOT drop fit-y in top-level properties for specified height chart',
     log.wrap(localLogger => {
-      const spec = compile({
+      const {spec} = compile({
         data: {
           values: [{x: 1, y: 'bar'}]
         },
@@ -143,7 +143,7 @@ describe('compile/compile', () => {
           x: {field: 'x', type: 'quantitative'},
           y: {field: 'y', type: 'nominal'}
         }
-      }).spec;
+      });
 
       expect(localLogger.warns.length).toEqual(0);
       expect(spec.autosize).toBe('fit');
@@ -153,7 +153,7 @@ describe('compile/compile', () => {
   it(
     'should NOT drop fit-x in top-level properties for specified width chart',
     log.wrap(localLogger => {
-      const spec = compile({
+      const {spec} = compile({
         data: {
           values: [{x: 'foo', y: 1}]
         },
@@ -164,7 +164,7 @@ describe('compile/compile', () => {
           x: {field: 'x', type: 'nominal'},
           y: {field: 'y', type: 'quantitative'}
         }
-      }).spec;
+      });
 
       expect(localLogger.warns.length).toEqual(0);
       expect(spec.autosize).toBe('fit');
@@ -172,14 +172,14 @@ describe('compile/compile', () => {
   );
 
   it('should use size signal for bar chart width', () => {
-    const spec = compile({
+    const {spec} = compile({
       data: {values: [{a: 'A', b: 28}]},
       mark: 'bar',
       encoding: {
         x: {field: 'a', type: 'ordinal'},
         y: {field: 'b', type: 'quantitative'}
       }
-    }).spec;
+    });
 
     expect(spec.signals).toEqual([
       {
@@ -195,20 +195,20 @@ describe('compile/compile', () => {
   });
 
   it('should set resize to true if requested', () => {
-    const spec = compile({
+    const {spec} = compile({
       autosize: {
         resize: true
       },
       data: {url: 'foo.csv'},
       mark: 'point',
       encoding: {}
-    }).spec;
+    });
 
     expect((spec.autosize as any).resize).toBeTruthy();
   });
 
   it('should set autosize to fit and containment if requested', () => {
-    const spec = compile({
+    const {spec} = compile({
       autosize: {
         type: 'fit',
         contains: 'content'
@@ -216,29 +216,29 @@ describe('compile/compile', () => {
       data: {url: 'foo.csv'},
       mark: 'point',
       encoding: {}
-    }).spec;
+    });
 
     expect(spec.autosize).toEqual({type: 'fit', contains: 'content'});
   });
 
   it('should set autosize to fit if requested', () => {
-    const spec = compile({
+    const {spec} = compile({
       autosize: 'fit',
       data: {url: 'foo.csv'},
       mark: 'point',
       encoding: {}
-    }).spec;
+    });
 
     expect(spec.autosize).toBe('fit');
   });
 
   it('should use containerSize for width and autosize to fit-x/padding', () => {
-    const spec = compile({
+    const {spec} = compile({
       width: 'container',
       data: {url: 'foo.csv'},
       mark: 'point',
       encoding: {}
-    }).spec;
+    });
 
     expect(spec.autosize).toEqual({type: 'fit-x', contains: 'padding'});
     expect(spec.signals).toEqual([
@@ -252,12 +252,12 @@ describe('compile/compile', () => {
   });
 
   it('should use containerSize for width and autosize to fit-y/padding', () => {
-    const spec = compile({
+    const {spec} = compile({
       height: 'container',
       data: {url: 'foo.csv'},
       mark: 'point',
       encoding: {}
-    }).spec;
+    });
 
     expect(spec.autosize).toEqual({type: 'fit-y', contains: 'padding'});
     expect(spec.signals).toEqual([
@@ -271,7 +271,7 @@ describe('compile/compile', () => {
   });
 
   it('should use containerSize for width/height and autosize to fit/padding, and respect default view width/height', () => {
-    const spec = compile({
+    const {spec} = compile({
       width: 'container',
       height: 'container',
       data: {url: 'foo.csv'},
@@ -283,7 +283,7 @@ describe('compile/compile', () => {
           continuousHeight: 300
         }
       }
-    }).spec;
+    });
 
     expect(spec.autosize).toEqual({type: 'fit', contains: 'padding'});
     expect(spec.signals).toEqual([
@@ -321,7 +321,7 @@ describe('compile/compile', () => {
   it(
     'warn if use container for width for composed spec',
     log.wrap(localLogger => {
-      const spec = compile({
+      const {spec} = compile({
         width: 'container',
         vconcat: [
           {
@@ -329,7 +329,7 @@ describe('compile/compile', () => {
             encoding: {}
           }
         ]
-      }).spec;
+      });
       expect(localLogger.warns[0]).toEqual(log.message.containerSizeNonSingle('width'));
       expect(spec.autosize).toBeUndefined();
     })
@@ -338,7 +338,7 @@ describe('compile/compile', () => {
   it(
     'warn if use container for height for composed spec',
     log.wrap(localLogger => {
-      const spec = compile({
+      const {spec} = compile({
         height: 'container',
         vconcat: [
           {
@@ -346,7 +346,7 @@ describe('compile/compile', () => {
             encoding: {}
           }
         ]
-      }).spec;
+      });
       expect(localLogger.warns[0]).toEqual(log.message.containerSizeNonSingle('height'));
       expect(spec.autosize).toBeUndefined();
     })
@@ -355,7 +355,7 @@ describe('compile/compile', () => {
   it(
     'warn if trying to fit composed spec',
     log.wrap(localLogger => {
-      const spec = compile({
+      const {spec} = compile({
         data: {values: [{a: 'A', b: 28}]},
         autosize: 'fit',
         vconcat: [
@@ -364,14 +364,14 @@ describe('compile/compile', () => {
             encoding: {}
           }
         ]
-      }).spec;
+      });
       expect(localLogger.warns[0]).toEqual(log.message.FIT_NON_SINGLE);
       expect(spec.autosize).toBeUndefined();
     })
   );
 
   it('should return title for a layered spec.', () => {
-    const spec = compile({
+    const {spec} = compile({
       data: {
         values: [{a: 'A', b: 28}]
       },
@@ -382,12 +382,12 @@ describe('compile/compile', () => {
           encoding: {}
         }
       ]
-    }).spec;
+    });
     expect(spec.title).toEqual({text: 'test', frame: 'group'});
   });
 
   it('should return title (string) for a layered spec.', () => {
-    const spec = compile({
+    const {spec} = compile({
       data: {
         values: [{a: 'A', b: 28}]
       },
@@ -398,12 +398,12 @@ describe('compile/compile', () => {
           encoding: {}
         }
       ]
-    }).spec;
+    });
     expect(spec.title).toEqual({text: 'test', frame: 'group'});
   });
 
   it('should return title from a child of a layer spec if parent has no title.', () => {
-    const spec = compile({
+    const {spec} = compile({
       data: {
         values: [{a: 'A', b: 28}]
       },
@@ -414,12 +414,12 @@ describe('compile/compile', () => {
           encoding: {}
         }
       ]
-    }).spec;
+    });
     expect(spec.title).toEqual({text: 'test', frame: 'group'});
   });
 
   it('should return a title for a concat spec', () => {
-    const spec = compile({
+    const {spec} = compile({
       data: {
         values: [{a: 'A', b: 28}]
       },
@@ -431,7 +431,7 @@ describe('compile/compile', () => {
         }
       ],
       config: {title: {anchor: 'middle'}}
-    }).spec;
+    });
     expect(spec.title).toEqual({
       text: 'test',
       anchor: 'middle' // We only support anchor as start for concat
@@ -439,7 +439,7 @@ describe('compile/compile', () => {
   });
 
   it('should return a title for a concat spec, automatically set anchor to "start", and augment the title with non-mark title config (e.g., offset).', () => {
-    const spec = compile({
+    const {spec} = compile({
       data: {
         values: [{a: 'A', b: 28}]
       },
@@ -451,7 +451,7 @@ describe('compile/compile', () => {
         }
       ],
       config: {title: {offset: 5}}
-    }).spec;
+    });
     expect(spec.title).toEqual({
       text: 'test',
       anchor: 'start',
@@ -460,7 +460,7 @@ describe('compile/compile', () => {
   });
 
   it('should not have title if there is no title.', () => {
-    const spec = compile({
+    const {spec} = compile({
       data: {
         values: [{a: 'A', b: 28}]
       },
@@ -471,12 +471,12 @@ describe('compile/compile', () => {
         }
       ],
       config: {title: {offset: 5}}
-    }).spec;
+    });
     expect(spec.title).not.toBeDefined();
   });
 
   it('should use provided config.', () => {
-    const spec = compile(
+    const {spec} = compile(
       {
         mark: 'point',
         data: {url: 'foo.csv'},
@@ -487,12 +487,12 @@ describe('compile/compile', () => {
           background: 'blue'
         }
       }
-    ).spec;
+    );
     expect(spec.background).toBe('blue');
   });
 
   it('should merge spec and provided config.', () => {
-    const spec = compile(
+    const {spec} = compile(
       {
         mark: 'point',
         data: {url: 'foo.csv'},
@@ -506,12 +506,12 @@ describe('compile/compile', () => {
           background: 'blue'
         }
       }
-    ).spec;
+    );
     expect(spec.background).toBe('red');
   });
 
   it('should return a spec with projections (implicit)', () => {
-    const spec = compile({
+    const {spec} = compile({
       mark: 'geoshape',
       data: {
         url: 'data/us-10m.json',
@@ -521,12 +521,12 @@ describe('compile/compile', () => {
         }
       },
       encoding: {}
-    }).spec;
+    });
     expect(spec.projections).toBeDefined();
   });
 
   it('should return a spec with projections (explicit)', () => {
-    const spec = compile({
+    const {spec} = compile({
       mark: 'geoshape',
       projection: {
         type: 'albersUsa'
@@ -539,7 +539,7 @@ describe('compile/compile', () => {
         }
       },
       encoding: {}
-    }).spec;
+    });
     expect(spec.projections).toBeDefined();
   });
 });
