@@ -72,5 +72,6 @@ export const VL_ONLY_LEGEND_CONFIG: (keyof LegendConfig)[] = [
   'gradientHorizontalMaxLength',
   'gradientHorizontalMinLength',
   'gradientVerticalMaxLength',
-  'gradientVerticalMinLength'
+  'gradientVerticalMinLength',
+  'unselectedOpacity'
 ];

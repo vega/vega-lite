@@ -20,7 +20,7 @@ const translate: TransformCompiler = {
     const name = selCmpt.name;
     const hasScales = scalesCompiler.has(selCmpt);
     const anchor = name + ANCHOR;
-    const {x, y} = selCmpt.project.has;
+    const {x, y} = selCmpt.project.hasChannel;
     let events = parseSelector(selCmpt.translate, 'scope');
 
     if (!hasScales) {

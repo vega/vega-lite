@@ -324,7 +324,7 @@ export class FacetModel extends ModelWithField {
       name,
       data,
       groupby,
-      ...(cross || fields.length
+      ...(cross || fields.length > 0
         ? {
             aggregate: {
               ...(cross ? {cross} : {}),

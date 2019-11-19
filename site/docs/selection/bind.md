@@ -5,10 +5,11 @@ title: Bind a Selection
 permalink: /docs/bind.html
 ---
 
-Using the `bind` property, selections can be bound in two ways:
+Using the `bind` property, selections can be bound in the following ways:
 
 - Single selections can be bound to [input elements](#input-element-binding) also known as dynamic query widgets.
 - Interval selections can be bound to their own [view's scales](#scale-binding) to enable panning &amp; zooming.
+- Single and multi selections can be bound to [legends](#legend-binding).
 
 ## Input Element Binding
 
@@ -22,7 +23,7 @@ If multiple projections are specified, customized bindings can be specified by m
 
 <div class="vl-example" data-name="selection_bind_cylyr"></div>
 
-**Note:** When a single selection is bound to input widgets, direct manipulation interaction (e.g., clicking or double clicking the visualization) is disabled by default. It can be re-enabled by explicitly specifying the [`on`](selection.html#selection-props) and [`clear`](clear.html) properties.
+**Note:** When a single selection is bound to input widgets, direct manipulation interaction (e.g., clicking or double clicking the visualization) is disabled by default. Such interaction can be re-enabled by explicitly specifying the [`on`](selection.html#selection-props) and [`clear`](clear.html) properties.
 
 ## Scale Binding
 
@@ -37,3 +38,17 @@ In multi-view displays, binding shared scales will keep the views synchronized. 
 A similar setup can be used to pan and zoom the cells of a scatterplot matrix:
 
 <div class="vl-example" data-name="interactive_panzoom_splom"></div>
+
+## Legend Binding
+
+When a single or multi selection is [projected](project.html) over only one field or encoding channel, the `bind` property can be set to `legend` to populate the selection by interacting with the corresponding legend.
+
+<div class="vl-example" data-name="interactive_legend"></div>
+
+To customize the events that trigger legend interaction, expand the `bind` property to an object, with a single `legend` property that maps to a [Vega event stream](https://vega.github.io/vega/docs/event-streams/).
+
+<div class="vl-example" data-name="interactive_legend_dblclick"></div>
+
+**Note:** When a selection is bound to legends, direct manipulation interaction (e.g., clicking or double clicking the visualization) is disabled by default. Such interaction can be re-enabled by explicitly specifying the [`on`](selection.html#selection-props) and [`clear`](clear.html) properties.
+
+**Limitations:** Currently, only binding to [symbol legends](https://vega.github.io/vega-lite/docs/legend.html#legend-types) are supported.

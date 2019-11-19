@@ -5,10 +5,17 @@ import {assembleInit} from '../assemble';
 import nearest from './nearest';
 import {TUPLE_FIELDS} from './project';
 import {TransformCompiler} from './transforms';
+import {isLegendBinding} from '../../../selection';
 
 const inputBindings: TransformCompiler = {
   has: selCmpt => {
-    return selCmpt.type === 'single' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind !== 'scales';
+    return (
+      selCmpt.type === 'single' &&
+      selCmpt.resolve === 'global' &&
+      selCmpt.bind &&
+      selCmpt.bind !== 'scales' &&
+      !isLegendBinding(selCmpt.bind)
+    );
   },
 
   parse: (model, selCmpt, selDef, origDef) => {
@@ -28,6 +35,7 @@ const inputBindings: TransformCompiler = {
     proj.items.forEach((p, i) => {
       const sgname = varName(`${name}_${p.field}`);
       const hasSignal = signals.filter(s => s.name === sgname);
+
       if (!hasSignal.length) {
         signals.unshift({
           name: sgname,

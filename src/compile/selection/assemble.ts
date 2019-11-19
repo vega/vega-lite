@@ -76,7 +76,7 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
     const name = selCmpt.name;
     const store = stringValue(name + STORE);
     const hasSg = signals.filter(s => s.name === name);
-    if (!hasSg.length) {
+    if (hasSg.length === 0) {
       const resolve = selCmpt.resolve === 'global' ? 'union' : selCmpt.resolve;
       const isMulti = selCmpt.type === 'multi' ? ', true)' : ')';
       signals.push({
@@ -99,7 +99,7 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
 
   if (hasSelections) {
     const hasUnit = signals.filter(s => s.name === 'unit');
-    if (!hasUnit.length) {
+    if (hasUnit.length === 0) {
       signals.unshift({
         name: 'unit',
         value: {},

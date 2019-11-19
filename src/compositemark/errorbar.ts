@@ -375,7 +375,7 @@ export function errorBarParams<
       ...(outerSpec.transform ?? []),
       ...bins,
       ...timeUnits,
-      ...(!aggregate.length ? [] : [{aggregate, groupby}]),
+      ...(aggregate.length === 0 ? [] : [{aggregate, groupby}]),
       ...postAggregateCalculates
     ],
     groupby,

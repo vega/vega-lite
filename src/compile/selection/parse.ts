@@ -47,11 +47,11 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
     const selCmpt = (selCmpts[safeName] = {
       ...selDef,
       name: safeName,
-      events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on
+      events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : duplicate(selDef.on)
     } as any);
 
     forEachTransform(selCmpt, txCompiler => {
-      if (txCompiler.parse) {
+      if (txCompiler.has(selCmpt) && txCompiler.parse) {
         txCompiler.parse(model, selCmpt, selDef, selDefs[name]);
       }
     });
@@ -63,7 +63,8 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
 export function parseSelectionPredicate(
   model: Model,
   selections: LogicalOperand<string>,
-  dfnode?: DataFlowNode
+  dfnode?: DataFlowNode,
+  datum = 'datum'
 ): string {
   const stores: string[] = [];
   function expr(name: string): string {
@@ -86,7 +87,7 @@ export function parseSelectionPredicate(
     }
 
     return (
-      `vlSelectionTest(${store}, datum` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
+      `vlSelectionTest(${store}, ${datum}` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
     );
   }
 

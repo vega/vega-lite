@@ -31,6 +31,7 @@ import {LegendComponent, LegendComponentIndex, LegendComponentProps, LEGEND_COMP
 import * as encode from './encode';
 import * as properties from './properties';
 import {direction, type} from './properties';
+import {parseInteractiveLegend} from '../selection/transforms/legends';
 
 export function parseLegend(model: Model) {
   if (isUnitModel(model)) {
@@ -91,6 +92,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   const legend = model.legend(channel);
 
   const legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
+  parseInteractiveLegend(model, channel, legendCmpt);
 
   for (const property of LEGEND_COMPONENT_PROPERTIES) {
     const value = getProperty(property, legend, channel, model);
@@ -103,14 +105,19 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   }
 
   const legendEncoding = legend.encoding ?? {};
-  const legendEncode = (['labels', 'legend', 'title', 'symbols', 'gradient'] as const).reduce(
+  const selections = legendCmpt.get('selections');
+  const legendEncode = (['labels', 'legend', 'title', 'symbols', 'gradient', 'entries'] as const).reduce(
     (e: LegendEncode, part) => {
       const legendEncodingPart = guideEncodeEntry(legendEncoding[part] ?? {}, model);
       const value = encode[part]
         ? encode[part](fieldDef, legendEncodingPart, model, channel, legendCmpt) // apply rule
         : legendEncodingPart; // no rule -- just default values
       if (value !== undefined && keys(value).length > 0) {
-        e[part] = {update: value};
+        e[part] = {
+          ...(selections?.length ? {name: `${fieldDef.field}_legend_${part}`} : {}),
+          ...(selections?.length ? {interactive: !!selections} : {}),
+          update: value
+        };
       }
       return e;
     },

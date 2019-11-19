@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
 import {Aggregate} from '../aggregate';
 import {Channel, FacetChannel, GeoPositionChannel, getSizeType, PositionScaleChannel} from '../channel';
-import {TypedFieldDef, Value} from '../channeldef';
+import {TypedFieldDef, Value, HiddenCompositeAggregate} from '../channeldef';
 import {SplitParentProperty} from '../compile/split';
 import {CompositeMark} from '../compositemark';
 import {ErrorBarCenter, ErrorBarExtent} from '../compositemark/errorbar';
@@ -48,6 +48,10 @@ export function cannotProjectOnChannelWithoutField(channel: Channel) {
   return `Cannot project a selection on encoding channel "${channel}", which has no field.`;
 }
 
+export function cannotProjectAggregate(channel: Channel, aggregate: Aggregate | HiddenCompositeAggregate) {
+  return `Cannot project a selection on encoding channel "${channel}" as it uses an aggregate function ("${aggregate}").`;
+}
+
 export function nearestNotSupportForContinuous(mark: string) {
   return `The "nearest" transform is not supported for ${mark} marks.`;
 }
@@ -63,6 +67,8 @@ export function selectionNotFound(name: string) {
 export const SCALE_BINDINGS_CONTINUOUS =
   'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
 
+export const LEGEND_BINDINGS_PROJECT_LENGTH =
+  'Legend bindings are only supported for selections over an individual field or encoding channel.';
 export function noSameUnitLookup(name: string) {
   return (
     `Cannot define and lookup the "${name}" selection in the same view. ` +

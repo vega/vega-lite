@@ -44,11 +44,11 @@ const scaleBindings: TransformCompiler = {
   },
 
   topLevelSignals: (model, selCmpt, signals) => {
-    const bound = selCmpt.scales.filter(proj => !signals.filter(s => s.name === proj.signals.data).length);
+    const bound = selCmpt.scales.filter(proj => signals.filter(s => s.name === proj.signals.data).length === 0);
 
     // Top-level signals are only needed for multiview displays and if this
     // view's top-level signals haven't already been generated.
-    if (!model.parent || isTopLevelLayer(model) || !bound.length) {
+    if (!model.parent || isTopLevelLayer(model) || bound.length === 0) {
       return signals;
     }
 
