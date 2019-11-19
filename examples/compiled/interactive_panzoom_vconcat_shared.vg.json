@@ -162,7 +162,12 @@
         },
         {
           "name": "region_modify",
-          "update": "modify(\"region_store\", region_tuple, true)"
+          "on": [
+            {
+              "events": {"signal": "region_tuple"},
+              "update": "modify(\"region_store\", region_tuple, true)"
+            }
+          ]
         }
       ],
       "marks": [

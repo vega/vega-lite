@@ -216,7 +216,12 @@
     },
     {
       "name": "brush_modify",
-      "update": "modify(\"brush_store\", brush_tuple, true)"
+      "on": [
+        {
+          "events": {"signal": "brush_tuple"},
+          "update": "modify(\"brush_store\", brush_tuple, true)"
+        }
+      ]
     }
   ],
   "marks": [

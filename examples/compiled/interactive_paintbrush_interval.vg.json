@@ -253,7 +253,12 @@
     },
     {
       "name": "paintbrush_modify",
-      "update": "modify(\"paintbrush_store\", paintbrush_tuple, true)"
+      "on": [
+        {
+          "events": {"signal": "paintbrush_tuple"},
+          "update": "modify(\"paintbrush_store\", paintbrush_tuple, true)"
+        }
+      ]
     }
   ],
   "marks": [

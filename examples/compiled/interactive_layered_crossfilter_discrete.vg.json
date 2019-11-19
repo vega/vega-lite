@@ -239,7 +239,12 @@
         },
         {
           "name": "brush_modify",
-          "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
+          "on": [
+            {
+              "events": {"signal": "brush_tuple"},
+              "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
+            }
+          ]
         }
       ],
       "marks": [
@@ -397,7 +402,12 @@
         },
         {
           "name": "brush_modify",
-          "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
+          "on": [
+            {
+              "events": {"signal": "brush_tuple"},
+              "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
+            }
+          ]
         }
       ],
       "marks": [
@@ -555,7 +565,12 @@
         },
         {
           "name": "brush_modify",
-          "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
+          "on": [
+            {
+              "events": {"signal": "brush_tuple"},
+              "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
+            }
+          ]
         }
       ],
       "marks": [

@@ -55,7 +55,12 @@
     },
     {
       "name": "CylYr_modify",
-      "update": "modify(\"CylYr_store\", CylYr_tuple, true)"
+      "on": [
+        {
+          "events": {"signal": "CylYr_tuple"},
+          "update": "modify(\"CylYr_store\", CylYr_tuple, true)"
+        }
+      ]
     }
   ],
   "marks": [

@@ -309,7 +309,12 @@
         },
         {
           "name": "brush_modify",
-          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child\" + '__facet_column_' + (facet[\"Series\"])})"
+          "on": [
+            {
+              "events": {"signal": "brush_tuple"},
+              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child\" + '__facet_column_' + (facet[\"Series\"])})"
+            }
+          ]
         },
         {
           "name": "grid_X",
@@ -423,7 +428,12 @@
         },
         {
           "name": "grid_modify",
-          "update": "modify(\"grid_store\", grid_tuple, true)"
+          "on": [
+            {
+              "events": {"signal": "grid_tuple"},
+              "update": "modify(\"grid_store\", grid_tuple, true)"
+            }
+          ]
         },
         {
           "name": "xenc_tuple",
@@ -432,7 +442,12 @@
         {"name": "xenc_tuple_fields", "value": [{"type": "E", "field": "X"}]},
         {
           "name": "xenc_modify",
-          "update": "modify(\"xenc_store\", xenc_tuple, true)"
+          "on": [
+            {
+              "events": {"signal": "xenc_tuple"},
+              "update": "modify(\"xenc_store\", xenc_tuple, true)"
+            }
+          ]
         }
       ],
       "marks": [

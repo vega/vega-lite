@@ -49,7 +49,12 @@
     },
     {
       "name": "paintbrush_modify",
-      "update": "modify(\"paintbrush_store\", paintbrush_tuple, null)"
+      "on": [
+        {
+          "events": {"signal": "paintbrush_tuple"},
+          "update": "modify(\"paintbrush_store\", paintbrush_tuple, null)"
+        }
+      ]
     }
   ],
   "marks": [

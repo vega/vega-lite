@@ -72,7 +72,12 @@
     },
     {
       "name": "highlight_modify",
-      "update": "modify(\"highlight_store\", highlight_tuple, true)"
+      "on": [
+        {
+          "events": {"signal": "highlight_tuple"},
+          "update": "modify(\"highlight_store\", highlight_tuple, true)"
+        }
+      ]
     },
     {
       "name": "select_tuple",
@@ -102,7 +107,12 @@
     },
     {
       "name": "select_modify",
-      "update": "modify(\"select_store\", select_toggle ? null : select_tuple, select_toggle ? null : true, select_toggle ? select_tuple : null)"
+      "on": [
+        {
+          "events": {"signal": "select_tuple"},
+          "update": "modify(\"select_store\", select_toggle ? null : select_tuple, select_toggle ? null : true, select_toggle ? select_tuple : null)"
+        }
+      ]
     }
   ],
   "marks": [

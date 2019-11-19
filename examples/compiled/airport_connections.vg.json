@@ -151,7 +151,12 @@
     },
     {
       "name": "single_modify",
-      "update": "modify(\"single_store\", single_tuple, true)"
+      "on": [
+        {
+          "events": {"signal": "single_tuple"},
+          "update": "modify(\"single_store\", single_tuple, true)"
+        }
+      ]
     }
   ],
   "marks": [
