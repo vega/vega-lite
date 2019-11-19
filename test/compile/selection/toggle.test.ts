@@ -86,11 +86,21 @@ describe('Toggle Selection Transform', () => {
       expect.arrayContaining([
         {
           name: 'one_modify',
-          update: `modify("one_store", ${oneExpr})`
+          on: [
+            {
+              events: {signal: 'one_tuple'},
+              update: `modify("one_store", ${oneExpr})`
+            }
+          ]
         },
         {
           name: 'two_modify',
-          update: `modify("two_store", ${twoExpr})`
+          on: [
+            {
+              events: {signal: 'two_tuple'},
+              update: `modify("two_store", ${twoExpr})`
+            }
+          ]
         }
       ])
     );

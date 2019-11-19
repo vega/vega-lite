@@ -1,7 +1,7 @@
 import {Signal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
-import {forEachSelection, MODIFY, STORE, unitName, VL_SELECTION_RESOLVE} from '.';
+import {forEachSelection, MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE} from '.';
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {SelectionInit, SelectionInitInterval, SelectionExtent} from '../../selection';
 import {keys, varName} from '../../util';
@@ -45,7 +45,12 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]
 
     signals.push({
       name: name + MODIFY,
-      update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
+      on: [
+        {
+          events: {signal: selCmpt.name + TUPLE},
+          update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
+        }
+      ]
     });
   });
 
