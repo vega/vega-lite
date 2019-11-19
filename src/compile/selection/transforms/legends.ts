@@ -123,7 +123,7 @@ export function parseInteractiveLegend(
     const proj = selCmpt.project.hasField[field] || selCmpt.project.hasChannel[channel];
     if (proj && legendBindings.has(selCmpt)) {
       const legendSelections = legendCmpt.get('selections') || [];
-      legendSelections.push(selCmpt);
+      legendSelections.push(selCmpt.name);
       legendCmpt.set('selections', legendSelections, false);
       proj.hasLegend = true;
     }

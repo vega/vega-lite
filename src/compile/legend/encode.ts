@@ -217,8 +217,7 @@ function selectedCondition(model: UnitModel, legendCmp: LegendComponent, fieldDe
 
   const field = stringValue(fieldDef.field);
   return selections
-    .map(selCmpt => {
-      const name = selCmpt.name;
+    .map(name => {
       const store = stringValue(varName(name) + STORE);
       return `(!length(data(${store})) || (${name}[${field}] && indexof(${name}[${field}], datum.value) >= 0))`;
     })

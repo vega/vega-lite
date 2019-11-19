@@ -3,11 +3,10 @@ import {NonPositionScaleChannel} from '../../channel';
 import {COMMON_LEGEND_PROPERTY_INDEX, Legend} from '../../legend';
 import {Flag, keys} from '../../util';
 import {Split} from '../split';
-import {SelectionComponent} from '../selection';
 
 export type LegendComponentProps = VgLegend & {
   labelExpr?: string;
-  selections?: SelectionComponent[];
+  selections?: string[];
 };
 
 const LEGEND_COMPONENT_PROPERTY_INDEX: Flag<keyof LegendComponentProps> = {
