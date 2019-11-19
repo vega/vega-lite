@@ -97,7 +97,7 @@ export function symbols(
 
   if (channel !== OPACITY) {
     if (condition) {
-      out.opacity = [{test: condition, value: opacity || 1}, {value: config.legend.unselectedOpacity}];
+      out.opacity = [{test: condition, value: opacity ?? 1}, {value: config.legend.unselectedOpacity}];
     } else if (opacity) {
       out.opacity = {value: opacity};
     }

@@ -32,7 +32,7 @@ const legendBindings: TransformCompiler = {
     if (origDef.on || origDef.clear) {
       const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
       for (const evt of selCmpt.events) {
-        evt.filter = array(evt.filter || []);
+        evt.filter = array(evt.filter ?? []);
         if (evt.filter.indexOf(legendFilter) < 0) {
           evt.filter.push(legendFilter);
         }
@@ -120,9 +120,9 @@ export function parseInteractiveLegend(
 ) {
   const field = model.fieldDef(channel).field;
   forEachSelection(model, selCmpt => {
-    const proj = selCmpt.project.hasField[field] || selCmpt.project.hasChannel[channel];
+    const proj = selCmpt.project.hasField[field] ?? selCmpt.project.hasChannel[channel];
     if (proj && legendBindings.has(selCmpt)) {
-      const legendSelections = legendCmpt.get('selections') || [];
+      const legendSelections = legendCmpt.get('selections') ?? [];
       legendSelections.push(selCmpt.name);
       legendCmpt.set('selections', legendSelections, false);
       proj.hasLegend = true;
