@@ -13,14 +13,10 @@
       "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [
         {
-          "type": "formula",
-          "as": "yearmonth_date",
-          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-        },
-        {
-          "type": "formula",
-          "as": "yearmonth_date_end",
-          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"])+1, 1, 0, 0, 0, 0)"
+          "field": "date",
+          "type": "timeunit",
+          "units": ["year", "month"],
+          "as": ["yearmonth_date", "yearmonth_date_end"]
         },
         {
           "type": "aggregate",

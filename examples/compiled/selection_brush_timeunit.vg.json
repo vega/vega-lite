@@ -21,9 +21,10 @@
       "transform": [
         {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
-          "type": "formula",
-          "as": "seconds_date",
-          "expr": "datetime(0, 0, 1, 0, 0, seconds(datum[\"date\"]), 0)"
+          "field": "date",
+          "type": "timeunit",
+          "units": ["seconds"],
+          "as": ["seconds_date", "seconds_date_end"]
         }
       ]
     },
@@ -36,9 +37,10 @@
           "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
-          "type": "formula",
-          "as": "minutes_date",
-          "expr": "datetime(0, 0, 1, 0, minutes(datum[\"date\"]), 0, 0)"
+          "field": "date",
+          "type": "timeunit",
+          "units": ["minutes"],
+          "as": ["minutes_date", "minutes_date_end"]
         },
         {
           "type": "filter",

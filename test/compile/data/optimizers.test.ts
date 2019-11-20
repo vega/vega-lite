@@ -115,9 +115,9 @@ describe('compile/data/optimizer', () => {
       expect(mergedNode.dependentFields()).toEqual(new Set(['a', 'b', 'c']));
 
       expect(mergedNode.assemble()).toEqual([
-        {as: 'a_yr', expr: 'datetime(year(datum["a"]), 0, 1, 0, 0, 0, 0)', type: 'formula'},
-        {as: 'c_yr', expr: 'datetime(year(datum["c"]), 0, 1, 0, 0, 0, 0)', type: 'formula'},
-        {as: 'b_yr', expr: 'datetime(year(datum["b"]), 0, 1, 0, 0, 0, 0)', type: 'formula'}
+        {field: 'a', as: ['a_yr', 'a_yr_end'], units: ['year'], type: 'timeunit'},
+        {field: 'c', as: ['c_yr', 'c_yr_end'], units: ['year'], type: 'timeunit'},
+        {field: 'b', as: ['b_yr', 'b_yr_end'], units: ['year'], type: 'timeunit'}
       ]);
     });
   });

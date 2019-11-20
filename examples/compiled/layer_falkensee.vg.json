@@ -67,9 +67,10 @@
           "as": "year"
         },
         {
-          "type": "formula",
-          "as": "year_year",
-          "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
+          "field": "year",
+          "type": "timeunit",
+          "units": ["year"],
+          "as": ["year_year", "year_year_end"]
         }
       ]
     },
@@ -98,14 +99,16 @@
           "as": "end"
         },
         {
-          "type": "formula",
-          "as": "year_start",
-          "expr": "datetime(year(datum[\"start\"]), 0, 1, 0, 0, 0, 0)"
+          "field": "start",
+          "type": "timeunit",
+          "units": ["year"],
+          "as": ["year_start", "year_start_end"]
         },
         {
-          "type": "formula",
-          "as": "year_end",
-          "expr": "datetime(year(datum[\"end\"]), 0, 1, 0, 0, 0, 0)"
+          "field": "end",
+          "type": "timeunit",
+          "units": ["year"],
+          "as": ["year_end", "year_end_end"]
         },
         {
           "type": "filter",

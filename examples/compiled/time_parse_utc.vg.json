@@ -13,9 +13,10 @@
       "format": {"type": "json", "parse": {"Year": "date"}},
       "transform": [
         {
-          "type": "formula",
-          "as": "year_Year",
-          "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
+          "field": "Year",
+          "type": "timeunit",
+          "units": ["year"],
+          "as": ["year_Year", "year_Year_end"]
         },
         {
           "type": "aggregate",

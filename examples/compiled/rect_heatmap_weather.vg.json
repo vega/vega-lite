@@ -14,14 +14,16 @@
       "format": {"type": "csv", "parse": {"date": "date", "temp": "number"}},
       "transform": [
         {
-          "type": "formula",
-          "as": "date_date",
-          "expr": "datetime(0, 0, date(datum[\"date\"]), 0, 0, 0, 0)"
+          "field": "date",
+          "type": "timeunit",
+          "units": ["date"],
+          "as": ["date_date", "date_date_end"]
         },
         {
-          "type": "formula",
-          "as": "month_date",
-          "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+          "field": "date",
+          "type": "timeunit",
+          "units": ["month"],
+          "as": ["month_date", "month_date_end"]
         },
         {
           "type": "aggregate",
