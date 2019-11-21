@@ -1,0 +1,25 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {"url": "data/cars.json"},
+  "title": {"text": ["hello", "world"], "subtitle": ["hello", "world"]},
+  "facet": {
+    "row": {"title": ["hello", "world"], "field": "Origin", "type": "nominal"}
+  },
+  "spec": {
+    "mark": {"type": "text", "text": ["place", "holder"]},
+    "encoding": {
+      "x": {
+        "title": ["hello", "world"],
+        "field": "Horsepower",
+        "type": "quantitative"
+      },
+      "y": {
+        "title": ["hello", "world"],
+        "field": "Displacement",
+        "type": "quantitative"
+      },
+      "text": {"value": ["hello", "world"]}
+    }
+  },
+  "autosize": {"type": "pad"}
+}

@@ -21,14 +21,11 @@ The `mark` property of a [single view specification](spec.html#single) can eithe
 }
 ```
 
-<!-- prettier-ignore-start -->
-
 ## Documentation Overview
-
 {:.no_toc}
 
-- TOC {:toc}
-  <!-- prettier-ignore-end -->
+- TOC
+{:toc}
 
 {:#types}
 

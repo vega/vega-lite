@@ -11,14 +11,11 @@ By default, Vega-Lite automatically creates axes with default properties for `x`
 
 Besides `axis` property of a field definition, the configuration object ([`config`](config.html)) also provides [axis config](#config) (`config: {axis: {...}}`) for setting default axis properties for all axes.
 
-<!-- prettier-ignore-start -->
-
 ## Documentation Overview
-
 {:.no_toc}
 
-- TOC {:toc}
-  <!-- prettier-ignore-end -->
+- TOC
+{:toc}
 
 ## Axis Properties
 
