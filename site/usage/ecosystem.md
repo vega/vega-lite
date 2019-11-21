@@ -19,6 +19,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - <span class="octicon octicon-star"></span> [Voyager (2)](https://github.com/vega/voyager), visualization tool for exploratory data analysis that blends a Tableau-style specification interface (formerly [Polestar](https://github.com/vega/polestar)) with chart recommendations (formerly the Voyager visualization browser) and generates Vega-Lite visualizations.
 - [data.world Chart Builder](https://data.world/integrations/chart-builder), a chart builder that imports data from queries in data.world. The generated specs can be saved locally or uploaded back to data.world. Project is [open source](https://github.com/datadotworld/chart-builder).
 - [Vega Viewer](https://github.com/RandomFractals/vscode-vega-viewer) and [Vega Preview](https://marketplace.visualstudio.com/items?itemName=mdk.vega-preview), Visual Studio Code extensions for viewing Vega and Vega-Lite visualizations.
+- [ColorBrewer-Lite](https://github.com/vis-au/colorbrewer), a fork of the ColorBrewer project that allows importing Vega-Lite specifications into the ColorBrewer interface to pick effective color schemes "in situ" for any color encoding.
 
 ## Plug-ins for Vega-Lite
 
