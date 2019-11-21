@@ -32,11 +32,16 @@ import {Flag, keys} from './util';
 
 export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
+// TODO: make recursive
 type ExcludeMapped<T, E> = {
   [P in keyof T]: Exclude<T[P], E>;
 };
 
-export type ExcludeMappedValueRef<T> = ExcludeMapped<T, ScaledValueRef<any> | NumericValueRef | ColorValueRef>;
+// Remove ValueRefs and from mapped types
+export type ExcludeMappedValueRef<T> = ExcludeMapped<
+  T,
+  ScaledValueRef<any> | NumericValueRef | ColorValueRef | SignalRef
+>;
 
 export interface VgData {
   name: string;
@@ -250,7 +255,14 @@ export type VgEncodeChannel =
   | 'href'
   | 'cursor'
   | 'defined'
-  | 'cornerRadius';
+  | 'cornerRadius'
+  | 'cornerRadiusTopLeft'
+  | 'cornerRadiusTopRight'
+  | 'cornerRadiusBottomRight'
+  | 'cornerRadiusBottomLeft'
+  | 'scaleX'
+  | 'scaleY';
+
 export type VgEncodeEntry = {[k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[]};
 
 // TODO: make export interface VgEncodeEntry {
@@ -584,6 +596,34 @@ export interface BaseMarkConfig {
    * __Default value:__ `0`
    */
   cornerRadius?: number;
+
+  /**
+   * The radius in pixels of rounded rectangle top right corner.
+   *
+   * __Default value:__ `0`
+   */
+  cornerRadiusTopLeft?: number;
+
+  /**
+   * The radius in pixels of rounded rectangle top left corner.
+   *
+   * __Default value:__ `0`
+   */
+  cornerRadiusTopRight?: number;
+
+  /**
+   * The radius in pixels of rounded rectangle bottom right corner.
+   *
+   * __Default value:__ `0`
+   */
+  cornerRadiusBottomRight?: number;
+
+  /**
+   * The radius in pixels of rounded rectangle bottom left corner.
+   *
+   * __Default value:__ `0`
+   */
+  cornerRadiusBottomLeft?: number;
 }
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
@@ -624,6 +664,10 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
   href: 1,
   tooltip: 1,
   cornerRadius: 1,
+  cornerRadiusTopLeft: 1,
+  cornerRadiusTopRight: 1,
+  cornerRadiusBottomLeft: 1,
+  cornerRadiusBottomRight: 1,
   x: 1,
   y: 1,
   x2: 1,

@@ -3,7 +3,7 @@ import {isFieldDef} from '../channeldef';
 import {Encoding} from '../encoding';
 import * as log from '../log';
 import {Scale} from '../scale';
-import {GenericSpec} from '../spec/index';
+import {GenericSpec} from '../spec';
 import {GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from '../spec/unit';
 import {keys} from '../util';
 import {NonFacetUnitNormalizer} from './base';
@@ -47,7 +47,7 @@ export class RangeStepNormalizer implements NonFacetUnitNormalizer<UnitSpecWithR
             ...encoding,
             [channel]: {
               ...defWithoutScale,
-              ...(keys(scaleWithoutRangeStep).length ? {scale: scaleWithoutRangeStep} : {})
+              ...(keys(scaleWithoutRangeStep).length > 0 ? {scale: scaleWithoutRangeStep} : {})
             }
           };
         }

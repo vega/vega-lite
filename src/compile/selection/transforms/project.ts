@@ -20,16 +20,19 @@ export interface SelectionProjection {
   field: string;
   channel?: SingleDefUnitChannel;
   signals?: {data?: string; visual?: string};
+  hasLegend?: boolean;
 }
 
 export class SelectionProjectionComponent {
-  public has: {[key in SingleDefUnitChannel]?: SelectionProjection};
+  public hasChannel: {[key in SingleDefUnitChannel]?: SelectionProjection};
+  public hasField: {[k: string]: SelectionProjection};
   public timeUnit?: TimeUnitNode;
   public items: SelectionProjection[];
 
   constructor(...items: SelectionProjection[]) {
     this.items = items;
-    this.has = {};
+    this.hasChannel = {};
+    this.hasField = {};
   }
 }
 
@@ -40,7 +43,7 @@ const project: TransformCompiler = {
 
   parse: (model, selCmpt, selDef) => {
     const name = selCmpt.name;
-    const proj = selCmpt.project || (selCmpt.project = new SelectionProjectionComponent());
+    const proj = selCmpt.project ?? (selCmpt.project = new SelectionProjectionComponent());
     const parsed: Dict<SelectionProjection> = {};
     const timeUnits: Dict<TimeUnitComponent> = {};
 
@@ -83,16 +86,26 @@ const project: TransformCompiler = {
     }
 
     // TODO: find a possible channel mapping for these fields.
-    for (const field of selDef.fields || []) {
+    for (const field of selDef.fields ?? []) {
       const p: SelectionProjection = {type: 'E', field};
       p.signals = {...signalName(p, 'data')};
       proj.items.push(p);
+      proj.hasField[field] = p;
     }
 
-    for (const channel of selDef.encodings || []) {
+    for (const channel of selDef.encodings ?? []) {
       const fieldDef = model.fieldDef(channel);
       if (fieldDef) {
         let field = fieldDef.field;
+
+        if (fieldDef.aggregate) {
+          log.warn(log.message.cannotProjectAggregate(channel, fieldDef.aggregate));
+          continue;
+        } else if (!field) {
+          log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
+          continue;
+        }
+
         if (fieldDef.timeUnit) {
           field = model.vgField(channel);
 
@@ -127,7 +140,7 @@ const project: TransformCompiler = {
           const p: SelectionProjection = {field, channel, type};
           p.signals = {...signalName(p, 'data'), ...signalName(p, 'visual')};
           proj.items.push((parsed[field] = p));
-          proj.has[channel] = parsed[field];
+          proj.hasField[field] = proj.hasChannel[channel] = parsed[field];
         }
       } else {
         log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
@@ -147,7 +160,7 @@ const project: TransformCompiler = {
       }
     }
 
-    if (keys(timeUnits).length) {
+    if (keys(timeUnits).length > 0) {
       proj.timeUnit = new TimeUnitNode(null, timeUnits);
     }
   },
@@ -155,12 +168,12 @@ const project: TransformCompiler = {
   signals: (model, selCmpt, allSignals) => {
     const name = selCmpt.name + TUPLE_FIELDS;
     const hasSignal = allSignals.filter(s => s.name === name);
-    return hasSignal.length
+    return hasSignal.length > 0
       ? allSignals
       : allSignals.concat({
           name,
           value: selCmpt.project.items.map(proj => {
-            const {signals, ...rest} = proj;
+            const {signals, hasLegend, ...rest} = proj;
             const p = duplicate(rest);
             p.field = replacePathInField(p.field);
             return p;

@@ -1,11 +1,11 @@
 import {RepeatRef} from '../../src/channeldef';
 import {Encoding} from '../../src/encoding';
 import {isMarkDef, MarkDef} from '../../src/mark';
-import {normalize} from '../../src/normalize/index';
+import {normalize} from '../../src/normalize';
 import {isLayerSpec, isUnitSpec} from '../../src/spec';
 import {isCalculate} from '../../src/transform';
 import {defaultConfig} from '.././../src/config';
-import {TopLevelSpec} from '../../src/spec/index';
+import {TopLevelSpec} from '../../src/spec';
 
 describe('common feature of composite marks', () => {
   it('should clip all the part when clip property in composite mark def is true', () => {

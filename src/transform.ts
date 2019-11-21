@@ -303,37 +303,45 @@ export interface SampleTransform {
   sample: number;
 }
 
-export interface LookupData {
-  /**
-   * Secondary data source to lookup in.
-   */
-  data: Data;
+export interface LookupBase {
   /**
    * Key in data to lookup.
    */
   key: FieldName;
   /**
-   * Fields in foreign data to lookup.
+   * Fields in foreign data or selection to lookup.
    * If not specified, the entire object is queried.
    */
   fields?: FieldName[];
 }
 
-export interface LookupTransform {
+export interface LookupData extends LookupBase {
+  /**
+   * Secondary data source to lookup in.
+   */
+  data: Data;
+}
+
+export interface LookupSelection extends LookupBase {
+  selection: string;
+}
+
+export interface BaseLookupTransform {
   /**
    * Key in primary data source.
    */
-  lookup: FieldName;
+  lookup: string;
 
   /**
-   * Secondary data reference.
-   */
-  from: LookupData;
-
-  /**
-   * The field or fields for storing the computed formula value.
-   * If `from.fields` is specified, the transform will use the same names for `as`.
-   * If `from.fields` is not specified, `as` has to be a string and we put the whole object into the data under the specified name.
+   * The output fields on which to store the looked up data values.
+   *
+   * For data lookups, this property may be left blank if `from.fields`
+   * has been specified (those field names will be used); if `from.fields`
+   * has not been specified, `as` must be a string.
+   *
+   * For selection lookups, this property is optional: if unspecified,
+   * looked up values will be stored under a property named for the selection;
+   * and if specified, it must correspond to `from.fields`.
    */
   as?: FieldName | FieldName[];
 
@@ -344,6 +352,22 @@ export interface LookupTransform {
    */
   default?: string;
 }
+
+export interface DataLookupTransform extends BaseLookupTransform {
+  /**
+   * Secondary data reference.
+   */
+  from: LookupData;
+}
+
+export interface SelectionLookupTransform extends BaseLookupTransform {
+  /**
+   * The selection to use as the secondary data reference.
+   */
+  from: LookupSelection;
+}
+
+export type LookupTransform = DataLookupTransform | SelectionLookupTransform;
 
 export interface FoldTransform {
   /**
@@ -584,6 +608,14 @@ export function isLoess(t: Transform): t is LoessTransform {
 
 export function isLookup(t: Transform): t is LookupTransform {
   return t['lookup'] !== undefined;
+}
+
+export function isDataLookup(t: Transform): t is DataLookupTransform {
+  return t['lookup'] !== undefined && t['from']['selection'] === undefined;
+}
+
+export function isSelectionLookup(t: Transform): t is SelectionLookupTransform {
+  return t['lookup'] !== undefined && t['from']['selection'] !== undefined;
 }
 
 export function isSample(t: Transform): t is SampleTransform {

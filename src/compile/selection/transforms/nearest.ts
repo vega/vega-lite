@@ -21,7 +21,7 @@ const nearest: TransformCompiler = {
   },
 
   marks: (model, selCmpt, marks) => {
-    const {x, y} = selCmpt.project.has;
+    const {x, y} = selCmpt.project.hasChannel;
     const markType = model.mark;
     if (isPathMark(markType)) {
       log.warn(log.message.nearestNotSupportForContinuous(markType));
@@ -55,7 +55,7 @@ const nearest: TransformCompiler = {
     let index = 0;
     let exists = false;
     marks.forEach((mark, i) => {
-      const name = mark.name || '';
+      const name = mark.name ?? '';
       if (name === model.component.mark[0].name) {
         index = i;
       } else if (name.indexOf(VORONOI) >= 0) {

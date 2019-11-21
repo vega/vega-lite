@@ -11,7 +11,7 @@ import {
   NormalizedSpec,
   UnitSpec
 } from '../spec';
-import {TopLevelSpec} from '../spec/index';
+import {TopLevelSpec} from '../spec';
 import {AutoSizeParams, AutosizeType, TopLevel} from '../spec/toplevel';
 import {NormalizerParams} from './base';
 import {CoreNormalizer} from './core';
@@ -44,7 +44,7 @@ function normalizeGenericSpec(spec: GenericSpec<UnitSpec, ExtendedLayerSpec> | F
 }
 
 function _normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {
-  return isString(autosize) ? {type: autosize} : autosize || {};
+  return isString(autosize) ? {type: autosize} : autosize ?? {};
 }
 
 /**

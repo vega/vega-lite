@@ -14,12 +14,12 @@ export class DensityTransformNode extends DataFlowNode {
   constructor(parent: DataFlowNode, private transform: DensityTransform) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
-    const specifiedAs = this.transform.as || [undefined, undefined];
-    this.transform.as = [specifiedAs[0] || 'value', specifiedAs[1] || 'density'];
+    const specifiedAs = this.transform.as ?? [undefined, undefined];
+    this.transform.as = [specifiedAs[0] ?? 'value', specifiedAs[1] ?? 'density'];
   }
 
   public dependentFields() {
-    return new Set([this.transform.density, ...(this.transform.groupby || [])]);
+    return new Set([this.transform.density, ...(this.transform.groupby ?? [])]);
   }
 
   public producedFields() {

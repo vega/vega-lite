@@ -2,7 +2,7 @@ import * as log from '../../log';
 import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
 import {checkLinks} from './debug';
-import {DataComponent} from './index';
+import {DataComponent} from '.';
 import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
 import * as optimizers from './optimizers';
 

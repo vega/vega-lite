@@ -1,20 +1,21 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {hasOwnProperty, isString, stringValue} from 'vega-util';
-import {SelectionComponent, STORE} from '.';
+import {SelectionComponent, STORE, forEachSelection} from '.';
 import {LogicalOperand} from '../../logical';
 import {SelectionDef, SelectionExtent} from '../../selection';
 import {Dict, duplicate, logicalExpr, varName} from '../../util';
-import {DataFlowNode} from '../data/dataflow';
+import {DataFlowNode, OutputNode} from '../data/dataflow';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {forEachTransform} from './transforms/transforms';
 import {warn} from '../../log';
+import {FilterNode} from '../data/filter';
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
   const selectionConfig = model.config.selection;
 
-  for (let name in selDefs) {
+  for (const name in selDefs) {
     if (!hasOwnProperty(selDefs, name)) {
       continue;
     }
@@ -38,19 +39,19 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
       }
 
       if (selDef[key] === undefined || selDef[key] === true) {
-        selDef[key] = cfg[key] || selDef[key];
+        selDef[key] = cfg[key] ?? selDef[key];
       }
     }
 
-    name = varName(name);
-    const selCmpt = (selCmpts[name] = {
+    const safeName = varName(name);
+    const selCmpt = (selCmpts[safeName] = {
       ...selDef,
-      name: name,
-      events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on
+      name: safeName,
+      events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : duplicate(selDef.on)
     } as any);
 
     forEachTransform(selCmpt, txCompiler => {
-      if (txCompiler.parse) {
+      if (txCompiler.has(selCmpt) && txCompiler.parse) {
         txCompiler.parse(model, selCmpt, selDef, selDefs[name]);
       }
     });
@@ -62,7 +63,8 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
 export function parseSelectionPredicate(
   model: Model,
   selections: LogicalOperand<string>,
-  dfnode?: DataFlowNode
+  dfnode?: DataFlowNode,
+  datum = 'datum'
 ): string {
   const stores: string[] = [];
   function expr(name: string): string {
@@ -71,7 +73,7 @@ export function parseSelectionPredicate(
     const store = stringValue(vname + STORE);
 
     if (selCmpt.project.timeUnit) {
-      const child = dfnode || model.component.data.raw;
+      const child = dfnode ?? model.component.data.raw;
       const tunode = selCmpt.project.timeUnit.clone();
       if (child.parent) {
         tunode.insertAsParentOf(child);
@@ -85,7 +87,7 @@ export function parseSelectionPredicate(
     }
 
     return (
-      `vlSelectionTest(${store}, datum` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
+      `vlSelectionTest(${store}, ${datum}` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
     );
   }
 
@@ -122,4 +124,17 @@ export function parseSelectionBinExtent(selCmpt: SelectionComponent, extent: Sel
   }
 
   return `${selCmpt.name}[${stringValue(field)}]`;
+}
+
+export function materializeSelections(model: UnitModel, main: OutputNode) {
+  forEachSelection(model, selCmpt => {
+    const selection = selCmpt.name;
+    const lookupName = model.getName(`lookup_${selection}`);
+    model.component.data.outputNodes[lookupName] = selCmpt.materialized = new OutputNode(
+      new FilterNode(main, model, {selection}),
+      lookupName,
+      'lookup',
+      model.component.data.outputNodeRefCounts
+    );
+  });
 }

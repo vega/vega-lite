@@ -1,4 +1,4 @@
-import {CompositeEncoding} from '../compositemark/index';
+import {CompositeEncoding} from '../compositemark';
 import {Projection} from '../projection';
 import {BaseSpec, LayerUnitMixins, ResolveMixins} from './base';
 import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';

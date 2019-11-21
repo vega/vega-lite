@@ -9,7 +9,7 @@ import {Flag, keys} from '../util';
 import {BaseMarkConfig, LayoutAlign, RowCol} from '../vega.schema';
 import {isConcatSpec} from './concat';
 import {isFacetMapping, isFacetSpec} from './facet';
-import {NormalizedSpec} from './index';
+import {NormalizedSpec} from '.';
 import {isRepeatSpec} from './repeat';
 
 export {TopLevel} from './toplevel';
@@ -297,8 +297,8 @@ export function extractCompositionLayout(
         layout[prop] = isNumber(spacing)
           ? spacing
           : {
-              row: spacing.row || spacingConfig,
-              column: spacing.column || spacingConfig
+              row: spacing.row ?? spacingConfig,
+              column: spacing.column ?? spacingConfig
             };
       } else {
         (layout[prop] as any) = spec[prop];

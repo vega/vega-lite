@@ -334,7 +334,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
             const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
             const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';
             if (channel === 'text' || channel === 'tooltip') {
-              newFieldDef['format'] = newFieldDef['format'] || format;
+              newFieldDef['format'] = newFieldDef['format'] ?? format;
               if (formatType) {
                 newFieldDef['formatType'] = formatType;
               }

@@ -11,9 +11,9 @@ function setLegendEncode(
   vgProp: VgEncodeChannel,
   vgRef: VgValueRef | VgValueRef[]
 ) {
-  legend.encode = legend.encode || {};
-  legend.encode[part] = legend.encode[part] || {};
-  legend.encode[part].update = legend.encode[part].update || {};
+  legend.encode = legend.encode ?? {};
+  legend.encode[part] = legend.encode[part] ?? {};
+  legend.encode[part].update = legend.encode[part].update ?? {};
   // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
   (legend.encode[part].update[vgProp] as any) = vgRef;
 }
@@ -41,7 +41,7 @@ export function assembleLegends(model: Model): VgLegend[] {
   return vals(legendByDomain)
     .flat()
     .map((legendCmpt: LegendComponent) => {
-      const {labelExpr, ...legend} = legendCmpt.combine();
+      const {labelExpr, selections, ...legend} = legendCmpt.combine();
 
       if (legend.encode?.symbols) {
         const out = legend.encode.symbols.update;
@@ -58,7 +58,7 @@ export function assembleLegends(model: Model): VgLegend[] {
 
       if (labelExpr !== undefined) {
         let expr = labelExpr;
-        if (legend.encode?.labels?.update && isSignalRef(legend.encode.labels.update.text)) {
+        if (legend.encode?.labels?.update?.text && isSignalRef(legend.encode.labels.update.text)) {
           expr = replaceAll(labelExpr, 'datum.label', legend.encode.labels.update.text.signal);
         }
 

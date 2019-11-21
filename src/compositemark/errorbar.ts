@@ -6,7 +6,7 @@ import {Data} from '../data';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
-import {NormalizerParams} from '../normalize/index';
+import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {Step} from '../spec/base';
 import {TitleParams} from '../title';
@@ -372,10 +372,10 @@ export function errorBarParams<
 
   return {
     transform: [
-      ...(outerSpec.transform || []),
+      ...(outerSpec.transform ?? []),
       ...bins,
       ...timeUnits,
-      ...(!aggregate.length ? [] : [{aggregate, groupby}]),
+      ...(aggregate.length === 0 ? [] : [{aggregate, groupby}]),
       ...postAggregateCalculates
     ],
     groupby,

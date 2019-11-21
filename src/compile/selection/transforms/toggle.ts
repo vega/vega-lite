@@ -5,7 +5,7 @@ export const TOGGLE = '_toggle';
 
 const toggle: TransformCompiler = {
   has: selCmpt => {
-    return selCmpt.type === 'multi' && selCmpt.toggle;
+    return selCmpt.type === 'multi' && !!selCmpt.toggle;
   },
 
   signals: (model, selCmpt, signals) => {

@@ -160,6 +160,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -1593,6 +1609,22 @@
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -5076,6 +5108,42 @@
           "$ref": "#/definitions/TopoDataFormat"
         }
       ]
+    },
+    "DataLookupTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldName"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/FieldName"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "The output fields on which to store the looked up data values.\n\nFor data lookups, this property may be left blank if `from.fields`\nhas been specified (those field names will be used); if `from.fields`\nhas not been specified, `as` must be a string.\n\nFor selection lookups, this property is optional: if unspecified,\nlooked up values will be stored under a property named for the selection;\nand if specified, it must correspond to `from.fields`."
+        },
+        "default": {
+          "description": "The default value to use if lookup fails.\n\n__Default value:__ `null`",
+          "type": "string"
+        },
+        "from": {
+          "$ref": "#/definitions/LookupData",
+          "description": "Secondary data reference."
+        },
+        "lookup": {
+          "description": "Key in primary data source.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "from",
+        "lookup"
+      ],
+      "type": "object"
     },
     "DataSource": {
       "anyOf": [
@@ -9381,6 +9449,19 @@
       },
       "type": "object"
     },
+    "LegendBinding": {
+      "anyOf": [
+        {
+          "enum": [
+            "legend"
+          ],
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/LegendStreamBinding"
+        }
+      ]
+    },
     "LegendConfig": {
       "additionalProperties": false,
       "properties": {
@@ -9746,6 +9827,10 @@
         "titlePadding": {
           "description": "The padding, in pixels, between title and legend.\n\n__Default value:__ `5`.",
           "type": "number"
+        },
+        "unselectedOpacity": {
+          "description": "The opacity of unselected legend entries.\n\n__Default value:__ 0.35.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -9886,6 +9971,25 @@
       },
       "type": "object"
     },
+    "LegendStreamBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "legend": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Stream"
+            }
+          ]
+        }
+      },
+      "required": [
+        "legend"
+      ],
+      "type": "object"
+    },
     "LineConfig": {
       "additionalProperties": false,
       "properties": {
@@ -9920,6 +10024,22 @@
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -10456,7 +10576,7 @@
           "description": "Secondary data source to lookup in."
         },
         "fields": {
-          "description": "Fields in foreign data to lookup.\nIf not specified, the entire object is queried.",
+          "description": "Fields in foreign data or selection to lookup.\nIf not specified, the entire object is queried.",
           "items": {
             "$ref": "#/definitions/FieldName"
           },
@@ -10473,41 +10593,39 @@
       ],
       "type": "object"
     },
-    "LookupTransform": {
+    "LookupSelection": {
       "additionalProperties": false,
       "properties": {
-        "as": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FieldName"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/FieldName"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "The field or fields for storing the computed formula value.\nIf `from.fields` is specified, the transform will use the same names for `as`.\nIf `from.fields` is not specified, `as` has to be a string and we put the whole object into the data under the specified name."
+        "fields": {
+          "description": "Fields in foreign data or selection to lookup.\nIf not specified, the entire object is queried.",
+          "items": {
+            "$ref": "#/definitions/FieldName"
+          },
+          "type": "array"
         },
-        "default": {
-          "description": "The default value to use if lookup fails.\n\n__Default value:__ `null`",
-          "type": "string"
-        },
-        "from": {
-          "$ref": "#/definitions/LookupData",
-          "description": "Secondary data reference."
-        },
-        "lookup": {
+        "key": {
           "$ref": "#/definitions/FieldName",
-          "description": "Key in primary data source."
+          "description": "Key in data to lookup."
+        },
+        "selection": {
+          "type": "string"
         }
       },
       "required": [
-        "lookup",
-        "from"
+        "key",
+        "selection"
       ],
       "type": "object"
+    },
+    "LookupTransform": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/DataLookupTransform"
+        },
+        {
+          "$ref": "#/definitions/SelectionLookupTransform"
+        }
+      ]
     },
     "Mark": {
       "description": "All types of primitive marks.",
@@ -10562,6 +10680,22 @@
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -10881,6 +11015,22 @@
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -11301,6 +11451,10 @@
     "MultiSelection": {
       "additionalProperties": false,
       "properties": {
+        "bind": {
+          "$ref": "#/definitions/LegendBinding",
+          "description": "When set, a selection is populated by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;\nto re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding."
+        },
         "clear": {
           "anyOf": [
             {
@@ -11386,6 +11540,10 @@
     "MultiSelectionConfig": {
       "additionalProperties": false,
       "properties": {
+        "bind": {
+          "$ref": "#/definitions/LegendBinding",
+          "description": "When set, a selection is populated by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;\nto re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding."
+        },
         "clear": {
           "anyOf": [
             {
@@ -11642,6 +11800,22 @@
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -12650,6 +12824,22 @@
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -13755,6 +13945,42 @@
     "SelectionInitMapping": {
       "$ref": "#/definitions/Dict<SelectionInit>"
     },
+    "SelectionLookupTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldName"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/FieldName"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "The output fields on which to store the looked up data values.\n\nFor data lookups, this property may be left blank if `from.fields`\nhas been specified (those field names will be used); if `from.fields`\nhas not been specified, `as` must be a string.\n\nFor selection lookups, this property is optional: if unspecified,\nlooked up values will be stored under a property named for the selection;\nand if specified, it must correspond to `from.fields`."
+        },
+        "default": {
+          "description": "The default value to use if lookup fails.\n\n__Default value:__ `null`",
+          "type": "string"
+        },
+        "from": {
+          "$ref": "#/definitions/LookupSelection",
+          "description": "The selection to use as the secondary data reference."
+        },
+        "lookup": {
+          "description": "Key in primary data source.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "from",
+        "lookup"
+      ],
+      "type": "object"
+    },
     "SelectionPredicate": {
       "additionalProperties": false,
       "properties": {
@@ -13876,9 +14102,12 @@
                 "$ref": "#/definitions/Binding"
               },
               "type": "object"
+            },
+            {
+              "$ref": "#/definitions/LegendBinding"
             }
           ],
-          "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
+          "description": "When set, a selection is populated by input elements (also known as dynamic query widgets)\nor by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;\nto re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
         },
         "clear": {
           "anyOf": [
@@ -13965,9 +14194,12 @@
                 "$ref": "#/definitions/Binding"
               },
               "type": "object"
+            },
+            {
+              "$ref": "#/definitions/LegendBinding"
             }
           ],
-          "description": "Establish a two-way binding between a single selection and input elements\n(also known as dynamic query widgets). A binding takes the form of\nVega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
+          "description": "When set, a selection is populated by input elements (also known as dynamic query widgets)\nor by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;\nto re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)\nor can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
         },
         "clear": {
           "anyOf": [
@@ -14476,6 +14708,22 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -14799,6 +15047,22 @@
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {

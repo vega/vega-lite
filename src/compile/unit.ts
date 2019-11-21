@@ -78,7 +78,7 @@ export class UnitModel extends ModelWithField {
 
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
 
-    const encodingWithRepeaterReplaced = replaceRepeaterInEncoding(spec.encoding || {}, repeater);
+    const encodingWithRepeaterReplaced = replaceRepeaterInEncoding(spec.encoding ?? {}, repeater);
 
     this.markDef = normalizeMarkDef(spec.mark, encodingWithRepeaterReplaced, config, {
       graticule: spec.data && isGraticuleGenerator(spec.data)
@@ -147,7 +147,7 @@ export class UnitModel extends ModelWithField {
       }
 
       if (fieldDef) {
-        scales[channel] = specifiedScale || {};
+        scales[channel] = specifiedScale ?? {};
       }
       return scales;
     }, {} as ScaleIndex);
@@ -236,7 +236,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public assembleMarks() {
-    let marks = this.component.mark || [];
+    let marks = this.component.mark ?? [];
 
     // If this unit is part of a layer, selections should augment
     // all in concert rather than each unit individually. This

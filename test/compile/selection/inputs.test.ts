@@ -73,6 +73,15 @@ describe('Inputs Selection Transform', () => {
       fields: ['nested.a'],
       on: 'click',
       bind: {input: 'range', min: 0, max: 10, step: 1}
+    },
+    twelve: {type: 'single', bind: 'legend'},
+    'space separated': {
+      type: 'single',
+      bind: {input: 'range', min: 0, max: 10, step: 1}
+    },
+    'dash-separated': {
+      type: 'single',
+      bind: {input: 'range', min: 0, max: 10, step: 1}
     }
   });
 
@@ -87,6 +96,9 @@ describe('Inputs Selection Transform', () => {
     expect(inputs.has(selCmpts['nine'])).toBeTruthy();
     expect(inputs.has(selCmpts['ten'])).toBeTruthy();
     expect(inputs.has(selCmpts['eleven'])).toBeTruthy();
+    expect(inputs.has(selCmpts['twelve'])).toBeFalsy();
+    expect(inputs.has(selCmpts['space_separated'])).toBeTruthy();
+    expect(inputs.has(selCmpts['dash_separated'])).toBeTruthy();
   });
 
   it('adds widget binding for default projection', () => {

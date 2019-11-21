@@ -4,6 +4,7 @@ import {getFirstDefined} from '../../util';
 import {isVgRangeStep, VgRangeStep} from '../../vega.schema';
 import {isFacetModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
+import {getViewConfigContinuousSize} from '../../config';
 
 export function assembleLayoutSignals(model: Model): NewSignal[] {
   return [...sizeSignals(model, 'width'), ...sizeSignals(model, 'height')];
@@ -53,7 +54,7 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): (NewSig
   } else if (size == 'container') {
     const isWidth = name.endsWith('width');
     const expr = isWidth ? 'containerSize()[0]' : 'containerSize()[1]';
-    const defaultValue = isWidth ? model.config.view.continuousWidth : model.config.view.continuousHeight;
+    const defaultValue = getViewConfigContinuousSize(model.config.view, isWidth ? 'width' : 'height');
     const safeExpr = `isFinite(${expr}) ? ${expr} : ${defaultValue}`;
     return [{name, init: safeExpr, on: [{update: safeExpr, events: 'window:resize'}]}];
   } else {

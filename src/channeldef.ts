@@ -588,7 +588,7 @@ export function vgField(
         const {bin, aggregate, timeUnit} = fieldDef;
         if (isBinning(bin)) {
           fn = binToString(bin);
-          suffix = (opt.binSuffix || '') + (opt.suffix || '');
+          suffix = (opt.binSuffix ?? '') + (opt.suffix ?? '');
         } else if (aggregate) {
           if (isArgmaxDef(aggregate)) {
             argAccessor = `.${field}`;
@@ -601,7 +601,7 @@ export function vgField(
           }
         } else if (timeUnit) {
           fn = String(timeUnit);
-          suffix = ((!contains(['range', 'mid'], opt.binSuffix) && opt.binSuffix) || '') + (opt.suffix || '');
+          suffix = ((!contains(['range', 'mid'], opt.binSuffix) && opt.binSuffix) || '') + (opt.suffix ?? '');
         }
       }
     }
@@ -717,14 +717,14 @@ export function title(
   config: Config,
   {allowDisabling, includeDefault = true}: {allowDisabling: boolean; includeDefault?: boolean}
 ) {
-  const guide = getGuide(fieldDef) || {};
+  const guide = getGuide(fieldDef) ?? {};
   const guideTitle = guide.title;
   const def = includeDefault ? defaultTitle(fieldDef, config) : undefined;
 
   if (allowDisabling) {
     return getFirstDefined(guideTitle, fieldDef.title, def);
   } else {
-    return guideTitle || fieldDef.title || def;
+    return guideTitle ?? fieldDef.title ?? def;
   }
 }
 
@@ -747,7 +747,7 @@ export function format(fieldDef: TypedFieldDef<string>) {
   if (isTextFieldDef(fieldDef) && fieldDef.format) {
     return fieldDef.format;
   } else {
-    const guide = getGuide(fieldDef) || {};
+    const guide = getGuide(fieldDef) ?? {};
     return guide.format;
   }
 }
@@ -893,7 +893,7 @@ export function normalizeFieldDef(fd: FieldDef<string>, channel: Channel) {
   return fieldDef;
 }
 
-export function normalizeBin(bin: BinParams | boolean | 'binned', channel: Channel) {
+export function normalizeBin(bin: BinParams | boolean | 'binned', channel?: Channel) {
   if (isBoolean(bin)) {
     return {maxbins: autoMaxBins(channel)};
   } else if (bin === 'binned') {

@@ -44,10 +44,10 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
 
   const orient = markDef.orient;
   const hasSizeDef =
-    encoding[sizeChannel] ||
-    encoding.size ||
-    markDef[sizeChannel] ||
-    markDef.size ||
+    encoding[sizeChannel] ??
+    encoding.size ??
+    markDef[sizeChannel] ??
+    markDef.size ??
     getMarkConfig('size', markDef, config, {vgChannel: sizeChannel});
 
   const isBarBand = channel === 'x' ? orient === 'vertical' : orient === 'horizontal';

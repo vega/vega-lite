@@ -8,7 +8,7 @@ import {
   isVConcatSpec
 } from './concat';
 import {GenericFacetSpec, isFacetSpec} from './facet';
-import {GenericSpec} from './index';
+import {GenericSpec} from '.';
 import {GenericLayerSpec, isLayerSpec} from './layer';
 import {GenericRepeatSpec, isRepeatSpec} from './repeat';
 import {GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';

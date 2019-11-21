@@ -34,6 +34,7 @@ import {
 import {deepEqual, mergeDeep} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection';
+import {materializeSelections} from '../selection/parse';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {CalculateNode} from './calculate';
@@ -55,7 +56,7 @@ import {GeoPointNode} from './geopoint';
 import {GraticuleNode} from './graticule';
 import {IdentifierNode} from './identifier';
 import {ImputeNode} from './impute';
-import {AncestorParse, DataComponent} from './index';
+import {AncestorParse, DataComponent} from '.';
 import {JoinAggregateTransformNode} from './joinaggregate';
 import {makeJoinAggregateFromFacet} from './joinaggregatefacet';
 import {LoessTransformNode} from './loess';
@@ -102,7 +103,7 @@ export function findSource(data: Data, sources: SourceNode[]) {
 }
 
 function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
-  if (model.data !== undefined || !model.parent) {
+  if (model.data || !model.parent) {
     // if the model defines a data source or is the root, create a source node
 
     if (model.data === null) {
@@ -153,7 +154,7 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       derivedType = 'derived';
     } else if (isFilter(t)) {
       const implicit = getImplicitFromFilterTransform(t);
-      transformNode = head = ParseNode.makeWithAncestors(head, {}, implicit, ancestorParse) || head;
+      transformNode = head = ParseNode.makeWithAncestors(head, {}, implicit, ancestorParse) ?? head;
 
       head = new FilterNode(head, model, t.filter);
     } else if (isBin(t)) {
@@ -218,7 +219,7 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
     }
 
     if (transformNode && derivedType !== undefined) {
-      for (const field of transformNode.producedFields() || []) {
+      for (const field of transformNode.producedFields() ?? []) {
         ancestorParse.set(field, derivedType, false);
       }
     }
@@ -303,7 +304,7 @@ export function parseData(model: Model): DataComponent {
     ancestorParse.parseNothing = true;
   }
 
-  head = ParseNode.makeExplicit(head, model, ancestorParse) || head;
+  head = ParseNode.makeExplicit(head, model, ancestorParse) ?? head;
 
   // Default discrete selections require an identifer transform to
   // uniquely identify data points. Add this transform at the head of
@@ -319,7 +320,7 @@ export function parseData(model: Model): DataComponent {
   const parentIsLayer = model.parent && isLayerModel(model.parent);
   if (isUnitModel(model) || isFacetModel(model)) {
     if (parentIsLayer) {
-      head = BinNode.makeFromEncoding(head, model) || head;
+      head = BinNode.makeFromEncoding(head, model) ?? head;
     }
   }
 
@@ -330,7 +331,7 @@ export function parseData(model: Model): DataComponent {
   // create parse nodes for fields that need to be parsed (or flattened) implicitly
   const implicitSelection = getImplicitFromSelection(model);
   const implicitEncoding = getImplicitFromEncoding(model);
-  head = ParseNode.makeWithAncestors(head, {}, {...implicitSelection, ...implicitEncoding}, ancestorParse) || head;
+  head = ParseNode.makeWithAncestors(head, {}, {...implicitSelection, ...implicitEncoding}, ancestorParse) ?? head;
 
   if (isUnitModel(model)) {
     head = GeoJSONNode.parseAll(head, model);
@@ -339,10 +340,10 @@ export function parseData(model: Model): DataComponent {
 
   if (isUnitModel(model) || isFacetModel(model)) {
     if (!parentIsLayer) {
-      head = BinNode.makeFromEncoding(head, model) || head;
+      head = BinNode.makeFromEncoding(head, model) ?? head;
     }
 
-    head = TimeUnitNode.makeFromEncoding(head, model) || head;
+    head = TimeUnitNode.makeFromEncoding(head, model) ?? head;
     head = CalculateNode.parseAllForSortIndex(head, model);
   }
 
@@ -361,12 +362,12 @@ export function parseData(model: Model): DataComponent {
         head = new IdentifierNode(head);
       }
     }
-    head = ImputeNode.makeFromEncoding(head, model) || head;
-    head = StackNode.makeFromEncoding(head, model) || head;
+    head = ImputeNode.makeFromEncoding(head, model) ?? head;
+    head = StackNode.makeFromEncoding(head, model) ?? head;
   }
 
   if (isUnitModel(model)) {
-    head = FilterInvalidNode.make(head, model) || head;
+    head = FilterInvalidNode.make(head, model) ?? head;
   }
 
   // output node for marks
@@ -374,6 +375,10 @@ export function parseData(model: Model): DataComponent {
   const main = new OutputNode(head, mainName, MAIN, outputNodeRefCounts);
   outputNodes[mainName] = main;
   head = main;
+
+  if (isUnitModel(model)) {
+    materializeSelections(model, main);
+  }
 
   // add facet marker
   let facetRoot = null;
@@ -385,7 +390,7 @@ export function parseData(model: Model): DataComponent {
 
     // Derive new aggregate for facet's sort field
     // augment data source with new fields for crossed facet
-    head = makeJoinAggregateFromFacet(head, model.facet) || head;
+    head = makeJoinAggregateFromFacet(head, model.facet) ?? head;
 
     facetRoot = new FacetNode(head, model, facetName, main.getSource());
     outputNodes[facetName] = facetRoot;

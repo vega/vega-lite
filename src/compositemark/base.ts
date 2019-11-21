@@ -1,6 +1,6 @@
 import {GenericMarkDef, getMarkType} from '../mark';
 import {NonFacetUnitNormalizer, Normalize, NormalizerParams} from '../normalize/base';
-import {GenericSpec} from '../spec/index';
+import {GenericSpec} from '../spec';
 import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer';
 import {GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from '../spec/unit';
 

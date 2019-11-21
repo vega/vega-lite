@@ -197,7 +197,7 @@ export abstract class Model {
     this.repeater = repeater;
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
-    this.name = spec.name || parentGivenName;
+    this.name = spec.name ?? parentGivenName;
     this.title = isText(spec.title) ? {text: spec.title} : (spec.title as TitleParams);
 
     // Shared name maps
@@ -208,7 +208,7 @@ export abstract class Model {
     this.data = spec.data;
 
     this.description = spec.description;
-    this.transforms = normalizeTransform(spec.transform || []);
+    this.transforms = normalizeTransform(spec.transform ?? []);
     this.layout = isUnitSpec(spec) || isLayerSpec(spec) ? {} : extractCompositionLayout(spec, type, config);
 
     this.component = {
@@ -301,7 +301,7 @@ export abstract class Model {
 
   public assembleGroupStyle(): string | string[] {
     if (this.type === 'unit' || this.type === 'layer') {
-      return this.view?.style || 'cell';
+      return this.view?.style ?? 'cell';
     }
     return undefined;
   }
@@ -334,7 +334,7 @@ export abstract class Model {
         return {
           width: this.getSizeSignalRef('width'),
           height: this.getSizeSignalRef('height'),
-          ...(encodeEntry || {})
+          ...(encodeEntry ?? {})
         };
       }
     }
@@ -397,7 +397,7 @@ export abstract class Model {
   }
 
   public assembleTitle(): VgTitle {
-    const {encoding, ...titleNoEncoding} = this.title || ({} as TitleParams);
+    const {encoding, ...titleNoEncoding} = this.title ?? ({} as TitleParams);
 
     const title: VgTitle = {
       ...extractTitleConfig(this.config.title).nonMark,
@@ -409,14 +409,14 @@ export abstract class Model {
       if (contains(['unit', 'layer'], this.type)) {
         // Unit/Layer
         if (contains<AnchorValue>(['middle', undefined], title.anchor)) {
-          title.frame = title.frame || 'group';
+          title.frame = title.frame ?? 'group';
         }
       } else {
         // composition with Vega layout
 
         // Set title = "start" by default for composition as "middle" does not look nice
         // https://github.com/vega/vega/issues/960#issuecomment-471360328
-        title.anchor = title.anchor || 'start';
+        title.anchor = title.anchor ?? 'start';
       }
 
       return keys(title).length > 0 ? title : undefined;
@@ -493,7 +493,7 @@ export abstract class Model {
     // Increase ref count. This is critical because otherwise we won't create a data source.
     // We also increase the ref counts on OutputNode.getSource() calls.
     const refCounts = this.component.data.outputNodeRefCounts;
-    refCounts[fullName] = (refCounts[fullName] || 0) + 1;
+    refCounts[fullName] = (refCounts[fullName] ?? 0) + 1;
 
     return fullName;
   }

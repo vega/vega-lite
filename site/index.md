@@ -41,7 +41,7 @@ images:
   </span>
 </span>
 
-Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uwdata/de6661c12d58), watch our [OpenVis Conf talk about the new features in Vega-Lite v2](https://www.youtube.com/watch?v=9uaHRWj04D4), check out the [documentation]({{ site.baseurl }}/docs/) and take a look at our [example gallery]({{ site.baseurl }}/examples/).
+Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uwdata/de6661c12d58), watch our [OpenVis Conf talk about the new features in Vega-Lite v2](https://www.youtube.com/watch?v=9uaHRWj04D4), check out the [documentation]({{ site.baseurl }}/docs/) and take a look at our [example gallery]({{ site.baseurl }}/examples/). Follow us on [Twitter at @vega_vis](https://twitter.com/vega_vis) to stay informed about updates.
 
 ## Example
 
@@ -78,6 +78,25 @@ Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uw
 - [JSON schema](http://json-schema.org/) specification for [Vega-Lite](https://github.com/vega/schema) ([latest](https://vega.github.io/schema/vega-lite/v4.json))
 - Ask questions about Vega-Lite on [Stack Overflow](https://stackoverflow.com/tags/vega-lite) or [Slack](https://bit.ly/join-vega-slack)
 - Fork our [Vega-Lite Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9), or [Observable Notebook](https://beta.observablehq.com/@domoritz/vega-lite-demo).
+
+## Users
+
+Vega-Lite is used by thousands of data enthusiasts, developers, journalists, data scientists, teachers, and researchers across many organizations. Here are some of them. Learn about integrations on our [ecosystem page]({{ site.baseurl }}/ecosystem.html).
+
+{:.logos}
+
+- ![Apple]({{ site.baseurl }}/static/logo_apple.png 'Apple')
+- ![Google]({{ site.baseurl }}/static/logo_google.png 'Google')
+- ![Microsoft]({{ site.baseurl }}/static/logo_ms.png 'Microsoft')
+- ![Tableau]({{ site.baseurl }}/static/logo_tableau.png 'Tableau')
+- ![Airbnb]({{ site.baseurl }}/static/logo_airbnb.png 'Airbnb')
+- ![JupyterLab]({{ site.baseurl }}/static/logo_jlab.png 'JupyterLab')
+- ![LA Times]({{ site.baseurl }}/static/logo_la_times.png 'LA Times')
+- ![CERN]({{ site.baseurl }}/static/logo_cern.png 'CERN')
+- ![Massachusetts Institute of Technology]({{ site.baseurl }}/static/logo_mit.png 'Massachusetts Institute of Technology')
+- ![University of Washington]({{ site.baseurl }}/static/logo_uw.png 'University of Washington')
+- ![Carnegie Mellon University]({{ site.baseurl }}/static/logo_cmu.png 'Carnegie Mellon University')
+- ![Berkeley]({{ site.baseurl }}/static/logo_berkeley.png 'Berkeley')
 
 ## Team
 

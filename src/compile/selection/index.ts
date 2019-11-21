@@ -7,7 +7,8 @@ import {
   SelectionInitInterval,
   SelectionResolution,
   SelectionType,
-  SELECTION_ID
+  SELECTION_ID,
+  LegendBinding
 } from '../../selection';
 import {Dict} from '../../util';
 import {FacetModel} from '../facet';
@@ -17,6 +18,7 @@ import interval from './interval';
 import multi from './multi';
 import single from './single';
 import {SelectionProjection, SelectionProjectionComponent} from './transforms/project';
+import {OutputNode} from '../data/dataflow';
 
 export const STORE = '_store';
 export const TUPLE = '_tuple';
@@ -36,7 +38,8 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
     ? SelectionInit | SelectionInit[]
     : never)[];
   events: Stream[];
-  bind?: 'scales' | Binding | Dict<Binding>;
+  materialized: OutputNode;
+  bind?: 'scales' | Binding | Dict<Binding> | LegendBinding;
   resolve: SelectionResolution;
   empty: 'all' | 'none';
   mark?: BrushConfig;
@@ -62,14 +65,15 @@ const compilers: Dict<SelectionCompiler> = {single, multi, interval};
 
 export function forEachSelection(
   model: Model,
-  cb: (selCmpt: SelectionComponent, selCompiler: SelectionCompiler) => void
+  cb: (selCmpt: SelectionComponent, selCompiler: SelectionCompiler) => void | boolean
 ) {
   const selections = model.component.selection;
   if (selections) {
     for (const name in selections) {
       if (hasOwnProperty(selections, name)) {
         const sel = selections[name];
-        cb(sel, compilers[sel.type]);
+        const success = cb(sel, compilers[sel.type]);
+        if (success === true) break;
       }
     }
   }

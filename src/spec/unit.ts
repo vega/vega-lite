@@ -1,5 +1,5 @@
 import {Field} from '../channeldef';
-import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark/index';
+import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark';
 import {Encoding} from '../encoding';
 import {AnyMark, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
