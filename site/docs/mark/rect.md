@@ -17,14 +17,11 @@ permalink: /docs/rect.html
 
 The `rect` mark represents an arbitrary rectangle.
 
-<!-- prettier-ignore-start -->
-
 ## Documentation Overview
-
 {:.no_toc}
 
-- TOC {:toc}
-  <!-- prettier-ignore-end -->
+- TOC
+{:toc}
   {:#properties}
 
 ## Rect Mark Properties
