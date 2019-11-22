@@ -257,7 +257,12 @@
     },
     {
       "name": "alex_modify",
-      "update": "modify(\"alex_store\", alex_tuple, true)"
+      "on": [
+        {
+          "events": {"signal": "alex_tuple"},
+          "update": "modify(\"alex_store\", alex_tuple, true)"
+        }
+      ]
     },
     {
       "name": "morgan_x",
@@ -475,7 +480,12 @@
     },
     {
       "name": "morgan_modify",
-      "update": "modify(\"morgan_store\", morgan_tuple, true)"
+      "on": [
+        {
+          "events": {"signal": "morgan_tuple"},
+          "update": "modify(\"morgan_store\", morgan_tuple, true)"
+        }
+      ]
     }
   ],
   "marks": [

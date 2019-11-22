@@ -72,7 +72,12 @@
     },
     {
       "name": "index_modify",
-      "update": "modify(\"index_store\", index_tuple, true)"
+      "on": [
+        {
+          "events": {"signal": "index_tuple"},
+          "update": "modify(\"index_store\", index_tuple, true)"
+        }
+      ]
     }
   ],
   "marks": [

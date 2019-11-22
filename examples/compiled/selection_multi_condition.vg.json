@@ -253,7 +253,12 @@
     },
     {
       "name": "brush_modify",
-      "update": "modify(\"brush_store\", brush_tuple, true)"
+      "on": [
+        {
+          "events": {"signal": "brush_tuple"},
+          "update": "modify(\"brush_store\", brush_tuple, true)"
+        }
+      ]
     },
     {
       "name": "hoverbrush_tuple",
@@ -287,7 +292,12 @@
     },
     {
       "name": "hoverbrush_modify",
-      "update": "modify(\"hoverbrush_store\", hoverbrush_toggle ? null : hoverbrush_tuple, hoverbrush_toggle ? null : true, hoverbrush_toggle ? hoverbrush_tuple : null)"
+      "on": [
+        {
+          "events": {"signal": "hoverbrush_tuple"},
+          "update": "modify(\"hoverbrush_store\", hoverbrush_toggle ? null : hoverbrush_tuple, hoverbrush_toggle ? null : true, hoverbrush_toggle ? hoverbrush_tuple : null)"
+        }
+      ]
     }
   ],
   "marks": [

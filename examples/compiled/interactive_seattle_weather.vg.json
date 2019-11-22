@@ -247,7 +247,12 @@
         },
         {
           "name": "brush_modify",
-          "update": "modify(\"brush_store\", brush_tuple, true)"
+          "on": [
+            {
+              "events": {"signal": "brush_tuple"},
+              "update": "modify(\"brush_store\", brush_tuple, true)"
+            }
+          ]
         }
       ],
       "marks": [
@@ -457,7 +462,12 @@
         },
         {
           "name": "click_modify",
-          "update": "modify(\"click_store\", click_toggle ? null : click_tuple, click_toggle ? null : true, click_toggle ? click_tuple : null)"
+          "on": [
+            {
+              "events": {"signal": "click_tuple"},
+              "update": "modify(\"click_store\", click_toggle ? null : click_tuple, click_toggle ? null : true, click_toggle ? click_tuple : null)"
+            }
+          ]
         }
       ],
       "marks": [

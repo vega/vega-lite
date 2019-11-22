@@ -124,7 +124,12 @@
     },
     {
       "name": "view_modify",
-      "update": "modify(\"view_store\", view_tuple, true)"
+      "on": [
+        {
+          "events": {"signal": "view_tuple"},
+          "update": "modify(\"view_store\", view_tuple, true)"
+        }
+      ]
     }
   ],
   "marks": [

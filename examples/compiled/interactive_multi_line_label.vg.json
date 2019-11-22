@@ -85,7 +85,12 @@
     },
     {
       "name": "label_modify",
-      "update": "modify(\"label_store\", label_tuple, true)"
+      "on": [
+        {
+          "events": {"signal": "label_tuple"},
+          "update": "modify(\"label_store\", label_tuple, true)"
+        }
+      ]
     }
   ],
   "marks": [

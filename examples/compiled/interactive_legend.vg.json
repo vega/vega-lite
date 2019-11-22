@@ -107,7 +107,12 @@
     },
     {
       "name": "industry_modify",
-      "update": "modify(\"industry_store\", industry_toggle ? null : industry_tuple, industry_toggle ? null : true, industry_toggle ? industry_tuple : null)"
+      "on": [
+        {
+          "events": {"signal": "industry_tuple"},
+          "update": "modify(\"industry_store\", industry_toggle ? null : industry_tuple, industry_toggle ? null : true, industry_toggle ? industry_tuple : null)"
+        }
+      ]
     }
   ],
   "marks": [

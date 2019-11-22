@@ -81,7 +81,12 @@
         },
         {
           "name": "hover_modify",
-          "update": "modify(\"hover_store\", hover_tuple, true)"
+          "on": [
+            {
+              "events": {"signal": "hover_tuple"},
+              "update": "modify(\"hover_store\", hover_tuple, true)"
+            }
+          ]
         }
       ],
       "marks": [
@@ -188,7 +193,12 @@
         },
         {
           "name": "hover_modify",
-          "update": "modify(\"hover_store\", hover_tuple, true)"
+          "on": [
+            {
+              "events": {"signal": "hover_tuple"},
+              "update": "modify(\"hover_store\", hover_tuple, true)"
+            }
+          ]
         }
       ],
       "marks": [

@@ -295,7 +295,12 @@
         },
         {
           "name": "pts_modify",
-          "update": "modify(\"pts_store\", pts_tuple, true)"
+          "on": [
+            {
+              "events": {"signal": "pts_tuple"},
+              "update": "modify(\"pts_store\", pts_tuple, true)"
+            }
+          ]
         }
       ],
       "marks": [

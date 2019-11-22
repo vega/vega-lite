@@ -67,7 +67,12 @@
     },
     {
       "name": "highlight_modify",
-      "update": "modify(\"highlight_store\", highlight_tuple, true)"
+      "on": [
+        {
+          "events": {"signal": "highlight_tuple"},
+          "update": "modify(\"highlight_store\", highlight_tuple, true)"
+        }
+      ]
     }
   ],
   "marks": [
