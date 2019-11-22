@@ -1,0 +1,81 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "padding": 5,
+  "config": {
+    "view": {"stroke": "transparent"},
+    "headerRow": {
+      "titlePadding": -5,
+      "labelAlign": "left",
+      "labelPadding": 0,
+      "labelAngle": 0,
+      "labelExpr": "datum.value === 0 ? 'Midnight' : datum.value === 12 ? 'Noon' : datum.value < 12 ? datum.value + ':00 am' : (datum.value - 12) + ':00 pm'"
+    }
+  },
+  "title": {
+    "fontSize": 14,
+    "text": "Seattle Annual Temperatures",
+    "anchor": "start",
+    "offset": 4
+  },
+  "data": {
+    "name": "temperature",
+    "url": "data/seattle-temps.csv",
+    "format": {"type": "csv", "parse": {"temp": "number", "date": "date"}}
+  },
+  "transform": [
+    {"calculate": "hours(datum.date)", "as": "hour"},
+    {
+      "calculate": "datetime(year(datum.date), month(datum.date), date(datum.date))",
+      "as": "date"
+    }
+  ],
+  "width": 800,
+  "height": 25,
+  "mark": "area",
+  "encoding": {
+    "x": {
+      "field": "date",
+      "type": "temporal",
+      "axis": {"title": "Month", "grid": false, "domain": false, "format": "%b"}
+    },
+    "y": {
+      "field": "temp",
+      "type": "quantitative",
+      "title": null,
+      "axis": null,
+      "scale": {"zero": false, "range": [25, 1]}
+    },
+    "row": {
+      "spacing": -1,
+      "title": "Hour",
+      "field": "hour",
+      "type": "nominal",
+      "sort": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  }
+}
