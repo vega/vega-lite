@@ -13,6 +13,9 @@
   "search.exclude": {
     "build": true
   },
+  "[markdown]": {
+    "editor.formatOnSave": false
+  },
   "files.trimTrailingWhitespace": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,

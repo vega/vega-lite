@@ -20,14 +20,11 @@ Vega-Lite supports the following time units:
 
 By default, all time units represent date time using local time. To use UTC time, you can add the `utc` prefix (e.g., `utcyearmonth`).
 
-<!-- prettier-ignore-start -->
-
 ## Documentation Overview
-
 {:.no_toc}
 
-- TOC {:toc}
-  <!-- prettier-ignore-end -->
+- TOC
+{:toc}
 
 {: #encoding}
 

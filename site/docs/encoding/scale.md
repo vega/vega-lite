@@ -35,14 +35,11 @@ Besides the `scale` property of each encoding channel, the top-level configurati
 
 For more information about guides that visualize the scales, please see the [axes](axis.html) and [legends](legend.html) pages.
 
-<!-- prettier-ignore-start -->
-
 ## Documentation Overview
-
 {:.no_toc}
 
-- TOC {:toc}
-  <!-- prettier-ignore-end -->
+- TOC
+{:toc}
 
 {:#type}
 
