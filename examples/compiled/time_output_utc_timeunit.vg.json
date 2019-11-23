@@ -23,9 +23,13 @@
       "transform": [
         {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
-          "type": "formula",
-          "as": "utcyearmonthdatehoursminutes_date",
-          "expr": "datetime(utcyear(datum[\"date\"]), utcmonth(datum[\"date\"]), utcdate(datum[\"date\"]), utchours(datum[\"date\"]), utcminutes(datum[\"date\"]), 0, 0)"
+          "field": "date",
+          "type": "timeunit",
+          "units": ["year", "month", "date", "hours", "minutes"],
+          "as": [
+            "utcyearmonthdatehoursminutes_date",
+            "utcyearmonthdatehoursminutes_date_end"
+          ]
         }
       ]
     }

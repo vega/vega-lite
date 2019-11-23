@@ -23,9 +23,13 @@
       "transform": [
         {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
-          "type": "formula",
-          "as": "yearmonthdatehoursminutes_date",
-          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), hours(datum[\"date\"]), minutes(datum[\"date\"]), 0, 0)"
+          "field": "date",
+          "type": "timeunit",
+          "units": ["year", "month", "date", "hours", "minutes"],
+          "as": [
+            "yearmonthdatehoursminutes_date",
+            "yearmonthdatehoursminutes_date_end"
+          ]
         }
       ]
     }

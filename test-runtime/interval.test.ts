@@ -155,8 +155,8 @@ describe('interval selections at runtime in unit views', () => {
     await embed(spec('unit', 1, {type, encodings: ['x']}, {values, x: {type: 'temporal', timeUnit: 'day'}}));
 
     extents = [
-      [1136190528000, 1136361600000],
-      [1136449728000, 1136535264000]
+      [1325492928000, 1325664000000],
+      [1325752128000, 1325837664000]
     ];
     for (let i = 0; i < hits.drag.length; i++) {
       const store = toNumber(await page.evaluate(brush('drag', i)));

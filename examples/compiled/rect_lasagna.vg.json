@@ -13,9 +13,10 @@
       "transform": [
         {"type": "filter", "expr": "datum.symbol !== 'GOOG'"},
         {
-          "type": "formula",
-          "as": "yearmonthdate_date",
-          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
+          "field": "date",
+          "type": "timeunit",
+          "units": ["year", "month", "date"],
+          "as": ["yearmonthdate_date", "yearmonthdate_date_end"]
         },
         {
           "type": "aggregate",

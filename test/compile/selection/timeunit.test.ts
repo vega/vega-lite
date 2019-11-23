@@ -6,6 +6,7 @@ import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {Config} from '../../../src/config';
 import {NormalizedUnitSpec} from '../../../src/spec';
 import {parseModel, parseUnitModel} from '../../util';
+import {deepEqual} from '../../../src/util';
 
 function getData(model: Model) {
   optimizeDataflow(model.component.data, null);
@@ -64,7 +65,10 @@ describe('Selection time unit', () => {
     expect(selCmpts['two'].project.timeUnit).toBeInstanceOf(TimeUnitNode);
 
     const as = selCmpts['two'].project.timeUnit.assemble().map(tx => tx.as);
-    expect(as).toEqual(['seconds_date', 'minutes_date']);
+    expect(as).toEqual([
+      ['seconds_date', 'seconds_date_end'],
+      ['minutes_date', 'minutes_date_end']
+    ]);
   });
 
   it('is added with conditional encodings', () => {
@@ -84,7 +88,9 @@ describe('Selection time unit', () => {
       }
     });
     const data1 = getData(model).filter(d => d.name === 'data_0')[0].transform;
-    expect(data1.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
+    expect(
+      data1.filter(tx => tx.type === 'timeunit' && deepEqual(tx.as, ['seconds_date', 'seconds_date_end'])).length
+    ).toEqual(1);
   });
 
   it('is added before selection filters', () => {
@@ -108,7 +114,7 @@ describe('Selection time unit', () => {
     let tuIdx = -1;
     let selIdx = -1;
     data0.forEach((tx, idx) => {
-      if (tx.type === 'formula' && tx.as === 'seconds_date') {
+      if (tx.type === 'timeunit' && deepEqual(tx.as, ['seconds_date', 'seconds_date_end'])) {
         tuIdx = idx;
       }
     });
@@ -137,6 +143,8 @@ describe('Selection time unit', () => {
       }
     });
     const data1 = getData(model).filter(d => d.name === 'data_0')[0].transform;
-    expect(data1.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
+    expect(
+      data1.filter(tx => tx.type === 'timeunit' && deepEqual(tx.as, ['seconds_date', 'seconds_date_end'])).length
+    ).toEqual(1);
   });
 });

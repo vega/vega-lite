@@ -11,14 +11,16 @@
       "format": {"type": "csv", "parse": {"time": "date"}},
       "transform": [
         {
-          "type": "formula",
-          "as": "day_time",
-          "expr": "datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0)"
+          "field": "time",
+          "type": "timeunit",
+          "units": ["day"],
+          "as": ["day_time", "day_time_end"]
         },
         {
-          "type": "formula",
-          "as": "hours_time",
-          "expr": "datetime(0, 0, 1, hours(datum[\"time\"]), 0, 0, 0)"
+          "field": "time",
+          "type": "timeunit",
+          "units": ["hours"],
+          "as": ["hours_time", "hours_time_end"]
         },
         {
           "type": "formula",

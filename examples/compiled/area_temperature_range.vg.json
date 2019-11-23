@@ -16,9 +16,10 @@
       },
       "transform": [
         {
-          "type": "formula",
-          "as": "monthdate_date",
-          "expr": "datetime(0, month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
+          "field": "date",
+          "type": "timeunit",
+          "units": ["month", "date"],
+          "as": ["monthdate_date", "monthdate_date_end"]
         },
         {
           "type": "aggregate",

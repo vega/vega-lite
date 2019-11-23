@@ -25,9 +25,10 @@ describe('compile/data/timeunit', () => {
 
       expect(assembleFromEncoding(model)).toEqual([
         {
-          type: 'formula',
-          as: 'month_a',
-          expr: 'datetime(0, month(datum["a"]), 1, 0, 0, 0, 0)'
+          type: 'timeunit',
+          field: 'a',
+          as: ['month_a', 'month_a_end'],
+          units: ['month']
         }
       ]);
     });
@@ -43,14 +44,10 @@ describe('compile/data/timeunit', () => {
 
       expect(assembleFromEncoding(model)).toEqual([
         {
-          type: 'formula',
-          as: 'month_a',
-          expr: 'datetime(0, month(datum["a"]), 1, 0, 0, 0, 0)'
-        },
-        {
-          type: 'formula',
-          as: 'month_a_end',
-          expr: 'datetime(0, month(datum["a"])+1, 1, 0, 0, 0, 0)'
+          type: 'timeunit',
+          field: 'a',
+          as: ['month_a', 'month_a_end'],
+          units: ['month']
         }
       ]);
     });
@@ -60,9 +57,10 @@ describe('compile/data/timeunit', () => {
 
       expect(assembleFromTransform(t)).toEqual([
         {
-          type: 'formula',
-          as: 'month_date',
-          expr: 'datetime(0, month(datum["date"]), 1, 0, 0, 0, 0)'
+          type: 'timeunit',
+          field: 'date',
+          as: ['month_date', 'month_date_end'],
+          units: ['month']
         }
       ]);
     });
