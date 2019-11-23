@@ -4,10 +4,13 @@ import {
   Color,
   ColorValueRef,
   Compare as VgCompare,
+  Cursor,
   ExprRef as VgExprRef,
   Field as VgField,
   FontStyle as VgFontStyle,
   FontWeight as VgFontWeight,
+  GeoShapeTransform as VgGeoShapeTransform,
+  Interpolate,
   LayoutAlign,
   NumericValueRef,
   Orientation,
@@ -19,10 +22,7 @@ import {
   TextBaseline as VgTextBaseline,
   Title as VgTitle,
   Transforms as VgTransform,
-  UnionSortField as VgUnionSortField,
-  GeoShapeTransform as VgGeoShapeTransform,
-  Interpolate,
-  Cursor
+  UnionSortField as VgUnionSortField
 } from 'vega';
 import {isArray} from 'vega-util';
 import {Gradient, ValueOrGradientOrText} from './channeldef';
@@ -66,6 +66,16 @@ export interface VgDataRef {
 
 export function isSignalRef(o: any): o is SignalRef {
   return !!o['signal'];
+}
+
+export function asVegaRef<T>(value: T | SignalRef): null | undefined | SignalRef | {value: T} {
+  if (value == null) {
+    return value as null;
+  }
+  if (isSignalRef(value)) {
+    return value;
+  }
+  return {value};
 }
 
 // TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
@@ -263,7 +273,7 @@ export type VgEncodeChannel =
   | 'scaleX'
   | 'scaleY';
 
-export type VgEncodeEntry = {[k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[]};
+export type VgEncodeEntry = {[k in VgEncodeChannel]?: SignalRef | VgValueRef | (VgValueRef & {test?: string})[]};
 
 // TODO: make export interface VgEncodeEntry {
 //   x?: VgValueRef<number>
@@ -331,7 +341,7 @@ export interface BaseMarkConfig {
    * __Default value:__ (None)
    *
    */
-  fill?: Color | Gradient | null;
+  fill?: Color | Gradient | null | SignalRef;
 
   /**
    * Default Stroke Color. This has higher precedence than `config.color`.
@@ -339,7 +349,7 @@ export interface BaseMarkConfig {
    * __Default value:__ (None)
    *
    */
-  stroke?: Color | Gradient | null;
+  stroke?: Color | Gradient | null | SignalRef;
 
   // ---------- Opacity ----------
   /**

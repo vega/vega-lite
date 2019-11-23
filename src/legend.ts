@@ -11,7 +11,7 @@ import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
 import {ExcludeMappedValueRef} from './vega.schema';
 
-type BaseLegendNoSignals = ExcludeMappedValueRef<BaseLegend>;
+type BaseLegendNoValueRefs = ExcludeMappedValueRef<BaseLegend>;
 
 export type LegendConfig = LegendMixins &
   VlOnlyGuideConfig &
@@ -68,7 +68,7 @@ export type LegendConfig = LegendMixins &
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend extends BaseLegendNoSignals, LegendMixins, Guide {
+export interface Legend extends BaseLegendNoValueRefs, LegendMixins, Guide {
   /**
    * Mark definitions for custom legend encoding.
    *

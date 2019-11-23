@@ -1,4 +1,4 @@
-import {Color} from 'vega';
+import {Color, SignalRef} from 'vega';
 import {toSet} from 'vega-util';
 import {Gradient, Value} from './channeldef';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
@@ -78,7 +78,7 @@ export interface ColorMixins {
    * - This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
    * - The `fill` and `stroke` properties have higher precedence than `color` and will override `color`.
    */
-  color?: Color | Gradient;
+  color?: Color | Gradient | SignalRef;
 }
 
 export interface TooltipContent {
@@ -216,7 +216,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
 };
 
 export const defaultMarkConfig: MarkConfig = {
-  color: '#4c78a8',
+  color: {signal: 'colors.blue'},
   invalid: 'filter',
   timeUnitBand: 1
 };

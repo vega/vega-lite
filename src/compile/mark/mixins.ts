@@ -1,5 +1,4 @@
-import {ValueOrGradientOrText} from './../../channeldef';
-import {Align} from 'vega';
+import {Align, SignalRef} from 'vega';
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
 import {Channel, NonPositionScaleChannel, ScaleChannel, SCALE_CHANNELS, X, X2, Y2} from '../../channel';
@@ -23,13 +22,30 @@ import * as log from '../../log';
 import {isPathMark, Mark, MarkConfig, MarkDef} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
 import {contains, Dict, getFirstDefined, keys} from '../../util';
-import {VgEncodeChannel, VgEncodeEntry, VgValueRef, VG_MARK_CONFIGS} from '../../vega.schema';
+import {asVegaRef, VgEncodeChannel, VgEncodeEntry, VgValueRef, VG_MARK_CONFIGS} from '../../vega.schema';
 import {getMarkConfig, getMarkPropOrConfig, getStyleConfig} from '../common';
 import {expression} from '../predicate';
 import {parseSelectionPredicate} from '../selection/parse';
 import {UnitModel} from '../unit';
+import {ValueOrGradientOrText} from './../../channeldef';
 import * as ref from './valueref';
 import {fieldInvalidPredicate} from './valueref';
+
+/**
+ * Converts references to system colors to proper Vega signals.
+ *
+ * `"colors.red"` -> `{signal: 'colors.red'}`
+ */
+function systemColor<T>(c: T | SignalRef) {
+  if (isString(c)) {
+    if (c.startsWith('colors.')) {
+      return {
+        signal: c
+      };
+    }
+  }
+  return c;
+}
 
 export function color(model: UnitModel): VgEncodeEntry {
   const {markDef, encoding, config} = model;
@@ -65,8 +81,8 @@ export function color(model: UnitModel): VgEncodeEntry {
   const colorVgChannel = filled ? 'fill' : 'stroke';
 
   const fillStrokeMarkDefAndConfig: VgEncodeEntry = {
-    ...(defaultFill ? {fill: {value: defaultFill}} : {}),
-    ...(defaultStroke ? {stroke: {value: defaultStroke}} : {})
+    ...(defaultFill ? {fill: asVegaRef(systemColor(defaultFill))} : {}),
+    ...(defaultStroke ? {stroke: asVegaRef(systemColor(defaultFill))} : {})
   };
 
   if (markDef.color && (filled ? markDef.fill : markDef.stroke)) {
@@ -193,9 +209,9 @@ export function nonPosition(
   channel: NonPositionScaleChannel,
   model: UnitModel,
   opt: {
-    defaultValue?: ValueOrGradient;
+    defaultValue?: ValueOrGradient | SignalRef;
     vgChannel?: VgEncodeChannel;
-    defaultRef?: VgValueRef;
+    defaultRef?: VgValueRef | SignalRef;
   } = {}
 ): VgEncodeEntry {
   const {markDef, encoding, config} = model;
@@ -211,7 +227,7 @@ export function nonPosition(
         : // However, when they are different (e.g, vl's text size is vg fontSize), need to read "size" from configs
         getFirstDefined(markDef[channel], markDef[vgChannel], getMarkConfig(channel, markDef, config, {vgChannel})));
 
-    defaultRef = defaultValue ? {value: defaultValue} : undefined;
+    defaultRef = asVegaRef(systemColor(defaultValue));
   }
 
   const channelDef = encoding[channel];

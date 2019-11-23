@@ -1,4 +1,4 @@
-import {Color, SymbolShape} from 'vega';
+import {Color, SymbolShape, InitSignal, NewSignal, scheme} from 'vega';
 import {isObject, mergeConfig} from 'vega-util';
 import {AxisConfigMixins} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
@@ -208,7 +208,14 @@ export interface Config
 
   /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](https://vega.github.io/vega-lite/docs/mark.html#mark-def). The keys represent styles names; the values have to be valid [mark configuration objects](https://vega.github.io/vega-lite/docs/mark.html#config). */
   style?: StyleConfigIndex;
+
+  signals?: (InitSignal | NewSignal)[];
 }
+
+const tab10 = scheme('tableau10');
+const black = {signal: 'colors.gray0'};
+const gray = {signal: 'colors.gray8'};
+const lightGray = {signal: 'colors.gray13'};
 
 export const defaultConfig: Config = {
   background: 'white',
@@ -228,9 +235,9 @@ export const defaultConfig: Config = {
   line: {},
   point: {},
   rect: mark.defaultRectConfig,
-  rule: {color: 'black'}, // Need this to override default color in mark config
+  rule: {color: black},
   square: {},
-  text: {color: 'black'}, // Need this to override default color in mark config
+  text: {color: black},
   tick: mark.defaultTickConfig,
   trail: {},
 
@@ -261,7 +268,11 @@ export const defaultConfig: Config = {
 
   projection: {},
 
-  axis: {},
+  axis: {
+    domainColor: gray as any,
+    gridColor: lightGray as any,
+    tickColor: gray as any
+  },
   axisX: {},
   axisY: {},
   axisLeft: {},
@@ -276,13 +287,63 @@ export const defaultConfig: Config = {
   headerFacet: {},
 
   selection: defaultSelectionConfig,
-  style: {},
+  style: {
+    'guide-label': {
+      fill: black
+    },
+    'guide-title': {
+      fill: black
+    },
+    'group-title': {
+      fill: black
+    },
+    'group-subtitle': {
+      fill: black
+    },
+    cell: {
+      fill: 'transparent',
+      stroke: lightGray
+    }
+  },
 
   title: {},
 
   facet: {spacing: DEFAULT_SPACING},
   repeat: {spacing: DEFAULT_SPACING},
-  concat: {spacing: DEFAULT_SPACING}
+  concat: {spacing: DEFAULT_SPACING},
+
+  signals: [
+    {
+      name: 'colors',
+      value: {
+        blue: tab10[0],
+        orange: tab10[1],
+        red: tab10[2],
+        teal: tab10[3],
+        green: tab10[4],
+        yellow: tab10[5],
+        purple: tab10[6],
+        pink: tab10[7],
+        brown: tab10[8],
+        gray0: '#000',
+        gray1: '#111',
+        gray2: '#222',
+        gray3: '#333',
+        gray4: '#444',
+        gray5: '#555',
+        gray6: '#666',
+        gray7: '#777',
+        gray8: '#888',
+        gray9: '#999',
+        gray10: '#aaa',
+        gray11: '#bbb',
+        gray12: '#ccc',
+        gray13: '#ddd',
+        gray14: '#eee',
+        gray15: '#fff'
+      }
+    }
+  ]
 };
 
 export function initConfig(config: Config) {

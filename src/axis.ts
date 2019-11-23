@@ -5,7 +5,7 @@ import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
 import {ExcludeMappedValueRef, VgEncodeChannel} from './vega.schema';
 
-export type BaseAxisNoSignals = AxisMixins & ExcludeMappedValueRef<BaseAxis>;
+export type BaseAxisNoValueRefs = AxisMixins & ExcludeMappedValueRef<BaseAxis>;
 
 export type ConditionalAxisProp =
   | 'labelAlign'
@@ -28,7 +28,7 @@ export type ConditionalAxisProp =
   | 'tickWidth';
 
 export const CONDITIONAL_AXIS_PROP_INDEX: {
-  [prop in keyof BaseAxisNoSignals | ConditionalAxisProp]?: {
+  [prop in keyof BaseAxisNoValueRefs | ConditionalAxisProp]?: {
     part: keyof AxisEncode;
     vgProp: VgEncodeChannel;
   };
@@ -116,11 +116,11 @@ export function isConditionalAxisValue<V extends Value | number[]>(v: any): v is
 }
 
 // Vega axis config is the same as Vega axis base. If this is not the case, add specific type.
-export type VgAxisConfigNoSignals = Omit<BaseAxisNoSignals, ConditionalAxisProp> &
+export type VgAxisConfigNoSignals = Omit<BaseAxisNoValueRefs, ConditionalAxisProp> &
   {
     [k in ConditionalAxisProp]?:
-      | BaseAxisNoSignals[k]
-      | ConditionalAxisProperty<Exclude<BaseAxisNoSignals[k], undefined> | null>;
+      | BaseAxisNoValueRefs[k]
+      | ConditionalAxisProperty<Exclude<BaseAxisNoValueRefs[k], undefined> | null>;
   };
 
 // Change comments to be Vega-Lite specific

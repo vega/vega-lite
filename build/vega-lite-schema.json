@@ -152,6 +152,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
@@ -206,6 +209,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -341,6 +347,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -1657,6 +1666,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -1742,6 +1754,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -1860,7 +1875,7 @@
       },
       "type": "object"
     },
-    "BaseTitleNoSignals": {
+    "BaseTitleNoValueRefs": {
       "$ref": "#/definitions/ExcludeMappedValueRef<BaseTitle>"
     },
     "Baseline": {
@@ -2213,6 +2228,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
@@ -4982,6 +5000,19 @@
           "$ref": "#/definitions/SelectionConfig",
           "description": "An object hash for defining default properties for each type of selections."
         },
+        "signals": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/InitSignal"
+              },
+              {
+                "$ref": "#/definitions/NewSignal"
+              }
+            ]
+          },
+          "type": "array"
+        },
         "square": {
           "$ref": "#/definitions/MarkConfig",
           "description": "Square-Specific Config"
@@ -5524,6 +5555,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
@@ -5610,6 +5644,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
@@ -5663,6 +5700,31 @@
         "stderr",
         "stdev"
       ],
+      "type": "string"
+    },
+    "EventListener": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SignalRef"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "scale": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "scale"
+          ],
+          "type": "object"
+        },
+        {
+          "$ref": "#/definitions/Stream"
+        }
+      ]
+    },
+    "EventSelector": {
       "type": "string"
     },
     "EventStream": {
@@ -5799,6 +5861,16 @@
       ],
       "type": "string"
     },
+    "Events": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/EventSelector"
+        },
+        {
+          "$ref": "#/definitions/EventListener"
+        }
+      ]
+    },
     "ExcludeMappedValueRef<BaseTitle>": {
       "additionalProperties": false,
       "properties": {
@@ -5923,6 +5995,18 @@
     },
     "Expr": {
       "type": "string"
+    },
+    "ExprRef": {
+      "additionalProperties": false,
+      "properties": {
+        "expr": {
+          "$ref": "#/definitions/Expr"
+        }
+      },
+      "required": [
+        "expr"
+      ],
+      "type": "object"
     },
     "FacetEncodingFieldDef": {
       "additionalProperties": false,
@@ -8532,6 +8616,37 @@
       ],
       "type": "object"
     },
+    "InitSignal": {
+      "additionalProperties": false,
+      "properties": {
+        "bind": {
+          "$ref": "#/definitions/Binding"
+        },
+        "description": {
+          "type": "string"
+        },
+        "init": {
+          "$ref": "#/definitions/Expr"
+        },
+        "name": {
+          "type": "string"
+        },
+        "on": {
+          "items": {
+            "$ref": "#/definitions/OnEvent"
+          },
+          "type": "array"
+        },
+        "value": {
+          "$ref": "#/definitions/SignalValue"
+        }
+      },
+      "required": [
+        "init",
+        "name"
+      ],
+      "type": "object"
+    },
     "InlineData": {
       "additionalProperties": false,
       "properties": {
@@ -10018,6 +10133,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
@@ -10072,6 +10190,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -10196,6 +10317,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -10674,6 +10798,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
@@ -10728,6 +10855,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -10835,6 +10965,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -11009,6 +11142,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
@@ -11063,6 +11199,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -11198,6 +11337,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -11643,6 +11785,39 @@
       ],
       "type": "object"
     },
+    "NewSignal": {
+      "additionalProperties": false,
+      "properties": {
+        "bind": {
+          "$ref": "#/definitions/Binding"
+        },
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "on": {
+          "items": {
+            "$ref": "#/definitions/OnEvent"
+          },
+          "type": "array"
+        },
+        "react": {
+          "type": "boolean"
+        },
+        "update": {
+          "$ref": "#/definitions/Expr"
+        },
+        "value": {
+          "$ref": "#/definitions/SignalValue"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
     "NiceTime": {
       "enum": [
         "second",
@@ -11685,6 +11860,68 @@
     },
     "NumericValueDefWithCondition": {
       "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,number>"
+    },
+    "OnEvent": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "encode": {
+              "type": "string"
+            },
+            "events": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Events"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/EventListener"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "force": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "encode",
+            "events"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "events": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Events"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/EventListener"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "force": {
+              "type": "boolean"
+            },
+            "update": {
+              "$ref": "#/definitions/Update"
+            }
+          },
+          "required": [
+            "events",
+            "update"
+          ],
+          "type": "object"
+        }
+      ]
     },
     "OrderFieldDef": {
       "additionalProperties": false,
@@ -11794,6 +12031,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
@@ -11848,6 +12088,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -11955,6 +12198,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -12820,6 +13066,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
@@ -12884,6 +13133,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -12991,6 +13243,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -14070,6 +14325,8 @@
       ],
       "type": "object"
     },
+    "SignalValue": {
+    },
     "SingleDefUnitChannel": {
       "enum": [
         "x",
@@ -14707,6 +14964,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
@@ -14761,6 +15021,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -14872,6 +15135,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -15048,6 +15314,9 @@
             },
             {
               "$ref": "#/definitions/Gradient"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
@@ -15102,6 +15371,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -15209,6 +15481,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
@@ -15410,7 +15685,7 @@
       ]
     },
     "TitleConfig": {
-      "$ref": "#/definitions/BaseTitleNoSignals"
+      "$ref": "#/definitions/BaseTitleNoValueRefs"
     },
     "TitleFrame": {
       "enum": [
@@ -16732,6 +17007,31 @@
     "UnitSpec": {
       "$ref": "#/definitions/GenericUnitSpec<Encoding,AnyMark>",
       "description": "A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types)."
+    },
+    "Update": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Expr"
+        },
+        {
+          "$ref": "#/definitions/ExprRef"
+        },
+        {
+          "$ref": "#/definitions/SignalRef"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "value": {
+              "$ref": "#/definitions/SignalValue"
+            }
+          },
+          "required": [
+            "value"
+          ],
+          "type": "object"
+        }
+      ]
     },
     "UrlData": {
       "additionalProperties": false,
