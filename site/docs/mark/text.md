@@ -17,11 +17,14 @@ permalink: /docs/text.html
 
 `text` mark represents each data point with a text instead of a point.
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 {:#properties}
 

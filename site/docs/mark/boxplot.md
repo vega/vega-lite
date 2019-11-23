@@ -19,11 +19,14 @@ A box plot summarizes a distribution of quantitative values using a set of summa
 
 To create a box plot, set `mark` to `"boxplot"`.
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 {:#properties}
 

@@ -13,11 +13,14 @@ First, the [`facet` operator](#facet-operator) is one of Vega-Lite's [view compo
 
 Second, as a shortcut you can use the [`facet`, `column`, or `row` encoding channels](#facet-channels).
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 ## Facet Operator
 

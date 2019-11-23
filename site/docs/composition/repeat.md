@@ -7,11 +7,14 @@ permalink: /docs/repeat.html
 
 The `repeat` operator is part of Vega-Lite's [view composition](composition.html). It provides a shortcut that creates a view for each entry in an array of fields. This operator generates multiple plots like [`facet`](facet.html). However, unlike `facet` it allows full replication of a data set in each view.
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 ## Repeat Operator
 
