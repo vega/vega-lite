@@ -4827,7 +4827,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "axis": {
           "$ref": "#/definitions/AxisConfig",
@@ -12473,25 +12473,16 @@
       "additionalProperties": false,
       "properties": {
         "center": {
-          "description": "Sets the projection’s center to the specified center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<number>",
+          "description": "The projection’s center to the specified center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`"
         },
         "clipAngle": {
-          "description": "Sets the projection’s clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
+          "description": "The projection’s clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
           "type": "number"
         },
         "clipExtent": {
-          "description": "Sets the projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed.",
-          "items": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "description": "The projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed."
         },
         "coefficient": {
           "type": "number"
@@ -12508,8 +12499,14 @@
         "parallel": {
           "type": "number"
         },
+        "parallels": {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
         "precision": {
-          "description": "Sets the threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection’s current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
+          "description": "The threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection’s current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
           "type": "number"
         },
         "radius": {
@@ -12525,14 +12522,18 @@
           "type": "boolean"
         },
         "rotate": {
-          "description": "Sets the projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Vector2<number>"
+            },
+            {
+              "$ref": "#/definitions/Vector3<number>"
+            }
+          ],
+          "description": "The projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`"
         },
         "scale": {
-          "description": "Sets the projection's scale (zoom) value, overriding automatic fitting.",
+          "description": "The projection's scale (zoom) value, overriding automatic fitting.",
           "type": "number"
         },
         "spacing": {
@@ -12542,11 +12543,8 @@
           "type": "number"
         },
         "translate": {
-          "description": "Sets the projection's translation (pan) value, overriding automatic fitting.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "$ref": "#/definitions/Vector2<number>",
+          "description": "The projection's translation (pan) value, overriding automatic fitting."
         },
         "type": {
           "$ref": "#/definitions/ProjectionType",
@@ -15627,7 +15625,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -15754,7 +15752,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -15874,7 +15872,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -16013,7 +16011,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -16122,7 +16120,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -16279,7 +16277,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -16449,7 +16447,7 @@
               "$ref": "#/definitions/AutoSizeParams"
             }
           ],
-          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
+          "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
           "$ref": "#/definitions/Color",
@@ -17078,6 +17076,22 @@
       ],
       "maxItems": 2,
       "minItems": 2,
+      "type": "array"
+    },
+    "Vector3<number>": {
+      "items": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "maxItems": 3,
+      "minItems": 3,
       "type": "array"
     },
     "ViewBackground": {

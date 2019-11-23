@@ -1,4 +1,12 @@
-import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
+import {
+  AnchorValue,
+  Axis as VgAxis,
+  Legend as VgLegend,
+  NewSignal,
+  Projection as VgProjection,
+  SignalRef,
+  Title as VgTitle
+} from 'vega';
 import {hasOwnProperty} from 'vega-util';
 import {
   Channel,
@@ -24,11 +32,11 @@ import {
   SpecType,
   ViewBackground
 } from '../spec/base';
-import {NormalizedSpec} from '../spec';
-import {extractTitleConfig, TitleParams, isText} from '../title';
+import {NormalizedSpec} from '../spec/index';
+import {extractTitleConfig, isText, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
-import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection} from '../vega.schema';
+import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
