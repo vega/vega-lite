@@ -75,7 +75,7 @@
     "@types/jest": "^24.0.23",
     "@types/jest-environment-puppeteer": "^4.3.1",
     "@types/mkdirp": "^0.5.2",
-    "@types/puppeteer": "^1.20.2",
+    "@types/puppeteer": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^2.8.0",
     "ajv": "^6.10.2",
