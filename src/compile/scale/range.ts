@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import {SignalRef, RangeScheme} from 'vega';
 import {isArray, isNumber} from 'vega-util';
 import {isBinning} from '../../bin';
 import {
@@ -33,7 +33,7 @@ import {
 } from '../../scale';
 import {isStep, LayoutSizeMixins} from '../../spec/base';
 import * as util from '../../util';
-import {isSignalRef, SchemeConfig, VgRange} from '../../vega.schema';
+import {isSignalRef, VgRange} from '../../vega.schema';
 import {getBinSignalName} from '../data/bin';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
@@ -127,7 +127,7 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
   return makeImplicit(defaultRange(channel, model));
 }
 
-function parseScheme(scheme: Scheme): SchemeConfig {
+function parseScheme(scheme: Scheme): RangeScheme {
   if (isExtendedScheme(scheme)) {
     return {
       scheme: scheme.name,

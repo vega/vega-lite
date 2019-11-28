@@ -1,10 +1,17 @@
-import {BaseTitle, TextEncodeEntry, TitleAnchor, Text} from 'vega';
-import {BaseMarkConfig, ExcludeMappedValueRef} from './vega.schema';
-import {isString, isArray} from 'vega-util';
+import {
+  BaseTitle,
+  Text,
+  TextEncodeEntry,
+  TitleAnchor,
+  TitleConfig as VgTitleConfig,
+  MarkConfig as VgMarkConfig
+} from 'vega';
+import {isArray, isString} from 'vega-util';
+import {ExcludeMappedValueRef} from './vega.schema';
 
 export type BaseTitleNoValueRefs = ExcludeMappedValueRef<BaseTitle>;
 
-export type TitleConfig = BaseTitleNoValueRefs;
+export type TitleConfig = VgTitleConfig;
 
 export interface TitleBase extends BaseTitleNoValueRefs {
   /**
@@ -57,8 +64,8 @@ export interface TitleParams extends TitleBase {
 export function extractTitleConfig(
   titleConfig: TitleConfig
 ): {
-  mark: BaseMarkConfig;
-  nonMark: BaseTitleNoValueRefs;
+  mark: VgMarkConfig;
+  nonMark: VgTitleConfig;
 } {
   const {
     // These are non-mark title config that need to be hardcoded
@@ -72,12 +79,12 @@ export function extractTitleConfig(
     ...titleMarkConfig
   } = titleConfig;
 
-  const mark: BaseMarkConfig = {
+  const mark: VgMarkConfig = {
     ...titleMarkConfig,
     ...(color ? {fill: color} : {})
   };
 
-  const nonMark: BaseTitleNoValueRefs = {
+  const nonMark: VgTitleConfig = {
     ...(anchor ? {anchor} : {}),
     ...(frame ? {frame} : {}),
     ...(offset ? {offset} : {}),

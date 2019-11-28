@@ -1,4 +1,4 @@
-import {Color, SymbolShape, InitSignal, NewSignal, scheme} from 'vega';
+import {Color, InitSignal, NewSignal, RangeConfig, RangeScheme, scheme} from 'vega';
 import {isObject, mergeConfig} from 'vega-util';
 import {AxisConfigMixins} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
@@ -20,7 +20,7 @@ import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} fr
 import {TopLevelProperties} from './spec/toplevel';
 import {extractTitleConfig, TitleConfig} from './title';
 import {duplicate, getFirstDefined, keys} from './util';
-import {BaseMarkConfig, SchemeConfig} from './vega.schema';
+import {BaseMarkConfig} from './vega.schema';
 
 export interface ViewConfig extends BaseViewBackground {
   /**
@@ -83,44 +83,8 @@ export const defaultViewConfig: ViewConfig = {
   step: DEFAULT_STEP
 };
 
-export type RangeConfigValue = (number | string)[] | SchemeConfig | {step: number};
-
-export type RangeConfig = RangeConfigProps & {[key: string]: RangeConfigValue};
-
-export interface RangeConfigProps {
-  /**
-   * Default range for _nominal_ (categorical) fields.
-   */
-  category?: string[] | SchemeConfig;
-
-  /**
-   * Default range for diverging _quantitative_ fields.
-   */
-  diverging?: string[] | SchemeConfig;
-
-  /**
-   * Default range for _quantitative_ heatmaps.
-   */
-  heatmap?: string[] | SchemeConfig;
-
-  /**
-   * Default range for _ordinal_ fields.
-   */
-  ordinal?: string[] | SchemeConfig;
-
-  /**
-   * Default range for _quantitative_ and _temporal_ fields.
-   */
-  ramp?: string[] | SchemeConfig;
-
-  /**
-   * Default range palette for the `shape` channel.
-   */
-  symbol?: SymbolShape[];
-}
-
-export function isVgScheme(rangeConfig: string[] | SchemeConfig): rangeConfig is SchemeConfig {
-  return rangeConfig && !!rangeConfig['scheme'];
+export function isVgScheme(rangeScheme: string[] | RangeScheme): rangeScheme is RangeScheme {
+  return rangeScheme && !!rangeScheme['scheme'];
 }
 
 export interface VLOnlyConfig {
@@ -183,7 +147,7 @@ export interface Config
    *
    * __Default value:__ `"white"`
    */
-  background?: Color;
+  background?: Color | null;
 
   /**
    * An object hash that defines default range arrays or schemes for using with scales.
@@ -269,9 +233,9 @@ export const defaultConfig: Config = {
   projection: {},
 
   axis: {
-    domainColor: gray as any,
-    gridColor: lightGray as any,
-    tickColor: gray as any
+    domainColor: gray,
+    gridColor: lightGray,
+    tickColor: gray
   },
   axisX: {},
   axisY: {},

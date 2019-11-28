@@ -1,7 +1,7 @@
 /**
  * Utility for generating row / column headers
  */
-import {TitleAnchor, TitleConfig} from 'vega';
+import {TitleAnchor, TitleConfig as VgTitleConfig} from 'vega';
 import {isArray} from 'vega-util';
 import {FACET_CHANNELS, FacetChannel} from '../../channel';
 import {vgField} from '../../channeldef';
@@ -254,7 +254,7 @@ export function assembleHeaderProperties(
   facetFieldDef: FacetFieldDef<string>,
   channel: FacetChannel,
   properties: (keyof CoreHeader)[],
-  propertiesMap: {[k in keyof CoreHeader]: keyof TitleConfig}
+  propertiesMap: {[k in keyof CoreHeader]: keyof VgTitleConfig}
 ): Partial<VgTitle> {
   const props = {};
   for (const prop of properties) {

@@ -1,4 +1,4 @@
-import {Axis as VgAxis, AxisEncode, AxisOrient, BaseAxis, LabelOverlap} from 'vega';
+import {Axis as VgAxis, AxisConfig as VgAxisConfig, AxisEncode, AxisOrient, BaseAxis, LabelOverlap} from 'vega';
 import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
@@ -115,8 +115,7 @@ export function isConditionalAxisValue<V extends Value | number[]>(v: any): v is
   return v['condition'];
 }
 
-// Vega axis config is the same as Vega axis base. If this is not the case, add specific type.
-export type VgAxisConfigNoSignals = Omit<BaseAxisNoValueRefs, ConditionalAxisProp> &
+export type VgAxisWithConditionals = Omit<BaseAxisNoValueRefs, ConditionalAxisProp> &
   {
     [k in ConditionalAxisProp]?:
       | BaseAxisNoValueRefs[k]
@@ -156,9 +155,9 @@ export interface AxisOrientMixins {
   orient?: AxisOrient;
 }
 
-export type AxisConfig = VlOnlyGuideConfig & AxisOrientMixins & VgAxisConfigNoSignals;
+export type AxisConfig = VlOnlyGuideConfig & AxisOrientMixins & VgAxisConfig;
 
-export interface Axis extends AxisOrientMixins, VgAxisConfigNoSignals, Guide {
+export interface Axis extends AxisOrientMixins, VgAxisWithConditionals, Guide {
   /**
    * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.
    *

@@ -8,6 +8,7 @@ import {Type, TYPE_INDEX} from './type';
 import {contains, Flag, keys} from './util';
 import {ScaleInterpolate, ScaleInterpolateParams} from './vega.schema';
 import {SelectionExtent} from './selection';
+import {RangeEnum} from 'vega-typings/types';
 
 export namespace ScaleType {
   // Continuous - Quantitative
@@ -465,7 +466,7 @@ export interface Scale {
    *
    * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`).
    */
-  range?: number[] | string[] | string;
+  range?: number[] | string[] | RangeEnum;
 
   // ordinal
 

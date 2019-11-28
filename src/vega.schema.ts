@@ -22,7 +22,11 @@ import {
   TextBaseline as VgTextBaseline,
   Title as VgTitle,
   Transforms as VgTransform,
-  UnionSortField as VgUnionSortField
+  UnionSortField as VgUnionSortField,
+  RangeScheme,
+  ScaleData,
+  RangeBand,
+  RangeRaw
 } from 'vega';
 import {isArray} from 'vega-util';
 import {Gradient, ValueOrGradientOrText} from './channeldef';
@@ -38,10 +42,9 @@ type ExcludeMapped<T, E> = {
 };
 
 // Remove ValueRefs and from mapped types
-export type ExcludeMappedValueRef<T> = ExcludeMapped<
-  T,
-  ScaledValueRef<any> | NumericValueRef | ColorValueRef | SignalRef
->;
+export type ExcludeMappedValueRef<T> = ExcludeMapped<T, ScaledValueRef<any> | NumericValueRef | ColorValueRef>;
+
+export type ExcludeMappedSignalRefs<T> = ExcludeMapped<T, SignalRef>;
 
 export interface VgData {
   name: string;
@@ -108,19 +111,7 @@ export interface VgFieldRefUnionDomain {
   sort?: VgUnionSortField;
 }
 
-export interface SchemeConfig {
-  scheme: string;
-  extent?: number[];
-  count?: number;
-}
-
-export type VgRange =
-  | string
-  | VgDataRef
-  | (number | string | VgDataRef | SignalRef)[]
-  | SchemeConfig
-  | VgRangeStep
-  | SignalRef;
+export type VgRange = RangeScheme | ScaleData | RangeBand | RangeRaw;
 
 export function isVgRangeStep(range: VgRange): range is VgRangeStep {
   return !!range['step'];
@@ -129,6 +120,7 @@ export function isVgRangeStep(range: VgRange): range is VgRangeStep {
 export interface VgRangeStep {
   step: number | SignalRef;
 }
+
 // Domains that are not a union of domains
 export type VgNonUnionDomain = any[] | VgDataRef | SignalRef;
 export type VgDomain = VgNonUnionDomain | DataRefUnionDomain | VgFieldRefUnionDomain;

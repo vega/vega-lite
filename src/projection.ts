@@ -1,4 +1,4 @@
-import {Vector2, Vector3} from 'vega';
+import {ProjectionConfig as VgProjectionConfig, Vector2, Vector3} from 'vega';
 import {ProjectionType} from './vega.schema';
 
 export interface Projection {
@@ -78,7 +78,7 @@ export interface Projection {
 /**
  * Any property of Projection can be in config
  */
-export type ProjectionConfig = Projection;
+export type ProjectionConfig = VgProjectionConfig;
 
 export const PROJECTION_PROPERTIES: (keyof Projection)[] = [
   'type',
