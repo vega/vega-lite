@@ -19,11 +19,14 @@ An error bar summarizes an error range of quantitative values using a set of sum
 
 To create an error bar, set `mark` to `"errorbar"`.
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 {:#properties}
 

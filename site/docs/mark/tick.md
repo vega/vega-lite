@@ -17,11 +17,14 @@ permalink: /docs/tick.html
 
 The `tick` mark represents each data point as a short line. This is a useful mark for displaying the distribution of values in a field.
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 {:#properties}
 

@@ -11,11 +11,14 @@ Vega-Lite's `data` property describes the visualization's data source as part of
 
 In addition, Vega-Lite includes _data generators_ which can generate data sets such as numerical sequences or geographic reference elements such as GeoJSON graticule or sphere objects.
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 ## Types of Data Sources
 

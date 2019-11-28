@@ -16,11 +16,14 @@ permalink: /docs/trail.html
 
 The `trail` mark represents the data points stored in a field with a line connecting all of these points. Trail is similar to the `line` mark but a trail can have variable widths determined by backing data. Unlike lines, trails do not support different interpolation methods and use `fill` (not `stroke`) for their color. Trail marks are useful if you want to draw lines with changing size to reflect the underlying data.
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 {:#properties}
 

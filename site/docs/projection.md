@@ -13,13 +13,14 @@ For example, this example chart shows all airports in the United States by proje
 
 See [the example gallery for more examples with geographic projection](../examples/#maps-geographic-displays).
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
 
-{:#properties}
+<!--prettier-ignore-end-->
 
 ## Projection Properties
 

@@ -8,11 +8,14 @@ To impute missing data in Vega-Lite, you can either use the `impute` transform, 
 
 The impute transform groups data and determines missing values of the `key` field within each group. For each missing value in each group, the impute transform will produce a new tuple with the `impute`d field generated based on a specified imputation `method` (by using a constant `value` or by calculating statistics such as mean within each group).
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 {:#encoding}
 
