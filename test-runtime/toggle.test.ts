@@ -86,7 +86,7 @@ describe('Toggle multi selections at runtime', () => {
       let length = 0;
       for (let i = 0; i < hits.composite.length; i++) {
         const parent = parentSelector(specType, i % 3);
-        const store = await page.evaluate(toggle('composite', i, true, parent));
+        const store = (await page.evaluate(toggle('composite', i, true, parent))) as string;
         expect((length = store.length)).toEqual(i + 1);
         if (i % 3 === 2) {
           await testRender(`${specType}_${i}`);
