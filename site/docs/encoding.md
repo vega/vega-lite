@@ -79,7 +79,7 @@ The keys in the `encoding` object are encoding channels. Vega-Lite supports the 
 
 ## Channel Definition
 
-Each channel definition object is either a [field definition](<(#field-def)>), which describes the data field encoded by the channel, or a [value definition](#value-def), which describes an encoded constant value.
+Each channel definition object is either a [field definition](#field-def), which describes the data field encoded by the channel, or a [value definition](#value-def), which describes an encoded constant value.
 
 {:#field-def}
 
