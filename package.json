@@ -119,7 +119,7 @@
     "@types/fast-json-stable-stringify": "^2.0.0",
     "array-flat-polyfill": "^1.0.1",
     "clone": "~2.1.2",
-    "fast-deep-equal": "~2.0.1",
+    "fast-deep-equal": "~3.0.1",
     "fast-json-stable-stringify": "~2.0.0",
     "json-stringify-pretty-compact": "~2.0.0",
     "tslib": "~1.10.0",
