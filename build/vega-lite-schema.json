@@ -12367,7 +12367,14 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "impute": {
-          "$ref": "#/definitions/ImputeParams",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ImputeParams"
+            },
+            {
+              "type": "null"
+            }
+          ],
           "description": "An object defining the properties of the Impute Operation to be applied.\nThe field value of the other positional channel is taken as `key` of the `Impute` Operation.\nThe field of the `color` channel if specified is used as `groupby` of the `Impute` Operation.\n\n__See also:__ [`impute`](https://vega.github.io/vega-lite/docs/impute.html) documentation."
         },
         "scale": {
