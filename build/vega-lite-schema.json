@@ -381,8 +381,6 @@
         },
         "tension": {
           "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-          "maximum": 1,
-          "minimum": 0,
           "type": "number"
         },
         "text": {
@@ -1782,8 +1780,6 @@
         },
         "tension": {
           "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-          "maximum": 1,
-          "minimum": 0,
           "type": "number"
         },
         "text": {
@@ -10236,8 +10232,6 @@
         },
         "tension": {
           "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-          "maximum": 1,
-          "minimum": 0,
           "type": "number"
         },
         "text": {
@@ -10875,8 +10869,6 @@
         },
         "tension": {
           "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-          "maximum": 1,
-          "minimum": 0,
           "type": "number"
         },
         "text": {
@@ -11252,8 +11244,6 @@
         },
         "tension": {
           "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-          "maximum": 1,
-          "minimum": 0,
           "type": "number"
         },
         "text": {
@@ -12009,8 +11999,6 @@
         },
         "tension": {
           "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-          "maximum": 1,
-          "minimum": 0,
           "type": "number"
         },
         "text": {
@@ -13031,8 +13019,6 @@
         },
         "tension": {
           "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-          "maximum": 1,
-          "minimum": 0,
           "type": "number"
         },
         "text": {
@@ -14912,8 +14898,6 @@
         },
         "tension": {
           "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-          "maximum": 1,
-          "minimum": 0,
           "type": "number"
         },
         "text": {
@@ -15249,8 +15233,6 @@
         },
         "tension": {
           "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-          "maximum": 1,
-          "minimum": 0,
           "type": "number"
         },
         "text": {
