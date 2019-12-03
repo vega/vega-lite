@@ -72,6 +72,7 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
 
   /**
    * The tension parameter for the interpolation type of the error band.
+   *
    * @minimum 0
    * @maximum 1
    */

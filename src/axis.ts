@@ -182,9 +182,10 @@ export interface Axis extends AxisOrientMixins, VgAxisConfigNoSignals, Guide {
 
   /**
    * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
-   * @minimum 0
    *
    * __Default value__: Determine using a formula `ceil(width/40)` for x and `ceil(height/40)` for y.
+   *
+   * @minimum 0
    */
   tickCount?: number;
 
