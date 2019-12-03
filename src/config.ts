@@ -1,4 +1,5 @@
-import {Color, InitSignal, NewSignal, RangeConfig, RangeScheme, scheme} from 'vega';
+import {Color, InitSignal, NewSignal, RangeConfig, RangeScheme} from 'vega';
+import {scheme} from 'vega-scale';
 import {isObject, mergeConfig} from 'vega-util';
 import {AxisConfigMixins} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
