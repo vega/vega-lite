@@ -182,7 +182,7 @@ export function stack(
   return {
     groupbyChannel: dimensionDef ? dimensionChannel : undefined,
     fieldChannel,
-    impute: isPathMark(mark),
+    impute: stackedFieldDef.impute === null ? false : isPathMark(mark),
     stackBy,
     offset
   };
