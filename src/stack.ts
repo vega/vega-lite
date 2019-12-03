@@ -83,7 +83,7 @@ function potentialStackedChannel(encoding: Encoding<Field>): 'x' | 'y' | undefin
   return undefined;
 }
 
-// Note: CompassQL uses this method and only pass in required properties of each argument object.
+// Note: CompassQL uses this method and only passes in required properties of each argument object.
 // If required properties change, make sure to update CompassQL.
 export function stack(
   m: Mark | MarkDef,

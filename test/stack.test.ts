@@ -223,7 +223,7 @@ describe('stack', () => {
   });
 
   it(
-    'should always be warned if the aggregated axis has non-linear scale',
+    'should always warn if the aggregated axis has non-linear scale',
     log.wrap(localLogger => {
       for (const s of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
         [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT].forEach(scaleType => {
@@ -269,7 +269,7 @@ describe('stack', () => {
   });
 
   it(
-    'should throws warning if the aggregated axis has a non-summative aggregate',
+    'should throw warning if the aggregated axis has a non-summative aggregate',
     log.wrap(localLogger => {
       for (const stackOffset of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
         for (const aggregate of ['average', 'variance', 'q3'] as NonArgAggregateOp[]) {
@@ -401,6 +401,32 @@ describe('stack', () => {
           expect(stack(spec.mark, spec.encoding).offset).toEqual(s);
         });
       }
+    });
+
+    it('should impute area', () => {
+      const spec: TopLevel<NormalizedUnitSpec> = {
+        data: {url: 'data/barley.json'},
+        mark: 'area',
+        encoding: {
+          x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: 'zero'},
+          y: {field: 'variety', type: 'nominal'},
+          color: {field: 'site', type: 'nominal'}
+        }
+      };
+      expect(stack(spec.mark, spec.encoding).impute).toBeTruthy();
+    });
+
+    it('should allow disabling of imputation', () => {
+      const spec: TopLevel<NormalizedUnitSpec> = {
+        data: {url: 'data/barley.json'},
+        mark: 'area',
+        encoding: {
+          x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: 'zero', impute: null},
+          y: {field: 'variety', type: 'nominal'},
+          color: {field: 'site', type: 'nominal'}
+        }
+      };
+      expect(stack(spec.mark, spec.encoding).impute).toBeFalsy();
     });
   });
 });
