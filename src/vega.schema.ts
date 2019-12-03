@@ -443,8 +443,6 @@ export interface BaseMarkConfig {
   interpolate?: Interpolate;
   /**
    * Depending on the interpolation type, sets the tension parameter (for line and area marks).
-   * @minimum 0
-   * @maximum 1
    */
   tension?: number;
 
