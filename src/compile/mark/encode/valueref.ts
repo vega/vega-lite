@@ -4,7 +4,17 @@
 import {isFunction, isString} from 'vega-util';
 import {isCountingAggregateOp} from '../../../aggregate';
 import {isBinned, isBinning} from '../../../bin';
-import {Channel, getMainRangeChannel, PositionChannel, X, X2, Y, Y2} from '../../../channel';
+import {
+  ArcPositionChannel,
+  Channel,
+  getMainRangeChannel,
+  NonPositionScaleChannel,
+  PositionChannel,
+  X,
+  X2,
+  Y,
+  Y2
+} from '../../../channel';
 import {
   binRequiresRange,
   ChannelDef,
@@ -30,12 +40,13 @@ import {hasDiscreteDomain, isContinuousToContinuous} from '../../../scale';
 import {StackProperties} from '../../../stack';
 import {QUANTITATIVE, TEMPORAL} from '../../../type';
 import {contains, getFirstDefined} from '../../../util';
-import {VgValueRef} from '../../../vega.schema';
+import {VgEncodeChannel, VgValueRef} from '../../../vega.schema';
+import {getMarkConfig} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 
 export function midPointRefWithPositionInvalidTest(
   params: MidPointParams & {
-    channel: PositionChannel;
+    channel: PositionChannel | ArcPositionChannel;
   }
 ) {
   const {channel, channelDef, markDef, scale} = params;
@@ -68,7 +79,7 @@ export function wrapPositionInvalidTest({
   ref
 }: {
   fieldDef: FieldDef<string>;
-  channel: PositionChannel;
+  channel: PositionChannel | ArcPositionChannel;
   markDef: MarkDef<Mark>;
   ref: VgValueRef;
 }): VgValueRef | VgValueRef[] {
@@ -80,10 +91,15 @@ export function wrapPositionInvalidTest({
   return ref;
 }
 
-export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: PositionChannel) {
+export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: PositionChannel | ArcPositionChannel) {
   const test = fieldInvalidPredicate(fieldDef, true);
-  const mainChannel = getMainRangeChannel(channel) as 'x' | 'y';
-  const zeroValueRef = mainChannel === 'x' ? {value: 0} : {field: {group: 'height'}};
+
+  const mainChannel = getMainRangeChannel(channel) as PositionChannel | ArcPositionChannel; // we can cast here as the output can't be other things.
+  const zeroValueRef =
+    mainChannel === 'y'
+      ? {field: {group: 'height'}}
+      : // x / angle / radius can all use 0
+        {value: 0};
 
   return {test, ...zeroValueRef};
 }
@@ -266,4 +282,30 @@ export function widthHeightValueRef(channel: Channel, value: ValueOrGradientOrTe
     return {field: {group: 'height'}};
   }
   return {value};
+}
+
+export function getValueFromMarkDefAndConfig({
+  channel,
+  vgChannel,
+  markDef,
+  config
+}: {
+  channel: NonPositionScaleChannel | ArcPositionChannel;
+  vgChannel: VgEncodeChannel;
+  markDef: MarkDef;
+  config: Config;
+}) {
+  if (!vgChannel || vgChannel === channel) {
+    // When vl channel is the same as Vega's, no need to read from config as Vega will apply them correctly
+
+    return markDef[channel];
+  }
+
+  // However, when they are different (e.g, vl's text size is vg fontSize), need to read vl channel from configs
+  return getFirstDefined(
+    // prioritize vl-specific names
+    markDef[channel],
+    markDef[vgChannel],
+    getMarkConfig(channel, markDef, config, {vgChannel})
+  );
 }

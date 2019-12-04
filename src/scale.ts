@@ -749,6 +749,7 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
       case CHANNEL.FILLOPACITY:
       case CHANNEL.STROKEOPACITY:
       case CHANNEL.ANGLE:
+      case CHANNEL.RADIUS:
         // Although it generally doesn't make sense to use band with size and opacity,
         // it can also work since we use band: 0.5 to get midpoint.
         return (

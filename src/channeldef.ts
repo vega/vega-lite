@@ -390,6 +390,15 @@ export interface PositionFieldDef<F extends Field>
   band?: number;
 }
 
+export interface PolarFieldDef<F extends Field>
+  extends ScaleFieldDef<
+    F,
+    StandardType,
+    boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
+  > {
+  stack?: boolean;
+}
+
 export function getBand(
   channel: Channel,
   fieldDef: FieldDef<string>,
@@ -943,6 +952,7 @@ export function channelCompatibility(
     case 'href':
     case 'url':
     case 'angle':
+    case 'radius':
       return COMPATIBLE;
 
     case 'longitude':
@@ -962,6 +972,8 @@ export function channelCompatibility(
     case 'strokeOpacity':
     case 'strokeWidth':
     case 'size':
+    case 'angle2':
+    case 'radius2':
     case 'x2':
     case 'y2':
       if (type === 'nominal' && !fieldDef['sort']) {

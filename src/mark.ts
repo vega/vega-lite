@@ -2,9 +2,10 @@ import {Color} from 'vega';
 import {toSet} from 'vega-util';
 import {Gradient, Value} from './channeldef';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
-import {contains, keys, Flag} from './util';
+import {contains, Flag, keys} from './util';
 import {BaseMarkConfig} from './vega.schema';
 
+export const ARC: 'arc' = 'arc';
 export const AREA: 'area' = 'area';
 export const BAR: 'bar' = 'bar';
 export const IMAGE: 'image' = 'image';
@@ -23,6 +24,7 @@ export const GEOSHAPE: 'geoshape' = 'geoshape';
  * All types of primitive marks.
  */
 export type Mark =
+  | typeof ARC
   | typeof AREA
   | typeof BAR
   | typeof LINE
@@ -39,6 +41,7 @@ export type Mark =
 
 // Using mapped type to declare index, ensuring we always have all marks when we add more.
 const MARK_INDEX: Flag<Mark> = {
+  arc: 1,
   area: 1,
   bar: 1,
   image: 1,
@@ -155,6 +158,40 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    * If set to `0.5`, bandwidth of the marks will be half of the time unit band step.
    */
   timeUnitBand?: number;
+
+  /**
+   * - For arc marks, the arc length in radians if angle2 is not specified, otherwise the start arc angle. (A value of 0 indicates up or “north”, increasing values proceed clockwise.)
+   *
+   * - For point and text marks, rotation angle.
+   *
+   * @minimum 0
+   * @maximum 360
+   */
+  angle?: number; // overriding VG
+
+  /**
+   * The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise.
+   */
+  angle2?: number; // In Vega, this is called endAngle
+
+  /**
+   * For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.
+   *
+   * For arc mark, the outer radius in pixels.
+   *
+   * @minimum 0
+   *
+   * __Default value:__ `min(plot_width, plot_height)/2`
+   */
+  radius?: number; // overriding VG
+
+  /**
+   * The inner radius in pixels of arc marks.
+   *
+   * @minimum 0
+   * __Default value:__ `0`
+   */
+  radius2?: number; // In Vega, this is called outerRadius
 }
 
 export interface RectBinSpacingMixins {
@@ -225,6 +262,10 @@ export interface MarkConfigMixins {
   mark?: MarkConfig;
 
   // MARK-SPECIFIC CONFIGS
+
+  /** Arc-specific Config */
+  arc?: MarkConfig;
+
   /** Area-Specific Config */
   area?: AreaConfig;
 

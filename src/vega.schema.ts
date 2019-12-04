@@ -467,11 +467,7 @@ export interface BaseMarkConfig {
    */
   align?: Align;
 
-  /**
-   * The rotation angle of the text, in degrees.
-   * @minimum 0
-   * @maximum 360
-   */
+  // No comment here as VL is overriding this
   angle?: number;
 
   /**
@@ -498,10 +494,7 @@ export interface BaseMarkConfig {
    */
   dy?: number;
 
-  /**
-   * Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.
-   * @minimum 0
-   */
+  // No comment here as VL is overriding Vega
   radius?: number;
 
   /**

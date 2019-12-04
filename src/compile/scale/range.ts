@@ -8,6 +8,7 @@ import {
   FILL,
   FILLOPACITY,
   OPACITY,
+  RADIUS,
   ScaleChannel,
   SCALE_CHANNELS,
   SHAPE,
@@ -185,6 +186,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
         return [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
       }
     }
+
     case SIZE: {
       // TODO: support custom rangeMin, rangeMax
       const zero = model.component.scales[channel].get('zero');
@@ -201,9 +203,19 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       }
     }
     case ANGLE:
+      if (mark === 'arc') {
+        return [Math.PI * 2, 0];
+      }
       // TODO: add config.scale.min/maxAngleDegree (for point and text) and config.scale.min/maxAngleRadian (for arc) once we add arc marks.
       // (It's weird to add just config.scale.min/maxAngleDegree for now)
       return [0, 360];
+
+    case RADIUS: {
+      const {width, height} = model;
+      // max radius = half od min(width,height)
+      return [0, {signal: `min(${width.signal},${height.signal})/2`}];
+    }
+
     case STROKEWIDTH:
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minStrokeWidth, config.scale.maxStrokeWidth];

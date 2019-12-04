@@ -1,4 +1,4 @@
-import {getMainRangeChannel, PositionChannel, X, X2, Y2} from '../../../channel';
+import {getMainRangeChannel, getSecondaryRangeChannel, PositionChannel} from '../../../channel';
 import {isFieldDef, isPositionFieldDef} from '../../../channeldef';
 import * as log from '../../../log';
 import {ScaleType} from '../../../scale';
@@ -23,7 +23,7 @@ export function pointPosition(
   const {encoding, markDef, config, stack} = model;
 
   const channelDef = encoding[channel];
-  const channel2Def = encoding[channel === X ? X2 : Y2];
+  const channel2Def = encoding[getSecondaryRangeChannel(channel)];
   const scaleName = model.scaleName(channel);
   const scale = model.getScaleComponent(channel);
 
@@ -67,9 +67,9 @@ export function pointPosition(
 /**
  * @return Vega ValueRef for normal x- or y-position without projection
  */
-function positionRef(
+export function positionRef(
   params: ref.MidPointParams & {
-    channel: 'x' | 'y';
+    channel: 'x' | 'y' | 'radius' | 'angle';
   }
 ): VgValueRef | VgValueRef[] {
   const {channel, channelDef, scaleName, stack, offset} = params;

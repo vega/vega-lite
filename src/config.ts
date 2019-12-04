@@ -198,6 +198,8 @@ export const defaultConfig: Config = {
   view: defaultViewConfig,
 
   mark: mark.defaultMarkConfig,
+
+  arc: {},
   area: {},
   bar: mark.defaultBarConfig,
   circle: {},

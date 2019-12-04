@@ -25,6 +25,7 @@ import {
   NumericFieldDefWithCondition,
   NumericValueDefWithCondition,
   OrderFieldDef,
+  PolarFieldDef,
   PositionFieldDef,
   SecondaryFieldDef,
   ShapeFieldDefWithCondition,
@@ -90,6 +91,29 @@ export interface Encoding<F extends Field> {
    * Latitude position of geographically projected marks.
    */
   latitude?: LatLongFieldDef<F> | ValueDef<number>;
+
+  /**
+   * - For arc marks, the arc length in radians if angle2 is not specified, otherwise the start arc angle. (A value of 0 indicates up or “north”, increasing values proceed clockwise.)
+   *
+   * - For point and text marks, rotation angle.
+   */
+  angle?: PolarFieldDef<F> | ValueDef<number>;
+
+  /**
+   * The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise.
+   */
+  angle2?: SecondaryFieldDef<F> | ValueDef<number>;
+
+  /**
+   * The outer radius in pixels of arc marks.
+   */
+
+  radius?: PolarFieldDef<F> | ValueDef<number>;
+
+  /**
+   * The inner radius in pixels of arc marks.
+   */
+  radius2?: SecondaryFieldDef<F> | ValueDef<number>;
 
   /**
    * Longitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
@@ -169,11 +193,6 @@ export interface Encoding<F extends Field> {
    * - Size is unsupported for `"line"`, `"area"`, and `"rect"`. (Use `"trail"` instead of line with varying size)
    */
   size?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
-
-  /**
-   * Rotation angle of point and text marks.
-   */
-  angle?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
 
   /**
    * Shape of the mark.
@@ -532,6 +551,10 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'url':
       case 'x2':
       case 'y2':
+      case 'angle':
+      case 'angle2':
+      case 'radius':
+      case 'radius2':
       // falls through
 
       case 'latitude':
@@ -543,7 +566,6 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       // text, shape, shouldn't be a part of line/trail/area [falls through]
       case 'text':
       case 'shape':
-      case 'angle':
       // falls through
 
       // tooltip fields should not be added to group by [falls through]

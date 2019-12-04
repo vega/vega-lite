@@ -50,6 +50,7 @@ export function defaultSymbolType(
     case 'trail':
     case 'rule':
       return 'stroke';
+    case 'arc':
     case 'point':
     case 'circle':
     case 'tick':

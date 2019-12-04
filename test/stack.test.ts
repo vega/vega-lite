@@ -366,6 +366,37 @@ describe('stack', () => {
         expect(_stack.groupbyChannel).toBeUndefined();
       });
     });
+
+    it('should be correct for pie', () => {
+      const spec: TopLevel<NormalizedUnitSpec> = {
+        data: {url: 'data/barley.json'},
+        mark: 'arc',
+        encoding: {
+          angle: {field: 'field', type: 'quantitative'},
+          color: {field: 'id', type: 'nominal'}
+        }
+      };
+      const _stack = stack(spec.mark, spec.encoding, undefined);
+      expect(_stack.fieldChannel).toBe('angle');
+      expect(_stack.stackBy[0].channel).toBe('color');
+    });
+
+    it('should be correct for radial chart', () => {
+      const spec: TopLevel<NormalizedUnitSpec> = {
+        data: {url: 'data/barley.json'},
+        mark: 'arc',
+        encoding: {
+          angle: {field: 'field', type: 'quantitative', stack: true},
+          radius: {
+            field: 'field',
+            type: 'quantitative',
+            scale: {type: 'sqrt', zero: true, range: [20, 100]}
+          }
+        }
+      };
+      const _stack = stack(spec.mark, spec.encoding, undefined);
+      expect(_stack.fieldChannel).toBe('angle');
+    });
   });
 
   describe('stack().offset', () => {
