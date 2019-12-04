@@ -6463,6 +6463,14 @@
       "additionalProperties": false,
       "description": "Unit spec that can have a composite mark and row or column channels (shorthand for a facet spec).",
       "properties": {
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
         "data": {
           "anyOf": [
             {
@@ -16442,6 +16450,14 @@
         "background": {
           "$ref": "#/definitions/Color",
           "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`"
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
         },
         "config": {
           "$ref": "#/definitions/Config",
