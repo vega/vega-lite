@@ -26,7 +26,7 @@
   "scripts": {
     "build": "yarn build:only",
     "build:only": "yarn tsc:src && rollup -c",
-    "postbuild": "terser build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && yarn schema",
+    "postbuild": "terser build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && yarn schema && babel build/vega-lite.js --out-dir build-es5 --config-file ./babel.config.js",
     "prebuild:examples": "yarn build:only",
     "build:examples": "yarn data && TZ=America/Los_Angeles scripts/build-examples.sh",
     "prebuild:examples-full": "yarn build:only",
@@ -67,6 +67,9 @@
     "url": "https://github.com/vega/vega-lite/issues"
   },
   "devDependencies": {
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
     "@types/chai": "^4.2.5",
