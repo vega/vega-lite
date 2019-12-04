@@ -3,7 +3,7 @@
  */
 import {TitleAnchor, TitleConfig} from 'vega';
 import {isArray} from 'vega-util';
-import {FACET_CHANNELS, FacetChannel} from '../../channel';
+import {FacetChannel, FACET_CHANNELS} from '../../channel';
 import {vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {
@@ -17,16 +17,16 @@ import {isSortField} from '../../sort';
 import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
 import {contains, keys, replaceAll} from '../../util';
 import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema';
-import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties';
+import {defaultLabelBaseline} from '../axis/properties';
 import {formatSignalRef} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
 import {isFacetModel, Model} from '../model';
 import {getHeaderChannel, getHeaderProperties, getHeaderProperty} from './common';
 import {
-  HEADER_TYPES,
   HeaderChannel,
   HeaderComponent,
   HeaderType,
+  HEADER_TYPES,
   LayoutHeaderComponent,
   LayoutHeaderComponentIndex
 } from './component';
@@ -70,7 +70,7 @@ export function defaultHeaderGuideAlign(headerChannel: HeaderChannel, angle: num
       return {align: 'right'};
   }
 
-  const align = defaultLabelAlign(angle, headerChannel === 'row' ? 'left' : 'top');
+  const align = headerChannel === 'row' ? 'left' : undefined;
   return align ? {align} : {};
 }
 
