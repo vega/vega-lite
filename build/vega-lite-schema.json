@@ -17268,6 +17268,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "height": {
+          "description": "Default height",
+          "type": "number"
+        },
         "opacity": {
           "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
           "maximum": 1,
@@ -17321,6 +17325,10 @@
         "strokeWidth": {
           "description": "The stroke width, in pixels.",
           "minimum": 0,
+          "type": "number"
+        },
+        "width": {
+          "description": "Default width",
           "type": "number"
         }
       },

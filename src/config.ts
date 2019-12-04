@@ -24,6 +24,20 @@ import {BaseMarkConfig, SchemeConfig} from './vega.schema';
 
 export interface ViewConfig extends BaseViewBackground {
   /**
+   * Default width
+   *
+   * @deprecated since Vega-Lite 4.0 - Please use continuousWidth and discreteWidth instead.
+   */
+  width?: number;
+
+  /**
+   * Default height
+   *
+   * @deprecated since Vega-Lite 4.0 - Please use continuousHeight and discreteHeight instead.
+   */
+  height?: number;
+
+  /**
    * The default width when the plot has a continuous x-field.
    *
    * __Default value:__ `200`
