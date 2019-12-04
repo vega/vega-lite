@@ -1,6 +1,6 @@
 import {array, isBoolean} from 'vega-util';
 import {SUM_OPS} from './aggregate';
-import {NonPositionChannel, NONPOSITION_CHANNELS, X, X2, Y2} from './channel';
+import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel';
 import {
   channelDefType,
   FieldName,
@@ -14,7 +14,22 @@ import {
 } from './channeldef';
 import {channelHasField, Encoding, isAggregate} from './encoding';
 import * as log from './log';
-import {AREA, BAR, CIRCLE, isMarkDef, isPathMark, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
+import {
+  ARC,
+  AREA,
+  BAR,
+  CIRCLE,
+  isMarkDef,
+  isPathMark,
+  LINE,
+  Mark,
+  MarkDef,
+  POINT,
+  RULE,
+  SQUARE,
+  TEXT,
+  TICK
+} from './mark';
 import {ScaleType} from './scale';
 import {contains, Flag} from './util';
 
@@ -32,13 +47,13 @@ export function isStackOffset(s: string): s is StackOffset {
 
 export interface StackProperties {
   /** Dimension axis of the stack. */
-  groupbyChannel?: 'x' | 'y';
+  groupbyChannel?: 'x' | 'y' | 'theta' | 'radius';
 
   /** Field for groupbyChannel. */
   groupbyField?: FieldName;
 
   /** Measure axis of the stack. */
-  fieldChannel: 'x' | 'y';
+  fieldChannel: 'x' | 'y' | 'theta' | 'radius';
 
   /** Stack-by fields e.g., color, detail */
   stackBy: {
@@ -57,40 +72,68 @@ export interface StackProperties {
   impute: boolean;
 }
 
-export const STACKABLE_MARKS = [BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK];
-export const STACK_BY_DEFAULT_MARKS = [BAR, AREA];
+export const STACKABLE_MARKS = [ARC, BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK];
+export const STACK_BY_DEFAULT_MARKS = [BAR, AREA, ARC];
 
-function potentialStackedChannel(encoding: Encoding<string>): 'x' | 'y' | undefined {
-  const xDef = encoding.x;
-  const yDef = encoding.y;
+function potentialStackedChannel(
+  encoding: Encoding<string>,
+  mark: Mark,
+  x: 'x' | 'theta'
+): 'x' | 'y' | 'theta' | 'radius' | undefined {
+  const y = x === 'x' ? 'y' : 'radius';
+
+  const xDef = encoding[x];
+  const yDef = encoding[y];
 
   if (isFieldDef(xDef) && isFieldDef(yDef)) {
     if (channelDefType(xDef) === 'quantitative' && channelDefType(yDef) === 'quantitative') {
       if (xDef.stack) {
-        return 'x';
+        return x;
       } else if (yDef.stack) {
-        return 'y';
+        return y;
       }
       const xAggregate = isFieldDef(xDef) && !!xDef.aggregate;
       const yAggregate = isFieldDef(yDef) && !!yDef.aggregate;
       // if there is no explicit stacking, only apply stack if there is only one aggregate for x or y
       if (xAggregate !== yAggregate) {
-        return xAggregate ? 'x' : 'y';
+        return xAggregate ? x : y;
+      } else {
+        const xScale = xDef.scale?.type;
+        const yScale = yDef.scale?.type;
+
+        if (xScale && xScale !== 'linear') {
+          return y;
+        } else if (yScale && yScale !== 'linear') {
+          return x;
+        }
       }
     } else if (channelDefType(xDef) === 'quantitative') {
-      return 'x';
+      return x;
     } else if (channelDefType(yDef) === 'quantitative') {
-      return 'y';
+      return y;
     }
   } else if (channelDefType(xDef) === 'quantitative') {
-    return 'x';
+    return x;
   } else if (channelDefType(yDef) === 'quantitative') {
-    return 'y';
+    return y;
   }
   return undefined;
 }
 
-// Note: CompassQL uses this method and only passes in required properties of each argument object.
+function getDimensionChannel(channel: 'x' | 'y' | 'theta' | 'radius') {
+  switch (channel) {
+    case 'x':
+      return 'y';
+    case 'y':
+      return 'x';
+    case 'theta':
+      return 'radius';
+    case 'radius':
+      return 'theta';
+  }
+}
+
+// Note: CompassQL uses this method and only pass in required properties of each argument object.
 // If required properties change, make sure to update CompassQL.
 export function stack(
   m: Mark | MarkDef,
@@ -105,7 +148,13 @@ export function stack(
     return null;
   }
 
-  const fieldChannel = potentialStackedChannel(encoding);
+  // Run potential stacked twice, one for Cartesian and another for Polar,
+  // so text marks can be stacked in any of the coordinates.
+
+  // Note: The logic here is not perfectly correct.  If we want to support stacked dot plots where each dot is a pie chart with label, we have to change the stack logic here to separate Cartesian stacking for polar stacking.
+  // However, since we probably never want to do that, let's just note the limitation here.
+  const fieldChannel = potentialStackedChannel(encoding, mark, 'x') || potentialStackedChannel(encoding, mark, 'theta');
+
   if (!fieldChannel) {
     return null;
   }
@@ -113,9 +162,17 @@ export function stack(
   const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string> | PositionDatumDef<string>;
   const stackedField = isFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
 
-  const dimensionChannel = fieldChannel === 'x' ? 'y' : 'x';
-  const dimensionDef = encoding[dimensionChannel];
-  const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
+  let dimensionChannel: 'x' | 'y' | 'theta' | 'radius' = getDimensionChannel(fieldChannel);
+  let dimensionDef = encoding[dimensionChannel];
+
+  let dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
+
+  // avoid grouping by the stacked field
+  if (dimensionField === stackedField) {
+    dimensionField = undefined;
+    dimensionDef = undefined;
+    dimensionChannel = undefined;
+  }
 
   // Should have grouping level of detail that is different from the dimension field
   const stackBy = NONPOSITION_CHANNELS.reduce((sc, channel) => {
@@ -134,7 +191,7 @@ export function stack(
           // if fielddef is a repeat, just include it in the stack by
           !f ||
           // otherwise, the field must be different from x and y fields.
-          (f !== dimensionField && f !== stackedField)
+          f !== dimensionField
         ) {
           sc.push({channel, fieldDef});
         }
@@ -174,7 +231,7 @@ export function stack(
   }
 
   // Check if it is a ranged mark
-  if (isFieldOrDatumDef(encoding[fieldChannel === X ? X2 : Y2])) {
+  if (isFieldOrDatumDef(encoding[getSecondaryRangeChannel(fieldChannel)])) {
     if (stackedFieldDef.stack !== undefined) {
       log.warn(log.message.cannotStackRangedMark(fieldChannel));
     }

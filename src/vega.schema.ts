@@ -11,7 +11,7 @@ import {
   LayoutAlign,
   LinearScale,
   LogScale,
-  MarkConfig as VgMarkConfig,
+  MarkConfig,
   NumericValueRef,
   OrdinalScale,
   PointScale,
@@ -290,7 +290,7 @@ export type StrokeCap = 'butt' | 'round' | 'square';
 export type StrokeJoin = 'miter' | 'round' | 'bevel';
 export type Dir = 'ltr' | 'rtl';
 
-const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
+const VG_MARK_CONFIG_INDEX: Flag<keyof MarkConfig> = {
   blend: 1,
   opacity: 1,
   fill: 1,

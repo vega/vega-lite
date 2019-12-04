@@ -128,7 +128,8 @@ function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height'): Layout
     } else {
       return getViewConfigContinuousSize(config.view, sizeType);
     }
-  } else if (model.hasProjection) {
+  } else if (model.hasProjection || model.mark === 'arc') {
+    // arc should use continuous size by default otherwise the pie is extremely small
     return getViewConfigContinuousSize(config.view, sizeType);
   } else {
     const size = getViewConfigDiscreteSize(config.view, sizeType);

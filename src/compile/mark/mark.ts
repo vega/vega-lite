@@ -8,6 +8,7 @@ import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../
 import {VgCompare, VgEncodeEntry, VG_CORNERRADIUS_CHANNELS} from '../../vega.schema';
 import {getMarkConfig, getStyles, sortParams} from '../common';
 import {UnitModel} from '../unit';
+import {arc} from './arc';
 import {area} from './area';
 import {bar} from './bar';
 import {MarkCompiler} from './base';
@@ -21,6 +22,7 @@ import {text} from './text';
 import {tick} from './tick';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
+  arc,
   area,
   bar,
   circle,

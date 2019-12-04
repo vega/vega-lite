@@ -8,6 +8,7 @@ import {
   FILL,
   FILLOPACITY,
   OPACITY,
+  RADIUS,
   ScaleChannel,
   SCALE_CHANNELS,
   SHAPE,
@@ -16,6 +17,7 @@ import {
   STROKEDASH,
   STROKEOPACITY,
   STROKEWIDTH,
+  THETA,
   X,
   Y
 } from '../../channel';
@@ -199,6 +201,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
         return [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
       }
     }
+
     case SIZE: {
       // TODO: support custom rangeMin, rangeMax
       const zero = model.component.scales[channel].get('zero');
@@ -214,10 +217,27 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
         return [rangeMin, rangeMax];
       }
     }
+
+    case THETA:
+      return [0, Math.PI * 2];
+
     case ANGLE:
       // TODO: add config.scale.min/maxAngleDegree (for point and text) and config.scale.min/maxAngleRadian (for arc) once we add arc marks.
       // (It's weird to add just config.scale.min/maxAngleDegree for now)
       return [0, 360];
+
+    case RADIUS: {
+      // max radius = half od min(width,height)
+      return [
+        0,
+        new SignalRefWrapper(() => {
+          const w = model.getSignalName('width');
+          const h = model.getSignalName('height');
+          return `min(${w},${h})/2`;
+        })
+      ];
+    }
+
     case STROKEWIDTH:
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minStrokeWidth, config.scale.maxStrokeWidth];

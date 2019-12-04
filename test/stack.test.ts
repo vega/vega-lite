@@ -1,16 +1,19 @@
 import {NonArgAggregateOp} from '../src/aggregate';
 import {DETAIL, X, Y} from '../src/channel';
 import * as log from '../src/log';
-import {AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
+import {ARC, AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
 import {ScaleType} from '../src/scale';
 import {NormalizedUnitSpec, TopLevel} from '../src/spec';
 import {stack, STACKABLE_MARKS, StackOffset, STACK_BY_DEFAULT_MARKS} from '../src/stack';
+import {without} from '../src/util';
 
 describe('stack', () => {
-  const NON_STACKABLE_MARKS = [RECT];
+  const NON_STACKABLE_NON_POLAR_MARKS = [RECT];
+  const STACKABLE_NON_POLAR_MARKS = without(STACKABLE_MARKS, [ARC]);
+  const STACK_BY_DEFAULT_NON_POLAR_MARKS = without(STACK_BY_DEFAULT_MARKS, [ARC]);
 
   it('should be disabled for non-stackable marks with at least one of the stack channel', () => {
-    NON_STACKABLE_MARKS.forEach(nonStackableMark => {
+    NON_STACKABLE_NON_POLAR_MARKS.forEach(nonStackableMark => {
       const spec: TopLevel<NormalizedUnitSpec> = {
         data: {url: 'data/barley.json'},
         mark: nonStackableMark,
@@ -25,7 +28,7 @@ describe('stack', () => {
   });
 
   it('should be allowed for raw plot', () => {
-    STACKABLE_MARKS.forEach(mark => {
+    STACKABLE_NON_POLAR_MARKS.forEach(mark => {
       const spec: TopLevel<NormalizedUnitSpec> = {
         data: {url: 'data/barley.json'},
         mark: mark,
@@ -41,7 +44,7 @@ describe('stack', () => {
   });
 
   it('should be disabled when stack is false', () => {
-    STACKABLE_MARKS.forEach(mark => {
+    STACKABLE_NON_POLAR_MARKS.forEach(mark => {
       const spec: TopLevel<NormalizedUnitSpec> = {
         data: {url: 'data/barley.json'},
         mark: mark,
@@ -57,7 +60,7 @@ describe('stack', () => {
   });
 
   it('should prioritize axis with stack', () => {
-    STACKABLE_MARKS.forEach(mark => {
+    STACKABLE_NON_POLAR_MARKS.forEach(mark => {
       const spec: TopLevel<NormalizedUnitSpec> = {
         data: {url: 'data/barley.json'},
         mark: mark,
@@ -93,7 +96,7 @@ describe('stack', () => {
 
   it('can be enabled if one of the stackby channels is not aggregated', () => {
     for (const s of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
-      const marks = s === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
+      const marks = s === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
       marks.forEach(mark => {
         const spec: TopLevel<NormalizedUnitSpec> = {
           data: {url: 'data/barley.json'},
@@ -115,7 +118,7 @@ describe('stack', () => {
 
   it('can be enabled if one of the stackby channels is not aggregated', () => {
     for (const s of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
-      const marks = s === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
+      const marks = s === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
       for (const mark of marks) {
         const spec: TopLevel<NormalizedUnitSpec> = {
           data: {url: 'data/barley.json'},
@@ -188,7 +191,7 @@ describe('stack', () => {
 
   it('should always be disabled if there is both x and x2', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
-      const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
+      const marks = stacked === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
       marks.forEach(mark => {
         const spec: TopLevel<NormalizedUnitSpec> = {
           mark: mark,
@@ -206,7 +209,7 @@ describe('stack', () => {
 
   it('should always be disabled if there is both y and y2', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
-      const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
+      const marks = stacked === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
       marks.forEach(mark => {
         const spec: TopLevel<NormalizedUnitSpec> = {
           mark: mark,
@@ -227,7 +230,7 @@ describe('stack', () => {
     log.wrap(localLogger => {
       for (const s of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
         [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT].forEach(scaleType => {
-          const marks = s === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
+          const marks = s === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
           marks.forEach(mark => {
             const spec: TopLevel<NormalizedUnitSpec> = {
               data: {url: 'data/barley.json'},
@@ -251,7 +254,7 @@ describe('stack', () => {
   it('returns null if the aggregated axis has non-linear scale and disallowNonLinearStack = true', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
       [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT].forEach(scaleType => {
-        const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
+        const marks = stacked === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
         marks.forEach(mark => {
           const spec: TopLevel<NormalizedUnitSpec> = {
             data: {url: 'data/barley.json'},
@@ -273,7 +276,7 @@ describe('stack', () => {
     log.wrap(localLogger => {
       for (const stackOffset of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
         for (const aggregate of ['average', 'variance', 'q3'] as NonArgAggregateOp[]) {
-          const marks = stackOffset === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
+          const marks = stackOffset === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
           marks.forEach(mark => {
             const spec: TopLevel<NormalizedUnitSpec> = {
               data: {url: 'data/barley.json'},
@@ -365,6 +368,37 @@ describe('stack', () => {
         expect(_stack.fieldChannel).toBe(Y);
         expect(_stack.groupbyChannel).toBeUndefined();
       });
+    });
+
+    it('should be correct for pie', () => {
+      const spec: TopLevel<NormalizedUnitSpec> = {
+        data: {url: 'data/barley.json'},
+        mark: 'arc',
+        encoding: {
+          theta: {field: 'field', type: 'quantitative'},
+          color: {field: 'id', type: 'nominal'}
+        }
+      };
+      const _stack = stack(spec.mark, spec.encoding, undefined);
+      expect(_stack.fieldChannel).toBe('theta');
+      expect(_stack.stackBy[0].channel).toBe('color');
+    });
+
+    it('should be correct for radial chart', () => {
+      const spec: TopLevel<NormalizedUnitSpec> = {
+        data: {url: 'data/barley.json'},
+        mark: 'arc',
+        encoding: {
+          theta: {field: 'field', type: 'quantitative', stack: true},
+          radius: {
+            field: 'field',
+            type: 'quantitative',
+            scale: {type: 'sqrt', zero: true, range: [20, 100]}
+          }
+        }
+      };
+      const _stack = stack(spec.mark, spec.encoding, undefined);
+      expect(_stack.fieldChannel).toBe('theta');
     });
   });
 

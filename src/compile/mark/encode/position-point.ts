@@ -1,5 +1,5 @@
-import {getMainRangeChannel, PositionChannel, X, X2, Y2} from '../../../channel';
-import {isFieldDef, isPositionFieldOrDatumDef} from '../../../channeldef';
+import {getMainRangeChannel, getSecondaryRangeChannel, PositionChannel} from '../../../channel';
+import {getBand, isAnyPositionFieldOrDatumDef, isFieldDef} from '../../../channeldef';
 import {ScaleType} from '../../../scale';
 import {contains, getFirstDefined} from '../../../util';
 import {VgValueRef} from '../../../vega.schema';
@@ -20,7 +20,7 @@ export function pointPosition(
   const {encoding, markDef, config, stack} = model;
 
   const channelDef = encoding[channel];
-  const channel2Def = encoding[channel === X ? X2 : Y2];
+  const channel2Def = encoding[getSecondaryRangeChannel(channel)];
   const scaleName = model.scaleName(channel);
   const scale = model.getScaleComponent(channel);
 
@@ -63,23 +63,34 @@ export function pointPosition(
 /**
  * @return Vega ValueRef for normal x- or y-position without projection
  */
-function positionRef(
+export function positionRef(
   params: ref.MidPointParams & {
-    channel: 'x' | 'y';
+    channel: 'x' | 'y' | 'radius' | 'theta';
+    isMidPoint?: boolean;
   }
 ): VgValueRef | VgValueRef[] {
-  const {channel, channelDef, scaleName, stack, offset} = params;
+  const {channel, channelDef, isMidPoint, scaleName, stack, offset, markDef, config} = params;
 
   // This isn't a part of midPoint because we use midPoint for non-position too
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
-    if (isPositionFieldOrDatumDef(channelDef) && channelDef.band !== undefined) {
-      return ref.interpolatedSignalRef({
-        scaleName,
-        fieldOrDatumDef: channelDef,
-        startSuffix: 'start',
-        band: channelDef.band,
-        offset: 0
+    if (isAnyPositionFieldOrDatumDef(channelDef)) {
+      const band = getBand({
+        channel,
+        fieldDef: channelDef,
+        isMidPoint,
+        markDef,
+        stack,
+        config
       });
+      if (band !== undefined) {
+        return ref.interpolatedSignalRef({
+          scaleName,
+          fieldOrDatumDef: channelDef,
+          startSuffix: 'start',
+          band,
+          offset
+        });
+      }
     }
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return ref.valueRefForFieldOrDatumDef(channelDef, scaleName, {suffix: 'end'}, {offset});

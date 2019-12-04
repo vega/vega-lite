@@ -801,10 +801,11 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
   if (!CHANNEL.isScaleChannel(channel)) {
     return false;
   }
-
   switch (channel) {
     case CHANNEL.X:
     case CHANNEL.Y:
+    case CHANNEL.THETA:
+    case CHANNEL.RADIUS:
       return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
     case CHANNEL.SIZE: // TODO: size and opacity can support ordinal with more modification
     case CHANNEL.STROKEWIDTH:
@@ -824,6 +825,7 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
     case CHANNEL.STROKE:
       return scaleType !== 'band'; // band does not make sense with color
     case CHANNEL.STROKEDASH:
+      return scaleType === 'ordinal' || isContinuousToDiscrete(scaleType);
     case CHANNEL.SHAPE:
       return scaleType === 'ordinal'; // shape = lookup only
   }
