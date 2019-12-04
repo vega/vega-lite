@@ -64,6 +64,7 @@
         "text": "Origin",
         "orient": "left",
         "style": "guide-title",
+        "align": "left",
         "offset": 10
       }
     },
@@ -78,6 +79,7 @@
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
+        "align": "left",
         "offset": 10
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},

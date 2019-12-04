@@ -64,6 +64,7 @@
         "text": "Origin",
         "orient": "left",
         "style": "guide-title",
+        "align": "left",
         "offset": 10
       }
     },
@@ -79,7 +80,7 @@
         "style": "guide-label",
         "frame": "group",
         "baseline": "bottom",
-        "align": "center",
+        "align": "left",
         "angle": -90,
         "offset": 10
       },
