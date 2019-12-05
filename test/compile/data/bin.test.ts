@@ -203,7 +203,7 @@ describe('compile/data/bin', () => {
       expect(transform[2]).toEqual({
         type: 'formula',
         as: 'bin_maxbins_10_Rotten_Tomatoes_Rating_range',
-        expr: `!isValid(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) || !isFinite(+datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) ? "null" : format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"], "") + " - " + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], "")`
+        expr: `!isValid(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) || !isFinite(+datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) ? "null" : format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"], "") + "–" + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], "")`
       });
     });
   });

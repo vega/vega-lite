@@ -70,7 +70,7 @@ describe('Mark: Text', () => {
 
     it('should output correct bin range', () => {
       expect(props.text).toEqual({
-        signal: `!isValid(datum["bin_maxbins_10_foo"]) || !isFinite(+datum["bin_maxbins_10_foo"]) ? "null" : format(datum["bin_maxbins_10_foo"], "d") + " - " + format(datum["bin_maxbins_10_foo_end"], "d")`
+        signal: `!isValid(datum["bin_maxbins_10_foo"]) || !isFinite(+datum["bin_maxbins_10_foo"]) ? "null" : format(datum["bin_maxbins_10_foo"], "d") + "–" + format(datum["bin_maxbins_10_foo_end"], "d")`
       });
     });
   });

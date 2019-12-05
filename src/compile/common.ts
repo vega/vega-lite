@@ -150,7 +150,7 @@ export function binFormatExpression(startField: string, endField: string, format
     startField,
     format,
     config
-  )} + " - " + ${numberFormatExpr(endField, format, config)}`;
+  )} + "–" + ${numberFormatExpr(endField, format, config)}`;
 }
 
 /**
