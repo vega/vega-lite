@@ -2,6 +2,7 @@ import {SecondaryFieldDef, TypedFieldDef} from '../../../src/channeldef';
 import {getOffset, midPoint, tooltipForEncoding} from '../../../src/compile/mark/valueref';
 import {defaultConfig} from '../../../src/config';
 import {MarkDef} from '../../../src/mark';
+import {BIN_RANGE_DELIMITER} from './../../../src/compile/common';
 
 describe('compile/mark/valueref', () => {
   describe('getOffset', () => {
@@ -61,7 +62,7 @@ describe('compile/mark/valueref', () => {
   });
 
   describe('tooltipForEncoding', () => {
-    it('returns correct tooltip signal for binning field', () => {
+    it('returns correct tooltip signal for binned field', () => {
       expect(
         tooltipForEncoding(
           {
@@ -74,12 +75,11 @@ describe('compile/mark/valueref', () => {
           defaultConfig
         )
       ).toEqual({
-        signal:
-          '{"IMDB_Rating (binned)": !isValid(datum["bin_maxbins_10_IMDB_Rating"]) || !isFinite(+datum["bin_maxbins_10_IMDB_Rating"]) ? "null" : format(datum["bin_maxbins_10_IMDB_Rating"], "") + " - " + format(datum["bin_maxbins_10_IMDB_Rating_end"], "")}'
+        signal: `{"IMDB_Rating (binned)": !isValid(datum["bin_maxbins_10_IMDB_Rating"]) || !isFinite(+datum["bin_maxbins_10_IMDB_Rating"]) ? "null" : format(datum["bin_maxbins_10_IMDB_Rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_maxbins_10_IMDB_Rating_end"], "")}`
       });
     });
 
-    it('returns correct tooltip signal for binning field', () => {
+    it('returns correct tooltip signal for binned field with custom title', () => {
       expect(
         tooltipForEncoding(
           {
@@ -97,7 +97,7 @@ describe('compile/mark/valueref', () => {
         )
       ).toEqual({
         signal:
-          '{"IMDB_Rating (binned)": !isValid(datum["bin_IMDB_rating"]) || !isFinite(+datum["bin_IMDB_rating"]) ? "null" : format(datum["bin_IMDB_rating"], "") + " - " + format(datum["bin_IMDB_rating_end"], "")}'
+          '{"IMDB_Rating (binned)": !isValid(datum["bin_IMDB_rating"]) || !isFinite(+datum["bin_IMDB_rating"]) ? "null" : format(datum["bin_IMDB_rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_IMDB_rating_end"], "")}'
       });
     });
   });

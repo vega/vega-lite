@@ -3,6 +3,7 @@ import {text} from '../../../src/compile/mark/text';
 import {UnitModel} from '../../../src/compile/unit';
 import {NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../../src/spec';
 import {parseModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {BIN_RANGE_DELIMITER} from './../../../src/compile/common';
 
 describe('Mark: Text', () => {
   describe('with stacked x', () => {
@@ -70,7 +71,7 @@ describe('Mark: Text', () => {
 
     it('should output correct bin range', () => {
       expect(props.text).toEqual({
-        signal: `!isValid(datum["bin_maxbins_10_foo"]) || !isFinite(+datum["bin_maxbins_10_foo"]) ? "null" : format(datum["bin_maxbins_10_foo"], "d") + " - " + format(datum["bin_maxbins_10_foo_end"], "d")`
+        signal: `!isValid(datum["bin_maxbins_10_foo"]) || !isFinite(+datum["bin_maxbins_10_foo"]) ? "null" : format(datum["bin_maxbins_10_foo"], "d") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_maxbins_10_foo_end"], "d")`
       });
     });
   });

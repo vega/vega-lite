@@ -3,6 +3,7 @@ import {BinNode, getBinSignalName} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';
 import {parseUnitModelWithScale, parseUnitModelWithScaleAndSelection} from '../../util';
+import {BIN_RANGE_DELIMITER} from './../../../src/compile/common';
 import {PlaceholderDataFlowNode} from './util';
 
 function assembleFromEncoding(model: ModelWithField) {
@@ -203,7 +204,7 @@ describe('compile/data/bin', () => {
       expect(transform[2]).toEqual({
         type: 'formula',
         as: 'bin_maxbins_10_Rotten_Tomatoes_Rating_range',
-        expr: `!isValid(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) || !isFinite(+datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) ? "null" : format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"], "") + " - " + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], "")`
+        expr: `!isValid(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) || !isFinite(+datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) ? "null" : format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], "")`
       });
     });
   });
