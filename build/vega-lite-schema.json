@@ -17269,6 +17269,7 @@
           "type": "number"
         },
         "height": {
+          "deprecated": "Since Vega-Lite 4.0. Please use continuousHeight and discreteHeight instead.",
           "description": "Default height",
           "type": "number"
         },
@@ -17328,6 +17329,7 @@
           "type": "number"
         },
         "width": {
+          "deprecated": "Since Vega-Lite 4.0. Please use continuousWidth and discreteWidth instead.",
           "description": "Default width",
           "type": "number"
         }
