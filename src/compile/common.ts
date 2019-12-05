@@ -1,3 +1,4 @@
+import {Text} from 'vega';
 import {array} from 'vega-util';
 import {isBinning} from '../bin';
 import {
@@ -15,6 +16,7 @@ import {fieldValidPredicate} from '../predicate';
 import {ScaleType} from '../scale';
 import {SortFields} from '../sort';
 import {formatExpression, TimeUnit} from '../timeunit';
+import {isText} from '../title';
 import {QUANTITATIVE} from '../type';
 import {getFirstDefined} from '../util';
 import {BaseMarkConfig, VgEncodeEntry} from '../vega.schema';
@@ -22,8 +24,8 @@ import {deepEqual} from './../util';
 import {AxisComponentProps} from './axis/component';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
-import {Text} from 'vega';
-import {isText} from '../title';
+
+export const BIN_RANGE_DELIMITER = '–';
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {
   for (const property of propsList) {
@@ -150,7 +152,7 @@ export function binFormatExpression(startField: string, endField: string, format
     startField,
     format,
     config
-  )} + "–" + ${numberFormatExpr(endField, format, config)}`;
+  )} + "${BIN_RANGE_DELIMITER}" + ${numberFormatExpr(endField, format, config)}`;
 }
 
 /**
