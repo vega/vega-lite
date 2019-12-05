@@ -8,6 +8,11 @@
         "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
+        "name": "bar_size_responsive",
+        "title": "Responsive Bar Chart",
+        "description": "The bar gets automatically resized based on container size. To see how the bar gets automatically resized try this in [the editor](https://vega.github.io/editor/#/examples/vega-lite/bar_size_responsive)."
+      },
+      {
         "name": "bar_aggregate",
         "title": "Aggregate Bar Chart"
       },
