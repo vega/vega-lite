@@ -16,9 +16,7 @@ jobs:
     name: Node ${{ matrix.node }}
 
     steps:
-      - uses: actions/checkout@master
-        with:
-          fetch-depth: 1
+      - uses: actions/checkout@v2-beta
 
       - name: Setup Node
         uses: actions/setup-node@v1
@@ -43,9 +41,7 @@ jobs:
     name: Runtime and Coverage
 
     steps:
-      - uses: actions/checkout@master
-        with:
-          fetch-depth: 1
+      - uses: actions/checkout@v2-beta
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
