@@ -106,10 +106,7 @@ describe('encoding', () => {
           x: {
             field: 'yearmonthdatehoursminutes_a',
             type: 'temporal',
-            title: 'a (year-month-date-hours-minutes)',
-            axis: {
-              format: '%b %d, %Y %H:%M'
-            }
+            title: 'a (year-month-date-hours-minutes)'
           },
           y: {field: 'b', type: 'quantitative'}
         }
@@ -129,7 +126,6 @@ describe('encoding', () => {
 
       expect(output.encoding.y).toEqual({
         axis: {
-          format: '%Y',
           formatType: 'time'
         },
         field: 'year_b',
@@ -150,9 +146,6 @@ describe('encoding', () => {
       );
 
       expect(output.encoding.y).toEqual({
-        axis: {
-          format: '%Y'
-        },
         field: 'year_b',
         title: 'b (year)',
         type: 'temporal'
@@ -173,7 +166,6 @@ describe('encoding', () => {
 
       expect(output.encoding.detail).toEqual({
         legend: {
-          format: '%b',
           formatType: 'time'
         },
         field: 'month_c',
@@ -195,9 +187,6 @@ describe('encoding', () => {
       );
 
       expect(output.encoding.detail).toEqual({
-        legend: {
-          format: '%b'
-        },
         field: 'month_c',
         title: 'c (month)',
         type: 'temporal'
@@ -217,14 +206,12 @@ describe('encoding', () => {
         defaultConfig
       );
       expect(output.encoding.tooltip).toEqual({
-        format: '%b',
         formatType: 'time',
         field: 'month_c',
         title: 'c (month)',
         type: 'nominal'
       });
       expect(output.encoding.text).toEqual({
-        format: '%b',
         formatType: 'time',
         field: 'month_c',
         title: 'c (month)',

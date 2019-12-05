@@ -49,7 +49,6 @@ describe('common feature of composite marks', () => {
         type: 'ordinal',
         field: 'year_Year',
         axis: {
-          format: '%Y',
           formatType: 'time'
         }
       });

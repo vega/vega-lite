@@ -46,7 +46,8 @@ describe('legend/assemble', () => {
 
     const legends = model.assembleLegends();
     expect(legends[0].encode.labels.update.text).toEqual({
-      signal: "timeFormat(datum.value, '%b')[0]"
+      signal:
+        'timeFormat(datum.value, timeUnitSpecifier(["month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))[0]'
     });
   });
 

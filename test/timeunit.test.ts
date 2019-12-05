@@ -159,43 +159,55 @@ describe('timeUnit', () => {
 
   describe('template', () => {
     it('should return correct template for YEARMONTHDATEHOURSMINUTESSECONDS', () => {
-      expect(formatExpression(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS, 'datum.x', undefined, false)).toBe(
-        "timeFormat(datum.x, '%b %d, %Y %H:%M:%S')"
+      expect(formatExpression(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS, 'datum.x', false)).toBe(
+        'timeFormat(datum.x, timeUnitSpecifier(["year","month","date","hours","minutes","seconds"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
       );
     });
 
     it('should return correct template for YEARMONTH (No comma)', () => {
-      expect(formatExpression(TimeUnit.YEARMONTH, 'datum.x', undefined, false)).toBe("timeFormat(datum.x, '%b %Y')");
+      expect(formatExpression(TimeUnit.YEARMONTH, 'datum.x', false)).toBe(
+        'timeFormat(datum.x, timeUnitSpecifier(["year","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+      );
     });
 
     it('should return correct template for DAY', () => {
-      expect(formatExpression(TimeUnit.DAY, 'datum.x', undefined, false)).toBe("timeFormat(datum.x, '%A')");
+      expect(formatExpression(TimeUnit.DAY, 'datum.x', false)).toBe(
+        'timeFormat(datum.x, timeUnitSpecifier(["day"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+      );
     });
 
     it('should return correct template for DAY (shortened)', () => {
-      expect(formatExpression(TimeUnit.DAY, 'datum.x', true, false)).toBe("timeFormat(datum.x, '%a')");
+      expect(formatExpression(TimeUnit.DAY, 'datum.x', false)).toBe(
+        'timeFormat(datum.x, timeUnitSpecifier(["day"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+      );
     });
 
     it('should return correct template for QUARTER', () => {
-      expect(formatExpression(TimeUnit.QUARTER, 'datum.x', undefined, false)).toBe("'Q' + quarter(datum.x)");
+      expect(formatExpression(TimeUnit.QUARTER, 'datum.x', false)).toBe(
+        'timeFormat(datum.x, timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+      );
     });
 
     it('should return correct template for YEARQUARTER', () => {
-      expect(formatExpression(TimeUnit.YEARQUARTER, 'datum.x', undefined, false)).toBe(
-        "'Q' + quarter(datum.x) + ' ' + timeFormat(datum.x, '%Y')"
+      expect(formatExpression(TimeUnit.YEARQUARTER, 'datum.x', false)).toBe(
+        'timeFormat(datum.x, timeUnitSpecifier(["year","quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
       );
     });
 
     it('should return correct template for milliseconds', () => {
-      expect(formatExpression(TimeUnit.MILLISECONDS, 'datum.x', undefined, false)).toBe("timeFormat(datum.x, '%L')");
+      expect(formatExpression(TimeUnit.MILLISECONDS, 'datum.x', false)).toBe(
+        'timeFormat(datum.x, timeUnitSpecifier(["milliseconds"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+      );
     });
 
     it('should return correct template for no timeUnit', () => {
-      expect(formatExpression(undefined, 'datum.x', undefined, false)).toBeUndefined();
+      expect(formatExpression(undefined, 'datum.x', false)).toBeUndefined();
     });
 
     it('should return correct template for YEARMONTH (No comma) with utc scale', () => {
-      expect(formatExpression(TimeUnit.YEARMONTH, 'datum.x', undefined, true)).toBe("utcFormat(datum.x, '%b %Y')");
+      expect(formatExpression(TimeUnit.YEARMONTH, 'datum.x', true)).toBe(
+        'utcFormat(datum.x, timeUnitSpecifier(["year","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+      );
     });
   });
 });

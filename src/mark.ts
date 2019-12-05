@@ -211,7 +211,6 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
   rect: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
   line: ['point'],
-  text: ['shortTimeLabels'],
   tick: ['bandSize', 'thickness']
 };
 
@@ -254,7 +253,7 @@ export interface MarkConfigMixins {
   square?: MarkConfig;
 
   /** Text-Specific Config */
-  text?: TextConfig;
+  text?: MarkConfig;
 
   /** Tick-Specific Config */
   tick?: TickConfig;
@@ -400,13 +399,6 @@ export const defaultRectConfig: RectConfig = {
   continuousBandSize: DEFAULT_RECT_BAND_SIZE,
   timeUnitBandPosition: 0.5
 };
-
-export interface TextConfig extends MarkConfig {
-  /**
-   * Whether month names and weekday names should be abbreviated.
-   */
-  shortTimeLabels?: boolean;
-}
 
 export interface TickConfig extends MarkConfig, TickThicknessMixins {
   /**

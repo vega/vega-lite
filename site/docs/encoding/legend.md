@@ -110,4 +110,4 @@ To provide themes for all legends, the legend config (`config: {legend: {...}}`)
 
 The legend configuration also supports the following properties:
 
-{% include table.html props="gradientDirection,gradientHorizontalMaxLength,gradientHorizontalMinLength,gradientLabelLimit,gradientLabelOffset,gradientVerticalMaxLength,gradientVerticalMinLength,symbolBaseFillColor,symbolBaseStrokeColor,symbolDirection,symbolOffset,shortTimeLabels,strokeDash" source="LegendConfig" %}
+{% include table.html props="gradientDirection,gradientHorizontalMaxLength,gradientHorizontalMinLength,gradientLabelLimit,gradientLabelOffset,gradientVerticalMaxLength,gradientVerticalMinLength,symbolBaseFillColor,symbolBaseStrokeColor,symbolDirection,symbolOffset,strokeDash" source="LegendConfig" %}

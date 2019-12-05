@@ -2,7 +2,7 @@ import {Color, SymbolShape} from 'vega';
 import {isObject, mergeConfig} from 'vega-util';
 import {AxisConfigMixins} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
-import {VL_ONLY_GUIDE_CONFIG, VL_ONLY_LEGEND_CONFIG} from './guide';
+import {VL_ONLY_LEGEND_CONFIG} from './guide';
 import {HeaderConfigMixins} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import * as mark from './mark';
@@ -332,17 +332,7 @@ export function stripAndRedirectConfig(config: Config) {
     delete config[prop];
   }
 
-  // Remove Vega-Lite only axis/legend config
-  if (config.axis) {
-    for (const prop of VL_ONLY_GUIDE_CONFIG) {
-      delete config.axis[prop];
-    }
-  }
   if (config.legend) {
-    for (const prop of VL_ONLY_GUIDE_CONFIG) {
-      delete config.legend[prop];
-    }
-
     for (const prop of VL_ONLY_LEGEND_CONFIG) {
       delete config.legend[prop];
     }

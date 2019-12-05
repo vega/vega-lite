@@ -1,6 +1,7 @@
 import {DateTimeExpr, dateTimeExpr} from './datetime';
 import * as log from './log';
 import {accessPathWithDatum, Flag, keys, replaceAll} from './util';
+import stringify from 'fast-json-stable-stringify';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
@@ -224,6 +225,33 @@ const TIMEUNIT_INDEX: Flag<TimeUnit> = {
 
 export const TIMEUNITS = keys(TIMEUNIT_INDEX);
 
+export type TimeUnitFormat =
+  | 'year'
+  | 'year-month'
+  | 'year-month-date'
+  | 'quarter'
+  | 'month'
+  | 'date'
+  | 'week'
+  | 'day'
+  | 'hours'
+  | 'hours-minutes'
+  | 'minutes'
+  | 'seconds'
+  | 'milliseconds';
+
+// matches vega time unit format specifier
+// matches vega time unit format specifier
+export type TimeFormatConfig = {
+  [unit in TimeUnitFormat]?: string;
+};
+
+// In order of increasing specificity
+export const VEGALITE_TIMEFORMAT: TimeFormatConfig = {
+  'year-month': '%b %Y ',
+  'year-month-date': '%b %d, %Y '
+};
+
 export function isTimeUnit(t: string): t is TimeUnit {
   return !!TIMEUNIT_INDEX[t];
 }
@@ -333,94 +361,33 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string, {end}: {end: bo
   return dateTimeExpr(d);
 }
 
-export function getDateTimeComponents(timeUnit: TimeUnit, shortTimeLabels: boolean) {
+export function getTimeUnitSpecifierExpression(timeUnit: TimeUnit) {
   if (!timeUnit) {
     return undefined;
   }
 
-  const dateComponents: string[] = [];
-  const hasYear = containsTimeUnit(timeUnit, TimeUnit.YEAR);
-
-  if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
-    // By default use short month name
-    dateComponents.push(shortTimeLabels !== false ? '%b' : '%B');
-  }
-
-  if (containsTimeUnit(timeUnit, TimeUnit.DAY)) {
-    dateComponents.push(shortTimeLabels ? '%a' : '%A');
-  } else if (containsTimeUnit(timeUnit, TimeUnit.DATE)) {
-    dateComponents.push('%d' + (hasYear ? ',' : '')); // add comma if there is year
-  }
-
-  if (hasYear) {
-    dateComponents.push(shortTimeLabels ? '%y' : '%Y');
-  }
-
-  const timeComponents: string[] = [];
-
-  if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
-    timeComponents.push('%H');
-  }
-  if (containsTimeUnit(timeUnit, TimeUnit.MINUTES)) {
-    timeComponents.push('%M');
-  }
-  if (containsTimeUnit(timeUnit, TimeUnit.SECONDS)) {
-    timeComponents.push('%S');
-  }
-  if (containsTimeUnit(timeUnit, TimeUnit.MILLISECONDS)) {
-    timeComponents.push('%L');
-  }
-
-  const dateTimeComponents: string[] = [];
-  if (dateComponents.length > 0) {
-    dateTimeComponents.push(dateComponents.join(' '));
-  }
-  if (timeComponents.length > 0) {
-    dateTimeComponents.push(timeComponents.join(':'));
-  }
-
-  return dateTimeComponents;
+  const timeUnitParts = getTimeUnitParts(timeUnit);
+  return `timeUnitSpecifier(${stringify(timeUnitParts)}, ${stringify(VEGALITE_TIMEFORMAT)})`;
 }
 
 /**
  * returns the signal expression used for axis labels for a time unit
  */
-export function formatExpression(
-  timeUnit: TimeUnit,
-  field: string,
-  shortTimeLabels: boolean,
-  isUTCScale: boolean
-): string {
+export function formatExpression(timeUnit: TimeUnit, field: string, isUTCScale: boolean): string {
   if (!timeUnit) {
     return undefined;
   }
 
-  const dateTimeComponents: string[] = getDateTimeComponents(timeUnit, shortTimeLabels);
-  let expression = '';
+  const timeUnitSpecifierExpr = getTimeUnitSpecifierExpression(timeUnit);
 
-  if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
-    // special expression for quarter as prefix
-    expression = `'Q' + quarter(${field})`;
+  // We only use utcFormat for utc scale
+  // For utc time units, the data is already converted as a part of timeUnit transform.
+  // Thus, utc time units should use timeFormat to avoid shifting the time twice.
+  if (isUTCScale) {
+    return `utcFormat(${field}, ${timeUnitSpecifierExpr})`;
+  } else {
+    return `timeFormat(${field}, ${timeUnitSpecifierExpr})`;
   }
-
-  if (dateTimeComponents.length > 0) {
-    if (expression) {
-      // Add space between quarter and main time format
-      expression += ` + ' ' + `;
-    }
-
-    // We only use utcFormat for utc scale
-    // For utc time units, the data is already converted as a part of timeUnit transform.
-    // Thus, utc time units should use timeFormat to avoid shifting the time twice.
-    if (isUTCScale) {
-      expression += `utcFormat(${field}, '${dateTimeComponents.join(' ')}')`;
-    } else {
-      expression += `timeFormat(${field}, '${dateTimeComponents.join(' ')}')`;
-    }
-  }
-
-  // If expression is still an empty string, return undefined instead.
-  return expression || undefined;
 }
 
 export function normalizeTimeUnit(timeUnit: TimeUnit): TimeUnit {

@@ -99,7 +99,6 @@ export function formatSignalRef(
         }),
         fieldDef.timeUnit,
         specifiedFormat,
-        config.text.shortTimeLabels,
         config.timeFormat,
         isUTCScale,
         true
@@ -162,7 +161,6 @@ export function timeFormatExpression(
   field: string,
   timeUnit: TimeUnit,
   format: string,
-  shortTimeLabels: boolean,
   rawTimeFormat: string, // should be provided only for actual text and headers, not axis/legend labels
   isUTCScale: boolean,
   alwaysReturn = false
@@ -170,14 +168,13 @@ export function timeFormatExpression(
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.
     format = format ?? rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
-
     if (format || alwaysReturn) {
       return `${isUTCScale ? 'utc' : 'time'}Format(${field}, '${format}')`;
     } else {
       return undefined;
     }
   } else {
-    return formatExpression(timeUnit, field, shortTimeLabels, isUTCScale);
+    return formatExpression(timeUnit, field, isUTCScale);
   }
 }
 
