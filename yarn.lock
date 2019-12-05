@@ -3214,7 +3214,7 @@ glob-parent@^5.0.0, glob-parent@^5.1.0:
   dependencies:
     is-glob "^4.0.1"
 
-glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.6, glob@~7.1.5:
+glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.6, glob@~7.1.6:
   version "7.1.6"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.6.tgz#141f33b81a7c2492e125594307480c46679278a6"
   integrity sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==
@@ -6992,14 +6992,14 @@ ts-jest@^24.2.0:
     semver "^5.5"
     yargs-parser "10.x"
 
-ts-json-schema-generator@^0.56.0:
-  version "0.56.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.56.0.tgz#68fc3aa1b0396416406a64a19ef080fff9586449"
-  integrity sha512-zLkyP2gPnXFsZIeCfk5uKWT81Eh4C0jYGiOZbNKoRVjkzp/5NhNoW+859PfLpGPeK3vMJ5/SGIOVn5lWidOVCw==
+ts-json-schema-generator@^0.57.0:
+  version "0.57.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.57.0.tgz#699f8e0602bc1185ca61d85c46d178b513fbc2be"
+  integrity sha512-t846uLm5GkseA9dSp00RGVKXM3fKO4cuPkzEkLTxNC2zOfVSjprWcdL2rUe30VoGm0sAoFdkaSwSfeib3O6bMw==
   dependencies:
     "@types/json-schema" "^7.0.3"
     commander "~4.0.0"
-    glob "~7.1.5"
+    glob "~7.1.6"
     json-stable-stringify "^1.0.1"
     typescript "~3.7.2"
 

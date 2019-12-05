@@ -4,7 +4,7 @@ import {Encoding} from '../encoding';
 import {AnyMark, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {SelectionDef} from '../selection';
-import {BaseSpec, DataMixins, LayerUnitMixins, ResolveMixins} from './base';
+import {BaseSpec, BoundsMixins, DataMixins, LayerUnitMixins, ResolveMixins} from './base';
 import {TopLevel} from './toplevel';
 
 /**
@@ -47,7 +47,7 @@ export type UnitSpec = GenericUnitSpec<CompositeEncoding, AnyMark>;
 /**
  * Unit spec that can have a composite mark and row or column channels (shorthand for a facet spec).
  */
-export type FacetedUnitSpec = GenericUnitSpec<FacetedCompositeEncoding, AnyMark> & ResolveMixins;
+export type FacetedUnitSpec = GenericUnitSpec<FacetedCompositeEncoding, AnyMark> & ResolveMixins & BoundsMixins;
 
 export type TopLevelUnitSpec = TopLevel<FacetedUnitSpec> & DataMixins;
 
