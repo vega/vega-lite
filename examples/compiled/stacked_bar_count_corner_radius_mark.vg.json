@@ -71,8 +71,8 @@
             "signal": "max(scale('y',datum[\"min___count_start\"]),scale('y',datum[\"max___count_start\"]),scale('y',datum[\"min___count_end\"]),scale('y',datum[\"max___count_end\"]))"
           },
           "clip": {"value": true},
-          "cornerRadiusTopLeft": {"value": 8},
-          "cornerRadiusTopRight": {"value": 8}
+          "cornerRadiusTopLeft": {"value": 3},
+          "cornerRadiusTopRight": {"value": 3}
         }
       },
       "marks": [
