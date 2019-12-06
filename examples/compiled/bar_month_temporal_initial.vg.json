@@ -116,7 +116,11 @@
       "labelOverlap": true,
       "encode": {
         "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%b')[0]"}}
+          "update": {
+            "text": {
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))[0]"
+            }
+          }
         }
       },
       "zindex": 0

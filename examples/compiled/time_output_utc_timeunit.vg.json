@@ -110,7 +110,9 @@
       "encode": {
         "labels": {
           "update": {
-            "text": {"signal": "timeFormat(datum.value, '%b %d, %Y %H:%M')"}
+            "text": {
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"year\",\"month\",\"date\",\"hours\",\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            }
           }
         }
       },

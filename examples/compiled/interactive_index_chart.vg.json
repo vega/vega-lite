@@ -244,7 +244,9 @@
           "fill": {"value": "firebrick"},
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 310},
-          "text": {"signal": "timeFormat(datum[\"yearmonth_date\"], '%b %Y')"},
+          "text": {
+            "signal": "timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+          },
           "baseline": {"value": "middle"}
         }
       }
