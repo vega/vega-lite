@@ -65,13 +65,13 @@ For example:
 
 A linear gradient interpolates colors along a line, from a starting point to an ending point. By default a linear gradient runs horizontally, from left to right. Use the _x1_, _y1_, _x2_, and _y2_ properties to configure the gradient direction. All coordinates are defined in a normalized [0, 1] coordinate space, relative to the bounding box of the item being colored.
 
-{% include table.html props="gradient,x1,x2,y1,y2,stops" source="GradientLinear" %}
+{% include table.html props="gradient,x1,x2,y1,y2,stops" source="LinearGradient" %}
 
 <a name="RadialGradient" href="#radial-gradient">#</a> **Radial Gradient**
 
 A radial gradient interpolates colors between two circles, from an inner circle boundary to an outer circle boundary. By default a radial gradient runs from the center point of the coordinate system (zero radius inner circle), out to the maximum extent (0.5 radius outer circle). Use the _x1_, _y1_, _x2_, and _y2_ properties to configure the inner and outer circle center points, and use the _r1_ and _r2_ properties to configure the circle radii. All coordinates are defined in a normalized [0, 1] coordinate space, relative to the bounding box of the item being colored. A value of 1 corresponds to the maximum extent of the bounding box (width or height, whichever is larger).
 
-{% include table.html props="gradient,x1,x2,y1,y2,r1,r2,stops" source="GradientRadial" %}
+{% include table.html props="gradient,x1,x2,y1,y2,r1,r2,stops" source="RadialGradient" %}
 
 <a name="GradientStop" href="#gradient-stop">#</a> **Gradient Stop**
 
