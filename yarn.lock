@@ -518,7 +518,7 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/chai@^4.2.5":
+"@types/chai@^4.2.6":
   version "4.2.6"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.6.tgz#a55625d151d9c7c7a0a95920632131d66480bce9"
   integrity sha512-HF8faEUA4JurIm+68VaA2KedtZf5LYdXpQEAbIAN79DwWQbO82BNTksZgCH3UMqbZHXex9C6TrBfg7OUInRISQ==
@@ -899,7 +899,7 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@typescript-eslint/eslint-plugin@^2.9.0":
+"@typescript-eslint/eslint-plugin@^2.10.0":
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-2.10.0.tgz#c4cb103275e555e8a7e9b3d14c5951eb6d431e70"
   integrity sha512-rT51fNLW0u3fnDGnAHVC5nu+Das+y2CpW10yqvf6/j5xbuUV3FxA3mBaIbM24CXODXjbgUznNb4Kg9XZOUxKAw==
@@ -919,7 +919,7 @@
     "@typescript-eslint/typescript-estree" "2.10.0"
     eslint-scope "^5.0.0"
 
-"@typescript-eslint/parser@^2.9.0":
+"@typescript-eslint/parser@^2.10.0":
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-2.10.0.tgz#24b2e48384ab6d5a6121e4c4faf8892c79657ad3"
   integrity sha512-wQNiBokcP5ZsTuB+i4BlmVWq6o+oAhd8en2eSm/EE9m7BgZUIfEeYFd6z3S+T7bgNuloeiHA1/cevvbBDLr98g==
@@ -2587,7 +2587,7 @@ eslint-visitor-keys@^1.1.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.1.0.tgz#e2a82cea84ff246ad6fb57f9bde5b46621459ec2"
   integrity sha512-8y9YjtM1JBJU/A9Kc+SbaOV4y29sSWckBwMHa+FGtVj5gN/sbnKDf6xJUl+8g7FAij9LVaP8C24DUiH/f/2Z9A==
 
-eslint@^6.7.1:
+eslint@^6.7.2:
   version "6.7.2"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-6.7.2.tgz#c17707ca4ad7b2d8af986a33feba71e18a9fecd1"
   integrity sha512-qMlSWJaCSxDFr8fBPvJM9kJwbazrhNcBU3+DszDW1OlEwKBBRWsJc7NJFelvwQpanHCR14cOLD41x8Eqvo3Nng==
@@ -2831,10 +2831,10 @@ fast-deep-equal@^2.0.1:
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
   integrity sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
 
-fast-deep-equal@~3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.0.1.tgz#05a7fb9c3c34e594562b73c2b6e7ddaa92e5e79b"
-  integrity sha512-eV4KJB1HpEcckLU+u/i+FFZnvbeu34rQ514kL8m4uw7FyGWa7ltvz45vfDVFPZD+Z+h8WQL86+co5P3OWZrScw==
+fast-deep-equal@~3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.1.tgz#545145077c501491e33b15ec408c294376e94ae4"
+  integrity sha512-8UEa58QDLauDNfpbrX55Q9jrGHThw2ZMdOky5Gl1CDtVeJDPVrG4Jxx1N8jw2gkWaff5UUuX1KJd+9zGe2B+ZA==
 
 fast-diff@^1.1.2:
   version "1.2.0"
@@ -6192,7 +6192,7 @@ rollup-pluginutils@^2.0.1, rollup-pluginutils@^2.5.0, rollup-pluginutils@^2.8.1:
   dependencies:
     estree-walker "^0.6.1"
 
-rollup@^1.27.5:
+rollup@^1.27.8:
   version "1.27.8"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-1.27.8.tgz#94288a957af9f4c2380b73a17494d87705997d0f"
   integrity sha512-EVoEV5rAWl+5clnGznt1KY8PeVkzVQh/R0d2s3gHEkN7gfoyC4JmvIVuCtPbYE8NM5Ep/g+nAmvKXBjzaqTsHA==
@@ -6833,7 +6833,7 @@ teeny-request@^3.11.3:
     node-fetch "^2.2.0"
     uuid "^3.3.2"
 
-terser@^4.1.0, terser@^4.4.0:
+terser@^4.1.0, terser@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/terser/-/terser-4.4.2.tgz#448fffad0245f4c8a277ce89788b458bfd7706e8"
   integrity sha512-Uufrsvhj9O1ikwgITGsZ5EZS6qPokUOkCegS7fYOdGTv+OA90vndUbU6PEjr5ePqHfNUbGyMO7xyIZv2MhsALQ==
@@ -7064,7 +7064,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@~3.7.2:
+typescript@~3.7.2, typescript@~3.7.3:
   version "3.7.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.3.tgz#b36840668a16458a7025b9eabfad11b66ab85c69"
   integrity sha512-Mcr/Qk7hXqFBXMN7p7Lusj1ktCBydylfQM/FZCk5glCNQJrCUKPkMHdo9R0MTFWsC/4kPFvDS0fDPvukfCkFsw==
@@ -7226,12 +7226,12 @@ vega-encode@4.5.1:
     vega-time "^1.0.0"
     vega-util "^1.12.1"
 
-vega-event-selector@2.0.2, vega-event-selector@^2.0.2, vega-event-selector@~2.0.1:
+vega-event-selector@2.0.2, vega-event-selector@^2.0.2, vega-event-selector@~2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/vega-event-selector/-/vega-event-selector-2.0.2.tgz#bb64e1cfe047c6808878038319e18af6991759d9"
   integrity sha512-Uv72vBfM0lrlI2belKHFMZuVnW2uJl2ShqWPwGSXPVe6p+PzgqoPJYC8A/i5N8B54UA4UMDzlbBeo3x7q2W9Yg==
 
-vega-expression@2.6.3, vega-expression@^2.6.1, vega-expression@^2.6.3, vega-expression@~2.6.2:
+vega-expression@2.6.3, vega-expression@^2.6.1, vega-expression@^2.6.3, vega-expression@~2.6.3:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/vega-expression/-/vega-expression-2.6.3.tgz#11110922765cc495b8aebd8e05c4ec848d9f2b3b"
   integrity sha512-sME1+45BToTGsftb1Q6Ubs2iRYEoXkD2NRGnJuKS9YJ2ITzZwPHF/jy2kHW3iLpuNjj54meaO7HMQ/hUKrciUw==
@@ -7412,21 +7412,14 @@ vega-transforms@4.6.0:
     vega-time "^1.0.0"
     vega-util "^1.12.1"
 
-vega-typings@0.12.0:
+vega-typings@0.12.0, vega-typings@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.12.0.tgz#bf998252b7f72bb2f22d6d5a02813e0bd3685562"
   integrity sha512-K+IoUTTtXW3E1Qhr/y+JgLRxy476viAm6DeM8IiVrA8vvuLA3FTzHaeI7TCnaWEwk9xxLJBtdVKKC5FGbp0Nyw==
   dependencies:
     vega-util "^1.12.1"
 
-vega-typings@~0.11.1:
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.11.1.tgz#0a6d3476250147f8d6ed43cf436d9d6daa643ab9"
-  integrity sha512-yymFEW0fg/pjeuAsdMYLiwMW/Z0or45JJGUDiO+VSTF0dLE1qfQgWlpwm4gv2B/5Dx4FJEmj0OSTctOfjmFGCA==
-  dependencies:
-    vega-util "^1.11.0"
-
-vega-util@1.12.1, vega-util@^1.11.0, vega-util@^1.11.1, vega-util@^1.12.0, vega-util@^1.12.1, vega-util@^1.8.0, vega-util@~1.12.0:
+vega-util@1.12.1, vega-util@^1.11.0, vega-util@^1.11.1, vega-util@^1.12.0, vega-util@^1.12.1, vega-util@^1.8.0, vega-util@~1.12.1:
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.12.1.tgz#ade1c27ab30e6e330d4d3a99d108d2365ac08db0"
   integrity sha512-1WrfAULiInWUfgv+xsdCknYfxg0CDl6eFZf/7bSKsyn2agrQGOAm1YXEeWqkpwnWRmwt3gPs4IfTARVFwttcIw==
