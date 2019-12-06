@@ -1,7 +1,7 @@
 ---
 layout: page
 
-title: Table Binned heatmap
+title: 2D Histogram Heatmap
 menu: examples
 permalink: /examples/rect_binned_heatmap.html
 image: /examples/compiled/rect_binned_heatmap.png

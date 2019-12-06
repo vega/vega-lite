@@ -7,7 +7,7 @@
 
     <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
 
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Projection | Vega-Lite</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Projection" />
@@ -18,9 +18,10 @@
 <meta property="og:url" content="http://localhost:4000/vega-lite/docs/projection.html" />
 <meta property="og:site_name" content="Vega-Lite" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Projection" />
 <meta name="twitter:site" content="@vega_vis" />
 <script type="application/ld+json">
-{"description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","url":"http://localhost:4000/vega-lite/docs/projection.html","headline":"Projection","@context":"http://schema.org"}</script>
+{"url":"http://localhost:4000/vega-lite/docs/projection.html","headline":"Projection","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -461,15 +462,18 @@
 
 <p>See <a href="../examples/#maps-geographic-displays">the example gallery for more examples with geographic projection</a>.</p>
 
+<!--prettier-ignore-start-->
 <h2 class="no_toc" id="documentation-overview">Documentation Overview</h2>
 
 <ul id="markdown-toc">
-  <li><a href="#properties" id="markdown-toc-properties">Projection Properties</a></li>
+  <li><a href="#projection-properties" id="markdown-toc-projection-properties">Projection Properties</a></li>
   <li><a href="#projection-types" id="markdown-toc-projection-types">Projection Types</a></li>
   <li><a href="#config" id="markdown-toc-config">Projection Configuration</a></li>
 </ul>
 
-<h2 id="properties">Projection Properties</h2>
+<!--prettier-ignore-end-->
+
+<h2 id="projection-properties">Projection Properties</h2>
 
 <table class="doc-table">
   <thead>
@@ -509,7 +513,7 @@
 </td>
         <td>
   
-    <p>Sets the projection’s clipping circle radius to the specified angle in degrees. If <code>null</code>, switches to <a href="http://bl.ocks.org/mbostock/3788999">antimeridian</a> cutting rather than small-circle clipping.</p>
+    <p>The projection’s clipping circle radius to the specified angle in degrees. If <code>null</code>, switches to <a href="http://bl.ocks.org/mbostock/3788999">antimeridian</a> cutting rather than small-circle clipping.</p>
 
   
 
@@ -520,11 +524,11 @@
       
       <tr>
         <td>clipExtent</td>
-        <td>Number[]
+        <td>Vector2
 </td>
         <td>
   
-    <p>Sets the projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array <code>[[x0, y0], [x1, y1]]</code>, where <code>x0</code> is the left-side of the viewport, <code>y0</code> is the top, <code>x1</code> is the right and <code>y1</code> is the bottom. If <code>null</code>, no viewport clipping is performed.</p>
+    <p>The projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array <code>[[x0, y0], [x1, y1]]</code>, where <code>x0</code> is the left-side of the viewport, <code>y0</code> is the top, <code>x1</code> is the right and <code>y1</code> is the bottom. If <code>null</code>, no viewport clipping is performed.</p>
 
   
 
@@ -535,11 +539,11 @@
       
       <tr>
         <td>center</td>
-        <td>Number[]
+        <td>Vector2
 </td>
         <td>
   
-    <p>Sets the projection’s center to the specified center, a two-element array of longitude and latitude in degrees.</p>
+    <p>The projection’s center to the specified center, a two-element array of longitude and latitude in degrees.</p>
 
 <p><strong>Default value:</strong> <code>[0, 0]</code></p>
 
@@ -556,7 +560,7 @@
 </td>
         <td>
   
-    <p>Sets the projection’s scale (zoom) value, overriding automatic fitting.</p>
+    <p>The projection’s scale (zoom) value, overriding automatic fitting.</p>
 
   
 
@@ -567,11 +571,11 @@
       
       <tr>
         <td>translate</td>
-        <td>Number[]
+        <td>Vector2
 </td>
         <td>
   
-    <p>Sets the projection’s translation (pan) value, overriding automatic fitting.</p>
+    <p>The projection’s translation (pan) value, overriding automatic fitting.</p>
 
   
 
@@ -582,14 +586,27 @@
       
       <tr>
         <td>rotate</td>
+        <td>Vector2 | Vector3
+</td>
+        <td>
+  
+    <p>The projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [<code>lambda</code>, <code>phi</code>, <code>gamma</code>] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)</p>
+
+<p><strong>Default value:</strong> <code>[0, 0, 0]</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>parallels</td>
         <td>Number[]
 </td>
         <td>
   
-    <p>Sets the projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [<code>lambda</code>, <code>phi</code>, <code>gamma</code>] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)</p>
-
-<p><strong>Default value:</strong> <code>[0, 0, 0]</code></p>
-
   
 
 </td>
@@ -603,7 +620,7 @@
 </td>
         <td>
   
-    <p>Sets the threshold for the projection’s <a href="http://bl.ocks.org/mbostock/3795544">adaptive resampling</a> to the specified value in pixels. This value corresponds to the <a href="http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm">Douglas–Peucker distance</a>. If precision is not specified, returns the projection’s current resampling precision which defaults to <code>√0.5 ≅ 0.70710…</code>.</p>
+    <p>The threshold for the projection’s <a href="http://bl.ocks.org/mbostock/3795544">adaptive resampling</a> to the specified value in pixels. This value corresponds to the <a href="http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm">Douglas–Peucker distance</a>. If precision is not specified, returns the projection’s current resampling precision which defaults to <code>√0.5 ≅ 0.70710…</code>.</p>
 
   
 

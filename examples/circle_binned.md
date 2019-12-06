@@ -1,7 +1,7 @@
 ---
 layout: page
 
-title: Binned Scatterplot
+title: 2D Histogram Scatterplot
 menu: examples
 permalink: /examples/circle_binned.html
 image: /examples/compiled/circle_binned.png

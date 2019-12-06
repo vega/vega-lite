@@ -18,11 +18,14 @@ The `line` mark represents the data points stored in a field with a line connect
 
 **Note:** For line segments that connect (x,y) positions to (x2,y2) positions, please use [`rule`](rule.html) marks. For continuous lines with varying size, please use [`trail`](trail.html) marks.
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 {:#properties}
 

@@ -7,7 +7,7 @@
 
     <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
 
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Weekly Weather Plot | Vega-Lite</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Weekly Weather Plot" />
@@ -19,9 +19,11 @@
 <meta property="og:site_name" content="Vega-Lite" />
 <meta property="og:image" content="http://localhost:4000/vega-lite/examples/compiled/bar_layered_weather.png" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/vega-lite/examples/compiled/bar_layered_weather.png" />
+<meta property="twitter:title" content="Weekly Weather Plot" />
 <meta name="twitter:site" content="@vega_vis" />
 <script type="application/ld+json">
-{"description":"Inspired by this Vega example. Weekly weather data plot representing high/low ranges of record temperatures (light grey), average temperatures (dark grey), and both predicted and observed temperatures (black) for the given week. The first five days have high/low ranges of observed temperatures, and the last five days have ranges of predicted temperatures, where the upper barbell represents the range of high temperature predictions and the lower barbell represents the range of low temperature predictions. Created by @melissatdiamond.","@type":"WebPage","url":"http://localhost:4000/vega-lite/examples/bar_layered_weather.html","image":"http://localhost:4000/vega-lite/examples/compiled/bar_layered_weather.png","headline":"Weekly Weather Plot","@context":"http://schema.org"}</script>
+{"image":"http://localhost:4000/vega-lite/examples/compiled/bar_layered_weather.png","url":"http://localhost:4000/vega-lite/examples/bar_layered_weather.html","headline":"Weekly Weather Plot","description":"Inspired by this Vega example. Weekly weather data plot representing high/low ranges of record temperatures (light grey), average temperatures (dark grey), and both predicted and observed temperatures (black) for the given week. The first five days have high/low ranges of observed temperatures, and the last five days have ranges of predicted temperatures, where the upper barbell represents the range of high temperature predictions and the lower barbell represents the range of low temperature predictions. Created by @melissatdiamond.","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -74,8 +76,8 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "A layered bar chart with floating bars representing weekly weather data",
   "title": {
-    "text": "Weekly Weather Observations and Predictions",
-    "frame": "bounds"
+    "text": ["Weekly Weather", "Observations and Predictions"],
+    "frame": "group"
   },
   "data": {
     "url": "data/weather.json"
@@ -90,7 +92,7 @@
         "domain": false,
         "ticks": false,
         "labels": false,
-        "title": "Day",
+        "title": null,
         "titlePadding": 25,
         "orient": "top"
       }
@@ -204,8 +206,8 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "A layered bar chart with floating bars representing weekly weather data",
   "title": {
-    "text": "Weekly Weather Observations and Predictions",
-    "frame": "bounds"
+    "text": ["Weekly Weather", "Observations and Predictions"],
+    "frame": "group"
   },
   "data": {
     "url": "data/weather.json"
@@ -220,7 +222,7 @@
         "domain": false,
         "ticks": false,
         "labels": false,
-        "title": "Day",
+        "title": null,
         "titlePadding": 25,
         "orient": "top"
       }

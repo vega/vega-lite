@@ -7,7 +7,7 @@
 
     <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
 
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Lookup Transform | Vega-Lite</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Lookup Transform" />
@@ -18,9 +18,10 @@
 <meta property="og:url" content="http://localhost:4000/vega-lite/docs/lookup.html" />
 <meta property="og:site_name" content="Vega-Lite" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Lookup Transform" />
 <meta name="twitter:site" content="@vega_vis" />
 <script type="application/ld+json">
-{"description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","url":"http://localhost:4000/vega-lite/docs/lookup.html","headline":"Lookup Transform","@context":"http://schema.org"}</script>
+{"url":"http://localhost:4000/vega-lite/docs/lookup.html","headline":"Lookup Transform","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -487,10 +488,12 @@
       
       <tr>
         <td>lookup</td>
-        <td>Any
+        <td>String
 </td>
         <td>
   
+    <p><strong><em>Required.</em></strong> Key in primary data source.</p>
+
   
 
 </td>
@@ -500,10 +503,12 @@
       
       <tr>
         <td>from</td>
-        <td>Any
+        <td><a href="lookup.html#lookup-data">LookupData</a> | LookupSelection
 </td>
         <td>
   
+    <p><strong><em>Required.</em></strong> Data source or selection for secondary data reference.</p>
+
   
 
 </td>
@@ -513,10 +518,20 @@
       
       <tr>
         <td>as</td>
-        <td>Any
+        <td>FieldName | FieldName[]
 </td>
         <td>
   
+    <p>The output fields on which to store the looked up data values.</p>
+
+<p>For data lookups, this property may be left blank if <code>from.fields</code>
+has been specified (those field names will be used); if <code>from.fields</code>
+has not been specified, <code>as</code> must be a string.</p>
+
+<p>For selection lookups, this property is optional: if unspecified,
+looked up values will be stored under a property named for the selection;
+and if specified, it must correspond to <code>from.fields</code>.</p>
+
   
 
 </td>
@@ -526,10 +541,14 @@
       
       <tr>
         <td>default</td>
-        <td>Any
+        <td>String
 </td>
         <td>
   
+    <p>The default value to use if lookup fails.</p>
+
+<p><strong>Default value:</strong> <code>null</code></p>
+
   
 
 </td>
@@ -538,9 +557,9 @@
   </tbody>
 </table>
 
-<h2 id="lookup-data">Lookup Data</h2>
+<h3 id="lookup-data">Lookup Data</h3>
 
-<p>The secondary data reference (set with <code>from</code>) is an object that specifies how the lookup key should be matched to a second data source and what fields should be added.</p>
+<p>The secondary data reference (set with <code>from</code>) can be object that specifies how the lookup key should be matched to a second data source and what fields should be added.</p>
 
 <table class="doc-table">
   <thead>
@@ -604,11 +623,50 @@ If not specified, the entire object is queried.</p>
   </tbody>
 </table>
 
-<h2 id="example">Example</h2>
+<h4 id="example">Example</h4>
 
 <p>This example uses <code>lookup</code> to add the properties <code>age</code> and <code>height</code> to the main data source. The <code>person</code> field in the main data source is matched to the <code>name</code> field in the secondary data source.</p>
 
 <p><span class="vl-example" data-name="lookup"></span></p>
+
+<h3 id="lookup-selection">Lookup Selection</h3>
+
+<p>The secondary data reference (set with <code>from</code>) canalso be a selection name reference.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>selection</td>
+        <td>String
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> Selection name to look up.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h4 id="example-interactive-index-chart">Example: Interactive Index Chart</h4>
+
+<p><span class="vl-example" data-name="interactive_index_chart"></span></p>
 
 
   </section>

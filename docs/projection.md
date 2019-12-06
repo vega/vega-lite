@@ -13,17 +13,18 @@ For example, this example chart shows all airports in the United States by proje
 
 See [the example gallery for more examples with geographic projection](../examples/#maps-geographic-displays).
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
 
-{:#properties}
+<!--prettier-ignore-end-->
 
 ## Projection Properties
 
-{% include table.html props="type,clipAngle,clipExtent,center,scale,translate,rotate,precision" source="Projection" %}
+{% include table.html props="type,clipAngle,clipExtent,center,scale,translate,rotate,parallels,precision" source="Projection" %}
 
 If you want to explore the various available properties in more depth, Vega's projection documentation [hosts a useful demo](https://vega.github.io/vega/docs/projections/)
 

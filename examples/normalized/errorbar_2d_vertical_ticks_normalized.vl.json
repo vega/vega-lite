@@ -38,12 +38,7 @@
           "title": "Miles per Gallon (95% CIs)",
           "scale": {"zero": false}
         },
-        "x": {
-          "title": "Year (year)",
-          "type": "temporal",
-          "field": "year_Year",
-          "axis": {"format": "%Y"}
-        },
+        "x": {"title": "Year (year)", "type": "temporal", "field": "year_Year"},
         "tooltip": [
           {
             "field": "upper_Miles_per_Gallon",
@@ -60,12 +55,7 @@
             "type": "quantitative",
             "title": "Mean of Miles_per_Gallon"
           },
-          {
-            "title": "Year (year)",
-            "type": "temporal",
-            "field": "year_Year",
-            "axis": {"format": "%Y"}
-          }
+          {"title": "Year (year)", "type": "temporal", "field": "year_Year"}
         ]
       }
     },
@@ -82,12 +72,7 @@
           "title": "Miles per Gallon (95% CIs)",
           "scale": {"zero": false}
         },
-        "x": {
-          "title": "Year (year)",
-          "type": "temporal",
-          "field": "year_Year",
-          "axis": {"format": "%Y"}
-        },
+        "x": {"title": "Year (year)", "type": "temporal", "field": "year_Year"},
         "tooltip": [
           {
             "field": "upper_Miles_per_Gallon",
@@ -104,12 +89,7 @@
             "type": "quantitative",
             "title": "Mean of Miles_per_Gallon"
           },
-          {
-            "title": "Year (year)",
-            "type": "temporal",
-            "field": "year_Year",
-            "axis": {"format": "%Y"}
-          }
+          {"title": "Year (year)", "type": "temporal", "field": "year_Year"}
         ]
       }
     },
@@ -123,12 +103,7 @@
           "scale": {"zero": false}
         },
         "y2": {"field": "upper_Miles_per_Gallon", "type": "quantitative"},
-        "x": {
-          "title": "Year (year)",
-          "type": "temporal",
-          "field": "year_Year",
-          "axis": {"format": "%Y"}
-        },
+        "x": {"title": "Year (year)", "type": "temporal", "field": "year_Year"},
         "tooltip": [
           {
             "field": "upper_Miles_per_Gallon",
@@ -145,12 +120,7 @@
             "type": "quantitative",
             "title": "Mean of Miles_per_Gallon"
           },
-          {
-            "title": "Year (year)",
-            "type": "temporal",
-            "field": "year_Year",
-            "axis": {"format": "%Y"}
-          }
+          {"title": "Year (year)", "type": "temporal", "field": "year_Year"}
         ]
       }
     }

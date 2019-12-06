@@ -6,11 +6,14 @@ permalink: /docs/stack.html
 
 To stack fields in Vega-Lite, users can either use the `stack` property of an [encoding field definition](#encoding) or a `stack` transform inside the [`transform`](#transform) array.
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 {:#encoding}
 

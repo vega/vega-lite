@@ -39,8 +39,7 @@
             "x": {
               "title": "Year (year)",
               "type": "temporal",
-              "field": "year_Year",
-              "axis": {"format": "%Y"}
+              "field": "year_Year"
             },
             "tooltip": [
               {
@@ -58,12 +57,7 @@
                 "type": "quantitative",
                 "title": "Mean of Miles_per_Gallon"
               },
-              {
-                "title": "Year (year)",
-                "type": "temporal",
-                "field": "year_Year",
-                "axis": {"format": "%Y"}
-              }
+              {"title": "Year (year)", "type": "temporal", "field": "year_Year"}
             ]
           }
         }

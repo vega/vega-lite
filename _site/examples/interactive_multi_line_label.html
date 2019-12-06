@@ -7,7 +7,7 @@
 
     <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
 
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Multi Series Line Chart with Labels | Vega-Lite</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Multi Series Line Chart with Labels" />
@@ -19,9 +19,11 @@
 <meta property="og:site_name" content="Vega-Lite" />
 <meta property="og:image" content="http://localhost:4000/vega-lite/examples/compiled/interactive_multi_line_label.png" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/vega-lite/examples/compiled/interactive_multi_line_label.png" />
+<meta property="twitter:title" content="Multi Series Line Chart with Labels" />
 <meta name="twitter:site" content="@vega_vis" />
 <script type="application/ld+json">
-{"description":"The plot displays labels for all stock prices of the hovered time. The example is forked/modified from @jakevdp’s block.","@type":"WebPage","url":"http://localhost:4000/vega-lite/examples/interactive_multi_line_label.html","image":"http://localhost:4000/vega-lite/examples/compiled/interactive_multi_line_label.png","headline":"Multi Series Line Chart with Labels","@context":"http://schema.org"}</script>
+{"image":"http://localhost:4000/vega-lite/examples/compiled/interactive_multi_line_label.png","url":"http://localhost:4000/vega-lite/examples/interactive_multi_line_label.html","headline":"Multi Series Line Chart with Labels","description":"The plot displays labels for all stock prices of the hovered time. The example is forked/modified from @jakevdp’s block.","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -73,16 +75,10 @@
       const spec = {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {
-    "url": "data/stocks.csv",
-    "format": {
-      "type": "csv",
-      "parse": {
-        "date": "date"
-      }
-    }
+    "url": "data/stocks.csv"
   },
-  "width": 800,
-  "height": 400,
+  "width": 400,
+  "height": 300,
   "layer": [
     {
       "encoding": {
@@ -90,93 +86,65 @@
         "y": {"field": "price", "type": "quantitative"},
         "color": {"field": "symbol", "type": "nominal"}
       },
-      "layer": [{
-        "mark": "line"
-      },{
-        "selection": {
-          "label": {
-            "type": "single",
-            "nearest": true,
-            "on": "mouseover",
-            "encodings": [
-              "x"
-            ],
-            "empty": "none"
-          }
-        },
-        "mark": "point",
-        "encoding": {
-          "opacity": {
-            "condition": {
-              "selection": "label",
-              "value": 1
-            },
-            "value": 0
-          }
-        }
-      }]
-    },
-    {
-      "transform": [
+      "layer": [
+        {"mark": "line"},
         {
-          "filter": {
-            "selection": "label"
-          }
-        }
-      ],
-      "layer": [{
-        "mark": {
-         "type": "rule",
-         "color": "gray"
-        },
-        "encoding": {
-          "x": {
-            "type": "temporal",
-            "field": "date"
-          }
-        }
-      }, {
-        "encoding": {
-          "text": {
-            "type": "quantitative",
-            "field": "price"
+          "selection": {
+            "label": {
+              "type": "single",
+              "nearest": true,
+              "on": "mouseover",
+              "encodings": ["x"],
+              "empty": "none"
+            }
           },
-          "x": {
-            "type": "temporal",
-            "field": "date"
-          },
-          "y": {
-            "type": "quantitative",
-            "field": "price"
-          }
-        },
-        "layer": [{
-          "mark": {
-            "type": "text",
-            "stroke": "white",
-            "strokeWidth": 2,
-            "align": "left",
-            "dx": 5,
-            "dy": -5
-          }
-        }, {
-          "mark": {
-            "type": "text",
-            "align": "left",
-            "dx": 5,
-            "dy": -5
-          },
+          "mark": "point",
           "encoding": {
-            "color": {
-              "type": "nominal",
-              "field": "symbol",
-              "legend": null
+            "opacity": {
+              "condition": {"selection": "label", "value": 1},
+              "value": 0
             }
           }
-        }]
-      }]
-   }
- ]
+        }
+      ]
+    },
+    {
+      "transform": [{"filter": {"selection": "label"}}],
+      "layer": [
+        {
+          "mark": {"type": "rule", "color": "gray"},
+          "encoding": {
+            "x": {"type": "temporal", "field": "date"}
+          }
+        },
+        {
+          "encoding": {
+            "text": {"type": "quantitative", "field": "price"},
+            "x": {"type": "temporal", "field": "date"},
+            "y": {"type": "quantitative", "field": "price"}
+          },
+          "layer": [
+            {
+              "mark": {
+                "type": "text",
+                "stroke": "white",
+                "strokeWidth": 2,
+                "align": "left",
+                "dx": 5,
+                "dy": -5
+              }
+            },
+            {
+              "mark": {"type": "text", "align": "left", "dx": 5, "dy": -5},
+              "encoding": {
+                "color": {"type": "nominal", "field": "symbol", "legend": null}
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
 ;
 
@@ -193,16 +161,10 @@
 <pre class="example-spec"><code class="language-json">{
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {
-    "url": "data/stocks.csv",
-    "format": {
-      "type": "csv",
-      "parse": {
-        "date": "date"
-      }
-    }
+    "url": "data/stocks.csv"
   },
-  "width": 800,
-  "height": 400,
+  "width": 400,
+  "height": 300,
   "layer": [
     {
       "encoding": {
@@ -210,93 +172,65 @@
         "y": {"field": "price", "type": "quantitative"},
         "color": {"field": "symbol", "type": "nominal"}
       },
-      "layer": [{
-        "mark": "line"
-      },{
-        "selection": {
-          "label": {
-            "type": "single",
-            "nearest": true,
-            "on": "mouseover",
-            "encodings": [
-              "x"
-            ],
-            "empty": "none"
-          }
-        },
-        "mark": "point",
-        "encoding": {
-          "opacity": {
-            "condition": {
-              "selection": "label",
-              "value": 1
-            },
-            "value": 0
-          }
-        }
-      }]
-    },
-    {
-      "transform": [
+      "layer": [
+        {"mark": "line"},
         {
-          "filter": {
-            "selection": "label"
-          }
-        }
-      ],
-      "layer": [{
-        "mark": {
-         "type": "rule",
-         "color": "gray"
-        },
-        "encoding": {
-          "x": {
-            "type": "temporal",
-            "field": "date"
-          }
-        }
-      }, {
-        "encoding": {
-          "text": {
-            "type": "quantitative",
-            "field": "price"
+          "selection": {
+            "label": {
+              "type": "single",
+              "nearest": true,
+              "on": "mouseover",
+              "encodings": ["x"],
+              "empty": "none"
+            }
           },
-          "x": {
-            "type": "temporal",
-            "field": "date"
-          },
-          "y": {
-            "type": "quantitative",
-            "field": "price"
-          }
-        },
-        "layer": [{
-          "mark": {
-            "type": "text",
-            "stroke": "white",
-            "strokeWidth": 2,
-            "align": "left",
-            "dx": 5,
-            "dy": -5
-          }
-        }, {
-          "mark": {
-            "type": "text",
-            "align": "left",
-            "dx": 5,
-            "dy": -5
-          },
+          "mark": "point",
           "encoding": {
-            "color": {
-              "type": "nominal",
-              "field": "symbol",
-              "legend": null
+            "opacity": {
+              "condition": {"selection": "label", "value": 1},
+              "value": 0
             }
           }
-        }]
-      }]
-   }
- ]
+        }
+      ]
+    },
+    {
+      "transform": [{"filter": {"selection": "label"}}],
+      "layer": [
+        {
+          "mark": {"type": "rule", "color": "gray"},
+          "encoding": {
+            "x": {"type": "temporal", "field": "date"}
+          }
+        },
+        {
+          "encoding": {
+            "text": {"type": "quantitative", "field": "price"},
+            "x": {"type": "temporal", "field": "date"},
+            "y": {"type": "quantitative", "field": "price"}
+          },
+          "layer": [
+            {
+              "mark": {
+                "type": "text",
+                "stroke": "white",
+                "strokeWidth": 2,
+                "align": "left",
+                "dx": 5,
+                "dy": -5
+              }
+            },
+            {
+              "mark": {"type": "text", "align": "left", "dx": 5, "dy": -5},
+              "encoding": {
+                "color": {"type": "nominal", "field": "symbol", "legend": null}
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
 
 </code></pre>

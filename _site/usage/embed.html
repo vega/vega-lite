@@ -7,7 +7,7 @@
 
     <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
 
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Embedding Vega-Lite | Vega-Lite</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Embedding Vega-Lite" />
@@ -18,9 +18,10 @@
 <meta property="og:url" content="http://localhost:4000/vega-lite/usage/embed.html" />
 <meta property="og:site_name" content="Vega-Lite" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Embedding Vega-Lite" />
 <meta name="twitter:site" content="@vega_vis" />
 <script type="application/ld+json">
-{"description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","url":"http://localhost:4000/vega-lite/usage/embed.html","headline":"Embedding Vega-Lite","@context":"http://schema.org"}</script>
+{"url":"http://localhost:4000/vega-lite/usage/embed.html","headline":"Embedding Vega-Lite","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -94,15 +95,15 @@
 
 <p>For production deployments you will likely want to serve your own files or use a <a href="https://en.wikipedia.org/wiki/Content_delivery_network">content delivery network (CDN)</a>. Vega-Lite releases are hosted on <a href="https://www.jsdelivr.com/package/npm/vega-lite">jsDelivr</a>:</p>
 
-<pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/vega@5.8.1"&gt;&lt;/script&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.0-beta.12"&gt;&lt;/script&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/vega-embed@6.1.0"&gt;&lt;/script&gt;
+<pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/vega-lite@"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.0"&gt;&lt;/script&gt;
 </code></pre>
 
 <p>If you want to automatically use the latest versions of Vega-Lite, Vega, and Vega-Embed, you can specify only the major version.</p>
 
 <pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/vega@5"&gt;&lt;/script&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/vega-lite@4"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/vega-lite@"&gt;&lt;/script&gt;
 &lt;script src="https://cdn.jsdelivr.net/npm/vega-embed@6"&gt;&lt;/script&gt;
 </code></pre>
 
@@ -142,9 +143,9 @@ vegaEmbed('#vis', yourVlSpec);
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Embedding Vega-Lite&lt;/title&gt;
-    &lt;script src="https://cdn.jsdelivr.net/npm/vega@5.8.1"&gt;&lt;/script&gt;
-    &lt;script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.0-beta.12"&gt;&lt;/script&gt;
-    &lt;script src="https://cdn.jsdelivr.net/npm/vega-embed@6.1.0"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/vega-lite@"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.0"&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id="vis"&gt;&lt;/div&gt;

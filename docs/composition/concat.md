@@ -13,11 +13,14 @@ To place views side-by-side, Vega-Lite's [view composition](composition.html) pr
 
 If you concatenate similar views where the only difference is the field that is used in an encoding, use the [`repeat` operator](repeat.html).
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 {:#hconcat}
 

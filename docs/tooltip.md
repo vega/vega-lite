@@ -9,11 +9,14 @@ Tooltips can provide details of a particular data point on demand. Tooltips for 
 
 By default, the renderer will generate tooltips via native HTML ["title" attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/title). The [Vega Tooltip plugin](#plugin) can generate nice HTML tooltips.
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 {:#encoding}
 

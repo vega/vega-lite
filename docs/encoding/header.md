@@ -11,11 +11,14 @@ By default, Vega-Lite automatically creates headers with default properties for 
 
 In addition to the `header` property of a row- or column-field definition, users can also set default header properties for all headers with the configuration object's ([`config`](config.html)) [header configuration](#config) (`config: {header: {...}}`).
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 ## Header Properties
 

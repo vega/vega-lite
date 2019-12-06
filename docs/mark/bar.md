@@ -17,11 +17,14 @@ permalink: /docs/bar.html
 
 Bar marks are useful in many visualizations, including bar charts, [stacked bar charts](#stack), and [timelines](#ranged).
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 {:#properties}
 

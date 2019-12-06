@@ -7,7 +7,7 @@
 
     <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
 
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Parameter Types | Vega-Lite</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Parameter Types" />
@@ -18,9 +18,10 @@
 <meta property="og:url" content="http://localhost:4000/vega-lite/docs/types.html" />
 <meta property="og:site_name" content="Vega-Lite" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Parameter Types" />
 <meta name="twitter:site" content="@vega_vis" />
 <script type="application/ld+json">
-{"description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","url":"http://localhost:4000/vega-lite/docs/types.html","headline":"Parameter Types","@context":"http://schema.org"}</script>
+{"url":"http://localhost:4000/vega-lite/docs/types.html","headline":"Parameter Types","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -529,10 +530,12 @@
       
       <tr>
         <td>gradient</td>
-        <td>Any
+        <td>String
 </td>
         <td>
   
+    <p><strong><em>Required.</em></strong> The type of gradient. Use <code>"linear"</code> for a linear gradient.</p>
+
   
 
 </td>
@@ -542,10 +545,14 @@
       
       <tr>
         <td>x1</td>
-        <td>Any
+        <td>Number
 </td>
         <td>
   
+    <p>The starting x-coordinate, in normalized [0, 1] coordinates, of the linear gradient.</p>
+
+<p><strong>Default value:</strong> <code>0</code></p>
+
   
 
 </td>
@@ -555,10 +562,14 @@
       
       <tr>
         <td>x2</td>
-        <td>Any
+        <td>Number
 </td>
         <td>
   
+    <p>The ending x-coordinate, in normalized [0, 1] coordinates, of the linear gradient.</p>
+
+<p><strong>Default value:</strong> <code>1</code></p>
+
   
 
 </td>
@@ -568,10 +579,14 @@
       
       <tr>
         <td>y1</td>
-        <td>Any
+        <td>Number
 </td>
         <td>
   
+    <p>The starting y-coordinate, in normalized [0, 1] coordinates, of the linear gradient.</p>
+
+<p><strong>Default value:</strong> <code>0</code></p>
+
   
 
 </td>
@@ -581,10 +596,14 @@
       
       <tr>
         <td>y2</td>
-        <td>Any
+        <td>Number
 </td>
         <td>
   
+    <p>The ending y-coordinate, in normalized [0, 1] coordinates, of the linear gradient.</p>
+
+<p><strong>Default value:</strong> <code>0</code></p>
+
   
 
 </td>
@@ -594,10 +613,12 @@
       
       <tr>
         <td>stops</td>
-        <td>Any
+        <td><a href="types.html#gradient-stop">Stop</a>[]
 </td>
         <td>
   
+    <p><strong><em>Required.</em></strong> An array of gradient stops defining the gradient color sequence.</p>
+
   
 
 </td>
@@ -627,10 +648,12 @@
       
       <tr>
         <td>gradient</td>
-        <td>Any
+        <td>String
 </td>
         <td>
   
+    <p><strong><em>Required.</em></strong> The type of gradient. Use <code>"radial"</code> for a radial gradient.</p>
+
   
 
 </td>
@@ -640,10 +663,14 @@
       
       <tr>
         <td>x1</td>
-        <td>Any
+        <td>Number
 </td>
         <td>
   
+    <p>The x-coordinate, in normalized [0, 1] coordinates, for the center of the inner circle for the gradient.</p>
+
+<p><strong>Default value:</strong> <code>0.5</code></p>
+
   
 
 </td>
@@ -653,10 +680,14 @@
       
       <tr>
         <td>x2</td>
-        <td>Any
+        <td>Number
 </td>
         <td>
   
+    <p>The x-coordinate, in normalized [0, 1] coordinates, for the center of the outer circle for the gradient.</p>
+
+<p><strong>Default value:</strong> <code>0.5</code></p>
+
   
 
 </td>
@@ -666,10 +697,14 @@
       
       <tr>
         <td>y1</td>
-        <td>Any
+        <td>Number
 </td>
         <td>
   
+    <p>The y-coordinate, in normalized [0, 1] coordinates, for the center of the inner circle for the gradient.</p>
+
+<p><strong>Default value:</strong> <code>0.5</code></p>
+
   
 
 </td>
@@ -679,10 +714,14 @@
       
       <tr>
         <td>y2</td>
-        <td>Any
+        <td>Number
 </td>
         <td>
   
+    <p>The y-coordinate, in normalized [0, 1] coordinates, for the center of the outer circle for the gradient.</p>
+
+<p><strong>Default value:</strong> <code>0.5</code></p>
+
   
 
 </td>
@@ -692,10 +731,14 @@
       
       <tr>
         <td>r1</td>
-        <td>Any
+        <td>Number
 </td>
         <td>
   
+    <p>The radius length, in normalized [0, 1] coordinates, of the inner circle for the gradient.</p>
+
+<p><strong>Default value:</strong> <code>0</code></p>
+
   
 
 </td>
@@ -705,10 +748,14 @@
       
       <tr>
         <td>r2</td>
-        <td>Any
+        <td>Number
 </td>
         <td>
   
+    <p>The radius length, in normalized [0, 1] coordinates, of the outer circle for the gradient.</p>
+
+<p><strong>Default value:</strong> <code>0.5</code></p>
+
   
 
 </td>
@@ -718,10 +765,12 @@
       
       <tr>
         <td>stops</td>
-        <td>Any
+        <td><a href="types.html#gradient-stop">Stop</a>[]
 </td>
         <td>
   
+    <p><strong><em>Required.</em></strong> An array of gradient stops defining the gradient color sequence.</p>
+
   
 
 </td>

@@ -11,11 +11,14 @@ By default, Vega-Lite automatically creates axes with default properties for `x`
 
 Besides `axis` property of a field definition, the configuration object ([`config`](config.html)) also provides [axis config](#config) (`config: {axis: {...}}`) for setting default axis properties for all axes.
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
+
+<!--prettier-ignore-end-->
 
 ## Axis Properties
 
@@ -149,10 +152,6 @@ Axis configuration defines default settings for axes. Properties defined under t
 Additional property blocks can target more specific axis types based on the orientation (`"axisX"`, `"axisY"`, `"axisLeft"`, `"axisTop"`, etc.) or band scale type (`"axisBand"`). For example, properties defined under the `"axisBand"` property will only apply to axes visualizing `"band"` scales. If multiple axis config blocks apply to a single axis, type-based options take precedence over orientation-based options, which in turn take precedence over general options.
 
 An axis configuration supports all [axis properties](#properties) except `position`, `orient`, `format`, `tickCount`, `values`, and `zindex`.
-
-The `shortTimeLabels` property is also available for the general axis config (`config.axis`), but not for specific axis config (e.g., `config.axisX`).
-
-{% include table.html props="shortTimeLabels" source="AxisConfig" %}
 
 **See also:** [Axis Labels Properties](#labels) and [`guide-label` style config](mark.html#style-config) (common styles for by axis, [legend](legend.html), and [header](facet.html#header) labels).
 

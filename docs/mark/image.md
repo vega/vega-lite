@@ -17,12 +17,16 @@ permalink: /docs/image.html
 
 Image marks allow external images, such as icons or photographs, to be included in Vega-Lite visualizations. Image files such as PNG or JPG images are loaded from provided URLs.
 
+<!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
 
 - TOC
 {:toc}
-  {:#properties}
+
+<!--prettier-ignore-end-->
+
+{:#properties}
 
 ## Image Mark Properties
 

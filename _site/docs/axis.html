@@ -7,7 +7,7 @@
 
     <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
 
-    <!-- Begin Jekyll SEO tag v2.5.0 -->
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Axis | Vega-Lite</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Axis" />
@@ -18,9 +18,10 @@
 <meta property="og:url" content="http://localhost:4000/vega-lite/docs/axis.html" />
 <meta property="og:site_name" content="Vega-Lite" />
 <meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Axis" />
 <meta name="twitter:site" content="@vega_vis" />
 <script type="application/ld+json">
-{"description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","url":"http://localhost:4000/vega-lite/docs/axis.html","headline":"Axis","@context":"http://schema.org"}</script>
+{"url":"http://localhost:4000/vega-lite/docs/axis.html","headline":"Axis","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -459,6 +460,7 @@
 
 <p>Besides <code>axis</code> property of a field definition, the configuration object (<a href="config.html"><code>config</code></a>) also provides <a href="#config">axis config</a> (<code>config: {axis: {...}}</code>) for setting default axis properties for all axes.</p>
 
+<!--prettier-ignore-start-->
 <h2 class="no_toc" id="documentation-overview">Documentation Overview</h2>
 
 <ul id="markdown-toc">
@@ -480,6 +482,8 @@
   </li>
   <li><a href="#config" id="markdown-toc-config">Axis Config</a></li>
 </ul>
+
+<!--prettier-ignore-end-->
 
 <h2 id="axis-properties">Axis Properties</h2>
 
@@ -831,7 +835,7 @@ To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
       
       <tr>
         <td>labelAlign</td>
-        <td>String | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+        <td>String | ConditionalAxisNumber
 </td>
         <td>
   
@@ -868,7 +872,7 @@ To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
       
       <tr>
         <td>labelBaseline</td>
-        <td>String | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+        <td>String | ConditionalAxisLabelBaseline
 </td>
         <td>
   
@@ -914,7 +918,7 @@ To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
 
 
 
-  ConditionalAxisProperty
+  ConditionalAxisColor
 </td>
         <td>
   
@@ -985,7 +989,7 @@ To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
       
       <tr>
         <td>labelFont</td>
-        <td>String | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+        <td>String | ConditionalAxisString
 </td>
         <td>
   
@@ -1005,7 +1009,7 @@ To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
       
       <tr>
         <td>labelFontSize</td>
-        <td>Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+        <td>Number | ConditionalAxisNumber
 </td>
         <td>
   
@@ -1025,7 +1029,7 @@ To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
       
       <tr>
         <td>labelFontStyle</td>
-        <td>FontStyle | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+        <td>FontStyle | ConditionalAxisLabelFontStyle
 </td>
         <td>
   
@@ -1045,7 +1049,7 @@ To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
       
       <tr>
         <td>labelFontWeight</td>
-        <td>String | Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+        <td>String | Number | ConditionalAxisLabelFontWeight
 </td>
         <td>
   
@@ -1082,7 +1086,7 @@ To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
       
       <tr>
         <td>labelOpacity</td>
-        <td>Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+        <td>Number | ConditionalAxisNumber
 </td>
         <td>
   
@@ -1216,7 +1220,7 @@ To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
 
 
 
-  ConditionalAxisProperty
+  ConditionalAxisColor
 </td>
         <td>
   
@@ -1244,6 +1248,8 @@ To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
   
     <p>A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are “nice” (multiples of 2, 5, 10) and lie within the underlying scale’s range.</p>
 
+<p><strong>Default value</strong>: Determine using a formula <code>ceil(width/40)</code> for x and <code>ceil(height/40)</code> for y.</p>
+
   
 
 </td>
@@ -1253,7 +1259,7 @@ To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
       
       <tr>
         <td>tickDash</td>
-        <td>Number[] | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+        <td>Number[] | ConditionalAxisNumberArray
 </td>
         <td>
   
@@ -1320,7 +1326,7 @@ To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
       
       <tr>
         <td>tickOpacity</td>
-        <td>Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+        <td>Number | ConditionalAxisNumber
 </td>
         <td>
   
@@ -1374,7 +1380,7 @@ To put them in front, set <code>zindex</code> to <code>1</code> or more.</p>
       
       <tr>
         <td>tickWidth</td>
-        <td>Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+        <td>Number | ConditionalAxisNumber
 </td>
         <td>
   
@@ -1713,7 +1719,7 @@ This can be either a string (e.g <code>"bold"</code>, <code>"normal"</code>) or 
 
 
 
-  ConditionalAxisProperty
+  ConditionalAxisColor
 </td>
         <td>
   
@@ -1735,7 +1741,7 @@ This can be either a string (e.g <code>"bold"</code>, <code>"normal"</code>) or 
       
       <tr>
         <td>gridDash</td>
-        <td>Number[] | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+        <td>Number[] | ConditionalAxisNumberArray
 </td>
         <td>
   
@@ -1755,7 +1761,7 @@ This can be either a string (e.g <code>"bold"</code>, <code>"normal"</code>) or 
       
       <tr>
         <td>gridOpacity</td>
-        <td>Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+        <td>Number | ConditionalAxisNumber
 </td>
         <td>
   
@@ -1777,7 +1783,7 @@ This can be either a string (e.g <code>"bold"</code>, <code>"normal"</code>) or 
       
       <tr>
         <td>gridWidth</td>
-        <td>Number | <a href="axis.html#conditional">ConditionalAxisProperty</a>
+        <td>Number | ConditionalAxisNumber
 </td>
         <td>
   

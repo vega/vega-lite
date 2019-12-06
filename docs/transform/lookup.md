@@ -25,14 +25,24 @@ For each data object in the main data source, the transform tries to find a matc
 
 {% include table.html props="lookup,from,as,default" source="LookupTransform" %}
 
-## Lookup Data
+### Lookup Data
 
-The secondary data reference (set with `from`) is an object that specifies how the lookup key should be matched to a second data source and what fields should be added.
+The secondary data reference (set with `from`) can be object that specifies how the lookup key should be matched to a second data source and what fields should be added.
 
 {% include table.html props="data,key,fields" source="LookupData" %}
 
-## Example
+#### Example
 
 This example uses `lookup` to add the properties `age` and `height` to the main data source. The `person` field in the main data source is matched to the `name` field in the secondary data source.
 
 <span class="vl-example" data-name="lookup"></span>
+
+### Lookup Selection
+
+The secondary data reference (set with `from`) canalso be a selection name reference.
+
+{% include table.html props="selection" source="LookupSelection" %}
+
+#### Example: Interactive Index Chart
+
+<span class="vl-example" data-name="interactive_index_chart"></span>

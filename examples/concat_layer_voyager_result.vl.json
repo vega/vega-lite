@@ -154,7 +154,8 @@
           "mark": {
             "type": "text",
             "align": "right",
-            "style": "arrow-label"
+            "style": "arrow-label",
+            "text": ["Polestar", "More Valuable"]
           },
           "transform": [{"filter": "datum.label === 'PoleStar'"}],
           "encoding": {
@@ -162,10 +163,6 @@
               "field": "from",
               "type": "quantitative",
               "axis": null
-            },
-            "text": {
-              "field": "label",
-              "type": "nominal"
             }
           }
         },
@@ -173,7 +170,8 @@
           "mark": {
             "type": "text",
             "align": "left",
-            "style": "arrow-label"
+            "style": "arrow-label",
+            "text": ["Voyager / Voyager 2", "More Valuable"]
           },
           "transform": [{"filter": "datum.label !== 'PoleStar'"}],
           "encoding": {
@@ -181,43 +179,7 @@
               "field": "from",
               "type": "quantitative",
               "axis": null
-            },
-            "text": {
-              "field": "label",
-              "type": "nominal"
             }
-          }
-        },
-        {
-          "mark": {
-            "type": "text",
-            "align": "right",
-            "style": "arrow-label2"
-          },
-          "transform": [{"filter": "datum.label === 'PoleStar'"}],
-          "encoding": {
-            "x": {
-              "field": "from",
-              "type": "quantitative",
-              "axis": null
-            },
-            "text": {"value": "more valuable"}
-          }
-        },
-        {
-          "mark": {
-            "type": "text",
-            "align": "left",
-            "style": "arrow-label2"
-          },
-          "transform": [{"filter": "datum.label !== 'PoleStar'"}],
-          "encoding": {
-            "x": {
-              "field": "from",
-              "type": "quantitative",
-              "axis": null
-            },
-            "text": {"value": "more valuable"}
           }
         }
       ]
