@@ -6,8 +6,8 @@
   "width": 250,
   "height": 200,
   "title": {
-    "text": "Weekly Weather Observations and Predictions",
-    "frame": "bounds"
+    "text": ["Weekly Weather", "Observations and Predictions"],
+    "frame": "group"
   },
   "style": "cell",
   "data": [
@@ -356,7 +356,6 @@
       "scale": "x",
       "orient": "top",
       "grid": false,
-      "title": "Day",
       "domain": false,
       "labels": false,
       "ticks": false,
