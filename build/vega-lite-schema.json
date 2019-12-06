@@ -4347,42 +4347,6 @@
         }
       ]
     },
-    "DataLookupTransform": {
-      "additionalProperties": false,
-      "properties": {
-        "as": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FieldName"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/FieldName"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "The output fields on which to store the looked up data values.\n\nFor data lookups, this property may be left blank if `from.fields`\nhas been specified (those field names will be used); if `from.fields`\nhas not been specified, `as` must be a string.\n\nFor selection lookups, this property is optional: if unspecified,\nlooked up values will be stored under a property named for the selection;\nand if specified, it must correspond to `from.fields`."
-        },
-        "default": {
-          "description": "The default value to use if lookup fails.\n\n__Default value:__ `null`",
-          "type": "string"
-        },
-        "from": {
-          "$ref": "#/definitions/LookupData",
-          "description": "Secondary data reference."
-        },
-        "lookup": {
-          "description": "Key in primary data source.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "from",
-        "lookup"
-      ],
-      "type": "object"
-    },
     "DataSource": {
       "anyOf": [
         {
@@ -9852,6 +9816,7 @@
           "description": "Key in data to lookup."
         },
         "selection": {
+          "description": "Selection name to look up.",
           "type": "string"
         }
       },
@@ -9862,14 +9827,47 @@
       "type": "object"
     },
     "LookupTransform": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/DataLookupTransform"
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldName"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/FieldName"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "The output fields on which to store the looked up data values.\n\nFor data lookups, this property may be left blank if `from.fields`\nhas been specified (those field names will be used); if `from.fields`\nhas not been specified, `as` must be a string.\n\nFor selection lookups, this property is optional: if unspecified,\nlooked up values will be stored under a property named for the selection;\nand if specified, it must correspond to `from.fields`."
         },
-        {
-          "$ref": "#/definitions/SelectionLookupTransform"
+        "default": {
+          "description": "The default value to use if lookup fails.\n\n__Default value:__ `null`",
+          "type": "string"
+        },
+        "from": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LookupData"
+            },
+            {
+              "$ref": "#/definitions/LookupSelection"
+            }
+          ],
+          "description": "Data source or selection for secondary data reference."
+        },
+        "lookup": {
+          "description": "Key in primary data source.",
+          "type": "string"
         }
-      ]
+      },
+      "required": [
+        "lookup",
+        "from"
+      ],
+      "type": "object"
     },
     "Mark": {
       "description": "All types of primitive marks.",
@@ -13194,42 +13192,6 @@
     },
     "SelectionInitMapping": {
       "$ref": "#/definitions/Dict<SelectionInit>"
-    },
-    "SelectionLookupTransform": {
-      "additionalProperties": false,
-      "properties": {
-        "as": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FieldName"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/FieldName"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "The output fields on which to store the looked up data values.\n\nFor data lookups, this property may be left blank if `from.fields`\nhas been specified (those field names will be used); if `from.fields`\nhas not been specified, `as` must be a string.\n\nFor selection lookups, this property is optional: if unspecified,\nlooked up values will be stored under a property named for the selection;\nand if specified, it must correspond to `from.fields`."
-        },
-        "default": {
-          "description": "The default value to use if lookup fails.\n\n__Default value:__ `null`",
-          "type": "string"
-        },
-        "from": {
-          "$ref": "#/definitions/LookupSelection",
-          "description": "The selection to use as the secondary data reference."
-        },
-        "lookup": {
-          "description": "Key in primary data source.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "from",
-        "lookup"
-      ],
-      "type": "object"
     },
     "SelectionPredicate": {
       "additionalProperties": false,
