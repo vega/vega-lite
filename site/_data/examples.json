@@ -352,6 +352,22 @@
       {
         "name": "layer_line_window",
         "title": "Line Chart to Show Benchmarking Results"
+      },
+      {
+        "name": "area_density_stacked",
+        "title": "Stacked Density Estimates"
+      },
+      {
+        "name": "point_quantile_quantile",
+        "title": "Quantile-Quantile Plot (QQ Plot)"
+      },
+      {
+        "name": "layer_point_line_regression",
+        "title": "Linear Regression"
+      },
+      {
+        "name": "layer_point_line_loess",
+        "title": "Loess Regression"
       }
     ]
   },
@@ -438,6 +454,10 @@
         "name": "concat_layer_voyager_result",
         "title": "Comparative Likert Scale Ratings",
         "description": "Comparing Likert scale ratings between two conditions. (Figure 10. from @kanitw et al.'s \"Voyager 2: Augmenting Visual Analysis with Partial View Specifications\" -- http://idl.cs.washington.edu/files/2017-Voyager2-CHI.pdf)."
+      },
+      {
+        "name": "layer_bar_labels",
+        "title": "Bar with Label Overlays"
       }
     ],
     "Other Layered Plots": [
@@ -605,6 +625,10 @@
         "title": "Bar Chart with Highlighting on Hover and Selection on Click"
       },
       {
+        "name": "interactive_legend",
+        "title": "Interactive Legend"
+      },
+      {
         "name": "point_href",
         "title": "Scatterplot with External Links and Tooltips"
       },
@@ -664,6 +688,14 @@
       {
         "name": "bar_count_minimap",
         "title": "Bar Chart with a Minimap"
+      },
+      {
+        "name": "interactive_index_chart",
+        "title": "Interactive Index Chart"
+      },
+      {
+        "name": "interactive_bin_extent",
+        "title": "Focus + Context - Smooth Histogram Zooming"
       }
     ],
     "Interactive Multi-View Displays": [
