@@ -38,6 +38,10 @@
         "title": "Stacked Bar Chart"
       },
       {
+        "name": "stacked_bar_count_corner_radius_mark",
+        "title": "Stacked Bar Chart with Rounded Corners"
+      },
+      {
         "name": "stacked_bar_h",
         "title": "Horizontal Stacked Bar Chart"
       },

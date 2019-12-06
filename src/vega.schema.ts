@@ -223,6 +223,8 @@ export type VgEncodeChannel =
   | 'strokeDashOffset'
   | 'strokeMiterLimit'
   | 'strokeJoin'
+  | 'strokeOffset'
+  | 'strokeForeground'
   | 'cursor'
   | 'clip'
   | 'size'
@@ -686,6 +688,15 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
 };
 
 export const VG_MARK_CONFIGS = keys(VG_MARK_CONFIG_INDEX);
+
+// Vega's cornerRadius channels.
+export const VG_CORNERRADIUS_CHANNELS = [
+  'cornerRadius',
+  'cornerRadiusTopLeft',
+  'cornerRadiusTopRight',
+  'cornerRadiusBottomLeft',
+  'cornerRadiusBottomRight'
+] as const;
 
 export interface VgComparator {
   field?: string | string[];
