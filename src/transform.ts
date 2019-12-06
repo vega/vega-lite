@@ -326,7 +326,7 @@ export interface LookupSelection extends LookupBase {
   selection: string;
 }
 
-export interface BaseLookupTransform {
+export interface LookupTransform {
   /**
    * Key in primary data source.
    */
@@ -351,23 +351,24 @@ export interface BaseLookupTransform {
    * __Default value:__ `null`
    */
   default?: string;
-}
 
-export interface DataLookupTransform extends BaseLookupTransform {
   /**
-   * Secondary data reference.
+   * Data source or selection for secondary data reference.
    */
-  from: LookupData;
+  from: LookupData | LookupSelection;
 }
 
-export interface SelectionLookupTransform extends BaseLookupTransform {
-  /**
-   * The selection to use as the secondary data reference.
-   */
-  from: LookupSelection;
+export function isLookup(t: Transform): t is LookupTransform {
+  return t['lookup'] !== undefined;
 }
 
-export type LookupTransform = DataLookupTransform | SelectionLookupTransform;
+export function isLookupData(from: LookupData | LookupSelection): from is LookupData {
+  return from['data'] !== undefined;
+}
+
+export function isLookupSelection(from: LookupData | LookupSelection): from is LookupData {
+  return from['selection'] !== undefined;
+}
 
 export interface FoldTransform {
   /**
@@ -604,18 +605,6 @@ export interface LoessTransform {
 
 export function isLoess(t: Transform): t is LoessTransform {
   return t['loess'] !== undefined;
-}
-
-export function isLookup(t: Transform): t is LookupTransform {
-  return t['lookup'] !== undefined;
-}
-
-export function isDataLookup(t: Transform): t is DataLookupTransform {
-  return t['lookup'] !== undefined && t['from']['selection'] === undefined;
-}
-
-export function isSelectionLookup(t: Transform): t is SelectionLookupTransform {
-  return t['lookup'] !== undefined && t['from']['selection'] !== undefined;
 }
 
 export function isSample(t: Transform): t is SampleTransform {

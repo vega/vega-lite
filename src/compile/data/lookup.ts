@@ -1,8 +1,8 @@
-import {isString, array} from 'vega-util';
-import * as log from '../../log';
-import {LookupTransform, isDataLookup, isSelectionLookup} from '../../transform';
-import {duplicate, hash, varName} from '../../util';
 import {LookupTransform as VgLookupTransform} from 'vega';
+import {array, isString} from 'vega-util';
+import * as log from '../../log';
+import {isLookupData, isLookupSelection, LookupTransform} from '../../transform';
+import {duplicate, hash, varName} from '../../util';
 import {Model} from '../model';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {findSource} from './parse';
@@ -19,21 +19,22 @@ export class LookupNode extends DataFlowNode {
 
   public static make(parent: DataFlowNode, model: Model, transform: LookupTransform, counter: number) {
     const sources = model.component.data.sources;
+    const {from} = transform;
     let fromOutputNode = null;
 
-    if (isDataLookup(transform)) {
-      let fromSource = findSource(transform.from.data, sources);
+    if (isLookupData(from)) {
+      let fromSource = findSource(from.data, sources);
 
       if (!fromSource) {
-        fromSource = new SourceNode(transform.from.data);
+        fromSource = new SourceNode(from.data);
         sources.push(fromSource);
       }
 
       const fromOutputName = model.getName(`lookup_${counter}`);
       fromOutputNode = new OutputNode(fromSource, fromOutputName, 'lookup', model.component.data.outputNodeRefCounts);
       model.component.data.outputNodes[fromOutputName] = fromOutputNode;
-    } else if (isSelectionLookup(transform)) {
-      const selName = transform.from.selection;
+    } else if (isLookupSelection(from)) {
+      const selName = from.selection;
       transform.as = transform.as ?? selName;
       fromOutputNode = model.getSelectionComponent(varName(selName), selName).materialized;
       if (!fromOutputNode) {
