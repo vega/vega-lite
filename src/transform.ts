@@ -323,6 +323,9 @@ export interface LookupData extends LookupBase {
 }
 
 export interface LookupSelection extends LookupBase {
+  /**
+   * Selection name to look up.
+   */
   selection: string;
 }
 

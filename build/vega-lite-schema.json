@@ -2036,6 +2036,12 @@
           ],
           "type": "string"
         },
+        "labels": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "name": {
           "type": "string"
         },
@@ -9816,6 +9822,7 @@
           "description": "Key in data to lookup."
         },
         "selection": {
+          "description": "Selection name to look up.",
           "type": "string"
         }
       },
