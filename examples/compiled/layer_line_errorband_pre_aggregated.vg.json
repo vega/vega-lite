@@ -70,7 +70,7 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"ci0\": format(datum[\"upper_ci1\"], \"\"), \"ci1\": format(datum[\"lower_ci1\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
+            "signal": "{\"ci0\": format(datum[\"upper_ci1\"], \"\"), \"ci1\": format(datum[\"lower_ci1\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%b %d, %Y')}"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "lower_ci1"},
@@ -163,7 +163,11 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "encode": {
         "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
+          "update": {
+            "text": {
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            }
+          }
         }
       },
       "zindex": 0

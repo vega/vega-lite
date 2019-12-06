@@ -44,7 +44,6 @@ import {Config} from './config';
 import * as log from './log';
 import {Mark, MarkDef} from './mark';
 import {EncodingFacetMapping} from './spec/facet';
-import {getDateTimeComponents} from './timeunit';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {TEMPORAL} from './type';
 import {keys, some} from './util';
@@ -330,18 +329,22 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
           } else if (timeUnit) {
             timeUnits.push({timeUnit, field, as: newField});
 
-            // Add formatting to appropriate property based on the type of channel we're processing
-            const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
+            // define the format type for later compilation
             const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';
-            if (channel === 'text' || channel === 'tooltip') {
-              newFieldDef['format'] = newFieldDef['format'] ?? format;
-              if (formatType) {
+            if (formatType) {
+              if (channel === 'text' || channel === 'tooltip') {
                 newFieldDef['formatType'] = formatType;
+              } else if (isNonPositionScaleChannel(channel)) {
+                newFieldDef['legend'] = {
+                  formatType,
+                  ...newFieldDef['legend']
+                };
+              } else if (isPositionChannel) {
+                newFieldDef['axis'] = {
+                  formatType,
+                  ...newFieldDef['axis']
+                };
               }
-            } else if (isNonPositionScaleChannel(channel)) {
-              newFieldDef['legend'] = {format, ...(formatType ? {formatType} : {}), ...newFieldDef['legend']};
-            } else if (isPositionChannel) {
-              newFieldDef['axis'] = {format, ...(formatType ? {formatType} : {}), ...newFieldDef['axis']};
             }
           }
         }

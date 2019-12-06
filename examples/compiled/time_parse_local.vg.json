@@ -70,7 +70,11 @@
       "labelOverlap": true,
       "encode": {
         "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%H')"}}
+          "update": {
+            "text": {
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            }
+          }
         }
       },
       "zindex": 0

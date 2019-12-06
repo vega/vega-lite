@@ -43,7 +43,9 @@
           "fill": {"value": "black"},
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "mean_Horsepower"},
-          "text": {"signal": "timeFormat(datum[\"year_Year\"], '%Y')"},
+          "text": {
+            "signal": "timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+          },
           "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }
@@ -103,7 +105,11 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "encode": {
         "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
+          "update": {
+            "text": {
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            }
+          }
         }
       },
       "zindex": 0

@@ -409,7 +409,11 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "encode": {
         "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%b %Y')"}}
+          "update": {
+            "text": {
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            }
+          }
         }
       },
       "zindex": 0

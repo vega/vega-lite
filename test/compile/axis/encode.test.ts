@@ -34,7 +34,8 @@ describe('compile/axis/encode', () => {
         }
       });
       const labels = encode.labels(model, 'x', {});
-      const expected = "'Q' + quarter(datum.value)";
+      const expected =
+        'timeFormat(datum.value, timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))';
       expect(labels.text.signal).toEqual(expected);
     });
 
@@ -46,7 +47,8 @@ describe('compile/axis/encode', () => {
         }
       });
       const labels = encode.labels(model, 'x', {});
-      const expected = "'Q' + quarter(datum.value) + ' ' + timeFormat(datum.value, '%b %Y')";
+      const expected =
+        'timeFormat(datum.value, timeUnitSpecifier(["year","quarter","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))';
       expect(labels.text.signal).toEqual(expected);
     });
   });

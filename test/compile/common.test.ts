@@ -6,30 +6,18 @@ import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
 
 describe('Common', () => {
   describe('timeFormat()', () => {
-    it('should get the right time expression for month with shortTimeLabels=true', () => {
+    it('should get the right time expression for month', () => {
       const fieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
       const expression = timeFormatExpression(
         vgField(fieldDef, {expr: 'datum'}),
         TimeUnit.MONTH,
         undefined,
-        true,
         defaultConfig.timeFormat,
         false
       );
-      expect(expression).toBe(`timeFormat(datum["month_a"], '%b')`);
-    });
-
-    it('should get the right time expression for month with shortTimeLabels=false', () => {
-      const fieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
-      const expression = timeFormatExpression(
-        vgField(fieldDef, {expr: 'datum'}),
-        TimeUnit.MONTH,
-        undefined,
-        false,
-        defaultConfig.timeFormat,
-        false
+      expect(expression).toBe(
+        'timeFormat(datum["month_a"], timeUnitSpecifier(["month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
       );
-      expect(expression).toBe(`timeFormat(datum["month_a"], '%B')`);
     });
 
     it('should get the right time expression for yearmonth with custom format', () => {
@@ -38,7 +26,6 @@ describe('Common', () => {
         vgField(fieldDef, {expr: 'datum'}),
         TimeUnit.MONTH,
         '%Y',
-        true,
         defaultConfig.timeFormat,
         false
       );
@@ -51,11 +38,12 @@ describe('Common', () => {
         vgField(fieldDef, {expr: 'datum'}),
         TimeUnit.QUARTER,
         undefined,
-        true,
         defaultConfig.timeFormat,
         false
       );
-      expect(expression).toBe(`'Q' + quarter(datum["quarter_a"])`);
+      expect(expression).toBe(
+        'timeFormat(datum["quarter_a"], timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+      );
     });
 
     it('should get the right time expression for yearquarter', () => {
@@ -63,11 +51,12 @@ describe('Common', () => {
         'datum["data"]',
         TimeUnit.YEARQUARTER,
         undefined,
-        true,
         defaultConfig.timeFormat,
         false
       );
-      expect(expression).toBe(`'Q' + quarter(datum["data"]) + ' ' + timeFormat(datum["data"], '%y')`);
+      expect(expression).toBe(
+        'timeFormat(datum["data"], timeUnitSpecifier(["year","quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+      );
     });
 
     it('should get the right time expression for yearmonth with custom format and utc scale type', () => {
@@ -76,7 +65,6 @@ describe('Common', () => {
         vgField(fieldDef, {expr: 'datum'}),
         TimeUnit.MONTH,
         '%Y',
-        true,
         defaultConfig.timeFormat,
         true
       );

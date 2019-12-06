@@ -148,7 +148,11 @@
           "labelOverlap": true,
           "encode": {
             "labels": {
-              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+              "update": {
+                "text": {
+                  "signal": "timeFormat(datum.value, timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+                }
+              }
             }
           },
           "zindex": 0
@@ -216,7 +220,11 @@
           "labelOverlap": true,
           "encode": {
             "labels": {
-              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+              "update": {
+                "text": {
+                  "signal": "timeFormat(datum.value, timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+                }
+              }
             }
           },
           "zindex": 0

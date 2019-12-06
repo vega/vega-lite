@@ -87,7 +87,3 @@ By mapping geographic coordinate data to `longitude` and `latitude` channels of 
 ```
 
 The `text` property of the top-level [`config`](config.html) object sets the default properties for all text marks. If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
-
-Besides standard [mark properties](mark.html#config) and [special properties for text marks](#properties), text config can contain the following additional properties:
-
-{% include table.html props="shortTimeLabels" source="TextConfig" %}

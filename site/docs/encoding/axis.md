@@ -153,10 +153,6 @@ Additional property blocks can target more specific axis types based on the orie
 
 An axis configuration supports all [axis properties](#properties) except `position`, `orient`, `format`, `tickCount`, `values`, and `zindex`.
 
-The `shortTimeLabels` property is also available for the general axis config (`config.axis`), but not for specific axis config (e.g., `config.axisX`).
-
-{% include table.html props="shortTimeLabels" source="AxisConfig" %}
-
 **See also:** [Axis Labels Properties](#labels) and [`guide-label` style config](mark.html#style-config) (common styles for by axis, [legend](legend.html), and [header](facet.html#header) labels).
 
 <!-- hide as `grid` in axis config does not work yet.

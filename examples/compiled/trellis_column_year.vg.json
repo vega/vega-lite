@@ -82,7 +82,9 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"year_date\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "timeFormat(parent[\"year_date\"], '%Y')"},
+        "text": {
+          "signal": "timeFormat(parent[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+        },
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -108,7 +110,11 @@
           "labelOverlap": true,
           "encode": {
             "labels": {
-              "update": {"text": {"signal": "'Q' + quarter(datum.value)"}}
+              "update": {
+                "text": {
+                  "signal": "timeFormat(datum.value, timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+                }
+              }
             }
           },
           "zindex": 0

@@ -132,7 +132,11 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "encode": {
         "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
+          "update": {
+            "text": {
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            }
+          }
         }
       },
       "zindex": 0
@@ -155,7 +159,13 @@
       "title": "date (quarter)",
       "type": "symbol",
       "encode": {
-        "labels": {"update": {"text": {"signal": "'Q' + quarter(datum.value)"}}}
+        "labels": {
+          "update": {
+            "text": {
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            }
+          }
+        }
       }
     }
   ]

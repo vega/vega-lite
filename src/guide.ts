@@ -52,21 +52,12 @@ export interface Guide extends TitleMixins, FormatMixins {}
 
 export interface VlOnlyGuideConfig {
   /**
-   * Whether month names and weekday names should be abbreviated.
-   *
-   * __Default value:__  `false`
-   */
-  shortTimeLabels?: boolean;
-
-  /**
    * Set to null to disable title for the axis, legend, or header.
    */
   title?: null;
 }
 
 export type GuideEncodingEntry = {[k in VgEncodeChannel]?: ValueDef & ConditionValueDefMixins};
-
-export const VL_ONLY_GUIDE_CONFIG: (keyof VlOnlyGuideConfig)[] = ['shortTimeLabels'];
 
 export const VL_ONLY_LEGEND_CONFIG: (keyof LegendConfig)[] = [
   'gradientHorizontalMaxLength',

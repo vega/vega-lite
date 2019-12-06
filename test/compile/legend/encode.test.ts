@@ -120,7 +120,8 @@ describe('compile/legend', () => {
 
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
       const label = encode.labels(fieldDef, {}, model, COLOR, symbolLegend);
-      const expected = `timeFormat(datum.value, '%b')`;
+      const expected =
+        'timeFormat(datum.value, timeUnitSpecifier(["month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))';
       expect((label.text as SignalRef).signal).toEqual(expected);
     });
 
@@ -135,7 +136,8 @@ describe('compile/legend', () => {
 
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
       const label = encode.labels(fieldDef, {}, model, COLOR, symbolLegend);
-      const expected = `'Q' + quarter(datum.value)`;
+      const expected =
+        'timeFormat(datum.value, timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))';
       expect((label.text as SignalRef).signal).toEqual(expected);
     });
   });

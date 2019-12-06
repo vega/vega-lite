@@ -107,7 +107,9 @@
       "encode": {
         "labels": {
           "update": {
-            "text": {"signal": "utcFormat(datum.value, '%b %d, %Y %H:%M')"}
+            "text": {
+              "signal": "utcFormat(datum.value, timeUnitSpecifier([\"year\",\"month\",\"date\",\"hours\",\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            }
           }
         }
       },

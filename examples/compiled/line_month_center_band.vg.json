@@ -104,7 +104,11 @@
       "labelOverlap": true,
       "encode": {
         "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+          "update": {
+            "text": {
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            }
+          }
         }
       },
       "zindex": 0
@@ -118,5 +122,6 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"axis": {"shortTimeLabels": true}}
 }
