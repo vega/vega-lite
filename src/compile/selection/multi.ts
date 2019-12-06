@@ -1,3 +1,4 @@
+import {Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from '.';
 import {UnitModel} from '../unit';
@@ -27,13 +28,16 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
   // whitespace followed by a click in whitespace; the store should only
   // be cleared on the second click).
   const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
+
+  const events: Stream[] = selCmpt.events;
+
   return [
     {
       name: name + TUPLE,
-      on: selCmpt.events
+      on: events
         ? [
             {
-              events: selCmpt.events,
+              events,
               update: `datum && item().mark.marktype !== 'group' ? {${update}: [${values}]} : null`,
               force: true
             }
