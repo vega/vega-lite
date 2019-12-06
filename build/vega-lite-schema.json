@@ -612,7 +612,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>"
+              "$ref": "#/definitions/ConditionalAxisColor"
             }
           ]
         },
@@ -626,7 +626,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)927251285,undefined>927251285|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumberArray"
             }
           ]
         },
@@ -637,7 +637,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1806960624,undefined>1806960624|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -650,7 +650,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)702672441,undefined>702672441|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -662,7 +662,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)742391737,undefined>742391737|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -673,7 +673,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -690,7 +690,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>"
+              "$ref": "#/definitions/ConditionalAxisLabelBaseline"
             }
           ]
         },
@@ -715,7 +715,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>"
+              "$ref": "#/definitions/ConditionalAxisColor"
             }
           ]
         },
@@ -741,7 +741,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(string|undefined)1723860780,undefined>1723860780|null)>"
+              "$ref": "#/definitions/ConditionalAxisString"
             }
           ]
         },
@@ -753,7 +753,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)720879958,undefined>720879958|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -764,7 +764,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>"
+              "$ref": "#/definitions/ConditionalAxisLabelFontStyle"
             }
           ]
         },
@@ -775,7 +775,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>"
+              "$ref": "#/definitions/ConditionalAxisLabelFontWeight"
             }
           ]
         },
@@ -790,7 +790,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)377890894,undefined>377890894|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -852,7 +852,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>"
+              "$ref": "#/definitions/ConditionalAxisColor"
             }
           ]
         },
@@ -871,7 +871,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)105503503,undefined>105503503|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumberArray"
             }
           ]
         },
@@ -882,7 +882,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)61636408,undefined>61636408|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -905,7 +905,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1791665056,undefined>1791665056|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -926,7 +926,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1626350768,undefined>1626350768|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -1114,7 +1114,7 @@
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>"
+              "$ref": "#/definitions/ConditionalAxisColor"
             }
           ]
         },
@@ -1128,7 +1128,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)927251285,undefined>927251285|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumberArray"
             }
           ]
         },
@@ -1139,7 +1139,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1806960624,undefined>1806960624|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -1152,7 +1152,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)702672441,undefined>702672441|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -1164,7 +1164,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)742391737,undefined>742391737|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -1175,7 +1175,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -1192,7 +1192,7 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>"
+              "$ref": "#/definitions/ConditionalAxisLabelBaseline"
             }
           ]
         },
@@ -1217,7 +1217,7 @@
               "description": "The color of the tick label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>"
+              "$ref": "#/definitions/ConditionalAxisColor"
             }
           ]
         },
@@ -1239,7 +1239,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(string|undefined)1723860780,undefined>1723860780|null)>"
+              "$ref": "#/definitions/ConditionalAxisString"
             }
           ]
         },
@@ -1251,7 +1251,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)720879958,undefined>720879958|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -1262,7 +1262,7 @@
               "description": "Font style of the title."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>"
+              "$ref": "#/definitions/ConditionalAxisLabelFontStyle"
             }
           ]
         },
@@ -1273,7 +1273,7 @@
               "description": "Font weight of axis tick labels."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>"
+              "$ref": "#/definitions/ConditionalAxisLabelFontWeight"
             }
           ]
         },
@@ -1288,7 +1288,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)377890894,undefined>377890894|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -1346,7 +1346,7 @@
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>"
+              "$ref": "#/definitions/ConditionalAxisColor"
             }
           ]
         },
@@ -1360,7 +1360,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)105503503,undefined>105503503|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumberArray"
             }
           ]
         },
@@ -1371,7 +1371,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)61636408,undefined>61636408|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -1390,7 +1390,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1791665056,undefined>1791665056|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -1411,7 +1411,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1626350768,undefined>1626350768|null)>"
+              "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
@@ -2035,6 +2035,12 @@
             "select"
           ],
           "type": "string"
+        },
+        "labels": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
         },
         "name": {
           "type": "string"
@@ -2962,17 +2968,35 @@
         }
       ]
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>": {
+    "ConditionalAxisColor": {
+      "$ref": "#/definitions/ConditionalAxisProperty<(Color|null)>"
+    },
+    "ConditionalAxisLabelBaseline": {
+      "$ref": "#/definitions/ConditionalAxisProperty<(TextBaseline|null)>"
+    },
+    "ConditionalAxisLabelFontStyle": {
+      "$ref": "#/definitions/ConditionalAxisProperty<(FontStyle|null)>"
+    },
+    "ConditionalAxisLabelFontWeight": {
+      "$ref": "#/definitions/ConditionalAxisProperty<(FontWeight|null)>"
+    },
+    "ConditionalAxisNumber": {
+      "$ref": "#/definitions/ConditionalAxisProperty<(number|null)>"
+    },
+    "ConditionalAxisNumberArray": {
+      "$ref": "#/definitions/ConditionalAxisProperty<(number[]|null)>"
+    },
+    "ConditionalAxisProperty<(Color|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Color|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Color|null)>>"
               },
               "type": "array"
             }
@@ -2981,8 +3005,7 @@
         "value": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Align",
-              "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+              "$ref": "#/definitions/Color"
             },
             {
               "type": "null"
@@ -2997,17 +3020,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>": {
+    "ConditionalAxisProperty<(FontStyle|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontStyle|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontStyle|null)>>"
               },
               "type": "array"
             }
@@ -3016,8 +3039,7 @@
         "value": {
           "anyOf": [
             {
-              "$ref": "#/definitions/TextBaseline",
-              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+              "$ref": "#/definitions/FontStyle"
             },
             {
               "type": "null"
@@ -3032,17 +3054,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>": {
+    "ConditionalAxisProperty<(FontWeight|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontWeight|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontWeight|null)>>"
               },
               "type": "array"
             }
@@ -3051,8 +3073,7 @@
         "value": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FontWeight",
-              "description": "Font weight of axis tick labels."
+              "$ref": "#/definitions/FontWeight"
             },
             {
               "type": "null"
@@ -3067,17 +3088,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>": {
+    "ConditionalAxisProperty<(TextBaseline|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(TextBaseline|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(TextBaseline|null)>>"
               },
               "type": "array"
             }
@@ -3086,8 +3107,7 @@
         "value": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FontStyle",
-              "description": "Font style of the title."
+              "$ref": "#/definitions/TextBaseline"
             },
             {
               "type": "null"
@@ -3102,17 +3122,17 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>": {
+    "ConditionalAxisProperty<(number[]|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|null)>>"
               },
               "type": "array"
             }
@@ -3121,133 +3141,6 @@
         "value": {
           "anyOf": [
             {
-              "anyOf": [
-                {
-                  "type": "null"
-                },
-                {
-                  "$ref": "#/definitions/Color"
-                }
-              ],
-              "description": "The color of the tick label, can be in hex color code or regular color name."
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>>"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>>"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "null"
-                },
-                {
-                  "$ref": "#/definitions/Color"
-                }
-              ],
-              "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>>"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>>"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "null"
-                },
-                {
-                  "$ref": "#/definitions/Color"
-                }
-              ],
-              "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)105503503,undefined>105503503|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)105503503,undefined>105503503|null)>>"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)105503503,undefined>105503503|null)>>"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
               "items": {
                 "type": "number"
               },
@@ -3266,36 +3159,28 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)927251285,undefined>927251285|null)>": {
+    "ConditionalAxisProperty<(number|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)927251285,undefined>927251285|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)927251285,undefined>927251285|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|null)>>"
               },
               "type": "array"
             }
           ]
         },
         "value": {
-          "anyOf": [
-            {
-              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "type": [
+            "number",
+            "null"
+          ]
         }
       },
       "required": [
@@ -3304,34 +3189,28 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1626350768,undefined>1626350768|null)>": {
+    "ConditionalAxisProperty<(string|null)>": {
       "additionalProperties": false,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1626350768,undefined>1626350768|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1626350768,undefined>1626350768|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
               },
               "type": "array"
             }
           ]
         },
         "value": {
-          "anyOf": [
-            {
-              "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "required": [
@@ -3340,289 +3219,8 @@
       ],
       "type": "object"
     },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1791665056,undefined>1791665056|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1791665056,undefined>1791665056|null)>>"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1791665056,undefined>1791665056|null)>>"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "Opacity of the ticks.",
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1806960624,undefined>1806960624|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1806960624,undefined>1806960624|null)>>"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1806960624,undefined>1806960624|null)>>"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The pixel offset at which to start drawing with the grid dash array.",
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)377890894,undefined>377890894|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)377890894,undefined>377890894|null)>>"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)377890894,undefined>377890894|null)>>"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The opacity of the labels.",
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)61636408,undefined>61636408|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)61636408,undefined>61636408|null)>>"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)61636408,undefined>61636408|null)>>"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The pixel offset at which to start drawing with the tick mark dash array.",
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)702672441,undefined>702672441|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)702672441,undefined>702672441|null)>>"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)702672441,undefined>702672441|null)>>"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
-              "maximum": 1,
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)720879958,undefined>720879958|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)720879958,undefined>720879958|null)>>"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)720879958,undefined>720879958|null)>>"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The font size of the label, in pixels.",
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)742391737,undefined>742391737|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)742391737,undefined>742391737|null)>>"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)742391737,undefined>742391737|null)>>"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalAxisProperty<(alias-724931800-67988-68103-724931800-0-208413<(string|undefined)1723860780,undefined>1723860780|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(string|undefined)1723860780,undefined>1723860780|null)>>"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(string|undefined)1723860780,undefined>1723860780|null)>>"
-              },
-              "type": "array"
-            }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The font of the tick label.",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
+    "ConditionalAxisString": {
+      "$ref": "#/definitions/ConditionalAxisProperty<(string|null)>"
     },
     "ConditionalPredicate<MarkPropFieldDef>": {
       "additionalProperties": false,
@@ -3863,6 +3461,81 @@
       ],
       "type": "object"
     },
+    "ConditionalPredicate<ValueDef<(Color|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(FontStyle|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(FontWeight|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
     "ConditionalPredicate<ValueDef<(Gradient|string|null)>>": {
       "additionalProperties": false,
       "properties": {
@@ -3891,7 +3564,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-6039-6088-981995915-0-10466|undefined)870796116,undefined>870796116|null)>>": {
+    "ConditionalPredicate<ValueDef<(TextBaseline|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3901,8 +3574,7 @@
         "value": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Align",
-              "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
+              "$ref": "#/definitions/TextBaseline"
             },
             {
               "type": "null"
@@ -3917,7 +3589,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9003-9055-981995915-0-10466|undefined)186452232,undefined>186452232|null)>>": {
+    "ConditionalPredicate<ValueDef<(number[]|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -3927,184 +3599,6 @@
         "value": {
           "anyOf": [
             {
-              "$ref": "#/definitions/TextBaseline",
-              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9098-9247-981995915-0-10466|undefined)1209375024,undefined>1209375024|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontWeight",
-              "description": "Font weight of axis tick labels."
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(def-alias-981995915-9247-9388-981995915-0-10466|undefined)679934267,undefined>679934267|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontStyle",
-              "description": "Font style of the title."
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)1719818830,undefined>1719818830|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "null"
-                },
-                {
-                  "$ref": "#/definitions/Color"
-                }
-              ],
-              "description": "The color of the tick label, can be in hex color code or regular color name."
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)2086385775,undefined>2086385775|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "null"
-                },
-                {
-                  "$ref": "#/definitions/Color"
-                }
-              ],
-              "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(null|def-alias-1203634144-2468-2565-1203634144-0-2566|undefined)565543918,undefined>565543918|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "null"
-                },
-                {
-                  "$ref": "#/definitions/Color"
-                }
-              ],
-              "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)105503503,undefined>105503503|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
               "items": {
                 "type": "number"
               },
@@ -4123,7 +3617,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number[]|undefined)927251285,undefined>927251285|null)>>": {
+    "ConditionalPredicate<ValueDef<(number|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4131,258 +3625,11 @@
           "description": "Predicate for triggering the condition"
         },
         "value": {
-          "anyOf": [
-            {
-              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1626350768,undefined>1626350768|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1791665056,undefined>1791665056|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "Opacity of the ticks.",
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)1806960624,undefined>1806960624|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The pixel offset at which to start drawing with the grid dash array.",
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)377890894,undefined>377890894|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The opacity of the labels.",
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)61636408,undefined>61636408|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The pixel offset at which to start drawing with the tick mark dash array.",
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)702672441,undefined>702672441|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
-              "maximum": 1,
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)720879958,undefined>720879958|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The font size of the label, in pixels.",
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(number|undefined)742391737,undefined>742391737|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(alias-724931800-67988-68103-724931800-0-208413<(string|undefined)1723860780,undefined>1723860780|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "description": "The font of the tick label.",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "type": [
+            "number",
+            "null"
+          ]
         }
       },
       "required": [

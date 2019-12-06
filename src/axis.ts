@@ -1,4 +1,14 @@
-import {Axis as VgAxis, AxisEncode, AxisOrient, BaseAxis, LabelOverlap} from 'vega';
+import {
+  Axis as VgAxis,
+  AxisEncode,
+  AxisOrient,
+  BaseAxis,
+  Color,
+  FontStyle,
+  FontWeight,
+  LabelOverlap,
+  TextBaseline
+} from 'vega';
 import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
@@ -115,13 +125,40 @@ export function isConditionalAxisValue<V extends Value | number[]>(v: any): v is
   return v['condition'];
 }
 
+export type ConditionalAxisNumber = ConditionalAxisProperty<number | null>;
+export type ConditionalAxisLabelBaseline = ConditionalAxisProperty<TextBaseline | null>;
+export type ConditionalAxisColor = ConditionalAxisProperty<Color | null>;
+export type ConditionalAxisString = ConditionalAxisProperty<string | null>;
+
+export type ConditionalAxisLabelFontStyle = ConditionalAxisProperty<FontStyle | null>;
+export type ConditionalAxisLabelFontWeight = ConditionalAxisProperty<FontWeight | null>;
+
+export type ConditionalAxisNumberArray = ConditionalAxisProperty<number[] | null>;
+
 // Vega axis config is the same as Vega axis base. If this is not the case, add specific type.
-export type VgAxisConfigNoSignals = Omit<BaseAxisNoSignals, ConditionalAxisProp> &
-  {
-    [k in ConditionalAxisProp]?:
-      | BaseAxisNoSignals[k]
-      | ConditionalAxisProperty<Exclude<BaseAxisNoSignals[k], undefined> | null>;
-  };
+export type VgAxisConfigNoSignals = Omit<BaseAxisNoSignals, ConditionalAxisProp> & {
+  // The manual definition below is basically, but we have to do this manually to generate a nice schema
+  // [k in ConditionalAxisProp]?: BaseAxisNoSignals[k] | ConditionalAxisProperty<BaseAxisNoSignals[k] | null>;
+
+  labelAlign?: BaseAxisNoSignals['labelAlign'] | ConditionalAxisNumber;
+  labelBaseline?: BaseAxisNoSignals['labelBaseline'] | ConditionalAxisLabelBaseline;
+  labelColor?: BaseAxisNoSignals['labelColor'] | ConditionalAxisColor;
+  labelFont?: BaseAxisNoSignals['labelFont'] | ConditionalAxisString;
+  labelFontSize?: BaseAxisNoSignals['labelFontSize'] | ConditionalAxisNumber;
+  labelFontStyle?: BaseAxisNoSignals['labelFontStyle'] | ConditionalAxisLabelFontStyle;
+  labelFontWeight?: BaseAxisNoSignals['labelFontWeight'] | ConditionalAxisLabelFontWeight;
+  labelOpacity?: BaseAxisNoSignals['labelOpacity'] | ConditionalAxisNumber;
+  gridColor?: BaseAxisNoSignals['gridColor'] | ConditionalAxisColor;
+  gridDash?: BaseAxisNoSignals['gridDash'] | ConditionalAxisNumberArray;
+  gridDashOffset?: BaseAxisNoSignals['gridDashOffset'] | ConditionalAxisNumber;
+  gridOpacity?: BaseAxisNoSignals['gridOpacity'] | ConditionalAxisNumber;
+  gridWidth?: BaseAxisNoSignals['gridWidth'] | ConditionalAxisNumber;
+  tickColor?: BaseAxisNoSignals['tickColor'] | ConditionalAxisColor;
+  tickDash?: BaseAxisNoSignals['tickDash'] | ConditionalAxisNumberArray;
+  tickDashOffset?: BaseAxisNoSignals['tickDashOffset'] | ConditionalAxisNumber;
+  tickOpacity?: BaseAxisNoSignals['tickOpacity'] | ConditionalAxisNumber;
+  tickWidth?: BaseAxisNoSignals['tickWidth'] | ConditionalAxisNumber;
+};
 
 // Change comments to be Vega-Lite specific
 interface AxisMixins {
