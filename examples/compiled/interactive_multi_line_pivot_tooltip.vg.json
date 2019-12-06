@@ -6,7 +6,7 @@
   "height": 300,
   "style": "cell",
   "data": [
-    {"name": "label_store"},
+    {"name": "hover_store"},
     {
       "name": "source_0",
       "url": "data/stocks.csv",
@@ -17,22 +17,12 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "filter",
-          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {"type": "filter", "expr": "(vlSelectionTest(\"label_store\", datum))"}
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_1",
-      "transform": [
+          "type": "pivot",
+          "field": "symbol",
+          "value": "price",
+          "groupby": ["date"]
+        },
+        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
           "type": "filter",
           "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"])))"
@@ -40,9 +30,10 @@
       ]
     },
     {
-      "name": "data_3",
-      "source": "data_1",
+      "name": "data_1",
+      "source": "source_0",
       "transform": [
+        {"type": "filter", "expr": "(vlSelectionTest(\"hover_store\", datum))"},
         {
           "type": "filter",
           "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
@@ -59,36 +50,33 @@
       ]
     },
     {
-      "name": "label",
-      "update": "vlSelectionResolve(\"label_store\", \"union\")"
+      "name": "hover",
+      "update": "vlSelectionResolve(\"hover_store\", \"union\")"
     },
     {
-      "name": "label_tuple",
+      "name": "hover_tuple",
       "on": [
         {
           "events": [
             {
               "source": "scope",
               "type": "mouseover",
-              "markname": "layer_0_layer_1_voronoi"
+              "markname": "layer_1_voronoi"
             }
           ],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0_layer_1\", fields: label_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "scope", "type": "mouseout"}], "update": "null"}
       ]
     },
+    {"name": "hover_tuple_fields", "value": [{"type": "E", "field": "date"}]},
     {
-      "name": "label_tuple_fields",
-      "value": [{"field": "date", "channel": "x", "type": "E"}]
-    },
-    {
-      "name": "label_modify",
+      "name": "hover_modify",
       "on": [
         {
-          "events": {"signal": "label_tuple"},
-          "update": "modify(\"label_store\", label_tuple, true)"
+          "events": {"signal": "hover_tuple"},
+          "update": "modify(\"hover_store\", hover_tuple, true)"
         }
       ]
     }
@@ -135,14 +123,11 @@
       "name": "layer_0_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "interactive": true,
-      "from": {"data": "data_0"},
+      "interactive": false,
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "opacity": [
-            {"test": "(vlSelectionTest(\"label_store\", datum))", "value": 1},
-            {"value": 0}
-          ],
+          "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "symbol"},
           "x": {"scale": "x", "field": "date"},
@@ -151,36 +136,21 @@
       }
     },
     {
-      "name": "layer_0_layer_1_voronoi",
-      "type": "path",
-      "interactive": true,
-      "from": {"data": "layer_0_layer_1_marks"},
-      "encode": {
-        "update": {
-          "fill": {"value": "transparent"},
-          "strokeWidth": {"value": 0.35},
-          "stroke": {"value": "transparent"},
-          "isVoronoi": {"value": true}
-        }
-      },
-      "transform": [
-        {
-          "type": "voronoi",
-          "x": {"expr": "datum.datum.x || 0"},
-          "y": {"expr": "0"},
-          "size": [{"signal": "width"}, {"signal": "height"}]
-        }
-      ]
-    },
-    {
-      "name": "layer_1_layer_0_marks",
+      "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "interactive": false,
-      "from": {"data": "data_2"},
+      "interactive": true,
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "stroke": {"value": "gray"},
+          "stroke": {"value": "black"},
+          "opacity": [
+            {"test": "(vlSelectionTest(\"hover_store\", datum))", "value": 0.3},
+            {"value": 0}
+          ],
+          "tooltip": {
+            "signal": "{\"AAPL\": format(datum[\"AAPL\"], \"\"), \"AMZN\": format(datum[\"AMZN\"], \"\"), \"GOOG\": format(datum[\"GOOG\"], \"\"), \"IBM\": format(datum[\"IBM\"], \"\"), \"MSFT\": format(datum[\"MSFT\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"field": {"group": "height"}},
           "y2": {"value": 0}
@@ -188,44 +158,29 @@
       }
     },
     {
-      "name": "layer_1_layer_1_layer_0_marks",
-      "type": "text",
-      "style": ["text"],
-      "interactive": false,
-      "from": {"data": "data_3"},
+      "name": "layer_1_voronoi",
+      "type": "path",
+      "interactive": true,
+      "from": {"data": "layer_1_marks"},
       "encode": {
         "update": {
-          "stroke": {"value": "white"},
-          "strokeWidth": {"value": 2},
-          "align": {"value": "left"},
-          "dx": {"value": 5},
-          "dy": {"value": -5},
-          "fill": {"value": "black"},
-          "x": {"scale": "x", "field": "date"},
-          "y": {"scale": "y", "field": "price"},
-          "text": {"signal": "format(datum[\"price\"], \"\")"},
-          "baseline": {"value": "middle"}
+          "fill": {"value": "transparent"},
+          "strokeWidth": {"value": 0.35},
+          "stroke": {"value": "transparent"},
+          "isVoronoi": {"value": true},
+          "tooltip": {
+            "signal": "{\"AAPL\": format(datum.datum[\"AAPL\"], \"\"), \"AMZN\": format(datum.datum[\"AMZN\"], \"\"), \"GOOG\": format(datum.datum[\"GOOG\"], \"\"), \"IBM\": format(datum.datum[\"IBM\"], \"\"), \"MSFT\": format(datum.datum[\"MSFT\"], \"\")}"
+          }
         }
-      }
-    },
-    {
-      "name": "layer_1_layer_1_layer_1_marks",
-      "type": "text",
-      "style": ["text"],
-      "interactive": false,
-      "from": {"data": "data_3"},
-      "encode": {
-        "update": {
-          "align": {"value": "left"},
-          "dx": {"value": 5},
-          "dy": {"value": -5},
-          "fill": {"scale": "color", "field": "symbol"},
-          "x": {"scale": "x", "field": "date"},
-          "y": {"scale": "y", "field": "price"},
-          "text": {"signal": "format(datum[\"price\"], \"\")"},
-          "baseline": {"value": "middle"}
+      },
+      "transform": [
+        {
+          "type": "voronoi",
+          "x": {"expr": "datum.datum.x || 0"},
+          "y": {"expr": "datum.datum.y || 0"},
+          "size": [{"signal": "width"}, {"signal": "height"}]
         }
-      }
+      ]
     }
   ],
   "scales": [
@@ -235,9 +190,8 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "date"},
-          {"data": "data_0", "field": "date"},
-          {"data": "data_2", "field": "date"},
-          {"data": "data_3", "field": "date"}
+          {"data": "data_1", "field": "date"},
+          {"data": "data_0", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -248,8 +202,7 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "price"},
-          {"data": "data_0", "field": "price"},
-          {"data": "data_3", "field": "price"}
+          {"data": "data_1", "field": "price"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -262,8 +215,7 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "symbol"},
-          {"data": "data_0", "field": "symbol"},
-          {"data": "data_3", "field": "symbol"}
+          {"data": "data_1", "field": "symbol"}
         ],
         "sort": true
       },
@@ -325,7 +277,10 @@
       "title": "symbol",
       "encode": {
         "symbols": {
-          "update": {"fill": {"value": "transparent"}, "opacity": {"value": 1}}
+          "update": {
+            "fill": {"value": "transparent"},
+            "opacity": {"value": 0.7}
+          }
         }
       }
     }

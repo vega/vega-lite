@@ -55,3 +55,5 @@ produces the output:
 ## Example
 
 <div class="vl-example" data-name="bar_column_pivot"></div>
+
+<div class="vl-example" data-name="interactive_multi_line_pivot_tooltip"></div>
