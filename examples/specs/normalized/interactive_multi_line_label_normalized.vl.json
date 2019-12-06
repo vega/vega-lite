@@ -1,11 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {
-    "url": "data/stocks.csv",
-    "format": {"type": "csv", "parse": {"date": "date"}}
-  },
-  "width": 800,
-  "height": 400,
+  "data": {"url": "data/stocks.csv"},
+  "width": 400,
+  "height": 300,
   "layer": [
     {
       "layer": [
