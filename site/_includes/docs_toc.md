@@ -72,8 +72,6 @@
         - [Example]({{site.baseurl}}/docs/loess.html#example)
     - [Lookup]({{site.baseurl}}/docs/lookup.html)
         - [Lookup Transform]({{site.baseurl}}/docs/lookup.html#lookup-transform)
-        - [Lookup Data]({{site.baseurl}}/docs/lookup.html#lookup-data)
-        - [Example]({{site.baseurl}}/docs/lookup.html#example)
     - [Pivot]({{site.baseurl}}/docs/pivot.html)
         - [Pivot Transform Definition]({{site.baseurl}}/docs/pivot.html#pivot-transform-definition)
         - [Usage]({{site.baseurl}}/docs/pivot.html#usage)
