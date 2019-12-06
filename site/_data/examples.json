@@ -666,6 +666,12 @@
         "png": true
       },
       {
+        "name": "interactive_multi_line_pivot_tooltip",
+        "title": "Multi Series Line Chart with Tooltip",
+        "description": "The plot displays labels for all stock prices of the hovered time. This example uses a pivot transform to compute the data for the tooltip.",
+        "png": true
+      },
+      {
         "name": "interactive_multi_line_tooltip",
         "title": "Multi Series Line Chart with Tooltip",
         "description": "This plot requires the data to have different series in different fields.  See [#1274](https://github.com/vega/vega-lite/issues/1274) and [#1552](https://github.com/vega/vega-lite/issues/1552) for relevant future syntax improvements.",
