@@ -8,23 +8,28 @@
   "data": [
     {
       "name": "source_0",
-      "url": "data/movies.json",
+      "url": "data/iris.json",
       "format": {"type": "json"},
       "transform": [
         {
+          "type": "fold",
+          "fields": ["petalWidth", "petalLength", "sepalWidth", "sepalLength"],
+          "as": ["organ", "value"]
+        },
+        {
           "type": "kde",
-          "field": "IMDB_Rating",
+          "field": "value",
           "bandwidth": 0.3,
-          "groupby": ["Major_Genre"],
-          "extent": [0, 10],
+          "groupby": ["organ"],
+          "extent": [0, 8],
           "counts": true,
-          "steps": 50,
+          "steps": 200,
           "as": ["value", "density"]
         },
         {
           "type": "impute",
           "field": "density",
-          "groupby": ["Major_Genre"],
+          "groupby": ["organ"],
           "key": "value",
           "method": "value",
           "value": 0
@@ -33,7 +38,7 @@
           "type": "stack",
           "groupby": ["value"],
           "field": "density",
-          "sort": {"field": ["Major_Genre"], "order": ["descending"]},
+          "sort": {"field": ["organ"], "order": ["descending"]},
           "as": ["density_start", "density_end"],
           "offset": "zero"
         }
@@ -48,7 +53,7 @@
         "facet": {
           "name": "faceted_path_main",
           "data": "source_0",
-          "groupby": ["Major_Genre"]
+          "groupby": ["organ"]
         }
       },
       "encode": {
@@ -67,7 +72,7 @@
           "encode": {
             "update": {
               "orient": {"value": "vertical"},
-              "fill": {"scale": "color", "field": "Major_Genre"},
+              "fill": {"scale": "color", "field": "organ"},
               "x": {"scale": "x", "field": "value"},
               "y": {"scale": "y", "field": "density_end"},
               "y2": {"scale": "y", "field": "density_start"},
@@ -103,8 +108,8 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "Major_Genre", "sort": true},
-      "range": {"scheme": "category20"}
+      "domain": {"data": "source_0", "field": "organ", "sort": true},
+      "range": "category"
     }
   ],
   "axes": [
@@ -159,7 +164,7 @@
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
-      "title": "Major_Genre"
+      "title": "organ"
     }
   ]
 }

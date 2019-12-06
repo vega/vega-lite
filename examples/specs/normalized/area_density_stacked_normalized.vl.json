@@ -1,27 +1,27 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {"url": "data/movies.json"},
   "width": 400,
   "height": 100,
-  "data": {"url": "data/iris.json"},
-  "mark": "area",
   "transform": [
     {
-      "fold": ["petalWidth", "petalLength", "sepalWidth", "sepalLength"],
-      "as": ["organ", "value"]
-    },
-    {
-      "density": "value",
+      "density": "IMDB_Rating",
       "bandwidth": 0.3,
-      "groupby": ["organ"],
-      "extent": [0, 8],
+      "groupby": ["Major_Genre"],
+      "extent": [0, 10],
       "counts": true,
-      "steps": 200
+      "steps": 50
     }
   ],
+  "mark": "area",
   "encoding": {
     "x": {"field": "value", "type": "quantitative"},
-    "y": {"field": "density", "type": "quantitative", "stack": "zero"},
-    "color": {"field": "organ", "type": "nominal"}
+    "y": {"field": "density", "type": "quantitative", "stack": true},
+    "color": {
+      "field": "Major_Genre",
+      "type": "nominal",
+      "scale": {"scheme": "category20"}
+    }
   },
   "autosize": {"type": "pad"}
 }
