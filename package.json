@@ -108,7 +108,7 @@
     "ts-jest": "^24.2.0",
     "ts-json-schema-generator": "^0.57.0",
     "typescript": "~3.7.2",
-    "vega-cli": "^5.8.1",
+    "vega-cli": "^5.9.0",
     "vega-datasets": "^1.28.0",
     "vega-embed": "^6.2.0",
     "vega-tooltip": "^0.19.1",
@@ -130,7 +130,7 @@
     "yargs": "~15.0.2"
   },
   "peerDependencies": {
-    "vega": "^5.8.1"
+    "vega": "^5.9.0"
   },
   "husky": {
     "hooks": {
