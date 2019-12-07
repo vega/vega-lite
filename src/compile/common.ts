@@ -25,7 +25,7 @@ import {AxisComponentProps} from './axis/component';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
 
-export const BIN_RANGE_DELIMITER = '–';
+export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {
   for (const property of propsList) {
