@@ -4,14 +4,21 @@ import {
   Color,
   ColorValueRef,
   Compare as VgCompare,
+  Cursor,
   ExprRef as VgExprRef,
   Field as VgField,
   FontStyle as VgFontStyle,
   FontWeight as VgFontWeight,
+  GeoShapeTransform as VgGeoShapeTransform,
+  Interpolate,
   LayoutAlign,
   NumericValueRef,
   Orientation,
   ProjectionType,
+  RangeBand,
+  RangeRaw,
+  RangeScheme,
+  ScaleData,
   ScaledValueRef,
   SignalRef,
   SortField as VgSortField,
@@ -19,10 +26,7 @@ import {
   TextBaseline as VgTextBaseline,
   Title as VgTitle,
   Transforms as VgTransform,
-  UnionSortField as VgUnionSortField,
-  GeoShapeTransform as VgGeoShapeTransform,
-  Interpolate,
-  Cursor
+  UnionSortField as VgUnionSortField
 } from 'vega';
 import {isArray} from 'vega-util';
 import {Gradient, ValueOrGradientOrText} from './channeldef';
@@ -96,19 +100,7 @@ export interface VgFieldRefUnionDomain {
   sort?: VgUnionSortField;
 }
 
-export interface SchemeConfig {
-  scheme: string;
-  extent?: number[];
-  count?: number;
-}
-
-export type VgRange =
-  | string
-  | VgDataRef
-  | (number | string | VgDataRef | SignalRef)[]
-  | SchemeConfig
-  | VgRangeStep
-  | SignalRef;
+export type VgRange = RangeScheme | ScaleData | RangeBand | RangeRaw;
 
 export function isVgRangeStep(range: VgRange): range is VgRangeStep {
   return !!range['step'];

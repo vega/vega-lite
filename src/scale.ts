@@ -1,13 +1,14 @@
-import {toSet, isString} from 'vega-util';
+import {RangeEnum} from 'vega';
+import {isString, toSet} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, CHANNELS, isColorChannel} from './channel';
 import {DateTime} from './datetime';
 import * as log from './log';
+import {SelectionExtent} from './selection';
 import * as TYPE from './type';
 import {Type, TYPE_INDEX} from './type';
 import {contains, Flag, keys} from './util';
 import {ScaleInterpolate, ScaleInterpolateParams} from './vega.schema';
-import {SelectionExtent} from './selection';
 
 export namespace ScaleType {
   // Continuous - Quantitative
@@ -465,7 +466,7 @@ export interface Scale {
    *
    * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`).
    */
-  range?: number[] | string[] | string;
+  range?: number[] | string[] | RangeEnum;
 
   // ordinal
 
