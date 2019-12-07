@@ -42,7 +42,7 @@ The joinaggregate transform extends the input data objects with aggregate values
 
 ## Join Aggregate Transform Definition
 
-{% include table.html props="joinaggregate,frame,ignorePeers,groupby,sort" source="JoinAggregateTransform" %}
+{% include table.html props="joinaggregate,groupby" source="JoinAggregateTransform" %}
 
 {:#field-def}
 

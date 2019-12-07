@@ -6,12 +6,29 @@ Spec:
 CompositeUnitSpec:
   name: SingleViewSpec
   link: 'spec.html#single'
-ViewBackground:
-  name: 'spec.html#view-background'
+FacetedUnitSpec:
+  name: 'UnitSpec'
+  link: 'unit.html'
+UnitSpec:
+  link: 'unit.html'
 LayerSpec:
   link: 'layer.html'
+
 AutoSizeParams:
   link: 'size.html#autosize'
+ViewBackground:
+  link: 'spec.html#view-background'
+RowCol:
+  name: Object
+AutosizeType:
+  name: String
+Projection:
+  link: projection.html
+Step:
+  name: Object
+
+FontStyle:
+  name: String
 
 ## Facet Spec
 FacetMapping:
@@ -24,8 +41,16 @@ Data:
   link: 'data.html'
 DataFormat:
   link: 'data.html#format'
+InlineDataSet:
+  name: 'Object[]'
+Parse:
+  name: 'Object'
+FieldName:
+  name: String
 
 # Title
+TitleAnchor:
+  name: Null | String
 TitleParams:
   link: 'title.html#params'
 
@@ -35,25 +60,33 @@ Transform:
 
 AggregateOp:
   link: 'aggregate.html#ops'
+AggregatedFieldDef:
+  link: 'aggregate.html#aggregate-op-def'
 NonArgAggregateOp:
   name: AggregateOp
   link: 'aggregate.html#ops'
+AggregateOpDef:
+  link: 'transform.html#aggregate-op-def'
+
 Bin:
   link: 'bin.html'
 BinParams:
   link: 'bin.html#bin-parameters'
 'LogicalOperand<Predicate>':
-  name: Predicate
+BinExtent:
+  name: Array
+
+Predicate:
   link: 'transform.html#predicate'
-'LogicalOperand&lt;Predicate&gt;':
-  name: Predicate
-  link: 'transform.html#predicate'
-AggregateOpDef:
-  link: 'transform.html#aggregate-op-def'
+
 TimeUnit:
   link: 'timeunit.html'
+
 LookupData:
   link: 'lookup.html#lookup-data'
+LookupSelection:
+  link: 'lookup.html#lookup-selection'
+
 Window:
   link: 'window.html'
 
@@ -79,6 +112,8 @@ WindowOnlyOp:
 AnyMark:
   name: Mark
   link: mark.html
+OverlayMarkDef:
+  name: Object
 
 # Axes and Legends
 SymbolShape:
@@ -97,14 +132,22 @@ LegendConfig:
   link: 'legend.html#config'
 MarkConfig:
   link: 'mark.html#config'
+AreaConfig:
+  link: 'area.html#config'
 BarConfig:
   link: 'bar.html#config'
-RangeConfig:
-  link: 'scale.html#range-config'
-ScaleConfig:
-  link: 'scale.html#config'
+HeaderConfig:
+  link: 'header.html#config'
+LineConfig:
+  link: 'line.html#config'
 ProjectionConfig:
   link: 'projection.html#config'
+RangeConfig:
+  link: 'scale.html#range-config'
+RectConfig:
+  link: 'rect.html#config'
+ScaleConfig:
+  link: 'scale.html#config'
 SelectionConfig:
   link: 'selection.html#config'
 StyleConfigIndex:
@@ -121,9 +164,12 @@ CompositionConfig:
   link: 'config.html#composition-config'
 
 # Encoding
-EncodingWithFacet:
+FacetedEncoding:
   name: Encoding
   link: 'encoding.html'
+Encoding:
+  link: 'encoding.html'
+
 Type:
   link: type.html
 SingleDefChannel:
@@ -282,11 +328,13 @@ IntervalSelectionConfig:
   link: 'selection.html#definition'
 Binding:
   link: 'bind.html'
+LegendBinding:
+  link: 'https://vega.github.io/vega-lite/docs/bind.html#legend-binding'
 BrushConfig:
   name: Mark
   link: 'selection.html#interval-mark'
 Stream:
-  name: 'Vega Event Stream'
+  name: 'VegaEventStream'
   link: 'https://vega.github.io/vega/docs/event-streams/'
 SelectionResolution:
   link: 'selection.html#resolve'
@@ -298,13 +346,23 @@ SelectionInitIntervalMapping:
   link: 'init.html'
 
 # Types
+Any:
+  link: 'types.html#any'
 DateTime:
   link: 'types.html#datetime'
 Color:
   link: 'types.html#color'
+Gradient:
+  link: 'types.html#gradient'
 GradientStop:
   name: Stop
   link: 'types.html#gradient-stop'
+Text:
+  link: 'types.html#text'
+Vector2:
+  name: Array
+Vector3:
+  name: Array
 
 # Others
 FontWeight:
