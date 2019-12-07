@@ -220,6 +220,5 @@
         "opacity": {"value": 0.2}
       }
     }
-  ],
-  "autosize": {"type": "pad"}
+  ]
 }

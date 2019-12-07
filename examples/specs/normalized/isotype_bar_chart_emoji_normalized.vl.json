@@ -62,6 +62,5 @@
       "text": {"field": "emoji", "type": "nominal"},
       "size": {"value": 65}
     }
-  },
-  "autosize": {"type": "pad"}
+  }
 }

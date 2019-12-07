@@ -58,6 +58,5 @@
         "x": {"field": "yield", "aggregate": "mean", "type": "quantitative"}
       }
     }
-  ],
-  "autosize": {"type": "pad"}
+  ]
 }

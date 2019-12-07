@@ -64,6 +64,5 @@
         "opacity": {"value": 1}
       }
     }
-  ],
-  "autosize": {"type": "pad"}
+  ]
 }
