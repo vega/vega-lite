@@ -114,6 +114,5 @@
       "label": {"baseline": "middle", "align": "right", "dx": -5},
       "tick": {"orient": "horizontal"}
     }
-  },
-  "autosize": {"type": "pad"}
+  }
 }

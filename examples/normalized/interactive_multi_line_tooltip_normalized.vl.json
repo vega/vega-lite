@@ -44,6 +44,5 @@
       }
     }
   ],
-  "config": {"axisY": {"minExtent": 30}},
-  "autosize": {"type": "pad"}
+  "config": {"axisY": {"minExtent": 30}}
 }

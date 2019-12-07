@@ -37,6 +37,5 @@
   "config": {
     "scale": {"bandPaddingInner": 0, "bandPaddingOuter": 0},
     "text": {"baseline": "middle"}
-  },
-  "autosize": {"type": "pad"}
+  }
 }

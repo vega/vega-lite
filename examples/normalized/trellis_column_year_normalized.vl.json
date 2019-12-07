@@ -10,6 +10,5 @@
       "y": {"field": "price", "type": "quantitative", "aggregate": "mean"},
       "color": {"field": "symbol", "type": "nominal"}
     }
-  },
-  "autosize": {"type": "pad"}
+  }
 }

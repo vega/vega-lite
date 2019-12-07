@@ -37,6 +37,5 @@
         "opacity": {"value": 0.7}
       }
     }
-  ],
-  "autosize": {"type": "pad"}
+  ]
 }

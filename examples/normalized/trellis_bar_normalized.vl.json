@@ -24,6 +24,5 @@
         "scale": {"range": ["#675193", "#ca8861"]}
       }
     }
-  },
-  "autosize": {"type": "pad"}
+  }
 }

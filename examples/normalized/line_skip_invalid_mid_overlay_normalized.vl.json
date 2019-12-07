@@ -26,6 +26,5 @@
         "y": {"field": "y", "type": "quantitative"}
       }
     }
-  ],
-  "autosize": {"type": "pad"}
+  ]
 }

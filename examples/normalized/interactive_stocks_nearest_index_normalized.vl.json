@@ -47,6 +47,5 @@
       }
     }
   ],
-  "config": {"text": {"align": "right", "dx": -5, "dy": 5}},
-  "autosize": {"type": "pad"}
+  "config": {"text": {"align": "right", "dx": -5, "dy": 5}}
 }
