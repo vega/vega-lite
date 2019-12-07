@@ -150,11 +150,11 @@ function getTopLevelProperties(
 ) {
   const width = model.component.layoutSize.get('width');
   const height = model.component.layoutSize.get('height');
-
-  if (isString(autosize)) {
+  if (autosize === undefined) {
+    autosize = {type: 'pad'};
+  } else if (isString(autosize)) {
     autosize = {type: autosize};
   }
-
   if (width && height && isFitType(autosize.type)) {
     if (width === 'step' && height === 'step') {
       log.warn(log.message.droppingFit());
