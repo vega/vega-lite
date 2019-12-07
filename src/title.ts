@@ -2,11 +2,11 @@ import {BaseTitle, TextEncodeEntry, TitleAnchor, Text} from 'vega';
 import {BaseMarkConfig, ExcludeMappedValueRef} from './vega.schema';
 import {isString, isArray} from 'vega-util';
 
-export type BaseTitleNoSignals = ExcludeMappedValueRef<BaseTitle>;
+export type BaseTitleNoValueRefs = ExcludeMappedValueRef<BaseTitle>;
 
-export type TitleConfig = BaseTitleNoSignals;
+export type TitleConfig = BaseTitleNoValueRefs;
 
-export interface TitleBase extends BaseTitleNoSignals {
+export interface TitleBase extends BaseTitleNoValueRefs {
   /**
    * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
    *
@@ -58,7 +58,7 @@ export function extractTitleConfig(
   titleConfig: TitleConfig
 ): {
   mark: BaseMarkConfig;
-  nonMark: BaseTitleNoSignals;
+  nonMark: BaseTitleNoValueRefs;
 } {
   const {
     // These are non-mark title config that need to be hardcoded
@@ -77,7 +77,7 @@ export function extractTitleConfig(
     ...(color ? {fill: color} : {})
   };
 
-  const nonMark: BaseTitleNoSignals = {
+  const nonMark: BaseTitleNoValueRefs = {
     ...(anchor ? {anchor} : {}),
     ...(frame ? {frame} : {}),
     ...(offset ? {offset} : {}),

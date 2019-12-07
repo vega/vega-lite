@@ -1853,7 +1853,7 @@
       },
       "type": "object"
     },
-    "BaseTitleNoSignals": {
+    "BaseTitleNoValueRefs": {
       "$ref": "#/definitions/ExcludeMappedValueRef<BaseTitle>"
     },
     "Baseline": {
@@ -14277,7 +14277,7 @@
       ]
     },
     "TitleConfig": {
-      "$ref": "#/definitions/BaseTitleNoSignals"
+      "$ref": "#/definitions/BaseTitleNoValueRefs"
     },
     "TitleFrame": {
       "enum": [

@@ -2,7 +2,7 @@ import {Axis as VgAxis, Text} from 'vega';
 import {
   Axis,
   AxisPart,
-  BaseAxisNoSignals,
+  BaseAxisNoValueRefs,
   COMMON_AXIS_PROPERTIES_INDEX,
   ConditionalAxisProp,
   ConditionalAxisProperty
@@ -19,7 +19,7 @@ export type AxisComponentProps = Omit<VgAxis, 'title' | ConditionalAxisProp> & {
   title: Text | FieldDefBase<string>[];
   labelExpr: string;
 } & {
-    [k in ConditionalAxisProp]?: BaseAxisNoSignals[k] | ConditionalAxisProperty<BaseAxisNoSignals[k]>;
+    [k in ConditionalAxisProp]?: BaseAxisNoValueRefs[k] | ConditionalAxisProperty<BaseAxisNoValueRefs[k]>;
   };
 
 const AXIS_COMPONENT_PROPERTIES_INDEX: Flag<keyof AxisComponentProps> = {
