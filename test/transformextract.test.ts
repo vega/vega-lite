@@ -146,7 +146,11 @@ describe('extractTransforms()', () => {
     'time_parse_local.vl.json',
     'time_parse_utc.vl.json',
     'time_parse_utc_format.vl.json',
-    'window_cumulative_running_average.vl.json'
+    'window_cumulative_running_average.vl.json',
+    'stacked_bar_count_corner_radius_stroke.vl.json',
+    'stacked_bar_count_corner_radius_mark_x.vl.json',
+    'stacked_bar_count_corner_radius_mark.vl.json',
+    'stacked_bar_count_corner_radius_config.vl.json'
   ]);
 
   for (const file of fs.readdirSync(specsDir)) {
