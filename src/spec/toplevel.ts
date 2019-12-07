@@ -1,9 +1,9 @@
 import {Color} from 'vega';
+import {BaseSpec} from '.';
 import {getPositionScaleChannel} from '../channel';
 import {Config} from '../config';
 import {InlineDataset} from '../data';
 import {Dict} from '../util';
-import {BaseSpec} from '.';
 
 /**
  * @minimum 0
@@ -73,7 +73,7 @@ export function getFitType(sizeType?: 'width' | 'height'): FitType {
   return sizeType ? (`fit-${getPositionScaleChannel(sizeType)}` as FitType) : 'fit';
 }
 
-export type AutosizeType = 'pad' | 'none' | FitType;
+export type AutosizeType = 'pad' | 'none' | 'fit' | 'fit-x' | 'fit-y';
 
 export interface AutoSizeParams {
   /**
