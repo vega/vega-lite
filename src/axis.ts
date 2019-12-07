@@ -15,7 +15,7 @@ import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
 import {ExcludeMappedValueRef, VgEncodeChannel} from './vega.schema';
 
-export type BaseAxisNoSignals = AxisMixins & ExcludeMappedValueRef<BaseAxis>;
+export type BaseAxisNoValueRefs = AxisMixins & ExcludeMappedValueRef<BaseAxis>;
 
 export type ConditionalAxisProp =
   | 'labelAlign'
@@ -38,7 +38,7 @@ export type ConditionalAxisProp =
   | 'tickWidth';
 
 export const CONDITIONAL_AXIS_PROP_INDEX: {
-  [prop in keyof BaseAxisNoSignals | ConditionalAxisProp]?: {
+  [prop in keyof BaseAxisNoValueRefs | ConditionalAxisProp]?: {
     part: keyof AxisEncode;
     vgProp: VgEncodeChannel;
   };
@@ -136,28 +136,28 @@ export type ConditionalAxisLabelFontWeight = ConditionalAxisProperty<FontWeight 
 export type ConditionalAxisNumberArray = ConditionalAxisProperty<number[] | null>;
 
 // Vega axis config is the same as Vega axis base. If this is not the case, add specific type.
-export type VgAxisConfigNoSignals = Omit<BaseAxisNoSignals, ConditionalAxisProp> & {
+export type VgAxisConfigNoSignals = Omit<BaseAxisNoValueRefs, ConditionalAxisProp> & {
   // The manual definition below is basically, but we have to do this manually to generate a nice schema
   // [k in ConditionalAxisProp]?: BaseAxisNoSignals[k] | ConditionalAxisProperty<BaseAxisNoSignals[k] | null>;
 
-  labelAlign?: BaseAxisNoSignals['labelAlign'] | ConditionalAxisNumber;
-  labelBaseline?: BaseAxisNoSignals['labelBaseline'] | ConditionalAxisLabelBaseline;
-  labelColor?: BaseAxisNoSignals['labelColor'] | ConditionalAxisColor;
-  labelFont?: BaseAxisNoSignals['labelFont'] | ConditionalAxisString;
-  labelFontSize?: BaseAxisNoSignals['labelFontSize'] | ConditionalAxisNumber;
-  labelFontStyle?: BaseAxisNoSignals['labelFontStyle'] | ConditionalAxisLabelFontStyle;
-  labelFontWeight?: BaseAxisNoSignals['labelFontWeight'] | ConditionalAxisLabelFontWeight;
-  labelOpacity?: BaseAxisNoSignals['labelOpacity'] | ConditionalAxisNumber;
-  gridColor?: BaseAxisNoSignals['gridColor'] | ConditionalAxisColor;
-  gridDash?: BaseAxisNoSignals['gridDash'] | ConditionalAxisNumberArray;
-  gridDashOffset?: BaseAxisNoSignals['gridDashOffset'] | ConditionalAxisNumber;
-  gridOpacity?: BaseAxisNoSignals['gridOpacity'] | ConditionalAxisNumber;
-  gridWidth?: BaseAxisNoSignals['gridWidth'] | ConditionalAxisNumber;
-  tickColor?: BaseAxisNoSignals['tickColor'] | ConditionalAxisColor;
-  tickDash?: BaseAxisNoSignals['tickDash'] | ConditionalAxisNumberArray;
-  tickDashOffset?: BaseAxisNoSignals['tickDashOffset'] | ConditionalAxisNumber;
-  tickOpacity?: BaseAxisNoSignals['tickOpacity'] | ConditionalAxisNumber;
-  tickWidth?: BaseAxisNoSignals['tickWidth'] | ConditionalAxisNumber;
+  labelAlign?: BaseAxisNoValueRefs['labelAlign'] | ConditionalAxisNumber;
+  labelBaseline?: BaseAxisNoValueRefs['labelBaseline'] | ConditionalAxisLabelBaseline;
+  labelColor?: BaseAxisNoValueRefs['labelColor'] | ConditionalAxisColor;
+  labelFont?: BaseAxisNoValueRefs['labelFont'] | ConditionalAxisString;
+  labelFontSize?: BaseAxisNoValueRefs['labelFontSize'] | ConditionalAxisNumber;
+  labelFontStyle?: BaseAxisNoValueRefs['labelFontStyle'] | ConditionalAxisLabelFontStyle;
+  labelFontWeight?: BaseAxisNoValueRefs['labelFontWeight'] | ConditionalAxisLabelFontWeight;
+  labelOpacity?: BaseAxisNoValueRefs['labelOpacity'] | ConditionalAxisNumber;
+  gridColor?: BaseAxisNoValueRefs['gridColor'] | ConditionalAxisColor;
+  gridDash?: BaseAxisNoValueRefs['gridDash'] | ConditionalAxisNumberArray;
+  gridDashOffset?: BaseAxisNoValueRefs['gridDashOffset'] | ConditionalAxisNumber;
+  gridOpacity?: BaseAxisNoValueRefs['gridOpacity'] | ConditionalAxisNumber;
+  gridWidth?: BaseAxisNoValueRefs['gridWidth'] | ConditionalAxisNumber;
+  tickColor?: BaseAxisNoValueRefs['tickColor'] | ConditionalAxisColor;
+  tickDash?: BaseAxisNoValueRefs['tickDash'] | ConditionalAxisNumberArray;
+  tickDashOffset?: BaseAxisNoValueRefs['tickDashOffset'] | ConditionalAxisNumber;
+  tickOpacity?: BaseAxisNoValueRefs['tickOpacity'] | ConditionalAxisNumber;
+  tickWidth?: BaseAxisNoValueRefs['tickWidth'] | ConditionalAxisNumber;
 };
 
 // Change comments to be Vega-Lite specific
