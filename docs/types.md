@@ -22,6 +22,7 @@ Reference documentation for common parameter **types** expected by Vega-Lite spe
 - [Number](#number)
 - [Object](#object)
 - [String](#string)
+- [Text](#text)
 - [URL](#url)
 
 ## Literal Values
@@ -110,6 +111,10 @@ Accepts object literals. For example: `{"left":5, "right":30, "top":5, "bottom":
 <br/><a name="string" href="#string">#</a> **String**
 
 Accepts string values. For example: `"bold"`, `"step-before"`, `""`.
+
+<br/><a name="text" href="#text">#</a> **Text**
+
+Accepts string values or arrays of strings (for multi-line text).
 
 <br/><a name="url" href="#url">#</a> **URL**
 
