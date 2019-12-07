@@ -20,7 +20,6 @@ describe('normalizeErrorBand', () => {
       data: {
         url: 'data/population.json'
       },
-      autosize: {type: 'pad'},
       transform: [
         {
           aggregate: [

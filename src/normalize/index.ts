@@ -9,10 +9,11 @@ import {
   isUnitSpec,
   LayoutSizeMixins,
   NormalizedSpec,
+  TopLevelSpec,
   UnitSpec
 } from '../spec';
-import {TopLevelSpec} from '../spec';
 import {AutoSizeParams, AutosizeType, TopLevel} from '../spec/toplevel';
+import {deepEqual} from '../util';
 import {NormalizerParams} from './base';
 import {CoreNormalizer} from './core';
 
@@ -26,11 +27,12 @@ export function normalize(
 
   const normalizedSpec = normalizeGenericSpec(spec, config);
 
-  const {width, height, autosize} = spec;
+  const {width, height} = spec;
+  const autosize = normalizeAutoSize(normalizedSpec, {width, height, autosize: spec.autosize}, config);
 
   return {
     ...normalizedSpec,
-    autosize: normalizeAutoSize(normalizedSpec, {width, height, autosize}, config)
+    ...(autosize ? {autosize} : {})
   };
 }
 
@@ -101,6 +103,11 @@ export function normalizeAutoSize(
   }
   if (height == 'container' && !(autosize.type == 'fit' || autosize.type == 'fit-y')) {
     log.warn(log.message.containerSizeNotCompatibleWithAutosize('height'));
+  }
+
+  // Delete autosize property if it's Vega's default
+  if (deepEqual(autosize, {type: 'pad'})) {
+    return undefined;
   }
 
   return autosize;

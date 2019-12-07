@@ -366,7 +366,7 @@ describe('compile/compile', () => {
         ]
       });
       expect(localLogger.warns[0]).toEqual(log.message.FIT_NON_SINGLE);
-      expect(spec.autosize).toBeUndefined();
+      expect(spec.autosize).toEqual('fit');
     })
   );
 
