@@ -1,4 +1,4 @@
-import {containsTimeUnit, convert, fieldExpr, formatExpression, TimeUnit} from '../src/timeunit';
+import {containsTimeUnit, fieldExpr, formatExpression, TimeUnit} from '../src/timeunit';
 
 describe('timeUnit', () => {
   describe('containsTimeUnit', () => {
@@ -66,94 +66,6 @@ describe('timeUnit', () => {
       expect(fieldExpr(TimeUnit.UTCQUARTER, 'x')).toBe('datetime(0, (utcquarter(datum["x"])-1)*3, 1, 0, 0, 0, 0)');
 
       expect(fieldExpr(TimeUnit.UTCMILLISECONDS, 'x')).toBe('datetime(0, 0, 1, 0, 0, 0, utcmilliseconds(datum["x"]))');
-    });
-  });
-
-  describe('convert', () => {
-    it('should throw an error for the DAY timeunit', () => {
-      expect(() => {
-        convert(TimeUnit.DAY, new Date(2000, 11, 2, 23, 59, 59, 999));
-      }).toThrowError("Cannot convert to TimeUnits containing 'day'");
-    });
-
-    it('should return expected result for YEARQUARTER', () => {
-      const date: Date = convert(TimeUnit.YEARQUARTER, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(2000, 9, 1, 0, 0, 0, 0).getTime());
-    });
-
-    it('should return expected result for UTCYEARQUARTER', () => {
-      const date: Date = convert(TimeUnit.UTCYEARQUARTER, new Date(Date.UTC(2000, 11, 2, 23, 59, 59, 999)));
-      expect(date.getTime()).toBe(new Date(Date.UTC(2000, 9, 1, 0, 0, 0, 0)).getTime());
-    });
-
-    it('should return expected result for YEARQUARTERMONTH', () => {
-      const date: Date = convert(TimeUnit.YEARQUARTERMONTH, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(2000, 11, 1, 0, 0, 0, 0).getTime());
-    });
-
-    it('should return expected result for YEARMONTH', () => {
-      const date: Date = convert(TimeUnit.YEARMONTH, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(2000, 11, 1, 0, 0, 0, 0).getTime());
-    });
-
-    it('should return expected result for UTCYEARMONTH', () => {
-      const date: Date = convert(TimeUnit.UTCYEARMONTH, new Date(Date.UTC(2000, 11, 2, 23, 59, 59, 999)));
-      expect(date.getTime()).toBe(new Date(Date.UTC(2000, 11, 1, 0, 0, 0, 0)).getTime());
-    });
-
-    it('should return expected result for UTCYEARMONTH', () => {
-      const date: Date = convert(TimeUnit.UTCYEAR, new Date(Date.UTC(2000, 11, 2, 23, 59, 59, 999)));
-      expect(date.getTime()).toBe(new Date(Date.UTC(2000, 0, 1, 0, 0, 0, 0)).getTime());
-    });
-
-    it('should return expected result for YEARMONTHDATE', () => {
-      const date: Date = convert(TimeUnit.YEARMONTHDATE, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(2000, 11, 2, 0, 0, 0, 0).getTime());
-    });
-
-    it('should return expected result for YEARMONTHDATEHOURS', () => {
-      const date: Date = convert(TimeUnit.YEARMONTHDATEHOURS, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(2000, 11, 2, 23, 0, 0, 0).getTime());
-    });
-
-    it('should return expected result for YEARMONTHDATEHOURSMINUTES', () => {
-      const date: Date = convert(TimeUnit.YEARMONTHDATEHOURSMINUTES, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(2000, 11, 2, 23, 59, 0, 0).getTime());
-    });
-
-    it('should return expected result for YEARMONTHDATEHOURSMINUTESSECONDS', () => {
-      const date: Date = convert(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(2000, 11, 2, 23, 59, 59, 0).getTime());
-    });
-
-    it('should return expected result for QUARTERMONTH', () => {
-      const date: Date = convert(TimeUnit.QUARTERMONTH, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(1972, 11, 1, 0, 0, 0, 0).getTime());
-    });
-
-    it('should return expected result for HOURSMINUTES', () => {
-      const date: Date = convert(TimeUnit.HOURSMINUTES, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(1972, 0, 1, 23, 59, 0, 0).getTime());
-    });
-
-    it('should return expected result for HOURSMINUTESSECONDS', () => {
-      const date: Date = convert(TimeUnit.HOURSMINUTESSECONDS, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(1972, 0, 1, 23, 59, 59, 0).getTime());
-    });
-
-    it('should return expected result for MINUTESSECONDS', () => {
-      const date: Date = convert(TimeUnit.MINUTESSECONDS, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(1972, 0, 1, 0, 59, 59, 0).getTime());
-    });
-
-    it('should return expected result for SECONDSMILLISECONDS', () => {
-      const date: Date = convert(TimeUnit.SECONDSMILLISECONDS, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(1972, 0, 1, 0, 0, 59, 999).getTime());
-    });
-
-    it('should return expected result for MONTHDATE', () => {
-      const date: Date = convert(TimeUnit.MONTHDATE, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(1972, 11, 2, 0, 0, 0, 0).getTime());
     });
   });
 
