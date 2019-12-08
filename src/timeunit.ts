@@ -216,6 +216,13 @@ export function getLocalTimeUnit(t: UtcTimeUnit): LocalTimeUnit {
 
 export type TimeUnit = SingleTimeUnit | MultiTimeUnit;
 
+export interface TimeUnitParams {
+  units: string | LocalSingleTimeUnit;
+  step: number;
+  timezone: 'utc' | 'local';
+  maxbins: number;
+}
+
 const TIMEUNIT_INDEX: Flag<TimeUnit> = {
   ...LOCAL_SINGLE_TIMEUNIT_INDEX,
   ...UTC_SINGLE_TIMEUNIT_INDEX,
