@@ -1023,7 +1023,7 @@ export function valueExpr(
     time,
     undefinedIfExprNotRequired
   }: {
-    timeUnit: TimeUnit;
+    timeUnit: TimeUnit | TimeUnitParams;
     type?: Type;
     time?: boolean;
     undefinedIfExprNotRequired?: boolean;
