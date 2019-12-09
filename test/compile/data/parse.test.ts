@@ -399,9 +399,23 @@ describe('compile/data/parse', () => {
       expect(actual).toBe(namedUrl);
     });
 
-    it('should not find a source with conflicting format parameters', () => {
+    it('should not find a source with mesh and feature', () => {
       const actual = findSource({url: 'foo.csv', format: {type: 'topojson', mesh: 'states'}}, [
         new SourceNode({url: 'foo.csv', format: {type: 'topojson', feature: 'counties'}})
+      ]);
+      expect(actual).toBeNull();
+    });
+
+    it('should not find a source with conflicting features', () => {
+      const actual = findSource({url: 'foo.csv', format: {type: 'topojson', feature: 'states'}}, [
+        new SourceNode({url: 'foo.csv', format: {type: 'topojson', feature: 'counties'}})
+      ]);
+      expect(actual).toBeNull();
+    });
+
+    it('should not find a source with conflicting meshes', () => {
+      const actual = findSource({url: 'foo.csv', format: {type: 'topojson', mesh: 'states'}}, [
+        new SourceNode({url: 'foo.csv', format: {type: 'topojson', mesh: 'counties'}})
       ]);
       expect(actual).toBeNull();
     });

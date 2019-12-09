@@ -85,6 +85,17 @@ export function findSource(data: Data, sources: SourceNode[]) {
       continue;
     }
 
+    // we have to extract the same feature or mesh
+    if (
+      (data['format']?.feature || otherData.format?.feature) &&
+      data['format']?.feature !== otherData.format?.feature
+    ) {
+      continue;
+    }
+    if ((data['format']?.mesh || otherData.format?.mesh) && data['format']?.mesh !== otherData.format?.mesh) {
+      continue;
+    }
+
     if (isInlineData(data) && isInlineData(otherData)) {
       if (deepEqual(data.values, otherData.values)) {
         return other;
