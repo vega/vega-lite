@@ -21,7 +21,7 @@
 <meta property="twitter:title" content="Vega-Lite View Specification" />
 <meta name="twitter:site" content="@vega_vis" />
 <script type="application/ld+json">
-{"description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","url":"http://localhost:4000/vega-lite/docs/spec.html","headline":"Vega-Lite View Specification","@context":"https://schema.org"}</script>
+{"url":"http://localhost:4000/vega-lite/docs/spec.html","headline":"Vega-Lite View Specification","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -527,7 +527,7 @@
       
       <tr>
         <td>title</td>
-        <td>Text | <a href="title.html#params">TitleParams</a>
+        <td><a href="types.html#text">Text</a> | <a href="title.html#params">TitleParams</a>
 </td>
         <td>
   
@@ -623,7 +623,7 @@
       
       <tr>
         <td>align</td>
-        <td>String | RowCol
+        <td>String | Object
 </td>
         <td>
   
@@ -671,7 +671,7 @@ The supported string values are <code>"all"</code>, <code>"each"</code>, and <co
       
       <tr>
         <td>center</td>
-        <td>Boolean | RowCol
+        <td>Boolean | Object
 </td>
         <td>
   
@@ -690,7 +690,7 @@ The supported string values are <code>"all"</code>, <code>"each"</code>, and <co
       
       <tr>
         <td>spacing</td>
-        <td>Number | RowCol
+        <td>Number | Object
 </td>
         <td>
   
@@ -779,7 +779,7 @@ If an object, the value should have the format <code>{"left": 5, "top": 5, "righ
       
       <tr>
         <td>autosize</td>
-        <td>AutosizeType | <a href="size.html#autosize">AutoSizeParams</a>
+        <td>String | <a href="size.html#autosize">AutoSizeParams</a>
 </td>
         <td>
   
@@ -812,7 +812,7 @@ Object values can additionally specify parameters for content sizing and automat
       
       <tr>
         <td>usermeta</td>
-        <td>Any{}
+        <td><a href="types.html#any">Any</a>{}
 </td>
         <td>
   
@@ -901,7 +901,7 @@ This object is completely ignored by Vega and Vega-Lite and can be used for cust
       
       <tr>
         <td>encoding</td>
-        <td>FacetedEncoding
+        <td><a href="encoding.html">Encoding</a>
 </td>
         <td>
   
@@ -916,7 +916,7 @@ This object is completely ignored by Vega and Vega-Lite and can be used for cust
       
       <tr>
         <td>width</td>
-        <td>Number | String | Step
+        <td>Number | String | Object
 </td>
         <td>
   
@@ -944,7 +944,7 @@ Based on <code>config.view.continuousWidth</code> for a plot with a continuous x
       
       <tr>
         <td>height</td>
-        <td>Number | String | Step
+        <td>Number | String | Object
 </td>
         <td>
   
@@ -971,7 +971,7 @@ Based on <code>config.view.continuousWidth</code> for a plot with a continuous x
       
       <tr>
         <td>view</td>
-        <td>spec.html#view-background
+        <td><a href="spec.html#view-background">ViewBackground</a>
 </td>
         <td>
   
@@ -1003,7 +1003,7 @@ Based on <code>config.view.continuousWidth</code> for a plot with a continuous x
       
       <tr>
         <td>projection</td>
-        <td>Projection
+        <td><a href="projection.html">Projection</a>
 </td>
         <td>
   

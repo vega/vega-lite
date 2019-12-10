@@ -21,7 +21,7 @@
 <meta property="twitter:title" content="Layering views" />
 <meta name="twitter:site" content="@vega_vis" />
 <script type="application/ld+json">
-{"description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","url":"http://localhost:4000/vega-lite/docs/layer.html","headline":"Layering views","@context":"https://schema.org"}</script>
+{"url":"http://localhost:4000/vega-lite/docs/layer.html","headline":"Layering views","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -482,7 +482,7 @@
       
       <tr>
         <td>layer</td>
-        <td><a href="layer.html">LayerSpec</a>[] | UnitSpec[]
+        <td><a href="layer.html">LayerSpec</a>[] | <a href="unit.html">UnitSpec</a>[]
 </td>
         <td>
   
@@ -499,7 +499,7 @@
       
       <tr>
         <td>width</td>
-        <td>Number | String | Step
+        <td>Number | String | Object
 </td>
         <td>
   
@@ -527,7 +527,7 @@ Based on <code>config.view.continuousWidth</code> for a plot with a continuous x
       
       <tr>
         <td>height</td>
-        <td>Number | String | Step
+        <td>Number | String | Object
 </td>
         <td>
   
@@ -554,7 +554,7 @@ Based on <code>config.view.continuousWidth</code> for a plot with a continuous x
       
       <tr>
         <td>view</td>
-        <td>spec.html#view-background
+        <td><a href="spec.html#view-background">ViewBackground</a>
 </td>
         <td>
   
@@ -571,7 +571,7 @@ Based on <code>config.view.continuousWidth</code> for a plot with a continuous x
       
       <tr>
         <td>encoding</td>
-        <td>Encoding
+        <td><a href="encoding.html">Encoding</a>
 </td>
         <td>
   
@@ -586,7 +586,7 @@ Based on <code>config.view.continuousWidth</code> for a plot with a continuous x
       
       <tr>
         <td>projection</td>
-        <td>Projection
+        <td><a href="projection.html">Projection</a>
 </td>
         <td>
   
