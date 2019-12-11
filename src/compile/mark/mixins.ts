@@ -322,7 +322,7 @@ export function bandPosition(
     [vgChannel]: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5})
   };
 
-  if (encoding.size != null || markDef.size != null) {
+  if (encoding.size || (markDef.size !== null && markDef.size !== undefined)) {
     const orient = markDef.orient;
     if (orient) {
       if (getTypedFieldDef(encoding.size) || isValueDef(encoding.size)) {
@@ -341,7 +341,7 @@ export function bandPosition(
     }
   }
 
-  if (defaultSizeRef && defaultSizeRef?.value !== undefined) {
+  if (defaultSizeRef?.value !== undefined) {
     return {
       ...centeredBandPositionMixins,
       [sizeChannel]: defaultSizeRef
