@@ -5,21 +5,20 @@ import {isVgRangeStep} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
-import * as mixins from './mixins';
-import * as ref from './valueref';
+import * as encode from './encode';
 
 export const tick: MarkCompiler = {
   vgMark: 'rect',
 
   encodeEntry: (model: UnitModel) => {
-    const {config, markDef, width, height} = model;
+    const {config, markDef} = model;
     const orient = markDef.orient;
 
     const vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
     const vgThicknessChannel = orient === 'horizontal' ? 'height' : 'width';
 
     return {
-      ...mixins.baseEncodeEntry(model, {
+      ...encode.baseEncodeEntry(model, {
         align: 'ignore',
         baseline: 'ignore',
         color: 'include',
@@ -27,11 +26,11 @@ export const tick: MarkCompiler = {
         size: 'ignore'
       }),
 
-      ...mixins.pointPosition('x', model, ref.mid(width), {vgChannel: 'xc'}),
-      ...mixins.pointPosition('y', model, ref.mid(height), {vgChannel: 'yc'}),
+      ...encode.pointPosition('x', model, {defaultPos: 'mid', vgChannel: 'xc'}),
+      ...encode.pointPosition('y', model, {defaultPos: 'mid', vgChannel: 'yc'}),
 
       // size / thickness => width / height
-      ...mixins.nonPosition('size', model, {
+      ...encode.nonPosition('size', model, {
         defaultValue: defaultSize(model),
         vgChannel: vgSizeChannel
       }),

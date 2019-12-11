@@ -1,4 +1,4 @@
-import {nonPosition} from '../../../src/compile/mark/mixins';
+import {nonPosition} from '../../../src/compile/mark/encode';
 import {expression} from '../../../src/compile/predicate';
 import {parseSelectionPredicate as predicate, parseUnitSelection} from '../../../src/compile/selection/parse';
 import {parseUnitModel} from '../../util';

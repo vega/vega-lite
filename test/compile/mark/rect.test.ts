@@ -1,6 +1,6 @@
 import {PositionFieldDef} from '../../../src/channeldef';
+import {fieldInvalidTestValueRef} from '../../../src/compile/mark/encode/valueref';
 import {rect} from '../../../src/compile/mark/rect';
-import {fieldInvalidTestValueRef} from '../../../src/compile/mark/valueref';
 import * as log from '../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 

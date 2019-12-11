@@ -1,6 +1,6 @@
 import {PositionFieldDef, SecondaryFieldDef} from '../../../src/channeldef';
 import {bar} from '../../../src/compile/mark/bar';
-import {fieldInvalidPredicate, fieldInvalidTestValueRef} from '../../../src/compile/mark/valueref';
+import {fieldInvalidPredicate, fieldInvalidTestValueRef} from '../../../src/compile/mark/encode/valueref';
 import {DEFAULT_STEP} from '../../../src/config';
 import * as log from '../../../src/log';
 import {defaultBarConfig} from '../../../src/mark';

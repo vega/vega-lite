@@ -18,12 +18,12 @@ import {FILL_STROKE_CONFIG} from '../../mark';
 import {ScaleType} from '../../scale';
 import {getFirstDefined, keys, varName} from '../../util';
 import {applyMarkConfig, timeFormatExpression} from '../common';
-import * as mixins from '../mark/mixins';
+import * as mixins from '../mark/encode';
+import {STORE} from '../selection';
 import {UnitModel} from '../unit';
 import {ScaleChannel} from './../../channel';
 import {LegendComponent} from './component';
 import {defaultType} from './properties';
-import {STORE} from '../selection';
 
 function type(legendCmp: LegendComponent, model: UnitModel, channel: ScaleChannel) {
   const scaleType = model.getScaleComponent(channel).get('type');
