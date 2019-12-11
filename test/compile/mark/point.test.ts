@@ -42,6 +42,22 @@ describe('Mark: Point', () => {
     });
   });
 
+  it('with offset includes offset on y', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: {
+        type: 'point',
+        size: 250,
+        y: 'height',
+        yOffset: 25
+      },
+      data: {url: 'data/barley.json'}
+    });
+
+    const props = point.encodeEntry(model);
+
+    expect(props.y).toEqual({field: {group: 'height'}, offset: 25});
+  });
+
   describe('with stacked x', () => {
     // This is a simplified example for stacked point.
     // In reality this will be used as stacked's overlayed marker
