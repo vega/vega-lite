@@ -32,7 +32,7 @@ All models are fit using [ordinary least squares](https://en.wikipedia.org/wiki/
 
 ## Regression Transform Definition
 
-{% include table.html props="regression,on,groupby,method,order,extent,as" source="RegressionTransform" %}
+{% include table.html props="regression,on,groupby,method,order,extent,params,as" source="RegressionTransform" %}
 
 ## Usage
 
