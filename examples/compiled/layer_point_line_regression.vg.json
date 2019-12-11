@@ -28,6 +28,24 @@
           "as": ["Rotten_Tomatoes_Rating", "IMDB_Rating"]
         }
       ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "regression",
+          "x": "Rotten_Tomatoes_Rating",
+          "y": "IMDB_Rating",
+          "params": true,
+          "as": ["Rotten_Tomatoes_Rating", "IMDB_Rating"]
+        },
+        {
+          "type": "formula",
+          "expr": "'R²: '+format(datum.rSquared, '.2f')",
+          "as": "R2"
+        }
+      ]
     }
   ],
   "marks": [
@@ -59,6 +77,22 @@
           "defined": {
             "signal": "isValid(datum[\"Rotten_Tomatoes_Rating\"]) && isFinite(+datum[\"Rotten_Tomatoes_Rating\"]) && isValid(datum[\"IMDB_Rating\"]) && isFinite(+datum[\"IMDB_Rating\"])"
           }
+        }
+      }
+    },
+    {
+      "name": "layer_2_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "align": {"value": "right"},
+          "x": {"field": {"group": "width"}},
+          "y": {"value": -5},
+          "fill": {"value": "firebrick"},
+          "text": {"signal": "''+datum[\"R2\"]"},
+          "baseline": {"value": "middle"}
         }
       }
     }
