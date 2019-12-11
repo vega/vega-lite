@@ -378,6 +378,7 @@ export function midPoint({
     // for non-position, ref could be undefined.
     return {
       ...ref,
+      // only include offset when it is non-zero (zero = no offset)
       ...(offset ? {offset} : {})
     };
   }
