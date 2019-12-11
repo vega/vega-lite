@@ -310,4 +310,23 @@ describe('Mark: Rect', () => {
       expect(props.width).toBeUndefined();
     });
   });
+
+  describe('with size', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'rect', width: 50, height: 49, size: 20},
+      encoding: {
+        x: {field: 'x', type: 'ordinal'},
+        y: {field: 'y', type: 'ordinal'}
+      }
+    });
+
+    it(
+      'should throw warning',
+      log.wrap(localLogger => {
+        rect.encodeEntry(model);
+        expect(localLogger.warns[0]).toEqual(log.message.cannotApplySizeToNonOrientedMark('rect'));
+      })
+    );
+  });
 });

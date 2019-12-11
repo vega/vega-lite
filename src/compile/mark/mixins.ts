@@ -1,4 +1,3 @@
-import {ValueOrGradientOrText} from './../../channeldef';
 import {Align} from 'vega';
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
@@ -28,6 +27,7 @@ import {getMarkConfig, getMarkPropOrConfig, getStyleConfig} from '../common';
 import {expression} from '../predicate';
 import {parseSelectionPredicate} from '../selection/parse';
 import {UnitModel} from '../unit';
+import {ValueOrGradientOrText} from './../../channeldef';
 import * as ref from './valueref';
 import {fieldInvalidPredicate} from './valueref';
 
@@ -314,42 +314,39 @@ export function bandPosition(
 ) {
   const scaleName = model.scaleName(channel);
   const sizeChannel = channel === 'x' ? 'width' : 'height';
+  const {markDef, encoding, config} = model;
 
-  if (model.encoding.size != null || model.markDef.size != null || defaultSizeRef?.value !== undefined) {
-    const orient = model.markDef.orient;
+  const vgChannel = alignedChannel(channel, markDef, config);
+
+  const centeredBandPositionMixins = {
+    [vgChannel]: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5})
+  };
+
+  if (encoding.size || (markDef.size !== null && markDef.size !== undefined)) {
+    const orient = markDef.orient;
     if (orient) {
-      const centeredBandPositionMixins = {
-        // Use xc/yc and place the mark at the middle of the band
-        // This way we never have to deal with size's condition for x/y position.
-        [channel + 'c']: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5})
-      };
-
-      if (getTypedFieldDef(model.encoding.size)) {
+      if (getTypedFieldDef(encoding.size) || isValueDef(encoding.size)) {
         return {
           ...centeredBandPositionMixins,
           ...nonPosition('size', model, {vgChannel: sizeChannel})
         };
-      } else if (isValueDef(model.encoding.size)) {
+      } else if (markDef.size !== undefined) {
         return {
           ...centeredBandPositionMixins,
-          ...nonPosition('size', model, {vgChannel: sizeChannel})
-        };
-      } else if (model.markDef.size !== undefined) {
-        return {
-          ...centeredBandPositionMixins,
-          [sizeChannel]: {value: model.markDef.size}
-        };
-      } else if (defaultSizeRef && defaultSizeRef.value !== undefined) {
-        return {
-          ...centeredBandPositionMixins,
-          [sizeChannel]: defaultSizeRef
+          [sizeChannel]: {value: markDef.size}
         };
       }
     } else {
-      log.warn(log.message.cannotApplySizeToNonOrientedMark(model.markDef.type));
+      log.warn(log.message.cannotApplySizeToNonOrientedMark(markDef.type));
     }
   }
 
+  if (defaultSizeRef?.value !== undefined) {
+    return {
+      ...centeredBandPositionMixins,
+      [sizeChannel]: defaultSizeRef
+    };
+  }
   const {band = 1} = fieldDef;
 
   return {
