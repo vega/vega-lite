@@ -41,6 +41,26 @@
           "type": "quantitative"
         }
       }
+    },
+    {
+      "transform": [
+        {
+          "regression": "IMDB_Rating",
+          "on": "Rotten_Tomatoes_Rating",
+          "params": true
+        },
+        {"calculate": "'R²: '+format(datum.rSquared, '.2f')", "as": "R2"}
+      ],
+      "mark": {
+        "type": "text",
+        "color": "firebrick",
+        "x": "width",
+        "align": "right",
+        "y": -5
+      },
+      "encoding": {
+        "text": {"type": "nominal", "field": "R2"}
+      }
     }
   ]
 }
