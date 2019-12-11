@@ -1,10 +1,8 @@
-import {ValueOrGradientOrText} from './../../channeldef';
-import {array} from 'vega-util';
 /**
  * Utility files for producing Vega ValueRef for marks
  */
 import {SignalRef} from 'vega';
-import {isFunction, isString, stringValue} from 'vega-util';
+import {array, isFunction, isString, stringValue} from 'vega-util';
 import {isCountingAggregateOp} from '../../aggregate';
 import {isBinned, isBinning} from '../../bin';
 import {Channel, getMainRangeChannel, PositionChannel, X, X2, Y, Y2} from '../../channel';
@@ -42,6 +40,7 @@ import {contains, getFirstDefined} from '../../util';
 import {VgValueRef} from '../../vega.schema';
 import {binFormatExpression, formatSignalRef, getMarkConfig} from '../common';
 import {ScaleComponent} from '../scale/component';
+import {ValueOrGradientOrText} from './../../channeldef';
 
 function midPointWithPositionInvalidTest(
   params: MidPointParams & {
@@ -373,7 +372,16 @@ export function midPoint({
     // In such case, we will use default ref.
   }
 
-  return isFunction(defaultRef) ? defaultRef() : defaultRef;
+  const ref = isFunction(defaultRef) ? {...defaultRef(), ...(offset ? {offset} : {})} : defaultRef;
+
+  if (ref) {
+    // for non-position, ref could be undefined.
+    return {
+      ...ref,
+      ...(offset ? {offset} : {})
+    };
+  }
+  return ref;
 }
 
 /**
