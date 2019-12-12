@@ -45,7 +45,7 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
-          "stroke": {"value": "#4c78a8"},
+          "stroke": {"scale": "color", "field": "RatingDelta"},
           "x": {"scale": "x", "field": "Release_Date"},
           "y": {"scale": "y", "field": "RatingDelta"}
         }
@@ -66,6 +66,15 @@
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
+    },
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "RatingDelta"},
+      "range": "diverging",
+      "domainMid": 0,
+      "interpolate": "hcl",
+      "zero": false
     }
   ],
   "axes": [
@@ -113,6 +122,15 @@
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
+      "title": "Rating Delta",
+      "encode": {"gradient": {"update": {"opacity": {"value": 0.7}}}}
     }
   ]
 }
