@@ -442,6 +442,12 @@ export interface Scale {
    */
   domain?: number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionExtent;
 
+  /**
+   * Inserts a single mid-point value into a two-element domain. The mid-point value must lie between the domain minimum and maximum values. This property can be useful for setting a midpoint for [diverging color scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). The domainMid property is only intended for use with scales supporting continuous, piecewise domains.
+   */
+
+  domainMid?: number;
+
   // Hide because we might not really need this.
   /**
    * If true, reverses the order of the scale range.
@@ -595,6 +601,7 @@ export interface Scale {
 const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {
   type: 1,
   domain: 1,
+  domainMid: 1,
   align: 1,
   range: 1,
   scheme: 1,
@@ -646,6 +653,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
       return contains(['point', 'band'], scaleType);
     case 'paddingInner':
       return scaleType === 'band';
+    case 'domainMid':
     case 'clamp':
       return isContinuousToContinuous(scaleType);
     case 'nice':
@@ -680,6 +688,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
   switch (propName) {
     case 'interpolate':
     case 'scheme':
+    case 'domainMid':
       if (!isColorChannel(channel)) {
         return log.message.cannotUseScalePropertyWithNonColor(channel);
       }

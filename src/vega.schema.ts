@@ -121,6 +121,7 @@ export interface VgScale {
   type: ScaleType;
   align?: number;
   domain?: VgDomain;
+  domainMid?: number;
   domainRaw?: SignalRef;
   bins?: number[] | SignalRef;
   range: VgRange;
