@@ -56,8 +56,9 @@
     {
       "name": "color",
       "type": "linear",
-      "domain": [1000, 3250, 4500],
-      "range": ["#70001E", "#ffffff", "#00335E"],
+      "domain": {"data": "source_0", "field": "Weight_in_lbs"},
+      "range": "diverging",
+      "domainMid": 3250,
       "interpolate": "hcl",
       "zero": false
     }
