@@ -147,7 +147,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
   const mergedScaleCmpt = model.getScaleComponent(channel);
   const scaleType = mergedScaleCmpt.get('type');
 
-  const {domain} = model.specifiedScales[channel];
+  const {domain, domainMid} = model.specifiedScales[channel];
 
   switch (channel) {
     case X:
@@ -211,7 +211,11 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
         // Only nominal data uses ordinal scale by default
         return type === 'nominal' ? 'category' : 'ordinal';
       } else {
-        return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
+        if (domainMid !== undefined) {
+          return 'diverging';
+        } else {
+          return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
+        }
       }
     case OPACITY:
     case FILLOPACITY:

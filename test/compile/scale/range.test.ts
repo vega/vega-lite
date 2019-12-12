@@ -185,6 +185,17 @@ describe('compile/scale', () => {
         expect(parseRangeForChannel('color', model)).toEqual(makeImplicit('ramp'));
       });
 
+      it('should use default diverging range in Vega for a quantitative color field.', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            color: {field: 'x', type: 'quantitative', scale: {domainMid: 1}}
+          }
+        });
+
+        expect(parseRangeForChannel('color', model)).toEqual(makeImplicit('diverging'));
+      });
+
       it('should use the specified scheme with count for a quantitative color field.', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
