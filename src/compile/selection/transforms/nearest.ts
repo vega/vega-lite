@@ -1,6 +1,6 @@
 import * as log from '../../../log';
 import {isPathMark} from '../../../mark';
-import {tooltip} from '../../mark/mixins';
+import {tooltip} from '../../mark/encode';
 import {TransformCompiler} from './transforms';
 
 const VORONOI = 'voronoi';

@@ -1,4 +1,4 @@
-import {tooltip} from '../../../src/compile/mark/mixins';
+import {tooltip} from '../../../src/compile/mark/encode';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import nearest from '../../../src/compile/selection/transforms/nearest';
 import * as log from '../../../src/log';

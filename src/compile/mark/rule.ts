@@ -1,12 +1,11 @@
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
-import * as mixins from './mixins';
-import * as ref from './valueref';
+import * as encode from './encode';
 
 export const rule: MarkCompiler = {
   vgMark: 'rule',
   encodeEntry: (model: UnitModel) => {
-    const {markDef, width, height} = model;
+    const {markDef} = model;
     const orient = markDef.orient;
 
     if (!model.encoding.x && !model.encoding.y && !model.encoding.latitude && !model.encoding.longitude) {
@@ -15,24 +14,24 @@ export const rule: MarkCompiler = {
     }
 
     return {
-      ...mixins.baseEncodeEntry(model, {
+      ...encode.baseEncodeEntry(model, {
         align: 'ignore',
         baseline: 'ignore',
         color: 'include',
         orient: 'ignore',
         size: 'ignore'
       }),
-      ...mixins.pointOrRangePosition('x', model, {
-        defaultRef: orient === 'horizontal' ? 'zeroOrMin' : ref.mid(width),
-        defaultRef2: 'zeroOrMax',
+      ...encode.pointOrRangePosition('x', model, {
+        defaultPos: orient === 'horizontal' ? 'zeroOrMin' : 'mid',
+        defaultPos2: 'zeroOrMax',
         range: orient !== 'vertical' // include x2 for horizontal or line segment rule
       }),
-      ...mixins.pointOrRangePosition('y', model, {
-        defaultRef: orient === 'vertical' ? 'zeroOrMin' : ref.mid(height),
-        defaultRef2: 'zeroOrMax',
+      ...encode.pointOrRangePosition('y', model, {
+        defaultPos: orient === 'vertical' ? 'zeroOrMin' : 'mid',
+        defaultPos2: 'zeroOrMax',
         range: orient !== 'horizontal' // include y2 for vertical or line segment rule
       }),
-      ...mixins.nonPosition('size', model, {
+      ...encode.nonPosition('size', model, {
         vgChannel: 'strokeWidth' // VL's rule size is strokeWidth
       })
     };

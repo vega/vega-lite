@@ -1,16 +1,16 @@
+import {GeoShapeTransform as VgGeoShapeTransform} from 'vega';
 import {isFieldDef, vgField} from '../../channeldef';
 import {GEOJSON} from '../../type';
 import {VgPostEncodingTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
-import * as mixins from './mixins';
-import {GeoShapeTransform as VgGeoShapeTransform} from 'vega';
+import * as encode from './encode';
 
 export const geoshape: MarkCompiler = {
   vgMark: 'shape',
   encodeEntry: (model: UnitModel) => {
     return {
-      ...mixins.baseEncodeEntry(model, {
+      ...encode.baseEncodeEntry(model, {
         align: 'ignore',
         baseline: 'ignore',
         color: 'include',
