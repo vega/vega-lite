@@ -1,0 +1,66 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A simple radial chart with embedded data.",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {"name": "source_0", "values": [12, 23, 47, 6, 52, 19]},
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": [],
+          "field": "data",
+          "sort": {"field": [], "order": []},
+          "as": ["data_start", "data_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"data\"]) && isFinite(+datum[\"data\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "arc",
+      "style": ["arc"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#fff"},
+          "fill": {"value": "#4c78a8"},
+          "x": {"signal": "width", "mult": 0.5},
+          "y": {"signal": "height", "mult": 0.5},
+          "outerRadius": {"scale": "radius", "field": "data"},
+          "innerRadius": {"value": 20},
+          "startAngle": {"scale": "angle", "field": "data_end"},
+          "endAngle": {"scale": "angle", "field": "data_start"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "angle",
+      "type": "linear",
+      "domain": {"data": "data_0", "fields": ["data_start", "data_end"]},
+      "range": [6.283185307179586, 0],
+      "zero": false
+    },
+    {
+      "name": "radius",
+      "type": "sqrt",
+      "domain": {"data": "data_0", "field": "data"},
+      "range": [20, 100],
+      "zero": true
+    }
+  ]
+}

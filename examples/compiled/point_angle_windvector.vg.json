@@ -64,6 +64,13 @@
       "padding": 0.5
     },
     {
+      "name": "angle",
+      "type": "linear",
+      "domain": [0, 360],
+      "range": [180, 540],
+      "zero": true
+    },
+    {
       "name": "color",
       "type": "linear",
       "domain": [0, 360],
@@ -76,13 +83,6 @@
       "type": "linear",
       "domain": {"data": "source_0", "field": "speed"},
       "range": [0, 90.25],
-      "zero": true
-    },
-    {
-      "name": "angle",
-      "type": "linear",
-      "domain": [0, 360],
-      "range": [180, 540],
       "zero": true
     }
   ],
