@@ -26,6 +26,7 @@ export const text: MarkCompiler = {
       ...encode.nonPosition('size', model, {
         vgChannel: 'fontSize' // VL's text size is fontSize
       }),
+      ...encode.nonPosition('angle', model),
       ...encode.valueIfDefined('align', align(model.markDef, encoding, config)),
       ...encode.valueIfDefined('baseline', baseline(model.markDef, encoding, config))
     };

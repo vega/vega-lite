@@ -78,6 +78,12 @@ Fields can also be encoded in the [scatter plot](#scatter) using the `color` or 
 
 <span class="vl-example" data-name="point_color_with_shape"></span>
 
+### Wind Vector Map
+
+We can also use point mark with angle encoding to create a wind vector map.
+
+<span class="vl-example" data-name="point_angle_windvector"></span>
+
 ### Geo Point
 
 By mapping geographic coordinate data to `longitude` and `latitude` channels of a corresponding [projection](projection.html), we can visualize geographic points. The example below shows major airports in the US.

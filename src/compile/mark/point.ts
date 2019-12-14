@@ -18,6 +18,7 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
     ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
     ...encode.pointPosition('y', model, {defaultPos: 'mid'}),
     ...encode.nonPosition('size', model),
+    ...encode.nonPosition('angle', model),
     ...shapeMixins(model, config, fixedShape)
   };
 }
