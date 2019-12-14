@@ -8,7 +8,7 @@ import {wrapCondition} from './conditional';
 import * as ref from './valueref';
 
 /**
- * Return encodoing encode for non-positional channels with scales. (Text doesn't have scale.)
+ * Return encode for non-positional channels with scales. (Text doesn't have scale.)
  */
 export function nonPosition(
   channel: NonPositionScaleChannel,
