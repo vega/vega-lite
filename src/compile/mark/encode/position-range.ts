@@ -9,6 +9,9 @@ import {alignedPositionChannel} from './position-align';
 import {pointPosition, pointPositionDefaultRef} from './position-point';
 import * as ref from './valueref';
 
+/**
+ * Utility for area/rule position, which can be either point or range. (One of the axes should be point and the other should be range.)
+ */
 export function pointOrRangePosition(
   channel: 'x' | 'y',
   model: UnitModel,
@@ -45,6 +48,7 @@ export function rangePosition(
 
   const pos2Mixins = pointPosition2(model, defaultPos2, channel2);
 
+  // If there is width/height, we need to position the marks based on the alignment.
   const vgChannel = pos2Mixins[sizeChannel] ? alignedPositionChannel(channel, markDef, config) : channel;
 
   return {
@@ -93,13 +97,10 @@ function pointPosition2(model: UnitModel, defaultPos: 'zeroOrMin' | 'zeroOrMax',
 
   const defaultRef = pointPositionDefaultRef({
     model,
-    markDef,
-    config,
     defaultPos,
     channel,
     scaleName,
     scale,
-    mark,
     checkBarAreaWithoutZero: !encoding[channel] // only check for non-ranged marks
   })();
 

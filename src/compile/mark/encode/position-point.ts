@@ -1,8 +1,6 @@
 import {getMainRangeChannel, PositionChannel, X, X2, Y2} from '../../../channel';
 import {isFieldDef, isPositionFieldDef} from '../../../channeldef';
-import {Config} from '../../../config';
 import * as log from '../../../log';
-import {Mark, MarkDef} from '../../../mark';
 import {ScaleType} from '../../../scale';
 import {contains, getFirstDefined} from '../../../util';
 import {VgValueRef} from '../../../vega.schema';
@@ -22,24 +20,22 @@ export function pointPosition(
 ) {
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-  const {encoding, mark, markDef, config, stack} = model;
+  const {encoding, markDef, config, stack} = model;
 
   const channelDef = encoding[channel];
   const channel2Def = encoding[channel === X ? X2 : Y2];
   const scaleName = model.scaleName(channel);
   const scale = model.getScaleComponent(channel);
 
-  const offset = getOffset(channel, model.markDef);
+  const offset = getOffset(channel, markDef);
 
+  // Get default position or position from mark def
   const defaultRef = pointPositionDefaultRef({
     model,
-    markDef,
-    config,
     defaultPos,
     channel,
     scaleName,
     scale,
-    mark,
     checkBarAreaWithoutZero: !channel2Def // only check for non-ranged marks
   });
 
@@ -98,25 +94,20 @@ function positionRef(
 
 export function pointPositionDefaultRef({
   model,
-  markDef,
-  config,
   defaultPos,
   channel,
   scaleName,
   scale,
-  mark,
   checkBarAreaWithoutZero: checkBarAreaWithZero
 }: {
   model: UnitModel;
-  markDef: MarkDef;
-  config: Config;
   defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax';
   channel: PositionChannel;
   scaleName: string;
   scale: ScaleComponent;
-  mark: Mark;
   checkBarAreaWithoutZero: boolean;
 }) {
+  const {mark, markDef, config} = model;
   return () => {
     const mainChannel = getMainRangeChannel(channel);
 
