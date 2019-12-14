@@ -738,31 +738,34 @@ export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType:
 }
 
 export function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean {
-  switch (channel) {
-    case CHANNEL.X:
-    case CHANNEL.Y:
-      return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
-    case CHANNEL.SIZE: // TODO: size and opacity can support ordinal with more modification
-    case CHANNEL.STROKEWIDTH:
-    case CHANNEL.OPACITY:
-    case CHANNEL.FILLOPACITY:
-    case CHANNEL.STROKEOPACITY:
-      // Although it generally doesn't make sense to use band with size and opacity,
-      // it can also work since we use band: 0.5 to get midpoint.
-      return (
-        isContinuousToContinuous(scaleType) ||
-        isContinuousToDiscrete(scaleType) ||
-        contains(['band', 'point'], scaleType)
-      );
-    case CHANNEL.COLOR:
-    case CHANNEL.FILL:
-    case CHANNEL.STROKE:
-      return scaleType !== 'band'; // band does not make sense with color
-    case CHANNEL.SHAPE:
-      return scaleType === 'ordinal'; // shape = lookup only
+  if (CHANNEL.isScaleChannel(channel)) {
+    switch (channel) {
+      case CHANNEL.X:
+      case CHANNEL.Y:
+        return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
+      case CHANNEL.SIZE: // TODO: size and opacity can support ordinal with more modification
+      case CHANNEL.STROKEWIDTH:
+      case CHANNEL.OPACITY:
+      case CHANNEL.FILLOPACITY:
+      case CHANNEL.STROKEOPACITY:
+      case CHANNEL.ANGLE:
+        // Although it generally doesn't make sense to use band with size and opacity,
+        // it can also work since we use band: 0.5 to get midpoint.
+        return (
+          isContinuousToContinuous(scaleType) ||
+          isContinuousToDiscrete(scaleType) ||
+          contains(['band', 'point'], scaleType)
+        );
+      case CHANNEL.COLOR:
+      case CHANNEL.FILL:
+      case CHANNEL.STROKE:
+        return scaleType !== 'band'; // band does not make sense with color
+      case CHANNEL.SHAPE:
+        return scaleType === 'ordinal'; // shape = lookup only
+    }
+  } else {
+    return false;
   }
-  /* istanbul ignore next: it should never reach here */
-  return false;
 }
 
 export function getSupportedScaleType(channel: Channel, fieldDefType: Type) {

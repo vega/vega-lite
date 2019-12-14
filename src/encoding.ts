@@ -162,13 +162,18 @@ export interface Encoding<F extends Field> {
   strokeWidth?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
 
   /**
-   * Size of the mark.
+   * Size of the marks.
    * - For `"point"`, `"square"` and `"circle"`, – the symbol size, or pixel area of the mark.
    * - For `"bar"` and `"tick"` – the bar and tick's size.
    * - For `"text"` – the text's font size.
    * - Size is unsupported for `"line"`, `"area"`, and `"rect"`. (Use `"trail"` instead of line with varying size)
    */
   size?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
+
+  /**
+   * Rotation angle of point and text marks.
+   */
+  angle?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
 
   /**
    * Shape of the mark.
@@ -538,6 +543,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       // text, shape, shouldn't be a part of line/trail/area [falls through]
       case 'text':
       case 'shape':
+      case 'angle':
       // falls through
 
       // tooltip fields should not be added to group by [falls through]

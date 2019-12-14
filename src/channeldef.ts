@@ -1,6 +1,4 @@
-import {Text} from 'vega';
-// Declaration and utility for variants of a field definition object
-import {LinearGradient, RadialGradient} from 'vega';
+import {LinearGradient, RadialGradient, Text} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -944,6 +942,7 @@ export function channelCompatibility(
     case 'tooltip':
     case 'href':
     case 'url':
+    case 'angle':
       return COMPATIBLE;
 
     case 'longitude':
@@ -991,7 +990,6 @@ export function channelCompatibility(
       }
       return COMPATIBLE;
   }
-  throw new Error('channelCompatability not implemented for channel ' + channel);
 }
 
 /**
