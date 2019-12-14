@@ -29,6 +29,12 @@
       "field": "RatingDelta",
       "type": "quantitative",
       "axis": {"title": "Rating Delta"}
+    },
+    "color": {
+      "field": "RatingDelta",
+      "type": "quantitative",
+      "scale": {"domainMid": 0},
+      "axis": {"title": "Rating Delta"}
     }
   }
 }

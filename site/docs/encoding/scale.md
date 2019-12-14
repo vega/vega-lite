@@ -75,7 +75,7 @@ bar, image, rect, and rule marks while `"point"` is the default scales for all o
 
 By default, a scale in Vega-Lite draws domain values directly from a channel's encoded field. Users can specify the `domain` property of a scale to customize its domain values. To sort the order of the domain of the encoded, the [`sort`](sort.html) property of a [field definition](encoding.html#field-def) can be specified.
 
-{% include table.html props="domain" source="Scale" %}
+{% include table.html props="domain,domainMid" source="Scale" %}
 
 A common use case for the `domain` property is to limit, for example, the `x` range of values to include in a plot. However, setting the domain property alone is insufficient to achieve the desired effect. For example, consider the line plot specification below in which the `x` domain is restricted to the range `[300, 450]`.
 
@@ -229,7 +229,7 @@ Time and UTC scales (`"time"` and `"utc"`) are [continuous scales](#quantitative
 
 {:#piecewise}
 
-### Piecewise Scales
+### Piecewise and Diverging Scales
 
 We can use any types of continuous scales ([`"linear"`](scale.html#linear), [`"pow"`](scale.html#pow), [`"sqrt"`](scale.html#sqrt), [`"log"`](scale.html#log), [`"symlog"`](scale.html#symlog), [`"time"`](scale.html#time), [`"utc"`](scale.html#utc) to create a diverging color graph by specifying a custom `domain` with multiple elements.
 
