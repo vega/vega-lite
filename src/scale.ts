@@ -798,6 +798,10 @@ export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType:
 }
 
 export function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean {
+  if (!CHANNEL.isScaleChannel(channel)) {
+    return false;
+  }
+
   switch (channel) {
     case CHANNEL.X:
     case CHANNEL.Y:
@@ -807,6 +811,7 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
     case CHANNEL.OPACITY:
     case CHANNEL.FILLOPACITY:
     case CHANNEL.STROKEOPACITY:
+    case CHANNEL.ANGLE:
       // Although it generally doesn't make sense to use band with size and opacity,
       // it can also work since we use band: 0.5 to get midpoint.
       return (
@@ -819,12 +824,9 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
     case CHANNEL.STROKE:
       return scaleType !== 'band'; // band does not make sense with color
     case CHANNEL.STROKEDASH:
-      return scaleType === 'ordinal' || isContinuousToDiscrete(scaleType);
     case CHANNEL.SHAPE:
       return scaleType === 'ordinal'; // shape = lookup only
   }
-  /* istanbul ignore next: it should never reach here */
-  return false;
 }
 
 export function getSupportedScaleType(channel: Channel, fieldDefType: Type) {

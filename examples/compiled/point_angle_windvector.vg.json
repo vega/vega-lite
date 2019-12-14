@@ -1,0 +1,106 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/windvectors.csv",
+      "format": {"type": "csv"},
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"dir\"]) && isFinite(+datum[\"dir\"]) && isValid(datum[\"speed\"]) && isFinite(+datum[\"speed\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 10},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+    },
+    {"name": "y_step", "value": 10},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "shape": {"value": "wedge"},
+          "fill": {"value": "transparent"},
+          "stroke": {"scale": "color", "field": "dir"},
+          "x": {"scale": "x", "field": "longitude"},
+          "y": {"scale": "y", "field": "latitude"},
+          "size": {"scale": "size", "field": "speed"},
+          "angle": {"scale": "angle", "field": "dir"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "point",
+      "domain": {"data": "source_0", "field": "longitude", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "y",
+      "type": "point",
+      "domain": {"data": "source_0", "field": "latitude", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": [0, 360],
+      "range": {"scheme": "rainbow"},
+      "interpolate": "hcl",
+      "zero": true
+    },
+    {
+      "name": "size",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "speed"},
+      "range": [0, 90.25],
+      "zero": true
+    },
+    {
+      "name": "angle",
+      "type": "linear",
+      "domain": [0, 360],
+      "range": [180, 540],
+      "zero": true
+    }
+  ],
+  "legends": [
+    {
+      "size": "size",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "wedge",
+      "title": "speed",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "transparent"},
+            "opacity": {"value": 0.7}
+          }
+        }
+      }
+    }
+  ],
+  "config": {"style": {"cell": {"fill": "black"}}}
+}

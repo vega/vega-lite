@@ -1100,6 +1100,7 @@ export function channelCompatibility(
     case 'tooltip':
     case 'href':
     case 'url':
+    case 'angle':
       return COMPATIBLE;
 
     case 'longitude':

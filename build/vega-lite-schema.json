@@ -2880,6 +2880,20 @@
     "Encoding": {
       "additionalProperties": false,
       "properties": {
+        "angle": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericDatumDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueWithCondition"
+            }
+          ],
+          "description": "Rotation angle of point and text marks."
+        },
         "color": {
           "anyOf": [
             {
@@ -6382,6 +6396,20 @@
     "FacetedEncoding": {
       "additionalProperties": false,
       "properties": {
+        "angle": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericDatumDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueWithCondition"
+            }
+          ],
+          "description": "Rotation angle of point and text marks."
+        },
         "color": {
           "anyOf": [
             {
@@ -10818,6 +10846,9 @@
     "LegendResolveMap": {
       "additionalProperties": false,
       "properties": {
+        "angle": {
+          "$ref": "#/definitions/ResolveMode"
+        },
         "color": {
           "$ref": "#/definitions/ResolveMode"
         },
@@ -14985,6 +15016,9 @@
     "ScaleResolveMap": {
       "additionalProperties": false,
       "properties": {
+        "angle": {
+          "$ref": "#/definitions/ResolveMode"
+        },
         "color": {
           "$ref": "#/definitions/ResolveMode"
         },
@@ -15416,6 +15450,7 @@
         "strokeWidth",
         "strokeDash",
         "size",
+        "angle",
         "shape",
         "key",
         "text",

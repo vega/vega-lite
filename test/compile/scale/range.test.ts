@@ -251,6 +251,19 @@ describe('compile/scale', () => {
       });
     });
 
+    describe('angle', () => {
+      it('should use default angle.', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            angle: {field: 'x', type: 'quantitative'}
+          }
+        });
+
+        expect(parseRangeForChannel('angle', model)).toEqual(makeImplicit([0, 360]));
+      });
+    });
+
     describe('size', () => {
       describe('bar', () => {
         it('should return [minBandSize, maxBandSize] from config.bar when zero is excluded if both are specified', () => {
