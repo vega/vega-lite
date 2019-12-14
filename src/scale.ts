@@ -445,7 +445,6 @@ export interface Scale {
   /**
    * Inserts a single mid-point value into a two-element domain. The mid-point value must lie between the domain minimum and maximum values. This property can be useful for setting a midpoint for [diverging color scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). The domainMid property is only intended for use with scales supporting continuous, piecewise domains.
    */
-
   domainMid?: number;
 
   // Hide because we might not really need this.
