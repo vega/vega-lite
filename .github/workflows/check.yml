@@ -13,7 +13,7 @@ jobs:
     name: Lint, Format, Schema, and Examples
 
     steps:
-      - uses: actions/checkout@v2-beta
+      - uses: actions/checkout@v2
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
@@ -54,7 +54,7 @@ jobs:
     name: TOC
 
     steps:
-      - uses: actions/checkout@v2-beta
+      - uses: actions/checkout@v2
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
