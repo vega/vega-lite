@@ -9,7 +9,7 @@
   "data": [
     {
       "name": "source_0",
-      "url": "https://vega.github.io/vega-datasets/data/ohlc.json",
+      "url": "data/ohlc.json",
       "format": {"type": "json", "parse": {"date": "date"}}
     },
     {
