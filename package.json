@@ -106,12 +106,12 @@
     "svg2png-many": "^0.0.7",
     "terser": "^4.4.2",
     "ts-jest": "^24.2.0",
-    "ts-json-schema-generator": "^0.57.0",
+    "ts-json-schema-generator": "^0.58.0",
     "typescript": "~3.7.3",
     "vega-cli": "^5.9.0",
     "vega-datasets": "^1.29.0",
     "vega-embed": "^6.2.0",
-    "vega-tooltip": "^0.19.1",
+    "vega-tooltip": "^0.20.0",
     "yaml-front-matter": "^4.0.0"
   },
   "dependencies": {
@@ -120,7 +120,7 @@
     "array-flat-polyfill": "^1.0.1",
     "clone": "~2.1.2",
     "fast-deep-equal": "~3.1.1",
-    "fast-json-stable-stringify": "~2.0.0",
+    "fast-json-stable-stringify": "~2.1.0",
     "json-stringify-pretty-compact": "~2.0.0",
     "tslib": "~1.10.0",
     "vega-event-selector": "~2.0.2",
