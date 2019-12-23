@@ -1758,9 +1758,9 @@ concat-stream@1.6.2:
     typedarray "^0.0.6"
 
 concurrently@^5.0.0:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/concurrently/-/concurrently-5.0.1.tgz#9d15e0e7bb7ebe5c3bcd86deb8393501c35dd003"
-  integrity sha512-fPKUlOAXEXpktp3z7RqIvzTSCowfDo8oQbdKoGKGZVm+G2hGFbIIAFm4qwWcGl/sIHmpMSgPqeCbjld3kdPXvA==
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/concurrently/-/concurrently-5.0.2.tgz#4d2911018c0f15ddec34a8e668fc48dced7f3b1e"
+  integrity sha512-iUNVI6PzKO0RVXV9pHWM0khvEbELxf3XLIoChaV6hHyoIaJuxQWZiOwlNysnJX5khsfvIK66+OJqRdbYrdsR1g==
   dependencies:
     chalk "^2.4.2"
     date-fns "^2.0.1"
@@ -1769,7 +1769,7 @@ concurrently@^5.0.0:
     rxjs "^6.5.2"
     spawn-command "^0.0.2-1"
     supports-color "^6.1.0"
-    tree-kill "^1.2.1"
+    tree-kill "^1.2.2"
     yargs "^13.3.0"
 
 console-control-strings@^1.0.0, console-control-strings@~1.1.0:
