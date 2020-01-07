@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Vega-Lite compared with other Languages
+title: Vega-Lite Compared with other Languages
 permalink: /comparison.html
 ---
 
