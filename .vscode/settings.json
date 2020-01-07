@@ -18,5 +18,7 @@
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
   "typescript.referencesCodeLens.enabled": true,
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-  "eslint.autoFixOnSave": true
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }
