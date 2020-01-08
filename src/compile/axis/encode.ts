@@ -4,7 +4,7 @@ import {ScaleType} from '../../scale';
 import {keys} from '../../util';
 import {timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
-import {normalizeTimeUnit, normalizeTimeUnitObject} from '../../timeunit';
+import {normalizeTimeUnitObject} from '../../timeunit';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
   const fieldDef =
