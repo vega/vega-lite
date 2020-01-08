@@ -47,6 +47,7 @@ import {EncodingFacetMapping} from './spec/facet';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {TEMPORAL} from './type';
 import {keys, some} from './util';
+import {normalizeTimeUnitObject, timeUnitParamsToTransformParams} from './timeunit';
 
 export interface Encoding<F extends Field> {
   /**
@@ -327,7 +328,12 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
               newFieldDef['type'] = 'quantitative';
             }
           } else if (timeUnit) {
-            timeUnits.push({timeUnit, field, as: newField});
+            const timeUnitParams = normalizeTimeUnitObject(timeUnit);
+            timeUnits.push({
+              ...timeUnitParamsToTransformParams(timeUnitParams),
+              field,
+              as: newField
+            });
 
             // define the format type for later compilation
             const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';

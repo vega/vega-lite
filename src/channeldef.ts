@@ -29,7 +29,8 @@ import {
   normalizeTimeUnit,
   TimeUnit,
   TimeUnitParams,
-  normalizeTimeUnitObject
+  normalizeTimeUnitObject,
+  TimeUnitObject
 } from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
@@ -212,7 +213,7 @@ export interface FieldDefBase<F, B extends Bin = Bin> {
    *
    * __See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation.
    */
-  timeUnit?: TimeUnit;
+  timeUnit?: TimeUnitObject;
 
   /**
    * Aggregation function for the field

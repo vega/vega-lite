@@ -6,6 +6,7 @@ import {SelectionInit, SelectionInitInterval} from '../../../selection';
 import {Dict, hash, keys, varName, replacePathInField, duplicate} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
 import {TransformCompiler} from './transforms';
+import {timeUnitParamsToTransformParams, normalizeTimeUnitObject} from '../../../timeunit';
 
 export const TUPLE_FIELDS = '_tuple_fields';
 
@@ -116,7 +117,7 @@ const project: TransformCompiler = {
           const component = {
             as: field,
             field: fieldDef.field,
-            timeUnit: fieldDef.timeUnit
+            ...timeUnitParamsToTransformParams(normalizeTimeUnitObject(fieldDef.timeUnit))
           };
           timeUnits[hash(component)] = component;
         }

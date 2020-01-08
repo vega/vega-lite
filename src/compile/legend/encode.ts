@@ -24,6 +24,7 @@ import {UnitModel} from '../unit';
 import {ScaleChannel} from './../../channel';
 import {LegendComponent} from './component';
 import {defaultType} from './properties';
+import {normalizeTimeUnitObject} from '../../timeunit';
 
 function type(legendCmp: LegendComponent, model: UnitModel, channel: ScaleChannel) {
   const scaleType = model.getScaleComponent(channel).get('type');
@@ -146,7 +147,13 @@ export function labels(
 
   if (isTimeFormatFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
-    const expr = timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.timeFormat, isUTCScale);
+    const expr = timeFormatExpression(
+      'datum.value',
+      normalizeTimeUnitObject(fieldDef.timeUnit).units,
+      legend.format,
+      config.timeFormat,
+      isUTCScale
+    );
     labelsSpec = {
       ...(expr ? {text: {signal: expr}} : {}),
       ...labelsSpec

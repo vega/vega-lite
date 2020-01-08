@@ -218,10 +218,9 @@ export function getLocalTimeUnit(t: UtcTimeUnit): LocalTimeUnit {
 export type TimeUnit = SingleTimeUnit | MultiTimeUnit;
 
 export interface TimeUnitParams {
-  units: string | LocalSingleTimeUnit;
-  step: number;
-  timezone: 'utc' | 'local';
-  maxbins: number;
+  units: TimeUnit;
+  step?: number;
+  timezone?: 'utc' | 'local';
 }
 
 export type TimeUnitObject = TimeUnit | TimeUnitParams;
@@ -262,7 +261,7 @@ export const VEGALITE_TIMEFORMAT: TimeFormatConfig = {
   'year-month-date': '%b %d, %Y '
 };
 
-export function normalizeTimeUnitObject(timeUnit: TimeUnitObject) {
+export function normalizeTimeUnitObject(timeUnit: TimeUnitObject): TimeUnitParams {
   if (isString(timeUnit)) {
     return {
       units: timeUnit
@@ -270,6 +269,14 @@ export function normalizeTimeUnitObject(timeUnit: TimeUnitObject) {
   } else {
     return timeUnit;
   }
+}
+
+export function timeUnitParamsToTransformParams(timeUnitParams: TimeUnitParams) {
+  return {
+    timeUnit: timeUnitParams.units,
+    step: timeUnitParams.step,
+    timezone: timeUnitParams.timezone
+  };
 }
 
 export function isTimeUnit(t: string): t is TimeUnit {
