@@ -2,6 +2,7 @@ import {DateTimeExpr, dateTimeExpr} from './datetime';
 import * as log from './log';
 import {accessPathWithDatum, Flag, keys, replaceAll} from './util';
 import stringify from 'fast-json-stable-stringify';
+import {isString} from 'vega-util';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
@@ -223,6 +224,8 @@ export interface TimeUnitParams {
   maxbins: number;
 }
 
+export type TimeUnitObject = TimeUnit | TimeUnitParams;
+
 const TIMEUNIT_INDEX: Flag<TimeUnit> = {
   ...LOCAL_SINGLE_TIMEUNIT_INDEX,
   ...UTC_SINGLE_TIMEUNIT_INDEX,
@@ -258,6 +261,16 @@ export const VEGALITE_TIMEFORMAT: TimeFormatConfig = {
   'year-month': '%b %Y ',
   'year-month-date': '%b %d, %Y '
 };
+
+export function normalizeTimeUnitObject(timeUnit: TimeUnitObject) {
+  if (isString(timeUnit)) {
+    return {
+      units: timeUnit
+    };
+  } else {
+    return timeUnit;
+  }
+}
 
 export function isTimeUnit(t: string): t is TimeUnit {
   return !!TIMEUNIT_INDEX[t];

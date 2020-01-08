@@ -27,7 +27,9 @@ import {
   isLocalSingleTimeUnit,
   isUtcSingleTimeUnit,
   normalizeTimeUnit,
-  TimeUnit
+  TimeUnit,
+  TimeUnitParams,
+  normalizeTimeUnitObject
 } from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
@@ -1034,11 +1036,12 @@ export function valueExpr(
     expr = dateTimeExpr(v, true);
   } else if (isString(v) || isNumber(v)) {
     if (timeUnit || type === 'temporal') {
-      if (isLocalSingleTimeUnit(timeUnit)) {
-        expr = dateTimeExpr({[timeUnit]: v}, true);
-      } else if (isUtcSingleTimeUnit(timeUnit)) {
+      const timeUnitParams = normalizeTimeUnitObject(timeUnit);
+      if (isLocalSingleTimeUnit(timeUnitParams.units)) {
+        expr = dateTimeExpr({[timeUnitParams.units]: v}, true);
+      } else if (isUtcSingleTimeUnit(timeUnitParams.units)) {
         // FIXME is this really correct?
-        expr = valueExpr(v, {timeUnit: getLocalTimeUnit(timeUnit)});
+        expr = valueExpr(v, {timeUnit: getLocalTimeUnit(timeUnitParams.units)});
       } else {
         // just pass the string to date function (which will call JS Date.parse())
         expr = `datetime(${JSON.stringify(v)})`;
