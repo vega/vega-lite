@@ -271,7 +271,13 @@ export function normalizeTimeUnitObject(timeUnit: TimeUnitObject): TimeUnitParam
   }
 }
 
-export function timeUnitParamsToTransformParams(timeUnitParams: TimeUnitParams) {
+export function getTimeUnitFromObject(timeUnit: TimeUnitObject): TimeUnit {
+  return timeUnit ? normalizeTimeUnitObject(timeUnit).units : undefined;
+}
+
+export function timeUnitParamsToTransformParams(
+  timeUnitParams: TimeUnitParams
+): {timeUnit: TimeUnit; step?: number; timezone?: 'utc' | 'local'} {
   return {
     timeUnit: timeUnitParams.units,
     step: timeUnitParams.step,

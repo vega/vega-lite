@@ -30,7 +30,8 @@ import {
   TimeUnit,
   TimeUnitParams,
   normalizeTimeUnitObject,
-  TimeUnitObject
+  TimeUnitObject,
+  getTimeUnitFromObject
 } from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
@@ -664,7 +665,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
   } else if (isBinning(bin)) {
     return `${field} (binned)`;
   } else if (timeUnit) {
-    const units = getTimeUnitParts(timeUnit).join('-');
+    const units = getTimeUnitParts(getTimeUnitFromObject(timeUnit)).join('-');
     return `${field} (${units})`;
   } else if (aggregate) {
     if (isArgmaxDef(aggregate)) {
@@ -679,7 +680,8 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
 }
 
 export function functionalTitleFormatter(fieldDef: FieldDefBase<string>) {
-  const {aggregate, bin, timeUnit, field} = fieldDef;
+  const {aggregate, bin, field} = fieldDef;
+  const timeUnit = getTimeUnitFromObject(fieldDef.timeUnit);
   if (isArgmaxDef(aggregate)) {
     return `${field} for argmax(${aggregate.argmax})`;
   } else if (isArgminDef(aggregate)) {
@@ -831,7 +833,7 @@ export function normalizeFieldDef(fd: FieldDef<string>, channel: Channel) {
 
   // Normalize Time Unit
   if (timeUnit) {
-    fieldDef.timeUnit = normalizeTimeUnit(timeUnit);
+    fieldDef.timeUnit = normalizeTimeUnit(getTimeUnitFromObject(timeUnit));
   }
 
   if (field) {

@@ -9,6 +9,7 @@ import {duplicate, hash} from '../../util';
 import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 import {getDependentFields} from './expressions';
+import {getTimeUnitFromObject} from '../../timeunit';
 
 export class CalculateNode extends DataFlowNode {
   private _dependentFields: Set<string>;
@@ -30,8 +31,9 @@ export class CalculateNode extends DataFlowNode {
         return;
       }
       if (isSortArray(fieldDef.sort)) {
-        const {field, timeUnit} = fieldDef;
+        const {field} = fieldDef;
         const sort: (number | string | boolean | DateTime)[] = fieldDef.sort;
+        const timeUnit = getTimeUnitFromObject(fieldDef.timeUnit);
         // generate `datum["a"] === val0 ? 0 : datum["a"] === val1 ? 1 : ... : n` via FieldEqualPredicate
         const calculate =
           sort

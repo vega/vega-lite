@@ -85,12 +85,12 @@ export interface TimeUnitTransform {
    * The number of steps between bins, in terms of the least
    * significant unit provided.
    */
-  step: number;
+  step?: number;
 
   /**
    * The timezone: `"local"` (default) or `"utc"`.
    */
-  timezone: 'utc' | 'local';
+  timezone?: 'utc' | 'local';
 }
 
 export interface AggregateTransform {
