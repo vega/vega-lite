@@ -121,7 +121,7 @@ describe('util', () => {
       expect(accessPathWithDatum('foo.bar')).toBe('datum["foo"] && datum["foo"]["bar"]');
     });
 
-    it('should support cusotom datum', () => {
+    it('should support custom datum', () => {
       expect(accessPathWithDatum('foo', 'parent')).toBe('parent["foo"]');
     });
   });
@@ -135,7 +135,7 @@ describe('util', () => {
       expect(flatAccessWithDatum('foo["bar"].baz')).toBe('datum["foo.bar.baz"]');
     });
 
-    it('should support cusotom datum', () => {
+    it('should support custom datum', () => {
       expect(flatAccessWithDatum('foo', 'parent')).toBe('parent["foo"]');
     });
   });
