@@ -124,6 +124,10 @@ describe('util', () => {
     it('should support custom datum', () => {
       expect(accessPathWithDatum('foo', 'parent')).toBe('parent["foo"]');
     });
+
+    it('should support escaped brackets', () => {
+      expect(accessPathWithDatum('y\\[foo\\]')).toBe('datum["y\\[foo\\]"]');
+    });
   });
 
   describe('flatAccessWithDatum', () => {
@@ -137,6 +141,10 @@ describe('util', () => {
 
     it('should support custom datum', () => {
       expect(flatAccessWithDatum('foo', 'parent')).toBe('parent["foo"]');
+    });
+
+    it('should support escaped brackets', () => {
+      expect(flatAccessWithDatum('y\\[foo\\]')).toBe('datum["y\\[foo\\]"]');
     });
   });
 
