@@ -2,7 +2,14 @@ import {isArray} from 'vega-util';
 import {FieldName, valueExpr, vgField} from './channeldef';
 import {DateTime} from './datetime';
 import {LogicalOperand} from './logical';
-import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit} from './timeunit';
+import {
+  fieldExpr as timeUnitFieldExpr,
+  normalizeTimeUnit,
+  TimeUnit,
+  getTimeUnitFromObject,
+  TimeUnitParams,
+  TimeUnitObject
+} from './timeunit';
 
 export type Predicate =
   // a) FieldPredicate (but we don't type FieldFilter here so the schema has no nesting
@@ -47,7 +54,7 @@ export interface FieldPredicateBase {
   /**
    * Time unit for the field to be filtered.
    */
-  timeUnit?: TimeUnit;
+  timeUnit?: TimeUnitObject;
 
   /**
    * Field to be filtered.
@@ -185,7 +192,8 @@ function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], tim
 
 // This method is used by Voyager. Do not change its behavior without changing Voyager.
 export function fieldFilterExpression(predicate: FieldPredicate, useInRange = true) {
-  const {field, timeUnit} = predicate;
+  const {field} = predicate;
+  const timeUnit = getTimeUnitFromObject(predicate.timeUnit);
   const fieldExpr = timeUnit
     ? // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
       // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline

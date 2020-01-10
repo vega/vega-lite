@@ -32,7 +32,7 @@ export class TimeUnitNode extends DataFlowNode {
 
       if (timeUnit) {
         const as = vgField(fieldDef, {forAs: true});
-        timeUnitComponent[hash({as, timeUnitParams, field})] = {
+        timeUnitComponent[hash({as, field, ...timeUnitParamsToTransformParams(timeUnitParams)})] = {
           as,
           field,
           ...timeUnitParamsToTransformParams(timeUnitParams),

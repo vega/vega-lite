@@ -833,7 +833,7 @@ export function normalizeFieldDef(fd: FieldDef<string>, channel: Channel) {
 
   // Normalize Time Unit
   if (timeUnit) {
-    fieldDef.timeUnit = normalizeTimeUnit(getTimeUnitFromObject(timeUnit));
+    fieldDef.timeUnit = normalizeTimeUnit(timeUnit);
   }
 
   if (field) {
@@ -1038,7 +1038,7 @@ export function valueExpr(
   if (isDateTime(v)) {
     expr = dateTimeExpr(v, true);
   } else if (isString(v) || isNumber(v)) {
-    if (timeUnit || type === 'temporal') {
+    if (timeUnit) {
       const timeUnitParams = normalizeTimeUnitObject(timeUnit);
       if (isLocalSingleTimeUnit(timeUnitParams.units)) {
         expr = dateTimeExpr({[timeUnitParams.units]: v}, true);
@@ -1049,6 +1049,9 @@ export function valueExpr(
         // just pass the string to date function (which will call JS Date.parse())
         expr = `datetime(${JSON.stringify(v)})`;
       }
+    } else {
+      // just pass the string to date function (which will call JS Date.parse())
+      expr = `datetime(${JSON.stringify(v)})`;
     }
   }
   if (expr) {

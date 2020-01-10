@@ -369,10 +369,24 @@ export function formatExpression(timeUnit: TimeUnit, field: string, isUTCScale: 
   }
 }
 
-export function normalizeTimeUnit(timeUnit: TimeUnit): TimeUnit {
+export function normalizeTimeUnit(timeUnit: TimeUnitObject): TimeUnitParams {
+  if (isString(timeUnit)) {
+    return {
+      units: correctTimeUnit(timeUnit)
+    };
+  } else {
+    return {
+      ...timeUnit,
+      units: correctTimeUnit(timeUnit.units)
+    };
+  }
+}
+
+export function correctTimeUnit(timeUnit: TimeUnit) {
   if (timeUnit !== 'day' && timeUnit.indexOf('day') >= 0) {
     log.warn(log.message.dayReplacedWithDate(timeUnit));
     return replaceAll(timeUnit, 'day', 'date') as TimeUnit;
   }
+
   return timeUnit;
 }
