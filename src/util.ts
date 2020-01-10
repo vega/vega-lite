@@ -293,6 +293,10 @@ export function titlecase(s: string) {
   return s.charAt(0).toUpperCase() + s.substr(1);
 }
 
+function escapePatchAccess(string: string) {
+  return replaceAll(replaceAll(replaceAll(string, ']', '\\]'), '[', '\\['), '.', '\\.');
+}
+
 /**
  * Converts a path to an access path with datum.
  * @param path The field name.
@@ -327,7 +331,7 @@ export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' | 'd
  */
 export function replacePathInField(path: string) {
   return `${splitAccessPath(path)
-    .map(p => replaceAll(p, '.', '\\.'))
+    .map(escapePatchAccess)
     .join('\\.')}`;
 }
 
