@@ -80,6 +80,17 @@ export interface TimeUnitTransform {
    * The output field to write the timeUnit value.
    */
   as: FieldName;
+
+  /**
+   * The number of steps between bins, in terms of the least
+   * significant unit provided.
+   */
+  step?: number;
+
+  /**
+   * The timezone: `"local"` (default) or `"utc"`.
+   */
+  timezone?: 'utc' | 'local';
 }
 
 export interface AggregateTransform {

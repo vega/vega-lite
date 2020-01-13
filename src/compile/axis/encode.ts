@@ -4,6 +4,7 @@ import {ScaleType} from '../../scale';
 import {keys} from '../../util';
 import {timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
+import {normalizeTimeUnit} from '../../timeunit';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
   const fieldDef =
@@ -17,7 +18,13 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   if (isTimeFormatFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
 
-    const expr = timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, null, isUTCScale);
+    const expr = timeFormatExpression(
+      'datum.value',
+      normalizeTimeUnit(fieldDef.timeUnit)?.units,
+      axis.format,
+      null,
+      isUTCScale
+    );
 
     if (expr) {
       labelsSpec.text = {signal: expr};

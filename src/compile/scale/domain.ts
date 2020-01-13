@@ -15,7 +15,7 @@ import {DateTime} from '../../datetime';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
-import {TimeUnit} from '../../timeunit';
+import {TimeUnit, normalizeTimeUnit} from '../../timeunit';
 import {Type} from '../../type';
 import * as util from '../../util';
 import {
@@ -208,7 +208,8 @@ function parseSingleChannelDomain(
 
   if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
     // explicit value
-    const {type, timeUnit} = fieldDef;
+    const {type} = fieldDef;
+    const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.units;
     if (type === 'temporal' || timeUnit) {
       return makeExplicit(mapDomainToDataSignal<number | string | boolean | DateTime>(domain, type, timeUnit));
     }

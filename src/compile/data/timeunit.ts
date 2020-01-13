@@ -1,7 +1,7 @@
 import {TimeUnitTransform as VgTimeUnitTransform} from 'vega';
 import {getSecondaryRangeChannel} from '../../channel';
 import {hasBand, vgField} from '../../channeldef';
-import {getTimeUnitParts} from '../../timeunit';
+import {getTimeUnitParts, normalizeTimeUnit} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, vals} from '../../util';
 import {isUnitModel, ModelWithField} from '../model';
@@ -23,17 +23,30 @@ export class TimeUnitNode extends DataFlowNode {
 
   public static makeFromEncoding(parent: DataFlowNode, model: ModelWithField) {
     const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef, channel) => {
-      const {timeUnit, field} = fieldDef;
+      const {field} = fieldDef;
+      const timeUnitParams = normalizeTimeUnit(fieldDef.timeUnit);
 
       const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;
 
       const band = isUnitModel(model) && hasBand(channel, fieldDef, channelDef2, model.markDef, model.config);
 
-      if (timeUnit) {
+      if (timeUnitParams) {
+        const {units: timeUnit, step, timezone} = timeUnitParams;
+
         const as = vgField(fieldDef, {forAs: true});
-        timeUnitComponent[hash({as, timeUnit, field})] = {
+        timeUnitComponent[
+          hash({
+            as,
+            timeUnit,
+            step,
+            timezone,
+            field
+          })
+        ] = {
           as,
           timeUnit,
+          step,
+          timezone,
           field,
           ...(band ? {band: true} : {})
         };
@@ -95,12 +108,15 @@ export class TimeUnitNode extends DataFlowNode {
     const transforms: VgTimeUnitTransform[] = [];
 
     for (const f of vals(this.formula)) {
-      const {timeUnit, field, as} = f;
+      const {field, as} = f;
+      const timeUnitParams = normalizeTimeUnit(f.timeUnit);
 
       transforms.push({
         field,
         type: 'timeunit',
-        units: getTimeUnitParts(timeUnit),
+        ...{units: getTimeUnitParts(timeUnitParams?.units)},
+        ...{step: timeUnitParams?.step},
+        ...{timezone: timeUnitParams?.timezone},
         as: [as, `${as}_end`]
       });
     }
