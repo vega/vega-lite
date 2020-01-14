@@ -1,6 +1,4 @@
-import {Text} from 'vega';
-// Declaration and utility for variants of a field definition object
-import {LinearGradient, RadialGradient} from 'vega';
+import {LinearGradient, RadialGradient, Text} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -14,7 +12,7 @@ import {FormatMixins, Guide, TitleMixins} from './guide';
 import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
-import {LogicalOperand} from './logical';
+import {LogicalComposition} from './logical';
 import {isRectBasedMark, MarkDef} from './mark';
 import {Predicate} from './predicate';
 import {Scale} from './scale';
@@ -105,14 +103,14 @@ export type ConditionalPredicate<CD extends FieldDef<any> | ValueDef<any>> = {
   /**
    * Predicate for triggering the condition
    */
-  test: LogicalOperand<Predicate>;
+  test: LogicalComposition<Predicate>;
 } & CD;
 
 export type ConditionalSelection<CD extends FieldDef<any> | ValueDef<any>> = {
   /**
    * A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose).
    */
-  selection: LogicalOperand<string>;
+  selection: LogicalComposition<string>;
 } & CD;
 
 export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSelection<T> {

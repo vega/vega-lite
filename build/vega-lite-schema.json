@@ -3299,7 +3299,7 @@
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "timeUnit": {
@@ -3380,7 +3380,7 @@
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "timeUnit": {
@@ -3457,7 +3457,7 @@
           "type": "string"
         },
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "timeUnit": {
@@ -3490,7 +3490,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3515,7 +3515,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3540,7 +3540,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3565,7 +3565,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3593,7 +3593,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3618,7 +3618,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3646,7 +3646,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3667,7 +3667,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3688,7 +3688,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3706,7 +3706,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3724,7 +3724,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3786,7 +3786,7 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
         },
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "sort": {
@@ -3867,7 +3867,7 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
         },
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "sort": {
@@ -3948,7 +3948,7 @@
           "type": "string"
         },
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "timeUnit": {
@@ -3981,7 +3981,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -4009,7 +4009,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -4030,7 +4030,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -4048,7 +4048,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -4066,7 +4066,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -6406,11 +6406,11 @@
         },
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6424,7 +6424,7 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "gte": {
           "anyOf": [
@@ -6442,7 +6442,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6456,7 +6456,7 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "gt": {
           "anyOf": [
@@ -6474,7 +6474,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6488,7 +6488,7 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "lte": {
           "anyOf": [
@@ -6506,7 +6506,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6520,7 +6520,7 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "lt": {
           "anyOf": [
@@ -6538,7 +6538,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6555,7 +6555,7 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "oneOf": {
           "anyOf": [
@@ -6588,7 +6588,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6602,7 +6602,7 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "range": {
           "description": "An array of inclusive minimum and maximum values\nfor a field value of a data item to be included in the filtered data.",
@@ -6625,7 +6625,7 @@
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6639,11 +6639,11 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "description": "Time unit for the field to be tested."
         },
         "valid": {
           "description": "If set to true the field's value has to be valid, meaning both not `null` and not [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).",
@@ -6660,8 +6660,8 @@
       "additionalProperties": false,
       "properties": {
         "filter": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "The `filter` property must be one of the predicate definitions:\n\n1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,\nwhere `datum` can be used to refer to the current data object\n\n2) one of the field predicates: [`equal`](https://vega.github.io/vega-lite/docs/filter.html#equal-predicate),\n[`lt`](https://vega.github.io/vega-lite/docs/filter.html#lt-predicate),\n[`lte`](https://vega.github.io/vega-lite/docs/filter.html#lte-predicate),\n[`gt`](https://vega.github.io/vega-lite/docs/filter.html#gt-predicate),\n[`gte`](https://vega.github.io/vega-lite/docs/filter.html#gte-predicate),\n[`range`](https://vega.github.io/vega-lite/docs/filter.html#range-predicate),\n[`oneOf`](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate),\nor [`valid`](https://vega.github.io/vega-lite/docs/filter.html#valid-predicate),\n\n3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate)\n\n4) a logical operand that combines (1), (2), or (3)."
+          "$ref": "#/definitions/PredicateComposition",
+          "description": "The `filter` property must be a predication definition, which can takes one of the following forms:\n\n1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,\nwhere `datum` can be used to refer to the current data object.\nFor example, `{filter: \"datum.b2 > 60\"}` would make the output data includes only items that have values in the field `b2` over 60.\n\n2) one of the [field predicates](https://vega.github.io/vega-lite/docs/predicate.html#field-predicate): [`equal`](https://vega.github.io/* vega-lite/docs/predicate.html#field-equal-predicate),\n[`lt`](https://vega.github.io/vega-lite/docs/predicate.html#lt-predicate),\n[`lte`](https://vega.github.io/vega-lite/docs/predicate.html#lte-predicate),\n[`gt`](https://vega.github.io/vega-lite/docs/predicate.html#gt-predicate),\n[`gte`](https://vega.github.io/vega-lite/docs/predicate.html#gte-predicate),\n[`range`](https://vega.github.io/vega-lite/docs/predicate.html#range-predicate),\n[`oneOf`](https://vega.github.io/vega-lite/docs/predicate.html#one-of-predicate),\nor [`valid`](https://vega.github.io/vega-lite/docs/predicate.html#valid-predicate),\n\n3) a [selection predicate](https://vega.github.io/vega-lite/docs/predicate.html#selection-predicate), which define the names of a selection that the data point should belong to (or a logical composition of selections).\n\na [logical composition](https://vega.github.io/vega-lite/docs/predicate.html#composition) of (1), (2), or (3)."
         }
       },
       "required": [
@@ -9792,7 +9792,7 @@
       "properties": {
         "and": {
           "items": {
-            "$ref": "#/definitions/LogicalOperand<Predicate>"
+            "$ref": "#/definitions/PredicateComposition"
           },
           "type": "array"
         }
@@ -9807,7 +9807,7 @@
       "properties": {
         "and": {
           "items": {
-            "$ref": "#/definitions/SelectionOperand"
+            "$ref": "#/definitions/SelectionComposition"
           },
           "type": "array"
         }
@@ -9817,31 +9817,7 @@
       ],
       "type": "object"
     },
-    "LogicalNot<Predicate>": {
-      "additionalProperties": false,
-      "properties": {
-        "not": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>"
-        }
-      },
-      "required": [
-        "not"
-      ],
-      "type": "object"
-    },
-    "SelectionNot": {
-      "additionalProperties": false,
-      "properties": {
-        "not": {
-          "$ref": "#/definitions/SelectionOperand"
-        }
-      },
-      "required": [
-        "not"
-      ],
-      "type": "object"
-    },
-    "LogicalOperand<Predicate>": {
+    "PredicateComposition": {
       "anyOf": [
         {
           "$ref": "#/definitions/LogicalNot<Predicate>"
@@ -9857,7 +9833,7 @@
         }
       ]
     },
-    "SelectionOperand": {
+    "SelectionComposition": {
       "anyOf": [
         {
           "$ref": "#/definitions/SelectionNot"
@@ -9873,12 +9849,36 @@
         }
       ]
     },
+    "LogicalNot<Predicate>": {
+      "additionalProperties": false,
+      "properties": {
+        "not": {
+          "$ref": "#/definitions/PredicateComposition"
+        }
+      },
+      "required": [
+        "not"
+      ],
+      "type": "object"
+    },
+    "SelectionNot": {
+      "additionalProperties": false,
+      "properties": {
+        "not": {
+          "$ref": "#/definitions/SelectionComposition"
+        }
+      },
+      "required": [
+        "not"
+      ],
+      "type": "object"
+    },
     "LogicalOr<Predicate>": {
       "additionalProperties": false,
       "properties": {
         "or": {
           "items": {
-            "$ref": "#/definitions/LogicalOperand<Predicate>"
+            "$ref": "#/definitions/PredicateComposition"
           },
           "type": "array"
         }
@@ -9893,7 +9893,7 @@
       "properties": {
         "or": {
           "items": {
-            "$ref": "#/definitions/SelectionOperand"
+            "$ref": "#/definitions/SelectionComposition"
           },
           "type": "array"
         }
@@ -13399,8 +13399,8 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
-          "description": "Filter using a selection name."
+          "$ref": "#/definitions/SelectionComposition",
+          "description": "Filter using a selection name or a logical composition of selection names."
         }
       },
       "required": [

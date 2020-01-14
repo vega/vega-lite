@@ -1,30 +1,30 @@
-export type LogicalOperand<T> = LogicalNot<T> | LogicalAnd<T> | LogicalOr<T> | T;
+export type LogicalComposition<T> = LogicalNot<T> | LogicalAnd<T> | LogicalOr<T> | T;
 
 export interface LogicalOr<T> {
-  or: LogicalOperand<T>[];
+  or: LogicalComposition<T>[];
 }
 
 export interface LogicalAnd<T> {
-  and: LogicalOperand<T>[];
+  and: LogicalComposition<T>[];
 }
 
 export interface LogicalNot<T> {
-  not: LogicalOperand<T>;
+  not: LogicalComposition<T>;
 }
 
-export function isLogicalOr(op: LogicalOperand<any>): op is LogicalOr<any> {
+export function isLogicalOr(op: LogicalComposition<any>): op is LogicalOr<any> {
   return !!op.or;
 }
 
-export function isLogicalAnd(op: LogicalOperand<any>): op is LogicalAnd<any> {
+export function isLogicalAnd(op: LogicalComposition<any>): op is LogicalAnd<any> {
   return !!op.and;
 }
 
-export function isLogicalNot(op: LogicalOperand<any>): op is LogicalNot<any> {
+export function isLogicalNot(op: LogicalComposition<any>): op is LogicalNot<any> {
   return !!op.not;
 }
 
-export function forEachLeaf<T>(op: LogicalOperand<T>, fn: (op: T) => void) {
+export function forEachLeaf<T>(op: LogicalComposition<T>, fn: (op: T) => void) {
   if (isLogicalNot(op)) {
     forEachLeaf(op.not, fn);
   } else if (isLogicalAnd(op)) {
@@ -40,13 +40,16 @@ export function forEachLeaf<T>(op: LogicalOperand<T>, fn: (op: T) => void) {
   }
 }
 
-export function normalizeLogicalOperand<T>(op: LogicalOperand<T>, normalizer: (o: T) => T): LogicalOperand<T> {
+export function normalizeLogicalComposition<T>(
+  op: LogicalComposition<T>,
+  normalizer: (o: T) => T
+): LogicalComposition<T> {
   if (isLogicalNot(op)) {
-    return {not: normalizeLogicalOperand(op.not, normalizer)};
+    return {not: normalizeLogicalComposition(op.not, normalizer)};
   } else if (isLogicalAnd(op)) {
-    return {and: op.and.map(o => normalizeLogicalOperand(o, normalizer))};
+    return {and: op.and.map(o => normalizeLogicalComposition(o, normalizer))};
   } else if (isLogicalOr(op)) {
-    return {or: op.or.map(o => normalizeLogicalOperand(o, normalizer))};
+    return {or: op.or.map(o => normalizeLogicalComposition(o, normalizer))};
   } else {
     return normalizer(op);
   }

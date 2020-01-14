@@ -72,12 +72,8 @@ Bin:
   link: 'bin.html'
 BinParams:
   link: 'bin.html#bin-parameters'
-'LogicalOperand<Predicate>':
 BinExtent:
   name: Array
-
-Predicate:
-  link: 'transform.html#predicate'
 
 TimeUnit:
   link: 'timeunit.html'
@@ -315,7 +311,7 @@ Resolve:
 SelectionDef:
   name: Selection
   link: 'selection.html'
-SelectionOperand:
+SelectionComposition:
   name: 'String | Object'
 SingleSelectionConfig:
   name: Selection
@@ -365,6 +361,10 @@ Vector3:
   name: Array
 
 # Others
+PredicateComposition:
+  name: 'Predicate'
+  link: 'predicate.html'
+
 FontWeight:
   name: 'String | Number'
 RepeatMapping:

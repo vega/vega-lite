@@ -3,7 +3,7 @@ import {BinParams} from './bin';
 import {FieldName} from './channeldef';
 import {Data} from './data';
 import {ImputeParams} from './impute';
-import {LogicalOperand, normalizeLogicalOperand} from './logical';
+import {LogicalComposition, normalizeLogicalComposition} from './logical';
 import {normalizePredicate, Predicate} from './predicate';
 import {SortField} from './sort';
 import {TimeUnit} from './timeunit';
@@ -29,7 +29,7 @@ export interface FilterTransform {
    * 4) a logical operand that combines (1), (2), or (3).
    */
   // TODO: https://github.com/vega/vega-lite/issues/2901
-  filter: LogicalOperand<Predicate>;
+  filter: LogicalComposition<Predicate>;
 }
 
 export function isFilter(t: Transform): t is FilterTransform {
@@ -677,7 +677,7 @@ export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {
     if (isFilter(t)) {
       return {
-        filter: normalizeLogicalOperand(t.filter, normalizePredicate)
+        filter: normalizeLogicalComposition(t.filter, normalizePredicate)
       };
     }
     return t;
