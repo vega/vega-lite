@@ -71,3 +71,4 @@ Please see the following pages for other special object types:
 
 - [Date Time](datetime.html)
 - [Gradient](gradient.html)
+- [Predicate](predicate.html)

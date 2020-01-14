@@ -45,12 +45,12 @@ export interface FieldPredicateBase {
   // TODO: support aggregate
 
   /**
-   * Time unit for the field to be filtered.
+   * Time unit for the field to be tested.
    */
   timeUnit?: TimeUnit;
 
   /**
-   * Field to be filtered.
+   * Field to be tested.
    */
   field: FieldName;
 }
