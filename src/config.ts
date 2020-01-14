@@ -1,4 +1,4 @@
-import {Color, RangeScheme, RangeConfig} from 'vega';
+import {Color, RangeConfig, RangeScheme} from 'vega';
 import {isObject, mergeConfig} from 'vega-util';
 import {AxisConfigMixins} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
@@ -46,6 +46,7 @@ export interface ViewConfig extends BaseViewBackground {
 
   /**
    * The default width when the plot has either a discrete x-field or no x-field.
+   * The width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step.
    *
    * __Default value:__ a step size based on `config.view.step`.
    */
@@ -59,6 +60,7 @@ export interface ViewConfig extends BaseViewBackground {
 
   /**
    * The default height when the plot has either a discrete y-field or no y-field.
+   * The height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step.
    *
    * __Default value:__ a step size based on `config.view.step`.
    */
