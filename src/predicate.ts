@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
 import {FieldName, valueExpr, vgField} from './channeldef';
 import {DateTime} from './datetime';
-import {LogicalOperand} from './logical';
+import {LogicalComposition} from './logical';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit} from './timeunit';
 
 export type Predicate =
@@ -32,12 +32,12 @@ export type FieldPredicate =
 
 export interface SelectionPredicate {
   /**
-   * Filter using a selection name.
+   * Filter using a selection name or a logical composition of selection names.
    */
-  selection: LogicalOperand<string>;
+  selection: LogicalComposition<string>;
 }
 
-export function isSelectionPredicate(predicate: LogicalOperand<Predicate>): predicate is SelectionPredicate {
+export function isSelectionPredicate(predicate: LogicalComposition<Predicate>): predicate is SelectionPredicate {
   return predicate?.['selection'];
 }
 
@@ -45,12 +45,12 @@ export interface FieldPredicateBase {
   // TODO: support aggregate
 
   /**
-   * Time unit for the field to be filtered.
+   * Time unit for the field to be tested.
    */
   timeUnit?: TimeUnit;
 
   /**
-   * Field to be filtered.
+   * Field to be tested.
    */
   field: FieldName;
 }

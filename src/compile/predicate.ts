@@ -1,5 +1,5 @@
 import {isString} from 'vega-util';
-import {LogicalOperand} from '../logical';
+import {LogicalComposition} from '../logical';
 import {fieldFilterExpression, isSelectionPredicate, Predicate} from '../predicate';
 import {logicalExpr} from '../util';
 import {DataFlowNode} from './data/dataflow';
@@ -10,7 +10,7 @@ import {parseSelectionPredicate} from './selection/parse';
  * Converts a predicate into an expression.
  */
 // model is only used for selection filters.
-export function expression(model: Model, filterOp: LogicalOperand<Predicate>, node?: DataFlowNode): string {
+export function expression(model: Model, filterOp: LogicalComposition<Predicate>, node?: DataFlowNode): string {
   return logicalExpr(filterOp, (predicate: Predicate) => {
     if (isString(predicate)) {
       return predicate;

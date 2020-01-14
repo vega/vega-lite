@@ -1,15 +1,15 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {hasOwnProperty, isString, stringValue} from 'vega-util';
-import {SelectionComponent, STORE, forEachSelection} from '.';
-import {LogicalOperand} from '../../logical';
+import {forEachSelection, SelectionComponent, STORE} from '.';
+import {warn} from '../../log';
+import {LogicalComposition} from '../../logical';
 import {SelectionDef, SelectionExtent} from '../../selection';
 import {Dict, duplicate, logicalExpr, varName} from '../../util';
 import {DataFlowNode, OutputNode} from '../data/dataflow';
+import {FilterNode} from '../data/filter';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {forEachTransform} from './transforms/transforms';
-import {warn} from '../../log';
-import {FilterNode} from '../data/filter';
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
@@ -62,7 +62,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
 
 export function parseSelectionPredicate(
   model: Model,
-  selections: LogicalOperand<string>,
+  selections: LogicalComposition<string>,
   dfnode?: DataFlowNode,
   datum = 'datum'
 ): string {

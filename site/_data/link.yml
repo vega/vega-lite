@@ -72,12 +72,8 @@ Bin:
   link: 'bin.html'
 BinParams:
   link: 'bin.html#bin-parameters'
-'LogicalOperand<Predicate>':
 BinExtent:
   name: Array
-
-Predicate:
-  link: 'transform.html#predicate'
 
 TimeUnit:
   link: 'timeunit.html'
@@ -315,7 +311,7 @@ Resolve:
 SelectionDef:
   name: Selection
   link: 'selection.html'
-SelectionOperand:
+SelectionComposition:
   name: 'String | Object'
 SingleSelectionConfig:
   name: Selection
@@ -349,14 +345,13 @@ SelectionInitIntervalMapping:
 Any:
   link: 'types.html#any'
 DateTime:
-  link: 'types.html#datetime'
+  link: 'datetime.html'
 Color:
   link: 'types.html#color'
 Gradient:
-  link: 'types.html#gradient'
+  link: 'gradient.html'
 GradientStop:
-  name: Stop
-  link: 'types.html#gradient-stop'
+  link: 'gradient.html#gradient-stop'
 Text:
   link: 'types.html#text'
 Vector2:
@@ -365,6 +360,10 @@ Vector3:
   name: Array
 
 # Others
+PredicateComposition:
+  name: 'Predicate'
+  link: 'predicate.html'
+
 FontWeight:
   name: 'String | Number'
 RepeatMapping:

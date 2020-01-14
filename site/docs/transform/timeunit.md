@@ -4,7 +4,7 @@ title: Time Unit
 permalink: /docs/timeunit.html
 ---
 
-Time unit is used to discretize times in Vega-Lite. It can either be used [inside encoding field definitions](#encoding) or as [a transform](#transform).
+Time unit is used to discretize times in Vega-Lite. It can be used (1) with the `timeUnit` property of [encoding field definitions](#encoding), (2) as [a standalone transform](#transform), or (3) with the `timeUnit` property of a [field predicate](predicate.html#field-predicate).
 
 Vega-Lite supports the following time units:
 

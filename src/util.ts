@@ -3,7 +3,7 @@ import {default as clone_} from 'clone';
 import deepEqual_ from 'fast-deep-equal';
 import stableStringify from 'fast-json-stable-stringify';
 import {hasOwnProperty, isNumber, isString, splitAccessPath, stringValue, writeConfig} from 'vega-util';
-import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
+import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalComposition} from './logical';
 
 export const deepEqual = deepEqual_;
 export const duplicate = clone_;
@@ -263,13 +263,13 @@ export function varName(s: string): string {
   return (s.match(/^\d+/) ? '_' : '') + alphanumericS;
 }
 
-export function logicalExpr<T>(op: LogicalOperand<T>, cb: (...args: readonly any[]) => string): string {
+export function logicalExpr<T>(op: LogicalComposition<T>, cb: (...args: readonly any[]) => string): string {
   if (isLogicalNot(op)) {
     return '!(' + logicalExpr(op.not, cb) + ')';
   } else if (isLogicalAnd(op)) {
-    return '(' + op.and.map((and: LogicalOperand<T>) => logicalExpr(and, cb)).join(') && (') + ')';
+    return '(' + op.and.map((and: LogicalComposition<T>) => logicalExpr(and, cb)).join(') && (') + ')';
   } else if (isLogicalOr(op)) {
-    return '(' + op.or.map((or: LogicalOperand<T>) => logicalExpr(or, cb)).join(') || (') + ')';
+    return '(' + op.or.map((or: LogicalComposition<T>) => logicalExpr(or, cb)).join(') || (') + ')';
   } else {
     return cb(op);
   }

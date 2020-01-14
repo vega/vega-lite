@@ -21,7 +21,8 @@ perl -pi -e s,'Conditional<(.*)>','Conditional\1',g build/vega-lite-schema.json
 perl -pi -e s,'FieldDefWithCondition<FieldDefWithoutScale>','FieldDefWithConditionWithoutScale',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDefWithCondition<FieldDefWithoutScale>','ValueDefWithConditionWithoutScale',g build/vega-lite-schema.json
 
-perl -pi -e s,'LogicalOperand<string>','SelectionOperand',g build/vega-lite-schema.json
+perl -pi -e s,'LogicalComposition<string>','SelectionComposition',g build/vega-lite-schema.json
+perl -pi -e s,'LogicalComposition<Predicate>','PredicateComposition',g build/vega-lite-schema.json
 perl -pi -e s,'LogicalAnd<string>','SelectionAnd',g build/vega-lite-schema.json
 perl -pi -e s,'LogicalOr<string>','SelectionOr',g build/vega-lite-schema.json
 perl -pi -e s,'LogicalNot<string>','SelectionNot',g build/vega-lite-schema.json
