@@ -16422,7 +16422,7 @@
               "type": "object"
             }
           ],
-          "description": "The default height when the plot has either a discrete y-field or no y-field.\n\n__Default value:__ a step size based on `config.view.step`."
+          "description": "The default height when the plot has either a discrete y-field or no y-field.\nThe height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step.\n\n__Default value:__ a step size based on `config.view.step`."
         },
         "discreteWidth": {
           "anyOf": [
@@ -16442,7 +16442,7 @@
               "type": "object"
             }
           ],
-          "description": "The default width when the plot has either a discrete x-field or no x-field.\n\n__Default value:__ a step size based on `config.view.step`."
+          "description": "The default width when the plot has either a discrete x-field or no x-field.\nThe width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step.\n\n__Default value:__ a step size based on `config.view.step`."
         },
         "fill": {
           "anyOf": [
