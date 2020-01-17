@@ -117,19 +117,19 @@ export interface ResolveMixins {
 
 export interface BaseViewBackground
   extends Partial<
-  Pick<
-    BaseMarkConfig,
-    | 'cornerRadius'
-    | 'fillOpacity'
-    | 'opacity'
-    | 'strokeCap'
-    | 'strokeDash'
-    | 'strokeDashOffset'
-    | 'strokeJoin'
-    | 'strokeMiterLimit'
-    | 'strokeOpacity'
-    | 'strokeWidth'
-  >
+    Pick<
+      BaseMarkConfig,
+      | 'cornerRadius'
+      | 'fillOpacity'
+      | 'opacity'
+      | 'strokeCap'
+      | 'strokeDash'
+      | 'strokeDashOffset'
+      | 'strokeJoin'
+      | 'strokeMiterLimit'
+      | 'strokeOpacity'
+      | 'strokeWidth'
+    >
   > {
   // Override documentations for fill, stroke, and cursor
   /**
@@ -302,9 +302,9 @@ export function extractCompositionLayout(
         layout[prop] = isNumber(spacing)
           ? spacing
           : {
-            row: spacing.row ?? spacingConfig,
-            column: spacing.column ?? spacingConfig
-          };
+              row: spacing.row ?? spacingConfig,
+              column: spacing.column ?? spacingConfig
+            };
       } else {
         (layout[prop] as any) = spec[prop];
       }
