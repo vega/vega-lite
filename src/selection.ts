@@ -1,4 +1,4 @@
-import {Binding, Color, Stream, Vector2} from 'vega';
+import {Binding, Color, Cursor, Stream, Vector2} from 'vega';
 import {isObject} from 'vega-util';
 import {SingleDefUnitChannel} from './channel';
 import {FieldName, Value} from './channeldef';
@@ -139,6 +139,7 @@ export interface MultiSelectionConfig extends BaseSelectionConfig {
   bind?: LegendBinding;
 }
 
+// Similar to BaseMarkConfig but the field documentations are specificly for an interval mark
 export interface BrushConfig {
   /**
    * The fill color of the interval mark.
@@ -176,6 +177,10 @@ export interface BrushConfig {
    * The offset (in pixels) with which to begin drawing the stroke dash array.
    */
   strokeDashOffset?: number;
+  /**
+   * The mouse cursor used over the interval mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
+   */
+  cursor?: Cursor;
 }
 
 export interface IntervalSelectionConfig extends BaseSelectionConfig {
