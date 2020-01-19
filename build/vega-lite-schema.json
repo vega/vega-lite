@@ -790,8 +790,15 @@
           "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
         },
         "labelPadding": {
-          "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisNumber"
+            }
+          ]
         },
         "labelSeparation": {
           "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
@@ -905,9 +912,16 @@
           "type": "boolean"
         },
         "tickSize": {
-          "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisNumber"
+            }
+          ]
         },
         "tickWidth": {
           "anyOf": [
@@ -1288,8 +1302,15 @@
           "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
         },
         "labelPadding": {
-          "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisNumber"
+            }
+          ]
         },
         "labelSeparation": {
           "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
@@ -1386,9 +1407,16 @@
           "type": "boolean"
         },
         "tickSize": {
-          "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisNumber"
+            }
+          ]
         },
         "tickWidth": {
           "anyOf": [
