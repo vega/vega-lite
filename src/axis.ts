@@ -122,7 +122,7 @@ export type ConditionalAxisProperty<V extends Value | number[]> = ValueDef<V> & 
 };
 
 export function isConditionalAxisValue<V extends Value | number[]>(v: any): v is ConditionalAxisProperty<V> {
-  return v['condition'];
+  return v && v['condition'];
 }
 
 export type ConditionalAxisNumber = ConditionalAxisProperty<number | null>;

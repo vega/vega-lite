@@ -1,6 +1,6 @@
 import {Color, RangeConfig, RangeScheme} from 'vega';
 import {isObject, mergeConfig} from 'vega-util';
-import {AxisConfigMixins} from './axis';
+import {AxisConfigMixins, isConditionalAxisValue} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
 import {VL_ONLY_LEGEND_CONFIG} from './guide';
 import {HeaderConfigMixins} from './header';
@@ -296,6 +296,15 @@ export function stripAndRedirectConfig(config: Config) {
 
   for (const prop of VL_ONLY_CONFIG_PROPERTIES) {
     delete config[prop];
+  }
+
+  if (config.axis) {
+    // delete condition axis config
+    for (const prop in config.axis) {
+      if (isConditionalAxisValue(config.axis[prop])) {
+        delete config.axis[prop];
+      }
+    }
   }
 
   if (config.legend) {
