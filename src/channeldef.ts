@@ -1071,7 +1071,7 @@ export function valueArray(fieldDef: TypedFieldDef<string>, values: (number | st
  */
 export function binRequiresRange(fieldDef: TypedFieldDef<string>, channel: Channel) {
   if (!isBinning(fieldDef.bin)) {
-    console.warn('Only use this method with binned field defs');
+    console.warn('Only call this method for binned field defs.');
     return false;
   }
 
