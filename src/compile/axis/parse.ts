@@ -1,5 +1,5 @@
 import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef, Text} from 'vega';
-import {Axis, AXIS_PARTS, isAxisProperty} from '../../axis';
+import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
 import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
 import {FieldDefBase, isTimeFormatFieldDef, toFieldDefBase} from '../../channeldef';
@@ -224,19 +224,18 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   const axisComponent = new AxisComponent();
 
   // 1.2. Add properties
-  AXIS_COMPONENT_PROPERTIES.forEach(property => {
+  for (const property of AXIS_COMPONENT_PROPERTIES) {
     const value = getProperty(property, axis, channel, model);
+    const configValue = getAxisConfig(
+      property,
+      model.config,
+      channel,
+      axisComponent.get('orient'),
+      model.getScaleComponent(channel).get('type')
+    );
+
     if (value !== undefined) {
       const explicit = isExplicit(value, property, axis, model, channel);
-
-      const configValue = getAxisConfig(
-        property,
-        model.config,
-        channel,
-        axisComponent.get('orient'),
-        model.getScaleComponent(channel).get('type')
-      );
-
       // only set property if it is explicitly set or has no config value (otherwise we will accidentally override config)
       if (explicit || configValue === undefined) {
         // Do not apply implicit rule if there is a config value
@@ -246,8 +245,13 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
         // - Orient is not an axis config in Vega, so we need to set too.
         axisComponent.set(property, configValue, false);
       }
+    } else if (
+      isConditionalAxisValue<any>(configValue) // need to cast as TS isn't smart enough to figure the generic parameter type yet
+    ) {
+      // If a config is specified and is conditional, copy conditional value from axis config
+      axisComponent.set(property, configValue, false);
     }
-  });
+  }
 
   // 2) Add guide encode definition groups
   const axisEncoding = axis.encoding ?? {};
