@@ -57,6 +57,38 @@ describe('Axis', () => {
       expect(axisComponent['x'][0].implicit.grid).toEqual(true);
     });
 
+    it('should include conditional axis config', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {
+            field: 'a',
+            type: 'quantitative'
+          }
+        },
+        config: {
+          axisX: {
+            gridDash: {
+              condition: {
+                test: {field: 'value', timeUnit: 'monthdate', equal: {month: 1, date: 1}},
+                value: null
+              },
+              value: [2, 2]
+            }
+          }
+        }
+      });
+      const axisComponent = parseUnitAxes(model);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].implicit.gridDash).toEqual({
+        condition: {
+          test: {field: 'value', timeUnit: 'monthdate', equal: {month: 1, date: 1}},
+          value: null
+        },
+        value: [2, 2]
+      });
+    });
+
     it('should produce axis component with grid=false', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',

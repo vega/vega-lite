@@ -14,6 +14,12 @@ describe('config', () => {
         opacity: 0.5,
         ...defaultConfig.bar
       },
+      axis: {
+        gridDash: {
+          condition: {test: {field: 'value', timeUnit: 'month', equal: 1}, value: null},
+          value: [2, 2]
+        }
+      },
       view: {
         fill: '#eee'
       },
@@ -40,6 +46,10 @@ describe('config', () => {
     it('should remove VL only mark config but keep Vega mark config', () => {
       expect(output.mark.color).not.toBeDefined();
       expect(output.mark.opacity).toEqual(0.3);
+    });
+
+    it('should remove conditional axis config', () => {
+      expect(output.axis).not.toBeDefined();
     });
 
     it('should redirect mark config to style and remove VL only mark-specific config', () => {
