@@ -136,7 +136,7 @@ export type ConditionalAxisLabelFontWeight = ConditionalAxisProperty<FontWeight 
 export type ConditionalAxisNumberArray = ConditionalAxisProperty<number[] | null>;
 
 // Vega axis config is the same as Vega axis base. If this is not the case, add specific type.
-export type VgAxisConfigNoSignals = Omit<BaseAxisNoValueRefs, ConditionalAxisProp> & {
+export type AxisConfigBaseWithConditional = Omit<BaseAxisNoValueRefs, ConditionalAxisProp> & {
   // The manual definition below is basically, but we have to do this manually to generate a nice schema
   // [k in ConditionalAxisProp]?: BaseAxisNoSignals[k] | ConditionalAxisProperty<BaseAxisNoSignals[k] | null>;
 
@@ -193,9 +193,9 @@ export interface AxisOrientMixins {
   orient?: AxisOrient;
 }
 
-export type AxisConfig = VlOnlyGuideConfig & AxisOrientMixins & VgAxisConfigNoSignals;
+export type AxisConfig = VlOnlyGuideConfig & AxisOrientMixins & AxisConfigBaseWithConditional;
 
-export interface Axis extends AxisOrientMixins, VgAxisConfigNoSignals, Guide {
+export interface Axis extends AxisOrientMixins, AxisConfigBaseWithConditional, Guide {
   /**
    * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.
    *
