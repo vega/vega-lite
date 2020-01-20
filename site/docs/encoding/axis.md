@@ -122,7 +122,7 @@ Note that each axis tick, grid line, and label instance is backed by a data obje
 
 In the following example, we adjust the `gridDash` and `tickDash` properties in a line chart based on whether a particular grid line falls on a year boundary. We also use the `labelExpr` property to show multi-line labels for year and month, showing the year number only for January of each year.
 
-<div class="vl-example" data-name="line_conditional_grid_dash"></div>
+<div class="vl-example" data-name="line_conditional_axis"></div>
 
 We can also conditionally hide some labels and ticks in the following Lasagna plot using conditional `labelColor` and `tickColor`:
 
