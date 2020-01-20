@@ -22,7 +22,7 @@
     "mark": "rect",
     "encoding": {
       "y": {"aggregate": "max", "field": "Miles_per_Gallon", "type": "quantitative"},
-      "y2": {"aggregate": "min", "field": "Miles_per_Gallon", "type": "quantitative"},
+      "y2": {"aggregate": "min", "field": "Miles_per_Gallon"},
       "opacity": {"value": 0.2}
     }
   }]

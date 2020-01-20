@@ -326,7 +326,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"fields": [[0, 6], [1, 5]]},
+      "domain": [0, 6],
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true

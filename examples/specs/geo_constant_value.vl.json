@@ -32,8 +32,7 @@
       "mark": "square",
       "encoding": {
         "longitude": {
-          "value": -122.335167,
-          "type": "quantitative"
+          "value": -122.335167
         },
         "latitude": {
           "field": "latitude",
@@ -55,8 +54,7 @@
           "type": "quantitative"
         },
         "latitude": {
-          "value": 47.608013,
-          "type": "quantitative"
+          "value": 47.608013
         },
         "size": {
           "value": 1

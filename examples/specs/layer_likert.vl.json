@@ -217,16 +217,13 @@
         "x": {
           "field": "value",
           "type": "quantitative",
-          "scale": {"domain": [0,6]},
-          "axis": {"grid": false, "values": [1,2,3,4,5]}
+          "scale": {"domain": [0, 6]},
+          "axis": {"grid": false, "values": [1, 2, 3, 4, 5]}
         },
         "size": {
           "aggregate": "count",
           "type": "quantitative",
-          "legend": {
-            "title": "Number of Ratings",
-            "offset": 75
-          }
+          "legend": {"title": "Number of Ratings", "offset": 75}
         },
         "color": {"value": "#6EB4FD"}
       }
@@ -237,30 +234,21 @@
         "x": {
           "field": "median",
           "type": "quantitative",
-          "scale": {"domain": [1,5]},
           "axis": {"title": null}
         },
-        "color": {
-          "value": "black"
-        }
+        "color": {"value": "black"}
       }
     },
     {
       "mark": {"type": "text", "x": -5, "align": "right"},
       "encoding": {
-        "text": {
-          "field": "lo",
-          "type": "nominal"
-        }
+        "text": {"field": "lo", "type": "nominal"}
       }
     },
     {
       "mark": {"type": "text", "x": 255, "align": "left"},
       "encoding": {
-        "text": {
-          "field": "hi",
-          "type": "nominal"
-        }
+        "text": {"field": "hi", "type": "nominal"}
       }
     }
   ]

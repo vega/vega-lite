@@ -2,7 +2,6 @@ import Ajv from 'ajv';
 import draft6Schema from 'ajv/lib/refs/json-schema-draft-06.json';
 import fs from 'fs';
 import path from 'path';
-import {inspect} from 'util';
 import {Spec as VgSpec} from 'vega';
 import vgSchema from 'vega/build/vega-schema.json';
 import vlSchema from '../build/vega-lite-schema.json';
@@ -10,6 +9,8 @@ import {compile} from '../src/compile/compile';
 import * as log from '../src/log';
 import {TopLevelSpec} from '../src/spec';
 import {duplicate} from '../src/util';
+
+// import {inspect} from 'util';
 
 const ajv = new Ajv({
   validateSchema: true,
@@ -28,7 +29,8 @@ function validateVL(spec: TopLevelSpec) {
   const valid = validateVl(spec);
   const errors = validateVl.errors;
   if (!valid) {
-    console.log(inspect(errors, {depth: 10, colors: true}));
+    // uncoment to show schema validation error details
+    // console.log(inspect(errors, {depth: 10, colors: true}));
   }
 
   expect(errors?.map((err: Ajv.ErrorObject) => err.message).join(', ')).toBeUndefined();
@@ -41,7 +43,8 @@ function validateVega(vegaSpec: VgSpec) {
   const valid = validateVg(vegaSpec);
   const errors = validateVg.errors;
   if (!valid) {
-    console.log(inspect(errors, {depth: 10, colors: true}));
+    // uncoment to show schema validation  error details
+    // console.log(inspect(errors, {depth: 10, colors: true}));
   }
 
   expect(errors?.map((err: Ajv.ErrorObject) => err.message).join(', ')).toBeUndefined();

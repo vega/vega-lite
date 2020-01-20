@@ -1,4 +1,5 @@
 {
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {
     "values": [
       {"actual": "A", "predicted": "A", "count": 13},
@@ -54,8 +55,7 @@
       }
     },
     "axis": {
-      "domain": false,
-      "zindex": 0
+      "domain": false
     }
   }
 }

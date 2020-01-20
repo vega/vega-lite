@@ -62,7 +62,7 @@
                   "type": "quantitative",
                   "title": "people"
                 },
-                "y2": {"field": "lower_box_people", "type": "quantitative"},
+                "y2": {"field": "lower_box_people"},
                 "x": {"field": "age", "type": "ordinal"},
                 "tooltip": {
                   "title": "Mean of people",
@@ -83,7 +83,7 @@
                   "type": "quantitative",
                   "title": "people"
                 },
-                "y2": {"field": "upper_whisker_people", "type": "quantitative"},
+                "y2": {"field": "upper_whisker_people"},
                 "x": {"field": "age", "type": "ordinal"},
                 "tooltip": {
                   "title": "Mean of people",
@@ -125,7 +125,7 @@
               "type": "quantitative",
               "title": "people"
             },
-            "y2": {"field": "upper_box_people", "type": "quantitative"},
+            "y2": {"field": "upper_box_people"},
             "x": {"field": "age", "type": "ordinal"},
             "tooltip": {
               "title": "Mean of people",

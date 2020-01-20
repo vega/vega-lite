@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/seattle-weather.csv", "format": {"type": "csv"}},
+  "data": {"url": "data/seattle-weather.csv"},
   "encoding": {
     "x": {"timeUnit": "yearmonthdate", "field": "date", "type": "temporal"},
     "tooltip": [

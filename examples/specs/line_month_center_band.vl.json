@@ -11,8 +11,5 @@
       "timeUnit": "month", "field": "date", "type": "temporal", "band": 0.5
     },
     "y": {"aggregate": "mean", "field": "temp", "type": "quantitative"}
-  },
-  "config": {
-    "axis": {"shortTimeLabels": true}
   }
 }

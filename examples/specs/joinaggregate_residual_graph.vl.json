@@ -34,7 +34,7 @@
       "field": "RatingDelta",
       "type": "quantitative",
       "scale": {"domainMid": 0},
-      "axis": {"title": "Rating Delta"}
+      "title": "Rating Delta"
     }
   }
 }

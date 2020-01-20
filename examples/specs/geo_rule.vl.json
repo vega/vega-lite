@@ -84,12 +84,10 @@
           "type": "quantitative"
         },
         "longitude2": {
-          "field": "dest_longitude",
-          "type": "quantitative"
+          "field": "dest_longitude"
         },
         "latitude2": {
-          "field": "dest_latitude",
-          "type": "quantitative"
+          "field": "dest_latitude"
         }
       }
     }
