@@ -1,4 +1,4 @@
-import {Config, defaultConfig, isVgScheme, stripAndRedirectConfig} from '../src/config';
+import {Config, defaultConfig, initConfig, isVgScheme, stripAndRedirectConfig} from '../src/config';
 import {PRIMITIVE_MARKS} from '../src/mark';
 import {duplicate} from '../src/util';
 
@@ -72,6 +72,13 @@ describe('config', () => {
 
     it('should remove empty config object', () => {
       expect(output.axisTop).not.toBeDefined();
+    });
+
+    it('should keep subtitle config in config.title if specified', () => {
+      const cfg = initConfig({
+        title: {subtitleColor: 'red'}
+      });
+      expect(stripAndRedirectConfig(cfg).title).toEqual({subtitleColor: 'red'});
     });
   });
 
