@@ -1,3 +1,4 @@
+import {splitAccessPath} from 'vega-util';
 import {FilterNode} from '../src/compile/data/filter';
 import {PivotTransformNode} from '../src/compile/data/pivot';
 import {
@@ -11,13 +12,13 @@ import {
   hasIntersection,
   isEqual,
   prefixGenerator,
+  replaceAll,
   replacePathInField,
   setEqual,
   stringify,
   unique,
   uniqueId,
-  varName,
-  replaceAll
+  varName
 } from '../src/util';
 
 describe('util', () => {
@@ -112,6 +113,12 @@ describe('util', () => {
     });
   });
 
+  describe('splitAccessPath', () => {
+    it('should support escaping', () => {
+      expect(splitAccessPath('y\\[foo\\]')).toEqual(['y[foo]']);
+    });
+  });
+
   describe('accessPathWithDatum', () => {
     it('should parse foo', () => {
       expect(accessPathWithDatum('foo')).toBe('datum["foo"]');
@@ -123,6 +130,10 @@ describe('util', () => {
 
     it('should support custom datum', () => {
       expect(accessPathWithDatum('foo', 'parent')).toBe('parent["foo"]');
+    });
+
+    it('should support escaped brackets', () => {
+      expect(accessPathWithDatum('y\\[foo\\]')).toBe('datum["y[foo]"]');
     });
   });
 
@@ -138,6 +149,10 @@ describe('util', () => {
     it('should support custom datum', () => {
       expect(flatAccessWithDatum('foo', 'parent')).toBe('parent["foo"]');
     });
+
+    it('should support escaped brackets', () => {
+      expect(flatAccessWithDatum('y\\[foo\\]')).toBe('datum["y[foo]"]');
+    });
   });
 
   describe('accessPathDepth', () => {
@@ -152,6 +167,10 @@ describe('util', () => {
     it('should return 2 for foo.bar', () => {
       expect(accessPathDepth('foo.bar')).toBe(2);
     });
+
+    it('should return 1 for y\\[foo\\]', () => {
+      expect(accessPathDepth('y\\[foo\\]')).toBe(1);
+    });
   });
 
   describe('removePathFromField', () => {
@@ -161,6 +180,10 @@ describe('util', () => {
 
     it('should keep \\.', () => {
       expect(replacePathInField('foo\\.bar')).toBe('foo\\.bar');
+    });
+
+    it('should keep escaped brackets', () => {
+      expect(replacePathInField('y\\[foo\\]')).toBe('y\\[foo\\]');
     });
   });
 
