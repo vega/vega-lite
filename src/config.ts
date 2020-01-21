@@ -337,7 +337,7 @@ export function stripAndRedirectConfig(config: Config) {
     // Redirect mark config to config.style so that mark config only affect its own mark type
     // without affecting other marks that share the same underlying Vega marks.
     // For example, config.rect should not affect bar marks.
-    redirectConfig(config, markType);
+    redirectConfigToStyleConfig(config, markType);
   }
 
   for (const m of getAllCompositeMarks()) {
@@ -345,9 +345,7 @@ export function stripAndRedirectConfig(config: Config) {
     delete config[m];
   }
 
-  // Redirect config.title -- so that title config do not
-  // affect header labels, which also uses `title` directive to implement.
-  redirectConfig(config, 'title', 'group-title');
+  redirectTitleConfig(config);
 
   // Remove empty config objects.
   for (const prop in config) {
@@ -359,18 +357,41 @@ export function stripAndRedirectConfig(config: Config) {
   return keys(config).length > 0 ? config : undefined;
 }
 
-function redirectConfig(
+/**
+ *
+ * Redirect config.title -- so that title config do not affect header labels,
+ * which also uses `title` directive to implement.
+ *
+ * For subtitle configs in config.title, keep them in config.title as header titles never have subtitles.
+ */
+function redirectTitleConfig(config: Config) {
+  const {mark: m, subtitle} = extractTitleConfig(config.title);
+
+  const style: BaseMarkConfig = {
+    ...m,
+    ...config.style['group-title']
+  };
+
+  // set config.style if it is not an empty object
+  if (keys(style).length > 0) {
+    config.style['group-title'] = style;
+  }
+
+  //
+  if (keys(subtitle).length > 0) {
+    config.title = subtitle;
+  } else {
+    delete config.title;
+  }
+}
+
+function redirectConfigToStyleConfig(
   config: Config,
-  prop: Mark | 'title' | 'view' | string, // string = composite mark
+  prop: Mark | 'view' | string, // string = composite mark
   toProp?: string,
   compositeMarkPart?: string
 ) {
-  const propConfig: BaseMarkConfig =
-    prop === 'title'
-      ? extractTitleConfig(config.title).mark
-      : compositeMarkPart
-      ? config[prop][compositeMarkPart]
-      : config[prop];
+  const propConfig: BaseMarkConfig = compositeMarkPart ? config[prop][compositeMarkPart] : config[prop];
 
   if (prop === 'view') {
     toProp = 'cell'; // View's default style is "cell"
@@ -378,8 +399,9 @@ function redirectConfig(
 
   const style: BaseMarkConfig = {
     ...propConfig,
-    ...config.style[prop]
+    ...config.style[toProp ?? prop]
   };
+
   // set config.style if it is not an empty object
   if (keys(style).length > 0) {
     config.style[toProp ?? prop] = style;
