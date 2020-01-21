@@ -616,8 +616,7 @@ describe('normalizeBoxIQR', () => {
               axis: {title: 'population'}
             },
             y2: {
-              field: 'lower_box_people',
-              type: 'quantitative'
+              field: 'lower_box_people'
             }
           }
         },
@@ -634,8 +633,7 @@ describe('normalizeBoxIQR', () => {
               axis: {title: 'population'}
             },
             y2: {
-              field: 'upper_whisker_people',
-              type: 'quantitative'
+              field: 'upper_whisker_people'
             }
           }
         }
@@ -690,8 +688,7 @@ describe('normalizeBoxIQR', () => {
               axis: {title: 'population'}
             },
             y2: {
-              field: 'upper_box_people',
-              type: 'quantitative'
+              field: 'upper_box_people'
             },
             color: {value: 'skyblue'}
           }
@@ -870,8 +867,7 @@ describe('normalizeBoxIQR', () => {
           axis: {title: 'population'}
         },
         y2: {
-          field: 'upper_box_people',
-          type: 'quantitative'
+          field: 'upper_box_people'
         },
         color: {
           field: 'mean_people',

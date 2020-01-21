@@ -60,7 +60,7 @@ describe('normalizeErrorBar with raw data input', () => {
               type: 'quantitative',
               title: 'people'
             },
-            y2: {field: 'upper_people', type: 'quantitative'},
+            y2: {field: 'upper_people'},
             x: {field: 'age', type: 'ordinal'},
             tooltip: [
               {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
@@ -775,8 +775,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
               type: 'quantitative',
               title: 'people'
             },
-            y2: {field: 'upper_people', type: 'quantitative'},
-            x: {field: 'age', type: 'ordinal'},
+            y2: {field: 'upper_people'},
             tooltip: [
               {field: 'upper_people', title: 'people2', type: 'quantitative'},
               {field: 'lower_people', title: 'people', type: 'quantitative'},
@@ -966,7 +965,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
               type: 'quantitative',
               title: 'people'
             },
-            y2: {field: 'upper_people', type: 'quantitative'},
+            y2: {field: 'upper_people'},
             x: {field: 'age', type: 'ordinal'},
             tooltip: [
               {field: 'people', title: 'people', type: 'quantitative'},
