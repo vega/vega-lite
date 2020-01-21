@@ -1,15 +1,15 @@
-import {Axis as VgAxis, AxisEncode, NewSignal, Text} from 'vega';
-import {isArray} from 'vega-util';
+import {Axis as VgAxis, AxisEncode, NewSignal, SignalRef, Text} from 'vega';
+import {isArray, stringValue} from 'vega-util';
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isConditionalAxisValue} from '../../axis';
 import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';
 import {Config} from '../../config';
+import {isText} from '../../title';
 import {getFirstDefined, keys, replaceAll} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {Model} from '../model';
 import {expression} from '../predicate';
 import {AxisComponent, AxisComponentIndex} from './component';
-import {isText} from '../../title';
 
 function assembleTitle(title: Text | FieldDefBase<string>[], config: Config): Text {
   if (!title) {
@@ -44,32 +44,52 @@ export function assembleAxis(
 ): VgAxis {
   const {orient, scale, labelExpr, title, zindex, ...axis} = axisCmpt.combine();
 
-  // Remove properties that are not valid for this kind of axis
-  keys(axis).forEach(prop => {
+  for (const prop in axis) {
     const propType = AXIS_PROPERTY_TYPE[prop];
     const propValue = axis[prop];
+
     if (propType && propType !== kind && propType !== 'both') {
+      // Remove properties that are not valid for this kind of axis
       delete axis[prop];
     } else if (isConditionalAxisValue(propValue)) {
-      const {vgProp, part} = CONDITIONAL_AXIS_PROP_INDEX[prop];
+      // deal with conditional axis value
+
       const {condition, value} = propValue;
+      const conditions = isArray(condition) ? condition : [condition];
 
-      const vgRef = [
-        ...(isArray(condition) ? condition : [condition]).map(c => {
-          const {value: v, test} = c;
-          return {
-            test: expression(null, test),
-            value: v
-          };
-        }),
-        {value}
-      ];
+      const propIndex = CONDITIONAL_AXIS_PROP_INDEX[prop];
+      if (propIndex) {
+        const {vgProp, part} = propIndex;
+        // If there is a corresponding Vega property for the channel,
+        // use Vega's custom axis encoding and delete the original axis property to avoid conflicts
 
-      setAxisEncode(axis, part, vgProp, vgRef);
-
-      delete axis[prop];
+        const vgRef = [
+          ...conditions.map(c => {
+            const {value: v, test} = c;
+            return {
+              test: expression(null, test),
+              value: v
+            };
+          }),
+          {value}
+        ];
+        setAxisEncode(axis, part, vgProp, vgRef);
+        delete axis[prop];
+      } else if (propIndex === null) {
+        // If propIndex is null, this means we support conditional axis property by converting the condition to signal insteed.
+        const signalRef: SignalRef = {
+          signal:
+            conditions
+              .map(c => {
+                const {value: v, test} = c;
+                return `${expression(null, test)} ? ${stringValue(v)} : `;
+              })
+              .join('') + stringValue(value)
+        };
+        axis[prop] = signalRef;
+      }
     }
-  });
+  }
 
   if (kind === 'grid') {
     if (!axis.grid) {

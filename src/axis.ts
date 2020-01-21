@@ -26,6 +26,7 @@ export type ConditionalAxisProp =
   | 'labelFontStyle'
   | 'labelFontWeight'
   | 'labelOpacity'
+  | 'labelPadding'
   | 'gridColor'
   | 'gridDash'
   | 'gridDashOffset'
@@ -35,13 +36,14 @@ export type ConditionalAxisProp =
   | 'tickDash'
   | 'tickDashOffset'
   | 'tickOpacity'
+  | 'tickSize'
   | 'tickWidth';
 
 export const CONDITIONAL_AXIS_PROP_INDEX: {
   [prop in keyof BaseAxisNoValueRefs | ConditionalAxisProp]?: {
     part: keyof AxisEncode;
     vgProp: VgEncodeChannel;
-  };
+  } | null; // null if we need to convert condition to signal
 } = {
   labelAlign: {
     part: 'labels',
@@ -75,6 +77,7 @@ export const CONDITIONAL_AXIS_PROP_INDEX: {
     part: 'labels',
     vgProp: 'opacity'
   },
+  labelPadding: null, // There is no fixed vgProp for tickSize, need to use signal.
   gridColor: {
     part: 'grid',
     vgProp: 'stroke'
@@ -111,6 +114,7 @@ export const CONDITIONAL_AXIS_PROP_INDEX: {
     part: 'ticks',
     vgProp: 'opacity'
   },
+  tickSize: null, // There is no fixed vgProp for tickSize, need to use signal.
   tickWidth: {
     part: 'ticks',
     vgProp: 'strokeWidth'
@@ -148,6 +152,7 @@ export type AxisConfigBaseWithConditional = Omit<BaseAxisNoValueRefs, Conditiona
   labelFontStyle?: BaseAxisNoValueRefs['labelFontStyle'] | ConditionalAxisLabelFontStyle;
   labelFontWeight?: BaseAxisNoValueRefs['labelFontWeight'] | ConditionalAxisLabelFontWeight;
   labelOpacity?: BaseAxisNoValueRefs['labelOpacity'] | ConditionalAxisNumber;
+  labelPadding?: BaseAxisNoValueRefs['labelPadding'] | ConditionalAxisNumber;
   gridColor?: BaseAxisNoValueRefs['gridColor'] | ConditionalAxisColor;
   gridDash?: BaseAxisNoValueRefs['gridDash'] | ConditionalAxisNumberArray;
   gridDashOffset?: BaseAxisNoValueRefs['gridDashOffset'] | ConditionalAxisNumber;
@@ -157,6 +162,7 @@ export type AxisConfigBaseWithConditional = Omit<BaseAxisNoValueRefs, Conditiona
   tickDash?: BaseAxisNoValueRefs['tickDash'] | ConditionalAxisNumberArray;
   tickDashOffset?: BaseAxisNoValueRefs['tickDashOffset'] | ConditionalAxisNumber;
   tickOpacity?: BaseAxisNoValueRefs['tickOpacity'] | ConditionalAxisNumber;
+  tickSize?: BaseAxisNoValueRefs['tickSize'] | ConditionalAxisNumber;
   tickWidth?: BaseAxisNoValueRefs['tickWidth'] | ConditionalAxisNumber;
 };
 
