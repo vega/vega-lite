@@ -3,7 +3,7 @@ import {scaleType} from '../../../src/compile/scale/type';
 import * as log from '../../../src/log';
 import {BAR, PRIMITIVE_MARKS, RULE} from '../../../src/mark';
 import {ScaleType} from '../../../src/scale';
-import {TIMEUNITS} from '../../../src/timeunit';
+import {TIMEUNITS, isUTCTimeUnit} from '../../../src/timeunit';
 import {NOMINAL, ORDINAL} from '../../../src/type';
 import * as util from '../../../src/util';
 import {RECT} from './../../../src/mark';
@@ -140,9 +140,15 @@ describe('compile/scale', () => {
         })
       );
 
-      it('should return time for all time units.', () => {
-        for (const timeUnit of TIMEUNITS) {
+      it('should return time for all non-utc time units.', () => {
+        for (const timeUnit of TIMEUNITS.filter(t => !isUTCTimeUnit(t))) {
           expect(scaleType({}, Y, {type: 'temporal', timeUnit: timeUnit}, 'point')).toEqual(ScaleType.TIME);
+        }
+      });
+
+      it('should return utc for all utc time units.', () => {
+        for (const timeUnit of TIMEUNITS.filter(t => isUTCTimeUnit(t))) {
+          expect(scaleType({}, Y, {type: 'temporal', timeUnit: timeUnit}, 'point')).toEqual(ScaleType.UTC);
         }
       });
     });
@@ -206,6 +212,12 @@ describe('compile/scale', () => {
       it('should return default scale type if data type is temporal but specified scale type is time or utc or any discrete type', () => {
         expect(scaleType({type: ScaleType.LINEAR}, 'x', {type: 'temporal', timeUnit: 'year'}, 'point')).toEqual(
           ScaleType.TIME
+        );
+      });
+
+      it('should return utc scale type if data type is temporal and specified scale type is utc', () => {
+        expect(scaleType({type: ScaleType.UTC}, 'x', {type: 'temporal', timeUnit: 'year'}, 'point')).toEqual(
+          ScaleType.UTC
         );
       });
 

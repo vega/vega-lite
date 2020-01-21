@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "Google's stock price over time.",
+  "description": "Google's stock price over time. Used to demonstrate time parsing of input data.",
   "data": {
     "values": [
       {"date": "10 Oct 2011 22:48:00"},

@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "Google's stock price over time.",
+  "description": "Google's stock price over time. Used to demonstrate a point overlay for an area chart.",
   "data": {"url": "data/stocks.csv"},
   "transform": [{"filter": "datum.symbol==='GOOG'"}],
   "mark": {"type": "area", "line": true, "point": true},
