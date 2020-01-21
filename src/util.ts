@@ -294,7 +294,7 @@ export function titlecase(s: string) {
 }
 
 function escapePatchAccess(string: string) {
-  return replaceAll(replaceAll(replaceAll(string, ']', '\\]'), '[', '\\['), '.', '\\.');
+  return string.replace(/(\[|\]|\.)/g, '\\$1');
 }
 
 /**
