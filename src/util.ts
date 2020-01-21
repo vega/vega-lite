@@ -293,7 +293,7 @@ export function titlecase(s: string) {
   return s.charAt(0).toUpperCase() + s.substr(1);
 }
 
-function escapePatchAccess(string: string) {
+function escapePathAccess(string: string) {
   return string.replace(/(\[|\]|\.)/g, '\\$1');
 }
 
@@ -331,7 +331,7 @@ export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' | 'd
  */
 export function replacePathInField(path: string) {
   return `${splitAccessPath(path)
-    .map(escapePatchAccess)
+    .map(escapePathAccess)
     .join('\\.')}`;
 }
 
