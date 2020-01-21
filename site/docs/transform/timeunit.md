@@ -120,7 +120,7 @@ To parse data in local time or UTC time, there are three cases:
 
 ### Output
 
-By default, Vega-Lite will output data in local time (even when input is parsed as UTC time). To output data in UTC time, we need to specify either a UTC time unit or scale:
+By default, Vega-Lite will output data in local time (even when input is parsed as UTC time). To output data in UTC time, we can specify either a UTC time unit or scale:
 
 1. UTC time unit when input data is in local time.
 
@@ -129,5 +129,3 @@ By default, Vega-Lite will output data in local time (even when input is parsed 
 2. UTC scale type when you have input data in UTC time.
 
 <span class="vl-example" data-name="time_output_utc_scale"></span>
-
-Do **not** use UTC time unit and the UTC scale type at the same time since that will cause Vega-Lite to shift the output time twice.

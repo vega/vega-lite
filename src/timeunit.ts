@@ -329,7 +329,7 @@ export function formatExpression(timeUnit: TimeUnit, field: string, isUTCScale: 
   // We only use utcFormat for utc scale
   // For utc time units, the data is already converted as a part of timeUnit transform.
   // Thus, utc time units should use timeFormat to avoid shifting the time twice.
-  if (isUTCScale) {
+  if (isUTCScale || isUTCTimeUnit(timeUnit)) {
     return `utcFormat(${field}, ${timeUnitSpecifierExpr})`;
   } else {
     return `timeFormat(${field}, ${timeUnitSpecifierExpr})`;

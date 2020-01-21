@@ -1,7 +1,7 @@
 import {TimeUnitTransform as VgTimeUnitTransform} from 'vega';
 import {getSecondaryRangeChannel} from '../../channel';
 import {hasBand, vgField} from '../../channeldef';
-import {getTimeUnitParts} from '../../timeunit';
+import {getTimeUnitParts, isUTCTimeUnit} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, vals} from '../../util';
 import {isUnitModel, ModelWithField} from '../model';
@@ -101,6 +101,7 @@ export class TimeUnitNode extends DataFlowNode {
         field,
         type: 'timeunit',
         units: getTimeUnitParts(timeUnit),
+        ...(isUTCTimeUnit(timeUnit) ? {timezone: 'utc'} : {}),
         as: [as, `${as}_end`]
       });
     }
