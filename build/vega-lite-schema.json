@@ -2314,12 +2314,16 @@
     "BrushConfig": {
       "additionalProperties": false,
       "properties": {
+        "cursor": {
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the interval mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
         "fill": {
           "$ref": "#/definitions/Color",
           "description": "The fill color of the interval mark.\n\n__Default value:__ `\"#333333\"`"
         },
         "fillOpacity": {
-          "description": "The fill opacity of the interval mark (a value between 0 and 1).\n\n__Default value:__ `0.125`",
+          "description": "The fill opacity of the interval mark (a value between `0` and `1`).\n\n__Default value:__ `0.125`",
           "type": "number"
         },
         "stroke": {
@@ -2327,7 +2331,7 @@
           "description": "The stroke color of the interval mark.\n\n__Default value:__ `\"#ffffff\"`"
         },
         "strokeDash": {
-          "description": "An array of alternating stroke and space lengths,\nfor creating dashed or dotted lines.",
+          "description": "An array of alternating stroke and space lengths, for creating dashed or dotted lines.",
           "items": {
             "type": "number"
           },
@@ -16328,6 +16332,10 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cursor": {
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
         "fill": {
           "anyOf": [
             {
@@ -16431,6 +16439,10 @@
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
+        },
+        "cursor": {
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
         "discreteHeight": {
           "anyOf": [

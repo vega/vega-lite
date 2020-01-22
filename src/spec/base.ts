@@ -1,4 +1,4 @@
-import {Color, Text} from 'vega';
+import {Color, Cursor, Text} from 'vega';
 import {isArray, isNumber, isObject} from 'vega-util';
 import {Config} from '../config';
 import {Data} from '../data';
@@ -131,7 +131,7 @@ export interface BaseViewBackground
       | 'strokeWidth'
     >
   > {
-  // Override documentations for fill and stroke
+  // Override documentations for fill, stroke, and cursor
   /**
    * The fill color.
    *
@@ -145,6 +145,11 @@ export interface BaseViewBackground
    * __Default value:__ `"#ddd"`
    */
   stroke?: Color | null;
+
+  /**
+   * The mouse cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
+   */
+  cursor?: Cursor;
 }
 
 export interface ViewBackground extends BaseViewBackground {

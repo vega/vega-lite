@@ -7,7 +7,7 @@ permalink: /docs/selection-mark.html
 
 Every interval selection also adds a rectangle mark to the visualization, to depict the extents of the selected region. The appearance of this mark can be customized with the following properties, specified under `mark`.
 
-{% include table.html props="fill,fillOpacity,stroke,strokeOpacity,strokeWidth,strokeDash,strokeDashOffset" source="BrushConfig" %}
+{% include table.html props="cursor,fill,fillOpacity,stroke,strokeOpacity,strokeWidth,strokeDash,strokeDashOffset" source="BrushConfig" %}
 
 ## Examples
 
