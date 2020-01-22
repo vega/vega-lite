@@ -2295,7 +2295,7 @@
           "description": "The fill color of the interval mark.\n\n__Default value:__ `\"#333333\"`"
         },
         "fillOpacity": {
-          "description": "The fill opacity of the interval mark (a value between 0 and 1).\n\n__Default value:__ `0.125`",
+          "description": "The fill opacity of the interval mark (a value between `0` and `1`).\n\n__Default value:__ `0.125`",
           "type": "number"
         },
         "stroke": {
@@ -2303,7 +2303,7 @@
           "description": "The stroke color of the interval mark.\n\n__Default value:__ `\"#ffffff\"`"
         },
         "strokeDash": {
-          "description": "An array of alternating stroke and space lengths,\nfor creating dashed or dotted lines.",
+          "description": "An array of alternating stroke and space lengths, for creating dashed or dotted lines.",
           "items": {
             "type": "number"
           },
