@@ -463,21 +463,6 @@ export abstract class Model {
     return group;
   }
 
-  public hasDescendantWithFieldOnChannel(channel: Channel) {
-    for (const child of this.children) {
-      if (isUnitModel(child)) {
-        if (child.channelHasField(channel)) {
-          return true;
-        }
-      } else {
-        if (child.hasDescendantWithFieldOnChannel(channel)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
   public getName(text: string) {
     return varName((this.name ? this.name + '_' : '') + text);
   }
