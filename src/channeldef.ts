@@ -15,7 +15,6 @@ import {getMarkConfig} from './compile/common';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
-import {Encoding} from './encoding';
 import {FormatMixins, Guide, TitleMixins} from './guide';
 import {ImputeParams} from './impute';
 import {Legend} from './legend';
@@ -277,7 +276,7 @@ export interface TypeMixins<T extends Type> {
  */
 export type TypedFieldDef<
   F extends Field,
-  T extends Type = Type,
+  T extends Type = StandardType,
   B extends Bin = boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
 > = FieldDefBase<F, B> & TitleMixins & TypeMixins<T>;
 
@@ -474,9 +473,36 @@ export type ChannelDef<
   V extends ValueOrGradientOrText = ValueOrGradientOrText
 > = ChannelDefWithCondition<FD, V>;
 
-export type Foo = Encoding<any>[Channel];
+// export type Foo = Encoding<any>[Channel];
 
-export type Bar = Exclude<Foo, ChannelDef<any>>;
+// let c: ChannelDef<any> = {
+//   value: 'foo',
+//   type: 'ordinal'
+// };
+
+// let d: Foo = {
+//   value: 'foo',
+//   type: 'ordinal'
+// };
+
+// const f: FieldDef<any> = {
+//   field: 'foo',
+//   type: 'ordinal'
+// };
+
+// const v: ValueDef<any> = {
+//   value: 'foo'
+// };
+
+// d = c;
+// d = f;
+// d = v;
+
+// c = d;
+// c = f;
+// c = v;
+
+// console.log(c, d, f, v);
 
 export function isConditionalDef<F extends Field, V extends ValueOrGradientOrText>(
   channelDef: ChannelDef<FieldDef<F>, V>
