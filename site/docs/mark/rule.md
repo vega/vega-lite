@@ -75,11 +75,11 @@ For example, we can use `y` and `y2` show the `"min"` and `"max"` values of hors
 
 We can also use rule to create error bars. In the example below, we use the [`ci0` and `ci1` aggregation operators](aggregate.html#ops) to visualize the [95% confidence interval](https://en.wikipedia.org/wiki/Confidence_interval) as a measure of the spread of the average yields for a variety of barley strains.
 
-<span class="vl-example" data-name="layer_error_bars"></span>
+<span class="vl-example" data-name="layer_point_errorbar_ci"></span>
 
 Alternatively, we can create error bars showing one standard deviation (`stdev`) over and below the mean value.
 
-<span class="vl-example" data-name="layer_error_bars_dev"></span>
+<span class="vl-example" data-name="layer_point_errorbar_stdev"></span>
 
 {:#config}
 
