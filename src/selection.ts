@@ -139,7 +139,7 @@ export interface MultiSelectionConfig extends BaseSelectionConfig {
   bind?: LegendBinding;
 }
 
-// Similar to BaseMarkConfig but the field documentations are specificly for an interval mark
+// Similar to BaseMarkConfig but the field documentations are specificly for an interval mark.
 export interface BrushConfig {
   /**
    * The fill color of the interval mark.
@@ -149,7 +149,7 @@ export interface BrushConfig {
    */
   fill?: Color;
   /**
-   * The fill opacity of the interval mark (a value between 0 and 1).
+   * The fill opacity of the interval mark (a value between `0` and `1`).
    *
    * __Default value:__ `0.125`
    */
@@ -169,8 +169,7 @@ export interface BrushConfig {
    */
   strokeWidth?: number;
   /**
-   * An array of alternating stroke and space lengths,
-   * for creating dashed or dotted lines.
+   * An array of alternating stroke and space lengths, for creating dashed or dotted lines.
    */
   strokeDash?: number[];
   /**
