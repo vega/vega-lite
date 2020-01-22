@@ -76,8 +76,7 @@
       "axis": null
     },
     "x2": {
-      "field": "x2",
-      "type": "quantitative"
+      "field": "x2"
     },
     "y": {
       "field": "y",
@@ -85,8 +84,7 @@
       "axis": null
     },
     "y2": {
-      "field": "y2",
-      "type": "quantitative"
+      "field": "y2"
     },
     "color": {
       "field": "Origin",

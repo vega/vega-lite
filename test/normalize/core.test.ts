@@ -224,7 +224,7 @@ describe('normalize()', () => {
                       type: 'quantitative',
                       title: 'people'
                     },
-                    y2: {field: 'upper_people', type: 'quantitative'},
+                    y2: {field: 'upper_people'},
                     x: {field: 'age', type: 'ordinal'},
                     tooltip: [
                       {field: 'center_people', title: 'Mean of people', type: 'quantitative'},

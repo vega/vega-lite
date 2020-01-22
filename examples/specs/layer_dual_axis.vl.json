@@ -1,10 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.6.0.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "A dual axis chart, created by setting y's scale resolution to `\"independent\"`",
   "width": 400, "height": 300,
   "data": {
-    "url": "data/weather.csv",
-    "format": {"type": "csv"}
+    "url": "data/weather.csv"
   },
   "transform": [{"filter": "datum.location == \"Seattle\""}],
   "encoding": {
@@ -29,8 +28,7 @@
 
         "y2": {
           "aggregate": "average",
-          "field": "temp_min",
-          "type": "quantitative"
+          "field": "temp_min"
         }
       }
     },

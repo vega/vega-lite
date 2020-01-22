@@ -59,8 +59,7 @@ describe('normalizeErrorBand', () => {
               title: 'people'
             },
             y2: {
-              field: 'upper_people',
-              type: 'quantitative'
+              field: 'upper_people'
             },
             x: {
               field: 'age',

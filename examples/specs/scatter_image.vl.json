@@ -12,6 +12,6 @@
   "encoding": {
     "x": {"field": "x", "type": "quantitative"},
     "y": {"field": "y", "type": "quantitative"},
-    "url": {"field": "img"}
+    "url": {"field": "img", "type": "nominal"}
   }
 }

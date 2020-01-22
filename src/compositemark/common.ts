@@ -169,8 +169,7 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
         ...(isString(endPositionPrefix)
           ? {
               [continuousAxis + '2']: {
-                field: endPositionPrefix + '_' + continuousAxisChannelDef.field,
-                type: continuousAxisChannelDef.type
+                field: endPositionPrefix + '_' + continuousAxisChannelDef.field
               }
             }
           : {}),

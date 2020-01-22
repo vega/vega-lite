@@ -16,8 +16,7 @@
         },
         "y2": {
           "aggregate": "max",
-          "field": "people",
-          "type": "quantitative"
+          "field": "people"
         }
       }
     },

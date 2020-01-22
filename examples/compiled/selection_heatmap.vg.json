@@ -143,14 +143,14 @@
       "labelAlign": "right",
       "labelAngle": 270,
       "labelBaseline": "middle",
-      "zindex": 0
+      "zindex": 1
     },
     {
       "scale": "y",
       "orient": "left",
       "grid": false,
       "title": "actual",
-      "zindex": 0
+      "zindex": 1
     }
   ],
   "legends": [
@@ -163,7 +163,7 @@
     }
   ],
   "config": {
-    "axis": {"domain": false, "zindex": 0},
+    "axis": {"domain": false},
     "range": {"ramp": {"scheme": "yellowgreenblue"}}
   }
 }

@@ -13,8 +13,11 @@
       "axis": {
         "tickCount": 20,
         "gridDash": {
-          "condition": {"test": {"field": "value", "timeUnit": "monthdate", "equal": {"month": 1, "date": 1}}, "value": null},
-          "value": [2,2]
+          "condition": {
+            "test": {"field": "value", "timeUnit": "monthdate", "equal": {"month": 1, "date": 1}},
+            "value": null
+          },
+          "value": [2, 2]
         }
       }
     },
