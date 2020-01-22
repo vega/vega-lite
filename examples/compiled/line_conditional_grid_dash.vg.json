@@ -68,7 +68,7 @@
             "strokeDash": [
               {
                 "test": "time(datetime(0, month(datum[\"value\"]), date(datum[\"value\"]), 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))",
-                "value": null
+                "value": [1, 0]
               },
               {"value": [2, 2]}
             ]

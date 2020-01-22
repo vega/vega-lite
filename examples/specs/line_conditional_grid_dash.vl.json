@@ -15,7 +15,7 @@
         "gridDash": {
           "condition": {
             "test": {"field": "value", "timeUnit": "monthdate", "equal": {"month": 1, "date": 1}},
-            "value": null
+            "value": [1, 0]
           },
           "value": [2, 2]
         }

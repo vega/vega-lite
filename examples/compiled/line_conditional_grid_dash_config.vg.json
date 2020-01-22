@@ -59,6 +59,7 @@
     {
       "scale": "x",
       "orient": "bottom",
+      "tickCount": 20,
       "gridScale": "y",
       "grid": true,
       "encode": {
@@ -67,7 +68,7 @@
             "strokeDash": [
               {
                 "test": "time(datetime(0, month(datum[\"value\"]), date(datum[\"value\"]), 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))",
-                "value": null
+                "value": [1, 0]
               },
               {"value": [2, 2]}
             ]
@@ -99,6 +100,7 @@
       "orient": "bottom",
       "grid": false,
       "title": "date",
+      "tickCount": 20,
       "labelFlush": true,
       "labelOverlap": true,
       "zindex": 0
@@ -115,7 +117,6 @@
   ],
   "config": {
     "axisX": {
-      "tickCount": 20,
       "gridDash": {
         "condition": {
           "test": {
@@ -123,7 +124,7 @@
             "timeUnit": "monthdate",
             "equal": {"month": 1, "date": 1}
           },
-          "value": null
+          "value": [1, 0]
         },
         "value": [2, 2]
       }
