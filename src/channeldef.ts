@@ -3,11 +3,19 @@ import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin';
-import {Channel, isScaleChannel, isSecondaryRangeChannel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
+import {
+  Channel,
+  ExtendedChannel,
+  isScaleChannel,
+  isSecondaryRangeChannel,
+  POSITION_SCALE_CHANNELS,
+  rangeType
+} from './channel';
 import {getMarkConfig} from './compile/common';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
+import {Encoding} from './encoding';
 import {FormatMixins, Guide, TitleMixins} from './guide';
 import {ImputeParams} from './impute';
 import {Legend} from './legend';
@@ -466,6 +474,10 @@ export type ChannelDef<
   V extends ValueOrGradientOrText = ValueOrGradientOrText
 > = ChannelDefWithCondition<FD, V>;
 
+export type Foo = Encoding<any>[Channel];
+
+export type Bar = Exclude<Foo, ChannelDef<any>>;
+
 export function isConditionalDef<F extends Field, V extends ValueOrGradientOrText>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is ChannelDefWithCondition<FieldDef<F>, V> {
@@ -908,7 +920,7 @@ export function normalizeBin(bin: BinParams | boolean | 'binned', channel?: Chan
 const COMPATIBLE = {compatible: true};
 export function channelCompatibility(
   fieldDef: TypedFieldDef<Field>,
-  channel: Channel
+  channel: ExtendedChannel
 ): {compatible: boolean; warning?: string} {
   const type = fieldDef.type;
 

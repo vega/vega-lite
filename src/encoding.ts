@@ -2,7 +2,15 @@ import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
-import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark} from './channel';
+import {
+  Channel,
+  ExtendedChannel,
+  isChannel,
+  isNonPositionScaleChannel,
+  isSecondaryRangeChannel,
+  supportMark,
+  UNIT_CHANNELS
+} from './channel';
 import {
   binRequiresRange,
   ChannelDef,
@@ -230,7 +238,7 @@ export interface Encoding<F extends Field> {
 
 export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
 
-export function channelHasField<F extends Field>(encoding: EncodingWithFacet<F>, channel: Channel): boolean {
+export function channelHasField<F extends Field>(encoding: EncodingWithFacet<F>, channel: ExtendedChannel): boolean {
   const channelDef = encoding && encoding[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
@@ -243,7 +251,7 @@ export function channelHasField<F extends Field>(encoding: EncodingWithFacet<F>,
 }
 
 export function isAggregate(encoding: EncodingWithFacet<Field>) {
-  return some(CHANNELS, channel => {
+  return some(UNIT_CHANNELS, channel => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       if (isArray(channelDef)) {

@@ -9,7 +9,14 @@ import {Mark} from './mark';
 import {EncodingFacetMapping, EncodingFacetMapping as ExtendedFacetMapping} from './spec/facet';
 import {Flag, keys} from './util';
 
-export type Channel = keyof Encoding<any> | keyof ExtendedFacetMapping<any>;
+/**
+ * Channels of normalized encodings.
+ */
+export type Channel = keyof Encoding<any>;
+/**
+ * Channel with facet channels.
+ */
+export type ExtendedChannel = Channel | keyof ExtendedFacetMapping<any>;
 
 // Facet
 export const ROW: 'row' = 'row';
@@ -343,7 +350,7 @@ const {geoshape: _g, ...ALL_MARKS_EXCEPT_GEOSHAPE} = ALL_MARKS;
  * @param channel
  * @return A dictionary mapping mark types to 'always', 'binned', or undefined
  */
-function getSupportedMark(channel: Channel): SupportedMark {
+function getSupportedMark(channel: ExtendedChannel): SupportedMark {
   switch (channel) {
     case COLOR:
     case FILL:
@@ -410,7 +417,7 @@ function getSupportedMark(channel: Channel): SupportedMark {
   }
 }
 
-export function rangeType(channel: Channel): RangeType {
+export function rangeType(channel: ExtendedChannel): RangeType {
   switch (channel) {
     case X:
     case Y:
