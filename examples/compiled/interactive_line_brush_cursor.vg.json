@@ -251,7 +251,10 @@
       "type": "rect",
       "clip": true,
       "encode": {
-        "enter": {"fill": {"value": "transparent"}},
+        "enter": {
+          "cursor": {"value": "pointer"},
+          "fill": {"value": "transparent"}
+        },
         "update": {
           "x": [
             {
@@ -283,10 +286,6 @@
           ],
           "stroke": [
             {"test": "brush_x[0] !== brush_x[1]", "value": "white"},
-            {"value": null}
-          ],
-          "cursor": [
-            {"test": "brush_x[0] !== brush_x[1]", "value": "pointer"},
             {"value": null}
           ]
         }
