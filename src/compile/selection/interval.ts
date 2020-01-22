@@ -139,7 +139,7 @@ const interval: SelectionCompiler<'interval'> = {
     // Two brush marks ensure that fill colors and other aesthetic choices do
     // not interefere with the core marks, but that the brushed region can still
     // be interacted with (e.g., dragging it around).
-    const {fill, fillOpacity, ...stroke} = selCmpt.mark;
+    const {fill, fillOpacity, cursor, ...stroke} = selCmpt.mark;
     const vgStroke = keys(stroke).reduce((def, k) => {
       def[k] = [
         {
@@ -173,6 +173,7 @@ const interval: SelectionCompiler<'interval'> = {
         clip: true,
         encode: {
           enter: {
+            ...(cursor ? {cursor: {value: cursor}} : {}),
             fill: {value: 'transparent'}
           },
           update: {...update, ...vgStroke}
