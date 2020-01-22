@@ -90,7 +90,7 @@ for (const example of [...examples, ...normalizedExamples]) {
         expect(localLogger.warns).toEqual([]);
       });
 
-      it('should produce valid vega', () => {
+      it('should produce valid Vega', () => {
         if (example.endsWith(BROKEN_SUFFIX)) {
           return;
         }
