@@ -55,7 +55,7 @@ const legendBindings: TransformCompiler = {
 
     for (const proj of selCmpt.project.items) {
       if (!proj.hasLegend) continue;
-      const prefix = `${proj.field}_legend`;
+      const prefix = `${varName(proj.field)}_legend`;
       const sgName = `${selName}_${prefix}`;
       const hasSignal = signals.filter(s => s.name === sgName);
 
@@ -85,7 +85,7 @@ const legendBindings: TransformCompiler = {
     const proj = selCmpt.project;
     const tuple = signals.find(s => s.name === name + TUPLE);
     const fields = name + TUPLE_FIELDS;
-    const values = proj.items.filter(p => p.hasLegend).map(p => varName(`${name}_${p.field}_legend`));
+    const values = proj.items.filter(p => p.hasLegend).map(p => varName(`${name}_${varName(p.field)}_legend`));
     const valid = values.map(v => `${v} !== null`).join(' && ');
     const update = `${valid} ? {fields: ${fields}, values: [${values.join(', ')}]} : null`;
 

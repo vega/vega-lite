@@ -20,7 +20,7 @@ import {
 } from '../../channeldef';
 import {Legend} from '../../legend';
 import {GEOJSON} from '../../type';
-import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
+import {deleteNestedProperty, getFirstDefined, keys, varName} from '../../util';
 import {mergeTitleComponent, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {isUnitModel, Model} from '../model';
@@ -114,7 +114,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
         : legendEncodingPart; // no rule -- just default values
       if (value !== undefined && keys(value).length > 0) {
         e[part] = {
-          ...(selections?.length ? {name: `${fieldDef.field}_legend_${part}`} : {}),
+          ...(selections?.length ? {name: `${varName(fieldDef.field)}_legend_${part}`} : {}),
           ...(selections?.length ? {interactive: !!selections} : {}),
           update: value
         };
