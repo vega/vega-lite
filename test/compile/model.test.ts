@@ -1,5 +1,5 @@
 import {NameMap} from '../../src/compile/model';
-import {parseFacetModel, parseFacetModelWithScale, parseModel} from '../util';
+import {parseFacetModelWithScale, parseModel} from '../util';
 
 describe('Model', () => {
   describe('NameMap', () => {
@@ -21,80 +21,6 @@ describe('Model', () => {
       expect(map.get('b')).toBe('c');
       expect(map.get('c')).toBe('c');
       expect(map.get('z')).toBe('c');
-    });
-  });
-
-  describe('hasDescendantWithFieldOnChannel', () => {
-    it('should return true if a child plot has a field on x', () => {
-      const model = parseFacetModel({
-        facet: {row: {field: 'a', type: 'nominal'}},
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: 'x', type: 'quantitative'}
-          }
-        }
-      });
-      expect(model.hasDescendantWithFieldOnChannel('x')).toBeTruthy();
-    });
-
-    it('should return true if a descendant plot has x', () => {
-      const model = parseFacetModel({
-        facet: {row: {field: 'a', type: 'nominal'}},
-        spec: {
-          layer: [
-            {
-              mark: 'point',
-              encoding: {
-                x: {field: 'x', type: 'quantitative'}
-              }
-            },
-            {
-              mark: 'point',
-              encoding: {
-                color: {field: 'x', type: 'quantitative'}
-              }
-            }
-          ]
-        }
-      });
-      expect(model.hasDescendantWithFieldOnChannel('x')).toBeTruthy();
-    });
-
-    it('should return false if no descendant plot has a field on x', () => {
-      const model = parseFacetModel({
-        facet: {row: {field: 'a', type: 'nominal'}},
-        spec: {
-          mark: 'point',
-          encoding: {
-            color: {field: 'x', type: 'quantitative'}
-          }
-        }
-      });
-      expect(!model.hasDescendantWithFieldOnChannel('x')).toBeTruthy();
-    });
-
-    it('should return false if no descendant plot has a field on x', () => {
-      const model = parseFacetModel({
-        facet: {row: {field: 'a', type: 'nominal'}},
-        spec: {
-          layer: [
-            {
-              mark: 'point',
-              encoding: {
-                color: {field: 'x', type: 'quantitative'}
-              }
-            },
-            {
-              mark: 'point',
-              encoding: {
-                color: {field: 'x', type: 'quantitative'}
-              }
-            }
-          ]
-        }
-      });
-      expect(!model.hasDescendantWithFieldOnChannel('x')).toBeTruthy();
     });
   });
 
