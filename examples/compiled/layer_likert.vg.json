@@ -357,6 +357,7 @@
       "scale": "y",
       "orient": "left",
       "grid": true,
+      "offset": 50,
       "gridScale": "x",
       "domain": false,
       "labels": false,

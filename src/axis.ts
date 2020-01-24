@@ -308,7 +308,7 @@ export const AXIS_PROPERTY_TYPE: {
   labels: 'main',
   maxExtent: 'main',
   minExtent: 'main',
-  offset: 'main',
+  offset: 'both',
   position: 'main',
   tickColor: 'main',
   tickExtra: 'main',
