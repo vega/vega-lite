@@ -1,5 +1,4 @@
-import {DateTime} from './../build/src/datetime.d';
-import {dateTimeToExpr, dateTimeToTimestamp} from '../src/datetime';
+import {DateTime, dateTimeToExpr, dateTimeToTimestamp} from '../src/datetime';
 import * as log from '../src/log';
 
 describe('datetime', () => {

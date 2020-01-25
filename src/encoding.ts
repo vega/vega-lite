@@ -1,5 +1,5 @@
-import {AggregateOp, array} from 'vega';
-import {isArray} from 'vega-util';
+import {AggregateOp} from 'vega';
+import {array, isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
 import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark} from './channel';
