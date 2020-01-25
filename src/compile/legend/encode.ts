@@ -1,5 +1,5 @@
 import {ColorValueRef, SymbolEncodeEntry} from 'vega';
-import {isArray, stringValue} from 'vega-util';
+import {isArray, stringValue, array} from 'vega-util';
 import {COLOR, NonPositionScaleChannel, OPACITY} from '../../channel';
 import {
   Conditional,
@@ -194,10 +194,7 @@ function getConditionValue<V extends Value | Gradient>(
   reducer: (val: V, conditionalDef: Conditional<ValueDef<V>>) => V
 ): V {
   if (hasConditionalValueDef(channelDef)) {
-    return (isArray(channelDef.condition) ? channelDef.condition : [channelDef.condition]).reduce(
-      reducer,
-      channelDef.value as any
-    );
+    return array(channelDef.condition).reduce(reducer, channelDef.value as any);
   } else if (isValueDef(channelDef)) {
     return channelDef.value as any;
   }

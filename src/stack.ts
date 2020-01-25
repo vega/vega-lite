@@ -1,4 +1,4 @@
-import {isArray, isBoolean} from 'vega-util';
+import {isBoolean, array} from 'vega-util';
 import {SUM_OPS} from './aggregate';
 import {NonPositionChannel, NONPOSITION_CHANNELS, X, X2, Y2} from './channel';
 import {
@@ -115,7 +115,7 @@ export function stack(
     // Ignore tooltip in stackBy (https://github.com/vega/vega-lite/issues/4001)
     if (channel !== 'tooltip' && channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
-      (isArray(channelDef) ? channelDef : [channelDef]).forEach(cDef => {
+      array(channelDef).forEach(cDef => {
         const fieldDef = getTypedFieldDef(cDef);
         if (fieldDef.aggregate) {
           return;

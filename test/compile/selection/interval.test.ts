@@ -65,8 +65,8 @@ describe('Interval Selections', () => {
       encodings: ['x'],
       init: {
         x: [
-          {year: 2000, month: 10, day: 5},
-          {year: 2001, month: 1, day: 13}
+          {year: 2000, month: 10, date: 5},
+          {year: 2001, month: 1, date: 13}
         ]
       }
     }
@@ -334,7 +334,7 @@ describe('Interval Selections', () => {
         expect.arrayContaining([
           {
             name: 'six_x',
-            init: '[scale("x", datetime(2000, 10, 5+1, 0, 0, 0, 0)), scale("x", datetime(2001, 1, 13+1, 0, 0, 0, 0))]',
+            init: '[scale("x", datetime(2000, 9, 5, 0, 0, 0, 0)), scale("x", datetime(2001, 0, 13, 0, 0, 0, 0))]',
             on: [
               {
                 events: parseSelector('mousedown', 'scope')[0],
@@ -352,7 +352,7 @@ describe('Interval Selections', () => {
           },
           {
             name: 'six_Horsepower',
-            init: '[datetime(2000, 10, 5+1, 0, 0, 0, 0), datetime(2001, 1, 13+1, 0, 0, 0, 0)]',
+            init: '[datetime(2000, 9, 5, 0, 0, 0, 0), datetime(2001, 0, 13, 0, 0, 0, 0)]',
             on: [
               {
                 events: {signal: 'six_x'},

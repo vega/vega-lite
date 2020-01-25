@@ -52,7 +52,7 @@ export interface DateTime {
   month?: Month | string;
 
   /**
-   * Integer value representing the date from 1-31.
+   * Integer value representing the date (day of the month) from 1-31.
    * @minimum 1
    * @maximum 31
    * @TJS-type integer
@@ -160,7 +160,7 @@ export const SHORT_MONTHS = MONTHS.map(m => m.substr(0, 3));
 export const DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 export const SHORT_DAYS = DAYS.map(d => d.substr(0, 3));
 
-function normalizeQuarter(q: number | string) {
+function normalizeQuarter(q: number | string): string {
   if (isNumber(q)) {
     if (q > 4) {
       log.warn(log.message.invalidTimeUnit('quarter', q));
@@ -193,7 +193,7 @@ function normalizeMonth(m: string | number) {
   }
 }
 
-function normalizeDay(d: string | number) {
+function normalizeDay(d: string | number): string {
   if (isNumber(d)) {
     // mod so that this can be both 0-based where 0 = sunday
     // and 1-based where 7=sunday
@@ -215,12 +215,10 @@ function normalizeDay(d: string | number) {
 }
 
 /**
- * Return Vega Expression for a particular date time.
- * @param d
- * @param normalize whether to normalize quarter, month, day.
- * @param toJSON whether to return the date in JSON format
+ * @param d the date.
+ * @param normalize whether to normalize quarter, month, day. This should probably be true if d is a DateTime.
  */
-export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false, toJSON = false) {
+function dateTimeParts(d: DateTime | DateTimeExpr, normalize = false) {
   const units: (string | number)[] = [];
 
   if (normalize && d.day !== undefined) {
@@ -245,7 +243,7 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false, toJS
     units.push(month);
   } else if (d.quarter !== undefined) {
     const quarter = normalize ? normalizeQuarter(d.quarter) : d.quarter;
-    units.push(quarter + '*3');
+    units.push(isNumber(quarter) ? quarter * 3 : quarter + '*3');
   } else {
     units.push(0); // months start at zero in JS
   }
@@ -256,7 +254,7 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false, toJS
     // HACK: Day only works as a standalone unit
     // This is only correct because we always set year to 2006 for day
     const day = normalize ? normalizeDay(d.day) : d.day;
-    units.push(day + '+1');
+    units.push(isNumber(day) ? day + 1 : day + '+1');
   } else {
     units.push(1); // Date starts at 1 in JS
   }
@@ -268,19 +266,55 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false, toJS
     units.push(typeof unit === 'undefined' ? 0 : unit);
   }
 
-  const unitsString = units.join(', ');
+  return units;
+}
 
-  if (toJSON) {
-    if (d.utc) {
-      return new Function(`return +new Date(Date.UTC(${unitsString}))`)();
-    } else {
-      return new Function(`return +new Date(${unitsString})`)();
-    }
-  }
+/**
+ * Return Vega expression for a date time.
+ *
+ * @param d the date time.
+ * @returns the Vega expression.
+ */
+export function dateTimeToExpr(d: DateTime) {
+  const parts: (string | number)[] = dateTimeParts(d, true);
+
+  const string = parts.join(', ');
 
   if (d.utc) {
-    return `utc(${unitsString})`;
+    return `utc(${string})`;
   } else {
-    return `datetime(${unitsString})`;
+    return `datetime(${string})`;
+  }
+}
+
+/**
+ * Return Vega expression for a date time expression.
+ *
+ * @param d the internal date time object with expression.
+ * @returns the Vega expression.
+ */
+export function dateTimeExprToExpr(d: DateTimeExpr) {
+  const parts: (string | number)[] = dateTimeParts(d, false);
+
+  const string = parts.join(', ');
+
+  if (d.utc) {
+    return `utc(${string})`;
+  } else {
+    return `datetime(${string})`;
+  }
+}
+
+/**
+ * @param d the date time.
+ * @returns the timestamp.
+ */
+export function dateTimeToTimestamp(d: DateTime) {
+  const parts: (string | number)[] = dateTimeParts(d, true);
+
+  if (d.utc) {
+    return +new Date(Date.UTC(...(parts as [any, any])));
+  } else {
+    return +new Date(...(parts as [any]));
   }
 }

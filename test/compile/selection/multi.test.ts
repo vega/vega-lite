@@ -48,11 +48,11 @@ describe('Multi Selection', () => {
       init: [
         {
           Origin: 'Japan',
-          Year: {year: 1970, month: 1, day: 1}
+          Year: {year: 1970, month: 1, date: 1}
         },
         {
           Origin: 'USA',
-          Year: {year: 1980, month: 1, day: 1}
+          Year: {year: 1980, month: 1, date: 1}
         }
       ]
     },
@@ -215,7 +215,7 @@ describe('Multi Selection', () => {
               {type: 'E', field: 'Year'},
               {type: 'E', field: 'Origin'}
             ],
-            values: [+new Date(1970, 1, 2, 0, 0, 0, 0), 'Japan']
+            values: [+new Date(1970, 0, 1, 0, 0, 0, 0), 'Japan']
           },
           {
             unit: '',
@@ -223,7 +223,7 @@ describe('Multi Selection', () => {
               {type: 'E', field: 'Year'},
               {type: 'E', field: 'Origin'}
             ],
-            values: [+new Date(1980, 1, 2, 0, 0, 0, 0), 'USA']
+            values: [+new Date(1980, 0, 1, 0, 0, 0, 0), 'USA']
           }
         ]
       },

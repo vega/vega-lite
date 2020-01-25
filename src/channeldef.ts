@@ -7,7 +7,7 @@ import {Channel, isScaleChannel, isSecondaryRangeChannel, POSITION_SCALE_CHANNEL
 import {getMarkConfig} from './compile/common';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
-import {DateTime, dateTimeExpr, isDateTime} from './datetime';
+import {DateTime, dateTimeToExpr, isDateTime} from './datetime';
 import {FormatMixins, Guide, TitleMixins} from './guide';
 import {ImputeParams} from './impute';
 import {Legend} from './legend';
@@ -1029,11 +1029,11 @@ export function valueExpr(
 ): string {
   let expr;
   if (isDateTime(v)) {
-    expr = dateTimeExpr(v, true);
+    expr = dateTimeToExpr(v);
   } else if (isString(v) || isNumber(v)) {
     if (timeUnit || type === 'temporal') {
       if (isLocalSingleTimeUnit(timeUnit)) {
-        expr = dateTimeExpr({[timeUnit]: v}, true);
+        expr = dateTimeToExpr({[timeUnit]: v});
       } else if (isUtcSingleTimeUnit(timeUnit)) {
         // FIXME is this really correct?
         expr = valueExpr(v, {timeUnit: getLocalTimeUnit(timeUnit)});

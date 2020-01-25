@@ -49,7 +49,7 @@ describe('Inputs Selection Transform', () => {
         Year: {input: 'range', min: 1970, max: 1980, step: 1}
       },
       init: {
-        Year: {year: 1970, month: 1, day: 1}
+        Year: {year: 1970, month: 3, date: 9}
       }
     },
     eight: {
@@ -219,7 +219,7 @@ describe('Inputs Selection Transform', () => {
       expect.arrayContaining([
         {
           name: 'seven_Year',
-          init: 'datetime(1970, 1, 1+1, 0, 0, 0, 0)',
+          init: 'datetime(1970, 2, 9, 0, 0, 0, 0)',
           bind: {input: 'range', min: 1970, max: 1980, step: 1}
         }
       ])
