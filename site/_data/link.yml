@@ -116,7 +116,22 @@ SymbolShape:
   name: String
 LabelOverlap:
   name: String
-ConditionalAxisProperty:
+ConditionalAxisColor:
+  link: 'axis.html#conditional'
+ConditionalAxisNumber:
+  link: 'axis.html#conditional'
+ConditionalAxisString:
+  link: 'axis.html#conditional'
+ConditionalAxisNumberArray:
+  link: 'axis.html#conditional'
+ConditionalAxisLabelBaseline:
+  name: ConditionalAxisString
+  link: 'axis.html#conditional'
+ConditionalAxisLabelFontStyle:
+  name: ConditionalAxisString
+  link: 'axis.html#conditional'
+ConditionalAxisLabelFontWeight:
+  name: ConditionalAxisString
   link: 'axis.html#conditional'
 
 # Config
