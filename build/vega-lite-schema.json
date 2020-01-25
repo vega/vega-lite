@@ -664,7 +664,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisNumber"
+              "$ref": "#/definitions/ConditionalAxisLabelAlign"
             }
           ]
         },
@@ -1180,7 +1180,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisNumber"
+              "$ref": "#/definitions/ConditionalAxisLabelAlign"
             }
           ]
         },
@@ -3028,6 +3028,9 @@
     "ConditionalAxisColor": {
       "$ref": "#/definitions/ConditionalAxisProperty%3C(Color%7Cnull)%3E"
     },
+    "ConditionalAxisLabelAlign": {
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(Align%7Cnull)%3E"
+    },
     "ConditionalAxisLabelBaseline": {
       "$ref": "#/definitions/ConditionalAxisProperty%3C(TextBaseline%7Cnull)%3E"
     },
@@ -3042,6 +3045,40 @@
     },
     "ConditionalAxisNumberArray": {
       "$ref": "#/definitions/ConditionalAxisProperty%3C(number%5B%5D%7Cnull)%3E"
+    },
+    "ConditionalAxisProperty<(Align|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(Align%7Cnull)%3E%3E"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(Align%7Cnull)%3E%3E"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "condition",
+        "value"
+      ],
+      "type": "object"
     },
     "ConditionalAxisProperty<(Color|null)>": {
       "additionalProperties": false,
@@ -3515,6 +3552,31 @@
       "required": [
         "test",
         "type"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(Align|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/PredicateComposition",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test",
+        "value"
       ],
       "type": "object"
     },

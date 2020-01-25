@@ -124,6 +124,9 @@ ConditionalAxisString:
   link: 'axis.html#conditional'
 ConditionalAxisNumberArray:
   link: 'axis.html#conditional'
+ConditionalAxisLabelAlign:
+  name: ConditionalAxisString
+  link: 'axis.html#conditional'
 ConditionalAxisLabelBaseline:
   name: ConditionalAxisString
   link: 'axis.html#conditional'
