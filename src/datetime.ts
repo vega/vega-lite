@@ -160,54 +160,54 @@ export const SHORT_MONTHS = MONTHS.map(m => m.substr(0, 3));
 export const DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 export const SHORT_DAYS = DAYS.map(d => d.substr(0, 3));
 
-function normalizeQuarter(q: number | string): string {
+function normalizeQuarter(q: number | string): number {
   if (isNumber(q)) {
     if (q > 4) {
       log.warn(log.message.invalidTimeUnit('quarter', q));
     }
     // We accept 1-based quarter, so need to readjust to 0-based quarter
-    return (q - 1).toString();
+    return q - 1;
   } else {
     // Invalid quarter
     throw new Error(log.message.invalidTimeUnit('quarter', q));
   }
 }
 
-function normalizeMonth(m: string | number) {
+function normalizeMonth(m: string | number): number {
   if (isNumber(m)) {
     // We accept 1-based month, so need to readjust to 0-based month
-    return (m - 1).toString();
+    return m - 1;
   } else {
     const lowerM = m.toLowerCase();
     const monthIndex = MONTHS.indexOf(lowerM);
     if (monthIndex !== -1) {
-      return monthIndex + ''; // 0 for january, ...
+      return monthIndex; // 0 for january, ...
     }
     const shortM = lowerM.substr(0, 3);
     const shortMonthIndex = SHORT_MONTHS.indexOf(shortM);
     if (shortMonthIndex !== -1) {
-      return shortMonthIndex + '';
+      return shortMonthIndex;
     }
     // Invalid month
     throw new Error(log.message.invalidTimeUnit('month', m));
   }
 }
 
-function normalizeDay(d: string | number): string {
+function normalizeDay(d: string | number): number {
   if (isNumber(d)) {
     // mod so that this can be both 0-based where 0 = sunday
     // and 1-based where 7=sunday
-    return (d % 7) + '';
+    return d % 7;
   } else {
     const lowerD = d.toLowerCase();
     const dayIndex = DAYS.indexOf(lowerD);
     if (dayIndex !== -1) {
-      return dayIndex + ''; // 0 for january, ...
+      return dayIndex; // 0 for january, ...
     }
     const shortD = lowerD.substr(0, 3);
     const shortDayIndex = SHORT_DAYS.indexOf(shortD);
     if (shortDayIndex !== -1) {
-      return shortDayIndex + '';
+      return shortDayIndex;
     }
     // Invalid day
     throw new Error(log.message.invalidTimeUnit('day', d));
@@ -217,9 +217,10 @@ function normalizeDay(d: string | number): string {
 /**
  * @param d the date.
  * @param normalize whether to normalize quarter, month, day. This should probably be true if d is a DateTime.
+ * @returns array of date time parts [year, month, day, hours, minutes, seconds, milliseconds]
  */
 function dateTimeParts(d: DateTime | DateTimeExpr, normalize = false) {
-  const units: (string | number)[] = [];
+  const parts: (string | number)[] = [];
 
   if (normalize && d.day !== undefined) {
     if (keys(d).length > 1) {
@@ -230,43 +231,43 @@ function dateTimeParts(d: DateTime | DateTimeExpr, normalize = false) {
   }
 
   if (d.year !== undefined) {
-    units.push(d.year);
+    parts.push(d.year);
   } else if (d.day !== undefined) {
     // Set year to 2006 for working with day since January 1 2006 is a Sunday
-    units.push(SUNDAY_YEAR);
+    parts.push(SUNDAY_YEAR);
   } else {
-    units.push(0);
+    parts.push(0);
   }
 
   if (d.month !== undefined) {
     const month = normalize ? normalizeMonth(d.month) : d.month;
-    units.push(month);
+    parts.push(month);
   } else if (d.quarter !== undefined) {
     const quarter = normalize ? normalizeQuarter(d.quarter) : d.quarter;
-    units.push(isNumber(quarter) ? quarter * 3 : quarter + '*3');
+    parts.push(isNumber(quarter) ? quarter * 3 : quarter + '*3');
   } else {
-    units.push(0); // months start at zero in JS
+    parts.push(0); // months start at zero in JS
   }
 
   if (d.date !== undefined) {
-    units.push(d.date);
+    parts.push(d.date);
   } else if (d.day !== undefined) {
     // HACK: Day only works as a standalone unit
     // This is only correct because we always set year to 2006 for day
     const day = normalize ? normalizeDay(d.day) : d.day;
-    units.push(isNumber(day) ? day + 1 : day + '+1');
+    parts.push(isNumber(day) ? day + 1 : day + '+1');
   } else {
-    units.push(1); // Date starts at 1 in JS
+    parts.push(1); // Date starts at 1 in JS
   }
 
   // Note: can't use TimeUnit enum here as importing it will create
   // circular dependency problem!
   for (const timeUnit of ['hours', 'minutes', 'seconds', 'milliseconds'] as const) {
     const unit = d[timeUnit];
-    units.push(typeof unit === 'undefined' ? 0 : unit);
+    parts.push(typeof unit === 'undefined' ? 0 : unit);
   }
 
-  return units;
+  return parts;
 }
 
 /**
