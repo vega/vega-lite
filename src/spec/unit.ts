@@ -4,13 +4,13 @@ import {Encoding} from '../encoding';
 import {AnyMark, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {SelectionDef} from '../selection';
-import {BaseSpec, BoundsMixins, DataMixins, LayerUnitMixins, ResolveMixins} from './base';
+import {BaseSpec, BoundsMixins, DataMixins, FrameMixins, ResolveMixins} from './base';
 import {TopLevel} from './toplevel';
 
 /**
  * Base interface for a unit (single-view) specification.
  */
-export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, LayerUnitMixins {
+export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
   /**
    * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
    * `"area"`, `"point"`, `"rule"`, `"geoshape"`, and `"text"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
@@ -44,10 +44,15 @@ export type NormalizedUnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef
  */
 export type UnitSpec = GenericUnitSpec<CompositeEncoding, AnyMark>;
 
+export type UnitSpecWithFrame = GenericUnitSpec<CompositeEncoding, AnyMark> & FrameMixins;
+
 /**
  * Unit spec that can have a composite mark and row or column channels (shorthand for a facet spec).
  */
-export type FacetedUnitSpec = GenericUnitSpec<FacetedCompositeEncoding, AnyMark> & ResolveMixins & BoundsMixins;
+export type FacetedUnitSpec = GenericUnitSpec<FacetedCompositeEncoding, AnyMark> &
+  ResolveMixins &
+  BoundsMixins &
+  FrameMixins;
 
 export type TopLevelUnitSpec = TopLevel<FacetedUnitSpec> & DataMixins;
 

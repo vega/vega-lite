@@ -1,15 +1,12 @@
 import {CompositeEncoding} from '../compositemark';
 import {Projection} from '../projection';
-import {BaseSpec, LayerUnitMixins, ResolveMixins} from './base';
+import {BaseSpec, FrameMixins, ResolveMixins} from './base';
 import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
 
 /**
  * Base interface for a layer specification.
  */
-export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>>
-  extends BaseSpec,
-    LayerUnitMixins,
-    ResolveMixins {
+export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, FrameMixins, ResolveMixins {
   /**
    * Layer or single view specifications to be layered.
    *

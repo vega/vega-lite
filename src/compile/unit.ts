@@ -22,6 +22,7 @@ import {Projection} from '../projection';
 import {Domain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
+import {isFrameMixins} from '../spec/base';
 import {stack, StackProperties} from '../stack';
 import {Dict} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
@@ -74,7 +75,16 @@ export class UnitModel extends ModelWithField {
     repeater: RepeaterValue,
     config: Config
   ) {
-    super(spec, 'unit', parent, parentGivenName, config, repeater, undefined, spec.view);
+    super(
+      spec,
+      'unit',
+      parent,
+      parentGivenName,
+      config,
+      repeater,
+      undefined,
+      isFrameMixins(spec) ? spec.view : undefined
+    );
 
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
 
@@ -87,11 +97,13 @@ export class UnitModel extends ModelWithField {
 
     this.size = initLayoutSize({
       encoding,
-      size: {
-        ...parentGivenSize,
-        ...(spec.width ? {width: spec.width} : {}),
-        ...(spec.height ? {height: spec.height} : {})
-      }
+      size: isFrameMixins(spec)
+        ? {
+            ...parentGivenSize,
+            ...(spec.width ? {width: spec.width} : {}),
+            ...(spec.height ? {height: spec.height} : {})
+          }
+        : parentGivenSize
     });
 
     // calculate stack properties

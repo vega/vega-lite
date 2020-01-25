@@ -1,5 +1,6 @@
 import {Color, Cursor, Text} from 'vega';
 import {isArray, isNumber, isObject} from 'vega-util';
+import {NormalizedSpec} from '.';
 import {Config} from '../config';
 import {Data} from '../data';
 import {Resolve} from '../resolve';
@@ -9,7 +10,6 @@ import {Flag, keys} from '../util';
 import {BaseMarkConfig, LayoutAlign, RowCol} from '../vega.schema';
 import {isConcatSpec} from './concat';
 import {isFacetMapping, isFacetSpec} from './facet';
-import {NormalizedSpec} from '.';
 import {isRepeatSpec} from './repeat';
 
 export {TopLevel} from './toplevel';
@@ -99,7 +99,11 @@ export interface LayoutSizeMixins {
   height?: number | 'container' | Step;
 }
 
-export interface LayerUnitMixins extends LayoutSizeMixins {
+export function isFrameMixins(o: any): o is FrameMixins {
+  return o['view'] || o['width'] || o['height'];
+}
+
+export interface FrameMixins extends LayoutSizeMixins {
   /**
    * An object defining the view background's fill and stroke.
    *

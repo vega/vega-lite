@@ -11,7 +11,7 @@ import {GenericFacetSpec} from './facet';
 import {GenericLayerSpec, LayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericRepeatSpec} from './repeat';
 import {TopLevel} from './toplevel';
-import {FacetedUnitSpec, GenericUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec} from './unit';
+import {FacetedUnitSpec, GenericUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec, UnitSpecWithFrame} from './unit';
 
 export {BaseSpec, LayoutSizeMixins} from './base';
 export {
@@ -45,7 +45,7 @@ export type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLa
  */
 export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
-export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedUnitSpec, LayerSpec>> & DataMixins;
+export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<UnitSpecWithFrame, LayerSpec>> & DataMixins;
 
 /**
  * A Vega-Lite top-level specification.
