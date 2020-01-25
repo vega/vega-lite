@@ -15,6 +15,7 @@ import {duplicate} from '../src/util';
 const ajv = new Ajv({
   validateSchema: true,
   allErrors: true,
+  format: 'full',
   extendRefs: 'fail',
   schemaId: 'auto' // for draft 04 and 06 schemas
 });

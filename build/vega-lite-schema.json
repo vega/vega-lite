@@ -1873,7 +1873,7 @@
       "type": "object"
     },
     "BaseTitleNoValueRefs": {
-      "$ref": "#/definitions/ExcludeMappedValueRef<BaseTitle>"
+      "$ref": "#/definitions/ExcludeMappedValueRef%3CBaseTitle%3E"
     },
     "Baseline": {
       "enum": [
@@ -2403,10 +2403,10 @@
       ]
     },
     "ColorGradientFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>"
+      "$ref": "#/definitions/FieldDefWithCondition%3CMarkPropFieldDef%2C(Gradient%7Cstring%7Cnull)%3E"
     },
     "ColorGradientValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>"
+      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%2C(Gradient%7Cstring%7Cnull)%3E"
     },
     "ColorName": {
       "enum": [
@@ -2948,100 +2948,100 @@
     "ConditionalMarkPropFieldDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<MarkPropFieldDef>"
+          "$ref": "#/definitions/ConditionalPredicate%3CMarkPropFieldDef%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<MarkPropFieldDef>"
+          "$ref": "#/definitions/ConditionalSelection%3CMarkPropFieldDef%3E"
         }
       ]
     },
     "ConditionalMarkPropFieldDef<TypeForShape>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<MarkPropFieldDef<TypeForShape>>"
+          "$ref": "#/definitions/ConditionalPredicate%3CMarkPropFieldDef%3CTypeForShape%3E%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<MarkPropFieldDef<TypeForShape>>"
+          "$ref": "#/definitions/ConditionalSelection%3CMarkPropFieldDef%3CTypeForShape%3E%3E"
         }
       ]
     },
     "ConditionalStringFieldDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<StringFieldDef>"
+          "$ref": "#/definitions/ConditionalPredicate%3CStringFieldDef%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<StringFieldDef>"
+          "$ref": "#/definitions/ConditionalSelection%3CStringFieldDef%3E"
         }
       ]
     },
     "ConditionalValueDef<(Gradient|string|null)>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Gradient|string|null)>>"
+          "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(Gradient%7Cstring%7Cnull)%3E%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<(Gradient|string|null)>>"
+          "$ref": "#/definitions/ConditionalSelection%3CValueDef%3C(Gradient%7Cstring%7Cnull)%3E%3E"
         }
       ]
     },
     "ConditionalStringValueDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
+          "$ref": "#/definitions/ConditionalPredicate%3CStringValueDef%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<StringValueDef>"
+          "$ref": "#/definitions/ConditionalSelection%3CStringValueDef%3E"
         }
       ]
     },
     "ConditionalValueDef<Text>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<ValueDef<Text>>"
+          "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3CText%3E%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<Text>>"
+          "$ref": "#/definitions/ConditionalSelection%3CValueDef%3CText%3E%3E"
         }
       ]
     },
     "ConditionalNumberValueDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<NumberValueDef>"
+          "$ref": "#/definitions/ConditionalPredicate%3CNumberValueDef%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<NumberValueDef>"
+          "$ref": "#/definitions/ConditionalSelection%3CNumberValueDef%3E"
         }
       ]
     },
     "ConditionalValueDef<string>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<ValueDef<string>>"
+          "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3Cstring%3E%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<string>>"
+          "$ref": "#/definitions/ConditionalSelection%3CValueDef%3Cstring%3E%3E"
         }
       ]
     },
     "ConditionalAxisColor": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(Color|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(Color%7Cnull)%3E"
     },
     "ConditionalAxisLabelBaseline": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(TextBaseline|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(TextBaseline%7Cnull)%3E"
     },
     "ConditionalAxisLabelFontStyle": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(FontStyle|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(FontStyle%7Cnull)%3E"
     },
     "ConditionalAxisLabelFontWeight": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(FontWeight|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(FontWeight%7Cnull)%3E"
     },
     "ConditionalAxisNumber": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(number|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(number%7Cnull)%3E"
     },
     "ConditionalAxisNumberArray": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(number[]|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(number%5B%5D%7Cnull)%3E"
     },
     "ConditionalAxisProperty<(Color|null)>": {
       "additionalProperties": false,
@@ -3049,11 +3049,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Color|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(Color%7Cnull)%3E%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Color|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(Color%7Cnull)%3E%3E"
               },
               "type": "array"
             }
@@ -3083,11 +3083,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontStyle|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(FontStyle%7Cnull)%3E%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontStyle|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(FontStyle%7Cnull)%3E%3E"
               },
               "type": "array"
             }
@@ -3117,11 +3117,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontWeight|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(FontWeight%7Cnull)%3E%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontWeight|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(FontWeight%7Cnull)%3E%3E"
               },
               "type": "array"
             }
@@ -3151,11 +3151,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(TextBaseline|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(TextBaseline%7Cnull)%3E%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(TextBaseline|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(TextBaseline%7Cnull)%3E%3E"
               },
               "type": "array"
             }
@@ -3185,11 +3185,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(number%5B%5D%7Cnull)%3E%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(number%5B%5D%7Cnull)%3E%3E"
               },
               "type": "array"
             }
@@ -3222,11 +3222,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(number%7Cnull)%3E%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(number%7Cnull)%3E%3E"
               },
               "type": "array"
             }
@@ -3252,11 +3252,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
+              "$ref": "#/definitions/ConditionalPredicate%3CStringValueDef%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
+                "$ref": "#/definitions/ConditionalPredicate%3CStringValueDef%3E"
               },
               "type": "array"
             }
@@ -3277,7 +3277,7 @@
       "type": "object"
     },
     "ConditionalAxisString": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(string|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(string%7Cnull)%3E"
     },
     "ConditionalPredicate<MarkPropFieldDef>": {
       "additionalProperties": false,
@@ -4431,7 +4431,7 @@
       ]
     },
     "Datasets": {
-      "$ref": "#/definitions/Dict<InlineDataset>"
+      "$ref": "#/definitions/Dict%3CInlineDataset%3E"
     },
     "DateTime": {
       "additionalProperties": false,
@@ -5314,7 +5314,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -5347,7 +5347,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -5387,7 +5387,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
@@ -5990,11 +5990,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef%3C(Gradient%7Cstring%7Cnull)%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                "$ref": "#/definitions/ConditionalValueDef%3C(Gradient%7Cstring%7Cnull)%3E"
               },
               "type": "array"
             }
@@ -6269,11 +6269,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<Text>"
+              "$ref": "#/definitions/ConditionalValueDef%3CText%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<Text>"
+                "$ref": "#/definitions/ConditionalValueDef%3CText%3E"
               },
               "type": "array"
             }
@@ -6356,11 +6356,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<string>"
+              "$ref": "#/definitions/ConditionalValueDef%3Cstring%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<string>"
+                "$ref": "#/definitions/ConditionalValueDef%3Cstring%3E"
               },
               "type": "array"
             }
@@ -6801,7 +6801,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -6820,7 +6820,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -6865,7 +6865,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
@@ -6904,7 +6904,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -6923,7 +6923,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -6972,7 +6972,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
@@ -7097,7 +7097,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -7116,7 +7116,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -7168,7 +7168,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
@@ -7465,15 +7465,15 @@
       "additionalProperties": false,
       "properties": {
         "extent": {
-          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "$ref": "#/definitions/Vector2%3CVector2%3Cnumber%3E%3E",
           "description": "Sets both the major and minor extents to the same values."
         },
         "extentMajor": {
-          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "$ref": "#/definitions/Vector2%3CVector2%3Cnumber%3E%3E",
           "description": "The major extent of the graticule as a two-element array of coordinates."
         },
         "extentMinor": {
-          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "$ref": "#/definitions/Vector2%3CVector2%3Cnumber%3E%3E",
           "description": "The minor extent of the graticule as a two-element array of coordinates."
         },
         "precision": {
@@ -7481,15 +7481,15 @@
           "type": "number"
         },
         "step": {
-          "$ref": "#/definitions/Vector2<number>",
+          "$ref": "#/definitions/Vector2%3Cnumber%3E",
           "description": "Sets both the major and minor step angles to the same values."
         },
         "stepMajor": {
-          "$ref": "#/definitions/Vector2<number>",
+          "$ref": "#/definitions/Vector2%3Cnumber%3E",
           "description": "The major step angles of the graticule.\n\n\n__Default value:__ `[90, 360]`"
         },
         "stepMinor": {
-          "$ref": "#/definitions/Vector2<number>",
+          "$ref": "#/definitions/Vector2%3Cnumber%3E",
           "description": "The minor step angles of the graticule.\n\n__Default value:__ `[10, 10]`"
         }
       },
@@ -9852,13 +9852,13 @@
     "PredicateComposition": {
       "anyOf": [
         {
-          "$ref": "#/definitions/LogicalNot<Predicate>"
+          "$ref": "#/definitions/LogicalNot%3CPredicate%3E"
         },
         {
-          "$ref": "#/definitions/LogicalAnd<Predicate>"
+          "$ref": "#/definitions/LogicalAnd%3CPredicate%3E"
         },
         {
-          "$ref": "#/definitions/LogicalOr<Predicate>"
+          "$ref": "#/definitions/LogicalOr%3CPredicate%3E"
         },
         {
           "$ref": "#/definitions/Predicate"
@@ -11078,10 +11078,10 @@
       "type": "string"
     },
     "NumericFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,number>"
+      "$ref": "#/definitions/FieldDefWithCondition%3CMarkPropFieldDef%2Cnumber%3E"
     },
     "NumericValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,number>"
+      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%2Cnumber%3E"
     },
     "OrderFieldDef": {
       "additionalProperties": false,
@@ -11875,7 +11875,7 @@
       "additionalProperties": false,
       "properties": {
         "center": {
-          "$ref": "#/definitions/Vector2<number>",
+          "$ref": "#/definitions/Vector2%3Cnumber%3E",
           "description": "The projection’s center to the specified center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`"
         },
         "clipAngle": {
@@ -11883,7 +11883,7 @@
           "type": "number"
         },
         "clipExtent": {
-          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "$ref": "#/definitions/Vector2%3CVector2%3Cnumber%3E%3E",
           "description": "The projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed."
         },
         "coefficient": {
@@ -11926,10 +11926,10 @@
         "rotate": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Vector2<number>"
+              "$ref": "#/definitions/Vector2%3Cnumber%3E"
             },
             {
-              "$ref": "#/definitions/Vector3<number>"
+              "$ref": "#/definitions/Vector3%3Cnumber%3E"
             }
           ],
           "description": "The projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`"
@@ -11945,7 +11945,7 @@
           "type": "number"
         },
         "translate": {
-          "$ref": "#/definitions/Vector2<number>",
+          "$ref": "#/definitions/Vector2%3Cnumber%3E",
           "description": "The projection's translation (pan) value, overriding automatic fitting."
         },
         "type": {
@@ -13408,24 +13408,24 @@
     "SelectionInitInterval": {
       "anyOf": [
         {
-          "$ref": "#/definitions/Vector2<boolean>"
+          "$ref": "#/definitions/Vector2%3Cboolean%3E"
         },
         {
-          "$ref": "#/definitions/Vector2<number>"
+          "$ref": "#/definitions/Vector2%3Cnumber%3E"
         },
         {
-          "$ref": "#/definitions/Vector2<string>"
+          "$ref": "#/definitions/Vector2%3Cstring%3E"
         },
         {
-          "$ref": "#/definitions/Vector2<DateTime>"
+          "$ref": "#/definitions/Vector2%3CDateTime%3E"
         }
       ]
     },
     "SelectionInitIntervalMapping": {
-      "$ref": "#/definitions/Dict<SelectionInitInterval>"
+      "$ref": "#/definitions/Dict%3CSelectionInitInterval%3E"
     },
     "SelectionInitMapping": {
-      "$ref": "#/definitions/Dict<SelectionInit>"
+      "$ref": "#/definitions/Dict%3CSelectionInit%3E"
     },
     "SelectionPredicate": {
       "additionalProperties": false,
@@ -13608,10 +13608,10 @@
       "type": "string"
     },
     "ShapeFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
+      "$ref": "#/definitions/FieldDefWithCondition%3CMarkPropFieldDef%3CTypeForShape%3E%2C(string%7Cnull)%3E"
     },
     "ShapeValueDefWithCondition": {
-      "$ref": "#/definitions/StringValueDefWithCondition<TypeForShape>"
+      "$ref": "#/definitions/StringValueDefWithCondition%3CTypeForShape%3E"
     },
     "SignalRef": {
       "additionalProperties": false,
@@ -14175,13 +14175,13 @@
       "type": "object"
     },
     "StringFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<StringFieldDef,string>"
+      "$ref": "#/definitions/FieldDefWithCondition%3CStringFieldDef%2Cstring%3E"
     },
     "StringValueDefWithCondition<TypeForShape>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
+      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%3CTypeForShape%3E%2C(string%7Cnull)%3E"
     },
     "StringValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(string|null)>"
+      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%2C(string%7Cnull)%3E"
     },
     "StrokeCap": {
       "enum": [
@@ -14235,10 +14235,10 @@
       ]
     },
     "TextFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<StringFieldDef,Text>"
+      "$ref": "#/definitions/FieldDefWithCondition%3CStringFieldDef%2CText%3E"
     },
     "TextValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<StringFieldDef,Text>"
+      "$ref": "#/definitions/ValueDefWithCondition%3CStringFieldDef%2CText%3E"
     },
     "TickConfig": {
       "additionalProperties": false,
@@ -14834,7 +14834,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -14868,7 +14868,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -14925,7 +14925,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
@@ -15081,7 +15081,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -15115,7 +15115,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -15179,7 +15179,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
@@ -15486,7 +15486,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -15520,7 +15520,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -15581,7 +15581,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
@@ -15961,7 +15961,7 @@
       "type": "object"
     },
     "UnitSpec": {
-      "$ref": "#/definitions/GenericUnitSpec<Encoding,AnyMark>",
+      "$ref": "#/definitions/GenericUnitSpec%3CEncoding%2CAnyMark%3E",
       "description": "A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types)."
     },
     "UrlData": {
@@ -16098,11 +16098,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef%3C(Gradient%7Cstring%7Cnull)%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                "$ref": "#/definitions/ConditionalValueDef%3C(Gradient%7Cstring%7Cnull)%3E"
               },
               "type": "array"
             }
@@ -16192,7 +16192,7 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef<TypeForShape>"
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef%3CTypeForShape%3E"
             },
             {
               "$ref": "#/definitions/ConditionalStringValueDef"
@@ -16226,11 +16226,11 @@
               "$ref": "#/definitions/ConditionalStringFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef<Text>"
+              "$ref": "#/definitions/ConditionalValueDef%3CText%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<Text>"
+                "$ref": "#/definitions/ConditionalValueDef%3CText%3E"
               },
               "type": "array"
             }
@@ -16260,10 +16260,10 @@
     "Vector2<Vector2<number>>": {
       "items": [
         {
-          "$ref": "#/definitions/Vector2<number>"
+          "$ref": "#/definitions/Vector2%3Cnumber%3E"
         },
         {
-          "$ref": "#/definitions/Vector2<number>"
+          "$ref": "#/definitions/Vector2%3Cnumber%3E"
         }
       ],
       "maxItems": 2,
