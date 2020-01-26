@@ -11,6 +11,7 @@
     }
   },
   "spec": {
+    "height": {"step": 12},
     "encoding": {
       "x": {
         "aggregate": "median",
@@ -21,7 +22,6 @@
     },
     "layer": [
       {
-        "height": {"step": 12},
         "mark": "point",
         "encoding": {
           "y": {
