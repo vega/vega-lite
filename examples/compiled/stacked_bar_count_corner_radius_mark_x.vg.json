@@ -48,7 +48,7 @@
         "facet": {
           "data": "source_0",
           "name": "stack_group_main",
-          "groupby": ["month_date"],
+          "groupby": ["month_date", "month_date_end"],
           "aggregate": {
             "fields": [
               "__count_start",
