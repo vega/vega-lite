@@ -2,7 +2,7 @@
 
 import {isNumber} from 'vega-util';
 import * as log from './log';
-import {duplicate, keys} from './util';
+import {duplicate, keys, isNumeric} from './util';
 
 /*
  * A designated year that starts on Sunday.
@@ -161,6 +161,10 @@ export const DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'fr
 export const SHORT_DAYS = DAYS.map(d => d.substr(0, 3));
 
 function normalizeQuarter(q: number | string): number {
+  if (isNumeric(q)) {
+    q = +q;
+  }
+
   if (isNumber(q)) {
     if (q > 4) {
       log.warn(log.message.invalidTimeUnit('quarter', q));
@@ -174,6 +178,10 @@ function normalizeQuarter(q: number | string): number {
 }
 
 function normalizeMonth(m: string | number): number {
+  if (isNumeric(m)) {
+    m = +m;
+  }
+
   if (isNumber(m)) {
     // We accept 1-based month, so need to readjust to 0-based month
     return m - 1;
@@ -188,12 +196,17 @@ function normalizeMonth(m: string | number): number {
     if (shortMonthIndex !== -1) {
       return shortMonthIndex;
     }
+
     // Invalid month
     throw new Error(log.message.invalidTimeUnit('month', m));
   }
 }
 
 function normalizeDay(d: string | number): number {
+  if (isNumeric(d)) {
+    d = +d;
+  }
+
   if (isNumber(d)) {
     // mod so that this can be both 0-based where 0 = sunday
     // and 1-based where 7=sunday
@@ -219,7 +232,7 @@ function normalizeDay(d: string | number): number {
  * @param normalize whether to normalize quarter, month, day. This should probably be true if d is a DateTime.
  * @returns array of date time parts [year, month, day, hours, minutes, seconds, milliseconds]
  */
-function dateTimeParts(d: DateTime | DateTimeExpr, normalize = false) {
+function dateTimeParts(d: DateTime | DateTimeExpr, normalize: boolean) {
   const parts: (string | number)[] = [];
 
   if (normalize && d.day !== undefined) {

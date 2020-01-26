@@ -162,5 +162,15 @@ describe('datetime', () => {
       const exprJSON = dateTimeToTimestamp(d);
       expect(exprJSON).toBe(+new Date(Date.UTC(2007, 0, 1, 0, 0, 0, 0)));
     });
+
+    it('should support accidental use of strings', () => {
+      const d: any = {
+        year: '2007',
+        month: '1',
+        date: '1'
+      };
+      const exprJSON = dateTimeToTimestamp(d);
+      expect(exprJSON).toBe(+new Date(2007, 0, 1, 0, 0, 0, 0));
+    });
   });
 });
