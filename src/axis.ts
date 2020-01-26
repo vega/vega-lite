@@ -1,4 +1,5 @@
 import {
+  Align,
   Axis as VgAxis,
   AxisEncode,
   AxisOrient,
@@ -130,6 +131,7 @@ export function isConditionalAxisValue<V extends Value | number[]>(v: any): v is
 }
 
 export type ConditionalAxisNumber = ConditionalAxisProperty<number | null>;
+export type ConditionalAxisLabelAlign = ConditionalAxisProperty<Align | null>;
 export type ConditionalAxisLabelBaseline = ConditionalAxisProperty<TextBaseline | null>;
 export type ConditionalAxisColor = ConditionalAxisProperty<Color | null>;
 export type ConditionalAxisString = ConditionalAxisProperty<string | null>;
@@ -144,7 +146,7 @@ export type AxisConfigBaseWithConditional = Omit<BaseAxisNoValueRefs, Conditiona
   // The manual definition below is basically, but we have to do this manually to generate a nice schema
   // [k in ConditionalAxisProp]?: BaseAxisNoSignals[k] | ConditionalAxisProperty<BaseAxisNoSignals[k] | null>;
 
-  labelAlign?: BaseAxisNoValueRefs['labelAlign'] | ConditionalAxisNumber;
+  labelAlign?: BaseAxisNoValueRefs['labelAlign'] | ConditionalAxisLabelAlign;
   labelBaseline?: BaseAxisNoValueRefs['labelBaseline'] | ConditionalAxisLabelBaseline;
   labelColor?: BaseAxisNoValueRefs['labelColor'] | ConditionalAxisColor;
   labelFont?: BaseAxisNoValueRefs['labelFont'] | ConditionalAxisString;
