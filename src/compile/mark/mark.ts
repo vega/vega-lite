@@ -174,12 +174,12 @@ function getStackGroups(model: UnitModel) {
       }
     }
 
+    const groupByField = model.fieldDef(model.stack.groupbyChannel);
     // For bin we have to add bin channels.
-    const groupby: string[] = model.vgField(model.stack.groupbyChannel)
-      ? [model.vgField(model.stack.groupbyChannel)]
-      : [];
-    if (model.fieldDef(model.stack.groupbyChannel)?.bin) {
-      groupby.push(model.vgField(model.stack.groupbyChannel, {binSuffix: 'end'}));
+    const groupby: string[] = vgField(groupByField) ? [vgField(groupByField)] : [];
+
+    if (groupByField?.bin || groupByField?.timeUnit) {
+      groupby.push(vgField(groupByField, {binSuffix: 'end'}));
     }
 
     const strokeProperties = [
