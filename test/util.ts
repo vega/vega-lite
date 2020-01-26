@@ -17,6 +17,9 @@ import {
   TopLevel,
   TopLevelSpec
 } from '../src/spec';
+import {FrameMixins} from '../src/spec/base';
+
+export type TopLevelNormalizedUnitSpecForTest = TopLevel<NormalizedUnitSpec> & FrameMixins;
 
 export function parseModel(inputSpec: TopLevelSpec): Model {
   const config = initConfig(inputSpec.config);
@@ -30,30 +33,30 @@ export function parseModelWithScale(inputSpec: TopLevelSpec): Model {
   return model;
 }
 
-export function parseUnitModel(spec: TopLevel<NormalizedUnitSpec>) {
+export function parseUnitModel(spec: TopLevelNormalizedUnitSpecForTest) {
   return new UnitModel(spec, null, '', undefined, undefined, initConfig(spec.config));
 }
 
-export function parseUnitModelWithScale(spec: TopLevel<NormalizedUnitSpec>) {
+export function parseUnitModelWithScale(spec: TopLevelNormalizedUnitSpecForTest) {
   const model = parseUnitModel(spec);
   model.parseScale();
   return model;
 }
 
-export function parseUnitModelWithScaleAndSelection(spec: TopLevel<NormalizedUnitSpec>) {
+export function parseUnitModelWithScaleAndSelection(spec: TopLevelNormalizedUnitSpecForTest) {
   const model = parseUnitModel(spec);
   model.parseScale();
   model.parseSelections();
   return model;
 }
 
-export function parseUnitModelWithScaleExceptRange(spec: TopLevel<NormalizedUnitSpec>) {
+export function parseUnitModelWithScaleExceptRange(spec: TopLevelNormalizedUnitSpecForTest) {
   const model = parseUnitModel(spec);
   parseScales(model, {ignoreRange: true});
   return model;
 }
 
-export function parseUnitModelWithScaleAndLayoutSize(spec: TopLevel<NormalizedUnitSpec>) {
+export function parseUnitModelWithScaleAndLayoutSize(spec: TopLevelNormalizedUnitSpecForTest) {
   const model = parseUnitModelWithScale(spec);
   model.parseLayoutSize();
   return model;
