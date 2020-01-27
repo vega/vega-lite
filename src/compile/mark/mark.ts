@@ -174,8 +174,8 @@ function getStackGroups(model: UnitModel) {
       }
     }
 
+    // For bin and time unit, we have to add bin/timeunit -end channels.
     const groupByField = model.fieldDef(model.stack.groupbyChannel);
-    // For bin we have to add bin channels.
     const groupby: string[] = vgField(groupByField) ? [vgField(groupByField)] : [];
 
     if (groupByField?.bin || groupByField?.timeUnit) {
