@@ -2,7 +2,7 @@ import {Signal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
 import {forEachSelection, MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE} from '.';
-import {dateTimeExpr, isDateTime} from '../../datetime';
+import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime';
 import {SelectionInit, SelectionInitInterval, SelectionExtent} from '../../selection';
 import {keys, varName} from '../../util';
 import {VgData} from '../../vega.schema';
@@ -16,13 +16,17 @@ import {parseSelectionBinExtent} from './parse';
 export function assembleInit(
   init: readonly (SelectionInit | readonly SelectionInit[] | SelectionInitInterval)[] | SelectionInit,
   isExpr = true,
-  wrap: (str: string) => string = identity
+  wrap: (str: string | number) => string | number = identity
 ): any {
   if (isArray(init)) {
     const assembled = init.map(v => assembleInit(v, isExpr, wrap));
     return isExpr ? `[${assembled.join(', ')}]` : assembled;
   } else if (isDateTime(init)) {
-    return wrap(dateTimeExpr(init, false, !isExpr));
+    if (isExpr) {
+      return wrap(dateTimeToExpr(init));
+    } else {
+      return wrap(dateTimeToTimestamp(init));
+    }
   }
   return isExpr ? wrap(JSON.stringify(init)) : init;
 }

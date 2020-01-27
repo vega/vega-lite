@@ -18,7 +18,8 @@ import {
   stringify,
   unique,
   uniqueId,
-  varName
+  varName,
+  isNumeric
 } from '../src/util';
 
 describe('util', () => {
@@ -302,6 +303,23 @@ describe('util', () => {
       expect(replaceAll('a/c', '/', 'b')).toBe('abc');
       expect(replaceAll('a\\c', '\\', 'b')).toBe('abc');
       expect(replaceAll('a[c', '[', 'b')).toBe('abc');
+    });
+  });
+
+  describe('isNumeric', () => {
+    it('should accept numbers', () => {
+      expect(isNumeric('12')).toBe(true);
+      expect(isNumeric('0')).toBe(true);
+      expect(isNumeric('1.2')).toBe(true);
+      expect(isNumeric('1e2')).toBe(true);
+    });
+    it('should reject other variables', () => {
+      expect(isNumeric('')).toBe(false);
+      expect(isNumeric('foo')).toBe(false);
+      expect(isNumeric('0a')).toBe(false);
+      expect(isNumeric('a0')).toBe(false);
+      expect(isNumeric('true')).toBe(false);
+      expect(isNumeric('1.2.3')).toBe(false);
     });
   });
 });

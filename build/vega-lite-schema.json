@@ -4500,7 +4500,7 @@
       "description": "Object for defining datetime in Vega-Lite Filter.\nIf both month and quarter are provided, month has higher precedence.\n`day` cannot be combined with other date.\nWe accept string for month and day names.",
       "properties": {
         "date": {
-          "description": "Integer value representing the date from 1-31.",
+          "description": "Integer value representing the date (day of the month) from 1-31.",
           "maximum": 31,
           "minimum": 1,
           "type": "number"

@@ -1,5 +1,5 @@
 import {Axis as VgAxis, AxisEncode, NewSignal, SignalRef, Text} from 'vega';
-import {isArray, stringValue} from 'vega-util';
+import {stringValue, array} from 'vega-util';
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isConditionalAxisValue} from '../../axis';
 import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';
@@ -55,7 +55,7 @@ export function assembleAxis(
       // deal with conditional axis value
 
       const {condition, value} = propValue;
-      const conditions = isArray(condition) ? condition : [condition];
+      const conditions = array(condition);
 
       const propIndex = CONDITIONAL_AXIS_PROP_INDEX[prop];
       if (propIndex) {

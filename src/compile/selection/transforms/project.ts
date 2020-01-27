@@ -1,4 +1,4 @@
-import {array, isArray} from 'vega-util';
+import {array} from 'vega-util';
 import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
@@ -155,7 +155,7 @@ const project: TransformCompiler = {
       if (selDef.type === 'interval') {
         selCmpt.init = parseInit(selDef.init);
       } else {
-        const init = isArray(selDef.init) ? selDef.init : [selDef.init];
+        const init = array(selDef.init);
         selCmpt.init = init.map(parseInit);
       }
     }

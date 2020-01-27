@@ -1,5 +1,5 @@
 import {AggregateOp} from 'vega';
-import {isArray} from 'vega-util';
+import {array, isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
 import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark} from './channel';
@@ -427,7 +427,7 @@ export function normalizeEncoding(encoding: Encoding<string>, markDef: MarkDef):
     ) {
       if (channelDef) {
         // Array of fieldDefs for detail channel (or production rule)
-        (normalizedEncoding[channel] as any) = (isArray(channelDef) ? channelDef : [channelDef]).reduce(
+        (normalizedEncoding[channel] as any) = array(channelDef).reduce(
           (defs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
             if (!isFieldDef(fieldDef)) {
               log.warn(log.message.emptyFieldDef(fieldDef, channel));
@@ -458,7 +458,7 @@ export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): Fiel
   for (const channel of keys(encoding)) {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
-      const channelDefArray = isArray(channelDef) ? channelDef : [channelDef];
+      const channelDefArray = array(channelDef);
       for (const def of channelDefArray) {
         if (isFieldDef(def)) {
           arr.push(def);
@@ -555,7 +555,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'key': {
         const channelDef = encoding[channel];
         if (isArray(channelDef) || isFieldDef(channelDef)) {
-          (isArray(channelDef) ? channelDef : [channelDef]).forEach(fieldDef => {
+          array(channelDef).forEach(fieldDef => {
             if (!fieldDef.aggregate) {
               details.push(vgField(fieldDef, {}));
             }

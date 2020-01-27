@@ -410,3 +410,13 @@ export function isInternalField(name: string) {
 export function normalizeAngle(angle: number) {
   return ((angle % 360) + 360) % 360;
 }
+
+/**
+ * Returns whether the passed in value is a valid number.
+ */
+export function isNumeric(value: number | string): boolean {
+  if (isNumber(value)) {
+    return true;
+  }
+  return !isNaN(value as any) && !isNaN(parseFloat(value));
+}

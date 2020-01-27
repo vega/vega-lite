@@ -1,7 +1,7 @@
-import {DateTimeExpr, dateTimeExpr} from './datetime';
+import stringify from 'fast-json-stable-stringify';
+import {DateTimeExpr, dateTimeExprToExpr} from './datetime';
 import * as log from './log';
 import {accessPathWithDatum, Flag, keys, replaceAll} from './util';
-import stringify from 'fast-json-stable-stringify';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
@@ -304,7 +304,7 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string, {end}: {end: bo
     d[lastTimeUnit] += '+1';
   }
 
-  return dateTimeExpr(d);
+  return dateTimeExprToExpr(d);
 }
 
 export function getTimeUnitSpecifierExpression(timeUnit: TimeUnit) {
