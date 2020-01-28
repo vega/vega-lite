@@ -127,7 +127,9 @@
         "update": {
           "fill": {"scale": "color", "field": "event"},
           "x": {"scale": "x", "field": "year_start"},
-          "x2": {"scale": "x", "field": "year_end"},
+          "x2": {
+            "signal": "scale(\"x\", 0.5 * datum[\"year_end\"] + 0.5 * datum[\"year_end_end\"])"
+          },
           "y": {"value": 0},
           "y2": {"field": {"group": "height"}}
         }
