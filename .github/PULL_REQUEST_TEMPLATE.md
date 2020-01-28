@@ -3,7 +3,7 @@ Please:
 - [ ] Make the pull requests (PRs) atomic. (Fix one issue at a time.) Multiple relevant issues that must be fixed together? Make atomic commits so we can easily review each issue.
 - [ ] Provide a concise title so we can easily copy it to the release note.
   - Use imperative mood and present tense.
-  - Mention relevant issues. (e.g., `Fix #1` / `Fix part of #1`)
+  - Mention relevant issues. (e.g., `Fixes #1` / `Fixes part of #1`)
 - [ ] Lint and test (Run `yarn test`)
 - [ ] Rebase onto the latest `master` branch.
 - [ ] Review your changes before sending the PR (to ensure code quality).
