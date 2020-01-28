@@ -7,6 +7,7 @@ import * as log from '../../log';
 import {
   AREA,
   BAR,
+  BAR_CORNER_RADIUS_INDEX as BAR_CORNER_RADIUS_END_INDEX,
   CIRCLE,
   IMAGE,
   isMarkDef,
@@ -37,6 +38,26 @@ export function normalizeMarkDef(
   markDef.orient = orient(markDef.type, encoding, specifiedOrient);
   if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
     log.warn(log.message.orientOverridden(markDef.orient, specifiedOrient));
+  }
+
+  if (markDef.type === 'bar' && markDef.orient) {
+    const cornerRadiusEnd =
+      markDef.cornerRadiusEnd ??
+      getMarkConfig(
+        'cornerRadiusEnd' as any, // Hack: there is no way to make the typing work with getMarkConfig()
+        markDef,
+        config
+      );
+    if (cornerRadiusEnd !== undefined) {
+      const newProps = BAR_CORNER_RADIUS_END_INDEX[markDef.orient];
+      for (const newProp of newProps) {
+        markDef[newProp] = cornerRadiusEnd;
+      }
+
+      if (markDef.cornerRadiusEnd !== undefined) {
+        delete markDef.cornerRadiusEnd; // no need to keep the original cap cornerRadius
+      }
+    }
   }
 
   // set opacity and filled if not specified in mark config
