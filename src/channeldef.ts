@@ -323,7 +323,7 @@ export interface ScaleFieldDef<
 /**
  * A field definition of a secondary channel that shares a scale with another primary channel. For example, `x2`, `xError` and `xError2` share the same scale with `x`.
  */
-export type SecondaryFieldDef<F extends Field> = FieldDefBase<F, null> & TitleMixins; // x2/y2 shouldn't have bin, but we keep bin property for simplicity of the codebase.
+export type SecondaryFieldDef<F extends Field> = FieldDefBase<F, null> & TitleMixins & BandMixins;
 
 /**
  * Field Def without scale (and without bin: "binned" support).
@@ -336,10 +336,11 @@ export type LatLongFieldDef<F extends Field> = FieldDefBase<F, null> &
 
 export interface PositionFieldDef<F extends Field>
   extends ScaleFieldDef<
-    F,
-    StandardType,
-    boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
-  > {
+      F,
+      StandardType,
+      boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
+    >,
+    BandMixins {
   /**
    * An object defining properties of axis's gridlines, ticks and labels.
    * If `null`, the axis for the encoding channel will be removed.
@@ -378,16 +379,22 @@ export interface PositionFieldDef<F extends Field>
    * __See also:__ [`impute`](https://vega.github.io/vega-lite/docs/impute.html) documentation.
    */
   impute?: ImputeParams | null;
+}
 
+export interface BandMixins {
   /**
-   * For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.
+   * For x or y channels of rect-based marks (`rect`, `bar`, and `image`) without x2 or y2 respectively, mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.
    *
-   * For other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.
+   * Otherwise, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band. If set to `1`, the marks will be positioned at the end of the band.
    *
    * @minimum 0
    * @maximum 1
    */
   band?: number;
+}
+
+export function isBandMixins(f: FieldDef<string>): f is BandMixins {
+  return f['band'] !== undefined;
 }
 
 export function getBand(
@@ -399,8 +406,8 @@ export function getBand(
   {isMidPoint}: {isMidPoint?: boolean} = {}
 ) {
   const {timeUnit, bin} = fieldDef;
-  if (contains(['x', 'y'], channel)) {
-    if (isPositionFieldDef(fieldDef) && fieldDef.band !== undefined) {
+  if (contains(['x', 'y', 'x2', 'y2'], channel)) {
+    if (isBandMixins(fieldDef) && fieldDef.band !== undefined) {
       return fieldDef.band;
     } else if (timeUnit && !fieldDef2) {
       if (isMidPoint) {
@@ -1069,7 +1076,7 @@ export function valueArray(fieldDef: TypedFieldDef<string>, values: (number | st
 /**
  * Checks whether a fieldDef for a particular channel requires a computed bin range.
  */
-export function binRequiresRange(fieldDef: TypedFieldDef<string>, channel: Channel) {
+export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel) {
   if (!isBinning(fieldDef.bin)) {
     console.warn('Only call this method for binned field defs.');
     return false;
@@ -1077,5 +1084,5 @@ export function binRequiresRange(fieldDef: TypedFieldDef<string>, channel: Chann
 
   // We need the range only when the user explicitly forces a binned field to be use discrete scale. In this case, bin range is used in axis and legend labels.
   // We could check whether the axis or legend exists (not disabled) but that seems overkill.
-  return isScaleChannel(channel) && contains(['ordinal', 'nominal'], fieldDef.type);
+  return isScaleChannel(channel) && isTypedFieldDef(fieldDef) && contains(['ordinal', 'nominal'], fieldDef.type);
 }

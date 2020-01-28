@@ -18,7 +18,6 @@ import {
   isTypedFieldDef,
   isValueDef,
   SecondaryFieldDef,
-  TypedFieldDef,
   ValueOrGradientOrText,
   vgField
 } from '../../../channeldef';
@@ -126,7 +125,7 @@ export function interpolatedSignalRef({
   band = 0.5
 }: {
   scaleName: string;
-  fieldDef: TypedFieldDef<string>;
+  fieldDef: FieldDef<string>;
   fieldDef2?: SecondaryFieldDef<string>;
   startSuffix?: string;
   offset: number;
@@ -193,30 +192,33 @@ export function midPoint({
     /* istanbul ignore else */
 
     if (isFieldDef(channelDef)) {
-      if (isTypedFieldDef(channelDef)) {
-        const band = getBand(channel, channelDef, channel2Def, markDef, config, {isMidPoint: true});
+      const band = getBand(channel, channelDef, channel2Def, markDef, config, {isMidPoint: true});
 
-        if (isBinning(channelDef.bin) || (band && channelDef.timeUnit)) {
-          // Use middle only for x an y to place marks in the center between start and end of the bin range.
-          // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
-          if (contains([X, Y], channel) && contains([QUANTITATIVE, TEMPORAL], channelDef.type)) {
-            if (stack && stack.impute) {
-              // For stack, we computed bin_mid so we can impute.
-              return fieldRef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
-            }
-            // For non-stack, we can just calculate bin mid on the fly using signal.
-            return interpolatedSignalRef({scaleName, fieldDef: channelDef, band, offset});
+      if (isBinning(channelDef.bin) || (band && channelDef.timeUnit)) {
+        // Use middle only for x an y to place marks in the center between start and end of the bin range.
+        // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
+        if (
+          (contains([X, Y], channel) &&
+            isTypedFieldDef(channelDef) &&
+            contains([QUANTITATIVE, TEMPORAL], channelDef.type)) ||
+          contains([X2, Y2], channel)
+        ) {
+          if (stack && stack.impute) {
+            // For stack, we computed bin_mid so we can impute.
+            return fieldRef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
           }
-          return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {}, {
-            offset
-          });
-        } else if (isBinned(channelDef.bin)) {
-          if (isFieldDef(channel2Def)) {
-            return interpolatedSignalRef({scaleName, fieldDef: channelDef, fieldDef2: channel2Def, band, offset});
-          } else {
-            const channel2 = channel === X ? X2 : Y2;
-            log.warn(log.message.channelRequiredForBinned(channel2));
-          }
+          // For non-stack, we can just calculate bin mid on the fly using signal.
+          return interpolatedSignalRef({scaleName, fieldDef: channelDef, band, offset});
+        }
+        return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {}, {
+          offset
+        });
+      } else if (isBinned(channelDef.bin)) {
+        if (isFieldDef(channel2Def)) {
+          return interpolatedSignalRef({scaleName, fieldDef: channelDef, fieldDef2: channel2Def, band, offset});
+        } else {
+          const channel2 = channel === X ? X2 : Y2;
+          log.warn(log.message.channelRequiredForBinned(channel2));
         }
       }
 
@@ -225,8 +227,8 @@ export function midPoint({
         if (hasDiscreteDomain(scaleType)) {
           if (scaleType === 'band') {
             // For band, to get mid point, need to offset by half of the band
-            const band = getFirstDefined(isPositionFieldDef(channelDef) ? channelDef.band : undefined, 0.5);
-            return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {band, offset});
+            const b = getFirstDefined(isPositionFieldDef(channelDef) ? channelDef.band : undefined, 0.5);
+            return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {band: b, offset});
           }
           return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {offset});
         }
