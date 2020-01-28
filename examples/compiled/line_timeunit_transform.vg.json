@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Google's stock price over time. Used to demonstrate the time unit transform.",
+  "description": "Seattle weather data. Used to demonstrate the time unit transform.",
   "background": "white",
   "padding": 5,
   "width": 200,

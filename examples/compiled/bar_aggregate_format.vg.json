@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A bar chart showing the US population distribution of age groups in 2000.",
+  "description": "A bar chart showing the US population distribution of age groups in 2000. Used to demonstrate aggregation and formatting.",
   "background": "white",
   "padding": 5,
   "width": 200,
