@@ -5,7 +5,7 @@ import * as log from '../../log';
 import {Mark} from '../../mark';
 import {channelSupportScaleType, Scale, ScaleType, scaleTypeSupportDataType} from '../../scale';
 import * as util from '../../util';
-import {isUTCTimeUnit} from '../../timeunit';
+import {normalizeTimeUnit} from '../../timeunit';
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 
@@ -78,7 +78,7 @@ function defaultType(channel: Channel, fieldDef: TypedFieldDef<string>, mark: Ma
         log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));
         // TODO: consider using quantize (equivalent to binning) once we have it
         return 'ordinal';
-      } else if (fieldDef.timeUnit && isUTCTimeUnit(fieldDef.timeUnit)) {
+      } else if (fieldDef.timeUnit && normalizeTimeUnit(fieldDef.timeUnit).utc) {
         return 'utc';
       }
       return 'time';

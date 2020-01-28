@@ -13,7 +13,7 @@ function getData(model: Model) {
   return assembleRootData(model.component.data, {});
 }
 
-function getModel(unit2: NormalizedUnitSpec, config?: Config) {
+function getConcatModel(unit2: NormalizedUnitSpec, config?: Config) {
   const model = parseModel({
     data: {
       values: [
@@ -72,7 +72,7 @@ describe('Selection time unit', () => {
   });
 
   it('is added with conditional encodings', () => {
-    const model = getModel({
+    const model = getConcatModel({
       mark: 'point',
       encoding: {
         x: {
@@ -94,7 +94,7 @@ describe('Selection time unit', () => {
   });
 
   it('is added before selection filters', () => {
-    const model = getModel(
+    const model = getConcatModel(
       {
         transform: [{filter: {selection: 'two'}}],
         mark: 'point',
@@ -130,7 +130,7 @@ describe('Selection time unit', () => {
   });
 
   it('removes duplicate time unit formulae', () => {
-    const model = getModel({
+    const model = getConcatModel({
       transform: [{filter: {selection: 'two'}}],
       mark: 'point',
       encoding: {

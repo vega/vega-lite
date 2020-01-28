@@ -32,6 +32,7 @@ import * as encode from './encode';
 import * as properties from './properties';
 import {direction, type} from './properties';
 import {parseInteractiveLegend} from '../selection/transforms/legends';
+import {normalizeTimeUnit} from '../../timeunit';
 
 export function parseLegend(model: Model) {
   if (isUnitModel(model)) {
@@ -140,7 +141,7 @@ function getProperty<K extends keyof LegendComponentProps>(
   const {encoding, mark} = model;
   const fieldDef = getTypedFieldDef(encoding[channel]);
   const legendConfig = model.config.legend;
-  const {timeUnit} = fieldDef;
+  const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.units;
 
   const scaleType = model.getScaleComponent(channel).get('type');
 

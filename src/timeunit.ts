@@ -1,7 +1,8 @@
-import stringify from 'fast-json-stable-stringify';
 import {DateTimeExpr, dateTimeExprToExpr} from './datetime';
 import * as log from './log';
-import {accessPathWithDatum, Flag, keys, replaceAll} from './util';
+import {accessPathWithDatum, Flag, keys, replaceAll, varName} from './util';
+import stringify from 'fast-json-stable-stringify';
+import {isString, isObject} from 'vega-util';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
@@ -240,6 +241,26 @@ export type TimeUnitFormat =
   | 'seconds'
   | 'milliseconds';
 
+export interface TimeUnitParams {
+  units?: TimeUnit;
+
+  /**
+   * If no `units` are specified, maxbins is used to infer time units.
+   */
+  maxbins?: number;
+
+  /**
+   * The number of steps between bins, in terms of the least
+   * significant unit provided.
+   */
+  step?: number;
+
+  /**
+   * True to use UTC timezone.
+   */
+  utc?: boolean;
+}
+
 // matches vega time unit format specifier
 // matches vega time unit format specifier
 export type TimeFormatConfig = {
@@ -336,10 +357,53 @@ export function formatExpression(timeUnit: TimeUnit, field: string, isUTCScale: 
   }
 }
 
-export function normalizeTimeUnit(timeUnit: TimeUnit): TimeUnit {
+export function normalizeTimeUnit(timeUnit: TimeUnit | TimeUnitParams): TimeUnitParams {
+  if (!timeUnit) {
+    return undefined;
+  }
+
+  let params;
+  if (isString(timeUnit)) {
+    params = {
+      units: correctTimeUnit(timeUnit)
+    };
+  } else if (isObject(timeUnit)) {
+    params = {
+      ...timeUnit,
+      units: correctTimeUnit(timeUnit.units)
+    };
+  }
+
+  if (isUTCTimeUnit(params.units)) {
+    params.utc = true;
+    params.units = getLocalTimeUnit(params.units);
+  }
+
+  return params;
+}
+
+export function correctTimeUnit(timeUnit: TimeUnit) {
   if (timeUnit !== 'day' && timeUnit.indexOf('day') >= 0) {
     log.warn(log.message.dayReplacedWithDate(timeUnit));
     return replaceAll(timeUnit, 'day', 'date') as TimeUnit;
   }
+
   return timeUnit;
+}
+
+export function timeUnitToString(timeUnit: TimeUnit | TimeUnitParams) {
+  timeUnit = normalizeTimeUnit(timeUnit);
+
+  if (timeUnit.units) {
+    return keys(timeUnit)
+      .map(p => varName(`${p === 'units' ? '' : `_${p}_`}${timeUnit[p]}`))
+      .join('');
+  } else {
+    return (
+      'timeunit' +
+      keys(timeUnit)
+        .map(p => varName(`_${p}_${timeUnit[p]}`))
+        .join('')
+    );
+  }
 }

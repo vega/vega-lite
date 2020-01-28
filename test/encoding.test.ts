@@ -99,7 +99,7 @@ describe('encoding', () => {
       );
       expect(output).toEqual({
         bins: [],
-        timeUnits: [{timeUnit: 'yearmonthdatehoursminutes', field: 'a', as: 'yearmonthdatehoursminutes_a'}],
+        timeUnits: [{timeUnit: {units: 'yearmonthdatehoursminutes'}, field: 'a', as: 'yearmonthdatehoursminutes_a'}],
         aggregate: [],
         groupby: ['yearmonthdatehoursminutes_a', 'b'],
         encoding: {

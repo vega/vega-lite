@@ -267,7 +267,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
   forEach(oldEncoding, (channelDef, channel) => {
     // Extract potential embedded transformations along with remaining properties
     if (isFieldDef(channelDef)) {
-      const {field, aggregate: aggOp, timeUnit, bin, ...remaining} = channelDef;
+      const {field, aggregate: aggOp, bin, timeUnit, ...remaining} = channelDef;
       if (aggOp || timeUnit || bin) {
         const guide = getGuide(channelDef);
         const isTitleDefined = guide && guide.title;
@@ -327,7 +327,11 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, conf
               newFieldDef['type'] = 'quantitative';
             }
           } else if (timeUnit) {
-            timeUnits.push({timeUnit, field, as: newField});
+            timeUnits.push({
+              timeUnit,
+              field,
+              as: newField
+            });
 
             // define the format type for later compilation
             const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';

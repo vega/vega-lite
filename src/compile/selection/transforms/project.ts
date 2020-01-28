@@ -108,16 +108,16 @@ const project: TransformCompiler = {
 
         if (fieldDef.timeUnit) {
           field = model.vgField(channel);
-
           // Construct TimeUnitComponents which will be combined into a
           // TimeUnitNode. This node may need to be inserted into the
           // dataflow if the selection is used across views that do not
           // have these time units defined.
           const component = {
+            timeUnit: fieldDef.timeUnit,
             as: field,
-            field: fieldDef.field,
-            timeUnit: fieldDef.timeUnit
+            field: fieldDef.field
           };
+
           timeUnits[hash(component)] = component;
         }
 

@@ -19,14 +19,7 @@ import {Scale} from './scale';
 import {isSortByChannel, Sort, SortOrder} from './sort';
 import {isFacetFieldDef} from './spec/facet';
 import {StackOffset} from './stack';
-import {
-  getLocalTimeUnit,
-  getTimeUnitParts,
-  isLocalSingleTimeUnit,
-  isUtcSingleTimeUnit,
-  normalizeTimeUnit,
-  TimeUnit
-} from './timeunit';
+import {getTimeUnitParts, normalizeTimeUnit, TimeUnit, TimeUnitParams, timeUnitToString} from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
 import {contains, flatAccessWithDatum, getFirstDefined, internalField, replacePathInField, titlecase} from './util';
@@ -208,7 +201,7 @@ export interface FieldDefBase<F, B extends Bin = Bin> {
    *
    * __See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation.
    */
-  timeUnit?: TimeUnit;
+  timeUnit?: TimeUnit | TimeUnitParams;
 
   /**
    * Aggregation function for the field
@@ -598,7 +591,7 @@ export function vgField(
             fn = String(aggregate);
           }
         } else if (timeUnit) {
-          fn = String(timeUnit);
+          fn = timeUnitToString(timeUnit);
           suffix = ((!contains(['range', 'mid'], opt.binSuffix) && opt.binSuffix) || '') + (opt.suffix ?? '');
         }
       }
@@ -659,7 +652,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
   } else if (isBinning(bin)) {
     return `${field} (binned)`;
   } else if (timeUnit) {
-    const units = getTimeUnitParts(timeUnit).join('-');
+    const units = getTimeUnitParts(normalizeTimeUnit(timeUnit)?.units).join('-');
     return `${field} (${units})`;
   } else if (aggregate) {
     if (isArgmaxDef(aggregate)) {
@@ -681,7 +674,9 @@ export function functionalTitleFormatter(fieldDef: FieldDefBase<string>) {
     return `${field} for argmin(${aggregate.argmin})`;
   }
 
-  const fn = aggregate || timeUnit || (isBinning(bin) && 'bin');
+  const timeUnitParams = normalizeTimeUnit(timeUnit);
+
+  const fn = aggregate || timeUnitParams?.units || (timeUnitParams?.maxbins && 'timeunit') || (isBinning(bin) && 'bin');
   if (fn) {
     return fn.toUpperCase() + '(' + field + ')';
   } else {
@@ -1021,26 +1016,22 @@ export function valueExpr(
     time,
     undefinedIfExprNotRequired
   }: {
-    timeUnit: TimeUnit;
+    timeUnit: TimeUnit | TimeUnitParams;
     type?: Type;
     time?: boolean;
     undefinedIfExprNotRequired?: boolean;
   }
 ): string {
+  const timeUnitParams = normalizeTimeUnit(timeUnit);
   let expr;
   if (isDateTime(v)) {
     expr = dateTimeToExpr(v);
   } else if (isString(v) || isNumber(v)) {
-    if (timeUnit || type === 'temporal') {
-      if (isLocalSingleTimeUnit(timeUnit)) {
-        expr = dateTimeToExpr({[timeUnit]: v});
-      } else if (isUtcSingleTimeUnit(timeUnit)) {
-        // FIXME is this really correct?
-        expr = valueExpr(v, {timeUnit: getLocalTimeUnit(timeUnit)});
-      } else {
-        // just pass the string to date function (which will call JS Date.parse())
-        expr = `datetime(${JSON.stringify(v)})`;
-      }
+    if (timeUnitParams) {
+      expr = dateTimeToExpr({[timeUnitParams.units]: v});
+    } else if (type === 'temporal') {
+      // just pass the string to date function (which will call JS Date.parse())
+      expr = `datetime(${JSON.stringify(v)})`;
     }
   }
   if (expr) {
@@ -1054,7 +1045,8 @@ export function valueExpr(
  * Standardize value array -- convert each value to Vega expression if applicable
  */
 export function valueArray(fieldDef: TypedFieldDef<string>, values: (number | string | boolean | DateTime)[]) {
-  const {timeUnit, type} = fieldDef;
+  const {type} = fieldDef;
+  const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.units;
   return values.map(v => {
     const expr = valueExpr(v, {timeUnit, type, undefinedIfExprNotRequired: true});
     // return signal for the expression if we need an expression

@@ -10,6 +10,7 @@ import {NOMINAL, ORDINAL} from '../../type';
 import {contains, normalizeAngle} from '../../util';
 import {UnitModel} from '../unit';
 import {getAxisConfig} from './config';
+import {normalizeTimeUnit} from '../../timeunit';
 
 // TODO: we need to refactor this method after we take care of config refactoring
 /**
@@ -148,7 +149,7 @@ export function defaultTickCount({
   if (
     !hasDiscreteDomain(scaleType) &&
     scaleType !== 'log' &&
-    !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)
+    !contains(['month', 'hours', 'day', 'quarter'], normalizeTimeUnit(fieldDef.timeUnit)?.units)
   ) {
     if (isBinning(fieldDef.bin)) {
       // for binned data, we don't want more ticks than maxbins
