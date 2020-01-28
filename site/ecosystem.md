@@ -67,7 +67,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Olmsted](https://github.com/matsengrp/olmsted): a web application for biologists to explore and visualize the adapative immune system using deep sequenced B-cell receptor data. The app uses Vega's interactive capabilities in the context of a React/Redux application to allow users to drill down into the data at multiple levels of granularity, and is currently being used by HIV researchers in the quest for a vaccine. [Demo available here](https://olmstedviz.org).
 - [Lens.org](https://www.lens.org/): Provides free search and analysis for millions of patents and scholarly works. Simplified interface for creating Vega-Lite data visualisations.
 - [DataVoyager.jl](https://github.com/queryverse/DataVoyager.jl), a Julia package that exposes the [Voyager (2)](https://github.com/vega/voyager) UI to the Julia programming language.
-- [ProfileVega.jl](https://github.com/davidanthoff/ProfileVega.jl), a Julia profile visualization tool that uses vega-lite.
+- [ProfileVega.jl](https://github.com/davidanthoff/ProfileVega.jl), a Julia profile visualization tool that uses Vega-Lite.
 
 ## Tools for Embedding Vega-Lite Visualizations
 
