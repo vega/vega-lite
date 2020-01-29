@@ -399,6 +399,7 @@ export function timeUnitToString(timeUnit: TimeUnit | TimeUnitParams) {
       .map(p => varName(`${p === 'units' ? '' : `_${p}_`}${timeUnit[p]}`))
       .join('');
   } else {
+    // when maxbins is specified instead of units
     return (
       'timeunit' +
       keys(timeUnit)
