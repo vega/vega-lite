@@ -15,10 +15,10 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 ## Tools for Authoring Vega-Lite Visualizations
 
 - <span class="octicon octicon-star"></span> [Vega-Editor](https://vega.github.io/editor/), the online editor for Vega and Vega-Lite. You can also get an output Vega spec from a given Vega-Lite spec as well.
+- <span class="octicon octicon-star"></span> [Vega Viewer](https://github.com/RandomFractals/vscode-vega-viewer) VSCode extension for Interactive Preview of Vega & Vega-Lite maps 🗺️ & graphs 📈
 - <span class="octicon octicon-star"></span> [vega-desktop](https://github.com/kristw/vega-desktop), a desktop app that lets you open `.vg.json` and `.vl.json` to see visualizations just like you open image files with an image viewer. This is useful for [creating visualizations with Vega/Vega-Lite locally](https://medium.com/@kristw/create-visualizations-with-vega-on-your-machine-using-your-preferred-editor-529e1be875c0).
 - <span class="octicon octicon-star"></span> [Voyager (2)](https://github.com/vega/voyager), visualization tool for exploratory data analysis that blends a Tableau-style specification interface (formerly [Polestar](https://github.com/vega/polestar)) with chart recommendations (formerly the Voyager visualization browser) and generates Vega-Lite visualizations.
 - [data.world Chart Builder](https://data.world/integrations/chart-builder), a chart builder that imports data from queries in data.world. The generated specs can be saved locally or uploaded back to data.world. Project is [open source](https://github.com/datadotworld/chart-builder).
-- [Vega Viewer](https://github.com/RandomFractals/vscode-vega-viewer) and [Vega Preview](https://marketplace.visualstudio.com/items?itemName=mdk.vega-preview), Visual Studio Code extensions for viewing Vega and Vega-Lite visualizations.
 - [ColorBrewer-Lite](https://github.com/vis-au/colorbrewer), a fork of the ColorBrewer project that allows importing Vega-Lite specifications into the ColorBrewer interface to pick effective color schemes "in situ" for any color encoding.
 
 ## Plug-ins for Vega-Lite
