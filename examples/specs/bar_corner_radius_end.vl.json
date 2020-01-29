@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "A simple bar chart with corner radius at the end of the bar.",
+  "description": "A simple bar chart with rounded corners at the end of the bar.",
   "data": {
     "values": [
       {"a": "A", "b": 28}, {"a": "B", "b": 55}, {"a": "C", "b": 43},
