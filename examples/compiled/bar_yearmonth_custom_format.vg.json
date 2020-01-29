@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Temperature in Seattle as a bar chart with yearmonth time unit.",
+  "description": "Custom time format on x-axis.",
   "background": "white",
   "padding": 5,
   "width": 200,
