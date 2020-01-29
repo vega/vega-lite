@@ -44,7 +44,7 @@ export function normalizeMarkDef(
     const cornerRadiusEnd =
       markDef.cornerRadiusEnd ??
       getMarkConfig(
-        'cornerRadiusEnd' as any, // Hack: there is no way to make the typing work with getMarkConfig()
+        'cornerRadiusEnd' as any, // FIXME: make the typing work with getMarkConfig()
         markDef,
         config
       );
