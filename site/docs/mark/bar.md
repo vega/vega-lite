@@ -71,7 +71,7 @@ If you want to use a discrete scale instead, you can cast the field to have an `
 
 ### Bar Chart with Rounded Corners
 
-We can also adjust corner radius of the bar with various corner radius properties. For example, we can use `cornerRadiusEnd` to create a bar chart with corner radius at the end of the bars.
+We can also adjust corner radius of the bar with various corner radius properties. For example, we can use `cornerRadiusEnd` to create a bar chart with rounded corners at the end of the bars.
 
 <span class="vl-example" data-name="bar_corner_radius_end"></span>
 
