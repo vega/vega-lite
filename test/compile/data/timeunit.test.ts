@@ -14,7 +14,7 @@ function assembleFromTransform(t: TimeUnitTransform) {
 
 describe('compile/data/timeunit', () => {
   describe('parseUnit', () => {
-    it('should return a dictionary of a formula transform for point', () => {
+    it('should return a timeunit transform for point', () => {
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
@@ -33,7 +33,7 @@ describe('compile/data/timeunit', () => {
       ]);
     });
 
-    it('should return a dictionary of formula transforms for bar', () => {
+    it('should return a unit transforms for bar', () => {
       const model = parseUnitModel({
         data: {values: []},
         mark: 'bar',
@@ -52,7 +52,7 @@ describe('compile/data/timeunit', () => {
       ]);
     });
 
-    it('should return a dictionary of formula transform from transform array', () => {
+    it('should return a timeunit transform from transform array', () => {
       const t: TimeUnitTransform = {field: 'date', as: 'month_date', timeUnit: 'month'};
 
       expect(assembleFromTransform(t)).toEqual([
@@ -60,6 +60,20 @@ describe('compile/data/timeunit', () => {
           type: 'timeunit',
           field: 'date',
           as: ['month_date', 'month_date_end'],
+          units: ['month']
+        }
+      ]);
+    });
+
+    it('should return a timeunit transform with timezone for utc units', () => {
+      const t: TimeUnitTransform = {field: 'date', as: 'utcmonth_date', timeUnit: 'utcmonth'};
+
+      expect(assembleFromTransform(t)).toEqual([
+        {
+          type: 'timeunit',
+          field: 'date',
+          timezone: 'utc',
+          as: ['utcmonth_date', 'utcmonth_date_end'],
           units: ['month']
         }
       ]);

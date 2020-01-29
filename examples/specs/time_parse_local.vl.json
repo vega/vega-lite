@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "Google's stock price over time.",
+  "description": "Non-ISO time strings are parsed as local time.",
   "data": {
     "values": [
       {"date": "10 Oct 2011 22:48:00"},
@@ -10,7 +10,7 @@
   "mark": "point",
   "encoding": {
     "y": {
-      "timeUnit": "hours",
+      "timeUnit": "hoursminutes",
       "field": "date",
       "type": "ordinal",
       "axis": {"title": "time"}

@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "Google's stock price over time.",
+  "description": "Using format parse to parsing of input time data as utc time.",
   "data": {
     "values": [
       {"date": "10 Oct 2011 22:48:00"},
@@ -13,7 +13,7 @@
   "mark": "point",
   "encoding": {
     "y": {
-      "timeUnit": "hours",
+      "timeUnit": "hoursminutes",
       "field": "date",
       "type": "ordinal",
       "axis": {"title": "time"}

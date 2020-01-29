@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Google's stock price over time.",
+  "description": "Using utc timeunit with local time input.",
   "background": "white",
   "padding": 5,
   "width": 200,
@@ -26,6 +26,7 @@
           "field": "date",
           "type": "timeunit",
           "units": ["year", "month", "date", "hours", "minutes"],
+          "timezone": "utc",
           "as": [
             "utcyearmonthdatehoursminutes_date",
             "utcyearmonthdatehoursminutes_date_end"
@@ -56,7 +57,7 @@
   "scales": [
     {
       "name": "x",
-      "type": "time",
+      "type": "utc",
       "domain": {
         "data": "data_0",
         "field": "utcyearmonthdatehoursminutes_date"
@@ -111,7 +112,7 @@
         "labels": {
           "update": {
             "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"year\",\"month\",\"date\",\"hours\",\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+              "signal": "utcFormat(datum.value, timeUnitSpecifier([\"year\",\"month\",\"date\",\"hours\",\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
             }
           }
         }
