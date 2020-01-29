@@ -20,7 +20,7 @@
           "type": "timeunit",
           "units": ["hours"],
           "timezone": "utc",
-          "as": ["utchours_date", "utchours_date_end"]
+          "as": ["hours_utc_true_date", "hours_utc_true_date_end"]
         }
       ]
     }
@@ -45,7 +45,7 @@
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
           "x": {"signal": "width", "mult": 0.5},
-          "y": {"scale": "y", "field": "utchours_date"}
+          "y": {"scale": "y", "field": "hours_utc_true_date"}
         }
       }
     }
@@ -54,7 +54,11 @@
     {
       "name": "y",
       "type": "point",
-      "domain": {"data": "data_0", "field": "utchours_date", "sort": true},
+      "domain": {
+        "data": "data_0",
+        "field": "hours_utc_true_date",
+        "sort": true
+      },
       "range": {"step": {"signal": "y_step"}},
       "padding": 0.5
     }
@@ -70,7 +74,7 @@
         "labels": {
           "update": {
             "text": {
-              "signal": "utcFormat(datum.value, timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
             }
           }
         }
