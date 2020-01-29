@@ -1,8 +1,8 @@
-import {Color} from 'vega';
+import {Color, Orientation} from 'vega';
 import {toSet} from 'vega-util';
 import {Gradient, Value} from './channeldef';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
-import {contains, keys, Flag} from './util';
+import {contains, Flag, keys} from './util';
 import {BaseMarkConfig} from './vega.schema';
 
 export const AREA: 'area' = 'area';
@@ -220,6 +220,8 @@ export const defaultMarkConfig: MarkConfig = {
   timeUnitBand: 1
 };
 
+export type AnyMarkConfig = MarkConfig | AreaConfig | BarConfig | RectConfig | LineConfig | TickConfig;
+
 export interface MarkConfigMixins {
   /** Mark Config */
   mark?: MarkConfig;
@@ -229,7 +231,7 @@ export interface MarkConfigMixins {
   area?: AreaConfig;
 
   /** Bar-Specific Config */
-  bar?: RectConfig;
+  bar?: BarConfig;
 
   /** Circle-Specific Config */
   circle?: MarkConfig;
@@ -281,6 +283,28 @@ export interface RectConfig extends RectBinSpacingMixins, MarkConfig {
    */
   discreteBandSize?: number;
 }
+
+export const BAR_CORNER_RADIUS_INDEX: {
+  [orient in Orientation]: (
+    | 'cornerRadiusTopLeft'
+    | 'cornerRadiusTopRight'
+    | 'cornerRadiusBottomLeft'
+    | 'cornerRadiusBottomRight'
+  )[];
+} = {
+  horizontal: ['cornerRadiusTopRight', 'cornerRadiusBottomRight'],
+  vertical: ['cornerRadiusTopLeft', 'cornerRadiusTopRight']
+};
+
+export interface BarCornerRadiusMixins {
+  /**
+   * - For vertical bars, top-left and top-right corner radius.
+   * - For horizontal bars, top-right and bottom-right corner radius.
+   */
+  cornerRadiusEnd?: number;
+}
+
+export type BarConfig = RectConfig & BarCornerRadiusMixins;
 
 export type OverlayMarkDef = MarkConfig & MarkDefMixins;
 
@@ -379,6 +403,7 @@ export interface MarkDefMixins {
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 export interface MarkDef<M extends string | Mark = Mark>
   extends GenericMarkDef<M>,
+    BarCornerRadiusMixins,
     RectBinSpacingMixins,
     MarkConfig,
     PointOverlayMixins,

@@ -11,7 +11,7 @@ import {
   vgField
 } from '../channeldef';
 import {Config, StyleConfigIndex} from '../config';
-import {MarkConfig, MarkDef} from '../mark';
+import {AnyMarkConfig, MarkConfig, MarkDef} from '../mark';
 import {fieldValidPredicate} from '../predicate';
 import {ScaleType} from '../scale';
 import {SortFields} from '../sort';
@@ -68,7 +68,11 @@ export function getMarkConfig<P extends keyof MarkConfig>(
   );
 }
 
-export function getStyleConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, styleConfigIndex: StyleConfigIndex) {
+export function getStyleConfig<P extends keyof AnyMarkConfig>(
+  prop: P,
+  mark: MarkDef,
+  styleConfigIndex: StyleConfigIndex
+) {
   const styles = getStyles(mark);
   let value;
   for (const style of styles) {

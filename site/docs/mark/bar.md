@@ -45,7 +45,7 @@ Bar marks are useful in many visualizations, including bar charts, [stacked bar 
 
 A bar mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
-{% include table.html props="orient,align,baseline,binSpacing,cornerRadius,cornerRadiusTopLeft,cornerRadiusTopRight,cornerRadiusBottomRight,cornerRadiusBottomLeft" source="MarkDef" %}
+{% include table.html props="orient,align,baseline,binSpacing,cornerRadius,cornerRadiusEnd,cornerRadiusTopLeft,cornerRadiusTopRight,cornerRadiusBottomRight,cornerRadiusBottomLeft" source="MarkDef" %}
 
 ## Examples
 
@@ -68,6 +68,12 @@ While the `bar` mark typically uses the x and y channels to encode a pair of dis
 If you want to use a discrete scale instead, you can cast the field to have an `"ordinal"` type. This casting strategy can be useful for time units with low cardinality such as `"month"`.
 
 <span class="vl-example" data-name="bar_month"></span>
+
+### Bar Chart with Rounded Corners
+
+We can also adjust corner radius of the bar with various corner radius properties. For example, we can use `cornerRadiusEnd` to create a bar chart with rounded corners at the end of the bars.
+
+<span class="vl-example" data-name="bar_corner_radius_end"></span>
 
 ### Histogram
 
