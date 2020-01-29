@@ -391,19 +391,23 @@ export function correctTimeUnit(timeUnit: TimeUnit) {
   return timeUnit;
 }
 
-export function timeUnitToString(timeUnit: TimeUnit | TimeUnitParams) {
-  timeUnit = normalizeTimeUnit(timeUnit);
+export function timeUnitToString(tu: TimeUnit | TimeUnitParams) {
+  const {utc, ...rest} = normalizeTimeUnit(tu);
 
-  if (timeUnit.unit) {
-    return keys(timeUnit)
-      .map(p => varName(`${p === 'unit' ? '' : `_${p}_`}${timeUnit[p]}`))
-      .join('');
+  if (rest.unit) {
+    return (
+      (utc ? 'utc' : '') +
+      keys(rest)
+        .map(p => varName(`${p === 'unit' ? '' : `_${p}_`}${rest[p]}`))
+        .join('')
+    );
   } else {
     // when maxbins is specified instead of units
     return (
+      (utc ? 'utc' : '') +
       'timeunit' +
-      keys(timeUnit)
-        .map(p => varName(`_${p}_${timeUnit[p]}`))
+      keys(rest)
+        .map(p => varName(`_${p}_${rest[p]}`))
         .join('')
     );
   }

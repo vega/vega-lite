@@ -119,7 +119,7 @@ describe('compile/data/timeunit', () => {
       });
       const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
       expect(timeUnitNode.hash()).toBe(
-        'TimeUnit {"{\\"as\\":\\"month_utc_true_step_10_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"step\\":10,\\"unit\\":\\"month\\",\\"utc\\":true}}":{"as":"month_utc_true_step_10_a","band":true,"field":"a","timeUnit":{"step":10,"unit":"month","utc":true}}}'
+        'TimeUnit {"{\\"as\\":\\"utcmonth_step_10_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"step\\":10,\\"unit\\":\\"month\\",\\"utc\\":true}}":{"as":"utcmonth_step_10_a","band":true,"field":"a","timeUnit":{"step":10,"unit":"month","utc":true}}}'
       );
     });
   });
