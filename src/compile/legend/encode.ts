@@ -149,7 +149,7 @@ export function labels(
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
     const expr = timeFormatExpression(
       'datum.value',
-      normalizeTimeUnit(fieldDef.timeUnit)?.units,
+      normalizeTimeUnit(fieldDef.timeUnit)?.unit,
       legend.format,
       config.timeFormat,
       isUTCScale

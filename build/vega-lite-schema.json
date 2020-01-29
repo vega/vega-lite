@@ -14821,7 +14821,7 @@
           "description": "The number of steps between bins, in terms of the least\nsignificant unit provided.",
           "type": "number"
         },
-        "units": {
+        "unit": {
           "$ref": "#/definitions/TimeUnit"
         },
         "utc": {

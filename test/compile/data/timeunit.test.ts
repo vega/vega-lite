@@ -66,7 +66,7 @@ describe('compile/data/timeunit', () => {
     });
 
     it('should return a dictionary of formula transform from transform array with TimeUnitParams', () => {
-      const t: TimeUnitTransform = {field: 'date', as: 'month_date', timeUnit: {units: 'month', utc: true, step: 10}};
+      const t: TimeUnitTransform = {field: 'date', as: 'month_date', timeUnit: {unit: 'month', utc: true, step: 10}};
 
       expect(assembleFromTransform(t)).toEqual([
         {
@@ -92,7 +92,7 @@ describe('compile/data/timeunit', () => {
       });
       const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
       expect(timeUnitNode.hash()).toBe(
-        'TimeUnit {"{\\"as\\":\\"month_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"units\\":\\"month\\"}}":{"as":"month_a","field":"a","timeUnit":{"units":"month"}}}'
+        'TimeUnit {"{\\"as\\":\\"month_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"unit\\":\\"month\\"}}":{"as":"month_a","field":"a","timeUnit":{"unit":"month"}}}'
       );
     });
     it('should generate the correct hash for bar', () => {
@@ -105,7 +105,7 @@ describe('compile/data/timeunit', () => {
       });
       const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
       expect(timeUnitNode.hash()).toBe(
-        'TimeUnit {"{\\"as\\":\\"month_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"units\\":\\"month\\"}}":{"as":"month_a","band":true,"field":"a","timeUnit":{"units":"month"}}}'
+        'TimeUnit {"{\\"as\\":\\"month_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"unit\\":\\"month\\"}}":{"as":"month_a","band":true,"field":"a","timeUnit":{"unit":"month"}}}'
       );
     });
 
@@ -114,12 +114,12 @@ describe('compile/data/timeunit', () => {
         data: {values: []},
         mark: 'bar',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: {units: 'month', utc: true, step: 10}}
+          x: {field: 'a', type: 'temporal', timeUnit: {unit: 'month', utc: true, step: 10}}
         }
       });
       const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
       expect(timeUnitNode.hash()).toBe(
-        'TimeUnit {"{\\"as\\":\\"month_utc_true_step_10_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"step\\":10,\\"units\\":\\"month\\",\\"utc\\":true}}":{"as":"month_utc_true_step_10_a","band":true,"field":"a","timeUnit":{"step":10,"units":"month","utc":true}}}'
+        'TimeUnit {"{\\"as\\":\\"month_utc_true_step_10_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"step\\":10,\\"unit\\":\\"month\\",\\"utc\\":true}}":{"as":"month_utc_true_step_10_a","band":true,"field":"a","timeUnit":{"step":10,"unit":"month","utc":true}}}'
       );
     });
   });

@@ -15,10 +15,10 @@ import {defaultConfig} from '../src/config';
 import {
   Encoding,
   extractTransformsFromEncoding,
+  fieldDefs,
   markChannelCompatible,
   normalizeEncoding,
-  pathGroupingFields,
-  fieldDefs
+  pathGroupingFields
 } from '../src/encoding';
 import * as log from '../src/log';
 import {CIRCLE, Mark, POINT, SQUARE, TICK} from '../src/mark';
@@ -99,7 +99,7 @@ describe('encoding', () => {
       );
       expect(output).toEqual({
         bins: [],
-        timeUnits: [{timeUnit: {units: 'yearmonthdatehoursminutes'}, field: 'a', as: 'yearmonthdatehoursminutes_a'}],
+        timeUnits: [{timeUnit: {unit: 'yearmonthdatehoursminutes'}, field: 'a', as: 'yearmonthdatehoursminutes_a'}],
         aggregate: [],
         groupby: ['yearmonthdatehoursminutes_a', 'b'],
         encoding: {

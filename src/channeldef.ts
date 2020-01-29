@@ -652,7 +652,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
   } else if (isBinning(bin)) {
     return `${field} (binned)`;
   } else if (timeUnit) {
-    const units = getTimeUnitParts(normalizeTimeUnit(timeUnit)?.units).join('-');
+    const units = getTimeUnitParts(normalizeTimeUnit(timeUnit)?.unit).join('-');
     return `${field} (${units})`;
   } else if (aggregate) {
     if (isArgmaxDef(aggregate)) {
@@ -676,7 +676,7 @@ export function functionalTitleFormatter(fieldDef: FieldDefBase<string>) {
 
   const timeUnitParams = normalizeTimeUnit(timeUnit);
 
-  const fn = aggregate || timeUnitParams?.units || (timeUnitParams?.maxbins && 'timeunit') || (isBinning(bin) && 'bin');
+  const fn = aggregate || timeUnitParams?.unit || (timeUnitParams?.maxbins && 'timeunit') || (isBinning(bin) && 'bin');
   if (fn) {
     return fn.toUpperCase() + '(' + field + ')';
   } else {
@@ -1028,7 +1028,7 @@ export function valueExpr(
     expr = dateTimeToExpr(v);
   } else if (isString(v) || isNumber(v)) {
     if (timeUnitParams) {
-      expr = dateTimeToExpr({[timeUnitParams.units]: v});
+      expr = dateTimeToExpr({[timeUnitParams.unit]: v});
     } else if (type === 'temporal') {
       // just pass the string to date function (which will call JS Date.parse())
       expr = `datetime(${JSON.stringify(v)})`;
@@ -1046,7 +1046,7 @@ export function valueExpr(
  */
 export function valueArray(fieldDef: TypedFieldDef<string>, values: (number | string | boolean | DateTime)[]) {
   const {type} = fieldDef;
-  const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.units;
+  const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.unit;
   return values.map(v => {
     const expr = valueExpr(v, {timeUnit, type, undefinedIfExprNotRequired: true});
     // return signal for the expression if we need an expression

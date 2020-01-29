@@ -149,7 +149,7 @@ export function defaultTickCount({
   if (
     !hasDiscreteDomain(scaleType) &&
     scaleType !== 'log' &&
-    !contains(['month', 'hours', 'day', 'quarter'], normalizeTimeUnit(fieldDef.timeUnit)?.units)
+    !contains(['month', 'hours', 'day', 'quarter'], normalizeTimeUnit(fieldDef.timeUnit)?.unit)
   ) {
     if (isBinning(fieldDef.bin)) {
       // for binned data, we don't want more ticks than maxbins

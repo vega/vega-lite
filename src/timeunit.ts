@@ -1,8 +1,8 @@
+import stringify from 'fast-json-stable-stringify';
+import {isObject, isString} from 'vega-util';
 import {DateTimeExpr, dateTimeExprToExpr} from './datetime';
 import * as log from './log';
 import {accessPathWithDatum, Flag, keys, replaceAll, varName} from './util';
-import stringify from 'fast-json-stable-stringify';
-import {isString, isObject} from 'vega-util';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
@@ -242,7 +242,7 @@ export type TimeUnitFormat =
   | 'milliseconds';
 
 export interface TimeUnitParams {
-  units?: TimeUnit;
+  unit?: TimeUnit;
 
   /**
    * If no `units` are specified, maxbins is used to infer time units.
@@ -362,21 +362,21 @@ export function normalizeTimeUnit(timeUnit: TimeUnit | TimeUnitParams): TimeUnit
     return undefined;
   }
 
-  let params;
+  let params: TimeUnitParams;
   if (isString(timeUnit)) {
     params = {
-      units: correctTimeUnit(timeUnit)
+      unit: correctTimeUnit(timeUnit)
     };
   } else if (isObject(timeUnit)) {
     params = {
       ...timeUnit,
-      units: correctTimeUnit(timeUnit.units)
+      unit: correctTimeUnit(timeUnit.unit)
     };
   }
 
-  if (isUTCTimeUnit(params.units)) {
+  if (isUTCTimeUnit(params.unit)) {
     params.utc = true;
-    params.units = getLocalTimeUnit(params.units);
+    params.unit = getLocalTimeUnit(params.unit);
   }
 
   return params;
@@ -394,9 +394,9 @@ export function correctTimeUnit(timeUnit: TimeUnit) {
 export function timeUnitToString(timeUnit: TimeUnit | TimeUnitParams) {
   timeUnit = normalizeTimeUnit(timeUnit);
 
-  if (timeUnit.units) {
+  if (timeUnit.unit) {
     return keys(timeUnit)
-      .map(p => varName(`${p === 'units' ? '' : `_${p}_`}${timeUnit[p]}`))
+      .map(p => varName(`${p === 'unit' ? '' : `_${p}_`}${timeUnit[p]}`))
       .join('');
   } else {
     // when maxbins is specified instead of units

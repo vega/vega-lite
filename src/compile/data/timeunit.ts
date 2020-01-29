@@ -109,12 +109,12 @@ export class TimeUnitNode extends DataFlowNode {
 
     for (const f of vals(this.formula)) {
       const {field, as, timeUnit} = f;
-      const {units, utc, ...params} = normalizeTimeUnit(timeUnit);
+      const {unit, utc, ...params} = normalizeTimeUnit(timeUnit);
 
       transforms.push({
         field,
         type: 'timeunit',
-        units: getTimeUnitParts(units),
+        units: getTimeUnitParts(unit),
         ...(utc ? {timezone: 'utc'} : {}),
         ...params,
         as: [as, `${as}_end`]

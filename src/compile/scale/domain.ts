@@ -209,7 +209,7 @@ function parseSingleChannelDomain(
   if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
     // explicit value
     const {type} = fieldDef;
-    const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.units;
+    const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.unit;
     if (type === 'temporal' || timeUnit) {
       return makeExplicit(mapDomainToDataSignal<number | string | boolean | DateTime>(domain, type, timeUnit));
     }

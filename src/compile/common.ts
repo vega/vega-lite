@@ -97,7 +97,7 @@ export function formatSignalRef(
         vgField(fieldDef, {
           expr
         }),
-        normalizeTimeUnit(fieldDef.timeUnit)?.units,
+        normalizeTimeUnit(fieldDef.timeUnit)?.unit,
         specifiedFormat,
         config.timeFormat,
         isUTCScale,

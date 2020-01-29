@@ -141,7 +141,7 @@ function getProperty<K extends keyof LegendComponentProps>(
   const {encoding, mark} = model;
   const fieldDef = getTypedFieldDef(encoding[channel]);
   const legendConfig = model.config.legend;
-  const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.units;
+  const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.unit;
 
   const scaleType = model.getScaleComponent(channel).get('type');
 

@@ -20,7 +20,7 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
 
     const expr = timeFormatExpression(
       'datum.value',
-      normalizeTimeUnit(fieldDef.timeUnit)?.units,
+      normalizeTimeUnit(fieldDef.timeUnit)?.unit,
       axis.format,
       null,
       isUTCScale
