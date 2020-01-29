@@ -13,7 +13,7 @@
   "mark": "point",
   "encoding": {
     "y": {
-      "timeUnit": "hours",
+      "timeUnit": "hoursminutes",
       "field": "date",
       "type": "ordinal",
       "axis": {"title": "time"}

@@ -114,7 +114,7 @@ To parse data in local time or UTC time, there are three cases:
 
 <span class="vl-example" data-name="time_parse_local"></span>
 
-3. To parse inline data or url data without ISO format as UTC time, we need to specify the `format` to be `utc`
+3. To parse inline data or url data without ISO format as UTC time, we need to specify the `format` to be `utc` with time format:
 
 <span class="vl-example" data-name="time_parse_utc_format"></span>
 
