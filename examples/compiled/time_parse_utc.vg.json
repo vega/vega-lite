@@ -1,126 +1,80 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Line chart of Horsepower over time",
+  "description": "Parsing a date in utc and outputting utc.",
   "background": "white",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 20,
   "style": "cell",
   "data": [
     {
       "name": "source_0",
-      "url": "data/cars.json",
-      "format": {"type": "json", "parse": {"Year": "date"}},
+      "values": [{"date": "2011-10-10"}, {"date": "2011-10-12"}]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
-          "field": "Year",
+          "field": "date",
           "type": "timeunit",
-          "units": ["year"],
-          "as": ["year_Year", "year_Year_end"]
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["year_Year"],
-          "ops": ["mean"],
-          "fields": ["Horsepower"],
-          "as": ["mean_Horsepower"]
-        },
-        {
-          "type": "filter",
-          "expr": "(isDate(datum[\"year_Year\"]) || (isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"])))"
+          "units": ["hours"],
+          "timezone": "utc",
+          "as": ["utchours_date", "utchours_date_end"]
         }
       ]
     }
   ],
+  "signals": [
+    {"name": "y_step", "value": 20},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+    },
+    {"name": "width", "update": "width"}
+  ],
   "marks": [
     {
       "name": "marks",
-      "type": "text",
-      "style": ["text"],
-      "from": {"data": "source_0"},
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"value": "black"},
-          "x": {"scale": "x", "field": "year_Year"},
-          "y": {"scale": "y", "field": "mean_Horsepower"},
-          "text": {
-            "signal": "timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-          },
-          "align": {"value": "center"},
-          "baseline": {"value": "middle"}
+          "opacity": {"value": 0.7},
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#4c78a8"},
+          "x": {"signal": "width", "mult": 0.5},
+          "y": {"scale": "y", "field": "utchours_date"}
         }
       }
     }
   ],
   "scales": [
     {
-      "name": "x",
-      "type": "time",
-      "domain": {"data": "source_0", "field": "year_Year"},
-      "range": [0, {"signal": "width"}]
-    },
-    {
       "name": "y",
-      "type": "linear",
-      "domain": {"data": "source_0", "field": "mean_Horsepower"},
-      "range": [{"signal": "height"}, 0],
-      "nice": true,
-      "zero": true
+      "type": "point",
+      "domain": {"data": "data_0", "field": "utchours_date", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "padding": 0.5
     }
   ],
   "axes": [
     {
-      "scale": "x",
-      "orient": "bottom",
-      "gridScale": "y",
-      "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "domain": false,
-      "labels": false,
-      "maxExtent": 0,
-      "minExtent": 0,
-      "ticks": false,
-      "zindex": 0
-    },
-    {
       "scale": "y",
       "orient": "left",
-      "gridScale": "x",
-      "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "domain": false,
-      "labels": false,
-      "maxExtent": 0,
-      "minExtent": 0,
-      "ticks": false,
-      "zindex": 0
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
       "grid": false,
-      "title": "Year (year)",
-      "labelFlush": true,
+      "title": "time",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
       "encode": {
         "labels": {
           "update": {
             "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+              "signal": "utcFormat(datum.value, timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
             }
           }
         }
       },
-      "zindex": 0
-    },
-    {
-      "scale": "y",
-      "orient": "left",
-      "grid": false,
-      "title": "Mean of Horsepower",
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]
