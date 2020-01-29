@@ -25,8 +25,8 @@
         {
           "field": "date",
           "type": "timeunit",
-          "units": ["hours"],
-          "as": ["hours_date", "hours_date_end"]
+          "units": ["hours", "minutes"],
+          "as": ["hoursminutes_date", "hoursminutes_date_end"]
         }
       ]
     }
@@ -51,7 +51,7 @@
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
           "x": {"signal": "width", "mult": 0.5},
-          "y": {"scale": "y", "field": "hours_date"}
+          "y": {"scale": "y", "field": "hoursminutes_date"}
         }
       }
     }
@@ -60,7 +60,7 @@
     {
       "name": "y",
       "type": "point",
-      "domain": {"data": "data_0", "field": "hours_date", "sort": true},
+      "domain": {"data": "data_0", "field": "hoursminutes_date", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "padding": 0.5
     }
@@ -76,7 +76,7 @@
         "labels": {
           "update": {
             "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"hours\",\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
             }
           }
         }
