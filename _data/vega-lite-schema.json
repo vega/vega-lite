@@ -664,7 +664,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisNumber"
+              "$ref": "#/definitions/ConditionalAxisLabelAlign"
             }
           ]
         },
@@ -790,8 +790,15 @@
           "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
         },
         "labelPadding": {
-          "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The padding in pixels between labels and ticks.\n\n__Default value:__ `2`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisNumber"
+            }
+          ]
         },
         "labelSeparation": {
           "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
@@ -905,9 +912,16 @@
           "type": "boolean"
         },
         "tickSize": {
-          "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisNumber"
+            }
+          ]
         },
         "tickWidth": {
           "anyOf": [
@@ -1166,7 +1180,7 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
-              "$ref": "#/definitions/ConditionalAxisNumber"
+              "$ref": "#/definitions/ConditionalAxisLabelAlign"
             }
           ]
         },
@@ -1288,8 +1302,15 @@
           "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
         },
         "labelPadding": {
-          "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The padding in pixels between labels and ticks.\n\n__Default value:__ `2`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisNumber"
+            }
+          ]
         },
         "labelSeparation": {
           "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
@@ -1305,6 +1326,10 @@
         },
         "minExtent": {
           "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30` for y-axis; `undefined` for x-axis.",
+          "type": "number"
+        },
+        "offset": {
+          "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.\n\n__Default value:__ derived from the [axis config](https://vega.github.io/vega-lite/docs/config.html#facet-scale-config)'s `offset` (`0` by default)",
           "type": "number"
         },
         "orient": {
@@ -1386,9 +1411,16 @@
           "type": "boolean"
         },
         "tickSize": {
-          "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisNumber"
+            }
+          ]
         },
         "tickWidth": {
           "anyOf": [
@@ -1503,6 +1535,349 @@
         },
         "y": {
           "$ref": "#/definitions/ResolveMode"
+        }
+      },
+      "type": "object"
+    },
+    "BarConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "align": {
+          "$ref": "#/definitions/Align",
+          "description": "The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`."
+        },
+        "angle": {
+          "description": "The rotation angle of the text, in degrees.",
+          "maximum": 360,
+          "minimum": 0,
+          "type": "number"
+        },
+        "aspect": {
+          "description": "Whether to keep aspect ratio of image marks.",
+          "type": "boolean"
+        },
+        "baseline": {
+          "$ref": "#/definitions/TextBaseline",
+          "description": "The vertical alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+        },
+        "binSpacing": {
+          "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
+          "minimum": 0,
+          "type": "number"
+        },
+        "color": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            }
+          ],
+          "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
+        },
+        "continuousBandSize": {
+          "description": "The default size of the bars on continuous scales.\n\n__Default value:__ `5`",
+          "minimum": 0,
+          "type": "number"
+        },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomLeft": {
+          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusBottomRight": {
+          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusEnd": {
+          "description": "- For vertical bars, top-left and top-right corner radius.\n- For horizontal bars, top-right and bottom-right corner radius.",
+          "type": "number"
+        },
+        "cornerRadiusTopLeft": {
+          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusTopRight": {
+          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cursor": {
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
+        },
+        "discreteBandSize": {
+          "description": "The default size of the bars with discrete dimensions. If unspecified, the default size is  `step-2`, which provides 2 pixel offset between bars.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "dx": {
+          "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "dy": {
+          "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
+          "type": "string"
+        },
+        "fill": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Default Fill Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+        },
+        "fillOpacity": {
+          "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "filled": {
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `false` for all `point`, `line`, and `rule` marks as well as `geoshape` marks for [`graticule`](https://vega.github.io/vega-lite/docs/data.html#graticule) data sources; otherwise, `true`.\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
+          "type": "boolean"
+        },
+        "font": {
+          "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
+          "type": "string"
+        },
+        "fontSize": {
+          "description": "The font size, in pixels.",
+          "type": "number"
+        },
+        "fontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style (e.g., `\"italic\"`)."
+        },
+        "fontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "height": {
+          "description": "Height of the marks.",
+          "type": "number"
+        },
+        "href": {
+          "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
+          "format": "uri",
+          "type": "string"
+        },
+        "interpolate": {
+          "$ref": "#/definitions/Interpolate",
+          "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+        },
+        "invalid": {
+          "description": "Defines how Vega-Lite should handle marks for invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
+          "enum": [
+            "filter",
+            null
+          ],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "limit": {
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
+          "type": "number"
+        },
+        "lineBreak": {
+          "description": "A delimiter, such as a newline character, upon which to break text strings into multiple lines. This property will be ignored if the text property is array-valued.",
+          "type": "string"
+        },
+        "lineHeight": {
+          "description": "The height, in pixels, of each line of text in a multi-line text mark.",
+          "type": "number"
+        },
+        "opacity": {
+          "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "order": {
+          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
+          "type": [
+            "null",
+            "boolean"
+          ]
+        },
+        "orient": {
+          "$ref": "#/definitions/Orientation",
+          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+        },
+        "radius": {
+          "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "shape": {
+          "description": "Shape of the point marks. Supported values include:\n- plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n- the line symbol `\"stroke\"`\n- centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n- a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n__Default value:__ `\"circle\"`",
+          "type": "string"
+        },
+        "size": {
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "stroke": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Default Stroke Color. This has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+        },
+        "strokeCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
+        },
+        "strokeDash": {
+          "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "strokeDashOffset": {
+          "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+          "type": "number"
+        },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
+          "type": "number"
+        },
+        "strokeOpacity": {
+          "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "strokeWidth": {
+          "description": "The stroke width, in pixels.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "tension": {
+          "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
+          "type": "number"
+        },
+        "text": {
+          "$ref": "#/definitions/Text",
+          "description": "Placeholder text if the `text` channel is not specified"
+        },
+        "theta": {
+          "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "timeUnitBand": {
+          "description": "Default relative band size for a time unit. If set to `1`, the bandwidth of the marks will be equal to the time unit band step.\nIf set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
+          "type": "number"
+        },
+        "timeUnitBandPosition": {
+          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.\nIf set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
+          "type": "number"
+        },
+        "tooltip": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Value"
+            },
+            {
+              "$ref": "#/definitions/TooltipContent"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null` or `false`, then no tooltip will be used.\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.\n\n__Default value:__ `null`"
+        },
+        "width": {
+          "description": "Width of the marks.",
+          "type": "number"
+        },
+        "x": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+        },
+        "x2": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "width"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
+        },
+        "y": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "height"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+        },
+        "y2": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "height"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
         }
       },
       "type": "object"
@@ -1845,7 +2220,7 @@
       "type": "object"
     },
     "BaseTitleNoValueRefs": {
-      "$ref": "#/definitions/ExcludeMappedValueRef<BaseTitle>"
+      "$ref": "#/definitions/ExcludeMappedValueRef%3CBaseTitle%3E"
     },
     "Baseline": {
       "enum": [
@@ -2286,12 +2661,16 @@
     "BrushConfig": {
       "additionalProperties": false,
       "properties": {
+        "cursor": {
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the interval mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
         "fill": {
           "$ref": "#/definitions/Color",
           "description": "The fill color of the interval mark.\n\n__Default value:__ `\"#333333\"`"
         },
         "fillOpacity": {
-          "description": "The fill opacity of the interval mark (a value between 0 and 1).\n\n__Default value:__ `0.125`",
+          "description": "The fill opacity of the interval mark (a value between `0` and `1`).\n\n__Default value:__ `0.125`",
           "type": "number"
         },
         "stroke": {
@@ -2299,7 +2678,7 @@
           "description": "The stroke color of the interval mark.\n\n__Default value:__ `\"#ffffff\"`"
         },
         "strokeDash": {
-          "description": "An array of alternating stroke and space lengths,\nfor creating dashed or dotted lines.",
+          "description": "An array of alternating stroke and space lengths, for creating dashed or dotted lines.",
           "items": {
             "type": "number"
           },
@@ -2371,10 +2750,10 @@
       ]
     },
     "ColorGradientFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>"
+      "$ref": "#/definitions/FieldDefWithCondition%3CMarkPropFieldDef%2C(Gradient%7Cstring%7Cnull)%3E"
     },
     "ColorGradientValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>"
+      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%2C(Gradient%7Cstring%7Cnull)%3E"
     },
     "ColorName": {
       "enum": [
@@ -2916,100 +3295,137 @@
     "ConditionalMarkPropFieldDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<MarkPropFieldDef>"
+          "$ref": "#/definitions/ConditionalPredicate%3CMarkPropFieldDef%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<MarkPropFieldDef>"
+          "$ref": "#/definitions/ConditionalSelection%3CMarkPropFieldDef%3E"
         }
       ]
     },
     "ConditionalMarkPropFieldDef<TypeForShape>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<MarkPropFieldDef<TypeForShape>>"
+          "$ref": "#/definitions/ConditionalPredicate%3CMarkPropFieldDef%3CTypeForShape%3E%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<MarkPropFieldDef<TypeForShape>>"
+          "$ref": "#/definitions/ConditionalSelection%3CMarkPropFieldDef%3CTypeForShape%3E%3E"
         }
       ]
     },
     "ConditionalStringFieldDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<StringFieldDef>"
+          "$ref": "#/definitions/ConditionalPredicate%3CStringFieldDef%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<StringFieldDef>"
+          "$ref": "#/definitions/ConditionalSelection%3CStringFieldDef%3E"
         }
       ]
     },
     "ConditionalValueDef<(Gradient|string|null)>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Gradient|string|null)>>"
+          "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(Gradient%7Cstring%7Cnull)%3E%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<(Gradient|string|null)>>"
+          "$ref": "#/definitions/ConditionalSelection%3CValueDef%3C(Gradient%7Cstring%7Cnull)%3E%3E"
         }
       ]
     },
     "ConditionalStringValueDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
+          "$ref": "#/definitions/ConditionalPredicate%3CStringValueDef%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<StringValueDef>"
+          "$ref": "#/definitions/ConditionalSelection%3CStringValueDef%3E"
         }
       ]
     },
     "ConditionalValueDef<Text>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<ValueDef<Text>>"
+          "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3CText%3E%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<Text>>"
+          "$ref": "#/definitions/ConditionalSelection%3CValueDef%3CText%3E%3E"
         }
       ]
     },
     "ConditionalNumberValueDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<NumberValueDef>"
+          "$ref": "#/definitions/ConditionalPredicate%3CNumberValueDef%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<NumberValueDef>"
+          "$ref": "#/definitions/ConditionalSelection%3CNumberValueDef%3E"
         }
       ]
     },
     "ConditionalValueDef<string>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<ValueDef<string>>"
+          "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3Cstring%3E%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<string>>"
+          "$ref": "#/definitions/ConditionalSelection%3CValueDef%3Cstring%3E%3E"
         }
       ]
     },
     "ConditionalAxisColor": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(Color|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(Color%7Cnull)%3E"
+    },
+    "ConditionalAxisLabelAlign": {
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(Align%7Cnull)%3E"
     },
     "ConditionalAxisLabelBaseline": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(TextBaseline|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(TextBaseline%7Cnull)%3E"
     },
     "ConditionalAxisLabelFontStyle": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(FontStyle|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(FontStyle%7Cnull)%3E"
     },
     "ConditionalAxisLabelFontWeight": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(FontWeight|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(FontWeight%7Cnull)%3E"
     },
     "ConditionalAxisNumber": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(number|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(number%7Cnull)%3E"
     },
     "ConditionalAxisNumberArray": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(number[]|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(number%5B%5D%7Cnull)%3E"
+    },
+    "ConditionalAxisProperty<(Align|null)>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(Align%7Cnull)%3E%3E"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(Align%7Cnull)%3E%3E"
+              },
+              "type": "array"
+            }
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "condition",
+        "value"
+      ],
+      "type": "object"
     },
     "ConditionalAxisProperty<(Color|null)>": {
       "additionalProperties": false,
@@ -3017,11 +3433,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Color|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(Color%7Cnull)%3E%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Color|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(Color%7Cnull)%3E%3E"
               },
               "type": "array"
             }
@@ -3051,11 +3467,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontStyle|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(FontStyle%7Cnull)%3E%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontStyle|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(FontStyle%7Cnull)%3E%3E"
               },
               "type": "array"
             }
@@ -3085,11 +3501,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontWeight|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(FontWeight%7Cnull)%3E%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontWeight|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(FontWeight%7Cnull)%3E%3E"
               },
               "type": "array"
             }
@@ -3119,11 +3535,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(TextBaseline|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(TextBaseline%7Cnull)%3E%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(TextBaseline|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(TextBaseline%7Cnull)%3E%3E"
               },
               "type": "array"
             }
@@ -3153,11 +3569,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(number%5B%5D%7Cnull)%3E%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(number%5B%5D%7Cnull)%3E%3E"
               },
               "type": "array"
             }
@@ -3190,11 +3606,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|null)>>"
+              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(number%7Cnull)%3E%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|null)>>"
+                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(number%7Cnull)%3E%3E"
               },
               "type": "array"
             }
@@ -3220,11 +3636,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
+              "$ref": "#/definitions/ConditionalPredicate%3CStringValueDef%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
+                "$ref": "#/definitions/ConditionalPredicate%3CStringValueDef%3E"
               },
               "type": "array"
             }
@@ -3245,7 +3661,7 @@
       "type": "object"
     },
     "ConditionalAxisString": {
-      "$ref": "#/definitions/ConditionalAxisProperty<(string|null)>"
+      "$ref": "#/definitions/ConditionalAxisProperty%3C(string%7Cnull)%3E"
     },
     "ConditionalPredicate<MarkPropFieldDef>": {
       "additionalProperties": false,
@@ -3299,11 +3715,18 @@
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -3380,11 +3803,18 @@
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -3457,11 +3887,18 @@
           "type": "string"
         },
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -3486,11 +3923,36 @@
       ],
       "type": "object"
     },
+    "ConditionalPredicate<ValueDef<(Align|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/PredicateComposition",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
     "ConditionalPredicate<ValueDef<(Color|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3515,7 +3977,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3540,7 +4002,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3565,7 +4027,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3593,7 +4055,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3618,7 +4080,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3646,7 +4108,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3667,7 +4129,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3688,7 +4150,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3706,7 +4168,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3724,7 +4186,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3786,7 +4248,7 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
         },
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "sort": {
@@ -3794,7 +4256,14 @@
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -3867,7 +4336,7 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
         },
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "sort": {
@@ -3875,7 +4344,14 @@
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -3948,11 +4424,18 @@
           "type": "string"
         },
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -3981,7 +4464,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -4009,7 +4492,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -4030,7 +4513,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -4048,7 +4531,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -4066,7 +4549,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -4135,7 +4618,7 @@
           "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`"
         },
         "bar": {
-          "$ref": "#/definitions/RectConfig",
+          "$ref": "#/definitions/BarConfig",
           "description": "Bar-Specific Config"
         },
         "boxplot": {
@@ -4399,14 +4882,14 @@
       ]
     },
     "Datasets": {
-      "$ref": "#/definitions/Dict<InlineDataset>"
+      "$ref": "#/definitions/Dict%3CInlineDataset%3E"
     },
     "DateTime": {
       "additionalProperties": false,
       "description": "Object for defining datetime in Vega-Lite Filter.\nIf both month and quarter are provided, month has higher precedence.\n`day` cannot be combined with other date.\nWe accept string for month and day names.",
       "properties": {
         "date": {
-          "description": "Integer value representing the date from 1-31.",
+          "description": "Integer value representing the date (day of the month) from 1-31.",
           "maximum": 31,
           "minimum": 1,
           "type": "number"
@@ -5282,7 +5765,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -5315,7 +5798,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -5355,13 +5838,20 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -5432,7 +5922,14 @@
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -5958,11 +6455,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef%3C(Gradient%7Cstring%7Cnull)%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                "$ref": "#/definitions/ConditionalValueDef%3C(Gradient%7Cstring%7Cnull)%3E"
               },
               "type": "array"
             }
@@ -6000,7 +6497,14 @@
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -6091,7 +6595,14 @@
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -6182,7 +6693,14 @@
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -6237,11 +6755,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<Text>"
+              "$ref": "#/definitions/ConditionalValueDef%3CText%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<Text>"
+                "$ref": "#/definitions/ConditionalValueDef%3CText%3E"
               },
               "type": "array"
             }
@@ -6269,7 +6787,14 @@
           "type": "string"
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -6324,11 +6849,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<string>"
+              "$ref": "#/definitions/ConditionalValueDef%3Cstring%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<string>"
+                "$ref": "#/definitions/ConditionalValueDef%3Cstring%3E"
               },
               "type": "array"
             }
@@ -6356,7 +6881,14 @@
           "type": "string"
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -6406,11 +6938,18 @@
         },
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6424,7 +6963,7 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "gte": {
           "anyOf": [
@@ -6441,8 +6980,15 @@
           "description": "The value that the field should be greater than or equals to."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6456,7 +7002,7 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "gt": {
           "anyOf": [
@@ -6473,8 +7019,15 @@
           "description": "The value that the field should be greater than."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6488,7 +7041,7 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "lte": {
           "anyOf": [
@@ -6505,8 +7058,15 @@
           "description": "The value that the field should be less than or equals to."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6520,7 +7080,7 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "lt": {
           "anyOf": [
@@ -6537,8 +7097,15 @@
           "description": "The value that the field should be less than."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6555,7 +7122,7 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "oneOf": {
           "anyOf": [
@@ -6587,8 +7154,15 @@
           "description": "A set of values that the `field`'s value should be a member of,\nfor a data item included in the filtered data."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6602,7 +7176,7 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "range": {
           "description": "An array of inclusive minimum and maximum values\nfor a field value of a data item to be included in the filtered data.",
@@ -6624,8 +7198,15 @@
           "type": "array"
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
+          "description": "Time unit for the field to be tested."
         }
       },
       "required": [
@@ -6639,11 +7220,18 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "Field to be filtered."
+          "description": "Field to be tested."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
-          "description": "Time unit for the field to be filtered."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
+          "description": "Time unit for the field to be tested."
         },
         "valid": {
           "description": "If set to true the field's value has to be valid, meaning both not `null` and not [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).",
@@ -6660,8 +7248,8 @@
       "additionalProperties": false,
       "properties": {
         "filter": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "The `filter` property must be one of the predicate definitions:\n\n1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,\nwhere `datum` can be used to refer to the current data object\n\n2) one of the field predicates: [`equal`](https://vega.github.io/vega-lite/docs/filter.html#equal-predicate),\n[`lt`](https://vega.github.io/vega-lite/docs/filter.html#lt-predicate),\n[`lte`](https://vega.github.io/vega-lite/docs/filter.html#lte-predicate),\n[`gt`](https://vega.github.io/vega-lite/docs/filter.html#gt-predicate),\n[`gte`](https://vega.github.io/vega-lite/docs/filter.html#gte-predicate),\n[`range`](https://vega.github.io/vega-lite/docs/filter.html#range-predicate),\n[`oneOf`](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate),\nor [`valid`](https://vega.github.io/vega-lite/docs/filter.html#valid-predicate),\n\n3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate)\n\n4) a logical operand that combines (1), (2), or (3)."
+          "$ref": "#/definitions/PredicateComposition",
+          "description": "The `filter` property must be a predication definition, which can takes one of the following forms:\n\n1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,\nwhere `datum` can be used to refer to the current data object.\nFor example, `{filter: \"datum.b2 > 60\"}` would make the output data includes only items that have values in the field `b2` over 60.\n\n2) one of the [field predicates](https://vega.github.io/vega-lite/docs/predicate.html#field-predicate): [`equal`](https://vega.github.io/* vega-lite/docs/predicate.html#field-equal-predicate),\n[`lt`](https://vega.github.io/vega-lite/docs/predicate.html#lt-predicate),\n[`lte`](https://vega.github.io/vega-lite/docs/predicate.html#lte-predicate),\n[`gt`](https://vega.github.io/vega-lite/docs/predicate.html#gt-predicate),\n[`gte`](https://vega.github.io/vega-lite/docs/predicate.html#gte-predicate),\n[`range`](https://vega.github.io/vega-lite/docs/predicate.html#range-predicate),\n[`oneOf`](https://vega.github.io/vega-lite/docs/predicate.html#one-of-predicate),\nor [`valid`](https://vega.github.io/vega-lite/docs/predicate.html#valid-predicate),\n\n3) a [selection predicate](https://vega.github.io/vega-lite/docs/predicate.html#selection-predicate), which define the names of a selection that the data point should belong to (or a logical composition of selections).\n\n4) a [logical composition](https://vega.github.io/vega-lite/docs/predicate.html#composition) of (1), (2), or (3)."
         }
       },
       "required": [
@@ -6769,7 +7357,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -6788,7 +7376,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -6833,7 +7421,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
@@ -6872,7 +7460,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -6891,7 +7479,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -6940,7 +7528,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
@@ -7065,7 +7653,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -7084,7 +7672,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -7136,7 +7724,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
@@ -7219,23 +7807,6 @@
           "$ref": "#/definitions/Encoding",
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
-        "height": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "enum": [
-                "container"
-              ],
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/Step"
-            }
-          ],
-          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number.\n- For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.)\n- To enable responsive sizing on height, it should be set to `\"container\"`.\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
-        },
         "mark": {
           "$ref": "#/definitions/AnyMark",
           "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
@@ -7272,27 +7843,6 @@
             "$ref": "#/definitions/Transform"
           },
           "type": "array"
-        },
-        "view": {
-          "$ref": "#/definitions/ViewBackground",
-          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
-        },
-        "width": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "enum": [
-                "container"
-              ],
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/Step"
-            }
-          ],
-          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number.\n- For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.)\n- To enable responsive sizing on width, it should be set to `\"container\"`.\n\n__Default value:__\nBased on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         }
       },
       "required": [
@@ -7433,15 +7983,15 @@
       "additionalProperties": false,
       "properties": {
         "extent": {
-          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "$ref": "#/definitions/Vector2%3CVector2%3Cnumber%3E%3E",
           "description": "Sets both the major and minor extents to the same values."
         },
         "extentMajor": {
-          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "$ref": "#/definitions/Vector2%3CVector2%3Cnumber%3E%3E",
           "description": "The major extent of the graticule as a two-element array of coordinates."
         },
         "extentMinor": {
-          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "$ref": "#/definitions/Vector2%3CVector2%3Cnumber%3E%3E",
           "description": "The minor extent of the graticule as a two-element array of coordinates."
         },
         "precision": {
@@ -7449,15 +7999,15 @@
           "type": "number"
         },
         "step": {
-          "$ref": "#/definitions/Vector2<number>",
+          "$ref": "#/definitions/Vector2%3Cnumber%3E",
           "description": "Sets both the major and minor step angles to the same values."
         },
         "stepMajor": {
-          "$ref": "#/definitions/Vector2<number>",
+          "$ref": "#/definitions/Vector2%3Cnumber%3E",
           "description": "The major step angles of the graticule.\n\n\n__Default value:__ `[90, 360]`"
         },
         "stepMinor": {
-          "$ref": "#/definitions/Vector2<number>",
+          "$ref": "#/definitions/Vector2%3Cnumber%3E",
           "description": "The minor step angles of the graticule.\n\n__Default value:__ `[10, 10]`"
         }
       },
@@ -8267,7 +8817,14 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -9792,7 +10349,7 @@
       "properties": {
         "and": {
           "items": {
-            "$ref": "#/definitions/LogicalOperand<Predicate>"
+            "$ref": "#/definitions/PredicateComposition"
           },
           "type": "array"
         }
@@ -9807,7 +10364,7 @@
       "properties": {
         "and": {
           "items": {
-            "$ref": "#/definitions/SelectionOperand"
+            "$ref": "#/definitions/SelectionComposition"
           },
           "type": "array"
         }
@@ -9817,47 +10374,23 @@
       ],
       "type": "object"
     },
-    "LogicalNot<Predicate>": {
-      "additionalProperties": false,
-      "properties": {
-        "not": {
-          "$ref": "#/definitions/LogicalOperand<Predicate>"
-        }
-      },
-      "required": [
-        "not"
-      ],
-      "type": "object"
-    },
-    "SelectionNot": {
-      "additionalProperties": false,
-      "properties": {
-        "not": {
-          "$ref": "#/definitions/SelectionOperand"
-        }
-      },
-      "required": [
-        "not"
-      ],
-      "type": "object"
-    },
-    "LogicalOperand<Predicate>": {
+    "PredicateComposition": {
       "anyOf": [
         {
-          "$ref": "#/definitions/LogicalNot<Predicate>"
+          "$ref": "#/definitions/LogicalNot%3CPredicate%3E"
         },
         {
-          "$ref": "#/definitions/LogicalAnd<Predicate>"
+          "$ref": "#/definitions/LogicalAnd%3CPredicate%3E"
         },
         {
-          "$ref": "#/definitions/LogicalOr<Predicate>"
+          "$ref": "#/definitions/LogicalOr%3CPredicate%3E"
         },
         {
           "$ref": "#/definitions/Predicate"
         }
       ]
     },
-    "SelectionOperand": {
+    "SelectionComposition": {
       "anyOf": [
         {
           "$ref": "#/definitions/SelectionNot"
@@ -9873,12 +10406,36 @@
         }
       ]
     },
+    "LogicalNot<Predicate>": {
+      "additionalProperties": false,
+      "properties": {
+        "not": {
+          "$ref": "#/definitions/PredicateComposition"
+        }
+      },
+      "required": [
+        "not"
+      ],
+      "type": "object"
+    },
+    "SelectionNot": {
+      "additionalProperties": false,
+      "properties": {
+        "not": {
+          "$ref": "#/definitions/SelectionComposition"
+        }
+      },
+      "required": [
+        "not"
+      ],
+      "type": "object"
+    },
     "LogicalOr<Predicate>": {
       "additionalProperties": false,
       "properties": {
         "or": {
           "items": {
-            "$ref": "#/definitions/LogicalOperand<Predicate>"
+            "$ref": "#/definitions/PredicateComposition"
           },
           "type": "array"
         }
@@ -9893,7 +10450,7 @@
       "properties": {
         "or": {
           "items": {
-            "$ref": "#/definitions/SelectionOperand"
+            "$ref": "#/definitions/SelectionComposition"
           },
           "type": "array"
         }
@@ -10390,6 +10947,10 @@
         },
         "cornerRadiusBottomRight": {
           "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cornerRadiusEnd": {
+          "description": "- For vertical bars, top-left and top-right corner radius.\n- For horizontal bars, top-right and bottom-right corner radius.",
           "type": "number"
         },
         "cornerRadiusTopLeft": {
@@ -11046,10 +11607,10 @@
       "type": "string"
     },
     "NumericFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,number>"
+      "$ref": "#/definitions/FieldDefWithCondition%3CMarkPropFieldDef%2Cnumber%3E"
     },
     "NumericValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,number>"
+      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%2Cnumber%3E"
     },
     "OrderFieldDef": {
       "additionalProperties": false,
@@ -11087,7 +11648,14 @@
           "description": "The sort order. One of `\"ascending\"` (default) or `\"descending\"`."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -11781,7 +12349,14 @@
           "description": "Type of stacking offset if the field should be stacked.\n`stack` is only applicable for `x` and `y` channels with continuous domains.\nFor example, `stack` of `y` can be used to customize stacking for a vertical bar chart.\n\n`stack` can be one of the following values:\n- `\"zero\"` or `true`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](https://vega.github.io/vega-lite/docs/stack.html#bar) and [area](https://vega.github.io/vega-lite/docs/stack.html#area) chart).\n- `\"normalize\"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](https://vega.github.io/vega-lite/docs/stack.html#normalized). <br/>\n-`\"center\"` - stacking with center baseline (for [streamgraph](https://vega.github.io/vega-lite/docs/stack.html#streamgraph)).\n- `null` or `false` - No-stacking. This will produce layered [bar](https://vega.github.io/vega-lite/docs/stack.html#layered-bar-chart) and area chart.\n\n__Default value:__ `zero` for plots with all of the following conditions are true:\n(1) the mark is `bar` or `area`;\n(2) the stacked measure channel (x or y) has a linear scale;\n(3) At least one of non-position channels mapped to an unaggregated field that is different from x and y. Otherwise, `null` by default.\n\n__See also:__ [`stack`](https://vega.github.io/vega-lite/docs/stack.html) documentation."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -11843,7 +12418,7 @@
       "additionalProperties": false,
       "properties": {
         "center": {
-          "$ref": "#/definitions/Vector2<number>",
+          "$ref": "#/definitions/Vector2%3Cnumber%3E",
           "description": "The projection’s center to the specified center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`"
         },
         "clipAngle": {
@@ -11851,7 +12426,7 @@
           "type": "number"
         },
         "clipExtent": {
-          "$ref": "#/definitions/Vector2<Vector2<number>>",
+          "$ref": "#/definitions/Vector2%3CVector2%3Cnumber%3E%3E",
           "description": "The projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed."
         },
         "coefficient": {
@@ -11894,10 +12469,10 @@
         "rotate": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Vector2<number>"
+              "$ref": "#/definitions/Vector2%3Cnumber%3E"
             },
             {
-              "$ref": "#/definitions/Vector3<number>"
+              "$ref": "#/definitions/Vector3%3Cnumber%3E"
             }
           ],
           "description": "The projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`"
@@ -11913,7 +12488,7 @@
           "type": "number"
         },
         "translate": {
-          "$ref": "#/definitions/Vector2<number>",
+          "$ref": "#/definitions/Vector2%3Cnumber%3E",
           "description": "The projection's translation (pan) value, overriding automatic fitting."
         },
         "type": {
@@ -12817,7 +13392,14 @@
           "type": "number"
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -12917,6 +13499,10 @@
             }
           ],
           "description": "Customized domain values.\n\nFor _quantitative_ fields, `domain` can take the form of a two-element array with minimum and maximum values. [Piecewise scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise) can be created by providing a `domain` with more than two entries.\nIf the input field is aggregated, `domain` can also be a string value `\"unaggregated\"`, indicating that the domain should include the raw data values prior to the aggregation.\n\nFor _temporal_ fields, `domain` can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](https://vega.github.io/vega-lite/docs/types.html#datetime).\n\nFor _ordinal_ and _nominal_ fields, `domain` can be an array that lists valid input values.\n\nThe `selection` property can be used to [interactively determine](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain."
+        },
+        "domainMid": {
+          "description": "Inserts a single mid-point value into a two-element domain. The mid-point value must lie between the domain minimum and maximum values. This property can be useful for setting a midpoint for [diverging color scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). The domainMid property is only intended for use with scales supporting continuous, piecewise domains.",
+          "type": "number"
         },
         "exponent": {
           "description": "The exponent of the `pow` scale.",
@@ -13273,7 +13859,14 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -13372,31 +13965,31 @@
     "SelectionInitInterval": {
       "anyOf": [
         {
-          "$ref": "#/definitions/Vector2<boolean>"
+          "$ref": "#/definitions/Vector2%3Cboolean%3E"
         },
         {
-          "$ref": "#/definitions/Vector2<number>"
+          "$ref": "#/definitions/Vector2%3Cnumber%3E"
         },
         {
-          "$ref": "#/definitions/Vector2<string>"
+          "$ref": "#/definitions/Vector2%3Cstring%3E"
         },
         {
-          "$ref": "#/definitions/Vector2<DateTime>"
+          "$ref": "#/definitions/Vector2%3CDateTime%3E"
         }
       ]
     },
     "SelectionInitIntervalMapping": {
-      "$ref": "#/definitions/Dict<SelectionInitInterval>"
+      "$ref": "#/definitions/Dict%3CSelectionInitInterval%3E"
     },
     "SelectionInitMapping": {
-      "$ref": "#/definitions/Dict<SelectionInit>"
+      "$ref": "#/definitions/Dict%3CSelectionInit%3E"
     },
     "SelectionPredicate": {
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/SelectionOperand",
-          "description": "Filter using a selection name."
+          "$ref": "#/definitions/SelectionComposition",
+          "description": "Filter using a selection name or a logical composition of selection names."
         }
       },
       "required": [
@@ -13572,10 +14165,10 @@
       "type": "string"
     },
     "ShapeFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
+      "$ref": "#/definitions/FieldDefWithCondition%3CMarkPropFieldDef%3CTypeForShape%3E%2C(string%7Cnull)%3E"
     },
     "ShapeValueDefWithCondition": {
-      "$ref": "#/definitions/StringValueDefWithCondition<TypeForShape>"
+      "$ref": "#/definitions/StringValueDefWithCondition%3CTypeForShape%3E"
     },
     "SignalRef": {
       "additionalProperties": false,
@@ -14114,7 +14707,14 @@
           "type": "string"
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -14139,13 +14739,13 @@
       "type": "object"
     },
     "StringFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<StringFieldDef,string>"
+      "$ref": "#/definitions/FieldDefWithCondition%3CStringFieldDef%2Cstring%3E"
     },
     "StringValueDefWithCondition<TypeForShape>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
+      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%3CTypeForShape%3E%2C(string%7Cnull)%3E"
     },
     "StringValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(string|null)>"
+      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%2C(string%7Cnull)%3E"
     },
     "StrokeCap": {
       "enum": [
@@ -14199,10 +14799,10 @@
       ]
     },
     "TextFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition<StringFieldDef,Text>"
+      "$ref": "#/definitions/FieldDefWithCondition%3CStringFieldDef%2CText%3E"
     },
     "TextValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<StringFieldDef,Text>"
+      "$ref": "#/definitions/ValueDefWithCondition%3CStringFieldDef%2CText%3E"
     },
     "TickConfig": {
       "additionalProperties": false,
@@ -14561,6 +15161,28 @@
         }
       ]
     },
+    "TimeUnitParams": {
+      "additionalProperties": false,
+      "properties": {
+        "maxbins": {
+          "description": "If no `unit` is specified, maxbins is used to infer time units.",
+          "type": "number"
+        },
+        "step": {
+          "description": "The number of steps between bins, in terms of the least\nsignificant unit provided.",
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Defines how date-time values should be binned."
+        },
+        "utc": {
+          "description": "True to use UTC timezone. Equivalent to using a `utc` prefixed `TimeUnit`.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
     "TimeUnitTransform": {
       "additionalProperties": false,
       "properties": {
@@ -14573,7 +15195,14 @@
           "description": "The data field to apply time unit."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "The timeUnit."
         }
       },
@@ -14798,7 +15427,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -14832,7 +15461,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -14889,7 +15518,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
@@ -15045,7 +15674,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -15079,7 +15708,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -15143,7 +15772,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
@@ -15450,7 +16079,7 @@
               "$ref": "#/definitions/LayoutAlign"
             },
             {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
+              "$ref": "#/definitions/RowCol%3CLayoutAlign%3E"
             }
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
@@ -15484,7 +16113,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/RowCol<boolean>"
+              "$ref": "#/definitions/RowCol%3Cboolean%3E"
             }
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
@@ -15545,7 +16174,7 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/RowCol<number>"
+              "$ref": "#/definitions/RowCol%3Cnumber%3E"
             }
           ],
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
@@ -15556,7 +16185,7 @@
               "$ref": "#/definitions/LayerSpec"
             },
             {
-              "$ref": "#/definitions/FacetedUnitSpec"
+              "$ref": "#/definitions/UnitSpecWithFrame"
             }
           ],
           "description": "A specification of the view that gets faceted."
@@ -15900,7 +16529,14 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__\n1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n2) `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
-          "$ref": "#/definitions/TimeUnit",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
           "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field.\nor [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
         },
         "title": {
@@ -15925,8 +16561,111 @@
       "type": "object"
     },
     "UnitSpec": {
-      "$ref": "#/definitions/GenericUnitSpec<Encoding,AnyMark>",
+      "$ref": "#/definitions/GenericUnitSpec%3CEncoding%2CAnyMark%3E",
       "description": "A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types)."
+    },
+    "UnitSpecWithFrame": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
+        },
+        "description": {
+          "description": "Description of this mark for commenting purpose.",
+          "type": "string"
+        },
+        "encoding": {
+          "$ref": "#/definitions/Encoding",
+          "description": "A key-value mapping between encoding channels and definition of fields."
+        },
+        "height": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Step"
+            }
+          ],
+          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number.\n- For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.)\n- To enable responsive sizing on height, it should be set to `\"container\"`.\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+        },
+        "mark": {
+          "$ref": "#/definitions/AnyMark",
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
+        },
+        "name": {
+          "description": "Name of the visualization for later reference.",
+          "type": "string"
+        },
+        "projection": {
+          "$ref": "#/definitions/Projection",
+          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
+        },
+        "selection": {
+          "additionalProperties": {
+            "$ref": "#/definitions/SelectionDef"
+          },
+          "description": "A key-value mapping between selection names and definitions.",
+          "type": "object"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
+        "transform": {
+          "description": "An array of data transformations such as filter and new field calculation.",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          },
+          "type": "array"
+        },
+        "view": {
+          "$ref": "#/definitions/ViewBackground",
+          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Step"
+            }
+          ],
+          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number.\n- For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.)\n- To enable responsive sizing on width, it should be set to `\"container\"`.\n\n__Default value:__\nBased on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view and the `\"container\"` option cannot be used.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "type": "object"
     },
     "UrlData": {
       "additionalProperties": false,
@@ -16062,11 +16801,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef%3C(Gradient%7Cstring%7Cnull)%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                "$ref": "#/definitions/ConditionalValueDef%3C(Gradient%7Cstring%7Cnull)%3E"
               },
               "type": "array"
             }
@@ -16156,7 +16895,7 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef<TypeForShape>"
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef%3CTypeForShape%3E"
             },
             {
               "$ref": "#/definitions/ConditionalStringValueDef"
@@ -16190,11 +16929,11 @@
               "$ref": "#/definitions/ConditionalStringFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef<Text>"
+              "$ref": "#/definitions/ConditionalValueDef%3CText%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<Text>"
+                "$ref": "#/definitions/ConditionalValueDef%3CText%3E"
               },
               "type": "array"
             }
@@ -16224,10 +16963,10 @@
     "Vector2<Vector2<number>>": {
       "items": [
         {
-          "$ref": "#/definitions/Vector2<number>"
+          "$ref": "#/definitions/Vector2%3Cnumber%3E"
         },
         {
-          "$ref": "#/definitions/Vector2<number>"
+          "$ref": "#/definitions/Vector2%3Cnumber%3E"
         }
       ],
       "maxItems": 2,
@@ -16295,6 +17034,10 @@
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
+        },
+        "cursor": {
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
         "fill": {
           "anyOf": [
@@ -16400,6 +17143,10 @@
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
+        "cursor": {
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
         "discreteHeight": {
           "anyOf": [
             {
@@ -16418,7 +17165,7 @@
               "type": "object"
             }
           ],
-          "description": "The default height when the plot has either a discrete y-field or no y-field.\n\n__Default value:__ a step size based on `config.view.step`."
+          "description": "The default height when the plot has either a discrete y-field or no y-field.\nThe height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step.\n\n__Default value:__ a step size based on `config.view.step`."
         },
         "discreteWidth": {
           "anyOf": [
@@ -16438,7 +17185,7 @@
               "type": "object"
             }
           ],
-          "description": "The default width when the plot has either a discrete x-field or no x-field.\n\n__Default value:__ a step size based on `config.view.step`."
+          "description": "The default width when the plot has either a discrete x-field or no x-field.\nThe width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step.\n\n__Default value:__ a step size based on `config.view.step`."
         },
         "fill": {
           "anyOf": [

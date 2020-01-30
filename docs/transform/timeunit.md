@@ -4,7 +4,7 @@ title: Time Unit
 permalink: /docs/timeunit.html
 ---
 
-Time unit is used to discretize times in Vega-Lite. It can either be used [inside encoding field definitions](#encoding) or as [a transform](#transform).
+Time unit is used to discretize times in Vega-Lite. It can be used (1) with the `timeUnit` property of [encoding field definitions](#encoding), (2) as [a standalone transform](#transform), or (3) with the `timeUnit` property of a [field predicate](predicate.html#field-predicate).
 
 Vega-Lite supports the following time units:
 
@@ -29,7 +29,7 @@ By default, all time units represent date time using local time. To use UTC time
 
 <!--prettier-ignore-end-->
 
-{: #encoding}
+{:#encoding}
 
 ## Time Unit in Encoding Field Definition
 
@@ -114,13 +114,13 @@ To parse data in local time or UTC time, there are three cases:
 
 <span class="vl-example" data-name="time_parse_local"></span>
 
-3. To parse inline data or url data without ISO format as UTC time, we need to specify the `format` to be `utc`
+3. To parse inline data or url data without ISO format as UTC time, we need to specify the `format` to be `utc` with time format:
 
 <span class="vl-example" data-name="time_parse_utc_format"></span>
 
 ### Output
 
-By default, Vega-Lite will output data in local time (even when input is parsed as UTC time). To output data in UTC time, we need to specify either a UTC time unit or scale:
+By default, Vega-Lite will output data in local time (even when input is parsed as UTC time). To output data in UTC time, we can specify either a UTC time unit or scale:
 
 1. UTC time unit when input data is in local time.
 
@@ -130,4 +130,16 @@ By default, Vega-Lite will output data in local time (even when input is parsed 
 
 <span class="vl-example" data-name="time_output_utc_scale"></span>
 
-Do **not** use UTC time unit and the UTC scale type at the same time since that will cause Vega-Lite to shift the output time twice.
+{:#params}
+
+## Time Unit Parameters
+
+To customize time unit parameters, you can set `timeUnit` to be a time unit definition object. It can have the following properties.
+
+{% include table.html props="unit,maxbins,step,utc" source="TimeUnitParams" %}
+
+### Example: Customizing Step
+
+The `step` parameter can be used to specify a bin size with respect to the smallest denominator in the time unit provided. The following example shows sum of distance traveled for each 5-minute interval.
+
+<span class="vl-example" data-name="time_custom_step"></span>

@@ -14,6 +14,13 @@
   {% if src.items.anyOf %}
     {% assign para = src.items.anyOf %}
     {% include type-anyof.html types=para suffix="[]"%}
+  {% elsif src.items.size > 1 %}
+    {% capture content %}
+      {% for element in src.items %}
+        {% capture c %}{% include type.html source=element %}{% endcapture c %}
+        {{ c | strip }}{% unless forloop.last %},{% endunless %}{% endfor %}
+    {% endcapture content %}
+    [{{ content | strip }}]
   {% else %}
     {% include type.html source=src.items parentheses=true %}[]
   {% endif %}

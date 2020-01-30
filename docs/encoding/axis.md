@@ -116,6 +116,7 @@ Note that each axis tick, grid line, and label instance is backed by a data obje
 
 - `label` - the string label
 - `value` - the data value
+- `index` - _fractional_ tick index (`0` for the first tick and `1` for the last tick)
 
 For example, we can adjust the grid dash in a line chart based on whether a particular grid line falls on a year boundary:
 

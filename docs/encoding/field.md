@@ -35,7 +35,9 @@ Valid JavaScript object access paths using either dot (e.g., `foo.bar`) or brack
 
 Further note that in JSON, you have to escape backslashes. Hence, a single backslash (`\`) is escaped as `\\\\` in JSON. You also need to escape quotes (`\"`) and use special escape characters for newlines (`\n`), carriage returns (`\r`), and tabs (`\t`).
 
-{:#repeat-ref} **2) An object defining iterated values from the `repeat` operator**
+{:#repeat-ref}
+
+**2) An object defining iterated values from the `repeat` operator**
 
 For example, we can set `field` of `x` channel to `{"repeat": "column"}` to create a histogram of different fields.
 

@@ -142,7 +142,7 @@ For example, the following specification generates a domain of number values and
 
 A graticule is a grid formed by lines of latitude and longitude. The graticule generator creates a geographic grid (as [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) data) to serve as a guiding element to include in maps. The graticule generator can be specified with either a boolean `true` value (indicating the default graticule) or a graticule parameter object:
 
-{% include table.html props="extentMajor,extentMinor,extent,stepMajor,stepMinor,step?,precision" source="GraticuleParams" %}
+{% include table.html props="extent,extentMajor,extentMinor,precision,step,stepMajor,stepMinor" source="GraticuleParams" %}
 
 The following example generates a custom graticule and visualizes it using an orthographic projection:
 

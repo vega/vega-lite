@@ -11,10 +11,10 @@ This transform supports parametric models for the following functional forms:
 
 - linear (`linear`): _y = a + b \* x_
 - logarithmic (`log`): _y = a + b \* log(x)_
-- exponential (`exp`): _y = a + eb \* x_
-- power (`pow`): _y = a \* xb_
-- quadratic (`quad`): _y = a + b * x + c * x2_
-- polynomial (`poly`): _y = a + b * x + … + k * xorder_
+- exponential (`exp`): _y = a \* e^(b \* x)_
+- power (`pow`): _y = a \* x^b_
+- quadratic (`quad`): _y = a + b * x + c * x^2_
+- polynomial (`poly`): _y = a + b * x + … + k * x^(order)_
 
 All models are fit using [ordinary least squares](https://en.wikipedia.org/wiki/Ordinary_least_squares). For non-parametric locally weighted regression, see the [loess](loess.html) transform.
 

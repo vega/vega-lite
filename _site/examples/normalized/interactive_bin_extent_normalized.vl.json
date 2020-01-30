@@ -1,0 +1,36 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {
+    "url": "data/flights-5k.json",
+    "format": {"parse": {"date": "date"}}
+  },
+  "transform": [
+    {"calculate": "hours(datum.date) + minutes(datum.date) / 60", "as": "time"}
+  ],
+  "vconcat": [
+    {
+      "width": 963,
+      "height": 100,
+      "selection": {"brush": {"type": "interval", "encodings": ["x"]}},
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "time", "bin": {"maxbins": 30}, "type": "quantitative"},
+        "y": {"aggregate": "count", "type": "quantitative"}
+      }
+    },
+    {
+      "width": 963,
+      "height": 100,
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "time",
+          "bin": {"maxbins": 30, "extent": {"selection": "brush"}},
+          "type": "quantitative"
+        },
+        "y": {"aggregate": "count", "type": "quantitative"}
+      }
+    }
+  ],
+  "autosize": {"type": "pad"}
+}

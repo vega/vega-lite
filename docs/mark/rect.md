@@ -71,10 +71,6 @@ For example, we can use `rect` to create an annotation [`layer`](layer.html) tha
 
 <span class="vl-example" data-name="layer_rect_extent"></span>
 
-We can also use `rect` to show a band covering one standard deviation over and below the global mean value.
-
-<span class="vl-example" data-name="layer_global_mean_dev"></span>
-
 {:#config}
 
 ## Rect Config
