@@ -4,6 +4,7 @@ import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
 import {FieldDefBase, isTimeFormatFieldDef, toFieldDefBase} from '../../channeldef';
 import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
+import {isSignalRef} from '../../vega.schema';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {LayerModel} from '../layer';
@@ -246,7 +247,9 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
         axisComponent.set(property, configValue, false);
       }
     } else if (
-      isConditionalAxisValue<any>(configValue) // need to cast as TS isn't smart enough to figure the generic parameter type yet
+      isConditionalAxisValue<any>(configValue) ||
+      isSignalRef(configValue)
+      // need to cast as TS isn't smart enough to figure the generic parameter type yet
     ) {
       // If a config is specified and is conditional, copy conditional value from axis config
       axisComponent.set(property, configValue, false);

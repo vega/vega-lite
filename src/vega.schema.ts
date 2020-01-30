@@ -67,7 +67,7 @@ export interface VgDataRef {
 }
 
 export function isSignalRef(o: any): o is SignalRef {
-  return !!o['signal'];
+  return o && !!o['signal'];
 }
 
 // TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})

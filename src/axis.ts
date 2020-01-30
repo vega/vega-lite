@@ -214,12 +214,12 @@ export type AxisConfigBaseWithConditionalAndSignal = Omit<BaseAxisNoValueRefs, C
   tickSize?: BaseAxisNoValueRefs['tickSize'] | ConditionalAxisNumber;
   tickWidth?: BaseAxisNoValueRefs['tickWidth'] | ConditionalAxisNumber;
   titleColor?: BaseAxisNoValueRefs['titleColor'] | SignalRef;
-  title?: TitleMixins['title'] | SignalRef;
+  title?: TitleMixins['title'];
 };
 
 export type AxisConfig = VlOnlyGuideConfig & AxisConfigBaseWithConditionalAndSignal;
 
-export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide<SignalRef> {
+export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
   /**
    * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.
    *

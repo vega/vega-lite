@@ -1,4 +1,4 @@
-import {Text} from 'vega';
+import {SignalRef, Text} from 'vega';
 import {array} from 'vega-util';
 import {isBinning} from '../bin';
 import {
@@ -216,7 +216,7 @@ export function mergeTitleFieldDefs(f1: readonly FieldDefBase<string>[], f2: rea
   return merged;
 }
 
-export function mergeTitle(title1: Text, title2: Text) {
+export function mergeTitle(title1: Text | SignalRef, title2: Text | SignalRef) {
   if (deepEqual(title1, title2) || !title2) {
     // if titles are the same or title2 is falsy
     return title1;

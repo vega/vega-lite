@@ -1,4 +1,4 @@
-import {Orientation, Text} from 'vega';
+import {Orientation, SignalRef, Text} from 'vega';
 import {isArray, isBoolean, isString} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from '.';
 import {
@@ -17,6 +17,7 @@ import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {getFirstDefined} from '../util';
+import {isSignalRef} from '../vega.schema';
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 
@@ -42,7 +43,7 @@ export interface CompositeMarkTooltipSummary {
   /**
    * The title prefix to show, corresponding to the field with field prefix `fieldPrefix`
    */
-  titlePrefix: Text;
+  titlePrefix: Text | SignalRef;
 }
 
 export function filterTooltipWithAggregatedField<F extends Field>(
@@ -111,11 +112,14 @@ export function getCompositeMarkTooltip(
   }
 
   const fiveSummaryTooltip: StringFieldDef<string>[] = tooltipSummary.map(
-    ({fieldPrefix, titlePrefix}): StringFieldDef<string> => ({
-      field: fieldPrefix + continuousAxisChannelDef.field,
-      type: continuousAxisChannelDef.type,
-      title: titlePrefix + (withFieldName ? ' of ' + continuousAxisChannelDef.field : '')
-    })
+    ({fieldPrefix, titlePrefix}): StringFieldDef<string> => {
+      const mainTitle = withFieldName ? ' of ' + continuousAxisChannelDef.field : '';
+      return {
+        field: fieldPrefix + continuousAxisChannelDef.field,
+        type: continuousAxisChannelDef.type,
+        title: isSignalRef(titlePrefix) ? {signal: titlePrefix + mainTitle} : titlePrefix + mainTitle
+      };
+    }
   );
 
   return {
