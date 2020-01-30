@@ -16,7 +16,8 @@
       "field": "date",
       "type": "temporal",
       "timeUnit": "yearmonthdatehoursminutes",
-      "scale": {"type": "utc"}
+      "scale": {"type": "utc"},
+      "axis": { "labelAngle": 15 }
     },
     "y": {"field": "price", "type": "quantitative"}
   }

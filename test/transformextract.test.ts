@@ -141,6 +141,7 @@ describe('extractTransforms()', () => {
     'stacked_bar_count.vl.json',
     'stacked_bar_size.vl.json',
     'stacked_bar_weather.vl.json',
+    'time_custom_step.vl.json',
     'time_output_utc_scale.vl.json',
     'time_output_utc_timeunit.vl.json',
     'time_parse_local.vl.json',

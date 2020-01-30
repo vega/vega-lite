@@ -129,3 +129,15 @@ By default, Vega-Lite will output data in local time (even when input is parsed 
 2. UTC scale type when you have input data in UTC time.
 
 <span class="vl-example" data-name="time_output_utc_scale"></span>
+
+## Time Unit Parameters
+
+If a TimeUnit string is provided, default time unit parameters are used. To customize time unit parameters, you can set `timeUnit` to be a time unit definition object. It can have the following properties.
+
+{% include table.html props="unit,maxbins,step,utc" source="TimeUnitParams" %}
+
+### Example: Customizing Step
+
+The `step` parameter can be used to specify a bin size with respect to the smallest denominator in the TimeUnit provided.
+
+<span class="vl-example" data-name="time_custom_step"></span>

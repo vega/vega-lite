@@ -114,7 +114,7 @@ export class TimeUnitNode extends DataFlowNode {
       transforms.push({
         field,
         type: 'timeunit',
-        units: getTimeUnitParts(unit),
+        ...(unit ? {units: getTimeUnitParts(unit)} : {}),
         ...(utc ? {timezone: 'utc'} : {}),
         ...params,
         as: [as, `${as}_end`]

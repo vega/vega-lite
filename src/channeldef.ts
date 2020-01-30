@@ -652,8 +652,10 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
   } else if (isBinning(bin)) {
     return `${field} (binned)`;
   } else if (timeUnit) {
-    const units = getTimeUnitParts(normalizeTimeUnit(timeUnit)?.unit).join('-');
-    return `${field} (${units})`;
+    const unit = normalizeTimeUnit(timeUnit)?.unit;
+    if (unit) {
+      return `${field} (${getTimeUnitParts(unit).join('-')})`;
+    }
   } else if (aggregate) {
     if (isArgmaxDef(aggregate)) {
       return `${field} for max ${aggregate.argmax}`;

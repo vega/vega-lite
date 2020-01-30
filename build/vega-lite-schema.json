@@ -14814,7 +14814,7 @@
       "additionalProperties": false,
       "properties": {
         "maxbins": {
-          "description": "If no `units` are specified, maxbins is used to infer time units.",
+          "description": "If no `unit` is specified, maxbins is used to infer time units.",
           "type": "number"
         },
         "step": {
@@ -14822,10 +14822,11 @@
           "type": "number"
         },
         "unit": {
-          "$ref": "#/definitions/TimeUnit"
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Defines how date-time values should be binned."
         },
         "utc": {
-          "description": "True to use UTC timezone.",
+          "description": "True to use UTC timezone. Equivalent to using a `utc` prefixed `TimeUnit`.",
           "type": "boolean"
         }
       },

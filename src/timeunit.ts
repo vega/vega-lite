@@ -242,10 +242,13 @@ export type TimeUnitFormat =
   | 'milliseconds';
 
 export interface TimeUnitParams {
+  /**
+   * Defines how date-time values should be binned.
+   */
   unit?: TimeUnit;
 
   /**
-   * If no `units` are specified, maxbins is used to infer time units.
+   * If no `unit` is specified, maxbins is used to infer time units.
    */
   maxbins?: number;
 
@@ -256,7 +259,7 @@ export interface TimeUnitParams {
   step?: number;
 
   /**
-   * True to use UTC timezone.
+   * True to use UTC timezone. Equivalent to using a `utc` prefixed `TimeUnit`.
    */
   utc?: boolean;
 }
@@ -370,7 +373,7 @@ export function normalizeTimeUnit(timeUnit: TimeUnit | TimeUnitParams): TimeUnit
   } else if (isObject(timeUnit)) {
     params = {
       ...timeUnit,
-      unit: correctTimeUnit(timeUnit.unit)
+      ...(timeUnit.unit ? {unit: correctTimeUnit(timeUnit.unit)} : {})
     };
   }
 
