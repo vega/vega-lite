@@ -1,0 +1,164 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Using a custom step for time unit.",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"date": "Sun, 01 Jan 2012 00:00:00", "distance": 1},
+        {"date": "Sun, 01 Jan 2012 00:01:00", "distance": 1},
+        {"date": "Sun, 01 Jan 2012 00:02:00", "distance": 2},
+        {"date": "Sun, 01 Jan 2012 00:03:00", "distance": 1},
+        {"date": "Sun, 01 Jan 2012 00:04:00", "distance": 4},
+        {"date": "Sun, 01 Jan 2012 00:05:00", "distance": 2},
+        {"date": "Sun, 01 Jan 2012 00:06:00", "distance": 5},
+        {"date": "Sun, 01 Jan 2012 00:07:00", "distance": 2},
+        {"date": "Sun, 01 Jan 2012 00:08:00", "distance": 6},
+        {"date": "Sun, 01 Jan 2012 00:09:00", "distance": 4},
+        {"date": "Sun, 01 Jan 2012 00:10:00", "distance": 1},
+        {"date": "Sun, 01 Jan 2012 00:11:00", "distance": 1},
+        {"date": "Sun, 01 Jan 2012 00:12:00", "distance": 3},
+        {"date": "Sun, 01 Jan 2012 00:13:00", "distance": 0},
+        {"date": "Sun, 01 Jan 2012 00:14:00", "distance": 2},
+        {"date": "Sun, 01 Jan 2012 00:15:00", "distance": 3}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["minutes"],
+          "step": 5,
+          "as": ["minutes_step_5_date", "minutes_step_5_date_end"]
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["minutes_step_5_date", "minutes_step_5_date_end"],
+          "ops": ["sum"],
+          "fields": ["distance"],
+          "as": ["sum_distance"]
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"minutes_step_5_date\"]) || (isValid(datum[\"minutes_step_5_date\"]) && isFinite(+datum[\"minutes_step_5_date\"])))"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "x2": [
+            {
+              "test": "!isValid(datum[\"minutes_step_5_date\"]) || !isFinite(+datum[\"minutes_step_5_date\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "minutes_step_5_date", "offset": 1}
+          ],
+          "x": [
+            {
+              "test": "!isValid(datum[\"minutes_step_5_date\"]) || !isFinite(+datum[\"minutes_step_5_date\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "minutes_step_5_date_end"}
+          ],
+          "y": {"scale": "y", "field": "sum_distance"},
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {
+        "data": "data_0",
+        "fields": ["minutes_step_5_date", "minutes_step_5_date_end"]
+      },
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "sum_distance"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date (minutes)",
+      "labelAngle": 15,
+      "encode": {
+        "labels": {
+          "update": {
+            "text": {
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            }
+          }
+        }
+      },
+      "labelAlign": "left",
+      "labelBaseline": "top",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Sum of distance",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

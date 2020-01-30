@@ -101,9 +101,7 @@
       "orient": "bottom",
       "grid": false,
       "title": "date (year-month-date-hours-minutes)",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "labelAngle": 15,
       "encode": {
         "labels": {
           "update": {
@@ -113,6 +111,11 @@
           }
         }
       },
+      "labelAlign": "left",
+      "labelBaseline": "top",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 0
     },
     {

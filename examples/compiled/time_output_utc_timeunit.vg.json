@@ -105,7 +105,7 @@
       "orient": "bottom",
       "grid": false,
       "title": "date (year-month-date-hours-minutes)",
-      "labelAngle": 45,
+      "labelAngle": 15,
       "encode": {
         "labels": {
           "update": {
