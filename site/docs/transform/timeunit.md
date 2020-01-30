@@ -29,7 +29,7 @@ By default, all time units represent date time using local time. To use UTC time
 
 <!--prettier-ignore-end-->
 
-{: #encoding}
+{:#encoding}
 
 ## Time Unit in Encoding Field Definition
 
@@ -130,14 +130,16 @@ By default, Vega-Lite will output data in local time (even when input is parsed 
 
 <span class="vl-example" data-name="time_output_utc_scale"></span>
 
+{:#params}
+
 ## Time Unit Parameters
 
-If a TimeUnit string is provided, default time unit parameters are used. To customize time unit parameters, you can set `timeUnit` to be a time unit definition object. It can have the following properties.
+To customize time unit parameters, you can set `timeUnit` to be a time unit definition object. It can have the following properties.
 
 {% include table.html props="unit,maxbins,step,utc" source="TimeUnitParams" %}
 
 ### Example: Customizing Step
 
-The `step` parameter can be used to specify a bin size with respect to the smallest denominator in the TimeUnit provided.
+The `step` parameter can be used to specify a bin size with respect to the smallest denominator in the time unit provided. The following example shows sum of distance traveled for each 5-minute interval.
 
 <span class="vl-example" data-name="time_custom_step"></span>

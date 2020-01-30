@@ -77,6 +77,8 @@ BinExtent:
 
 TimeUnit:
   link: 'timeunit.html'
+TimeUnitParams:
+  link: 'timeunit.html#params'
 
 LookupData:
   link: 'lookup.html#lookup-data'

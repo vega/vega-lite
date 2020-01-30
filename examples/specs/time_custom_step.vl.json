@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "Using a custom step for time unit.",
+  "description": "Showing sum of distance traveled for each 5-minute interval.",
   "data": {
     "values": [
       {"date": "Sun, 01 Jan 2012 00:00:00", "distance": 1},
@@ -29,8 +29,7 @@
       "timeUnit": {
         "unit": "minutes",
         "step": 5
-      },
-      "axis": {"labelAngle": 15}
+      }
     },
     "y": {"field": "distance", "type": "quantitative", "aggregate": "sum"}
   }
