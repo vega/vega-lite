@@ -24,6 +24,7 @@
     "test": "test"
   },
   "scripts": {
+    "changelog": "conventional-changelog -p angular",
     "build": "yarn build:only",
     "build:only": "yarn tsc:src && rollup -c",
     "postbuild": "terser build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && yarn schema",
@@ -69,6 +70,9 @@
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
+    "@rollup/plugin-commonjs": "11.0.1",
+    "@rollup/plugin-json": "^4.0.1",
+    "@rollup/plugin-node-resolve": "^7.0.0",
     "@types/chai": "^4.2.7",
     "@types/d3": "^5.7.2",
     "@types/highlight.js": "^9.12.3",
@@ -83,6 +87,7 @@
     "cheerio": "^1.0.0-rc.3",
     "codecov": "^3.6.2",
     "concurrently": "^5.0.2",
+    "conventional-changelog": "^3.1.18",
     "d3": "^5.15.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",
@@ -98,9 +103,6 @@
     "prettier": "^1.19.1",
     "puppeteer": "^2.0.0",
     "rollup": "^1.29.1",
-    "@rollup/plugin-commonjs": "11.0.1",
-    "@rollup/plugin-json": "^4.0.1",
-    "@rollup/plugin-node-resolve": "^7.0.0",
     "rollup-plugin-sourcemaps": "^0.5.0",
     "rollup-plugin-terser": "^5.2.0",
     "svg2png-many": "^0.0.7",
