@@ -1,9 +1,9 @@
+import {SignalRef, Text} from 'vega';
 import {ConditionValueDefMixins, ValueDef} from './channeldef';
 import {LegendConfig} from './legend';
 import {VgEncodeChannel} from './vega.schema';
-import {Text} from 'vega';
 
-export interface TitleMixins {
+export interface TitleMixins<S extends SignalRef | null = null> {
   /**
    * A title for the field. If `null`, the title will be removed.
    *
@@ -15,7 +15,7 @@ export interface TitleMixins {
    *
    * 2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.
    */
-  title?: Text | null;
+  title?: Text | null | S;
 }
 
 export interface FormatMixins {
@@ -48,7 +48,7 @@ export interface FormatMixins {
   labelExpr?: string;
 }
 
-export interface Guide extends TitleMixins, FormatMixins {}
+export interface Guide<S extends SignalRef = null> extends TitleMixins<S>, FormatMixins {}
 
 export interface VlOnlyGuideConfig {
   /**

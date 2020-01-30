@@ -363,7 +363,7 @@ function getProperty<K extends keyof AxisComponentProps>(
       const fieldDef2 = model.fieldDef(channel2);
       // Keep undefined so we use default if title is unspecified.
       // For other falsy value, keep them so we will hide the title.
-      return getFirstDefined<Text | FieldDefBase<string>[]>(
+      return getFirstDefined<Text | SignalRef | FieldDefBase<string>[]>(
         specifiedAxis.title,
         getFieldDefTitle(model, channel), // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
         mergeTitleFieldDefs([toFieldDefBase(fieldDef)], fieldDef2 ? [toFieldDefBase(fieldDef2)] : [])
