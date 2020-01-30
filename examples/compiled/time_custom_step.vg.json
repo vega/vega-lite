@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Using a custom step for time unit.",
+  "description": "Showing sum of distance traveled for each 5-minute interval.",
   "background": "white",
   "padding": 5,
   "width": 200,
@@ -134,7 +134,9 @@
       "orient": "bottom",
       "grid": false,
       "title": "date (minutes)",
-      "labelAngle": 15,
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
       "encode": {
         "labels": {
           "update": {
@@ -144,11 +146,6 @@
           }
         }
       },
-      "labelAlign": "left",
-      "labelBaseline": "top",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 0
     },
     {
