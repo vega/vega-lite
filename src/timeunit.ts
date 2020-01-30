@@ -1,7 +1,8 @@
 import stringify from 'fast-json-stable-stringify';
+import {isObject, isString} from 'vega-util';
 import {DateTimeExpr, dateTimeExprToExpr} from './datetime';
 import * as log from './log';
-import {accessPathWithDatum, Flag, keys, replaceAll} from './util';
+import {accessPathWithDatum, Flag, keys, replaceAll, varName} from './util';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
@@ -240,6 +241,29 @@ export type TimeUnitFormat =
   | 'seconds'
   | 'milliseconds';
 
+export interface TimeUnitParams {
+  /**
+   * Defines how date-time values should be binned.
+   */
+  unit?: TimeUnit;
+
+  /**
+   * If no `unit` is specified, maxbins is used to infer time units.
+   */
+  maxbins?: number;
+
+  /**
+   * The number of steps between bins, in terms of the least
+   * significant unit provided.
+   */
+  step?: number;
+
+  /**
+   * True to use UTC timezone. Equivalent to using a `utc` prefixed `TimeUnit`.
+   */
+  utc?: boolean;
+}
+
 // matches vega time unit format specifier
 // matches vega time unit format specifier
 export type TimeFormatConfig = {
@@ -336,10 +360,58 @@ export function formatExpression(timeUnit: TimeUnit, field: string, isUTCScale: 
   }
 }
 
-export function normalizeTimeUnit(timeUnit: TimeUnit): TimeUnit {
+export function normalizeTimeUnit(timeUnit: TimeUnit | TimeUnitParams): TimeUnitParams {
+  if (!timeUnit) {
+    return undefined;
+  }
+
+  let params: TimeUnitParams;
+  if (isString(timeUnit)) {
+    params = {
+      unit: correctTimeUnit(timeUnit)
+    };
+  } else if (isObject(timeUnit)) {
+    params = {
+      ...timeUnit,
+      ...(timeUnit.unit ? {unit: correctTimeUnit(timeUnit.unit)} : {})
+    };
+  }
+
+  if (isUTCTimeUnit(params.unit)) {
+    params.utc = true;
+    params.unit = getLocalTimeUnit(params.unit);
+  }
+
+  return params;
+}
+
+export function correctTimeUnit(timeUnit: TimeUnit) {
   if (timeUnit !== 'day' && timeUnit.indexOf('day') >= 0) {
     log.warn(log.message.dayReplacedWithDate(timeUnit));
     return replaceAll(timeUnit, 'day', 'date') as TimeUnit;
   }
+
   return timeUnit;
+}
+
+export function timeUnitToString(tu: TimeUnit | TimeUnitParams) {
+  const {utc, ...rest} = normalizeTimeUnit(tu);
+
+  if (rest.unit) {
+    return (
+      (utc ? 'utc' : '') +
+      keys(rest)
+        .map(p => varName(`${p === 'unit' ? '' : `_${p}_`}${rest[p]}`))
+        .join('')
+    );
+  } else {
+    // when maxbins is specified instead of units
+    return (
+      (utc ? 'utc' : '') +
+      'timeunit' +
+      keys(rest)
+        .map(p => varName(`_${p}_${rest[p]}`))
+        .join('')
+    );
+  }
 }

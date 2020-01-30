@@ -15,7 +15,7 @@ import {AnyMarkConfig, MarkConfig, MarkDef} from '../mark';
 import {fieldValidPredicate} from '../predicate';
 import {ScaleType} from '../scale';
 import {SortFields} from '../sort';
-import {formatExpression, TimeUnit} from '../timeunit';
+import {formatExpression, TimeUnit, normalizeTimeUnit} from '../timeunit';
 import {isText} from '../title';
 import {QUANTITATIVE} from '../type';
 import {getFirstDefined} from '../util';
@@ -101,7 +101,7 @@ export function formatSignalRef(
         vgField(fieldDef, {
           expr
         }),
-        fieldDef.timeUnit,
+        normalizeTimeUnit(fieldDef.timeUnit)?.unit,
         specifiedFormat,
         config.timeFormat,
         isUTCScale,

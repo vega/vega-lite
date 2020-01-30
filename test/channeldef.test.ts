@@ -82,7 +82,9 @@ describe('fieldDef', () => {
           type: 'temporal'
         };
         expect(normalize(fieldDef, 'x')).toEqual({
-          timeUnit: 'yearmonthdate',
+          timeUnit: {
+            unit: 'yearmonthdate'
+          },
           field: 'a',
           type: 'temporal'
         });

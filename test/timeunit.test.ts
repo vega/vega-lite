@@ -121,5 +121,11 @@ describe('timeUnit', () => {
         'utcFormat(datum.x, timeUnitSpecifier(["year","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
       );
     });
+
+    it('should return correct template for UTCYEARMONTH (No comma)', () => {
+      expect(formatExpression(TimeUnit.UTCYEARMONTH, 'datum.x', true)).toBe(
+        'utcFormat(datum.x, timeUnitSpecifier(["year","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+      );
+    });
   });
 });
