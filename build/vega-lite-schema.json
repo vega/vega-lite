@@ -792,7 +792,7 @@
         "labelPadding": {
           "anyOf": [
             {
-              "description": "The padding in pixels between labels and ticks.\n\n__Default value:__ `2`",
+              "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
               "type": "number"
             },
             {
@@ -1304,7 +1304,7 @@
         "labelPadding": {
           "anyOf": [
             {
-              "description": "The padding in pixels between labels and ticks.\n\n__Default value:__ `2`",
+              "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
               "type": "number"
             },
             {
@@ -2749,11 +2749,11 @@
         }
       ]
     },
-    "ColorGradientFieldDefWithCondition<Field>": {
-      "$ref": "#/definitions/FieldDefWithCondition%3CMarkPropFieldDef%3CField%2CStandardType%3E%2C(Gradient%7Cstring%7Cnull)%3E"
+    "ColorGradientFieldDefWithCondition": {
+      "$ref": "#/definitions/FieldDefWithCondition%3CMarkPropFieldDef%2C(Gradient%7Cstring%7Cnull)%3E"
     },
-    "ColorGradientValueDefWithCondition<Field>": {
-      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%3CField%2CStandardType%3E%2C(Gradient%7Cstring%7Cnull)%3E"
+    "ColorGradientValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%2C(Gradient%7Cstring%7Cnull)%3E"
     },
     "ColorName": {
       "enum": [
@@ -2927,16 +2927,16 @@
         }
       ]
     },
-    "CompositeEncoding": {
+    "Encoding": {
       "additionalProperties": false,
       "properties": {
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ColorGradientFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -2944,11 +2944,11 @@
         "detail": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDefWithoutScale%3CField%3E"
+              "$ref": "#/definitions/FieldDefWithoutScale"
             },
             {
               "items": {
-                "$ref": "#/definitions/FieldDefWithoutScale%3CField%3E"
+                "$ref": "#/definitions/FieldDefWithoutScale"
               },
               "type": "array"
             }
@@ -2958,10 +2958,10 @@
         "fill": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ColorGradientFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -2969,10 +2969,10 @@
         "fillOpacity": {
           "anyOf": [
             {
-              "$ref": "#/definitions/NumericFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
@@ -2980,25 +2980,25 @@
         "href": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "A URL to load upon mouse click."
         },
         "key": {
-          "$ref": "#/definitions/FieldDefWithoutScale%3CField%3E",
+          "$ref": "#/definitions/FieldDefWithoutScale",
           "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
         },
         "latitude": {
           "anyOf": [
             {
-              "$ref": "#/definitions/LatLongFieldDef%3CField%3E"
+              "$ref": "#/definitions/LatLongFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Latitude position of geographically projected marks."
@@ -3006,10 +3006,10 @@
         "latitude2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
@@ -3017,10 +3017,10 @@
         "longitude": {
           "anyOf": [
             {
-              "$ref": "#/definitions/LatLongFieldDef%3CField%3E"
+              "$ref": "#/definitions/LatLongFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Longitude position of geographically projected marks."
@@ -3028,10 +3028,10 @@
         "longitude2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
@@ -3039,10 +3039,10 @@
         "opacity": {
           "anyOf": [
             {
-              "$ref": "#/definitions/NumericFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
@@ -3050,16 +3050,16 @@
         "order": {
           "anyOf": [
             {
-              "$ref": "#/definitions/OrderFieldDef%3CField%3E"
+              "$ref": "#/definitions/OrderFieldDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/OrderFieldDef%3CField%3E"
+                "$ref": "#/definitions/OrderFieldDef"
               },
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html). Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
@@ -3067,10 +3067,10 @@
         "shape": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ShapeFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ShapeFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ShapeValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ShapeValueDefWithCondition"
             }
           ],
           "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:\n   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   - the line symbol `\"stroke\"`\n   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
@@ -3078,10 +3078,10 @@
         "size": {
           "anyOf": [
             {
-              "$ref": "#/definitions/NumericFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
@@ -3089,10 +3089,10 @@
         "stroke": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ColorGradientFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -3100,10 +3100,10 @@
         "strokeOpacity": {
           "anyOf": [
             {
-              "$ref": "#/definitions/NumericFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
@@ -3111,10 +3111,10 @@
         "strokeWidth": {
           "anyOf": [
             {
-              "$ref": "#/definitions/NumericFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
@@ -3122,10 +3122,10 @@
         "text": {
           "anyOf": [
             {
-              "$ref": "#/definitions/TextFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/TextFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/TextValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
           "description": "Text of the `text` mark."
@@ -3133,14 +3133,14 @@
         "tooltip": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             },
             {
               "items": {
-                "$ref": "#/definitions/StringFieldDef%3CField%3E"
+                "$ref": "#/definitions/StringFieldDef"
               },
               "type": "array"
             },
@@ -3153,10 +3153,10 @@
         "url": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "The URL of an image mark."
@@ -3164,10 +3164,10 @@
         "x": {
           "anyOf": [
             {
-              "$ref": "#/definitions/PositionFieldDef%3CField%3E"
+              "$ref": "#/definitions/PositionFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3C(number%7C%22width%22)%3E"
+              "$ref": "#/definitions/XValueDef"
             }
           ],
           "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
@@ -3175,10 +3175,10 @@
         "x2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3C(number%7C%22width%22)%3E"
+              "$ref": "#/definitions/XValueDef"
             }
           ],
           "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
@@ -3186,10 +3186,10 @@
         "xError": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -3197,10 +3197,10 @@
         "xError2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -3208,10 +3208,10 @@
         "y": {
           "anyOf": [
             {
-              "$ref": "#/definitions/PositionFieldDef%3CField%3E"
+              "$ref": "#/definitions/PositionFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3C(number%7C%22height%22)%3E"
+              "$ref": "#/definitions/YValueDef"
             }
           ],
           "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
@@ -3219,10 +3219,10 @@
         "y2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3C(number%7C%22height%22)%3E"
+              "$ref": "#/definitions/YValueDef"
             }
           ],
           "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
@@ -3230,10 +3230,10 @@
         "yError": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -3241,10 +3241,10 @@
         "yError2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -3292,37 +3292,37 @@
       },
       "type": "object"
     },
-    "Conditional<MarkPropFieldDef<Field,StandardType>>": {
+    "ConditionalMarkPropFieldDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate%3CMarkPropFieldDef%3CField%2CStandardType%3E%3E"
+          "$ref": "#/definitions/ConditionalPredicate%3CMarkPropFieldDef%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection%3CMarkPropFieldDef%3CField%2CStandardType%3E%3E"
+          "$ref": "#/definitions/ConditionalSelection%3CMarkPropFieldDef%3E"
         }
       ]
     },
-    "Conditional<MarkPropFieldDef<Field,TypeForShape>>": {
+    "ConditionalMarkPropFieldDef<TypeForShape>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate%3CMarkPropFieldDef%3CField%2CTypeForShape%3E%3E"
+          "$ref": "#/definitions/ConditionalPredicate%3CMarkPropFieldDef%3CTypeForShape%3E%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection%3CMarkPropFieldDef%3CField%2CTypeForShape%3E%3E"
+          "$ref": "#/definitions/ConditionalSelection%3CMarkPropFieldDef%3CTypeForShape%3E%3E"
         }
       ]
     },
-    "Conditional<StringFieldDef<Field>>": {
+    "ConditionalStringFieldDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate%3CStringFieldDef%3CField%3E%3E"
+          "$ref": "#/definitions/ConditionalPredicate%3CStringFieldDef%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection%3CStringFieldDef%3CField%3E%3E"
+          "$ref": "#/definitions/ConditionalSelection%3CStringFieldDef%3E"
         }
       ]
     },
-    "Conditional<ValueDef<(Gradient|string|null)>>": {
+    "ConditionalValueDef<(Gradient|string|null)>": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(Gradient%7Cstring%7Cnull)%3E%3E"
@@ -3332,17 +3332,17 @@
         }
       ]
     },
-    "Conditional<ValueDef<(string|null)>>": {
+    "ConditionalStringValueDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(string%7Cnull)%3E%3E"
+          "$ref": "#/definitions/ConditionalPredicate%3CStringValueDef%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection%3CValueDef%3C(string%7Cnull)%3E%3E"
+          "$ref": "#/definitions/ConditionalSelection%3CStringValueDef%3E"
         }
       ]
     },
-    "Conditional<ValueDef<Text>>": {
+    "ConditionalValueDef<Text>": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3CText%3E%3E"
@@ -3352,17 +3352,17 @@
         }
       ]
     },
-    "Conditional<ValueDef<number>>": {
+    "ConditionalNumberValueDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3Cnumber%3E%3E"
+          "$ref": "#/definitions/ConditionalPredicate%3CNumberValueDef%3E"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection%3CValueDef%3Cnumber%3E%3E"
+          "$ref": "#/definitions/ConditionalSelection%3CNumberValueDef%3E"
         }
       ]
     },
-    "Conditional<ValueDef<string>>": {
+    "ConditionalValueDef<string>": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3Cstring%3E%3E"
@@ -3636,11 +3636,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(string%7Cnull)%3E%3E"
+              "$ref": "#/definitions/ConditionalPredicate%3CStringValueDef%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3C(string%7Cnull)%3E%3E"
+                "$ref": "#/definitions/ConditionalPredicate%3CStringValueDef%3E"
               },
               "type": "array"
             }
@@ -3663,7 +3663,7 @@
     "ConditionalAxisString": {
       "$ref": "#/definitions/ConditionalAxisProperty%3C(string%7Cnull)%3E"
     },
-    "ConditionalPredicate<MarkPropFieldDef<Field,StandardType>>": {
+    "ConditionalPredicate<MarkPropFieldDef>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -3711,11 +3711,11 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
         },
         "sort": {
-          "$ref": "#/definitions/Sort%3CField%3E",
+          "$ref": "#/definitions/Sort",
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "timeUnit": {
@@ -3744,7 +3744,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<MarkPropFieldDef<Field,TypeForShape>>": {
+    "ConditionalPredicate<MarkPropFieldDef<TypeForShape>>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -3792,11 +3792,11 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
         },
         "sort": {
-          "$ref": "#/definitions/Sort%3CField%3E",
+          "$ref": "#/definitions/Sort",
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "timeUnit": {
@@ -3825,7 +3825,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<StringFieldDef<Field>>": {
+    "ConditionalPredicate<StringFieldDef>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -3873,7 +3873,7 @@
           "type": "string"
         },
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "timeUnit": {
@@ -3906,7 +3906,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3931,7 +3931,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3956,7 +3956,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -3981,7 +3981,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -4006,7 +4006,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -4034,7 +4034,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -4059,7 +4059,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -4087,7 +4087,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -4104,11 +4104,11 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(string|null)>>": {
+    "ConditionalPredicate<StringValueDef>": {
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -4129,7 +4129,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -4143,11 +4143,11 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<number>>": {
+    "ConditionalPredicate<NumberValueDef>": {
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -4165,7 +4165,7 @@
       "additionalProperties": false,
       "properties": {
         "test": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "Predicate for triggering the condition"
         },
         "value": {
@@ -4179,7 +4179,7 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<MarkPropFieldDef<Field,StandardType>>": {
+    "ConditionalSelection<MarkPropFieldDef>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -4227,11 +4227,11 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
         },
         "selection": {
-          "$ref": "#/definitions/LogicalComposition%3Cstring%3E",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "sort": {
-          "$ref": "#/definitions/Sort%3CField%3E",
+          "$ref": "#/definitions/Sort",
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
@@ -4260,7 +4260,7 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<MarkPropFieldDef<Field,TypeForShape>>": {
+    "ConditionalSelection<MarkPropFieldDef<TypeForShape>>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -4308,11 +4308,11 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
         },
         "selection": {
-          "$ref": "#/definitions/LogicalComposition%3Cstring%3E",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "sort": {
-          "$ref": "#/definitions/Sort%3CField%3E",
+          "$ref": "#/definitions/Sort",
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
@@ -4341,7 +4341,7 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<StringFieldDef<Field>>": {
+    "ConditionalSelection<StringFieldDef>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -4389,7 +4389,7 @@
           "type": "string"
         },
         "selection": {
-          "$ref": "#/definitions/LogicalComposition%3Cstring%3E",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "timeUnit": {
@@ -4422,7 +4422,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/LogicalComposition%3Cstring%3E",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -4446,11 +4446,11 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<ValueDef<(string|null)>>": {
+    "ConditionalSelection<StringValueDef>": {
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/LogicalComposition%3Cstring%3E",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -4471,7 +4471,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/LogicalComposition%3Cstring%3E",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -4485,11 +4485,11 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<ValueDef<number>>": {
+    "ConditionalSelection<NumberValueDef>": {
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/LogicalComposition%3Cstring%3E",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -4507,7 +4507,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/LogicalComposition%3Cstring%3E",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
@@ -5204,7 +5204,7 @@
     "Element": {
       "type": "string"
     },
-    "EncodingSortField<Field>": {
+    "EncodingSortField": {
       "additionalProperties": false,
       "description": "A sort definition for sorting a discrete scale in an encoding field definition.",
       "properties": {
@@ -5710,7 +5710,7 @@
     "Expr": {
       "type": "string"
     },
-    "FacetEncodingFieldDef<Field>": {
+    "FacetEncodingFieldDef": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -5782,7 +5782,7 @@
               "$ref": "#/definitions/SortOrder"
             },
             {
-              "$ref": "#/definitions/EncodingSortField%3CField%3E"
+              "$ref": "#/definitions/EncodingSortField"
             },
             {
               "type": "null"
@@ -5826,7 +5826,7 @@
       ],
       "type": "object"
     },
-    "FacetFieldDef<Field>": {
+    "FacetFieldDef": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -5864,7 +5864,7 @@
               "$ref": "#/definitions/SortOrder"
             },
             {
-              "$ref": "#/definitions/EncodingSortField%3CField%3E"
+              "$ref": "#/definitions/EncodingSortField"
             },
             {
               "type": "null"
@@ -5897,46 +5897,46 @@
       ],
       "type": "object"
     },
-    "FacetMapping<Field>": {
+    "FacetMapping": {
       "additionalProperties": false,
       "properties": {
         "column": {
-          "$ref": "#/definitions/FacetFieldDef%3CField%3E",
+          "$ref": "#/definitions/FacetFieldDef",
           "description": "A field definition for the horizontal facet of trellis plots."
         },
         "row": {
-          "$ref": "#/definitions/FacetFieldDef%3CField%3E",
+          "$ref": "#/definitions/FacetFieldDef",
           "description": "A field definition for the vertical facet of trellis plots."
         }
       },
       "type": "object"
     },
-    "FacetedCompositeEncoding": {
+    "FacetedEncoding": {
       "additionalProperties": false,
       "properties": {
         "color": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ColorGradientFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
         },
         "column": {
-          "$ref": "#/definitions/RowColumnEncodingFieldDef%3CField%3E",
+          "$ref": "#/definitions/RowColumnEncodingFieldDef",
           "description": "A field definition for the horizontal facet of trellis plots."
         },
         "detail": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDefWithoutScale%3CField%3E"
+              "$ref": "#/definitions/FieldDefWithoutScale"
             },
             {
               "items": {
-                "$ref": "#/definitions/FieldDefWithoutScale%3CField%3E"
+                "$ref": "#/definitions/FieldDefWithoutScale"
               },
               "type": "array"
             }
@@ -5944,16 +5944,16 @@
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
         },
         "facet": {
-          "$ref": "#/definitions/FacetEncodingFieldDef%3CField%3E",
+          "$ref": "#/definitions/FacetEncodingFieldDef",
           "description": "A field definition for the (flexible) facet of trellis plots.\n\nIf either `row` or `column` is specified, this channel will be ignored."
         },
         "fill": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ColorGradientFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -5961,10 +5961,10 @@
         "fillOpacity": {
           "anyOf": [
             {
-              "$ref": "#/definitions/NumericFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
@@ -5972,25 +5972,25 @@
         "href": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "A URL to load upon mouse click."
         },
         "key": {
-          "$ref": "#/definitions/FieldDefWithoutScale%3CField%3E",
+          "$ref": "#/definitions/FieldDefWithoutScale",
           "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
         },
         "latitude": {
           "anyOf": [
             {
-              "$ref": "#/definitions/LatLongFieldDef%3CField%3E"
+              "$ref": "#/definitions/LatLongFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Latitude position of geographically projected marks."
@@ -5998,10 +5998,10 @@
         "latitude2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
@@ -6009,10 +6009,10 @@
         "longitude": {
           "anyOf": [
             {
-              "$ref": "#/definitions/LatLongFieldDef%3CField%3E"
+              "$ref": "#/definitions/LatLongFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Longitude position of geographically projected marks."
@@ -6020,10 +6020,10 @@
         "longitude2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
@@ -6031,10 +6031,10 @@
         "opacity": {
           "anyOf": [
             {
-              "$ref": "#/definitions/NumericFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
@@ -6042,31 +6042,31 @@
         "order": {
           "anyOf": [
             {
-              "$ref": "#/definitions/OrderFieldDef%3CField%3E"
+              "$ref": "#/definitions/OrderFieldDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/OrderFieldDef%3CField%3E"
+                "$ref": "#/definitions/OrderFieldDef"
               },
               "type": "array"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html). Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
         },
         "row": {
-          "$ref": "#/definitions/RowColumnEncodingFieldDef%3CField%3E",
+          "$ref": "#/definitions/RowColumnEncodingFieldDef",
           "description": "A field definition for the vertical facet of trellis plots."
         },
         "shape": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ShapeFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ShapeFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ShapeValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ShapeValueDefWithCondition"
             }
           ],
           "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:\n   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   - the line symbol `\"stroke\"`\n   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
@@ -6074,10 +6074,10 @@
         "size": {
           "anyOf": [
             {
-              "$ref": "#/definitions/NumericFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
@@ -6085,10 +6085,10 @@
         "stroke": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ColorGradientFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ColorGradientFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -6096,10 +6096,10 @@
         "strokeOpacity": {
           "anyOf": [
             {
-              "$ref": "#/definitions/NumericFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
@@ -6107,10 +6107,10 @@
         "strokeWidth": {
           "anyOf": [
             {
-              "$ref": "#/definitions/NumericFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
@@ -6118,10 +6118,10 @@
         "text": {
           "anyOf": [
             {
-              "$ref": "#/definitions/TextFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/TextFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/TextValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
           "description": "Text of the `text` mark."
@@ -6129,14 +6129,14 @@
         "tooltip": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             },
             {
               "items": {
-                "$ref": "#/definitions/StringFieldDef%3CField%3E"
+                "$ref": "#/definitions/StringFieldDef"
               },
               "type": "array"
             },
@@ -6149,10 +6149,10 @@
         "url": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithCondition%3CField%3E"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "The URL of an image mark."
@@ -6160,10 +6160,10 @@
         "x": {
           "anyOf": [
             {
-              "$ref": "#/definitions/PositionFieldDef%3CField%3E"
+              "$ref": "#/definitions/PositionFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3C(number%7C%22width%22)%3E"
+              "$ref": "#/definitions/XValueDef"
             }
           ],
           "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
@@ -6171,10 +6171,10 @@
         "x2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3C(number%7C%22width%22)%3E"
+              "$ref": "#/definitions/XValueDef"
             }
           ],
           "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
@@ -6182,10 +6182,10 @@
         "xError": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -6193,10 +6193,10 @@
         "xError2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -6204,10 +6204,10 @@
         "y": {
           "anyOf": [
             {
-              "$ref": "#/definitions/PositionFieldDef%3CField%3E"
+              "$ref": "#/definitions/PositionFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3C(number%7C%22height%22)%3E"
+              "$ref": "#/definitions/YValueDef"
             }
           ],
           "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
@@ -6215,10 +6215,10 @@
         "y2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3C(number%7C%22height%22)%3E"
+              "$ref": "#/definitions/YValueDef"
             }
           ],
           "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
@@ -6226,10 +6226,10 @@
         "yError": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -6237,10 +6237,10 @@
         "yError2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/SecondaryFieldDef%3CField%3E"
+              "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueDef%3Cnumber%3E"
+              "$ref": "#/definitions/NumberValueDef"
             }
           ],
           "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -6276,7 +6276,7 @@
           "type": "string"
         },
         "encoding": {
-          "$ref": "#/definitions/FacetedCompositeEncoding",
+          "$ref": "#/definitions/FacetedEncoding",
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
@@ -6374,7 +6374,7 @@
         }
       ]
     },
-    "FieldDefWithCondition<MarkPropFieldDef<Field,StandardType>,(Gradient|string|null)>": {
+    "FieldDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -6399,11 +6399,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional%3CValueDef%3C(Gradient%7Cstring%7Cnull)%3E%3E"
+              "$ref": "#/definitions/ConditionalValueDef%3C(Gradient%7Cstring%7Cnull)%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional%3CValueDef%3C(Gradient%7Cstring%7Cnull)%3E%3E"
+                "$ref": "#/definitions/ConditionalValueDef%3C(Gradient%7Cstring%7Cnull)%3E"
               },
               "type": "array"
             }
@@ -6437,7 +6437,7 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
         },
         "sort": {
-          "$ref": "#/definitions/Sort%3CField%3E",
+          "$ref": "#/definitions/Sort",
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
@@ -6465,7 +6465,7 @@
       ],
       "type": "object"
     },
-    "FieldDefWithCondition<MarkPropFieldDef<Field,StandardType>,number>": {
+    "FieldDefWithCondition<MarkPropFieldDef,number>": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -6490,11 +6490,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional%3CValueDef%3Cnumber%3E%3E"
+              "$ref": "#/definitions/ConditionalNumberValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional%3CValueDef%3Cnumber%3E%3E"
+                "$ref": "#/definitions/ConditionalNumberValueDef"
               },
               "type": "array"
             }
@@ -6528,7 +6528,7 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
         },
         "sort": {
-          "$ref": "#/definitions/Sort%3CField%3E",
+          "$ref": "#/definitions/Sort",
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
@@ -6556,7 +6556,7 @@
       ],
       "type": "object"
     },
-    "FieldDefWithCondition<MarkPropFieldDef<Field,TypeForShape>,(string|null)>": {
+    "FieldDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -6581,11 +6581,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional%3CValueDef%3C(string%7Cnull)%3E%3E"
+              "$ref": "#/definitions/ConditionalStringValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional%3CValueDef%3C(string%7Cnull)%3E%3E"
+                "$ref": "#/definitions/ConditionalStringValueDef"
               },
               "type": "array"
             }
@@ -6619,7 +6619,7 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
         },
         "sort": {
-          "$ref": "#/definitions/Sort%3CField%3E",
+          "$ref": "#/definitions/Sort",
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "timeUnit": {
@@ -6647,7 +6647,7 @@
       ],
       "type": "object"
     },
-    "FieldDefWithCondition<StringFieldDef<Field>,Text>": {
+    "FieldDefWithCondition<StringFieldDef,Text>": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -6678,11 +6678,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional%3CValueDef%3CText%3E%3E"
+              "$ref": "#/definitions/ConditionalValueDef%3CText%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional%3CValueDef%3CText%3E%3E"
+                "$ref": "#/definitions/ConditionalValueDef%3CText%3E"
               },
               "type": "array"
             }
@@ -6734,7 +6734,7 @@
       ],
       "type": "object"
     },
-    "FieldDefWithCondition<StringFieldDef<Field>,string>": {
+    "FieldDefWithCondition<StringFieldDef,string>": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -6765,11 +6765,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional%3CValueDef%3Cstring%3E%3E"
+              "$ref": "#/definitions/ConditionalValueDef%3Cstring%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional%3CValueDef%3Cstring%3E%3E"
+                "$ref": "#/definitions/ConditionalValueDef%3Cstring%3E"
               },
               "type": "array"
             }
@@ -6821,8 +6821,8 @@
       ],
       "type": "object"
     },
-    "FieldDefWithoutScale<Field>": {
-      "$ref": "#/definitions/TypedFieldDef%3CField%2CStandardType%3E",
+    "FieldDefWithoutScale": {
+      "$ref": "#/definitions/TypedFieldDef",
       "description": "Field Def without scale (and without bin: \"binned\" support)."
     },
     "FieldEqualPredicate": {
@@ -7101,7 +7101,7 @@
       "additionalProperties": false,
       "properties": {
         "filter": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E",
+          "$ref": "#/definitions/PredicateComposition",
           "description": "The `filter` property must be a predication definition, which can takes one of the following forms:\n\n1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,\nwhere `datum` can be used to refer to the current data object.\nFor example, `{filter: \"datum.b2 > 60\"}` would make the output data includes only items that have values in the field `b2` over 60.\n\n2) one of the [field predicates](https://vega.github.io/vega-lite/docs/predicate.html#field-predicate): [`equal`](https://vega.github.io/* vega-lite/docs/predicate.html#field-equal-predicate),\n[`lt`](https://vega.github.io/vega-lite/docs/predicate.html#lt-predicate),\n[`lte`](https://vega.github.io/vega-lite/docs/predicate.html#lte-predicate),\n[`gt`](https://vega.github.io/vega-lite/docs/predicate.html#gt-predicate),\n[`gte`](https://vega.github.io/vega-lite/docs/predicate.html#gte-predicate),\n[`range`](https://vega.github.io/vega-lite/docs/predicate.html#range-predicate),\n[`oneOf`](https://vega.github.io/vega-lite/docs/predicate.html#one-of-predicate),\nor [`valid`](https://vega.github.io/vega-lite/docs/predicate.html#valid-predicate),\n\n3) a [selection predicate](https://vega.github.io/vega-lite/docs/predicate.html#selection-predicate), which define the names of a selection that the data point should belong to (or a logical composition of selections).\n\n4) a [logical composition](https://vega.github.io/vega-lite/docs/predicate.html#composition) of (1), (2), or (3)."
         }
       },
@@ -7200,7 +7200,7 @@
         }
       ]
     },
-    "GenericConcatSpec<FacetedUnitSpec,LayerSpec>": {
+    "ConcatSpec": {
       "additionalProperties": false,
       "description": "Base interface for a generalized concatenation specification.",
       "properties": {
@@ -7241,7 +7241,7 @@
         "concat": {
           "description": "A list of views to be concatenated.",
           "items": {
-            "$ref": "#/definitions/GenericSpec%3CFacetedUnitSpec%2CLayerSpec%3E"
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         },
@@ -7303,7 +7303,7 @@
       ],
       "type": "object"
     },
-    "GenericFacetSpec<FacetedUnitSpec,LayerSpec>": {
+    "FacetSpec": {
       "additionalProperties": false,
       "description": "Base interface for a facet specification.",
       "properties": {
@@ -7359,10 +7359,10 @@
         "facet": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FacetFieldDef%3CField%3E"
+              "$ref": "#/definitions/FacetFieldDef"
             },
             {
-              "$ref": "#/definitions/FacetMapping%3CField%3E"
+              "$ref": "#/definitions/FacetMapping"
             }
           ],
           "description": "Definition for how to facet the data. One of:\n1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)\n2) [An object that maps `row` and `column` channels to their field definitions](https://vega.github.io/vega-lite/docs/facet.html#mapping)"
@@ -7422,7 +7422,7 @@
       ],
       "type": "object"
     },
-    "GenericHConcatSpec<FacetedUnitSpec,LayerSpec>": {
+    "HConcatSpec": {
       "additionalProperties": false,
       "description": "Base interface for a horizontal concatenation specification.",
       "properties": {
@@ -7456,7 +7456,7 @@
         "hconcat": {
           "description": "A list of views to be concatenated and put into a row.",
           "items": {
-            "$ref": "#/definitions/GenericSpec%3CFacetedUnitSpec%2CLayerSpec%3E"
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         },
@@ -7496,7 +7496,7 @@
       ],
       "type": "object"
     },
-    "GenericRepeatSpec<FacetedUnitSpec,LayerSpec>": {
+    "RepeatSpec": {
       "additionalProperties": false,
       "description": "Base interface for a repeat specification.",
       "properties": {
@@ -7583,7 +7583,7 @@
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "spec": {
-          "$ref": "#/definitions/GenericSpec%3CFacetedUnitSpec%2CLayerSpec%3E",
+          "$ref": "#/definitions/Spec",
           "description": "A specification of the view that gets repeated."
         },
         "title": {
@@ -7611,7 +7611,7 @@
       ],
       "type": "object"
     },
-    "GenericSpec<FacetedUnitSpec,LayerSpec>": {
+    "Spec": {
       "anyOf": [
         {
           "$ref": "#/definitions/FacetedUnitSpec"
@@ -7620,24 +7620,24 @@
           "$ref": "#/definitions/LayerSpec"
         },
         {
-          "$ref": "#/definitions/GenericFacetSpec%3CFacetedUnitSpec%2CLayerSpec%3E"
+          "$ref": "#/definitions/FacetSpec"
         },
         {
-          "$ref": "#/definitions/GenericRepeatSpec%3CFacetedUnitSpec%2CLayerSpec%3E"
+          "$ref": "#/definitions/RepeatSpec"
         },
         {
-          "$ref": "#/definitions/GenericConcatSpec%3CFacetedUnitSpec%2CLayerSpec%3E"
+          "$ref": "#/definitions/ConcatSpec"
         },
         {
-          "$ref": "#/definitions/GenericVConcatSpec%3CFacetedUnitSpec%2CLayerSpec%3E"
+          "$ref": "#/definitions/VConcatSpec"
         },
         {
-          "$ref": "#/definitions/GenericHConcatSpec%3CFacetedUnitSpec%2CLayerSpec%3E"
+          "$ref": "#/definitions/HConcatSpec"
         }
       ],
       "description": "Any specification in Vega-Lite."
     },
-    "GenericUnitSpec<CompositeEncoding,AnyMark>": {
+    "GenericUnitSpec<Encoding,AnyMark>": {
       "additionalProperties": false,
       "description": "Base interface for a unit (single-view) specification.",
       "properties": {
@@ -7657,7 +7657,7 @@
           "type": "string"
         },
         "encoding": {
-          "$ref": "#/definitions/CompositeEncoding",
+          "$ref": "#/definitions/Encoding",
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "mark": {
@@ -7703,7 +7703,7 @@
       ],
       "type": "object"
     },
-    "GenericVConcatSpec<FacetedUnitSpec,LayerSpec>": {
+    "VConcatSpec": {
       "additionalProperties": false,
       "description": "Base interface for a vertical concatenation specification.",
       "properties": {
@@ -7767,7 +7767,7 @@
         "vconcat": {
           "description": "A list of views to be concatenated and put into a column.",
           "items": {
-            "$ref": "#/definitions/GenericSpec%3CFacetedUnitSpec%2CLayerSpec%3E"
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         }
@@ -8654,7 +8654,7 @@
         }
       ]
     },
-    "LatLongFieldDef<Field>": {
+    "LatLongFieldDef": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -8714,7 +8714,7 @@
           "type": "string"
         },
         "encoding": {
-          "$ref": "#/definitions/CompositeEncoding",
+          "$ref": "#/definitions/Encoding",
           "description": "A shared key-value mapping between encoding channels and definition of fields in the underlying layers."
         },
         "height": {
@@ -8739,7 +8739,7 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/GenericLayerSpec%3CUnitSpec%3E"
+                "$ref": "#/definitions/LayerSpec"
               },
               {
                 "$ref": "#/definitions/UnitSpec"
@@ -10195,7 +10195,7 @@
       "properties": {
         "and": {
           "items": {
-            "$ref": "#/definitions/LogicalComposition%3CPredicate%3E"
+            "$ref": "#/definitions/PredicateComposition"
           },
           "type": "array"
         }
@@ -10205,12 +10205,12 @@
       ],
       "type": "object"
     },
-    "LogicalAnd<string>": {
+    "SelectionAnd": {
       "additionalProperties": false,
       "properties": {
         "and": {
           "items": {
-            "$ref": "#/definitions/LogicalComposition%3Cstring%3E"
+            "$ref": "#/definitions/SelectionComposition"
           },
           "type": "array"
         }
@@ -10220,7 +10220,7 @@
       ],
       "type": "object"
     },
-    "LogicalComposition<Predicate>": {
+    "PredicateComposition": {
       "anyOf": [
         {
           "$ref": "#/definitions/LogicalNot%3CPredicate%3E"
@@ -10236,16 +10236,16 @@
         }
       ]
     },
-    "LogicalComposition<string>": {
+    "SelectionComposition": {
       "anyOf": [
         {
-          "$ref": "#/definitions/LogicalNot%3Cstring%3E"
+          "$ref": "#/definitions/SelectionNot"
         },
         {
-          "$ref": "#/definitions/LogicalAnd%3Cstring%3E"
+          "$ref": "#/definitions/SelectionAnd"
         },
         {
-          "$ref": "#/definitions/LogicalOr%3Cstring%3E"
+          "$ref": "#/definitions/SelectionOr"
         },
         {
           "type": "string"
@@ -10256,7 +10256,7 @@
       "additionalProperties": false,
       "properties": {
         "not": {
-          "$ref": "#/definitions/LogicalComposition%3CPredicate%3E"
+          "$ref": "#/definitions/PredicateComposition"
         }
       },
       "required": [
@@ -10264,11 +10264,11 @@
       ],
       "type": "object"
     },
-    "LogicalNot<string>": {
+    "SelectionNot": {
       "additionalProperties": false,
       "properties": {
         "not": {
-          "$ref": "#/definitions/LogicalComposition%3Cstring%3E"
+          "$ref": "#/definitions/SelectionComposition"
         }
       },
       "required": [
@@ -10281,7 +10281,7 @@
       "properties": {
         "or": {
           "items": {
-            "$ref": "#/definitions/LogicalComposition%3CPredicate%3E"
+            "$ref": "#/definitions/PredicateComposition"
           },
           "type": "array"
         }
@@ -10291,12 +10291,12 @@
       ],
       "type": "object"
     },
-    "LogicalOr<string>": {
+    "SelectionOr": {
       "additionalProperties": false,
       "properties": {
         "or": {
           "items": {
-            "$ref": "#/definitions/LogicalComposition%3Cstring%3E"
+            "$ref": "#/definitions/SelectionComposition"
           },
           "type": "array"
         }
@@ -11452,13 +11452,13 @@
       ],
       "type": "string"
     },
-    "NumericFieldDefWithCondition<Field>": {
-      "$ref": "#/definitions/FieldDefWithCondition%3CMarkPropFieldDef%3CField%2CStandardType%3E%2Cnumber%3E"
+    "NumericFieldDefWithCondition": {
+      "$ref": "#/definitions/FieldDefWithCondition%3CMarkPropFieldDef%2Cnumber%3E"
     },
-    "NumericValueDefWithCondition<Field>": {
-      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%3CField%2CStandardType%3E%2Cnumber%3E"
+    "NumericValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%2Cnumber%3E"
     },
-    "OrderFieldDef<Field>": {
+    "OrderFieldDef": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -12099,7 +12099,7 @@
       ],
       "type": "object"
     },
-    "PositionFieldDef<Field>": {
+    "PositionFieldDef": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -12170,7 +12170,7 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
         },
         "sort": {
-          "$ref": "#/definitions/Sort%3CField%3E",
+          "$ref": "#/definitions/Sort",
           "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript.\n- [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
         },
         "stack": {
@@ -13165,7 +13165,7 @@
       },
       "type": "object"
     },
-    "RowColumnEncodingFieldDef<Field>": {
+    "RowColumnEncodingFieldDef": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -13211,7 +13211,7 @@
               "$ref": "#/definitions/SortOrder"
             },
             {
-              "$ref": "#/definitions/EncodingSortField%3CField%3E"
+              "$ref": "#/definitions/EncodingSortField"
             },
             {
               "type": "null"
@@ -13667,7 +13667,7 @@
       ],
       "type": "object"
     },
-    "SecondaryFieldDef<Field>": {
+    "SecondaryFieldDef": {
       "additionalProperties": false,
       "description": "A field definition of a secondary channel that shares a scale with another primary channel. For example, `x2`, `xError` and `xError2` share the same scale with `x`.",
       "properties": {
@@ -13806,7 +13806,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/LogicalComposition%3Cstring%3E",
+          "$ref": "#/definitions/SelectionComposition",
           "description": "Filter using a selection name or a logical composition of selection names."
         }
       },
@@ -13982,11 +13982,11 @@
       ],
       "type": "string"
     },
-    "ShapeFieldDefWithCondition<Field>": {
-      "$ref": "#/definitions/FieldDefWithCondition%3CMarkPropFieldDef%3CField%2CTypeForShape%3E%2C(string%7Cnull)%3E"
+    "ShapeFieldDefWithCondition": {
+      "$ref": "#/definitions/FieldDefWithCondition%3CMarkPropFieldDef%3CTypeForShape%3E%2C(string%7Cnull)%3E"
     },
-    "ShapeValueDefWithCondition<Field>": {
-      "$ref": "#/definitions/StringValueDefWithCondition%3CField%2CTypeForShape%3E"
+    "ShapeValueDefWithCondition": {
+      "$ref": "#/definitions/StringValueDefWithCondition%3CTypeForShape%3E"
     },
     "SignalRef": {
       "additionalProperties": false,
@@ -14210,7 +14210,7 @@
         }
       ]
     },
-    "Sort<Field>": {
+    "Sort": {
       "anyOf": [
         {
           "$ref": "#/definitions/SortArray"
@@ -14219,7 +14219,7 @@
           "$ref": "#/definitions/AllSortString"
         },
         {
-          "$ref": "#/definitions/EncodingSortField%3CField%3E"
+          "$ref": "#/definitions/EncodingSortField"
         },
         {
           "$ref": "#/definitions/SortByEncoding"
@@ -14477,7 +14477,7 @@
         }
       ]
     },
-    "StringFieldDef<Field>": {
+    "StringFieldDef": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -14549,14 +14549,14 @@
       ],
       "type": "object"
     },
-    "StringFieldDefWithCondition<Field>": {
-      "$ref": "#/definitions/FieldDefWithCondition%3CStringFieldDef%3CField%3E%2Cstring%3E"
+    "StringFieldDefWithCondition": {
+      "$ref": "#/definitions/FieldDefWithCondition%3CStringFieldDef%2Cstring%3E"
     },
-    "StringValueDefWithCondition<Field,TypeForShape>": {
-      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%3CField%2CTypeForShape%3E%2C(string%7Cnull)%3E"
+    "StringValueDefWithCondition<TypeForShape>": {
+      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%3CTypeForShape%3E%2C(string%7Cnull)%3E"
     },
-    "StringValueDefWithCondition<Field>": {
-      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%3CField%2CStandardType%3E%2C(string%7Cnull)%3E"
+    "StringValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%2C(string%7Cnull)%3E"
     },
     "StrokeCap": {
       "enum": [
@@ -14609,11 +14609,11 @@
         }
       ]
     },
-    "TextFieldDefWithCondition<Field>": {
-      "$ref": "#/definitions/FieldDefWithCondition%3CStringFieldDef%3CField%3E%2CText%3E"
+    "TextFieldDefWithCondition": {
+      "$ref": "#/definitions/FieldDefWithCondition%3CStringFieldDef%2CText%3E"
     },
-    "TextValueDefWithCondition<Field>": {
-      "$ref": "#/definitions/ValueDefWithCondition%3CStringFieldDef%3CField%3E%2CText%3E"
+    "TextValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition%3CStringFieldDef%2CText%3E"
     },
     "TickConfig": {
       "additionalProperties": false,
@@ -15195,7 +15195,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<GenericConcatSpec<FacetedUnitSpec,LayerSpec>>": {
+    "TopLevelConcatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -15255,7 +15255,7 @@
         "concat": {
           "description": "A list of views to be concatenated.",
           "items": {
-            "$ref": "#/definitions/GenericSpec%3CFacetedUnitSpec%2CLayerSpec%3E"
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         },
@@ -15333,7 +15333,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<GenericHConcatSpec<FacetedUnitSpec,LayerSpec>>": {
+    "TopLevelHConcatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -15394,7 +15394,7 @@
         "hconcat": {
           "description": "A list of views to be concatenated and put into a row.",
           "items": {
-            "$ref": "#/definitions/GenericSpec%3CFacetedUnitSpec%2CLayerSpec%3E"
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         },
@@ -15442,7 +15442,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<GenericRepeatSpec<FacetedUnitSpec,LayerSpec>>": {
+    "TopLevelRepeatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -15560,7 +15560,7 @@
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "spec": {
-          "$ref": "#/definitions/GenericSpec%3CFacetedUnitSpec%2CLayerSpec%3E",
+          "$ref": "#/definitions/Spec",
           "description": "A specification of the view that gets repeated."
         },
         "title": {
@@ -15592,7 +15592,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<GenericVConcatSpec<FacetedUnitSpec,LayerSpec>>": {
+    "TopLevelVConcatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -15691,7 +15691,7 @@
         "vconcat": {
           "description": "A list of views to be concatenated and put into a column.",
           "items": {
-            "$ref": "#/definitions/GenericSpec%3CFacetedUnitSpec%2CLayerSpec%3E"
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         }
@@ -15701,7 +15701,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<LayerSpec>": {
+    "TopLevelLayerSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -15748,7 +15748,7 @@
           "type": "string"
         },
         "encoding": {
-          "$ref": "#/definitions/CompositeEncoding",
+          "$ref": "#/definitions/Encoding",
           "description": "A shared key-value mapping between encoding channels and definition of fields in the underlying layers."
         },
         "height": {
@@ -15773,7 +15773,7 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/GenericLayerSpec%3CUnitSpec%3E"
+                "$ref": "#/definitions/LayerSpec"
               },
               {
                 "$ref": "#/definitions/UnitSpec"
@@ -15930,10 +15930,10 @@
         "facet": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FacetFieldDef%3CField%3E"
+              "$ref": "#/definitions/FacetFieldDef"
             },
             {
-              "$ref": "#/definitions/FacetMapping%3CField%3E"
+              "$ref": "#/definitions/FacetMapping"
             }
           ],
           "description": "Definition for how to facet the data. One of:\n1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)\n2) [An object that maps `row` and `column` channels to their field definitions](https://vega.github.io/vega-lite/docs/facet.html#mapping)"
@@ -16011,19 +16011,19 @@
           "$ref": "#/definitions/TopLevelFacetSpec"
         },
         {
-          "$ref": "#/definitions/TopLevel%3CLayerSpec%3E"
+          "$ref": "#/definitions/TopLevelLayerSpec"
         },
         {
-          "$ref": "#/definitions/TopLevel%3CGenericRepeatSpec%3CFacetedUnitSpec%2CLayerSpec%3E%3E"
+          "$ref": "#/definitions/TopLevelRepeatSpec"
         },
         {
-          "$ref": "#/definitions/TopLevel%3CGenericConcatSpec%3CFacetedUnitSpec%2CLayerSpec%3E%3E"
+          "$ref": "#/definitions/TopLevelConcatSpec"
         },
         {
-          "$ref": "#/definitions/TopLevel%3CGenericVConcatSpec%3CFacetedUnitSpec%2CLayerSpec%3E%3E"
+          "$ref": "#/definitions/TopLevelVConcatSpec"
         },
         {
-          "$ref": "#/definitions/TopLevel%3CGenericHConcatSpec%3CFacetedUnitSpec%2CLayerSpec%3E%3E"
+          "$ref": "#/definitions/TopLevelHConcatSpec"
         }
       ],
       "description": "A Vega-Lite top-level specification.\nThis is the root class for all Vega-Lite specifications.\n(The json schema is generated from this type.)"
@@ -16083,7 +16083,7 @@
           "type": "string"
         },
         "encoding": {
-          "$ref": "#/definitions/FacetedCompositeEncoding",
+          "$ref": "#/definitions/FacetedEncoding",
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
@@ -16278,7 +16278,7 @@
       ],
       "type": "string"
     },
-    "TypedFieldDef<Field,StandardType>": {
+    "TypedFieldDef": {
       "additionalProperties": false,
       "description": "Definition object for a data field, its type and transformation of an encoding channel.",
       "properties": {
@@ -16336,7 +16336,7 @@
       "type": "object"
     },
     "UnitSpec": {
-      "$ref": "#/definitions/GenericUnitSpec%3CCompositeEncoding%2CAnyMark%3E",
+      "$ref": "#/definitions/GenericUnitSpec%3CEncoding%2CAnyMark%3E",
       "description": "A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types)."
     },
     "UnitSpecWithFrame": {
@@ -16358,7 +16358,7 @@
           "type": "string"
         },
         "encoding": {
-          "$ref": "#/definitions/CompositeEncoding",
+          "$ref": "#/definitions/Encoding",
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
@@ -16504,7 +16504,7 @@
         "null"
       ]
     },
-    "ValueDef<(number|\"height\")>": {
+    "YValueDef": {
       "additionalProperties": false,
       "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
@@ -16528,7 +16528,7 @@
       ],
       "type": "object"
     },
-    "ValueDef<(number|\"width\")>": {
+    "XValueDef": {
       "additionalProperties": false,
       "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
@@ -16552,7 +16552,7 @@
       ],
       "type": "object"
     },
-    "ValueDef<number>": {
+    "NumberValueDef": {
       "additionalProperties": false,
       "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
@@ -16566,21 +16566,21 @@
       ],
       "type": "object"
     },
-    "ValueDefWithCondition<MarkPropFieldDef<Field,StandardType>,(Gradient|string|null)>": {
+    "ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>": {
       "additionalProperties": false,
       "minProperties": 1,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional%3CMarkPropFieldDef%3CField%2CStandardType%3E%3E"
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
             },
             {
-              "$ref": "#/definitions/Conditional%3CValueDef%3C(Gradient%7Cstring%7Cnull)%3E%3E"
+              "$ref": "#/definitions/ConditionalValueDef%3C(Gradient%7Cstring%7Cnull)%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional%3CValueDef%3C(Gradient%7Cstring%7Cnull)%3E%3E"
+                "$ref": "#/definitions/ConditionalValueDef%3C(Gradient%7Cstring%7Cnull)%3E"
               },
               "type": "array"
             }
@@ -16604,21 +16604,21 @@
       },
       "type": "object"
     },
-    "ValueDefWithCondition<MarkPropFieldDef<Field,StandardType>,(string|null)>": {
+    "ValueDefWithCondition<MarkPropFieldDef,(string|null)>": {
       "additionalProperties": false,
       "minProperties": 1,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional%3CMarkPropFieldDef%3CField%2CStandardType%3E%3E"
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
             },
             {
-              "$ref": "#/definitions/Conditional%3CValueDef%3C(string%7Cnull)%3E%3E"
+              "$ref": "#/definitions/ConditionalStringValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional%3CValueDef%3C(string%7Cnull)%3E%3E"
+                "$ref": "#/definitions/ConditionalStringValueDef"
               },
               "type": "array"
             }
@@ -16635,21 +16635,21 @@
       },
       "type": "object"
     },
-    "ValueDefWithCondition<MarkPropFieldDef<Field,StandardType>,number>": {
+    "ValueDefWithCondition<MarkPropFieldDef,number>": {
       "additionalProperties": false,
       "minProperties": 1,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional%3CMarkPropFieldDef%3CField%2CStandardType%3E%3E"
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
             },
             {
-              "$ref": "#/definitions/Conditional%3CValueDef%3Cnumber%3E%3E"
+              "$ref": "#/definitions/ConditionalNumberValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional%3CValueDef%3Cnumber%3E%3E"
+                "$ref": "#/definitions/ConditionalNumberValueDef"
               },
               "type": "array"
             }
@@ -16663,21 +16663,21 @@
       },
       "type": "object"
     },
-    "ValueDefWithCondition<MarkPropFieldDef<Field,TypeForShape>,(string|null)>": {
+    "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
       "additionalProperties": false,
       "minProperties": 1,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional%3CMarkPropFieldDef%3CField%2CTypeForShape%3E%3E"
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef%3CTypeForShape%3E"
             },
             {
-              "$ref": "#/definitions/Conditional%3CValueDef%3C(string%7Cnull)%3E%3E"
+              "$ref": "#/definitions/ConditionalStringValueDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional%3CValueDef%3C(string%7Cnull)%3E%3E"
+                "$ref": "#/definitions/ConditionalStringValueDef"
               },
               "type": "array"
             }
@@ -16694,21 +16694,21 @@
       },
       "type": "object"
     },
-    "ValueDefWithCondition<StringFieldDef<Field>,Text>": {
+    "ValueDefWithCondition<StringFieldDef,Text>": {
       "additionalProperties": false,
       "minProperties": 1,
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Conditional%3CStringFieldDef%3CField%3E%3E"
+              "$ref": "#/definitions/ConditionalStringFieldDef"
             },
             {
-              "$ref": "#/definitions/Conditional%3CValueDef%3CText%3E%3E"
+              "$ref": "#/definitions/ConditionalValueDef%3CText%3E"
             },
             {
               "items": {
-                "$ref": "#/definitions/Conditional%3CValueDef%3CText%3E%3E"
+                "$ref": "#/definitions/ConditionalValueDef%3CText%3E"
               },
               "type": "array"
             }
