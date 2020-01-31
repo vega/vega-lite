@@ -19,7 +19,14 @@ import {Scale} from './scale';
 import {isSortByChannel, Sort, SortOrder} from './sort';
 import {isFacetFieldDef} from './spec/facet';
 import {StackOffset} from './stack';
-import {getTimeUnitParts, normalizeTimeUnit, TimeUnit, TimeUnitParams, timeUnitToString} from './timeunit';
+import {
+  getTimeUnitParts,
+  normalizeTimeUnit,
+  TimeUnit,
+  TimeUnitParams,
+  timeUnitToString,
+  isLocalSingleTimeUnit
+} from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
 import {contains, flatAccessWithDatum, getFirstDefined, internalField, replacePathInField, titlecase} from './util';
@@ -1024,16 +1031,17 @@ export function valueExpr(
     undefinedIfExprNotRequired?: boolean;
   }
 ): string {
-  const timeUnitParams = normalizeTimeUnit(timeUnit);
+  const unit = normalizeTimeUnit(timeUnit)?.unit;
   let expr;
   if (isDateTime(v)) {
     expr = dateTimeToExpr(v);
   } else if (isString(v) || isNumber(v)) {
-    if (timeUnitParams) {
-      expr = dateTimeToExpr({[timeUnitParams.unit]: v});
-    } else if (type === 'temporal') {
-      // just pass the string to date function (which will call JS Date.parse())
-      expr = `datetime(${JSON.stringify(v)})`;
+    if (unit || type === 'temporal') {
+      if (isLocalSingleTimeUnit(unit)) {
+        expr = dateTimeToExpr({[unit]: v});
+      } else {
+        expr = `datetime(${JSON.stringify(v)})`;
+      }
     }
   }
   if (expr) {

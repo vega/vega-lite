@@ -541,6 +541,26 @@ describe('compile/scale', () => {
         ]);
       });
 
+      it('should return the right custom domain when timeUnit is used', () => {
+        const model = parseUnitModel({
+          mark: 'point',
+          encoding: {
+            y: {
+              field: 'year',
+              type: 'temporal',
+              scale: {domain: ['Jan 1, 2007', 'Jan 1, 2009']},
+              timeUnit: 'yearmonthdate'
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'y');
+
+        expect(_domain).toEqual([
+          {signal: `{data: datetime("Jan 1, 2007")}`},
+          {signal: `{data: datetime("Jan 1, 2009")}`}
+        ]);
+      });
+
       describe('for ordinal', () => {
         it('should have correct domain for binned ordinal color', () => {
           const model = parseUnitModel({
