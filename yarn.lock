@@ -7885,10 +7885,17 @@ vega-transforms@4.6.0:
     vega-time "^1.0.0"
     vega-util "^1.12.1"
 
-vega-typings@0.12.0, vega-typings@~0.12.0:
+vega-typings@0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.12.0.tgz#bf998252b7f72bb2f22d6d5a02813e0bd3685562"
   integrity sha512-K+IoUTTtXW3E1Qhr/y+JgLRxy476viAm6DeM8IiVrA8vvuLA3FTzHaeI7TCnaWEwk9xxLJBtdVKKC5FGbp0Nyw==
+  dependencies:
+    vega-util "^1.12.1"
+
+vega-typings@~0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.12.1.tgz#47f61c7e5bce01617f891dff5148f06fdae5f881"
+  integrity sha512-+9nciYMrG3t/gBQv5bc5s81aBpa3WC/EGsj6pBJBq8hniyeM9OgFf94ABNX6GJCzC7I8QdusVOrA/CTI3HYCpg==
   dependencies:
     vega-util "^1.12.1"
 
