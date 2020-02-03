@@ -7868,11 +7868,11 @@ vega-time@1.0.0, vega-time@^1.0.0:
     vega-util "^1.12.0"
 
 vega-tooltip@^0.20.0:
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.20.0.tgz#6861dd11cbae7a942bc3240935119d2074af8a3a"
-  integrity sha512-4LLSkaFh21YlsaqWkMrn5WEo1nJVZ1dNE7J12opVej2Afqomjzm4XO9znWlRu8Lfcm0GXjiDb2rfXAcxghVOmg==
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.20.1.tgz#817323c7f9e3fa9db53afe583493fbfe290d7892"
+  integrity sha512-kk1p2VRDAZRdoi9C6UdItOO8GCFbtVfUNT1g3XPpHCYuQ4Lrjffa0SNcT/i69luC3n6qd9VyrceFoPBGM4YvTw==
   dependencies:
-    vega-util "^1.12.1"
+    vega-util "^1.12.2"
 
 vega-transforms@4.6.0:
   version "4.6.0"
