@@ -68,6 +68,14 @@ describe('compile/axis/assemble', () => {
       expect(axis.encode.labels.update.text).toEqual({signal: 'test[0]'});
     });
 
+    it('correctly redirect color signal', () => {
+      const axisCmpt = new AxisComponent({
+        labelColor: {signal: 'a'}
+      });
+      const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
+      expect(axis.encode.labels.update.fill).toEqual({signal: 'a'});
+    });
+
     it('correctly applies conditional axis tickSize', () => {
       const axisCmpt = new AxisComponent({
         tickSize: {
