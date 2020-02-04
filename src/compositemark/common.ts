@@ -117,7 +117,7 @@ export function getCompositeMarkTooltip(
       return {
         field: fieldPrefix + continuousAxisChannelDef.field,
         type: continuousAxisChannelDef.type,
-        title: isSignalRef(titlePrefix) ? {signal: titlePrefix + `"${mainTitle}"`} : titlePrefix + mainTitle
+        title: isSignalRef(titlePrefix) ? {signal: titlePrefix + `"${escape(mainTitle)}"`} : titlePrefix + mainTitle
       };
     }
   );
