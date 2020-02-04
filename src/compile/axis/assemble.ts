@@ -1,5 +1,5 @@
 import {Axis as VgAxis, AxisEncode, NewSignal, SignalRef, Text} from 'vega';
-import {stringValue, array} from 'vega-util';
+import {array, stringValue} from 'vega-util';
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isConditionalAxisValue} from '../../axis';
 import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';
@@ -88,6 +88,13 @@ export function assembleAxis(
         };
         axis[prop] = signalRef;
       }
+    } else if (isSignalRef(propValue)) {
+      const propIndex = CONDITIONAL_AXIS_PROP_INDEX[prop];
+      if (propIndex) {
+        const {vgProp, part} = propIndex;
+        setAxisEncode(axis, part, vgProp, propValue);
+        delete axis[prop];
+      } // else do nothing since the property already supports signal
     }
   }
 
