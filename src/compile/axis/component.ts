@@ -2,10 +2,10 @@ import {Axis as VgAxis, Text} from 'vega-typings';
 import {
   Axis,
   AxisPart,
-  BaseAxisNoValueRefs,
+  AxisPropsWithConditionAndSignal,
   COMMON_AXIS_PROPERTIES_INDEX,
   ConditionalAxisProp,
-  ConditionalAxisProperty
+  SignalAxisProp
 } from '../../axis';
 import {FieldDefBase} from '../../channeldef';
 import {duplicate, Flag, keys} from '../../util';
@@ -15,11 +15,10 @@ function isFalseOrNull(v: any) {
   return v === false || v === null;
 }
 
-export type AxisComponentProps = Omit<VgAxis, 'title' | ConditionalAxisProp> & {
-  title: Text | FieldDefBase<string>[];
-  labelExpr: string;
-} & {
-    [k in ConditionalAxisProp]?: BaseAxisNoValueRefs[k] | ConditionalAxisProperty<BaseAxisNoValueRefs[k]>;
+export type AxisComponentProps = Omit<VgAxis, 'title' | ConditionalAxisProp | SignalAxisProp> &
+  Omit<AxisPropsWithConditionAndSignal, 'title'> & {
+    title: Text | FieldDefBase<string>[];
+    labelExpr: string;
   };
 
 const AXIS_COMPONENT_PROPERTIES_INDEX: Flag<keyof AxisComponentProps> = {
