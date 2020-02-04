@@ -4,6 +4,7 @@ import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
 import {FieldDefBase, isTimeFormatFieldDef, toFieldDefBase} from '../../channeldef';
 import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
+import {isSignalRef} from '../../vega.schema';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {LayerModel} from '../layer';
@@ -246,7 +247,9 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
         axisComponent.set(property, configValue, false);
       }
     } else if (
-      isConditionalAxisValue<any>(configValue) // need to cast as TS isn't smart enough to figure the generic parameter type yet
+      isConditionalAxisValue<any>(configValue) ||
+      isSignalRef(configValue)
+      // need to cast as TS isn't smart enough to figure the generic parameter type yet
     ) {
       // If a config is specified and is conditional, copy conditional value from axis config
       axisComponent.set(property, configValue, false);
@@ -363,7 +366,7 @@ function getProperty<K extends keyof AxisComponentProps>(
       const fieldDef2 = model.fieldDef(channel2);
       // Keep undefined so we use default if title is unspecified.
       // For other falsy value, keep them so we will hide the title.
-      return getFirstDefined<Text | FieldDefBase<string>[]>(
+      return getFirstDefined<Text | SignalRef | FieldDefBase<string>[]>(
         specifiedAxis.title,
         getFieldDefTitle(model, channel), // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
         mergeTitleFieldDefs([toFieldDefBase(fieldDef)], fieldDef2 ? [toFieldDefBase(fieldDef2)] : [])
