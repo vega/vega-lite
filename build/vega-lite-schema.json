@@ -552,6 +552,9 @@
                 },
                 {
                   "$ref": "#/definitions/Color"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
                 }
               ],
               "description": "Color of axis domain line.\n\n__Default value:__ `\"gray\"`."
@@ -562,11 +565,18 @@
           ]
         },
         "domainDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed domain lines.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "An array of alternating [stroke, space] lengths for dashed domain lines."
         },
         "domainDashOffset": {
           "description": "The pixel offset at which to start drawing with the domain dash array.",
@@ -605,6 +615,9 @@
                 },
                 {
                   "$ref": "#/definitions/Color"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
                 }
               ],
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
@@ -620,11 +633,18 @@
         "gridDash": {
           "anyOf": [
             {
-              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
+              "description": "An array of alternating [stroke, space] lengths for dashed grid lines."
             },
             {
               "$ref": "#/definitions/ConditionalAxisNumberArray"
@@ -670,7 +690,14 @@
         "labelAlign": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Align",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Align"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
@@ -687,7 +714,14 @@
         "labelBaseline": {
           "anyOf": [
             {
-              "$ref": "#/definitions/TextBaseline",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/TextBaseline"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
@@ -696,11 +730,18 @@
           ]
         },
         "labelBound": {
-          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
-          "type": [
-            "number",
-            "boolean"
-          ]
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`."
         },
         "labelColor": {
           "anyOf": [
@@ -711,6 +752,9 @@
                 },
                 {
                   "$ref": "#/definitions/Color"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
                 }
               ],
               "description": "The color of the tick label, can be in hex color code or regular color name."
@@ -735,14 +779,28 @@
           ]
         },
         "labelFlushOffset": {
-          "description": "Indicates the number of pixels by which to offset flush-adjusted labels. For example, a value of `2` will push flush-adjusted labels 2 pixels outward from the center of the axis. Offsets can help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `0`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "Indicates the number of pixels by which to offset flush-adjusted labels. For example, a value of `2` will push flush-adjusted labels 2 pixels outward from the center of the axis. Offsets can help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `0`."
         },
         "labelFont": {
           "anyOf": [
             {
-              "description": "The font of the tick label.",
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
+              "description": "The font of the tick label."
             },
             {
               "$ref": "#/definitions/ConditionalAxisString"
@@ -764,7 +822,14 @@
         "labelFontStyle": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FontStyle",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/FontStyle"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
               "description": "Font style of the title."
             },
             {
@@ -775,7 +840,14 @@
         "labelFontWeight": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FontWeight",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/FontWeight"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
               "description": "Font weight of axis tick labels."
             },
             {
@@ -805,7 +877,7 @@
         "labelPadding": {
           "anyOf": [
             {
-              "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
+              "description": "The padding in pixels between labels and ticks.\n\n__Default value:__ `2`",
               "type": "number"
             },
             {
@@ -814,8 +886,15 @@
           ]
         },
         "labelSeparation": {
-          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled."
         },
         "labels": {
           "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__ `true`.",
@@ -842,12 +921,24 @@
           "type": "number"
         },
         "tickBand": {
-          "description": "For band scales, indicates if ticks and grid lines should be placed at the center of a band (default) or at the band extents to indicate intervals.",
-          "enum": [
-            "center",
-            "extent"
+          "anyOf": [
+            {
+              "enum": [
+                "center"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "extent"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
           ],
-          "type": "string"
+          "description": "For band scales, indicates if ticks and grid lines should be placed at the center of a band (default) or at the band extents to indicate intervals."
         },
         "tickColor": {
           "anyOf": [
@@ -858,6 +949,9 @@
                 },
                 {
                   "$ref": "#/definitions/Color"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
                 }
               ],
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
@@ -878,11 +972,18 @@
         "tickDash": {
           "anyOf": [
             {
-              "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
+              "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines."
             },
             {
               "$ref": "#/definitions/ConditionalAxisNumberArray"
@@ -901,12 +1002,26 @@
           ]
         },
         "tickExtra": {
-          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`."
         },
         "tickMinStep": {
-          "description": "The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.\n\n__Default value__: `undefined`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.\n\n__Default value__: `undefined`"
         },
         "tickOffset": {
           "description": "Position offset in pixels to apply to ticks, labels, and gridlines.",
@@ -924,8 +1039,15 @@
           ]
         },
         "tickRound": {
-          "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`"
         },
         "tickSize": {
           "anyOf": [
@@ -952,8 +1074,15 @@
           ]
         },
         "ticks": {
-          "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`"
         },
         "title": {
           "anyOf": [
@@ -970,11 +1099,25 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "titleAlign": {
-          "$ref": "#/definitions/Align",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Horizontal text alignment of axis titles."
         },
         "titleAnchor": {
-          "$ref": "#/definitions/TitleAnchor",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TitleAnchor"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Text anchor position for placing axis titles."
         },
         "titleAngle": {
@@ -982,7 +1125,14 @@
           "type": "number"
         },
         "titleBaseline": {
-          "$ref": "#/definitions/TextBaseline",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Vertical text baseline for axis titles."
         },
         "titleColor": {
@@ -994,6 +1144,9 @@
                 },
                 {
                   "$ref": "#/definitions/Color"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
                 }
               ],
               "description": "Color of the title, can be in hex color code or regular color name."
@@ -1004,8 +1157,15 @@
           ]
         },
         "titleFont": {
-          "description": "Font of the title. (e.g., `\"Helvetica Neue\"`).",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "Font of the title. (e.g., `\"Helvetica Neue\"`)."
         },
         "titleFontSize": {
           "description": "Font size of the title.",
@@ -1013,11 +1173,25 @@
           "type": "number"
         },
         "titleFontStyle": {
-          "$ref": "#/definitions/FontStyle",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Font style of the title."
         },
         "titleFontWeight": {
-          "$ref": "#/definitions/FontWeight",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Font weight of the title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "titleLimit": {
@@ -1074,6 +1248,9 @@
                 "$ref": "#/definitions/DateTime"
               },
               "type": "array"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Explicitly set the visible axis tick values."
@@ -1106,6 +1283,9 @@
                 },
                 {
                   "$ref": "#/definitions/Color"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
                 }
               ],
               "description": "Color of axis domain line.\n\n__Default value:__ `\"gray\"`."
@@ -1116,11 +1296,18 @@
           ]
         },
         "domainDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed domain lines.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "An array of alternating [stroke, space] lengths for dashed domain lines."
         },
         "domainDashOffset": {
           "description": "The pixel offset at which to start drawing with the domain dash array.",
@@ -1147,6 +1334,9 @@
                 },
                 {
                   "$ref": "#/definitions/Color"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
                 }
               ],
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
@@ -1162,11 +1352,18 @@
         "gridDash": {
           "anyOf": [
             {
-              "description": "An array of alternating [stroke, space] lengths for dashed grid lines.",
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
+              "description": "An array of alternating [stroke, space] lengths for dashed grid lines."
             },
             {
               "$ref": "#/definitions/ConditionalAxisNumberArray"
@@ -1212,7 +1409,14 @@
         "labelAlign": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Align",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Align"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
@@ -1229,7 +1433,14 @@
         "labelBaseline": {
           "anyOf": [
             {
-              "$ref": "#/definitions/TextBaseline",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/TextBaseline"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
             },
             {
@@ -1238,11 +1449,18 @@
           ]
         },
         "labelBound": {
-          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
-          "type": [
-            "number",
-            "boolean"
-          ]
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`."
         },
         "labelColor": {
           "anyOf": [
@@ -1253,6 +1471,9 @@
                 },
                 {
                   "$ref": "#/definitions/Color"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
                 }
               ],
               "description": "The color of the tick label, can be in hex color code or regular color name."
@@ -1273,14 +1494,28 @@
           ]
         },
         "labelFlushOffset": {
-          "description": "Indicates the number of pixels by which to offset flush-adjusted labels. For example, a value of `2` will push flush-adjusted labels 2 pixels outward from the center of the axis. Offsets can help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `0`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "Indicates the number of pixels by which to offset flush-adjusted labels. For example, a value of `2` will push flush-adjusted labels 2 pixels outward from the center of the axis. Offsets can help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `0`."
         },
         "labelFont": {
           "anyOf": [
             {
-              "description": "The font of the tick label.",
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
+              "description": "The font of the tick label."
             },
             {
               "$ref": "#/definitions/ConditionalAxisString"
@@ -1302,7 +1537,14 @@
         "labelFontStyle": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FontStyle",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/FontStyle"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
               "description": "Font style of the title."
             },
             {
@@ -1313,7 +1555,14 @@
         "labelFontWeight": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FontWeight",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/FontWeight"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
               "description": "Font weight of axis tick labels."
             },
             {
@@ -1343,7 +1592,7 @@
         "labelPadding": {
           "anyOf": [
             {
-              "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
+              "description": "The padding in pixels between labels and ticks.\n\n__Default value:__ `2`",
               "type": "number"
             },
             {
@@ -1352,8 +1601,15 @@
           ]
         },
         "labelSeparation": {
-          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled."
         },
         "labels": {
           "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__ `true`.",
@@ -1376,12 +1632,24 @@
           "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y-axis oriented towards the right edge of the chart).\n\n__Default value:__ `\"bottom\"` for x-axes and `\"left\"` for y-axes."
         },
         "tickBand": {
-          "description": "For band scales, indicates if ticks and grid lines should be placed at the center of a band (default) or at the band extents to indicate intervals.",
-          "enum": [
-            "center",
-            "extent"
+          "anyOf": [
+            {
+              "enum": [
+                "center"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "extent"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
           ],
-          "type": "string"
+          "description": "For band scales, indicates if ticks and grid lines should be placed at the center of a band (default) or at the band extents to indicate intervals."
         },
         "tickColor": {
           "anyOf": [
@@ -1392,6 +1660,9 @@
                 },
                 {
                   "$ref": "#/definitions/Color"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
                 }
               ],
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
@@ -1407,11 +1678,18 @@
         "tickDash": {
           "anyOf": [
             {
-              "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines.",
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ],
+              "description": "An array of alternating [stroke, space] lengths for dashed tick mark lines."
             },
             {
               "$ref": "#/definitions/ConditionalAxisNumberArray"
@@ -1430,8 +1708,15 @@
           ]
         },
         "tickExtra": {
-          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`."
         },
         "tickOffset": {
           "description": "Position offset in pixels to apply to ticks, labels, and gridlines.",
@@ -1449,8 +1734,15 @@
           ]
         },
         "tickRound": {
-          "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`"
         },
         "tickSize": {
           "anyOf": [
@@ -1477,8 +1769,15 @@
           ]
         },
         "ticks": {
-          "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`"
         },
         "title": {
           "anyOf": [
@@ -1496,11 +1795,25 @@
           "type": "null"
         },
         "titleAlign": {
-          "$ref": "#/definitions/Align",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Horizontal text alignment of axis titles."
         },
         "titleAnchor": {
-          "$ref": "#/definitions/TitleAnchor",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TitleAnchor"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Text anchor position for placing axis titles."
         },
         "titleAngle": {
@@ -1508,7 +1821,14 @@
           "type": "number"
         },
         "titleBaseline": {
-          "$ref": "#/definitions/TextBaseline",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Vertical text baseline for axis titles."
         },
         "titleColor": {
@@ -1520,6 +1840,9 @@
                 },
                 {
                   "$ref": "#/definitions/Color"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
                 }
               ],
               "description": "Color of the title, can be in hex color code or regular color name."
@@ -1530,8 +1853,15 @@
           ]
         },
         "titleFont": {
-          "description": "Font of the title. (e.g., `\"Helvetica Neue\"`).",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "Font of the title. (e.g., `\"Helvetica Neue\"`)."
         },
         "titleFontSize": {
           "description": "Font size of the title.",
@@ -1539,11 +1869,25 @@
           "type": "number"
         },
         "titleFontStyle": {
-          "$ref": "#/definitions/FontStyle",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Font style of the title."
         },
         "titleFontWeight": {
-          "$ref": "#/definitions/FontWeight",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Font weight of the title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "titleLimit": {
@@ -9096,16 +9440,37 @@
       "description": "Properties of a legend or boolean flag for determining whether to show it.",
       "properties": {
         "clipHeight": {
-          "description": "The height in pixels to clip symbol legend entries and limit their size.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The height in pixels to clip symbol legend entries and limit their size."
         },
         "columnPadding": {
-          "description": "The horizontal padding in pixels between symbol legend entries.\n\n__Default value:__ `10`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The horizontal padding in pixels between symbol legend entries.\n\n__Default value:__ `10`."
         },
         "columns": {
-          "description": "The number of columns in which to arrange symbol legend entries. A value of `0` or lower indicates a single row with one column per entry.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The number of columns in which to arrange symbol legend entries. A value of `0` or lower indicates a single row with one column per entry."
         },
         "cornerRadius": {
           "description": "Corner radius for the full legend.",
@@ -9122,6 +9487,9 @@
             },
             {
               "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Background fill color for the full legend."
@@ -9139,9 +9507,16 @@
           "type": "string"
         },
         "gradientLength": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.\n\n__Default value:__ `200`.",
-          "minimum": 0,
-          "type": "number"
+          "minimum": 0
         },
         "gradientOpacity": {
           "description": "Opacity of the color gradient.",
@@ -9154,6 +9529,9 @@
             },
             {
               "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "The color of the gradient stroke, can be in hex color code or regular color name.\n\n__Default value:__ `\"lightGray\"`."
@@ -9164,20 +9542,48 @@
           "type": "number"
         },
         "gradientThickness": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The thickness in pixels of the color gradient. This value corresponds to the width of a vertical gradient or the height of a horizontal gradient.\n\n__Default value:__ `16`.",
-          "minimum": 0,
-          "type": "number"
+          "minimum": 0
         },
         "gridAlign": {
-          "$ref": "#/definitions/LayoutAlign",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The alignment to apply to symbol legends rows and columns. The supported string values are `\"all\"`, `\"each\"` (the default), and `none`. For more information, see the [grid layout documentation](https://vega.github.io/vega/docs/layout).\n\n__Default value:__ `\"each\"`."
         },
         "labelAlign": {
-          "$ref": "#/definitions/Align",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The alignment of the legend label, can be left, center, or right."
         },
         "labelBaseline": {
-          "$ref": "#/definitions/TextBaseline",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The position of the baseline of legend label, can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`.\n\n__Default value:__ `\"middle\"`."
         },
         "labelColor": {
@@ -9187,6 +9593,9 @@
             },
             {
               "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "The color of the legend label, can be in hex color code or regular color name."
@@ -9196,8 +9605,15 @@
           "type": "string"
         },
         "labelFont": {
-          "description": "The font of the legend label.",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The font of the legend label."
         },
         "labelFontSize": {
           "description": "The font size of legend label.\n\n__Default value:__ `10`.",
@@ -9205,11 +9621,25 @@
           "type": "number"
         },
         "labelFontStyle": {
-          "$ref": "#/definitions/FontStyle",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The font style of legend label."
         },
         "labelFontWeight": {
-          "$ref": "#/definitions/FontWeight",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The font weight of legend label."
         },
         "labelLimit": {
@@ -9225,7 +9655,14 @@
           "type": "number"
         },
         "labelOverlap": {
-          "$ref": "#/definitions/LabelOverlap",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LabelOverlap"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` (default) or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true`."
         },
         "labelPadding": {
@@ -9233,8 +9670,15 @@
           "type": "number"
         },
         "labelSeparation": {
-          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled."
         },
         "legendX": {
           "description": "Custom x-position for legend with orient \"none\".",
@@ -9249,7 +9693,14 @@
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/LegendOrient",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LegendOrient"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of `\"left\"`, `\"right\"`, `\"top\"`, `\"bottom\"`, `\"top-left\"`, `\"top-right\"`, `\"bottom-left\"`, `\"bottom-right\"`, `\"none\"`.\n\n__Default value:__ `\"right\"`"
         },
         "padding": {
@@ -9257,8 +9708,15 @@
           "type": "number"
         },
         "rowPadding": {
-          "description": "The vertical padding in pixels between symbol legend entries.\n\n__Default value:__ `2`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The vertical padding in pixels between symbol legend entries.\n\n__Default value:__ `2`."
         },
         "strokeColor": {
           "anyOf": [
@@ -9267,16 +9725,26 @@
             },
             {
               "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Border stroke color for the full legend."
         },
         "symbolDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed symbol strokes.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "An array of alternating [stroke, space] lengths for dashed symbol strokes."
         },
         "symbolDashOffset": {
           "description": "The pixel offset at which to start drawing with the symbol stroke dash array.",
@@ -9289,6 +9757,9 @@
             },
             {
               "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "The color of the legend symbol,"
@@ -9317,6 +9788,9 @@
             },
             {
               "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "Stroke color for legend symbols."
@@ -9327,23 +9801,30 @@
           "type": "number"
         },
         "symbolType": {
-          "$ref": "#/definitions/SymbolShape",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SymbolShape"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
         },
         "tickCount": {
+          "$ref": "#/definitions/TickCount",
+          "description": "The desired number of tick values for quantitative legends."
+        },
+        "tickMinStep": {
           "anyOf": [
             {
               "type": "number"
             },
             {
-              "$ref": "#/definitions/TimeInterval"
+              "$ref": "#/definitions/SignalRef"
             }
           ],
-          "description": "The desired number of tick values for quantitative legends."
-        },
-        "tickMinStep": {
-          "description": "The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.\n\n__Default value__: `undefined`",
-          "type": "number"
+          "description": "The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.\n\n__Default value__: `undefined`"
         },
         "title": {
           "anyOf": [
@@ -9360,15 +9841,36 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "titleAlign": {
-          "$ref": "#/definitions/Align",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Horizontal text alignment for legend titles.\n\n__Default value:__ `\"left\"`."
         },
         "titleAnchor": {
-          "$ref": "#/definitions/TitleAnchor",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TitleAnchor"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Text anchor position for placing legend titles."
         },
         "titleBaseline": {
-          "$ref": "#/definitions/TextBaseline",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Vertical text baseline for legend titles.\n\n__Default value:__ `\"top\"`."
         },
         "titleColor": {
@@ -9378,24 +9880,48 @@
             },
             {
               "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
             }
           ],
           "description": "The color of the legend title, can be in hex color code or regular color name."
         },
         "titleFont": {
-          "description": "The font of the legend title.",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "The font of the legend title."
         },
         "titleFontSize": {
           "description": "The font size of the legend title.",
           "type": "number"
         },
         "titleFontStyle": {
-          "$ref": "#/definitions/FontStyle",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The font style of the legend title."
         },
         "titleFontWeight": {
-          "$ref": "#/definitions/FontWeight",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The font weight of the legend title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "titleLimit": {
@@ -9412,7 +9938,14 @@
           "type": "number"
         },
         "titleOrient": {
-          "$ref": "#/definitions/Orient",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Orient"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "Orientation of the legend title."
         },
         "titlePadding": {
@@ -9428,24 +9961,36 @@
           "type": "string"
         },
         "values": {
-          "description": "Explicitly set the visible legend values.",
-          "items": {
-            "anyOf": [
-              {
+          "anyOf": [
+            {
+              "items": {
                 "type": "number"
               },
-              {
+              "type": "array"
+            },
+            {
+              "items": {
                 "type": "string"
               },
-              {
+              "type": "array"
+            },
+            {
+              "items": {
                 "type": "boolean"
               },
-              {
+              "type": "array"
+            },
+            {
+              "items": {
                 "$ref": "#/definitions/DateTime"
-              }
-            ]
-          },
-          "type": "array"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
+          "description": "Explicitly set the visible legend values."
         },
         "zindex": {
           "description": "A non-negative integer indicating the z-index of the legend.\nIf zindex is 0, legend should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
@@ -9609,7 +10154,14 @@
           "type": "number"
         },
         "labelOverlap": {
-          "$ref": "#/definitions/LabelOverlap",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LabelOverlap"
+            },
+            {
+              "$ref": "#/definitions/SignalRef"
+            }
+          ],
           "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `\"greedy\"` for `log scales otherwise `true`."
         },
         "labelPadding": {
@@ -15260,6 +15812,19 @@
         }
       },
       "type": "object"
+    },
+    "TickCount": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "$ref": "#/definitions/TimeInterval"
+        },
+        {
+          "$ref": "#/definitions/SignalRef"
+        }
+      ]
     },
     "TimeInterval": {
       "enum": [

@@ -15,9 +15,9 @@ import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, TitleMixins, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {ExcludeMappedValueRef, VgEncodeChannel} from './vega.schema';
+import {ExcludeMappedValueRefButKeepSignal, VgEncodeChannel} from './vega.schema';
 
-export type BaseAxisNoValueRefs = AxisMixins & ExcludeMappedValueRef<BaseAxis>;
+export type BaseAxisNoValueRefs = AxisMixins & ExcludeMappedValueRefButKeepSignal<BaseAxis>;
 
 interface AxisMixins {
   // Override comments to be Vega-Lite specific
@@ -251,12 +251,12 @@ export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
    *
    * __Default value__: `undefined`
    */
-  tickMinStep?: number;
+  tickMinStep?: number | SignalRef; // Vega already supports Signal
 
   /**
    * Explicitly set the visible axis tick values.
    */
-  values?: number[] | string[] | boolean[] | DateTime[];
+  values?: number[] | string[] | boolean[] | DateTime[] | SignalRef; // Vega already supports Signal -- we have to re-declare here since VL supports special Date Time object that's not valid in Vega.
 
   /**
    * A non-negative integer indicating the z-index of the axis.
