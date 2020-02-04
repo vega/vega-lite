@@ -191,7 +191,10 @@ export type ConditionalAxisLabelFontWeight = ConditionalAxisProperty<FontWeight 
 export type ConditionalAxisNumberArray = ConditionalAxisProperty<number[] | null>;
 
 // Vega axis config is the same as Vega axis base. If this is not the case, add specific type.
-export type AxisConfigBaseWithConditionalAndSignal = Omit<BaseAxisNoValueRefs, ConditionalAxisProp | SignalAxisProp> & {
+export type AxisConfigBaseWithConditionalAndSignal = Omit<BaseAxisNoValueRefs, ConditionalAxisProp | SignalAxisProp> &
+  AxisPropsWithConditionAndSignal;
+
+export interface AxisPropsWithConditionAndSignal {
   domainColor?: BaseAxisNoValueRefs['domainColor'] | SignalRef;
   labelAlign?: BaseAxisNoValueRefs['labelAlign'] | ConditionalAxisLabelAlign;
   labelBaseline?: BaseAxisNoValueRefs['labelBaseline'] | ConditionalAxisLabelBaseline;
@@ -215,7 +218,7 @@ export type AxisConfigBaseWithConditionalAndSignal = Omit<BaseAxisNoValueRefs, C
   tickWidth?: BaseAxisNoValueRefs['tickWidth'] | ConditionalAxisNumber;
   titleColor?: BaseAxisNoValueRefs['titleColor'] | SignalRef;
   title?: TitleMixins['title'];
-};
+}
 
 export type AxisConfig = VlOnlyGuideConfig & AxisConfigBaseWithConditionalAndSignal;
 
