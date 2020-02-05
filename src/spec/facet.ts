@@ -1,4 +1,4 @@
-import {LayoutAlign} from 'vega';
+import {LayoutAlign} from 'vega-typings';
 import {BinParams} from '../bin';
 import {ChannelDef, Field, FieldDef, TypedFieldDef} from '../channeldef';
 import {Header} from '../header';

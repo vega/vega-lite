@@ -1,4 +1,4 @@
-import {RegressionTransform as VgRegressionTransform} from 'vega';
+import {RegressionTransform as VgRegressionTransform} from 'vega-typings';
 import {RegressionTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {DataFlowNode} from './dataflow';

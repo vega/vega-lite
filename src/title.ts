@@ -1,4 +1,4 @@
-import {BaseTitle, Text, TextEncodeEntry, TitleAnchor} from 'vega';
+import {BaseTitle, Text, TextEncodeEntry, TitleAnchor} from 'vega-typings';
 import {isArray, isString} from 'vega-util';
 import {BaseMarkConfig, ExcludeMappedValueRef} from './vega.schema';
 

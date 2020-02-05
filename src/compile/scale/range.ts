@@ -1,4 +1,4 @@
-import {RangeScheme, SignalRef} from 'vega';
+import {RangeScheme, SignalRef} from 'vega-typings';
 import {isArray, isNumber} from 'vega-util';
 import {isBinning} from '../../bin';
 import {

@@ -1,4 +1,4 @@
-import {Align} from 'vega';
+import {Align} from 'vega-typings';
 import {Config} from '../../../config';
 import {MarkDef} from '../../../mark';
 import {getFirstDefined} from '../../../util';

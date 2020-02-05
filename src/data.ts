@@ -3,7 +3,7 @@
  */
 import {VgData} from './vega.schema';
 import {FieldName} from './channeldef';
-import {Vector2} from 'vega';
+import {Vector2} from 'vega-typings';
 
 export type ParseValue = null | string | 'string' | 'boolean' | 'date' | 'number';
 

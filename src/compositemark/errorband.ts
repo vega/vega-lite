@@ -1,4 +1,4 @@
-import {Interpolate, Orientation} from 'vega';
+import {Interpolate, Orientation} from 'vega-typings';
 import {Field} from '../channeldef';
 import {Encoding} from '../encoding';
 import * as log from '../log';

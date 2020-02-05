@@ -27,7 +27,7 @@ import {
   Title as VgTitle,
   Transforms as VgTransform,
   UnionSortField as VgUnionSortField
-} from 'vega';
+} from 'vega-typings';
 import {isArray} from 'vega-util';
 import {Gradient, ValueOrGradientOrText} from './channeldef';
 import {NiceTime, ScaleType} from './scale';

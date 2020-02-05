@@ -114,6 +114,7 @@
     "vega-datasets": "^1.29.0",
     "vega-embed": "^6.2.2",
     "vega-tooltip": "^0.20.1",
+    "vega-typings": "~0.12.2",
     "yaml-front-matter": "^4.1.0"
   },
   "dependencies": {
@@ -127,7 +128,6 @@
     "tslib": "~1.10.0",
     "vega-event-selector": "~2.0.2",
     "vega-expression": "~2.6.3",
-    "vega-typings": "~0.12.1",
     "vega-util": "~1.12.2",
     "yargs": "~15.1.0"
   },
