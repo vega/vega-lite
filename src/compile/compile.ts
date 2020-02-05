@@ -85,7 +85,7 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
 
   try {
     // 1. Initialize config by deep merging default config with the config provided via option and the input spec.
-    const config = initConfig(mergeConfig({}, opt.config, inputSpec.config));
+    const config = initConfig(mergeConfig(opt.config, inputSpec.config));
 
     // 2. Normalize: Convert input spec -> normalized spec
 
