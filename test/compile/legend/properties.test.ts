@@ -75,6 +75,11 @@ describe('compile/legend', () => {
 
       expect(values).toEqual([1, 2, 3, 4]);
     });
+
+    it('returns signal correctly for non-DateTime', () => {
+      const values = properties.values({values: {signal: 'a'}}, {field: 'a', type: 'quantitative'});
+      expect(values).toEqual({signal: 'a'});
+    });
   });
 
   describe('clipHeight()', () => {

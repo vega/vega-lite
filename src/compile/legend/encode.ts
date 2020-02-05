@@ -1,5 +1,5 @@
 import {ColorValueRef, SymbolEncodeEntry} from 'vega-typings';
-import {isArray, stringValue, array} from 'vega-util';
+import {array, isArray, stringValue} from 'vega-util';
 import {COLOR, NonPositionScaleChannel, OPACITY} from '../../channel';
 import {
   Conditional,
@@ -16,15 +16,15 @@ import {
 } from '../../channeldef';
 import {FILL_STROKE_CONFIG} from '../../mark';
 import {ScaleType} from '../../scale';
+import {normalizeTimeUnit} from '../../timeunit';
 import {getFirstDefined, keys, varName} from '../../util';
-import {applyMarkConfig, timeFormatExpression} from '../common';
+import {applyMarkConfig, signalOrValueRef, timeFormatExpression} from '../common';
 import * as mixins from '../mark/encode';
 import {STORE} from '../selection';
 import {UnitModel} from '../unit';
 import {ScaleChannel} from './../../channel';
 import {LegendComponent} from './component';
 import {defaultType} from './properties';
-import {normalizeTimeUnit} from '../../timeunit';
 
 function type(legendCmp: LegendComponent, model: UnitModel, channel: ScaleChannel) {
   const scaleType = model.getScaleComponent(channel).get('type');
@@ -63,14 +63,14 @@ export function symbols(
         if (legendCmp.get('symbolFillColor')) {
           delete out.fill;
         } else {
-          out.fill = {value: config.legend.symbolBaseFillColor ?? 'black'};
-          out.fillOpacity = {value: opacity ?? 1};
+          out.fill = signalOrValueRef(config.legend.symbolBaseFillColor ?? 'black');
+          out.fillOpacity = signalOrValueRef(opacity ?? 1);
         }
       } else if (isArray(out.fill)) {
         const fill =
           getFirstConditionValue(encoding.fill ?? encoding.color) ?? markDef.fill ?? (filled && markDef.color);
         if (fill) {
-          out.fill = {value: fill} as ColorValueRef;
+          out.fill = signalOrValueRef(fill) as ColorValueRef;
         }
       }
     }
@@ -98,9 +98,12 @@ export function symbols(
 
   if (channel !== OPACITY) {
     if (condition) {
-      out.opacity = [{test: condition, value: opacity ?? 1}, {value: config.legend.unselectedOpacity}];
+      out.opacity = [
+        {test: condition, ...signalOrValueRef(opacity ?? 1)},
+        signalOrValueRef(config.legend.unselectedOpacity)
+      ];
     } else if (opacity) {
-      out.opacity = {value: opacity};
+      out.opacity = signalOrValueRef(opacity);
     }
   }
 
@@ -125,7 +128,7 @@ export function gradient(
   const opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
   if (opacity) {
     // only apply opacity if it is neither zero or undefined
-    out.opacity = {value: opacity};
+    out.opacity = signalOrValueRef(opacity);
   }
 
   out = {...out, ...gradientSpec};

@@ -1,8 +1,9 @@
+import {SignalRef} from 'vega';
 import {NonPositionScaleChannel} from '../../../channel';
 import {FieldDef, ValueOrGradient} from '../../../channeldef';
 import {getFirstDefined} from '../../../util';
 import {VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {getMarkConfig} from '../../common';
+import {getMarkConfig, signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
 import {wrapCondition} from './conditional';
 import * as ref from './valueref';
@@ -14,7 +15,7 @@ export function nonPosition(
   channel: NonPositionScaleChannel,
   model: UnitModel,
   opt: {
-    defaultValue?: ValueOrGradient;
+    defaultValue?: ValueOrGradient | SignalRef;
     vgChannel?: VgEncodeChannel;
     defaultRef?: VgValueRef;
   } = {}
@@ -32,7 +33,9 @@ export function nonPosition(
         : // However, when they are different (e.g, vl's text size is vg fontSize), need to read "size" from configs
         getFirstDefined(markDef[channel], markDef[vgChannel], getMarkConfig(channel, markDef, config, {vgChannel})));
 
-    defaultRef = defaultValue ? {value: defaultValue} : undefined;
+    if (defaultValue !== undefined) {
+      defaultRef = signalOrValueRef(defaultValue);
+    }
   }
 
   const channelDef = encoding[channel];

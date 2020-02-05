@@ -1,4 +1,5 @@
-import {LabelOverlap, LegendOrient, LegendType, SymbolShape} from 'vega-typings';
+import {LabelOverlap, LegendOrient, LegendType, SignalRef, SymbolShape} from 'vega-typings';
+import {isArray} from 'vega-util';
 import {Channel, isColorChannel} from '../../channel';
 import {
   FieldDefWithCondition,
@@ -12,14 +13,17 @@ import {Mark} from '../../mark';
 import {isContinuousToContinuous, ScaleType} from '../../scale';
 import {TimeUnit} from '../../timeunit';
 import {contains, getFirstDefined} from '../../util';
+import {isSignalRef} from '../../vega.schema';
 import {Model} from '../model';
 import {getFirstConditionValue} from './encode';
 
 export function values(legend: Legend, fieldDef: TypedFieldDef<string>) {
   const vals = legend.values;
 
-  if (vals) {
+  if (isArray(vals)) {
     return valueArray(fieldDef, vals);
+  } else if (isSignalRef(vals)) {
+    return vals;
   }
   return undefined;
 }
@@ -30,8 +34,8 @@ export function defaultSymbolType(
   shapeChannelDef:
     | FieldDefWithCondition<MarkPropFieldDef<string>, SymbolShape>
     | ValueDefWithCondition<MarkPropFieldDef<string>, SymbolShape>,
-  markShape: SymbolShape
-): SymbolShape {
+  markShape: SymbolShape | SignalRef
+): SymbolShape | SignalRef {
   if (channel !== 'shape') {
     // use the value from the shape encoding or the mark config if they exist
     const shape = getFirstConditionValue(shapeChannelDef) ?? markShape;

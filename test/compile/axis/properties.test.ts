@@ -92,6 +92,11 @@ describe('compile/axis', () => {
       expect(values).toEqual([1, 2, 3, 4]);
     });
 
+    it('returns signal correctly for non-DateTime', () => {
+      const values = properties.values({values: {signal: 'a'}}, null, {field: 'a', type: 'quantitative'});
+      expect(values).toEqual({signal: 'a'});
+    });
+
     it('should simply drop values when domain is specified', () => {
       const model1 = parseUnitModelWithScale({
         mark: 'bar',

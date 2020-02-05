@@ -4,14 +4,15 @@ import {
   Legend as VgLegend,
   LegendConfig as VgLegendConfig,
   LegendOrient,
-  Orientation
+  Orientation,
+  SignalRef
 } from 'vega-typings';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {ExcludeMappedValueRef} from './vega.schema';
+import {ExcludeMappedValueRef, ExcludeMappedValueRefButKeepSignal} from './vega.schema';
 
-type BaseLegendNoSignals = ExcludeMappedValueRef<BaseLegend>;
+type BaseLegendNoValueRefs = ExcludeMappedValueRefButKeepSignal<BaseLegend>;
 
 export type LegendConfig = LegendMixins &
   VlOnlyGuideConfig &
@@ -68,7 +69,7 @@ export type LegendConfig = LegendMixins &
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend extends BaseLegendNoSignals, LegendMixins, Guide {
+export interface Legend extends BaseLegendNoValueRefs, LegendMixins, Guide {
   /**
    * Mark definitions for custom legend encoding.
    *
@@ -88,12 +89,12 @@ export interface Legend extends BaseLegendNoSignals, LegendMixins, Guide {
    *
    * __Default value__: `undefined`
    */
-  tickMinStep?: number;
+  tickMinStep?: number | SignalRef;
 
   /**
    * Explicitly set the visible legend values.
    */
-  values?: (number | string | boolean | DateTime)[];
+  values?: number[] | string[] | boolean[] | DateTime[] | SignalRef; // Vega already supports Signal -- we have to re-declare here since VL supports special Date Time object that's not valid in Vega.
 
   /**
    * The type of the legend. Use `"symbol"` to create a discrete legend and `"gradient"` for a continuous color gradient.
@@ -137,7 +138,7 @@ interface LegendMixins {
    *
    * __Default value:__ `"greedy"` for `log scales otherwise `true`.
    */
-  labelOverlap?: LabelOverlap;
+  labelOverlap?: LabelOverlap | SignalRef; // override comment since our default differs from Vega
 }
 
 export interface LegendEncoding {

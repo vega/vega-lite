@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {isNumber} from 'vega-util';
 import {getViewConfigDiscreteStep} from '../../config';
 import {getFirstDefined} from '../../util';
@@ -39,7 +40,7 @@ export const tick: MarkCompiler = {
   }
 };
 
-function defaultSize(model: UnitModel): number {
+function defaultSize(model: UnitModel): number | SignalRef {
   const {config, markDef} = model;
   const {orient} = markDef;
 
