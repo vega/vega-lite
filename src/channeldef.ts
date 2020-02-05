@@ -1,4 +1,4 @@
-import {LinearGradient, RadialGradient, Text} from 'vega-typings';
+import {Gradient, Text} from 'vega-typings';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -21,18 +21,20 @@ import {isFacetFieldDef} from './spec/facet';
 import {StackOffset} from './stack';
 import {
   getTimeUnitParts,
+  isLocalSingleTimeUnit,
   normalizeTimeUnit,
   TimeUnit,
   TimeUnitParams,
-  timeUnitToString,
-  isLocalSingleTimeUnit
+  timeUnitToString
 } from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
 import {contains, flatAccessWithDatum, getFirstDefined, internalField, replacePathInField, titlecase} from './util';
 
+export {Gradient};
+
 export type Value = number | string | boolean | null;
-export type Gradient = LinearGradient | RadialGradient;
+
 export type ValueOrGradient = Value | Gradient;
 
 export type ValueOrGradientOrText = Value | Gradient | Text;

@@ -1,6 +1,7 @@
 import {BaseTitle, Text, TextEncodeEntry, TitleAnchor} from 'vega-typings';
 import {isArray, isString} from 'vega-util';
-import {BaseMarkConfig, ExcludeMappedValueRef} from './vega.schema';
+import {MarkConfig} from './mark';
+import {ExcludeMappedValueRef} from './vega.schema';
 
 export type BaseTitleNoValueRefs = ExcludeMappedValueRef<BaseTitle>;
 
@@ -57,7 +58,7 @@ export interface TitleParams extends TitleBase {
 export function extractTitleConfig(
   titleConfig: TitleConfig
 ): {
-  mark: BaseMarkConfig;
+  mark: MarkConfig;
   nonMark: BaseTitleNoValueRefs;
   subtitle: BaseTitleNoValueRefs;
 } {
@@ -83,7 +84,7 @@ export function extractTitleConfig(
     ...titleMarkConfig
   } = titleConfig;
 
-  const mark: BaseMarkConfig = {
+  const mark: MarkConfig = {
     ...titleMarkConfig,
     ...(color ? {fill: color} : {})
   };

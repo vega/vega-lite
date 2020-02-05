@@ -1,9 +1,8 @@
-import {Color, Orientation} from 'vega-typings';
+import {Align, Color, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega-typings';
 import {toSet} from 'vega-util';
 import {Gradient, Value} from './channeldef';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {contains, Flag, keys} from './util';
-import {BaseMarkConfig} from './vega.schema';
 
 export const AREA: 'area' = 'area';
 export const BAR: 'bar' = 'bar';
@@ -78,7 +77,7 @@ export interface ColorMixins {
    * - This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
    * - The `fill` and `stroke` properties have higher precedence than `color` and will override `color`.
    */
-  color?: Color | Gradient;
+  color?: Color | Gradient | SignalRef;
 }
 
 export interface TooltipContent {
@@ -88,7 +87,7 @@ export interface TooltipContent {
 /** @hidden */
 export type Hide = 'hide';
 
-export interface MarkConfig extends ColorMixins, BaseMarkConfig {
+export interface MarkConfig extends ColorMixins, Omit<VgMarkConfig, 'tooltip'> {
   // ========== VL-Specific ==========
 
   /**
@@ -100,37 +99,6 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    *
    */
   filled?: boolean;
-
-  // ========== Overriding Vega ==========
-
-  /**
-   * The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.
-   *
-   * - If `tooltip` is `true` or `{"content": "encoding"}`, then all fields from `encoding` will be used.
-   * - If `tooltip` is `{"content": "data"}`, then all fields that appear in the highlighted data point will be used.
-   * - If set to `null` or `false`, then no tooltip will be used.
-   *
-   * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.
-   *
-   * __Default value:__ `null`
-   */
-  tooltip?: Value | TooltipContent | null;
-
-  /**
-   * Default size for marks.
-   * - For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.
-   * - For `bar`, this represents the band size of the bar, in pixels.
-   * - For `text`, this represents the font size, in pixels.
-   *
-   * __Default value:__
-   * - `30` for point, circle, square marks; width/height's `step`
-   * - `2` for bar marks with discrete dimensions;
-   * - `5` for bar marks with continuous dimensions;
-   * - `11` for text marks.
-   *
-   * @minimum 0
-   */
-  size?: number;
 
   /**
    * For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.
@@ -155,6 +123,115 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    * If set to `0.5`, bandwidth of the marks will be half of the time unit band step.
    */
   timeUnitBand?: number;
+
+  // ========== Overriding Vega ==========
+
+  /**
+   * The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.
+   *
+   * - If `tooltip` is `true` or `{"content": "encoding"}`, then all fields from `encoding` will be used.
+   * - If `tooltip` is `{"content": "data"}`, then all fields that appear in the highlighted data point will be used.
+   * - If set to `null` or `false`, then no tooltip will be used.
+   *
+   * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.
+   *
+   * __Default value:__ `null`
+   */
+  tooltip?: Value | TooltipContent | null; // VL has a special object form for tooltip content
+
+  /**
+   * Default size for marks.
+   * - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.
+   * - For `bar`, this represents the band size of the bar, in pixels.
+   * - For `text`, this represents the font size, in pixels.
+   *
+   * __Default value:__
+   * - `30` for point, circle, square marks; width/height's `step`
+   * - `2` for bar marks with discrete dimensions;
+   * - `5` for bar marks with continuous dimensions;
+   * - `11` for text marks.
+   *
+   * @minimum 0
+   */
+  size?: number | SignalRef; // size works beyond symbol marks in VL
+
+  /**
+   * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without specified `x2` or `width`.
+   *
+   * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
+   */
+  x?: number | 'width' | SignalRef; // Vega doesn't have 'width'
+
+  /**
+   * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without specified `y2` or `height`.
+   *
+   * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
+   */
+  y?: number | 'height' | SignalRef; // Vega doesn't have 'height'
+
+  /**
+   * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   *
+   * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
+   */
+  x2?: number | 'width' | SignalRef; // Vega doesn't have 'width'
+
+  /**
+   * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   *
+   * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
+   */
+  y2?: number | 'height' | SignalRef; // Vega doesn't have 'height'
+
+  /**
+   * Default Fill Color. This property has higher precedence than `config.color`.
+   *
+   * __Default value:__ (None)
+   *
+   */
+  fill?: Color | Gradient | null | SignalRef; // docs: Vega doesn't have config.color
+
+  /**
+   * Default Stroke Color. This property has higher precedence than `config.color`.
+   *
+   * __Default value:__ (None)
+   *
+   */
+  stroke?: Color | Gradient | null | SignalRef; // docs: Vega doesn't have config.color
+
+  /**
+   * The overall opacity (value between [0,1]).
+   *
+   * __Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  opacity?: number | SignalRef; // docs (different defaults)
+
+  /**
+   * The orientation of a non-stacked bar, tick, area, and line charts.
+   * The value is either horizontal (default) or vertical.
+   * - For bar, rule and tick, this determines whether the size of the bar and tick
+   * should be applied to x or y dimension.
+   * - For area, this property determines the orient property of the Vega output.
+   * - For line and trail marks, this property determines the sort order of the points in the line
+   * if `config.sortLineBy` is not specified.
+   * For stacked charts, this is always determined by the orientation of the stack;
+   * therefore explicitly specified value will be ignored.
+   */
+  orient?: Orientation; // Vega orient doesn't apply to bar/tick/line. Since there are number of logic depending on this property, Vega-Lite would NOT allow signal for orient.
+
+  /**
+   * The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `"left"`, `"right"`, `"center"`.
+   */
+  align?: Align; // Vega doesn't apply align to ranged marks. Since there are number of logic depending on this property, Vega-Lite would NOT allow signal for align.
+
+  /**
+   * The text baseline or vertical ranged marks (area, bar, image, rect, rule). One of `"left"`, `"right"`, `"center"`.
+   * One of `"top"`, `"bottom"`, `"middle"`, `"alphabetic"` (for text only).
+   */
+  baseline?: TextBaseline; // Vega doesn't apply align to ranged marks. Since there are number of logic depending on this property, Vega-Lite would NOT allow signal for baseline
 }
 
 export interface RectBinSpacingMixins {
