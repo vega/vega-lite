@@ -1,4 +1,4 @@
-import {Align, Color, FontStyle, FontWeight, Orient, TextBaseline, TitleAnchor, TitleConfig} from 'vega';
+import {Align, Color, FontStyle, FontWeight, Orient, TextBaseline, TitleAnchor, TitleConfig} from 'vega-typings';
 import {FormatMixins, Guide, VlOnlyGuideConfig} from './guide';
 import {keys} from './util';
 

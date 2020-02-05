@@ -1,4 +1,4 @@
-import {Legend as VgLegend, NewSignal, Title as VgTitle} from 'vega';
+import {Legend as VgLegend, NewSignal, Title as VgTitle} from 'vega-typings';
 import {Config} from '../config';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec';

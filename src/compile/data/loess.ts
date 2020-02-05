@@ -1,4 +1,4 @@
-import {LoessTransform as VgLoessTransform} from 'vega';
+import {LoessTransform as VgLoessTransform} from 'vega-typings';
 import {LoessTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {DataFlowNode} from './dataflow';

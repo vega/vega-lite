@@ -1,4 +1,4 @@
-import {LegendOrient} from 'vega';
+import {LegendOrient} from 'vega-typings';
 import * as properties from '../../../src/compile/legend/properties';
 
 describe('compile/legend', () => {

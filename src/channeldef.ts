@@ -1,4 +1,4 @@
-import {LinearGradient, RadialGradient, Text} from 'vega';
+import {LinearGradient, RadialGradient, Text} from 'vega-typings';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';

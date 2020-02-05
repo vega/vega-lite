@@ -1,4 +1,4 @@
-import {Axis as VgAxis, Text} from 'vega';
+import {Axis as VgAxis, Text} from 'vega-typings';
 import {
   Axis,
   AxisPart,

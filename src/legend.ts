@@ -5,7 +5,7 @@ import {
   LegendConfig as VgLegendConfig,
   LegendOrient,
   Orientation
-} from 'vega';
+} from 'vega-typings';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';

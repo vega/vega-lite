@@ -1,4 +1,4 @@
-import {Orientation} from 'vega';
+import {Orientation} from 'vega-typings';
 import {isBinned, isBinning} from '../../bin';
 import {isContinuous, isFieldDef, TypedFieldDef} from '../../channeldef';
 import {Config} from '../../config';

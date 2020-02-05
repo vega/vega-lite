@@ -1,4 +1,4 @@
-import {LabelOverlap, LegendOrient, LegendType, SymbolShape} from 'vega';
+import {LabelOverlap, LegendOrient, LegendType, SymbolShape} from 'vega-typings';
 import {Channel, isColorChannel} from '../../channel';
 import {
   FieldDefWithCondition,

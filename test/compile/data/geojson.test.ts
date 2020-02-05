@@ -1,4 +1,4 @@
-import {FieldRef, Vector2} from 'vega';
+import {FieldRef, Vector2} from 'vega-typings';
 import {GeoJSONNode} from '../../../src/compile/data/geojson';
 import {contains, every} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';

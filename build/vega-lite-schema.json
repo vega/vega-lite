@@ -798,7 +798,7 @@
         "labelPadding": {
           "anyOf": [
             {
-              "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
+              "description": "The padding in pixels between labels and ticks.\n\n__Default value:__ `2`",
               "type": "number"
             },
             {
@@ -1310,7 +1310,7 @@
         "labelPadding": {
           "anyOf": [
             {
-              "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
+              "description": "The padding in pixels between labels and ticks.\n\n__Default value:__ `2`",
               "type": "number"
             },
             {
@@ -1890,71 +1890,6 @@
             }
           ],
           "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
-        }
-      },
-      "type": "object"
-    },
-    "BaseLegendLayout": {
-      "additionalProperties": false,
-      "properties": {
-        "anchor": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TitleAnchor"
-            },
-            {
-              "$ref": "#/definitions/SignalRef"
-            }
-          ],
-          "description": "The anchor point for legend orient group layout."
-        },
-        "bounds": {
-          "$ref": "#/definitions/LayoutBounds",
-          "description": "The bounds calculation to use for legend orient group layout."
-        },
-        "center": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/SignalRef"
-            }
-          ],
-          "description": "A flag to center legends within a shared orient group."
-        },
-        "direction": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Orientation"
-            },
-            {
-              "$ref": "#/definitions/SignalRef"
-            }
-          ],
-          "description": "The layout direction for legend orient group layout."
-        },
-        "margin": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/SignalRef"
-            }
-          ],
-          "description": "The pixel margin between legends within a orient group."
-        },
-        "offset": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/SignalRef"
-            }
-          ],
-          "description": "The pixel offset from the chart body for a legend orient group."
         }
       },
       "type": "object"
@@ -5921,14 +5856,7 @@
           "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
         },
         "tickCount": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/TimeInterval"
-            }
-          ],
+          "$ref": "#/definitions/TickCount",
           "description": "The desired number of tick values for quantitative legends."
         },
         "titleAlign": {
@@ -9443,25 +9371,6 @@
       ],
       "type": "string"
     },
-    "LayoutBounds": {
-      "anyOf": [
-        {
-          "enum": [
-            "full"
-          ],
-          "type": "string"
-        },
-        {
-          "enum": [
-            "flush"
-          ],
-          "type": "string"
-        },
-        {
-          "$ref": "#/definitions/SignalRef"
-        }
-      ]
-    },
     "Legend": {
       "additionalProperties": false,
       "description": "Properties of a legend or boolean flag for determining whether to show it.",
@@ -9702,14 +9611,7 @@
           "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
         },
         "tickCount": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/TimeInterval"
-            }
-          ],
+          "$ref": "#/definitions/TickCount",
           "description": "The desired number of tick values for quantitative legends."
         },
         "tickMinStep": {
@@ -9989,8 +9891,9 @@
           "type": "number"
         },
         "layout": {
-          "$ref": "#/definitions/LegendLayout",
-          "description": "Legend orient group layout parameters."
+          "description": "Legend orient group layout parameters.",
+          "not": {
+          }
         },
         "legendX": {
           "description": "Custom x-position for legend with orient \"none\".",
@@ -10124,14 +10027,7 @@
           "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
         },
         "tickCount": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/TimeInterval"
-            }
-          ],
+          "$ref": "#/definitions/TickCount",
           "description": "The desired number of tick values for quantitative legends."
         },
         "title": {
@@ -10201,95 +10097,6 @@
         "unselectedOpacity": {
           "description": "The opacity of unselected legend entries.\n\n__Default value:__ 0.35.",
           "type": "number"
-        }
-      },
-      "type": "object"
-    },
-    "LegendLayout": {
-      "additionalProperties": false,
-      "properties": {
-        "anchor": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TitleAnchor"
-            },
-            {
-              "$ref": "#/definitions/SignalRef"
-            }
-          ],
-          "description": "The anchor point for legend orient group layout."
-        },
-        "bottom": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "bottom-left": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "bottom-right": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "bounds": {
-          "$ref": "#/definitions/LayoutBounds",
-          "description": "The bounds calculation to use for legend orient group layout."
-        },
-        "center": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/SignalRef"
-            }
-          ],
-          "description": "A flag to center legends within a shared orient group."
-        },
-        "direction": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Orientation"
-            },
-            {
-              "$ref": "#/definitions/SignalRef"
-            }
-          ],
-          "description": "The layout direction for legend orient group layout."
-        },
-        "left": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "margin": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/SignalRef"
-            }
-          ],
-          "description": "The pixel margin between legends within a orient group."
-        },
-        "offset": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/SignalRef"
-            }
-          ],
-          "description": "The pixel offset from the chart body for a legend orient group."
-        },
-        "right": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "top": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "top-left": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "top-right": {
-          "$ref": "#/definitions/BaseLegendLayout"
         }
       },
       "type": "object"
@@ -13240,9 +13047,6 @@
             "type": "number"
           },
           {
-            "$ref": "#/definitions/SignalRef"
-          },
-          {
             "$ref": "#/definitions/RangeRawArray"
           }
         ]
@@ -13251,13 +13055,8 @@
     },
     "RangeRawArray": {
       "items": {
-        "anyOf": [
-          {
-            "type": "number"
-          },
-          {
-            "$ref": "#/definitions/SignalRef"
-          }
+        "type": [
+          "number"
         ]
       },
       "type": "array"
@@ -13271,40 +13070,20 @@
           "$ref": "#/definitions/RangeRaw"
         },
         {
-          "$ref": "#/definitions/SignalRef"
-        },
-        {
           "additionalProperties": false,
           "properties": {
             "count": {
-              "anyOf": [
-                {
-                  "type": "number"
-                },
-                {
-                  "$ref": "#/definitions/SignalRef"
-                }
+              "type": [
+                "number"
               ]
             },
             "extent": {
-              "anyOf": [
-                {
-                  "items": {
-                    "anyOf": [
-                      {
-                        "type": "number"
-                      },
-                      {
-                        "$ref": "#/definitions/SignalRef"
-                      }
-                    ]
-                  },
-                  "type": "array"
-                },
-                {
-                  "$ref": "#/definitions/SignalRef"
-                }
-              ]
+              "items": {
+                "type": [
+                  "number"
+                ]
+              },
+              "type": "array"
             },
             "scheme": {
               "anyOf": [
@@ -13316,9 +13095,6 @@
                     "type": "string"
                   },
                   "type": "array"
-                },
-                {
-                  "$ref": "#/definitions/SignalRef"
                 },
                 {
                   "$ref": "#/definitions/ColorScheme"
@@ -14688,18 +14464,6 @@
     "ShapeValueDefWithCondition": {
       "$ref": "#/definitions/StringValueDefWithCondition<TypeForShape>"
     },
-    "SignalRef": {
-      "additionalProperties": false,
-      "properties": {
-        "signal": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "signal"
-      ],
-      "type": "object"
-    },
     "SingleDefUnitChannel": {
       "enum": [
         "x",
@@ -15662,6 +15426,16 @@
         }
       },
       "type": "object"
+    },
+    "TickCount": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "$ref": "#/definitions/TimeInterval"
+        }
+      ]
     },
     "TimeInterval": {
       "enum": [

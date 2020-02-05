@@ -1,12 +1,12 @@
-import {FormulaTransform as VgFormulaTransform, SignalRef} from 'vega';
+import {FormulaTransform as VgFormulaTransform, SignalRef} from 'vega-typings';
 import {isFieldDef} from '../../channeldef';
 import {pathGroupingFields} from '../../encoding';
 import {ImputeSequence, ImputeTransform, isImputeSequence} from '../../transform';
 import {duplicate, hash} from '../../util';
-import {ImputeTransform as VgImputeTransform} from 'vega';
+import {ImputeTransform as VgImputeTransform} from 'vega-typings';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
-import {WindowTransform as VgWindowTransform} from 'vega';
+import {WindowTransform as VgWindowTransform} from 'vega-typings';
 
 export class ImputeNode extends DataFlowNode {
   public clone() {

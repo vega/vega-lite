@@ -3,7 +3,7 @@ import {vgField as fieldRef} from '../../channeldef';
 import {isPathMark} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
 import {Dict, hash, keys} from '../../util';
-import {FilterTransform as VgFilterTransform} from 'vega';
+import {FilterTransform as VgFilterTransform} from 'vega-typings';
 import {getMarkPropOrConfig} from '../common';
 import {UnitModel} from '../unit';
 import {TypedFieldDef} from './../../channeldef';

@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import {AggregateOp} from 'vega-typings';
 import {isFieldDef} from '../../src/channeldef';
 import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar';
 import {defaultConfig} from '../../src/config';
