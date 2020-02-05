@@ -70,7 +70,7 @@ for (const example of [...examples, ...normalizedExamples]) {
   describe(
     example,
     log.wrap(localLogger => {
-      const vegaSpec: VgSpec = compile(jsonSpec).spec;
+      const vegaSpec: VgSpec = compile(jsonSpec).spec as VgSpec;
 
       it('should not cause any side effects', () => {
         expect(jsonSpec).toEqual(originalSpec);
