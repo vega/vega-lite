@@ -1,4 +1,5 @@
 // @ts-ignore
+import {event, select, selectAll, Selection} from 'd3-selection';
 import hljs from 'highlight.js/lib/highlight';
 // @ts-ignore
 import css from 'highlight.js/lib/languages/css';
@@ -10,8 +11,6 @@ import javascript from 'highlight.js/lib/languages/javascript';
 import json from 'highlight.js/lib/languages/json';
 // @ts-ignore
 import xml from 'highlight.js/lib/languages/xml';
-
-import {event, select, selectAll, Selection} from 'd3-selection';
 import compactStringify from 'json-stringify-pretty-compact';
 import * as vega from 'vega';
 import {Handler} from 'vega-tooltip';
@@ -72,7 +71,7 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
 export function embedExample($target: any, spec: TopLevelSpec, actions = true, tooltip = true) {
   const {spec: vgSpec} = compile(spec);
 
-  const view = new vega.View(vega.parse(vgSpec), {loader: loader}).renderer('svg').initialize($target);
+  const view = new vega.View(vega.parse(vgSpec as any), {loader: loader}).renderer('svg').initialize($target);
 
   if (tooltip) {
     const handler = new Handler().call;
