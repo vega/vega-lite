@@ -1,6 +1,7 @@
 /**
  * Utility files for producing Vega ValueRef for marks
  */
+import {SignalRef} from 'vega';
 import {isFunction, isString} from 'vega-util';
 import {isCountingAggregateOp} from '../../../aggregate';
 import {isBinned, isBinning} from '../../../bin';
@@ -31,6 +32,7 @@ import {StackProperties} from '../../../stack';
 import {QUANTITATIVE, TEMPORAL} from '../../../type';
 import {contains, getFirstDefined} from '../../../util';
 import {VgValueRef} from '../../../vega.schema';
+import {signalOrValueRef} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 
 export function midPointRefWithPositionInvalidTest(
@@ -259,11 +261,11 @@ export function midPoint({
 /**
  * Convert special "width" and "height" values in Vega-Lite into Vega value ref.
  */
-export function widthHeightValueRef(channel: Channel, value: ValueOrGradientOrText) {
+export function widthHeightValueRef(channel: Channel, value: ValueOrGradientOrText | SignalRef) {
   if (contains(['x', 'x2'], channel) && value === 'width') {
     return {field: {group: 'width'}};
   } else if (contains(['y', 'y2'], channel) && value === 'height') {
     return {field: {group: 'height'}};
   }
-  return {value};
+  return signalOrValueRef(value);
 }

@@ -8,6 +8,7 @@ import {defaultLegendConfig, LegendConfig} from './legend';
 import * as mark from './mark';
 import {
   Mark,
+  MarkConfig,
   MarkConfigMixins,
   PRIMITIVE_MARKS,
   VL_ONLY_MARK_CONFIG_PROPERTIES,
@@ -20,7 +21,6 @@ import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} fr
 import {TopLevelProperties} from './spec/toplevel';
 import {extractTitleConfig, TitleConfig} from './title';
 import {duplicate, getFirstDefined, keys} from './util';
-import {BaseMarkConfig} from './vega.schema';
 
 export interface ViewConfig extends BaseViewBackground {
   /**
@@ -147,7 +147,7 @@ export interface VLOnlyConfig {
 }
 
 export interface StyleConfigIndex {
-  [style: string]: BaseMarkConfig;
+  [style: string]: MarkConfig;
 }
 
 export interface Config
@@ -367,7 +367,7 @@ export function stripAndRedirectConfig(config: Config) {
 function redirectTitleConfig(config: Config) {
   const {mark: m, subtitle} = extractTitleConfig(config.title);
 
-  const style: BaseMarkConfig = {
+  const style: MarkConfig = {
     ...m,
     ...config.style['group-title']
   };
@@ -391,13 +391,13 @@ function redirectConfigToStyleConfig(
   toProp?: string,
   compositeMarkPart?: string
 ) {
-  const propConfig: BaseMarkConfig = compositeMarkPart ? config[prop][compositeMarkPart] : config[prop];
+  const propConfig: MarkConfig = compositeMarkPart ? config[prop][compositeMarkPart] : config[prop];
 
   if (prop === 'view') {
     toProp = 'cell'; // View's default style is "cell"
   }
 
-  const style: BaseMarkConfig = {
+  const style: MarkConfig = {
     ...propConfig,
     ...config.style[toProp ?? prop]
   };

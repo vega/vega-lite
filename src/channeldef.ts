@@ -1,4 +1,4 @@
-import {LinearGradient, RadialGradient, Text} from 'vega-typings';
+import {Gradient, Text} from 'vega-typings';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -32,7 +32,8 @@ import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
 import {contains, flatAccessWithDatum, getFirstDefined, internalField, replacePathInField, titlecase} from './util';
 
 export type Value = number | string | boolean | number[] | null;
-export type Gradient = LinearGradient | RadialGradient;
+export {Gradient};
+
 export type ValueOrGradient = Value | Gradient;
 
 export type ValueOrGradientOrText = Value | Gradient | Text;

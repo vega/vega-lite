@@ -51,8 +51,8 @@
       "encode": {
         "update": {
           "align": {"value": "left"},
-          "x": {"value": 5},
           "fill": {"value": "black"},
+          "x": {"value": 5},
           "y": {"scale": "y", "field": "Major_Genre", "band": 0.5},
           "text": {"signal": "''+datum[\"Major_Genre\"]"},
           "baseline": {"value": "middle"}

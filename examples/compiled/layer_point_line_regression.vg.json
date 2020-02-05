@@ -88,9 +88,9 @@
       "encode": {
         "update": {
           "align": {"value": "right"},
+          "fill": {"value": "firebrick"},
           "x": {"field": {"group": "width"}},
           "y": {"value": -5},
-          "fill": {"value": "firebrick"},
           "text": {"signal": "''+datum[\"R2\"]"},
           "baseline": {"value": "middle"}
         }

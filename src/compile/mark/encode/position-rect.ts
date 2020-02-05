@@ -18,7 +18,7 @@ import {Mark, MarkDef} from '../../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../../scale';
 import {getFirstDefined} from '../../../util';
 import {isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {getMarkConfig} from '../../common';
+import {getMarkConfig, signalOrValueRef} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
 import {nonPosition} from './nonposition';
@@ -118,7 +118,7 @@ function defaultSizeRef(
   );
 
   if (markPropOrConfig !== undefined) {
-    return {value: markPropOrConfig};
+    return signalOrValueRef(markPropOrConfig);
   }
 
   if (scale) {

@@ -1,4 +1,5 @@
 import {Align, AxisOrient, SignalRef} from 'vega-typings';
+import {isArray} from 'vega-util';
 import {Axis} from '../../axis';
 import {isBinning} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
@@ -6,11 +7,12 @@ import {isDiscrete, TypedFieldDef, valueArray} from '../../channeldef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
+import {normalizeTimeUnit} from '../../timeunit';
 import {NOMINAL, ORDINAL} from '../../type';
 import {contains, normalizeAngle} from '../../util';
+import {isSignalRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {getAxisConfig} from './config';
-import {normalizeTimeUnit} from '../../timeunit';
 
 // TODO: we need to refactor this method after we take care of config refactoring
 /**
@@ -164,8 +166,10 @@ export function defaultTickCount({
 export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: TypedFieldDef<string>) {
   const vals = specifiedAxis.values;
 
-  if (vals) {
+  if (isArray(vals)) {
     return valueArray(fieldDef, vals);
+  } else if (isSignalRef(vals)) {
+    return vals;
   }
 
   return undefined;
