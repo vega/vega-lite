@@ -64,6 +64,16 @@ Adding a field to a [mark property channel](encoding.html#mark-prop) such as `co
 
 <span class="vl-example" data-name="line_color"></span>
 
+### Multi-series Line Chart with Varying Dashes
+
+Adding a field to `strokeDash` also produces a multi-series line chart.
+
+<span class="vl-example" data-name="line_strokedash"></span>
+
+We can also use line grouping to create a line chart that has multiple parts with varying styles.
+
+<span class="vl-example" data-name="line_dashed_part"></span>
+
 {:#line-detail}
 
 ### Multi-series Line Chart with the Detail Channel
@@ -91,6 +101,8 @@ Note that the overlay point marks have `opacity` = 1 by default (instead of semi
 Here we create stroked points by setting their `\"filled\"` to `false` and their `fill` to `\"white\"`.
 
 <span class="vl-example" data-name="line_overlay_stroked"></span>
+
+{:#line-detail}
 
 ### Line Chart with Invalid Values
 
