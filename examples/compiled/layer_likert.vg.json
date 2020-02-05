@@ -297,8 +297,8 @@
       "encode": {
         "update": {
           "align": {"value": "right"},
-          "x": {"value": -5},
           "fill": {"value": "black"},
+          "x": {"value": -5},
           "y": {"scale": "y", "field": "name"},
           "text": {"signal": "''+datum[\"lo\"]"},
           "baseline": {"value": "middle"}
@@ -313,8 +313,8 @@
       "encode": {
         "update": {
           "align": {"value": "left"},
-          "x": {"value": 255},
           "fill": {"value": "black"},
+          "x": {"value": 255},
           "y": {"scale": "y", "field": "name"},
           "text": {"signal": "''+datum[\"hi\"]"},
           "baseline": {"value": "middle"}

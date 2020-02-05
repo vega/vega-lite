@@ -301,9 +301,9 @@
         "update": {
           "align": {"value": "center"},
           "baseline": {"value": "bottom"},
-          "y": {"value": -5},
           "fill": {"value": "black"},
           "x": {"scale": "x", "field": "id", "band": 0.5},
+          "y": {"value": -5},
           "text": {"signal": "''+datum[\"day\"]"}
         }
       }

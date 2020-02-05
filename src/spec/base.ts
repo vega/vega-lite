@@ -3,11 +3,12 @@ import {isArray, isNumber, isObject} from 'vega-util';
 import {NormalizedSpec} from '.';
 import {Config} from '../config';
 import {Data} from '../data';
+import {MarkConfig} from '../mark';
 import {Resolve} from '../resolve';
 import {TitleParams} from '../title';
 import {Transform} from '../transform';
 import {Flag, keys} from '../util';
-import {BaseMarkConfig, LayoutAlign, RowCol} from '../vega.schema';
+import {LayoutAlign, RowCol} from '../vega.schema';
 import {isConcatSpec} from './concat';
 import {isFacetMapping, isFacetSpec} from './facet';
 import {isRepeatSpec} from './repeat';
@@ -122,7 +123,7 @@ export interface ResolveMixins {
 export interface BaseViewBackground
   extends Partial<
     Pick<
-      BaseMarkConfig,
+      MarkConfig,
       | 'cornerRadius'
       | 'fillOpacity'
       | 'opacity'

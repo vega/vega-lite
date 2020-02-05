@@ -1,7 +1,7 @@
 import * as log from '../../../log';
 import {contains, getFirstDefined} from '../../../util';
 import {VgEncodeEntry} from '../../../vega.schema';
-import {getMarkConfig} from '../../common';
+import {getMarkConfig, signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
 import {nonPosition} from './nonposition';
 
@@ -39,8 +39,8 @@ export function color(model: UnitModel): VgEncodeEntry {
   const colorVgChannel = filled ? 'fill' : 'stroke';
 
   const fillStrokeMarkDefAndConfig: VgEncodeEntry = {
-    ...(defaultFill ? {fill: {value: defaultFill}} : {}),
-    ...(defaultStroke ? {stroke: {value: defaultStroke}} : {})
+    ...(defaultFill ? {fill: signalOrValueRef(defaultFill)} : {}),
+    ...(defaultStroke ? {stroke: signalOrValueRef(defaultStroke)} : {})
   };
 
   if (markDef.color && (filled ? markDef.fill : markDef.stroke)) {

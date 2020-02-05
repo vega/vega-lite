@@ -19,13 +19,20 @@ import {formatExpression, normalizeTimeUnit, TimeUnit} from '../timeunit';
 import {isText} from '../title';
 import {QUANTITATIVE} from '../type';
 import {getFirstDefined} from '../util';
-import {BaseMarkConfig, VgEncodeEntry} from '../vega.schema';
+import {isSignalRef, VgEncodeEntry} from '../vega.schema';
 import {deepEqual} from './../util';
 import {AxisComponentProps} from './axis/component';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
+
+export function signalOrValueRef<T>(value: T | SignalRef): {value: T} | SignalRef {
+  if (isSignalRef(value)) {
+    return value;
+  }
+  return {value};
+}
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {
   for (const property of propsList) {
@@ -80,7 +87,7 @@ export function getStyleConfig<P extends keyof AnyMarkConfig>(
 
     // MarkConfig extends VgMarkConfig so a prop may not be a valid property for style
     // However here we also check if it is defined, so it is okay to cast here
-    const p = prop as keyof BaseMarkConfig;
+    const p = prop as keyof MarkConfig;
     if (styleConfig && styleConfig[p] !== undefined) {
       value = styleConfig[p];
     }

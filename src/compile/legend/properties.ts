@@ -1,4 +1,4 @@
-import {LabelOverlap, LegendOrient, LegendType, SymbolShape} from 'vega-typings';
+import {LabelOverlap, LegendOrient, LegendType, SignalRef, SymbolShape} from 'vega-typings';
 import {isArray} from 'vega-util';
 import {Channel, isColorChannel} from '../../channel';
 import {
@@ -34,8 +34,8 @@ export function defaultSymbolType(
   shapeChannelDef:
     | FieldDefWithCondition<MarkPropFieldDef<string>, SymbolShape>
     | ValueDefWithCondition<MarkPropFieldDef<string>, SymbolShape>,
-  markShape: SymbolShape
-): SymbolShape {
+  markShape: SymbolShape | SignalRef
+): SymbolShape | SignalRef {
   if (channel !== 'shape') {
     // use the value from the shape encoding or the mark config if they exist
     const shape = getFirstConditionValue(shapeChannelDef) ?? markShape;
