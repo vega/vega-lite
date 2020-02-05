@@ -758,6 +758,8 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
     case CHANNEL.FILL:
     case CHANNEL.STROKE:
       return scaleType !== 'band'; // band does not make sense with color
+    case CHANNEL.STROKEDASH:
+      return scaleType === 'ordinal' || isContinuousToDiscrete(scaleType);
     case CHANNEL.SHAPE:
       return scaleType === 'ordinal'; // shape = lookup only
   }

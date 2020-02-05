@@ -10,6 +10,7 @@ import {
   SHAPE,
   SIZE,
   STROKE,
+  STROKEDASH,
   STROKEOPACITY,
   STROKEWIDTH
 } from './channel';
@@ -142,6 +143,8 @@ export function autoMaxBins(channel?: Channel): number {
     // We choose 6 like shape to simplify the rule [falls through]
     case SHAPE:
       return 6; // Vega's "shape" has 6 distinct values
+    case STROKEDASH:
+      return 4; // We only provide 5 different stroke dash values (but 4 is more effective)
     default:
       return 10;
   }
