@@ -1,4 +1,4 @@
-import {Gradient, Text} from 'vega-typings';
+import {Gradient, SignalRef, Text} from 'vega-typings';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -55,7 +55,8 @@ export interface ValueDef<V extends ValueOrGradient | Value[] = Value> {
 
 export type ChannelDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradientOrText = Value> =
   | FieldDefWithCondition<F, V>
-  | ValueDefWithCondition<F, V>;
+  | ValueDefWithCondition<F, V>
+  | SignalRefWithCondition<F, V>;
 
 /**
  * A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.
@@ -74,20 +75,34 @@ export type ValueDefWithCondition<F extends FieldDef<any>, V extends ValueOrGrad
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
-  condition?: Conditional<F> | Conditional<ValueDef<V>> | Conditional<ValueDef<V>>[];
+  condition?: Conditional<F> | ValueOrSignalCondition<V>;
 };
 
-export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
-  MarkPropFieldDef<F, T>,
-  string | null
->;
+/**
+ * @hidden
+ */
+export type SignalRefWithCondition<F extends FieldDef<any>, V extends ValueOrGradientOrText = Value> = SignalRef & {
+  /**
+   * A field definition or one or more value definition(s) with a selection predicate.
+   */
+  condition?: Conditional<F> | ValueOrSignalCondition<V>;
+};
 
-export type ColorGradientValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
-  MarkPropFieldDef<F, T>,
-  Gradient | string | null
->;
+export type ValueOrSignalWithCondition<F extends FieldDef<any>, V extends ValueOrGradientOrText = Value> =
+  | ValueDefWithCondition<F, V>
+  | SignalRefWithCondition<F, V>;
 
-export type NumericValueDefWithCondition<F extends Field> = ValueDefWithCondition<
+export type StringValueOrSignalWithCondition<
+  F extends Field,
+  T extends Type = StandardType
+> = ValueOrSignalWithCondition<MarkPropFieldDef<F, T>, string | null>;
+
+export type ColorGradientValueOrSignalWithCondition<
+  F extends Field,
+  T extends Type = StandardType
+> = ValueOrSignalWithCondition<MarkPropFieldDef<F, T>, Gradient | string | null>;
+
+export type NumericValueOrSignalWithCondition<F extends Field> = ValueOrSignalWithCondition<
   MarkPropFieldDef<F, StandardType>,
   number
 >;
@@ -98,20 +113,22 @@ export type NumericArrayValueDefWithCondition<F extends Field> = ValueDefWithCon
 
 export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
-export type ShapeValueDefWithCondition<F extends Field> = StringValueDefWithCondition<F, TypeForShape>;
+export type ShapeValueOrSignalWithCondition<F extends Field> = StringValueOrSignalWithCondition<F, TypeForShape>;
 
-export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<StringFieldDef<F>, Text>;
+export type TextValueOrSignalWithCondition<F extends Field> = ValueOrSignalWithCondition<StringFieldDef<F>, Text>;
 
-export type Conditional<CD extends FieldDef<any> | ValueDef<any>> = ConditionalPredicate<CD> | ConditionalSelection<CD>;
+export type Conditional<CD extends FieldDef<any> | ValueDef<any> | SignalRef> =
+  | ConditionalPredicate<CD>
+  | ConditionalSelection<CD>;
 
-export type ConditionalPredicate<CD extends FieldDef<any> | ValueDef<any>> = {
+export type ConditionalPredicate<CD extends FieldDef<any> | ValueDef<any> | SignalRef> = {
   /**
    * Predicate for triggering the condition
    */
   test: LogicalComposition<Predicate>;
 } & CD;
 
-export type ConditionalSelection<CD extends FieldDef<any> | ValueDef<any>> = {
+export type ConditionalSelection<CD extends FieldDef<any> | ValueDef<any> | SignalRef> = {
   /**
    * A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose).
    */
@@ -122,6 +139,12 @@ export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSe
   return c['selection'];
 }
 
+export type ValueOrSignalCondition<V extends ValueOrGradientOrText = Value> =
+  | Conditional<ValueDef<V>>
+  | Conditional<ValueDef<V>>[]
+  | Conditional<SignalRef>
+  | Conditional<SignalRef>[];
+
 export interface ConditionValueDefMixins<V extends ValueOrGradientOrText = Value> {
   /**
    * One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).
@@ -129,7 +152,7 @@ export interface ConditionValueDefMixins<V extends ValueOrGradientOrText = Value
    * __Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)
    * since Vega-Lite only allows at most one encoded field per encoding channel.
    */
-  condition?: Conditional<ValueDef<V>> | Conditional<ValueDef<V>>[];
+  condition?: ValueOrSignalCondition<V>;
 }
 
 /**
@@ -478,7 +501,7 @@ export type ChannelDef<
 export function isConditionalDef<F extends Field, V extends ValueOrGradientOrText>(
   channelDef: ChannelDef<FieldDef<F>, V>
 ): channelDef is ChannelDefWithCondition<FieldDef<F>, V> {
-  return !!channelDef && !!channelDef.condition;
+  return !!channelDef && !!channelDef['condition'];
 }
 
 /**
