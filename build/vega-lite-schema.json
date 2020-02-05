@@ -877,7 +877,7 @@
         "labelPadding": {
           "anyOf": [
             {
-              "description": "The padding in pixels between labels and ticks.\n\n__Default value:__ `2`",
+              "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
               "type": "number"
             },
             {
@@ -1592,7 +1592,7 @@
         "labelPadding": {
           "anyOf": [
             {
-              "description": "The padding in pixels between labels and ticks.\n\n__Default value:__ `2`",
+              "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
               "type": "number"
             },
             {
