@@ -10,7 +10,7 @@ import {
   SecondaryFieldDef,
   StringFieldDef,
   StringFieldDefWithCondition,
-  StringValueDefWithCondition
+  StringValueOrSignalWithCondition
 } from '../channeldef';
 import {Encoding, fieldDefs} from '../encoding';
 import * as log from '../log';
@@ -51,7 +51,7 @@ export function filterTooltipWithAggregatedField<F extends Field>(
 ): {
   customTooltipWithoutAggregatedField?:
     | StringFieldDefWithCondition<F>
-    | StringValueDefWithCondition<F>
+    | StringValueOrSignalWithCondition<F>
     | StringFieldDef<F>[];
   filteredEncoding: Encoding<F>;
 } {
@@ -62,11 +62,11 @@ export function filterTooltipWithAggregatedField<F extends Field>(
 
   let customTooltipWithAggregatedField:
     | StringFieldDefWithCondition<F>
-    | StringValueDefWithCondition<F>
+    | StringValueOrSignalWithCondition<F>
     | StringFieldDef<F>[];
   let customTooltipWithoutAggregatedField:
     | StringFieldDefWithCondition<F>
-    | StringValueDefWithCondition<F>
+    | StringValueOrSignalWithCondition<F>
     | StringFieldDef<F>[];
 
   if (isArray(tooltip)) {

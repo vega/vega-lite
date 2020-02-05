@@ -2,6 +2,8 @@ import {array} from 'vega-util';
 import {
   ChannelDef,
   Conditional,
+  ConditionalPredicate,
+  ConditionalSelection,
   FieldDef,
   isConditionalSelection,
   ValueDef,
@@ -28,7 +30,9 @@ export function wrapCondition<FD extends FieldDef<any>, V extends ValueOrGradien
     const conditions = array(condition);
     const vgConditions = conditions.map(c => {
       const conditionValueRef = refFn(c);
-      const test = isConditionalSelection(c) ? parseSelectionPredicate(model, c.selection) : expression(model, c.test);
+      const test = isConditionalSelection<any>(c)
+        ? parseSelectionPredicate(model, (c as ConditionalSelection<any>).selection) // FIXME: remove casting once TS is no longer dumb about it
+        : expression(model, (c as ConditionalPredicate<any>).test); // FIXME: remove casting once TS is no longer dumb about it
       return {
         test,
         ...conditionValueRef

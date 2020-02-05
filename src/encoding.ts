@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega-typings';
+import {AggregateOp, SignalRef} from 'vega-typings';
 import {array, isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
@@ -7,7 +7,7 @@ import {
   binRequiresRange,
   ChannelDef,
   ColorGradientFieldDefWithCondition,
-  ColorGradientValueDefWithCondition,
+  ColorGradientValueOrSignalWithCondition,
   Field,
   FieldDef,
   FieldDefWithoutScale,
@@ -25,17 +25,17 @@ import {
   NumericArrayFieldDefWithCondition,
   NumericArrayValueDefWithCondition,
   NumericFieldDefWithCondition,
-  NumericValueDefWithCondition,
+  NumericValueOrSignalWithCondition,
   OrderFieldDef,
   PositionFieldDef,
   SecondaryFieldDef,
   ShapeFieldDefWithCondition,
-  ShapeValueDefWithCondition,
+  ShapeValueOrSignalWithCondition,
   StringFieldDef,
   StringFieldDefWithCondition,
-  StringValueDefWithCondition,
+  StringValueOrSignalWithCondition,
   TextFieldDefWithCondition,
-  TextValueDefWithCondition,
+  TextValueOrSignalWithCondition,
   title,
   TypedFieldDef,
   ValueDef,
@@ -49,6 +49,7 @@ import {EncodingFacetMapping} from './spec/facet';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {TEMPORAL} from './type';
 import {keys, some} from './util';
+import {isSignalRef} from './vega.schema';
 
 export interface Encoding<F extends Field> {
   /**
@@ -56,14 +57,14 @@ export interface Encoding<F extends Field> {
    *
    * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
    */
-  x?: PositionFieldDef<F> | ValueDef<number | 'width'>;
+  x?: PositionFieldDef<F> | ValueDef<number | 'width'> | SignalRef;
 
   /**
    * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without specified `y2` or `height`.
    *
    * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y?: PositionFieldDef<F> | ValueDef<number | 'height'>;
+  y?: PositionFieldDef<F> | ValueDef<number | 'height'> | SignalRef;
 
   /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
@@ -72,7 +73,7 @@ export interface Encoding<F extends Field> {
    */
   // TODO: Ham need to add default behavior
   // `x2` cannot have type as it should have the same type as `x`
-  x2?: SecondaryFieldDef<F> | ValueDef<number | 'width'>;
+  x2?: SecondaryFieldDef<F> | ValueDef<number | 'width'> | SignalRef;
 
   /**
    * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
@@ -81,7 +82,7 @@ export interface Encoding<F extends Field> {
    */
   // TODO: Ham need to add default behavior
   // `y2` cannot have type as it should have the same type as `y`
-  y2?: SecondaryFieldDef<F> | ValueDef<number | 'height'>;
+  y2?: SecondaryFieldDef<F> | ValueDef<number | 'height'> | SignalRef;
 
   /**
    * Longitude position of geographically projected marks.
@@ -116,7 +117,7 @@ export interface Encoding<F extends Field> {
    * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    * 2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme).
    */
-  color?: ColorGradientFieldDefWithCondition<F> | ColorGradientValueDefWithCondition<F>;
+  color?: ColorGradientFieldDefWithCondition<F> | ColorGradientValueOrSignalWithCondition<F>;
 
   /**
    * Fill color of the marks.
@@ -124,7 +125,7 @@ export interface Encoding<F extends Field> {
    *
    * _Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    */
-  fill?: ColorGradientFieldDefWithCondition<F> | ColorGradientValueDefWithCondition<F>;
+  fill?: ColorGradientFieldDefWithCondition<F> | ColorGradientValueOrSignalWithCondition<F>;
 
   /**
    * Stroke color of the marks.
@@ -133,35 +134,35 @@ export interface Encoding<F extends Field> {
    * _Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    */
 
-  stroke?: ColorGradientFieldDefWithCondition<F> | ColorGradientValueDefWithCondition<F>;
+  stroke?: ColorGradientFieldDefWithCondition<F> | ColorGradientValueOrSignalWithCondition<F>;
 
   /**
    * Opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property.
    */
-  opacity?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
+  opacity?: NumericFieldDefWithCondition<F> | NumericValueOrSignalWithCondition<F>;
 
   /**
    * Fill opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property.
    */
-  fillOpacity?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
+  fillOpacity?: NumericFieldDefWithCondition<F> | NumericValueOrSignalWithCondition<F>;
 
   /**
    * Stroke opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property.
    */
-  strokeOpacity?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
+  strokeOpacity?: NumericFieldDefWithCondition<F> | NumericValueOrSignalWithCondition<F>;
 
   /**
    * Stroke width of the marks.
    *
    * __Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property.
    */
-  strokeWidth?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
+  strokeWidth?: NumericFieldDefWithCondition<F> | NumericValueOrSignalWithCondition<F>;
 
   /**
    * Stroke dash of the marks.
@@ -177,7 +178,7 @@ export interface Encoding<F extends Field> {
    * - For `"text"` – the text's font size.
    * - Size is unsupported for `"line"`, `"area"`, and `"rect"`. (Use `"trail"` instead of line with varying size)
    */
-  size?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
+  size?: NumericFieldDefWithCondition<F> | NumericValueOrSignalWithCondition<F>;
 
   /**
    * Shape of the mark.
@@ -192,7 +193,7 @@ export interface Encoding<F extends Field> {
    *
    * __Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`"circle"` if unset.)
    */
-  shape?: ShapeFieldDefWithCondition<F> | ShapeValueDefWithCondition<F>;
+  shape?: ShapeFieldDefWithCondition<F> | ShapeValueOrSignalWithCondition<F>;
   /**
    * Additional levels of detail for grouping data in aggregate views and
    * in line, trail, and area marks without mapping data to a specific visual channel.
@@ -207,24 +208,24 @@ export interface Encoding<F extends Field> {
   /**
    * Text of the `text` mark.
    */
-  text?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
+  text?: TextFieldDefWithCondition<F> | TextValueOrSignalWithCondition<F>;
 
   /**
    * The tooltip text to show upon mouse hover. Specifying `tooltip` encoding overrides [the `tooltip` property in the mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
    *
    * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite.
    */
-  tooltip?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | StringFieldDef<F>[] | null;
+  tooltip?: StringFieldDefWithCondition<F> | StringValueOrSignalWithCondition<F> | StringFieldDef<F>[] | null;
 
   /**
    * A URL to load upon mouse click.
    */
-  href?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  href?: StringFieldDefWithCondition<F> | StringValueOrSignalWithCondition<F>;
 
   /**
    * The URL of an image mark.
    */
-  url?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  url?: StringFieldDefWithCondition<F> | StringValueOrSignalWithCondition<F>;
 
   /**
    * Order of the marks.
@@ -456,7 +457,12 @@ export function normalizeEncoding(encoding: Encoding<string>, markDef: MarkDef):
       if (channel === 'tooltip' && channelDef === null) {
         // Preserve null so we can use it to disable tooltip
         normalizedEncoding[channel] = null;
-      } else if (!isFieldDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef)) {
+      } else if (
+        !isFieldDef(channelDef) &&
+        !isValueDef(channelDef) &&
+        !isConditionalDef(channelDef) &&
+        !isSignalRef(channelDef)
+      ) {
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         return normalizedEncoding;
       }
