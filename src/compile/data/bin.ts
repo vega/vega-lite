@@ -1,4 +1,4 @@
-import {BinTransform as VgBinTransform, Transforms as VgTransform} from 'vega';
+import {BinTransform as VgBinTransform, Transforms as VgTransform} from 'vega-typings';
 import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning, isSelectionExtent} from '../../bin';
 import {Channel} from '../../channel';

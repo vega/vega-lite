@@ -1,4 +1,4 @@
-import {Orientation} from 'vega';
+import {Orientation} from 'vega-typings';
 import {isNumber, isObject} from 'vega-util';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';

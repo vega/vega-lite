@@ -1,4 +1,4 @@
-import {Vector2, Vector3} from 'vega';
+import {Vector2, Vector3} from 'vega-typings';
 import {ProjectionType} from './vega.schema';
 
 export interface Projection {

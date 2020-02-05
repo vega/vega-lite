@@ -1,4 +1,4 @@
-import {RangeEnum} from 'vega';
+import {RangeEnum} from 'vega-typings';
 import {isString, toSet} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, CHANNELS, isColorChannel} from './channel';

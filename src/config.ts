@@ -1,4 +1,4 @@
-import {Color, RangeConfig, RangeScheme} from 'vega';
+import {Color, RangeConfig, RangeScheme} from 'vega-typings';
 import {isObject, mergeConfig} from 'vega-util';
 import {AxisConfigMixins, isConditionalAxisValue} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';

@@ -1,4 +1,4 @@
-import {Color, Orientation} from 'vega';
+import {Color, Orientation} from 'vega-typings';
 import {toSet} from 'vega-util';
 import {Gradient, Value} from './channeldef';
 import {CompositeMark, CompositeMarkDef} from './compositemark';

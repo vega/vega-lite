@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import {SignalRef} from 'vega-typings';
 import {ScaleChannel} from '../../../src/channel';
 import {PositionFieldDef} from '../../../src/channeldef';
 import {domainSort, mergeDomains, parseDomainForChannel} from '../../../src/compile/scale/domain';

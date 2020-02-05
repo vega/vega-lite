@@ -1,4 +1,4 @@
-import {Color} from 'vega';
+import {Color} from 'vega-typings';
 import {BaseSpec} from '.';
 import {getPositionScaleChannel} from '../channel';
 import {Config} from '../config';

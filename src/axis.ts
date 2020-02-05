@@ -9,7 +9,7 @@ import {
   FontWeight,
   LabelOverlap,
   TextBaseline
-} from 'vega';
+} from 'vega-typings';
 import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';

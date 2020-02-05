@@ -1,4 +1,4 @@
-import {KDETransform as VgKDETransform} from 'vega';
+import {KDETransform as VgKDETransform} from 'vega-typings';
 import {DensityTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {DataFlowNode} from './dataflow';

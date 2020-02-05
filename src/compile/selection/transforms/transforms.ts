@@ -1,4 +1,4 @@
-import {NewSignal, Signal} from 'vega';
+import {NewSignal, Signal} from 'vega-typings';
 import {SelectionComponent} from '..';
 import {SelectionDef} from '../../../selection';
 import {Model} from '../../model';
