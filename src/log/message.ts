@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega-typings';
 import {Aggregate} from '../aggregate';
 import {Channel, FacetChannel, GeoPositionChannel, getSizeType, PositionScaleChannel} from '../channel';
-import {TypedFieldDef, Value, HiddenCompositeAggregate} from '../channeldef';
+import {HiddenCompositeAggregate, TypedFieldDef, Value} from '../channeldef';
 import {SplitParentProperty} from '../compile/split';
 import {CompositeMark} from '../compositemark';
 import {ErrorBarCenter, ErrorBarExtent} from '../compositemark/errorbar';
@@ -11,7 +11,7 @@ import {Projection} from '../projection';
 import {ScaleType} from '../scale';
 import {GenericSpec} from '../spec';
 import {Type} from '../type';
-import {stringify, replaceAll} from '../util';
+import {replaceAll, stringify} from '../util';
 import {VgSortField} from '../vega.schema';
 
 /**
@@ -169,7 +169,9 @@ export function droppingColor(type: 'encoding' | 'property', opt: {fill?: boolea
 }
 
 export function emptyFieldDef(fieldDef: TypedFieldDef<string>, channel: Channel) {
-  return `Dropping ${stringify(fieldDef)} from channel "${channel}" since it does not contain data field or value.`;
+  return `Dropping ${stringify(
+    fieldDef
+  )} from channel "${channel}" since it does not contain any data field, value, or signal.`;
 }
 export function latLongDeprecated(channel: Channel, type: Type, newChannel: GeoPositionChannel) {
   return `${channel}-encoding with type ${type} is deprecated. Replacing with ${newChannel}-encoding.`;

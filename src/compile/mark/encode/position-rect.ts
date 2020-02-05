@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega-typings/types';
 import {isNumber} from 'vega-util';
 import {isBinned, isBinning} from '../../../bin';
 import {PositionChannel, X, X2, Y2} from '../../../channel';
@@ -222,7 +223,7 @@ export function rectBinPosition({
   reverse
 }: {
   fieldDef: TypedFieldDef<string>;
-  fieldDef2?: ValueDef | SecondaryFieldDef<string>;
+  fieldDef2?: ValueDef | SecondaryFieldDef<string> | SignalRef;
   channel: 'x' | 'y';
   band: number;
   scaleName: string;

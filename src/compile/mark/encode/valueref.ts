@@ -31,7 +31,7 @@ import {hasDiscreteDomain, isContinuousToContinuous} from '../../../scale';
 import {StackProperties} from '../../../stack';
 import {QUANTITATIVE, TEMPORAL} from '../../../type';
 import {contains, getFirstDefined} from '../../../util';
-import {VgValueRef} from '../../../vega.schema';
+import {isSignalRef, VgValueRef} from '../../../vega.schema';
 import {signalOrValueRef} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 
@@ -239,6 +239,8 @@ export function midPoint({
       const offsetMixins = offset ? {offset} : {};
 
       return {...widthHeightValueRef(channel, value), ...offsetMixins};
+    } else if (isSignalRef(channelDef)) {
+      return channelDef;
     }
 
     // If channelDef is neither field def or value def, it's a condition-only def.
