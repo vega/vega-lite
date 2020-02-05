@@ -1,6 +1,6 @@
 import {PivotTransform} from '../../transform';
 import {duplicate, hash, unique} from '../../util';
-import {PivotTransform as VgPivotTransform} from 'vega';
+import {PivotTransform as VgPivotTransform} from 'vega-typings';
 import {DataFlowNode} from './dataflow';
 
 /**

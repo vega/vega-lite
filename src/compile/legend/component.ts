@@ -1,4 +1,4 @@
-import {Legend as VgLegend} from 'vega';
+import {Legend as VgLegend} from 'vega-typings';
 import {NonPositionScaleChannel} from '../../channel';
 import {COMMON_LEGEND_PROPERTY_INDEX, Legend} from '../../legend';
 import {Flag, keys} from '../../util';

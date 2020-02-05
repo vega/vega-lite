@@ -1,5 +1,5 @@
 import {SELECTION_ID} from '../../selection';
-import {IdentifierTransform as VgIdentifierTransform} from 'vega';
+import {IdentifierTransform as VgIdentifierTransform} from 'vega-typings';
 import {DataFlowNode} from './dataflow';
 
 export class IdentifierNode extends DataFlowNode {

@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import {SignalRef} from 'vega-typings';
 import {COLOR, SIZE} from '../../../src/channel';
 import {LegendComponent} from '../../../src/compile/legend/component';
 import * as encode from '../../../src/compile/legend/encode';

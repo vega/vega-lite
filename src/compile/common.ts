@@ -1,4 +1,4 @@
-import {Text} from 'vega';
+import {Text} from 'vega-typings';
 import {array} from 'vega-util';
 import {isBinning} from '../bin';
 import {

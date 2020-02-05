@@ -1,6 +1,6 @@
 import {SequenceParams} from '../../data';
 import {hash} from '../../util';
-import {SequenceTransform as VgSequenceTransform} from 'vega';
+import {SequenceTransform as VgSequenceTransform} from 'vega-typings';
 import {DataFlowNode} from './dataflow';
 
 export class SequenceNode extends DataFlowNode {

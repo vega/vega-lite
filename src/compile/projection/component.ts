@@ -1,6 +1,6 @@
-import {SignalRef} from 'vega';
+import {SignalRef} from 'vega-typings';
 import {Projection} from '../../projection';
-import {Projection as VgProjection} from 'vega';
+import {Projection as VgProjection} from 'vega-typings';
 import {Split} from '../split';
 
 export class ProjectionComponent extends Split<VgProjection> {

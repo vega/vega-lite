@@ -1,4 +1,4 @@
-import {NewSignal, PushSignal} from 'vega';
+import {NewSignal, PushSignal} from 'vega-typings';
 import {X} from '../../../src/channel';
 import {assembleScalesForModel} from '../../../src/compile/scale/assemble';
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';

@@ -1,4 +1,4 @@
-import {ColorValueRef, SymbolEncodeEntry} from 'vega';
+import {ColorValueRef, SymbolEncodeEntry} from 'vega-typings';
 import {isArray, stringValue, array} from 'vega-util';
 import {COLOR, NonPositionScaleChannel, OPACITY} from '../../channel';
 import {

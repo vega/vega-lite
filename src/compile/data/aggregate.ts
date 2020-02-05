@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import {AggregateOp} from 'vega-typings';
 import {isArgmaxDef, isArgminDef} from '../../aggregate';
 import {
   Channel,
@@ -14,7 +14,7 @@ import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../u
 import {isUnitModel, ModelWithField} from '../model';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
-import {AggregateTransform as VgAggregateTransform} from 'vega';
+import {AggregateTransform as VgAggregateTransform} from 'vega-typings';
 
 type Measures = Dict<{[key in AggregateOp]?: Set<string>}>;
 

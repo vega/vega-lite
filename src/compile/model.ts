@@ -6,7 +6,7 @@ import {
   Projection as VgProjection,
   SignalRef,
   Title as VgTitle
-} from 'vega';
+} from 'vega-typings';
 import {hasOwnProperty} from 'vega-util';
 import {
   Channel,

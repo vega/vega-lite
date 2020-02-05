@@ -1,4 +1,4 @@
-import {GeoJSONTransform as VgGeoJSONTransform, Vector2} from 'vega';
+import {GeoJSONTransform as VgGeoJSONTransform, Vector2} from 'vega-typings';
 import {isString} from 'vega-util';
 import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {isValueDef, ValueDef} from '../../channeldef';
