@@ -1,7 +1,7 @@
 {% assign res = "" %}
 {% for type in include.types %}
   {% if type.anyOf %}
-    {% include type-anyOf.html types=type.anyOf %}
+    {% include type-anyof.html types=type.anyOf %}
   {% elsif type.type == "array" %}
     {% if type.items["$ref"] %}
       {% assign ref = type.items["$ref"] %}
