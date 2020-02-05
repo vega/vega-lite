@@ -22,6 +22,7 @@ import {getMarkConfig} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
 import {nonPosition} from './nonposition';
+import {getOffset} from './offset';
 import {alignedPositionChannel} from './position-align';
 import {pointPosition} from './position-point';
 import {rangePosition} from './position-range';
@@ -171,9 +172,10 @@ function rectBandPosition(
   const {markDef, encoding, config} = model;
 
   const vgChannel = alignedPositionChannel(channel, markDef, config);
+  const offset = getOffset(channel, markDef);
 
   const centeredBandPositionMixins = {
-    [vgChannel]: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5})
+    [vgChannel]: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5, offset})
   };
 
   if (encoding.size || (markDef.size !== null && markDef.size !== undefined)) {
@@ -204,8 +206,7 @@ function rectBandPosition(
   const {band = 1} = fieldDef;
 
   return {
-    // FIXME: make offset work correctly here when we support group bar (https://github.com/vega/vega-lite/issues/396)
-    [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, {band: (1 - band) / 2}),
+    [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, {band: (1 - band) / 2, offset}),
     [sizeChannel]: sizeRef ?? bandRef(scaleName, band)
   };
 }
