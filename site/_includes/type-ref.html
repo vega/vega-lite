@@ -1,4 +1,4 @@
-{% assign ref = include.ref | split: "/" | last | strip %}
+{% assign ref = include.ref | split: "/" | last | strip | url_decode %}
 {% assign refschema = site.data.vega-lite-schema.definitions[ref] %}
 {% assign refcontent = ref | split: "<" | first | strip | append: include.suffix %}
 {% if refschema.type == "string" and refschema.enum != nil %}

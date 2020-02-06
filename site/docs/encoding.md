@@ -195,7 +195,7 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 <!-- {% include table.html props="scale,legend,condition" source="ColorFieldDefWithCondition" %} -->
 
-{% include table.html props="scale,legend,condition" source="FieldDefWithCondition<MarkPropFieldDef,(string|null)>" %}
+{% include table.html props="scale,legend,condition" source="FieldDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>" %}
 
 {:#mark-prop-value-def}
 
@@ -206,7 +206,7 @@ In addition to the constant `value`, [value definitions](#value-def) of mark pro
 <!-- {% include table.html props="condition"
 source="ColorValueDefWithCondition" %} -->
 
-{% include table.html props="condition" source="ValueDefWithOptionalCondition<MarkPropFieldDef,(string|null)>" %}
+{% include table.html props="condition" source="ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>" %}
 
 See [the `condition`](condition.html) page for examples how to specify condition logic.
 
@@ -226,7 +226,7 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 <!-- {% include table.html props="format,formatType,condition" source="TextFieldDefWithCondition" %} -->
 
-{% include table.html props="format,formatType,condition" source="FieldDefWithCondition<TextFieldDef,Value>" %}
+{% include table.html props="format,formatType,condition" source="FieldDefWithCondition<StringFieldDef,Text>" %}
 
 {:#text-value-def}
 
@@ -236,7 +236,7 @@ In addition to the constant `value`, [value definitions](#value-def) of `text` a
 
 <!-- {% include table.html props="condition" source="TextValueDefWithCondition" %} -->
 
-{% include table.html props="condition" source="ValueDefWithCondition<TextFieldDef,Value>" %}
+{% include table.html props="condition" source="FieldDefWithCondition<StringFieldDef,Text>" %}
 
 ### Multiple Field Definitions for Tooltips
 
@@ -258,7 +258,7 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 <!-- {% include table.html props="condition" source="StringFieldDefWithCondition" %} -->
 
-{% include table.html props="condition" source="FieldDefWithCondition<MarkPropFieldDef,(string|null)>" %}
+{% include table.html props="condition" source="FieldDefWithCondition<StringFieldDef,string>" %}
 
 The example below show how the href channel can be used to provide links to external resources with more details.
 
