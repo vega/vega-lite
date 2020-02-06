@@ -7,7 +7,7 @@ describe('Schema', () => {
     const ajv = new Ajv({
       allErrors: true,
       verbose: true,
-      format: 'full',
+      // format: 'full',  // remove since we don't encode refs
       extendRefs: 'fail'
     });
 

@@ -968,7 +968,7 @@
     jest-diff "^25.1.0"
     pretty-format "^25.1.0"
 
-"@types/json-schema@^7.0.3":
+"@types/json-schema@^7.0.3", "@types/json-schema@^7.0.4":
   version "7.0.4"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.4.tgz#38fd73ddfd9b55abb1e1b2ed578cb55bd7b7d339"
   integrity sha512-8+KAKzEvSUdeo+kmqnKrqgeE+LcA0tjYWFY7RPProVYwnqDjukzO+3b6dLD56rYX5TdWejnEOLJYOIeh4CXKuA==
@@ -1879,15 +1879,10 @@ commander@^3.0.2:
   resolved "https://registry.yarnpkg.com/commander/-/commander-3.0.2.tgz#6837c3fb677ad9933d1cfba42dd14d5117d6b39e"
   integrity sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==
 
-commander@^4.0.1:
+commander@^4.0.1, commander@~4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-4.1.1.tgz#9fd602bd936294e9e9ef46a3f4d6964044b18068"
   integrity sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==
-
-commander@~4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-4.0.1.tgz#b67622721785993182e807f4883633e6401ba53c"
-  integrity sha512-IPF4ouhCP+qdlcmCedhxX4xiGBPyigb8v5NeUp+0LyhwLgxMqyp3S0vl7TAPfS/hiP7FC3caI/PB9lTmP8r1NA==
 
 compare-func@^1.3.1:
   version "1.3.2"
@@ -7452,16 +7447,16 @@ ts-jest@^25.2.0:
     semver "^5.5"
     yargs-parser "10.x"
 
-ts-json-schema-generator@0.58.1:
-  version "0.58.1"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.58.1.tgz#41bce930e53422723646f0b037f33b1b4c8a42d5"
-  integrity sha512-v4shrlxAYtEfeq+1Hfr57pljGv2OMHV8oZ5NwbaWHHGOfXDuDAPn9Cf7HJU4+7ls7UqUPZiyRpKQdRV+GhuSuQ==
+ts-json-schema-generator@0.59.0:
+  version "0.59.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.59.0.tgz#cc926deb4752f6b68c159929db4e415bede0de51"
+  integrity sha512-SN/mBWq8OGPoLbFODE29Vwp9HSZjWi+/RB/m2l8Fy3/bzWCyrG6biax5NQJV4Y4/D+XsEEt95pvV9ows09PQPw==
   dependencies:
-    "@types/json-schema" "^7.0.3"
-    commander "~4.0.1"
+    "@types/json-schema" "^7.0.4"
+    commander "~4.1.1"
     glob "~7.1.6"
     json-stable-stringify "^1.0.1"
-    typescript "~3.7.3"
+    typescript "~3.7.5"
 
 tslib@^1.8.1, tslib@^1.9.0, tslib@~1.10.0:
   version "1.10.0"
@@ -7516,7 +7511,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@~3.7.3, typescript@~3.7.5:
+typescript@~3.7.5:
   version "3.7.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
   integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
