@@ -8,6 +8,7 @@ import {
   SHAPE,
   SIZE,
   STROKE,
+  STROKEDASH,
   STROKEOPACITY,
   STROKEWIDTH
 } from '../../channel';
@@ -19,20 +20,20 @@ import {
   TypedFieldDef
 } from '../../channeldef';
 import {Legend} from '../../legend';
+import {normalizeTimeUnit} from '../../timeunit';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, getFirstDefined, keys, varName} from '../../util';
 import {mergeTitleComponent, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
+import {parseInteractiveLegend} from '../selection/transforms/legends';
 import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex, LegendComponentProps, LEGEND_COMPONENT_PROPERTIES} from './component';
 import * as encode from './encode';
 import * as properties from './properties';
 import {direction, type} from './properties';
-import {parseInteractiveLegend} from '../selection/transforms/legends';
-import {normalizeTimeUnit} from '../../timeunit';
 
 export function parseLegend(model: Model) {
   if (isUnitModel(model)) {
@@ -44,7 +45,7 @@ export function parseLegend(model: Model) {
 
 function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   const {encoding} = model;
-  return [COLOR, FILL, STROKE, STROKEWIDTH, SIZE, SHAPE, OPACITY, FILLOPACITY, STROKEOPACITY].reduce(
+  return [COLOR, FILL, STROKE, STROKEWIDTH, STROKEDASH, SIZE, SHAPE, OPACITY, FILLOPACITY, STROKEOPACITY].reduce(
     (legendComponent, channel) => {
       const def = encoding[channel];
       if (

@@ -21,17 +21,17 @@ import {isFacetFieldDef} from './spec/facet';
 import {StackOffset} from './stack';
 import {
   getTimeUnitParts,
+  isLocalSingleTimeUnit,
   normalizeTimeUnit,
   TimeUnit,
   TimeUnitParams,
-  timeUnitToString,
-  isLocalSingleTimeUnit
+  timeUnitToString
 } from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
 import {contains, flatAccessWithDatum, getFirstDefined, internalField, replacePathInField, titlecase} from './util';
 
-export type Value = number | string | boolean | null;
+export type Value = number | string | boolean | number[] | null;
 export type Gradient = LinearGradient | RadialGradient;
 export type ValueOrGradient = Value | Gradient;
 
@@ -90,6 +90,10 @@ export type NumericValueDefWithCondition<F extends Field> = ValueDefWithConditio
   MarkPropFieldDef<F, StandardType>,
   number
 >;
+export type NumericArrayValueDefWithCondition<F extends Field> = ValueDefWithCondition<
+  MarkPropFieldDef<F, StandardType>,
+  number[]
+>;
 
 export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
@@ -147,6 +151,10 @@ export type ColorGradientFieldDefWithCondition<F extends Field, T extends Type =
 export type NumericFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
   MarkPropFieldDef<F, StandardType>,
   number
+>;
+export type NumericArrayFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
+  MarkPropFieldDef<F, StandardType>,
+  number[]
 >;
 
 export type ShapeFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
@@ -975,6 +983,15 @@ export function channelCompatibility(
       }
       return COMPATIBLE;
 
+    case 'strokeDash':
+      if (!contains(['ordinal', 'nominal'], fieldDef.type)) {
+        return {
+          compatible: false,
+          warning: 'StrokeDash channel should be used with only discrete data.'
+        };
+      }
+      return COMPATIBLE;
+
     case 'shape':
       if (!contains(['ordinal', 'nominal', 'geojson'], fieldDef.type)) {
         return {
@@ -993,7 +1010,6 @@ export function channelCompatibility(
       }
       return COMPATIBLE;
   }
-  throw new Error('channelCompatability not implemented for channel ' + channel);
 }
 
 /**

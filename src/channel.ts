@@ -44,6 +44,7 @@ export const FILLOPACITY: 'fillOpacity' = 'fillOpacity';
 export const STROKEOPACITY: 'strokeOpacity' = 'strokeOpacity';
 
 export const STROKEWIDTH: 'strokeWidth' = 'strokeWidth';
+export const STROKEDASH: 'strokeDash' = 'strokeDash';
 
 // Non-scale channel
 export const TEXT: 'text' = 'text';
@@ -112,6 +113,7 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   strokeOpacity: 1,
 
   strokeWidth: 1,
+  strokeDash: 1,
   size: 1,
   shape: 1,
 
@@ -286,6 +288,7 @@ export function supportLegend(channel: NonPositionScaleChannel) {
     case SHAPE:
     case OPACITY:
     case STROKEWIDTH:
+    case STROKEDASH:
       return true;
     case FILLOPACITY:
     case STROKEOPACITY:
@@ -359,6 +362,7 @@ function getSupportedMark(channel: Channel): SupportedMark {
     case FILLOPACITY:
     case STROKEOPACITY:
     case STROKEWIDTH:
+
     // falls through
 
     case FACET:
@@ -400,6 +404,17 @@ function getSupportedMark(channel: Channel): SupportedMark {
         line: 'always',
         trail: 'always'
       };
+    case STROKEDASH:
+      return {
+        line: 'always',
+        point: 'always',
+        tick: 'always',
+        rule: 'always',
+        circle: 'always',
+        square: 'always',
+        bar: 'always',
+        geoshape: 'always'
+      };
     case SHAPE:
       return {point: 'always', geoshape: 'always'};
     case TEXT:
@@ -429,6 +444,7 @@ export function rangeType(channel: Channel): RangeType {
     case ROW:
     case COLUMN:
     case SHAPE:
+    case STROKEDASH:
     // TEXT, TOOLTIP, URL, and HREF have no scale but have discrete output [falls through]
     case TEXT:
     case TOOLTIP:

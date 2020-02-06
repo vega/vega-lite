@@ -1,6 +1,6 @@
 import {Color, Orientation} from 'vega';
 import {toSet} from 'vega-util';
-import {Gradient, Value} from './channeldef';
+import {Gradient} from './channeldef';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {contains, Flag, keys} from './util';
 import {BaseMarkConfig} from './vega.schema';
@@ -114,7 +114,7 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    *
    * __Default value:__ `null`
    */
-  tooltip?: Value | TooltipContent | null;
+  tooltip?: number | string | boolean | TooltipContent | null;
 
   /**
    * Default size for marks.

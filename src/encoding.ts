@@ -22,6 +22,8 @@ import {
   LatLongFieldDef,
   normalize,
   normalizeFieldDef,
+  NumericArrayFieldDefWithCondition,
+  NumericArrayValueDefWithCondition,
   NumericFieldDefWithCondition,
   NumericValueDefWithCondition,
   OrderFieldDef,
@@ -160,6 +162,13 @@ export interface Encoding<F extends Field> {
    * __Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property.
    */
   strokeWidth?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
+
+  /**
+   * Stroke dash of the marks.
+   *
+   * __Default value:__ `[1,0]` (No dash).
+   */
+  strokeDash?: NumericArrayFieldDefWithCondition<F> | NumericArrayValueDefWithCondition<F>;
 
   /**
    * Size of the mark.
@@ -582,6 +591,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'opacity':
       case 'fillOpacity':
       case 'strokeOpacity':
+      case 'strokeDash':
       case 'strokeWidth': {
         // TODO strokeDashOffset:
         // falls through

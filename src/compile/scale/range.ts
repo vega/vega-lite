@@ -12,6 +12,7 @@ import {
   SHAPE,
   SIZE,
   STROKE,
+  STROKEDASH,
   STROKEOPACITY,
   STROKEWIDTH,
   X,
@@ -202,6 +203,15 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
     case STROKEWIDTH:
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minStrokeWidth, config.scale.maxStrokeWidth];
+    case STROKEDASH:
+      return [
+        // TODO: add this to Vega's config.range?
+        [1, 0],
+        [4, 2],
+        [2, 1],
+        [1, 1],
+        [1, 2, 4, 2]
+      ];
     case SHAPE:
       return 'symbol';
     case COLOR:

@@ -33,6 +33,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
     ...nonPosition('fillOpacity', model),
     ...nonPosition('strokeOpacity', model),
     ...nonPosition('strokeWidth', model),
+    ...nonPosition('strokeDash', model),
     ...tooltip(model),
     ...text(model, 'href')
   };
