@@ -511,4 +511,14 @@ export interface AxisConfigMixins {
    * Specific axis config for axes with "band" scales.
    */
   axisBand?: AxisConfig;
+
+  /**
+   * Specific axis config for quantitative fields
+   */
+  axisQuantitative?: AxisConfig;
+
+  /**
+   * Specific axis config for temporal fields
+   */
+  axisTemporal?: AxisConfig;
 }

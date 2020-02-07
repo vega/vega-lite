@@ -60,9 +60,9 @@ These two config properties define the default number and time formats for text 
 
 Axis configurations define default settings for axes. Properties defined under the main `"axis"` object are applied to _all_ axes.
 
-Additional property blocks can target more specific axis types based on the orientation (`"axisX"`, `"axisY"`, `"axisLeft"`, `"axisTop"`, etc.) or band scale type (`"axisBand"`). For example, properties defined under the `"axisBand"` property will only apply to axes visualizing `"band"` scales. If multiple axis config blocks apply to a single axis, type-based options take precedence over orientation-based options, which in turn take precedence over general options.
+Additional property blocks can target more specific axis types based on the orientation (`"axisX"`, `"axisY"`, `"axisLeft"`, `"axisTop"`, etc.), band scale type (`"axisBand"`), or scale's data type (`"axisQuantitative"` and `"axisTemporal"`). For example, properties defined under the `"axisBand"` property will only apply to axes visualizing `"band"` scales. If multiple axis config blocks apply to a single axis, type-based options take precedence over orientation-based options, which in turn take precedence over general options.
 
-{% include table.html props="axis,axisX,axisY,axisLeft,axisRight,axisTop,axisBottom,axisBand" source="Config" %}
+{% include table.html props="axis,axisX,axisY,axisLeft,axisRight,axisTop,axisBottom,axisBand,axisQuantitative,axisTemporal" source="Config" %}
 
 {:#header-config}
 

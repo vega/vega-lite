@@ -42,7 +42,7 @@ export function labelAngle(
     return normalizeAngle(specifiedAxis.labelAngle);
   } else {
     // try axis config value
-    const angle = getAxisConfig(
+    const {configValue: angle} = getAxisConfig(
       'labelAngle',
       model.config,
       channel,

@@ -227,7 +227,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   // 1.2. Add properties
   for (const property of AXIS_COMPONENT_PROPERTIES) {
     const value = getProperty(property, axis, channel, model);
-    const configValue = getAxisConfig(
+    const {configValue, configFrom} = getAxisConfig(
       property,
       model.config,
       channel,
@@ -249,7 +249,8 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
     } else if (
       isConditionalAxisValue<any>(configValue) ||
       // need to set "any" as TS isn't smart enough to figure the generic parameter type yet
-      isSignalRef(configValue)
+      isSignalRef(configValue) ||
+      contains(['axisQuantitative', 'axisTemporal'], configFrom)
     ) {
       // If a config is specified and is conditional, copy conditional value from axis config
       axisComponent.set(property, configValue, false);
