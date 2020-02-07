@@ -55,7 +55,7 @@ export interface ValueDef<V extends ValueOrGradient | Value[] = Value> {
 
 export type ChannelDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradientOrText = Value> =
   | FieldDefWithCondition<F, V>
-  | ValueDefWithCondition<F, V>
+  | ValueWithCondition<F, V>
   | SignalRefWithCondition<F, V>;
 
 /**
@@ -69,7 +69,7 @@ export type ChannelDefWithCondition<F extends FieldDef<any>, V extends ValueOrGr
 /**
  * @minProperties 1
  */
-export type ValueDefWithCondition<F extends FieldDef<any>, V extends ValueOrGradientOrText = Value> = Partial<
+export type ValueWithCondition<F extends FieldDef<any>, V extends ValueOrGradientOrText = Value> = Partial<
   ValueDef<V>
 > & {
   /**
@@ -89,7 +89,7 @@ export type SignalRefWithCondition<F extends FieldDef<any>, V extends ValueOrGra
 };
 
 export type ValueOrSignalWithCondition<F extends FieldDef<any>, V extends ValueOrGradientOrText = Value> =
-  | ValueDefWithCondition<F, V>
+  | ValueWithCondition<F, V>
   | SignalRefWithCondition<F, V>;
 
 export type StringValueOrSignalWithCondition<
@@ -106,7 +106,7 @@ export type NumericValueOrSignalWithCondition<F extends Field> = ValueOrSignalWi
   MarkPropFieldDef<F, StandardType>,
   number
 >;
-export type NumericArrayValueDefWithCondition<F extends Field> = ValueDefWithCondition<
+export type NumericArrayValueDefWithCondition<F extends Field> = ValueWithCondition<
   MarkPropFieldDef<F, StandardType>,
   number[]
 >;

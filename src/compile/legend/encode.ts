@@ -12,7 +12,7 @@ import {
   TypedFieldDef,
   Value,
   ValueDef,
-  ValueDefWithCondition
+  ValueWithCondition
 } from '../../channeldef';
 import {FILL_STROKE_CONFIG} from '../../mark';
 import {ScaleType} from '../../scale';
@@ -186,13 +186,13 @@ export function entries(
 function getMaxValue(
   channelDef:
     | FieldDefWithCondition<MarkPropFieldDef<string>, number>
-    | ValueDefWithCondition<MarkPropFieldDef<string>, number>
+    | ValueWithCondition<MarkPropFieldDef<string>, number>
 ) {
   return getConditionValue<number>(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
 }
 
 export function getFirstConditionValue<V extends Value | Gradient>(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, V> | ValueDefWithCondition<MarkPropFieldDef<string>, V>
+  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, V> | ValueWithCondition<MarkPropFieldDef<string>, V>
 ): V {
   return getConditionValue(channelDef, (v: V, conditionalDef: Conditional<ValueDef<V>>) => {
     return getFirstDefined<V>(v, conditionalDef.value);
@@ -200,7 +200,7 @@ export function getFirstConditionValue<V extends Value | Gradient>(
 }
 
 function getConditionValue<V extends Value | Gradient>(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, V> | ValueDefWithCondition<MarkPropFieldDef<string>, V>,
+  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, V> | ValueWithCondition<MarkPropFieldDef<string>, V>,
   reducer: (val: V, conditionalDef: Conditional<ValueDef<V>>) => V
 ): V {
   if (hasConditionalValueDef(channelDef)) {

@@ -1,13 +1,7 @@
 import {LabelOverlap, LegendOrient, LegendType, SignalRef, SymbolShape} from 'vega-typings';
 import {isArray} from 'vega-util';
 import {Channel, isColorChannel} from '../../channel';
-import {
-  FieldDefWithCondition,
-  MarkPropFieldDef,
-  TypedFieldDef,
-  valueArray,
-  ValueDefWithCondition
-} from '../../channeldef';
+import {FieldDefWithCondition, MarkPropFieldDef, TypedFieldDef, valueArray, ValueWithCondition} from '../../channeldef';
 import {Legend, LegendConfig} from '../../legend';
 import {Mark} from '../../mark';
 import {isContinuousToContinuous, ScaleType} from '../../scale';
@@ -33,7 +27,7 @@ export function defaultSymbolType(
   channel: Channel,
   shapeChannelDef:
     | FieldDefWithCondition<MarkPropFieldDef<string>, SymbolShape>
-    | ValueDefWithCondition<MarkPropFieldDef<string>, SymbolShape>,
+    | ValueWithCondition<MarkPropFieldDef<string>, SymbolShape>,
   markShape: SymbolShape | SignalRef
 ): SymbolShape | SignalRef {
   if (channel !== 'shape') {

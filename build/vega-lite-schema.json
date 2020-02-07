@@ -14025,7 +14025,7 @@
       "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,number[]>"
     },
     "NumericArrayValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,number[]>"
+      "$ref": "#/definitions/ValueWithCondition<MarkPropFieldDef,number[]>"
     },
     "NumericFieldDefWithCondition": {
       "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,number>"
@@ -20071,157 +20071,6 @@
       ],
       "type": "object"
     },
-    "ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>": {
-      "additionalProperties": false,
-      "minProperties": 1,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ValueDefCondition<(Gradient|string|null)>"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Gradient"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "type": "object"
-    },
-    "ValueDefWithCondition<MarkPropFieldDef,(string|null)>": {
-      "additionalProperties": false,
-      "minProperties": 1,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ValueDefCondition<(string|null)>"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "null"
-          ]
-        }
-      },
-      "type": "object"
-    },
-    "ValueDefWithCondition<MarkPropFieldDef,number>": {
-      "additionalProperties": false,
-      "minProperties": 1,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ValueDefCondition<number>"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": "number"
-        }
-      },
-      "type": "object"
-    },
-    "ValueDefWithCondition<MarkPropFieldDef,number[]>": {
-      "additionalProperties": false,
-      "minProperties": 1,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ValueDefCondition<number[]>"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        }
-      },
-      "type": "object"
-    },
-    "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
-      "additionalProperties": false,
-      "minProperties": 1,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef<TypeForShape>"
-            },
-            {
-              "$ref": "#/definitions/ValueDefCondition<(string|null)>"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "null"
-          ]
-        }
-      },
-      "type": "object"
-    },
-    "ValueDefWithCondition<StringFieldDef,Text>": {
-      "additionalProperties": false,
-      "minProperties": 1,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalStringFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ValueDefCondition<Text>"
-            }
-          ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
-        },
-        "value": {
-          "$ref": "#/definitions/Text",
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "type": "object"
-    },
     "ValueDefCondition<(Gradient|string|null)>": {
       "anyOf": [
         {
@@ -20355,19 +20204,170 @@
       ]
     },
     "ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>"
+      "$ref": "#/definitions/ValueWithCondition<MarkPropFieldDef,(Gradient|string|null)>"
     },
     "ValueDefWithCondition<MarkPropFieldDef,(string|null)>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(string|null)>"
+      "$ref": "#/definitions/ValueWithCondition<MarkPropFieldDef,(string|null)>"
     },
     "ValueDefWithCondition<MarkPropFieldDef,number>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,number>"
+      "$ref": "#/definitions/ValueWithCondition<MarkPropFieldDef,number>"
     },
     "ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
+      "$ref": "#/definitions/ValueWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
     },
     "ValueDefWithCondition<StringFieldDef,Text>": {
-      "$ref": "#/definitions/ValueDefWithCondition<StringFieldDef,Text>"
+      "$ref": "#/definitions/ValueWithCondition<StringFieldDef,Text>"
+    },
+    "ValueWithCondition<MarkPropFieldDef,(Gradient|string|null)>": {
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ValueDefCondition<(Gradient|string|null)>"
+            }
+          ],
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "type": "object"
+    },
+    "ValueWithCondition<MarkPropFieldDef,(string|null)>": {
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ValueDefCondition<(string|null)>"
+            }
+          ],
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
+        },
+        "value": {
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "ValueWithCondition<MarkPropFieldDef,number>": {
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ValueDefCondition<number>"
+            }
+          ],
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
+        },
+        "value": {
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "ValueWithCondition<MarkPropFieldDef,number[]>": {
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ValueDefCondition<number[]>"
+            }
+          ],
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
+        },
+        "value": {
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ValueWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef<TypeForShape>"
+            },
+            {
+              "$ref": "#/definitions/ValueDefCondition<(string|null)>"
+            }
+          ],
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
+        },
+        "value": {
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "ValueWithCondition<StringFieldDef,Text>": {
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalStringFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ValueDefCondition<Text>"
+            }
+          ],
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
+        },
+        "value": {
+          "$ref": "#/definitions/Text",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "type": "object"
     },
     "Vector2<DateTime>": {
       "items": [
