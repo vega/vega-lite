@@ -18,6 +18,7 @@ perl -pi -e s,'ValueDef(.*)<number>','NumberValueDef\1',g build/vega-lite-schema
 
 perl -pi -e s,'Conditional<(.*)>','Conditional\1',g build/vega-lite-schema.json
 
+perl -pi -e s,'ValueOrSignal','ValueDef',g build/vega-lite-schema.json
 perl -pi -e s,'FieldDefWithCondition<FieldDefWithoutScale>','FieldDefWithConditionWithoutScale',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDefWithCondition<FieldDefWithoutScale>','ValueDefWithConditionWithoutScale',g build/vega-lite-schema.json
 
