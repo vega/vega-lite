@@ -16,7 +16,7 @@ ${example.description ? `description: "${example.description.replace(/"/g, '\\"'
 title: ${example.title}
 menu: examples
 permalink: /examples/${example.name}.html
-image: /examples/compiled/${example.name}.png
+image: /examples/${example.name}.png
 edit_path: _data/examples.json
 ---
 
