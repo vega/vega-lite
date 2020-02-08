@@ -7876,10 +7876,10 @@ vega-typings@0.12.0:
   dependencies:
     vega-util "^1.12.1"
 
-vega-typings@~0.12.2:
-  version "0.12.2"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.12.2.tgz#83a7d8e705df08e7003712c84108764ff67d1325"
-  integrity sha512-Fpy8QEG7Jj5LQ7TfYgXFw436Ba1wAgnhmVu5bo7Irj1WNdNEU1FXE/EgQooQJpN/PblJHmy/0Tebb2sjDAM6mQ==
+vega-typings@~0.12.3:
+  version "0.12.3"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.12.3.tgz#fc5f00219a0d99d3df5b19c563be77800c157cf0"
+  integrity sha512-ubOekVm60PjzP0b+FAakbti9PkoGu/as2SPX7iBo5IPp8pt+Ej5SNpQJPdCl9rSpKCzU4QNWz1ptZcXL3WSTcg==
   dependencies:
     vega-util "^1.12.1"
 
