@@ -3388,10 +3388,10 @@
     "ConditionalValueDef<number[]>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate%3CValueDef%3Cnumber%5B%5D%3E%3E"
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<number[]>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection%3CValueDef%3Cnumber%5B%5D%3E%3E"
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<number[]>>"
         }
       ]
     },
@@ -7029,11 +7029,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef%3Cnumber%5B%5D%3E"
+              "$ref": "#/definitions/ConditionalValueDef<number[]>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef%3Cnumber%5B%5D%3E"
+                "$ref": "#/definitions/ConditionalValueDef<number[]>"
               },
               "type": "array"
             }
@@ -12104,10 +12104,10 @@
       "type": "string"
     },
     "NumericArrayFieldDefWithCondition": {
-      "$ref": "#/definitions/FieldDefWithCondition%3CMarkPropFieldDef%2Cnumber%5B%5D%3E"
+      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,number[]>"
     },
     "NumericArrayValueDefWithCondition": {
-      "$ref": "#/definitions/ValueDefWithCondition%3CMarkPropFieldDef%2Cnumber%5B%5D%3E"
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,number[]>"
     },
     "NumericFieldDefWithCondition": {
       "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,number>"
@@ -17437,11 +17437,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef%3Cnumber%5B%5D%3E"
+              "$ref": "#/definitions/ConditionalValueDef<number[]>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef%3Cnumber%5B%5D%3E"
+                "$ref": "#/definitions/ConditionalValueDef<number[]>"
               },
               "type": "array"
             }
