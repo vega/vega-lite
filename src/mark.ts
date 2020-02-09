@@ -220,18 +220,17 @@ export interface MarkConfig extends ColorMixins, Omit<VgMarkConfig, 'tooltip'> {
    * For stacked charts, this is always determined by the orientation of the stack;
    * therefore explicitly specified value will be ignored.
    */
-  orient?: Orientation; // Vega orient doesn't apply to bar/tick/line. Since there are number of logic depending on this property, Vega-Lite would NOT allow signal for orient.
+  orient?: Orientation; // Vega orient doesn't apply to bar/tick/line. Since some logic depends on this property, Vega-Lite does NOT allow signal for orient.
 
   /**
    * The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `"left"`, `"right"`, `"center"`.
    */
-  align?: Align; // Vega doesn't apply align to ranged marks. Since there are number of logic depending on this property, Vega-Lite would NOT allow signal for align.
+  align?: Align; // Vega doesn't apply align to ranged marks. Since some logic depends on this property, Vega-Lite does NOT allow signal for align.
 
   /**
-   * The text baseline or vertical ranged marks (area, bar, image, rect, rule). One of `"left"`, `"right"`, `"center"`.
-   * One of `"top"`, `"bottom"`, `"middle"`, `"alphabetic"` (for text only).
+   * The vertical text baseline. One of `"top"`, `"bottom"`, `"middle"`, `"alphabetic"` (for text only).
    */
-  baseline?: TextBaseline; // Vega doesn't apply align to ranged marks. Since there are number of logic depending on this property, Vega-Lite would NOT allow signal for baseline
+  baseline?: TextBaseline; // Vega doesn't apply align to ranged marks. Since some logic depends on this property, Vega-Lite does NOT allow signal for baseline.
 }
 
 export interface RectBinSpacingMixins {
