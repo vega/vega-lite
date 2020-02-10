@@ -143,7 +143,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The text baseline or vertical ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`.\nOne of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
         },
         "color": {
           "anyOf": [
@@ -1590,7 +1590,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The text baseline or vertical ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`.\nOne of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
         },
         "binSpacing": {
           "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
@@ -9905,7 +9905,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The text baseline or vertical ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`.\nOne of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
         },
         "color": {
           "anyOf": [
@@ -10615,7 +10615,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The text baseline or vertical ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`.\nOne of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
         },
         "color": {
           "anyOf": [
@@ -10961,7 +10961,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The text baseline or vertical ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`.\nOne of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
         },
         "binSpacing": {
           "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
@@ -11788,7 +11788,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The text baseline or vertical ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`.\nOne of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
         },
         "clip": {
           "description": "Whether a mark be clipped to the enclosing group’s width and height.",
@@ -12908,7 +12908,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The text baseline or vertical ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`.\nOne of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
         },
         "binSpacing": {
           "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
@@ -14898,7 +14898,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The text baseline or vertical ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`.\nOne of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
         },
         "color": {
           "anyOf": [
