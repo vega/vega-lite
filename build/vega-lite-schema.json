@@ -4379,9 +4379,17 @@
           "$ref": "#/definitions/AxisConfig",
           "description": "Specific axis config for y-axis along the left edge of the chart."
         },
+        "axisQuantitative": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Specific axis config for quantitative fields"
+        },
         "axisRight": {
           "$ref": "#/definitions/AxisConfig",
           "description": "Specific axis config for y-axis along the right edge of the chart."
+        },
+        "axisTemporal": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Specific axis config for temporal fields"
         },
         "axisTop": {
           "$ref": "#/definitions/AxisConfig",
