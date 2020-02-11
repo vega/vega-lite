@@ -1,6 +1,6 @@
 import {PositionScaleChannel} from '../../channel';
 import {Config} from '../../config';
-import {isContinuousToContinuous, ScaleType} from '../../scale';
+import {isQuantitative, ScaleType} from '../../scale';
 
 export function getAxisConfig(
   property: string,
@@ -12,7 +12,7 @@ export function getAxisConfig(
   // configTypes to loop, starting from higher precedence
   const configTypes = [
     ...(scaleType === 'band' ? ['axisBand'] : []),
-    ...(isContinuousToContinuous(scaleType) ? ['axisQuantitative'] : []),
+    ...(isQuantitative(scaleType) ? ['axisQuantitative'] : []),
     ...(scaleType === 'time' || scaleType === 'utc' ? ['axisTemporal'] : []),
 
     // X/Y
