@@ -42,13 +42,13 @@ export function symbols(
     return undefined;
   }
 
+  const {markDef, encoding, config, mark} = model;
+  const filled = markDef.filled && mark !== 'trail';
+
   let out = {
     ...applyMarkConfig({}, model, FILL_STROKE_CONFIG),
-    ...mixins.color(model)
+    ...mixins.color(model, {filled})
   } as SymbolEncodeEntry; // FIXME: remove this when VgEncodeEntry is compatible with SymbolEncodeEntry
-
-  const {markDef, encoding, config} = model;
-  const filled = markDef.filled;
 
   const opacity = getMaxValue(encoding.opacity) ?? markDef.opacity;
   const condition = selectedCondition(model, legendCmp, fieldDef);

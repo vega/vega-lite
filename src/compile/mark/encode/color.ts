@@ -5,9 +5,12 @@ import {getMarkConfig, signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
 import {nonPosition} from './nonposition';
 
-export function color(model: UnitModel): VgEncodeEntry {
+export function color(model: UnitModel, opt: {filled: boolean | undefined} = {filled: undefined}): VgEncodeEntry {
   const {markDef, encoding, config} = model;
-  const {filled, type: markType} = markDef;
+  const {type: markType} = markDef;
+
+  // Allow filled to be overridden (for trail's "filled")
+  const filled = getFirstDefined(opt.filled, markDef.filled);
 
   const configValue = {
     fill: getMarkConfig('fill', markDef, config),
