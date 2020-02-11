@@ -127,6 +127,12 @@ const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
 
 export const QUANTITATIVE_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'symlog'];
 
+const QUANTITATIVE_SCALES_INDEX = toSet(QUANTITATIVE_SCALES);
+
+export function isQuantitative(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' {
+  return type in QUANTITATIVE_SCALES_INDEX;
+}
+
 export const CONTINUOUS_TO_DISCRETE_SCALES: ScaleType[] = ['quantile', 'quantize', 'threshold'];
 const CONTINUOUS_TO_DISCRETE_INDEX = toSet(CONTINUOUS_TO_DISCRETE_SCALES);
 
