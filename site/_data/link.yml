@@ -304,6 +304,8 @@ Legend:
   link: legend.html
 Scale:
   link: 'scale.html'
+SelectionExtent:
+  name: Object
 Sort:
   link: 'sort.html'
 EncodingSortField:
