@@ -435,16 +435,19 @@ export interface Scale {
   type?: ScaleType;
 
   /**
-   * Customized domain values.
+   * Customized domain values, either constant values or dynamic values driven by a selection.
    *
-   * For _quantitative_ fields, `domain` can take the form of a two-element array with minimum and maximum values. [Piecewise scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise) can be created by providing a `domain` with more than two entries.
-   * If the input field is aggregated, `domain` can also be a string value `"unaggregated"`, indicating that the domain should include the raw data values prior to the aggregation.
+   * 1) Constant `domain` for _quantitative_ fields can take one of the following forms:
    *
-   * For _temporal_ fields, `domain` can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](https://vega.github.io/vega-lite/docs/types.html#datetime).
+   * - A two-element array with minimum and maximum values. To create a diverging scale, this two-element array can be combined with the `domainMid` property.
+   * - An array with more than two entries, for [Piecewise quantitative scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise).
+   * - A string value `"unaggregated"`, if the input field is aggregated, to indicate that the domain should include the raw data values prior to the aggregation.
    *
-   * For _ordinal_ and _nominal_ fields, `domain` can be an array that lists valid input values.
+   * 2) Constant `domain` for _temporal_ fields can be a two-element array with minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](https://vega.github.io/vega-lite/docs/types.html#datetime).
    *
-   * The `selection` property can be used to [interactively determine](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain.
+   * 3) Constant `domain` for _ordinal_ and _nominal_ fields can be an array that lists valid input values.
+   *
+   * 4) Domain can also takes an object defining a field or encoding of a selection that [interactively determines](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain.
    */
   domain?: number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionExtent;
 
