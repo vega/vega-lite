@@ -131,12 +131,5 @@
       "zindex": 0
     }
   ],
-  "legends": [
-    {
-      "stroke": "color",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "stroke",
-      "title": "team"
-    }
-  ]
+  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "team"}]
 }

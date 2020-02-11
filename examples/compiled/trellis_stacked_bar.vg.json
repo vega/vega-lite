@@ -177,12 +177,5 @@
       "range": "category"
     }
   ],
-  "legends": [
-    {
-      "fill": "color",
-      "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
-      "symbolType": "square",
-      "title": "site"
-    }
-  ]
+  "legends": [{"fill": "color", "symbolType": "square", "title": "site"}]
 }

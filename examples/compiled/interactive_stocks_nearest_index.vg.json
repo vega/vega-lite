@@ -268,13 +268,6 @@
       "zindex": 0
     }
   ],
-  "legends": [
-    {
-      "stroke": "color",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "stroke",
-      "title": "symbol"
-    }
-  ],
+  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "symbol"}],
   "config": {"style": {"text": {"align": "right", "dx": -5, "dy": 5}}}
 }

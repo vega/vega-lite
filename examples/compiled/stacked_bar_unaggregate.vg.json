@@ -116,12 +116,5 @@
       "zindex": 0
     }
   ],
-  "legends": [
-    {
-      "fill": "color",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "square",
-      "title": "c"
-    }
-  ]
+  "legends": [{"fill": "color", "symbolType": "square", "title": "c"}]
 }

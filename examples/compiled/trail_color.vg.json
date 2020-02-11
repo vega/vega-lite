@@ -129,12 +129,7 @@
     }
   ],
   "legends": [
-    {
-      "stroke": "color",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "stroke",
-      "title": "symbol"
-    },
+    {"stroke": "color", "symbolType": "stroke", "title": "symbol"},
     {
       "strokeWidth": "size",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},

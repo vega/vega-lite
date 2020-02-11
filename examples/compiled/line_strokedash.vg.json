@@ -124,7 +124,6 @@
   "legends": [
     {
       "strokeDash": "strokeDash",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "stroke",
       "title": "symbol",
       "encode": {"symbols": {"update": {"stroke": {"value": "#4c78a8"}}}}

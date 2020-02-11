@@ -169,19 +169,21 @@ export function defaultGradientLength({
     gradientVerticalMinLength
   } = legendConfig;
 
-  const dir = direction({legend, legendConfig, channel, scaleType});
-
-  if (dir === 'horizontal') {
-    const orient = getFirstDefined(legend.orient, legendConfig.orient);
-    if (orient === 'top' || orient === 'bottom') {
-      return gradientLengthSignal(model, 'width', gradientHorizontalMinLength, gradientHorizontalMaxLength);
+  if (isContinuousToContinuous(scaleType)) {
+    const dir = direction({legend, legendConfig, channel, scaleType});
+    if (dir === 'horizontal') {
+      const orient = getFirstDefined(legend.orient, legendConfig.orient);
+      if (orient === 'top' || orient === 'bottom') {
+        return gradientLengthSignal(model, 'width', gradientHorizontalMinLength, gradientHorizontalMaxLength);
+      } else {
+        return gradientHorizontalMinLength;
+      }
     } else {
-      return gradientHorizontalMinLength;
+      // vertical / undefined (Vega uses vertical by default)
+      return gradientLengthSignal(model, 'height', gradientVerticalMinLength, gradientVerticalMaxLength);
     }
-  } else {
-    // vertical / undefined (Vega uses vertical by default)
-    return gradientLengthSignal(model, 'height', gradientVerticalMinLength, gradientVerticalMaxLength);
   }
+  return undefined;
 }
 
 function gradientLengthSignal(model: Model, sizeType: 'width' | 'height', min: number, max: number) {
