@@ -130,25 +130,16 @@
   ],
   "legends": [
     {
-      "fill": "color",
+      "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "stroke",
       "title": "symbol"
     },
     {
-      "size": "size",
+      "strokeWidth": "size",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "stroke",
-      "title": "price",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "black"},
-            "fillOpacity": {"value": 1},
-            "stroke": {"value": "transparent"}
-          }
-        }
-      }
+      "title": "price"
     }
   ]
 }
