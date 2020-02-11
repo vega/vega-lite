@@ -3,19 +3,19 @@ import {
   isAggregateOp,
   isArgmaxDef,
   isArgminDef,
+  MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX,
   NonArgAggregateOp,
-  SHARED_DOMAIN_OP_INDEX,
-  MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX
+  SHARED_DOMAIN_OP_INDEX
 } from '../../aggregate';
-import {isBinning, isSelectionExtent, isBinParams} from '../../bin';
+import {isBinning, isBinParams, isSelectionExtent} from '../../bin';
 import {getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
 import {binRequiresRange, hasBand, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
 import * as log from '../../log';
-import {Domain, hasDiscreteDomain, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
+import {Domain, hasDiscreteDomain, isDomainUnionWith, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
-import {TimeUnit, normalizeTimeUnit} from '../../timeunit';
+import {normalizeTimeUnit, TimeUnit} from '../../timeunit';
 import {Type} from '../../type';
 import * as util from '../../util';
 import {
@@ -36,7 +36,7 @@ import {isFacetModel, isUnitModel, Model} from '../model';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
-import {ScaleComponentIndex, ScaleComponent} from './component';
+import {ScaleComponent, ScaleComponentIndex} from './component';
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {
@@ -205,6 +205,12 @@ function parseSingleChannelDomain(
   channel: ScaleChannel | 'x2' | 'y2'
 ): Explicit<VgNonUnionDomain[]> {
   const fieldDef = model.fieldDef(channel);
+
+  if (isDomainUnionWith(domain)) {
+    const defaultDomain = parseSingleChannelDomain(scaleType, undefined, model, channel);
+
+    return makeExplicit([...defaultDomain.value, domain.unionWith]);
+  }
 
   if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
     // explicit value

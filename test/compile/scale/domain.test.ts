@@ -42,6 +42,18 @@ describe('compile/scale', () => {
       ]);
     });
 
+    it('should have correct domain unionWith', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'quantitative', scale: {domain: {unionWith: [0, 100]}}}
+        }
+      });
+
+      const xDomain = testParseDomainForChannel(model, 'x');
+      expect(xDomain).toEqual([{data: 'main', field: 'a'}, [0, 100]]);
+    });
+
     it('should have correct domain for color', () => {
       const model = parseUnitModel({
         mark: 'bar',
