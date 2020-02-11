@@ -401,12 +401,5 @@
       "zero": true
     }
   ],
-  "legends": [
-    {
-      "stroke": "color",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "stroke",
-      "title": "location"
-    }
-  ]
+  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "location"}]
 }

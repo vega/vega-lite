@@ -130,11 +130,6 @@
     }
   ],
   "legends": [
-    {
-      "title": "Weather type",
-      "fill": "color",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "square"
-    }
+    {"title": "Weather type", "fill": "color", "symbolType": "square"}
   ]
 }

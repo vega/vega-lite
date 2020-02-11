@@ -113,7 +113,6 @@
       "orient": "top",
       "fill": "color",
       "direction": "horizontal",
-      "gradientLength": {"signal": "clamp(width, 100, 200)"},
       "symbolType": "square"
     }
   ],

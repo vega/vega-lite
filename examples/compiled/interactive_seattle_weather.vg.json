@@ -580,7 +580,6 @@
     {
       "title": "Weather",
       "stroke": "color",
-      "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
       "symbolType": "circle",
       "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
       "fill": "color"

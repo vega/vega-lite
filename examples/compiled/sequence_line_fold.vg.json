@@ -126,11 +126,5 @@
       "zindex": 0
     }
   ],
-  "legends": [
-    {
-      "stroke": "color",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "stroke"
-    }
-  ]
+  "legends": [{"stroke": "color", "symbolType": "stroke"}]
 }

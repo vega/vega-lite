@@ -226,9 +226,6 @@
   "legends": [
     {
       "stroke": "trellis_barley_color",
-      "gradientLength": {
-        "signal": "clamp(trellis_barley_child_height, 64, 200)"
-      },
       "symbolType": "circle",
       "title": "year",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
