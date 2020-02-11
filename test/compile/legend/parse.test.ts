@@ -58,6 +58,36 @@ describe('compile/legend', () => {
       expect(def.stroke).toBe('color');
     });
 
+    it('should produce a Vega legend object with correct type and scale for trail color', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'trail',
+        encoding: {
+          x: {field: 'a', type: 'nominal'},
+          color: {field: 'a', type: 'quantitative'}
+        }
+      });
+
+      const def = legendParse.parseLegendForChannel(model, COLOR).combine();
+      expect(typeof def).toBe('object');
+      expect(def.title).toBe('a');
+      expect(def.stroke).toBe('color');
+    });
+
+    it('should produce a Vega legend object with correct type and scale for trail size', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'trail',
+        encoding: {
+          x: {field: 'a', type: 'nominal'},
+          size: {field: 'a', type: 'quantitative'}
+        }
+      });
+
+      const def = legendParse.parseLegendForChannel(model, SIZE).combine();
+      expect(typeof def).toBe('object');
+      expect(def.title).toBe('a');
+      expect(def.strokeWidth).toBe('size');
+    });
+
     it('should produce no legend title when title is null, "", or false', () => {
       for (const val of [null, '', false]) {
         const model = parseUnitModelWithScale({
