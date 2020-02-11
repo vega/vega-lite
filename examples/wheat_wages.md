@@ -4,7 +4,7 @@ description: "A recreation of William Playfair’s classic chart visualizing the
 title: Wheat and Wages Example
 menu: examples
 permalink: /examples/wheat_wages.html
-image: /examples/compiled/wheat_wages.png
+image: /examples/wheat_wages.png
 edit_path: _data/examples.json
 ---
 

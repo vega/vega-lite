@@ -4,7 +4,7 @@ description: "A bar chart encodes quantitative values as the extent of rectangul
 title: Simple Bar Chart
 menu: examples
 permalink: /examples/bar.html
-image: /examples/compiled/bar.png
+image: /examples/bar.png
 edit_path: _data/examples.json
 ---
 

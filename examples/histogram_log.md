@@ -4,7 +4,7 @@ description: "Log-scaled Histogram.  We may improve the support of this. See htt
 title: Log-scaled Histogram
 menu: examples
 permalink: /examples/histogram_log.html
-image: /examples/compiled/histogram_log.png
+image: /examples/histogram_log.png
 edit_path: _data/examples.json
 ---
 

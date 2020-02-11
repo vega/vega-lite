@@ -259,6 +259,14 @@
       {
         "name": "sequence_line_fold",
         "title": "Drawing Sine and Cosine Curves with the Sequence Generator"
+      },
+      {
+        "name": "line_strokedash",
+        "title": "Line chart with varying stroke dash"
+      },
+      {
+        "name": "line_dashed_part",
+        "title": "Line chart with a dashed part"
       }
     ],
     "Area Charts & Streamgraphs": [

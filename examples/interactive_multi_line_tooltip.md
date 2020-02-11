@@ -4,7 +4,7 @@ description: "This plot requires the data to have different series in different 
 title: Multi Series Line Chart with Tooltip
 menu: examples
 permalink: /examples/interactive_multi_line_tooltip.html
-image: /examples/compiled/interactive_multi_line_tooltip.png
+image: /examples/interactive_multi_line_tooltip.png
 edit_path: _data/examples.json
 ---
 

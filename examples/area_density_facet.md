@@ -4,7 +4,7 @@ layout: page
 title: Faceted Density Plot
 menu: examples
 permalink: /examples/area_density_facet.html
-image: /examples/compiled/area_density_facet.png
+image: /examples/area_density_facet.png
 edit_path: _data/examples.json
 ---
 

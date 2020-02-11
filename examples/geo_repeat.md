@@ -4,7 +4,7 @@ description: "the population per state, engineers per state, and hurricanes per 
 title: Three Choropleths Representing Disjoint Data from the Same Table
 menu: examples
 permalink: /examples/geo_repeat.html
-image: /examples/compiled/geo_repeat.png
+image: /examples/geo_repeat.png
 edit_path: _data/examples.json
 ---
 

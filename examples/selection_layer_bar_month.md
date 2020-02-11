@@ -4,7 +4,7 @@ description: "The plot below uses an interval selection, which causes the chart 
 title: Interactive Average
 menu: examples
 permalink: /examples/selection_layer_bar_month.html
-image: /examples/compiled/selection_layer_bar_month.png
+image: /examples/selection_layer_bar_month.png
 edit_path: _data/examples.json
 ---
 

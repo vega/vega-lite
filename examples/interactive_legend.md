@@ -4,7 +4,7 @@ layout: page
 title: Interactive Legend
 menu: examples
 permalink: /examples/interactive_legend.html
-image: /examples/compiled/interactive_legend.png
+image: /examples/interactive_legend.png
 edit_path: _data/examples.json
 ---
 

@@ -4,7 +4,7 @@ description: "A bar graph showing what activites consume what percentage of the 
 title: Calculate Percentage of Total
 menu: examples
 permalink: /examples/window_percent_of_total.html
-image: /examples/compiled/window_percent_of_total.png
+image: /examples/window_percent_of_total.png
 edit_path: _data/examples.json
 ---
 

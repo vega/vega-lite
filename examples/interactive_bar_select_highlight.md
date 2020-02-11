@@ -4,7 +4,7 @@ description: "A bar chart with highlighting on hover and selecting on click. (In
 title: Bar Chart with Highlighting on Hover and Selection on Click
 menu: examples
 permalink: /examples/interactive_bar_select_highlight.html
-image: /examples/compiled/interactive_bar_select_highlight.png
+image: /examples/interactive_bar_select_highlight.png
 edit_path: _data/examples.json
 ---
 

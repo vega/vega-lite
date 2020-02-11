@@ -4,7 +4,7 @@ layout: page
 title: Quantile-Quantile Plot (QQ Plot)
 menu: examples
 permalink: /examples/point_quantile_quantile.html
-image: /examples/compiled/point_quantile_quantile.png
+image: /examples/point_quantile_quantile.png
 edit_path: _data/examples.json
 ---
 

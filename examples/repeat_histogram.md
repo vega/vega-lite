@@ -4,7 +4,7 @@ description: "Horizontally repeated charts that show the histograms of different
 title: Horizontally Repeated Charts
 menu: examples
 permalink: /examples/repeat_histogram.html
-image: /examples/compiled/repeat_histogram.png
+image: /examples/repeat_histogram.png
 edit_path: _data/examples.json
 ---
 

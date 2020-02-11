@@ -143,6 +143,8 @@ We can also conditionally hide some labels and ticks in the following Lasagna pl
     "axisTop": : ...,
     "axisBottom": : ...,
     "axisBand": : ...,
+    "axisQuantitative": : ...,
+    "axisTemporal": : ...,
     ...
   }
 }
@@ -150,7 +152,7 @@ We can also conditionally hide some labels and ticks in the following Lasagna pl
 
 Axis configuration defines default settings for axes. Properties defined under the `"axis"` property in the top-level [`config`](config.html) object are applied to _all_ axes.
 
-Additional property blocks can target more specific axis types based on the orientation (`"axisX"`, `"axisY"`, `"axisLeft"`, `"axisTop"`, etc.) or band scale type (`"axisBand"`). For example, properties defined under the `"axisBand"` property will only apply to axes visualizing `"band"` scales. If multiple axis config blocks apply to a single axis, type-based options take precedence over orientation-based options, which in turn take precedence over general options.
+Additional property blocks can target more specific axis types based on the orientation (`"axisX"`, `"axisY"`, `"axisLeft"`, `"axisTop"`, etc.), band scale type (`"axisBand"`), or scale's data type (`"axisQuantitative"` and `"axisTemporal"`). For example, properties defined under the `"axisBand"` property will only apply to axes visualizing `"band"` scales. If multiple axis config blocks apply to a single axis, type-based options take precedence over orientation-based options, which in turn take precedence over general options.
 
 An axis configuration supports all [axis properties](#properties) except `position`, `orient`, `format`, `tickCount`, `values`, and `zindex`.
 

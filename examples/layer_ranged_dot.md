@@ -4,7 +4,7 @@ description: "A ranged dot plot that uses 'layer' to convey changing life expect
 title: Ranged Dot Plot
 menu: examples
 permalink: /examples/layer_ranged_dot.html
-image: /examples/compiled/layer_ranged_dot.png
+image: /examples/layer_ranged_dot.png
 edit_path: _data/examples.json
 ---
 

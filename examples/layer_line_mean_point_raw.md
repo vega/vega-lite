@@ -4,7 +4,7 @@ description: "Plot showing average data with raw values in the background."
 title: Layering Averages over Raw Values
 menu: examples
 permalink: /examples/layer_line_mean_point_raw.html
-image: /examples/compiled/layer_line_mean_point_raw.png
+image: /examples/layer_line_mean_point_raw.png
 edit_path: _data/examples.json
 ---
 

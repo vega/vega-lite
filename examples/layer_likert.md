@@ -4,7 +4,7 @@ description: "Distributions and Medians of Likert Scale Ratings. (Figure 9 from 
 title: Distributions and Medians of Likert Scale Ratings
 menu: examples
 permalink: /examples/layer_likert.html
-image: /examples/compiled/layer_likert.png
+image: /examples/layer_likert.png
 edit_path: _data/examples.json
 ---
 

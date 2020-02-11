@@ -4,7 +4,7 @@ layout: page
 title: Grouped Bar Chart
 menu: examples
 permalink: /examples/bar_grouped.html
-image: /examples/compiled/bar_grouped.png
+image: /examples/bar_grouped.png
 edit_path: _data/examples.json
 ---
 

@@ -4,7 +4,7 @@ description: "The plot displays labels for all stock prices of the hovered time.
 title: Multi Series Line Chart with Labels
 menu: examples
 permalink: /examples/interactive_multi_line_label.html
-image: /examples/compiled/interactive_multi_line_label.png
+image: /examples/interactive_multi_line_label.png
 edit_path: _data/examples.json
 ---
 

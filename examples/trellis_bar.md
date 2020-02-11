@@ -4,7 +4,7 @@ description: "A trellis bar chart showing the US population distribution of age 
 title: Trellis Bar Chart
 menu: examples
 permalink: /examples/trellis_bar.html
-image: /examples/compiled/trellis_bar.png
+image: /examples/trellis_bar.png
 edit_path: _data/examples.json
 ---
 

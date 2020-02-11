@@ -4,7 +4,7 @@ description: "A scatterplot showing horsepower and miles per gallons that opens 
 title: Scatterplot with External Links and Tooltips
 menu: examples
 permalink: /examples/point_href.html
-image: /examples/compiled/point_href.png
+image: /examples/point_href.png
 edit_path: _data/examples.json
 ---
 

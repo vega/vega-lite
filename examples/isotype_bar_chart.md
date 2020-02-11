@@ -4,7 +4,7 @@ description: "Inspired by this [Only An Ocean Between, 1943](http://www.thomwhit
 title: Isotype Dot Plot
 menu: examples
 permalink: /examples/isotype_bar_chart.html
-image: /examples/compiled/isotype_bar_chart.png
+image: /examples/isotype_bar_chart.png
 edit_path: _data/examples.json
 ---
 

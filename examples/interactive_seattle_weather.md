@@ -4,7 +4,7 @@ description: "This graph shows an interactive view of Seattle's weather, includi
 title: Seattle Weather Exploration
 menu: examples
 permalink: /examples/interactive_seattle_weather.html
-image: /examples/compiled/interactive_seattle_weather.png
+image: /examples/interactive_seattle_weather.png
 edit_path: _data/examples.json
 ---
 

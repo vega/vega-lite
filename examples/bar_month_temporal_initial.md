@@ -4,7 +4,7 @@ description: "Using `labelExpr` to show only initial letters of month names."
 title: Bar Chart showing Initials of Month Names
 menu: examples
 permalink: /examples/bar_month_temporal_initial.html
-image: /examples/compiled/bar_month_temporal_initial.png
+image: /examples/bar_month_temporal_initial.png
 edit_path: _data/examples.json
 ---
 

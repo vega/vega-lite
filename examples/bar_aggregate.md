@@ -4,7 +4,7 @@ description: "A bar chart showing the US population distribution of age groups i
 title: Aggregate Bar Chart
 menu: examples
 permalink: /examples/bar_aggregate.html
-image: /examples/compiled/bar_aggregate.png
+image: /examples/bar_aggregate.png
 edit_path: _data/examples.json
 ---
 

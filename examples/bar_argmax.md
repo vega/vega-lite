@@ -4,7 +4,7 @@ description: "The production budget of the movie that has the highest US Gross i
 title: Bar Chart Showing Argmax Value
 menu: examples
 permalink: /examples/bar_argmax.html
-image: /examples/compiled/bar_argmax.png
+image: /examples/bar_argmax.png
 edit_path: _data/examples.json
 ---
 

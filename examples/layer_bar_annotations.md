@@ -4,7 +4,7 @@ description: "To create a bar chart that highlights values beyond a threshold, w
 title: Bar Chart Highlighting Values beyond a Threshold
 menu: examples
 permalink: /examples/layer_bar_annotations.html
-image: /examples/compiled/layer_bar_annotations.png
+image: /examples/layer_bar_annotations.png
 edit_path: _data/examples.json
 ---
 

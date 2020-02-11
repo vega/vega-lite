@@ -4,7 +4,7 @@ description: "A connected scatterplot can be created by customizing line `order`
 title: Connected Scatterplot (Lines with Custom Paths)
 menu: examples
 permalink: /examples/connected_scatterplot.html
-image: /examples/compiled/connected_scatterplot.png
+image: /examples/connected_scatterplot.png
 edit_path: _data/examples.json
 ---
 

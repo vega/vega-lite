@@ -4,7 +4,7 @@ description: "A dot plot showing each movie in the database, and the difference 
 title: Calculate Residuals
 menu: examples
 permalink: /examples/joinaggregate_residual_graph.html
-image: /examples/compiled/joinaggregate_residual_graph.png
+image: /examples/joinaggregate_residual_graph.png
 edit_path: _data/examples.json
 ---
 

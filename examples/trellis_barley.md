@@ -4,7 +4,7 @@ description: "The Trellis display by Becker et al. helped establish small multip
 title: Becker's Barley Trellis Plot
 menu: examples
 permalink: /examples/trellis_barley.html
-image: /examples/compiled/trellis_barley.png
+image: /examples/trellis_barley.png
 edit_path: _data/examples.json
 ---
 

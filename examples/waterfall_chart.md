@@ -4,7 +4,7 @@ layout: page
 title: Waterfall Chart of Monthly Profit and Loss
 menu: examples
 permalink: /examples/waterfall_chart.html
-image: /examples/compiled/waterfall_chart.png
+image: /examples/waterfall_chart.png
 edit_path: _data/examples.json
 ---
 

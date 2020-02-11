@@ -4,7 +4,7 @@ description: "Shows the relationship between horsepower and the numbver of cylin
 title: Strip Plot
 menu: examples
 permalink: /examples/tick_strip.html
-image: /examples/compiled/tick_strip.png
+image: /examples/tick_strip.png
 edit_path: _data/examples.json
 ---
 

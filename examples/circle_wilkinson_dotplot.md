@@ -4,7 +4,7 @@ description: "A Wilkinson Dot Plot"
 title: Wilkinson Dot Plot
 menu: examples
 permalink: /examples/circle_wilkinson_dotplot.html
-image: /examples/compiled/circle_wilkinson_dotplot.png
+image: /examples/circle_wilkinson_dotplot.png
 edit_path: _data/examples.json
 ---
 

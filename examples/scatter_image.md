@@ -4,7 +4,7 @@ description: "A simple bar chart with embedded data."
 title: Image-based Scatter Plot
 menu: examples
 permalink: /examples/scatter_image.html
-image: /examples/compiled/scatter_image.png
+image: /examples/scatter_image.png
 edit_path: _data/examples.json
 ---
 

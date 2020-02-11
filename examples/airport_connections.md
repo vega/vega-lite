@@ -4,7 +4,7 @@ description: "An interactive visualization of connections among major U.S. airpo
 title: Connections among Major U.S. Airports.
 menu: examples
 permalink: /examples/airport_connections.html
-image: /examples/compiled/airport_connections.png
+image: /examples/airport_connections.png
 edit_path: _data/examples.json
 ---
 

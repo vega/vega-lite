@@ -4,7 +4,7 @@ description: "Drag a rectangular brush to show (first 20) selected points in a t
 title: Brushing Scatter Plot to show data on a table
 menu: examples
 permalink: /examples/brush_table.html
-image: /examples/compiled/brush_table.png
+image: /examples/brush_table.png
 edit_path: _data/examples.json
 ---
 

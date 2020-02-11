@@ -4,7 +4,7 @@ description: "The bar gets automatically resized based on container size. To see
 title: Responsive Bar Chart
 menu: examples
 permalink: /examples/bar_size_responsive.html
-image: /examples/compiled/bar_size_responsive.png
+image: /examples/bar_size_responsive.png
 edit_path: _data/examples.json
 ---
 

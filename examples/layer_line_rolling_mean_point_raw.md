@@ -4,7 +4,7 @@ description: "Plot showing a 30 day rolling average with raw values in the backg
 title: Layering Rolling Averages over Raw Values
 menu: examples
 permalink: /examples/layer_line_rolling_mean_point_raw.html
-image: /examples/compiled/layer_line_rolling_mean_point_raw.png
+image: /examples/layer_line_rolling_mean_point_raw.png
 edit_path: _data/examples.json
 ---
 

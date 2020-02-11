@@ -4,7 +4,7 @@ description: "A population pyramid for the US in 2000, created using stack. See 
 title: Diverging Stacked Bar Chart (Population Pyramid)
 menu: examples
 permalink: /examples/bar_diverging_stack_population_pyramid.html
-image: /examples/compiled/bar_diverging_stack_population_pyramid.png
+image: /examples/bar_diverging_stack_population_pyramid.png
 edit_path: _data/examples.json
 ---
 

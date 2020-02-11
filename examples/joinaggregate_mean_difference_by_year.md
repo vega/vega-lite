@@ -4,7 +4,7 @@ description: "Bar graph showing the best films for the year they were produced, 
 title: Calculate Difference from Annual Average
 menu: examples
 permalink: /examples/joinaggregate_mean_difference_by_year.html
-image: /examples/compiled/joinaggregate_mean_difference_by_year.png
+image: /examples/joinaggregate_mean_difference_by_year.png
 edit_path: _data/examples.json
 ---
 

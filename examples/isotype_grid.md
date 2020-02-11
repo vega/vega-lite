@@ -4,7 +4,7 @@ description: "Inspired by this [D3 example by Alan Smith](http://bl.ocks.org/ala
 title: Isotype Grid
 menu: examples
 permalink: /examples/isotype_grid.html
-image: /examples/compiled/isotype_grid.png
+image: /examples/isotype_grid.png
 edit_path: _data/examples.json
 ---
 

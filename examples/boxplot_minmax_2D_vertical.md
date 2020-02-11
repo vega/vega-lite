@@ -4,7 +4,7 @@ description: "A vertical 2D box plot showing median, min, and max in the US popu
 title: Box Plot with Min/Max Whiskers
 menu: examples
 permalink: /examples/boxplot_minmax_2D_vertical.html
-image: /examples/compiled/boxplot_minmax_2D_vertical.png
+image: /examples/boxplot_minmax_2D_vertical.png
 edit_path: _data/examples.json
 ---
 

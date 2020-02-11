@@ -4,7 +4,7 @@ description: "Stock prices of four large companies as a small multiples of area 
 title: Trellis Area
 menu: examples
 permalink: /examples/trellis_area.html
-image: /examples/compiled/trellis_area.png
+image: /examples/trellis_area.png
 edit_path: _data/examples.json
 ---
 

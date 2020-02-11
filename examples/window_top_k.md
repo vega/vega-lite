@@ -4,7 +4,7 @@ description: "Here we use window transform to derive the total number of student
 title: Filtering Top-K Items
 menu: examples
 permalink: /examples/window_top_k.html
-image: /examples/compiled/window_top_k.png
+image: /examples/window_top_k.png
 edit_path: _data/examples.json
 ---
 

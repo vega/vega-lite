@@ -4,7 +4,7 @@ description: "Visualization of global deaths from natural disasters. Copy of cha
 title: Bubble Plot (Natural Disasters)
 menu: examples
 permalink: /examples/circle_natural_disasters.html
-image: /examples/compiled/circle_natural_disasters.png
+image: /examples/circle_natural_disasters.png
 edit_path: _data/examples.json
 ---
 

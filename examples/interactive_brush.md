@@ -4,7 +4,7 @@ description: "Drag out a rectangular brush to highlight points."
 title: Rectangular Brush
 menu: examples
 permalink: /examples/interactive_brush.html
-image: /examples/compiled/interactive_brush.png
+image: /examples/interactive_brush.png
 edit_path: _data/examples.json
 ---
 

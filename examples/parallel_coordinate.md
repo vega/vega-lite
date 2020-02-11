@@ -4,7 +4,7 @@ description: "Though Vega-Lite supports only one scale per axes, one can create 
 title: Parallel Coordinate Plot
 menu: examples
 permalink: /examples/parallel_coordinate.html
-image: /examples/compiled/parallel_coordinate.png
+image: /examples/parallel_coordinate.png
 edit_path: _data/examples.json
 ---
 

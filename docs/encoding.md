@@ -33,6 +33,7 @@ An integral part of the data visualization process is encoding data with visual 
     "fillOpacity": ...,
     "strokeOpacity": ...,
     "strokeWidth": ...,
+    "strokeDash": ...,
     "size": ...,
     "shape": ...,
 
@@ -69,7 +70,7 @@ The keys in the `encoding` object are encoding channels. Vega-Lite supports the 
 
 - [Position Channels](#position): `x`, `y`, `x2`, `y2`, `xError`, `yError`, `xError2`, `yError2`
 - [Geographic Position Channels](#geo): `longitude`, `latitude`, `longitude2`, `latitude2`
-- [Mark Property Channels](#mark-prop): `color`, `opacity`, `fillOpacity`, `strokeOpacity`, `shape`, `size`, `strokeWidth`
+- [Mark Property Channels](#mark-prop): `color`, `opacity`, `fillOpacity`, `strokeOpacity`, `shape`, `size`, `strokeDash`, `strokeWidth`
 - [Text and Tooltip Channels](#text): `text`, `tooltip`
 - [Hyperlink Channel](#href): `href`
 - [Level of Detail Channel](#detail): `detail`
@@ -185,7 +186,7 @@ Mark properties channels map data fields to visual properties of the marks. By d
 
 Here are the list of mark property channels:
 
-{% include table.html props="color,fill,stroke,opacity,fillOpacity,strokeOpacity,shape,size,strokeWidth" source="Encoding" %}
+{% include table.html props="color,fill,stroke,opacity,fillOpacity,strokeOpacity,shape,size,strokeDash,strokeWidth" source="Encoding" %}
 
 {:#mark-prop-field-def}
 
@@ -195,7 +196,7 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 <!-- {% include table.html props="scale,legend,condition" source="ColorFieldDefWithCondition" %} -->
 
-{% include table.html props="scale,legend,condition" source="FieldDefWithCondition<MarkPropFieldDef,(string|null)>" %}
+{% include table.html props="scale,legend,condition" source="FieldDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>" %}
 
 {:#mark-prop-value-def}
 
@@ -206,7 +207,7 @@ In addition to the constant `value`, [value definitions](#value-def) of mark pro
 <!-- {% include table.html props="condition"
 source="ColorValueDefWithCondition" %} -->
 
-{% include table.html props="condition" source="ValueDefWithOptionalCondition<MarkPropFieldDef,(string|null)>" %}
+{% include table.html props="condition" source="ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>" %}
 
 See [the `condition`](condition.html) page for examples how to specify condition logic.
 
@@ -226,7 +227,7 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 <!-- {% include table.html props="format,formatType,condition" source="TextFieldDefWithCondition" %} -->
 
-{% include table.html props="format,formatType,condition" source="FieldDefWithCondition<TextFieldDef,Value>" %}
+{% include table.html props="format,formatType,condition" source="FieldDefWithCondition<StringFieldDef,Text>" %}
 
 {:#text-value-def}
 
@@ -236,7 +237,7 @@ In addition to the constant `value`, [value definitions](#value-def) of `text` a
 
 <!-- {% include table.html props="condition" source="TextValueDefWithCondition" %} -->
 
-{% include table.html props="condition" source="ValueDefWithCondition<TextFieldDef,Value>" %}
+{% include table.html props="condition" source="FieldDefWithCondition<StringFieldDef,Text>" %}
 
 ### Multiple Field Definitions for Tooltips
 
@@ -258,7 +259,7 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 <!-- {% include table.html props="condition" source="StringFieldDefWithCondition" %} -->
 
-{% include table.html props="condition" source="FieldDefWithCondition<MarkPropFieldDef,(string|null)>" %}
+{% include table.html props="condition" source="FieldDefWithCondition<StringFieldDef,string>" %}
 
 The example below show how the href channel can be used to provide links to external resources with more details.
 

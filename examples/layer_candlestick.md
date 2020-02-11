@@ -4,7 +4,7 @@ description: "A candlestick chart inspired by an example in Protovis (http://mbo
 title: Candlestick Chart
 menu: examples
 permalink: /examples/layer_candlestick.html
-image: /examples/compiled/layer_candlestick.png
+image: /examples/layer_candlestick.png
 edit_path: _data/examples.json
 ---
 

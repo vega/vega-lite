@@ -4,7 +4,7 @@ description: "A scatterplot showing horsepower and miles per gallons."
 title: Colored Scatterplot
 menu: examples
 permalink: /examples/point_color_with_shape.html
-image: /examples/compiled/point_color_with_shape.png
+image: /examples/point_color_with_shape.png
 edit_path: _data/examples.json
 ---
 

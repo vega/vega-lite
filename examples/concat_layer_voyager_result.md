@@ -4,7 +4,7 @@ description: "Comparing Likert scale ratings between two conditions. (Figure 10.
 title: Comparative Likert Scale Ratings
 menu: examples
 permalink: /examples/concat_layer_voyager_result.html
-image: /examples/compiled/concat_layer_voyager_result.png
+image: /examples/concat_layer_voyager_result.png
 edit_path: _data/examples.json
 ---
 

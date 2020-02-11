@@ -4,7 +4,7 @@ layout: page
 title: Loess Regression
 menu: examples
 permalink: /examples/layer_point_line_loess.html
-image: /examples/compiled/layer_point_line_loess.png
+image: /examples/layer_point_line_loess.png
 edit_path: _data/examples.json
 ---
 

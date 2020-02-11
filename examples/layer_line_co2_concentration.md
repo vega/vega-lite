@@ -4,7 +4,7 @@ description: "This example was inspired by [Gregor Aisch](https://github.com/gka
 title: Carbon Dioxide in the Atmosphere
 menu: examples
 permalink: /examples/layer_line_co2_concentration.html
-image: /examples/compiled/layer_line_co2_concentration.png
+image: /examples/layer_line_co2_concentration.png
 edit_path: _data/examples.json
 ---
 

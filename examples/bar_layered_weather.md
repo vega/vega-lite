@@ -4,7 +4,7 @@ description: "Inspired by <a href='https://vega.github.io/vega-editor/?mode=vega
 title: Weekly Weather Plot
 menu: examples
 permalink: /examples/bar_layered_weather.html
-image: /examples/compiled/bar_layered_weather.png
+image: /examples/bar_layered_weather.png
 edit_path: _data/examples.json
 ---
 

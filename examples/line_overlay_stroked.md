@@ -7,7 +7,7 @@ description: "By setting the `point` property of the line mark definition to an 
 title: Line Chart with Stroked Point Markers
 menu: examples
 permalink: /examples/line_overlay_stroked.html
-image: /examples/compiled/line_overlay_stroked.png
+image: /examples/line_overlay_stroked.png
 edit_path: _data/examples.json
 ---
 

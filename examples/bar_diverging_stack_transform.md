@@ -4,7 +4,7 @@ description: "A diverging stacked bar chart for sentiments towards a set of eigh
 title: Diverging Stacked Bar Chart (with Neutral Parts)
 menu: examples
 permalink: /examples/bar_diverging_stack_transform.html
-image: /examples/compiled/bar_diverging_stack_transform.png
+image: /examples/bar_diverging_stack_transform.png
 edit_path: _data/examples.json
 ---
 

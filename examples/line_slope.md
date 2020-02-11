@@ -4,7 +4,7 @@ description: "Slope graph showing the change in yield for different barley sites
 title: Slope Graph
 menu: examples
 permalink: /examples/line_slope.html
-image: /examples/compiled/line_slope.png
+image: /examples/line_slope.png
 edit_path: _data/examples.json
 ---
 

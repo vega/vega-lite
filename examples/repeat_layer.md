@@ -4,7 +4,7 @@ description: "Summarized and per year weather information for Seatle and New Yor
 title: Repeat and Layer to Show Different Weather Measures
 menu: examples
 permalink: /examples/repeat_layer.html
-image: /examples/compiled/repeat_layer.png
+image: /examples/repeat_layer.png
 edit_path: _data/examples.json
 ---
 

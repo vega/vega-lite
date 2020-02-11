@@ -4,7 +4,7 @@ description: "Horizon Graph with 2 layers. (See https://idl.cs.washington.edu/pa
 title: Horizon Graph
 menu: examples
 permalink: /examples/area_horizon.html
-image: /examples/compiled/area_horizon.png
+image: /examples/area_horizon.png
 edit_path: _data/examples.json
 ---
 

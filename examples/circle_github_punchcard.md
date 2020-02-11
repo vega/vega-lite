@@ -4,7 +4,7 @@ description: "Punchcard Visualization like on Github. The day on y-axis uses a c
 title: Table Bubble Plot (Github Punch Card)
 menu: examples
 permalink: /examples/circle_github_punchcard.html
-image: /examples/compiled/circle_github_punchcard.png
+image: /examples/circle_github_punchcard.png
 edit_path: _data/examples.json
 ---
 

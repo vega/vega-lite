@@ -4,7 +4,7 @@ description: "A vertical 2D box plot showing median, min, and max in the US popu
 title: Tukey Box Plot (1.5 IQR)
 menu: examples
 permalink: /examples/boxplot_2D_vertical.html
-image: /examples/compiled/boxplot_2D_vertical.png
+image: /examples/boxplot_2D_vertical.png
 edit_path: _data/examples.json
 ---
 
