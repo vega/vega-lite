@@ -127,6 +127,7 @@
     "tslib": "~1.10.0",
     "vega-event-selector": "~2.0.2",
     "vega-expression": "~2.6.3",
+    "vega-scale": "^6.0.0",
     "vega-util": "~1.12.2",
     "yargs": "~15.1.0"
   },

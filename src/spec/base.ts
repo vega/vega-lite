@@ -1,4 +1,4 @@
-import {Color, Cursor, Text} from 'vega-typings';
+import {Color, Cursor, SignalRef, Text} from 'vega-typings';
 import {isArray, isNumber, isObject} from 'vega-util';
 import {NormalizedSpec} from '.';
 import {Config} from '../config';
@@ -142,14 +142,14 @@ export interface BaseViewBackground
    *
    * __Default value:__ `undefined`
    */
-  fill?: Color | null;
+  fill?: Color | null | SignalRef;
 
   /**
    * The stroke color.
    *
    * __Default value:__ `"#ddd"`
    */
-  stroke?: Color | null;
+  stroke?: Color | null | SignalRef;
 
   /**
    * The mouse cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.

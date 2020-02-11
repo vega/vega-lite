@@ -1,8 +1,98 @@
-import {Config, defaultConfig, initConfig, isVgScheme, stripAndRedirectConfig} from '../src/config';
+import {
+  Config,
+  defaultConfig,
+  DEFAULT_COLOR,
+  DEFAULT_FONT_SIZE,
+  initConfig,
+  isVgScheme,
+  stripAndRedirectConfig
+} from '../src/config';
 import {PRIMITIVE_MARKS} from '../src/mark';
 import {duplicate} from '../src/util';
 
 describe('config', () => {
+  describe('initConfig', () => {
+    it('produces correct default color and fontSize signal-based config', () => {
+      expect(initConfig({color: true, fontSize: true})).toEqual({
+        ...defaultConfig,
+        signals: [
+          {
+            name: 'fontSize',
+            value: DEFAULT_FONT_SIZE
+          },
+          {
+            name: 'color',
+            value: DEFAULT_COLOR
+          }
+        ],
+        mark: {...defaultConfig.mark, color: {signal: 'color.blue'}},
+        rule: {color: {signal: 'color.gray0'}},
+        text: {
+          color: {signal: 'color.gray0'},
+          fontSize: {signal: 'fontSize.text'}
+        },
+        style: {
+          'guide-label': {
+            fill: {signal: 'color.gray0'},
+            fontSize: {signal: 'fontSize.guideLabel'}
+          },
+          'guide-title': {
+            fill: {signal: 'color.gray0'},
+            fontSize: {signal: 'fontSize.guideTitle'}
+          },
+          'group-title': {
+            fill: {signal: 'color.gray0'},
+            fontSize: {signal: 'fontSize.groupTitle'}
+          },
+          'group-subtitle': {
+            fill: {signal: 'color.gray0'},
+            fontSize: {signal: 'fontSize.groupSubtitle'}
+          },
+          cell: {
+            stroke: {signal: 'color.gray8'}
+          }
+        },
+        axis: {
+          domainColor: {signal: 'color.gray13'},
+          gridColor: {signal: 'color.gray8'},
+          tickColor: {signal: 'color.gray13'}
+        },
+        legend: {
+          ...defaultConfig.legend,
+          gradientStrokeColor: 'color.gray8',
+          symbolBaseStrokeColor: 'color.gray13'
+        },
+        range: {
+          category: [
+            {signal: 'color.blue'},
+            {signal: 'color.orange'},
+            {signal: 'color.red'},
+            {signal: 'color.teal'},
+            {signal: 'color.green'},
+            {signal: 'color.yellow'},
+            {signal: 'color.purple'},
+            {signal: 'color.pink'},
+            {signal: 'color.brown'},
+            {signal: 'color.grey8'}
+          ]
+        }
+      });
+    });
+
+    it('correctly merge color signals for color and fontSize config', () => {
+      expect(initConfig({color: {newColor: 'red'}, fontSize: {newFontSize: 123}}).signals).toEqual([
+        {
+          name: 'fontSize',
+          value: {...DEFAULT_FONT_SIZE, newFontSize: 123}
+        },
+        {
+          name: 'color',
+          value: {...DEFAULT_COLOR, newColor: 'red'}
+        }
+      ]);
+    });
+  });
+
   describe('stripAndRedirectConfig', () => {
     const config: Config = {
       ...defaultConfig,
