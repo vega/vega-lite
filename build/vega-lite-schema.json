@@ -4369,31 +4369,31 @@
         },
         "axisBand": {
           "$ref": "#/definitions/AxisConfig",
-          "description": "Specific axis config for axes with \"band\" scales."
+          "description": "Config for axes with \"band\" scales."
         },
         "axisBottom": {
           "$ref": "#/definitions/AxisConfig",
-          "description": "Specific axis config for x-axis along the bottom edge of the chart."
+          "description": "Config for x-axis along the bottom edge of the chart."
         },
         "axisLeft": {
           "$ref": "#/definitions/AxisConfig",
-          "description": "Specific axis config for y-axis along the left edge of the chart."
+          "description": "Config for y-axis along the left edge of the chart."
         },
         "axisQuantitative": {
           "$ref": "#/definitions/AxisConfig",
-          "description": "Specific axis config for quantitative fields"
+          "description": "Config for quantitative axes."
         },
         "axisRight": {
           "$ref": "#/definitions/AxisConfig",
-          "description": "Specific axis config for y-axis along the right edge of the chart."
+          "description": "Config for y-axis along the right edge of the chart."
         },
         "axisTemporal": {
           "$ref": "#/definitions/AxisConfig",
-          "description": "Specific axis config for temporal fields"
+          "description": "Config for temporal axes."
         },
         "axisTop": {
           "$ref": "#/definitions/AxisConfig",
-          "description": "Specific axis config for x-axis along the top edge of the chart."
+          "description": "Config for x-axis along the top edge of the chart."
         },
         "axisX": {
           "$ref": "#/definitions/AxisConfig",

@@ -488,37 +488,37 @@ export interface AxisConfigMixins {
   axisY?: AxisConfig;
 
   /**
-   * Specific axis config for y-axis along the left edge of the chart.
+   * Config for y-axis along the left edge of the chart.
    */
   axisLeft?: AxisConfig;
 
   /**
-   * Specific axis config for y-axis along the right edge of the chart.
+   * Config for y-axis along the right edge of the chart.
    */
   axisRight?: AxisConfig;
 
   /**
-   * Specific axis config for x-axis along the top edge of the chart.
+   * Config for x-axis along the top edge of the chart.
    */
   axisTop?: AxisConfig;
 
   /**
-   * Specific axis config for x-axis along the bottom edge of the chart.
+   * Config for x-axis along the bottom edge of the chart.
    */
   axisBottom?: AxisConfig;
 
   /**
-   * Specific axis config for axes with "band" scales.
+   * Config for axes with "band" scales.
    */
   axisBand?: AxisConfig;
 
   /**
-   * Specific axis config for quantitative fields
+   * Config for quantitative axes.
    */
   axisQuantitative?: AxisConfig;
 
   /**
-   * Specific axis config for temporal fields
+   * Config for temporal axes.
    */
   axisTemporal?: AxisConfig;
 }
