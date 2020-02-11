@@ -62,11 +62,20 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
 }
 
 function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChannel): VgLegend {
-  const scale = model.scaleName(COLOR);
+  const scale = model.scaleName(channel);
+  if (model.mark === 'trail') {
+    if (channel === 'color') {
+      // trail is a filled mark, but its default symbolType ("stroke") should use "stroke"
+      return {stroke: scale};
+    } else if (channel === 'size') {
+      return {strokeWidth: scale};
+    }
+  }
+
   if (channel === 'color') {
     return model.markDef.filled ? {fill: scale} : {stroke: scale};
   }
-  return {[channel]: model.scaleName(channel)};
+  return {[channel]: scale};
 }
 
 function isExplicit<T extends string | number | object | boolean>(
