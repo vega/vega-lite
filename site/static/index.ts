@@ -1,5 +1,5 @@
-// @ts-ignore
 import {event, select, selectAll, Selection} from 'd3-selection';
+// @ts-ignore
 import hljs from 'highlight.js/lib/highlight';
 // @ts-ignore
 import css from 'highlight.js/lib/languages/css';

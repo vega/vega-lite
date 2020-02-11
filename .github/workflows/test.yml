@@ -35,6 +35,20 @@ jobs:
       - name: Build
         run: yarn build
 
+  build-site:
+    runs-on: ubuntu-latest
+
+    name: Build Site
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Build
+        run: yarn build:site
+
   runtime-coverage:
     runs-on: ubuntu-latest
 

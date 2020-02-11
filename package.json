@@ -75,7 +75,6 @@
     "@rollup/plugin-node-resolve": "^7.1.1",
     "@types/chai": "^4.2.8",
     "@types/d3": "^5.7.2",
-    "@types/highlight.js": "^9.12.3",
     "@types/jest": "^25.1.2",
     "@types/jest-environment-puppeteer": "^4.3.1",
     "@types/mkdirp": "^0.5.2",
