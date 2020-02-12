@@ -1,11 +1,10 @@
-import {RepeatRef} from '../../src/channeldef';
-import {Encoding} from '../../src/encoding';
 import {isMarkDef, MarkDef} from '../../src/mark';
 import {normalize} from '../../src/normalize';
-import {isLayerSpec, isUnitSpec} from '../../src/spec';
+import {isLayerSpec, isUnitSpec, TopLevelSpec} from '../../src/spec';
 import {isCalculate} from '../../src/transform';
 import {defaultConfig} from '.././../src/config';
-import {TopLevelSpec} from '../../src/spec';
+import {NormalizedUnitSpec} from './../../src/spec/unit';
+import {assertIsUnitSpec} from '../util';
 
 describe('common feature of composite marks', () => {
   it('should clip all the part when clip property in composite mark def is true', () => {
@@ -39,20 +38,19 @@ describe('common feature of composite marks', () => {
       },
       defaultConfig
     );
-    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
-    expect(layer).toBeTruthy();
-    for (const unitSpec of layer) {
-      const encoding: Encoding<string | RepeatRef> = isUnitSpec(unitSpec) && unitSpec.encoding;
-      expect(encoding).toBeTruthy();
-      expect(encoding.x).toEqual({
-        title: 'Year (year)',
-        type: 'ordinal',
-        field: 'year_Year',
-        axis: {
-          formatType: 'time'
-        }
-      });
-    }
+
+    assertIsUnitSpec(outputSpec);
+
+    const encoding = outputSpec.encoding;
+    expect(encoding).toBeTruthy();
+    expect(encoding.x).toEqual({
+      title: 'Year (year)',
+      type: 'ordinal',
+      field: 'year_Year',
+      axis: {
+        formatType: 'time'
+      }
+    });
   });
 
   it('should produce correct calculate transform when field name contains space or punctuation', () => {
@@ -90,7 +88,7 @@ describe('common feature of composite marks', () => {
     };
     const outputSpec = normalize(spec, defaultConfig);
 
-    const barLayer = outputSpec['layer'][0];
+    const barLayer = outputSpec as NormalizedUnitSpec;
     expect(barLayer.encoding.tooltip).toEqual(spec.encoding.tooltip);
   });
 
@@ -105,7 +103,7 @@ describe('common feature of composite marks', () => {
     };
     const outputSpec = normalize(spec, defaultConfig);
 
-    const barLayer = outputSpec['layer'][0];
+    const barLayer = outputSpec as NormalizedUnitSpec;
     expect(barLayer.encoding.tooltip).toEqual(null);
   });
 });
