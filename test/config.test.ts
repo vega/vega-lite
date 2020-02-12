@@ -62,11 +62,6 @@ describe('config', () => {
           gridColor: {signal: 'color.gray8'},
           tickColor: {signal: 'color.gray13'}
         },
-        legend: {
-          ...defaultConfig.legend,
-          gradientStrokeColor: 'color.gray8',
-          symbolBaseStrokeColor: 'color.gray13'
-        },
         range: {
           category: [
             {signal: 'color.blue'},
