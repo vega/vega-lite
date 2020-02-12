@@ -367,10 +367,6 @@ export function colorSignalConfig(color: boolean | ColorConfig = {}): Config {
       gridColor: {signal: 'color.gray8'},
       tickColor: {signal: 'color.gray13'}
     },
-    legend: {
-      gradientStrokeColor: 'color.gray8',
-      symbolBaseStrokeColor: 'color.gray13'
-    },
     range: {
       category: [
         {signal: 'color.blue'},
