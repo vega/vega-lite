@@ -23,6 +23,10 @@ const ajv = new Ajv({
 ajv.addMetaSchema(draft6Schema);
 ajv.addFormat('color-hex', () => true);
 
+console.warn = function() {
+  throw new Error('We should not call console.warn.');
+};
+
 const validateVl = ajv.compile(vlSchema);
 const validateVg = ajv.compile(vgSchema);
 
