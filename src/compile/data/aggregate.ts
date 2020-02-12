@@ -29,7 +29,7 @@ function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<st
     dims.add(vgField(fieldDef, {}));
     dims.add(vgField(fieldDef, {suffix: 'end'}));
 
-    if (binRequiresRange(fieldDef, channel)) {
+    if (fieldDef.bin && binRequiresRange(fieldDef, channel)) {
       dims.add(vgField(fieldDef, {binSuffix: 'range'}));
     }
   } else if (isGeoPositionChannel(channel)) {
