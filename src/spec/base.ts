@@ -100,11 +100,7 @@ export interface LayoutSizeMixins {
   height?: number | 'container' | Step;
 }
 
-export function isFrameMixins(o: any): o is FrameMixins {
-  return o['view'] || o['width'] || o['height'];
-}
-
-export interface FrameMixins extends LayoutSizeMixins {
+export interface LayerUnitMixins extends LayoutSizeMixins {
   /**
    * An object defining the view background's fill and stroke.
    *
