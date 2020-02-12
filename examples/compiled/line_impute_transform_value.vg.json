@@ -29,9 +29,8 @@
           "key": "a",
           "method": "value",
           "groupby": ["c"],
-          "value": null
-        },
-        {"type": "formula", "expr": "datum.b === null ? 0 : datum.b", "as": "b"}
+          "value": 0
+        }
       ]
     }
   ],

@@ -30,12 +30,7 @@
           "keyvals": [4],
           "method": "value",
           "groupby": ["c"],
-          "value": null
-        },
-        {
-          "type": "formula",
-          "expr": "datum.b === null ? 100 : datum.b",
-          "as": "b"
+          "value": 100
         }
       ]
     }
