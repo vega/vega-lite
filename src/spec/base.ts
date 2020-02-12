@@ -115,17 +115,17 @@ export interface FrameMixins extends LayoutSizeMixins {
 
 export type DeprecatedFrameMixins = {
   /**
-   * @deprecated Please avoid using width in a unit spec that's a part of a layer spec.
+   * __Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec.
    */
   width?: FrameMixins['width'];
 
   /**
-   * @deprecated Please avoid using width in a unit spec that's a part of a layer spec.
+   * __Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec.
    */
   height?: FrameMixins['height'];
 
   /**
-   * @deprecated Please avoid using width in a unit spec that's a part of a layer spec.
+   * __Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec.
    */
   view?: FrameMixins['view'];
 };
