@@ -12,8 +12,8 @@ import {duplicate} from '../src/util';
 
 describe('config', () => {
   describe('initConfig', () => {
-    it('produces correct default color and fontSize signal-based config', () => {
-      expect(initConfig({color: true, fontSize: true})).toEqual({
+    it('produces correct default color, font, and fontSize config', () => {
+      expect(initConfig({color: true, fontSize: true, font: 'abc'})).toEqual({
         ...defaultConfig,
         signals: [
           {
@@ -29,23 +29,28 @@ describe('config', () => {
         rule: {color: {signal: 'color.gray0'}},
         text: {
           color: {signal: 'color.gray0'},
+          font: 'abc',
           fontSize: {signal: 'fontSize.text'}
         },
         style: {
           'guide-label': {
             fill: {signal: 'color.gray0'},
+            font: 'abc',
             fontSize: {signal: 'fontSize.guideLabel'}
           },
           'guide-title': {
             fill: {signal: 'color.gray0'},
+            font: 'abc',
             fontSize: {signal: 'fontSize.guideTitle'}
           },
           'group-title': {
             fill: {signal: 'color.gray0'},
+            font: 'abc',
             fontSize: {signal: 'fontSize.groupTitle'}
           },
           'group-subtitle': {
             fill: {signal: 'color.gray0'},
+            font: 'abc',
             fontSize: {signal: 'fontSize.groupSubtitle'}
           },
           cell: {

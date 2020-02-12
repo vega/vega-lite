@@ -110,6 +110,11 @@ export type FontSizeConfig = {[name: string]: number};
 
 export interface VLOnlyConfig {
   /**
+   * Default font for all text marks, titles, and labels.
+   */
+  font?: string;
+
+  /**
    * Default color signals.
    *
    * @hidden
@@ -411,12 +416,25 @@ export function fontSizeSignalConfig(fontSize: boolean | FontSizeConfig): Config
   };
 }
 
+export function fontConfig(font: string): Config {
+  return {
+    text: {font},
+    style: {
+      'guide-label': {font},
+      'guide-title': {font},
+      'group-title': {font},
+      'group-subtitle': {font}
+    }
+  };
+}
+
 export function initConfig(config: Config = {}) {
-  const {color, fontSize, ...restConfig} = config;
+  const {color, font, fontSize, ...restConfig} = config;
 
   return mergeConfig(
     {},
     defaultConfig,
+    font ? fontConfig(font) : {},
     color ? colorSignalConfig(color) : {},
     fontSize ? fontSizeSignalConfig(fontSize) : {},
     restConfig || {}
