@@ -4,7 +4,7 @@
   "mark": {"type": "bar", "cornerRadius": 10, "stroke": "black"},
   "encoding": {
     "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-    "y": {"aggregate": "count", "field": "*", "type": "quantitative"},
+    "y": {"aggregate": "count", "type": "quantitative"},
     "color": {"field": "weather", "type": "nominal"}
   },
   "config": {"bar": {"strokeWidth": 2}}
