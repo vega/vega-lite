@@ -409,7 +409,7 @@ export interface SchemeParams {
   count?: number;
 }
 
-export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionExtent;
+export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionExtent | DomainUnionWith;
 export type Scheme = string | SchemeParams;
 
 export function isExtendedScheme(scheme: string | SchemeParams): scheme is SchemeParams {
@@ -418,6 +418,27 @@ export function isExtendedScheme(scheme: string | SchemeParams): scheme is Schem
 
 export function isSelectionDomain(domain: Domain): domain is SelectionExtent {
   return domain?.['selection'];
+}
+
+export interface DomainUnionWith {
+  /**
+   * Customized domain values to be union with the field's values.
+   *
+   * 1) `domain` for _quantitative_ fields can take one of the following forms:
+   *
+   * - a two-element array with minimum and maximum values.
+   * - an array with more than two entries, for [Piecewise  quantitative scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). (Alternatively, the `domainMid` property can be set for a diverging scale.)
+   * - a string value `"unaggregated"`, if the input field is aggregated, to indicate that the domain should include the raw data values prior to the aggregation.
+   *
+   * 2) `domain` for _temporal_ fields can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](https://vega.github.io/vega-lite/docs/types.html#datetime).
+   *
+   * 3) `domain` for _ordinal_ and _nominal_ fields can be an array that lists valid input values.
+   */
+  unionWith: number[] | string[] | boolean[] | DateTime[];
+}
+
+export function isDomainUnionWith(domain: Domain): domain is DomainUnionWith {
+  return domain && domain['unionWith'];
 }
 
 export interface Scale {
@@ -435,7 +456,7 @@ export interface Scale {
   type?: ScaleType;
 
   /**
-   * Customized domain values, either constant values or dynamic values driven by a selection.
+   * Customized domain values in the form of constant values or dynamic values driven by a selection.
    *
    * 1) Constant `domain` for _quantitative_ fields can take one of the following forms:
    *
@@ -447,9 +468,11 @@ export interface Scale {
    *
    * 3) Constant `domain` for _ordinal_ and _nominal_ fields can be an array that lists valid input values.
    *
-   * 4) Domain can also takes an object defining a field or encoding of a selection that [interactively determines](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain.
+   * 4) To combine (union) specified constant domain with the field's values, `domain` can be an object with a `unionWith` property that specify constant domain to be combined. For example, `domain: {unionWith: [0, 100]}` for a quantitative scale means that the scale domain always includes `[0, 100]`, but will include other values in the fields beyond `[0, 100]`.
+   *
+   * 5) Domain can also takes an object defining a field or encoding of a selection that [interactively determines](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain.
    */
-  domain?: number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionExtent;
+  domain?: number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionExtent | DomainUnionWith;
 
   /**
    * Inserts a single mid-point value into a two-element domain. The mid-point value must lie between the domain minimum and maximum values. This property can be useful for setting a midpoint for [diverging color scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). The domainMid property is only intended for use with scales supporting continuous, piecewise domains.
