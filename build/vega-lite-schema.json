@@ -7943,72 +7943,6 @@
       ],
       "description": "Any specification in Vega-Lite."
     },
-    "GenericUnitSpec<Encoding,AnyMark>": {
-      "additionalProperties": false,
-      "description": "Base interface for a unit (single-view) specification.",
-      "properties": {
-        "data": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Data"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "encoding": {
-          "$ref": "#/definitions/Encoding",
-          "description": "A key-value mapping between encoding channels and definition of fields."
-        },
-        "mark": {
-          "$ref": "#/definitions/AnyMark",
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "projection": {
-          "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
-        },
-        "selection": {
-          "additionalProperties": {
-            "$ref": "#/definitions/SelectionDef"
-          },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "mark"
-      ],
-      "type": "object"
-    },
     "VConcatSpec": {
       "additionalProperties": false,
       "description": "Base interface for a vertical concatenation specification.",
@@ -16716,8 +16650,108 @@
       "type": "object"
     },
     "UnitSpec": {
-      "$ref": "#/definitions/GenericUnitSpec<Encoding,AnyMark>",
-      "description": "A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types)."
+      "additionalProperties": false,
+      "description": "A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types).",
+      "properties": {
+        "data": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
+        },
+        "description": {
+          "description": "Description of this mark for commenting purpose.",
+          "type": "string"
+        },
+        "encoding": {
+          "$ref": "#/definitions/Encoding",
+          "description": "A key-value mapping between encoding channels and definition of fields."
+        },
+        "height": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Step"
+            }
+          ],
+          "deprecated": "Please avoid using width in a unit spec that's a part of a layer spec."
+        },
+        "mark": {
+          "$ref": "#/definitions/AnyMark",
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
+        },
+        "name": {
+          "description": "Name of the visualization for later reference.",
+          "type": "string"
+        },
+        "projection": {
+          "$ref": "#/definitions/Projection",
+          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
+        },
+        "selection": {
+          "additionalProperties": {
+            "$ref": "#/definitions/SelectionDef"
+          },
+          "description": "A key-value mapping between selection names and definitions.",
+          "type": "object"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
+        "transform": {
+          "description": "An array of data transformations such as filter and new field calculation.",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          },
+          "type": "array"
+        },
+        "view": {
+          "$ref": "#/definitions/ViewBackground",
+          "deprecated": "Please avoid using width in a unit spec that's a part of a layer spec."
+        },
+        "width": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Step"
+            }
+          ],
+          "deprecated": "Please avoid using width in a unit spec that's a part of a layer spec."
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "type": "object"
     },
     "UnitSpecWithFrame": {
       "additionalProperties": false,

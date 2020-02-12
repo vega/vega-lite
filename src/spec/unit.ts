@@ -4,7 +4,7 @@ import {Encoding} from '../encoding';
 import {AnyMark, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {SelectionDef} from '../selection';
-import {BaseSpec, BoundsMixins, DataMixins, FrameMixins, ResolveMixins} from './base';
+import {BaseSpec, BoundsMixins, DataMixins, DeprecatedFrameMixins, FrameMixins, ResolveMixins} from './base';
 import {TopLevel} from './toplevel';
 
 /**
@@ -42,7 +42,7 @@ export type NormalizedUnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef
 /**
  * A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types).
  */
-export type UnitSpec = GenericUnitSpec<CompositeEncoding, AnyMark>;
+export type UnitSpec = GenericUnitSpec<CompositeEncoding, AnyMark> & DeprecatedFrameMixins;
 
 export type UnitSpecWithFrame = GenericUnitSpec<CompositeEncoding, AnyMark> & FrameMixins;
 

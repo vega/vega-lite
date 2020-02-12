@@ -113,6 +113,23 @@ export interface FrameMixins extends LayoutSizeMixins {
   view?: ViewBackground;
 }
 
+export type DeprecatedFrameMixins = {
+  /**
+   * @deprecated Please avoid using width in a unit spec that's a part of a layer spec.
+   */
+  width?: FrameMixins['width'];
+
+  /**
+   * @deprecated Please avoid using width in a unit spec that's a part of a layer spec.
+   */
+  height?: FrameMixins['height'];
+
+  /**
+   * @deprecated Please avoid using width in a unit spec that's a part of a layer spec.
+   */
+  view?: FrameMixins['view'];
+};
+
 export interface ResolveMixins {
   /**
    * Scale, axis, and legend resolutions for view composition specifications.
