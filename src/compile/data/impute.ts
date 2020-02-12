@@ -1,12 +1,15 @@
-import {FormulaTransform as VgFormulaTransform, SignalRef} from 'vega-typings';
+import {
+  FormulaTransform as VgFormulaTransform,
+  ImputeTransform as VgImputeTransform,
+  SignalRef,
+  WindowTransform as VgWindowTransform
+} from 'vega-typings';
 import {isFieldDef} from '../../channeldef';
 import {pathGroupingFields} from '../../encoding';
 import {ImputeSequence, ImputeTransform, isImputeSequence} from '../../transform';
 import {duplicate, hash} from '../../util';
-import {ImputeTransform as VgImputeTransform} from 'vega-typings';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
-import {WindowTransform as VgWindowTransform} from 'vega-typings';
 
 export class ImputeNode extends DataFlowNode {
   public clone() {
@@ -70,16 +73,16 @@ export class ImputeNode extends DataFlowNode {
   public assemble() {
     const {impute, key, keyvals, method, groupby, value, frame = [null, null] as [null, null]} = this.transform;
 
-    const initialImpute: VgImputeTransform = {
+    const imputeTransform: VgImputeTransform = {
       type: 'impute',
       field: impute,
       key,
       ...(keyvals ? {keyvals: isImputeSequence(keyvals) ? this.processSequence(keyvals) : keyvals} : {}),
       method: 'value',
       ...(groupby ? {groupby} : {}),
-      value: null
+      value: !method || method === 'value' ? value : null
     };
-    let setImputedField;
+
     if (method && method !== 'value') {
       const deriveNewField: VgWindowTransform = {
         type: 'window',
@@ -95,16 +98,9 @@ export class ImputeNode extends DataFlowNode {
         expr: `datum.${impute} === null ? datum.imputed_${impute}_value : datum.${impute}`,
         as: impute
       };
-      setImputedField = [deriveNewField, replaceOriginal];
+      return [imputeTransform, deriveNewField, replaceOriginal];
     } else {
-      const replaceWithValue: VgFormulaTransform = {
-        type: 'formula',
-        expr: `datum.${impute} === null ? ${value} : datum.${impute}`,
-        as: impute
-      };
-      setImputedField = [replaceWithValue];
+      return [imputeTransform];
     }
-
-    return [initialImpute, ...setImputedField];
   }
 }

@@ -20,12 +20,7 @@ describe('compile/data/impute', () => {
           field: 'y',
           key: 'x',
           method: 'value',
-          value: null
-        },
-        {
-          type: 'formula',
-          expr: 'datum.y === null ? 200 : datum.y',
-          as: 'y'
+          value: 200
         }
       ]);
     });
@@ -237,12 +232,7 @@ describe('compile/data/impute', () => {
           key: 'yield',
           method: 'value',
           groupby: ['site'],
-          value: null
-        },
-        {
-          type: 'formula',
-          expr: 'datum.variety === null ? 500 : datum.variety',
-          as: 'variety'
+          value: 500
         }
       ]);
     });
@@ -264,12 +254,7 @@ describe('compile/data/impute', () => {
           key: 'yield',
           method: 'value',
           groupby: ['site'],
-          value: null
-        },
-        {
-          type: 'formula',
-          expr: 'datum.variety === null ? 0 : datum.variety',
-          as: 'variety'
+          value: 0
         }
       ]);
     });
@@ -401,12 +386,7 @@ describe('compile/data/impute', () => {
           key: 'yield',
           method: 'value',
           groupby: ['site'],
-          value: null
-        },
-        {
-          type: 'formula',
-          expr: 'datum.variety === null ? 20 : datum.variety',
-          as: 'variety'
+          value: 20
         }
       ]);
     });
