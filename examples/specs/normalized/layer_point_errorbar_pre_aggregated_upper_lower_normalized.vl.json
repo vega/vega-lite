@@ -34,34 +34,30 @@
         {"calculate": "datum[\"lower_yield\"]", "as": "upper_upper_yield"},
         {"calculate": "datum[\"upper_yield\"]", "as": "lower_upper_yield"}
       ],
-      "layer": [
-        {
-          "mark": {"type": "rule", "style": "errorbar-rule"},
-          "encoding": {
-            "x": {
-              "field": "lower_upper_yield",
-              "type": "quantitative",
-              "title": "yield",
-              "scale": {"zero": false}
-            },
-            "x2": {"field": "upper_upper_yield"},
-            "y": {"field": "variety", "type": "ordinal"},
-            "tooltip": [
-              {
-                "field": "upper_upper_yield",
-                "type": "quantitative",
-                "title": "lower_yield"
-              },
-              {
-                "field": "lower_upper_yield",
-                "type": "quantitative",
-                "title": "upper_yield"
-              },
-              {"field": "variety", "type": "ordinal"}
-            ]
-          }
-        }
-      ]
+      "mark": {"type": "rule", "style": "errorbar-rule"},
+      "encoding": {
+        "x": {
+          "field": "lower_upper_yield",
+          "type": "quantitative",
+          "title": "yield",
+          "scale": {"zero": false}
+        },
+        "x2": {"field": "upper_upper_yield"},
+        "y": {"field": "variety", "type": "ordinal"},
+        "tooltip": [
+          {
+            "field": "upper_upper_yield",
+            "type": "quantitative",
+            "title": "lower_yield"
+          },
+          {
+            "field": "lower_upper_yield",
+            "type": "quantitative",
+            "title": "upper_yield"
+          },
+          {"field": "variety", "type": "ordinal"}
+        ]
+      }
     },
     {
       "mark": {"type": "point", "filled": true, "color": "black"},

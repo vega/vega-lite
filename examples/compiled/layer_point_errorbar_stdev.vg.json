@@ -65,7 +65,7 @@
       }
     },
     {
-      "name": "layer_1_layer_0_marks",
+      "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule", "errorbar-rule"],
       "from": {"data": "data_0"},

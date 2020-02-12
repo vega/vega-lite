@@ -27,38 +27,34 @@
           "groupby": ["variety"]
         }
       ],
-      "layer": [
-        {
-          "mark": {"type": "rule", "style": "errorbar-rule"},
-          "encoding": {
-            "x": {
-              "field": "lower_yield",
-              "type": "quantitative",
-              "title": "Barley Yield"
-            },
-            "x2": {"field": "upper_yield"},
-            "y": {"field": "variety", "type": "ordinal"},
-            "tooltip": [
-              {
-                "field": "upper_yield",
-                "type": "quantitative",
-                "title": "Ci1 of yield"
-              },
-              {
-                "field": "lower_yield",
-                "type": "quantitative",
-                "title": "Ci0 of yield"
-              },
-              {
-                "field": "center_yield",
-                "type": "quantitative",
-                "title": "Mean of yield"
-              },
-              {"field": "variety", "type": "ordinal"}
-            ]
-          }
-        }
-      ]
+      "mark": {"type": "rule", "style": "errorbar-rule"},
+      "encoding": {
+        "x": {
+          "field": "lower_yield",
+          "type": "quantitative",
+          "title": "Barley Yield"
+        },
+        "x2": {"field": "upper_yield"},
+        "y": {"field": "variety", "type": "ordinal"},
+        "tooltip": [
+          {
+            "field": "upper_yield",
+            "type": "quantitative",
+            "title": "Ci1 of yield"
+          },
+          {
+            "field": "lower_yield",
+            "type": "quantitative",
+            "title": "Ci0 of yield"
+          },
+          {
+            "field": "center_yield",
+            "type": "quantitative",
+            "title": "Mean of yield"
+          },
+          {"field": "variety", "type": "ordinal"}
+        ]
+      }
     }
   ]
 }

@@ -20,37 +20,33 @@
           "as": "lower_yield"
         }
       ],
-      "layer": [
-        {
-          "mark": {"type": "rule", "style": "errorbar-rule"},
-          "encoding": {
-            "y": {
-              "field": "lower_yield",
-              "type": "quantitative",
-              "title": "yield",
-              "scale": {"zero": false}
-            },
-            "y2": {"field": "upper_yield"},
-            "tooltip": [
-              {
-                "field": "center_yield",
-                "type": "quantitative",
-                "title": "Mean of yield"
-              },
-              {
-                "field": "upper_yield",
-                "type": "quantitative",
-                "title": "Mean + stderr of yield"
-              },
-              {
-                "field": "lower_yield",
-                "type": "quantitative",
-                "title": "Mean - stderr of yield"
-              }
-            ]
+      "mark": {"type": "rule", "style": "errorbar-rule"},
+      "encoding": {
+        "y": {
+          "field": "lower_yield",
+          "type": "quantitative",
+          "title": "yield",
+          "scale": {"zero": false}
+        },
+        "y2": {"field": "upper_yield"},
+        "tooltip": [
+          {
+            "field": "center_yield",
+            "type": "quantitative",
+            "title": "Mean of yield"
+          },
+          {
+            "field": "upper_yield",
+            "type": "quantitative",
+            "title": "Mean + stderr of yield"
+          },
+          {
+            "field": "lower_yield",
+            "type": "quantitative",
+            "title": "Mean - stderr of yield"
           }
-        }
-      ]
+        ]
+      }
     },
     {
       "mark": {"type": "point", "filled": true, "color": "black"},
