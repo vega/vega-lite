@@ -1,6 +1,7 @@
 import {COLOR, X, Y} from '../../../src/channel';
 import {rule} from '../../../src/compile/mark/rule';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import * as log from '../../../src/log';
 
 describe('Mark: Rule', () => {
   describe('without encoding', () => {
@@ -27,8 +28,8 @@ describe('Mark: Rule', () => {
 
     it('should create vertical rule that fits height', () => {
       expect(props.x).toEqual({scale: X, field: 'a'});
-      expect(props.y).toEqual({field: {group: 'height'}});
-      expect(props.y2).toEqual({value: 0});
+      expect(props.y).toEqual({value: 0});
+      expect(props.y2).toEqual({field: {group: 'height'}});
     });
   });
 
@@ -42,8 +43,29 @@ describe('Mark: Rule', () => {
 
     it('should create horizontal rule that fits height', () => {
       expect(props.y).toEqual({scale: Y, field: 'a'});
-      expect(props.x).toEqual({value: 0});
-      expect(props.x2).toEqual({field: {group: 'width'}});
+      expect(props.x).toEqual({field: {group: 'width'}});
+      expect(props.x2).toEqual({value: 0});
+    });
+  });
+
+  describe('with y-only and log scale', () => {
+    log.wrap(localLogger => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'rule',
+        encoding: {y: {field: 'a', type: 'quantitative', scale: {type: 'log'}}}
+      });
+
+      const props = rule.encodeEntry(model);
+
+      it('should create horizontal rule that fits height', () => {
+        expect(props.y).toEqual({scale: Y, field: 'a'});
+        expect(props.x).toEqual({value: 0});
+        expect(props.x2).toEqual({field: {group: 'width'}});
+
+        expect(localLogger.warns[0]).toEqual(
+          log.message.nonZeroScaleUsedWithLengthMark('rule', 'y', {scaleType: 'log'})
+        );
+      });
     });
   });
 
