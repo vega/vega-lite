@@ -1,3 +1,5 @@
+import {FacetedUnitSpec} from './../src/spec/unit';
+import {BaseSpec} from './../src/spec/base';
 import {buildModel} from '../src/compile/buildmodel';
 import {ConcatModel} from '../src/compile/concat';
 import {FacetModel} from '../src/compile/facet';
@@ -15,7 +17,8 @@ import {
   NormalizedRepeatSpec,
   NormalizedUnitSpec,
   TopLevel,
-  TopLevelSpec
+  TopLevelSpec,
+  isUnitSpec
 } from '../src/spec';
 import {FrameMixins} from '../src/spec/base';
 
@@ -82,4 +85,10 @@ export function parseRepeatModel(spec: TopLevel<NormalizedRepeatSpec>) {
 
 export function parseConcatModel(spec: TopLevel<NormalizedConcatSpec>) {
   return new ConcatModel(spec, null, '', undefined, initConfig(spec.config));
+}
+
+export function assertIsUnitSpec(spec: BaseSpec): asserts spec is FacetedUnitSpec | NormalizedUnitSpec {
+  if (!isUnitSpec(spec)) {
+    throw new Error('Spec is not a unit spec!');
+  }
 }

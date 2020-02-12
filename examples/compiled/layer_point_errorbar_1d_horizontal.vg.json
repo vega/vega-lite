@@ -44,7 +44,7 @@
   "signals": [{"name": "height", "update": "height"}],
   "marks": [
     {
-      "name": "layer_0_layer_0_marks",
+      "name": "layer_0_marks",
       "type": "rule",
       "style": ["rule", "errorbar-rule"],
       "from": {"data": "data_0"},

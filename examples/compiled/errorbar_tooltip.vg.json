@@ -40,7 +40,7 @@
   ],
   "marks": [
     {
-      "name": "layer_0_marks",
+      "name": "marks",
       "type": "rule",
       "style": ["rule", "errorbar-rule"],
       "from": {"data": "source_0"},

@@ -1,3 +1,4 @@
+import {NormalizedUnitSpec} from './../spec/unit';
 import {Field} from '../channeldef';
 import {Encoding} from '../encoding';
 import {NormalizerParams} from '../normalize';
@@ -31,7 +32,7 @@ export {ErrorBarConfigMixins} from './errorbar';
 export type CompositeMarkNormalizerRun = (
   spec: GenericUnitSpec<any, any>,
   params: NormalizerParams
-) => NormalizedLayerSpec;
+) => NormalizedLayerSpec | NormalizedUnitSpec;
 
 /**
  * Registry index for all composite mark's normalizer

@@ -875,7 +875,7 @@ export function normalizeFieldDef(fd: FieldDef<string>, channel: Channel) {
   }
 
   if (isBinned(bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {
-    log.warn(`Channel ${channel} should not be used with "binned" bin`);
+    log.warn(`Channel ${channel} should not be used with "binned" bin.`);
   }
 
   // Normalize Type

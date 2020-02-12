@@ -12,6 +12,7 @@ import {Step} from '../spec/base';
 import {TitleParams} from '../title';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys, replaceAll, titlecase} from '../util';
+import {NormalizedUnitSpec} from './../spec/unit';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -115,7 +116,7 @@ export const errorBarNormalizer = new CompositeMarkNormalizer(ERRORBAR, normaliz
 export function normalizeErrorBar(
   spec: GenericUnitSpec<ErrorEncoding<string>, ErrorBar | ErrorBarDef>,
   {config}: NormalizerParams
-): NormalizedLayerSpec {
+): NormalizedLayerSpec | NormalizedUnitSpec {
   const {
     transform,
     continuousAxisChannelDef,
@@ -137,30 +138,32 @@ export function normalizeErrorBar(
 
   const tick: MarkDef = {type: 'tick', orient: ticksOrient};
 
+  const layer = [
+    ...makeErrorBarPart({
+      partName: 'ticks',
+      mark: tick,
+      positionPrefix: 'lower',
+      extraEncoding: tooltipEncoding
+    }),
+    ...makeErrorBarPart({
+      partName: 'ticks',
+      mark: tick,
+      positionPrefix: 'upper',
+      extraEncoding: tooltipEncoding
+    }),
+    ...makeErrorBarPart({
+      partName: 'rule',
+      mark: 'rule',
+      positionPrefix: 'lower',
+      endPositionPrefix: 'upper',
+      extraEncoding: tooltipEncoding
+    })
+  ];
+
   return {
     ...outerSpec,
     transform,
-    layer: [
-      ...makeErrorBarPart({
-        partName: 'ticks',
-        mark: tick,
-        positionPrefix: 'lower',
-        extraEncoding: tooltipEncoding
-      }),
-      ...makeErrorBarPart({
-        partName: 'ticks',
-        mark: tick,
-        positionPrefix: 'upper',
-        extraEncoding: tooltipEncoding
-      }),
-      ...makeErrorBarPart({
-        partName: 'rule',
-        mark: 'rule',
-        positionPrefix: 'lower',
-        endPositionPrefix: 'upper',
-        extraEncoding: tooltipEncoding
-      })
-    ]
+    ...(layer.length > 1 ? {layer} : {...layer[0]})
   };
 }
 

@@ -215,26 +215,22 @@ describe('normalize()', () => {
                   as: 'lower_people'
                 }
               ],
-              layer: [
-                {
-                  mark: {type: 'rule', style: 'errorbar-rule'},
-                  encoding: {
-                    y: {
-                      field: 'lower_people',
-                      type: 'quantitative',
-                      title: 'people'
-                    },
-                    y2: {field: 'upper_people'},
-                    x: {field: 'age', type: 'ordinal'},
-                    tooltip: [
-                      {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
-                      {field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative'},
-                      {field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative'},
-                      {field: 'age', type: 'ordinal'}
-                    ]
-                  }
-                }
-              ]
+              mark: {type: 'rule', style: 'errorbar-rule'},
+              encoding: {
+                y: {
+                  field: 'lower_people',
+                  type: 'quantitative',
+                  title: 'people'
+                },
+                y2: {field: 'upper_people'},
+                x: {field: 'age', type: 'ordinal'},
+                tooltip: [
+                  {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
+                  {field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative'},
+                  {field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative'},
+                  {field: 'age', type: 'ordinal'}
+                ]
+              }
             },
             {
               mark: {type: 'point', opacity: 1, filled: true},

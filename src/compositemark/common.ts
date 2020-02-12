@@ -113,7 +113,7 @@ export function getCompositeMarkTooltip(
 
   const fiveSummaryTooltip: StringFieldDef<string>[] = tooltipSummary.map(
     ({fieldPrefix, titlePrefix}): StringFieldDef<string> => {
-      const mainTitle = withFieldName ? ' of ' + continuousAxisChannelDef.field : '';
+      const mainTitle = withFieldName ? ` of ${continuousAxisChannelDef.field}` : '';
       return {
         field: fieldPrefix + continuousAxisChannelDef.field,
         type: continuousAxisChannelDef.type,
@@ -125,7 +125,7 @@ export function getCompositeMarkTooltip(
   return {
     tooltip: [
       ...fiveSummaryTooltip,
-      // need to cast because TextFieldDef support fewer types of bin
+      // need to cast because TextFieldDef supports fewer types of bin
       ...(fieldDefs(encodingWithoutContinuousAxis) as StringFieldDef<string>[])
     ]
   };

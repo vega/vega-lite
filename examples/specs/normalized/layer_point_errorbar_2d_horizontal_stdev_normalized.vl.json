@@ -20,39 +20,35 @@
           "as": "lower_yield"
         }
       ],
-      "layer": [
-        {
-          "mark": {"type": "rule", "style": "errorbar-rule"},
-          "encoding": {
-            "x": {
-              "field": "lower_yield",
-              "type": "quantitative",
-              "title": "yield",
-              "scale": {"zero": false}
-            },
-            "x2": {"field": "upper_yield"},
-            "y": {"field": "variety", "type": "ordinal"},
-            "tooltip": [
-              {
-                "field": "center_yield",
-                "type": "quantitative",
-                "title": "Mean of yield"
-              },
-              {
-                "field": "upper_yield",
-                "type": "quantitative",
-                "title": "Mean + stdev of yield"
-              },
-              {
-                "field": "lower_yield",
-                "type": "quantitative",
-                "title": "Mean - stdev of yield"
-              },
-              {"field": "variety", "type": "ordinal"}
-            ]
-          }
-        }
-      ]
+      "mark": {"type": "rule", "style": "errorbar-rule"},
+      "encoding": {
+        "x": {
+          "field": "lower_yield",
+          "type": "quantitative",
+          "title": "yield",
+          "scale": {"zero": false}
+        },
+        "x2": {"field": "upper_yield"},
+        "y": {"field": "variety", "type": "ordinal"},
+        "tooltip": [
+          {
+            "field": "center_yield",
+            "type": "quantitative",
+            "title": "Mean of yield"
+          },
+          {
+            "field": "upper_yield",
+            "type": "quantitative",
+            "title": "Mean + stdev of yield"
+          },
+          {
+            "field": "lower_yield",
+            "type": "quantitative",
+            "title": "Mean - stdev of yield"
+          },
+          {"field": "variety", "type": "ordinal"}
+        ]
+      }
     },
     {
       "mark": {"type": "point", "filled": true, "color": "black"},

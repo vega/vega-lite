@@ -18,7 +18,7 @@ export class CompositeMarkNormalizer<M extends string> implements NonFacetUnitNo
         // Output of the normalize method
         NormalizedLayerSpec | NormalizedUnitSpec
       >
-    ) => NormalizedLayerSpec
+    ) => NormalizedLayerSpec | NormalizedUnitSpec
   ) {}
 
   public hasMatchingType(spec: GenericSpec<any, any>): spec is CompositeMarkUnitSpec<M> {

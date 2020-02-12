@@ -20,39 +20,35 @@
           "as": "lower_yield"
         }
       ],
-      "layer": [
-        {
-          "mark": {"type": "rule", "style": "errorbar-rule"},
-          "encoding": {
-            "y": {
-              "field": "lower_yield",
-              "type": "quantitative",
-              "title": "yield",
-              "scale": {"zero": false}
-            },
-            "y2": {"field": "upper_yield"},
-            "x": {"field": "variety", "type": "ordinal"},
-            "tooltip": [
-              {
-                "field": "center_yield",
-                "type": "quantitative",
-                "title": "Mean of yield"
-              },
-              {
-                "field": "upper_yield",
-                "type": "quantitative",
-                "title": "Mean + stderr of yield"
-              },
-              {
-                "field": "lower_yield",
-                "type": "quantitative",
-                "title": "Mean - stderr of yield"
-              },
-              {"field": "variety", "type": "ordinal"}
-            ]
-          }
-        }
-      ]
+      "mark": {"type": "rule", "style": "errorbar-rule"},
+      "encoding": {
+        "y": {
+          "field": "lower_yield",
+          "type": "quantitative",
+          "title": "yield",
+          "scale": {"zero": false}
+        },
+        "y2": {"field": "upper_yield"},
+        "x": {"field": "variety", "type": "ordinal"},
+        "tooltip": [
+          {
+            "field": "center_yield",
+            "type": "quantitative",
+            "title": "Mean of yield"
+          },
+          {
+            "field": "upper_yield",
+            "type": "quantitative",
+            "title": "Mean + stderr of yield"
+          },
+          {
+            "field": "lower_yield",
+            "type": "quantitative",
+            "title": "Mean - stderr of yield"
+          },
+          {"field": "variety", "type": "ordinal"}
+        ]
+      }
     },
     {
       "mark": {"type": "point", "filled": true, "color": "black"},
