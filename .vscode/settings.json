@@ -20,6 +20,5 @@
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  },
-  "jest.pathToConfig": "jest-vscode.config.js"
+  }
 }
