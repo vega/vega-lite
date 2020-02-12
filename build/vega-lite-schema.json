@@ -16687,7 +16687,7 @@
               "$ref": "#/definitions/Step"
             }
           ],
-          "deprecated": "Please avoid using width in a unit spec that's a part of a layer spec."
+          "description": "__Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec."
         },
         "mark": {
           "$ref": "#/definitions/AnyMark",
@@ -16728,7 +16728,7 @@
         },
         "view": {
           "$ref": "#/definitions/ViewBackground",
-          "deprecated": "Please avoid using width in a unit spec that's a part of a layer spec."
+          "description": "__Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec."
         },
         "width": {
           "anyOf": [
@@ -16745,7 +16745,7 @@
               "$ref": "#/definitions/Step"
             }
           ],
-          "deprecated": "Please avoid using width in a unit spec that's a part of a layer spec."
+          "description": "__Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec."
         }
       },
       "required": [
@@ -17550,8 +17550,7 @@
           "type": "number"
         },
         "height": {
-          "deprecated": "Since Vega-Lite 4.0. Please use continuousHeight and discreteHeight instead.",
-          "description": "Default height",
+          "description": "Default height\n\n__Deprecated:__ Since Vega-Lite 4.0. Please use continuousHeight and discreteHeight instead.",
           "type": "number"
         },
         "opacity": {
@@ -17610,8 +17609,7 @@
           "type": "number"
         },
         "width": {
-          "deprecated": "Since Vega-Lite 4.0. Please use continuousWidth and discreteWidth instead.",
-          "description": "Default width",
+          "description": "Default width\n\n__Deprecated:__ Since Vega-Lite 4.0. Please use continuousWidth and discreteWidth instead.",
           "type": "number"
         }
       },

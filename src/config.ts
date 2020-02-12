@@ -27,14 +27,14 @@ export interface ViewConfig extends BaseViewBackground {
   /**
    * Default width
    *
-   * @deprecated Since Vega-Lite 4.0. Please use continuousWidth and discreteWidth instead.
+   * __Deprecated:__ Since Vega-Lite 4.0. Please use continuousWidth and discreteWidth instead.
    */
   width?: number;
 
   /**
    * Default height
    *
-   * @deprecated Since Vega-Lite 4.0. Please use continuousHeight and discreteHeight instead.
+   * __Deprecated:__ Since Vega-Lite 4.0. Please use continuousHeight and discreteHeight instead.
    */
   height?: number;
 
