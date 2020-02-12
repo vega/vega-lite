@@ -79,8 +79,8 @@
         "update": {
           "stroke": {"value": "red"},
           "x": {"scale": "x", "field": "average_AverageRating"},
-          "y": {"field": {"group": "height"}},
-          "y2": {"value": 0}
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}}
         }
       }
     }

@@ -132,8 +132,8 @@
             },
             {"scale": "x", "field": "year"}
           ],
-          "y": {"field": {"group": "height"}},
-          "y2": {"value": 0}
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}}
         }
       }
     },

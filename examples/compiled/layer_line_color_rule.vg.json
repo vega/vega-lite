@@ -71,8 +71,8 @@
       "encode": {
         "update": {
           "stroke": {"scale": "color", "field": "symbol"},
-          "x": {"value": 0},
-          "x2": {"field": {"group": "width"}},
+          "x": {"field": {"group": "width"}},
+          "x2": {"value": 0},
           "y": {"scale": "y", "field": "mean_price"},
           "strokeWidth": {"value": 2}
         }

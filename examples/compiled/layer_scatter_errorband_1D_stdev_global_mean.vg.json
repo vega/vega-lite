@@ -103,8 +103,8 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
-          "x": {"value": 0},
-          "x2": {"field": {"group": "width"}},
+          "x": {"field": {"group": "width"}},
+          "x2": {"value": 0},
           "y": {"scale": "y", "field": "mean_Miles_per_Gallon"}
         }
       }

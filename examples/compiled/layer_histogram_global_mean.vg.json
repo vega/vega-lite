@@ -100,8 +100,8 @@
             },
             {"scale": "x", "field": "mean_IMDB_Rating"}
           ],
-          "y": {"field": {"group": "height"}},
-          "y2": {"value": 0},
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}},
           "strokeWidth": {"value": 5}
         }
       }
