@@ -3,55 +3,23 @@
   "description": "Average temperatures in Seattle, broken down by hour. Derived from [Seattle Annual Temperate](https://vega.github.io/vega/examples/annual-temperature/) example from the Vega example gallery.",
   "width": 800,
   "height": 25,
-  "data": {
-    "url": "data/seattle-temps.csv"
-  },
-  "mark": "area",
   "title": "Seattle Annual Temperatures",
-  "config": {
-    "view": {
-      "stroke": null
-    },
-    "axis": {
-      "grid": false,
-      "domain": false
-    },
-    "headerRow": {
-      "labelAngle": 0,
-      "labelPadding": 2,
-      "titlePadding": -5,
-      "labelAlign": "left",
-      "labelExpr": "hours(datum.value) == 0 ? 'Midnight' : hours(datum.value) == 12 ? 'Noon' : timeFormat(datum.value, '%I:%M %p')"
-    }
-  },
+  "data": {"url": "data/seattle-temps.csv"},
+  "mark": "area",
   "encoding": {
     "x": {
       "field": "date",
       "type": "temporal",
       "title": "Month",
-      "axis": {
-        "grid": false,
-        "labelExpr": "timeFormat(datum.value, '%b')"
-      }
+      "axis": {"labelExpr": "timeFormat(datum.value, '%b')"}
     },
     "y": {
       "field": "temp",
       "type": "quantitative",
       "scale": {
-        "domain": [
-          37.5,
-          75.9
-        ],
-        "padding": 0,
-        "zero": false,
-        "nice": false
+        "zero": false
       },
-      "axis": {
-        "grid": false,
-        "title": null,
-        "labels": false,
-        "ticks": false
-      }
+      "axis": {"title": null, "labels": false, "ticks": false}
     },
     "row": {
       "field": "date",
@@ -84,7 +52,18 @@
         3,
         4,
         5
-      ]
+      ],
+      "header": {
+        "labelAngle": 0,
+        "labelPadding": 2,
+        "titlePadding": -4,
+        "labelAlign": "left",
+        "labelExpr": "hours(datum.value) == 0 ? 'Midnight' : hours(datum.value) == 12 ? 'Noon' : timeFormat(datum.value, '%I:%M %p')"
+      }
     }
+  },
+  "config": {
+    "view": {"stroke": null},
+    "axis": {"grid": false, "domain": false}
   }
 }
