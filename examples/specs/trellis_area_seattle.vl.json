@@ -18,8 +18,9 @@
     },
     "headerRow": {
       "labelAngle": 0,
-      "labelPadding": -40,
+      "labelPadding": 2,
       "titlePadding": -5,
+      "labelAlign": "left",
       "labelExpr": "hours(datum.value) == 0 ? 'Midnight' : hours(datum.value) == 12 ? 'Noon' : timeFormat(datum.value, '%I:%M %p')"
     }
   },
