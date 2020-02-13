@@ -18,7 +18,7 @@ import * as log from '../../../log';
 import {Mark, MarkDef} from '../../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../../scale';
 import {getFirstDefined} from '../../../util';
-import {isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
+import {isSignalRef, isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {getMarkConfig, signalOrValueRef} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
@@ -229,14 +229,25 @@ export function rectBinPosition({
   scaleName: string;
   markDef: MarkDef<Mark>;
   spacing?: number;
-  reverse: boolean;
+  reverse: boolean | SignalRef;
 }) {
-  const binSpacing = {
-    x: reverse ? spacing : 0,
-    x2: reverse ? 0 : spacing,
-    y: reverse ? 0 : spacing,
-    y2: reverse ? spacing : 0
-  } as const;
+  const binSpacing = isSignalRef(reverse)
+    ? {
+        signal:
+          `{` +
+          `"x": ${reverse.signal} ? ${spacing} : 0,` +
+          `"x2": ${reverse.signal} ? 0 : ${spacing},` +
+          `"y": ${reverse.signal} ? 0 : ${spacing},` +
+          `"y2": ${reverse.signal} ? ${spacing} : 0` +
+          `}`
+      }
+    : ({
+        x: reverse ? spacing : 0,
+        x2: reverse ? 0 : spacing,
+        y: reverse ? 0 : spacing,
+        y2: reverse ? spacing : 0
+      } as const);
+
   const channel2 = channel === X ? X2 : Y2;
   if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {
@@ -246,7 +257,7 @@ export function rectBinPosition({
         scaleName,
         markDef,
         band: (1 - band) / 2,
-        offset: binSpacing[`${channel}2`]
+        offset: isSignalRef(binSpacing) ? {signal: binSpacing.signal + `[${channel}2]`} : binSpacing[`${channel}2`]
       }),
       [channel]: rectBinRef({
         channel,
@@ -254,7 +265,7 @@ export function rectBinPosition({
         scaleName,
         markDef,
         band: 1 - (1 - band) / 2,
-        offset: binSpacing[channel]
+        offset: isSignalRef(binSpacing) ? {signal: binSpacing.signal + `[${channel}]`} : binSpacing[`${channel}`]
       })
     };
   } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {

@@ -1,18 +1,20 @@
+import {SignalRef} from 'vega-typings/types';
 import {isArray} from 'vega-util';
 import {ScaleChannel} from '../../channel';
 import {Scale, ScaleType} from '../../scale';
+import {SelectionExtent} from '../../selection';
 import {some} from '../../util';
 import {VgNonUnionDomain, VgScale} from '../../vega.schema';
 import {Explicit, Split} from '../split';
-import {SelectionExtent} from '../../selection';
 
 /**
  * All VgDomain property except domain.
  * (We exclude domain as we have a special "domains" array that allow us merge them all at once in assemble.)
  */
-export type ScaleComponentProps = Omit<VgScale, 'domain' | 'domainRaw'> & {
+export type ScaleComponentProps = Omit<VgScale, 'domain' | 'domainRaw' | 'reverse'> & {
   domains: VgNonUnionDomain[];
   selectionExtent?: SelectionExtent;
+  reverse?: boolean | SignalRef; // Need override since Vega doesn't official support scale reverse yet (though it does in practice)
 };
 
 export class ScaleComponent extends Split<ScaleComponentProps> {

@@ -27,7 +27,7 @@ export function assembleScalesForModel(model: Model): VgScale[] {
     }
 
     const scale = scaleComponent.combine();
-    const {name, type, selectionExtent, domains: _d, range: _r, ...otherScaleProps} = scale;
+    const {name, type, selectionExtent, domains: _d, range: _r, reverse, ...otherScaleProps} = scale;
     const range = assembleScaleRange(scale.range, name, channel);
 
     let domainRaw;
@@ -43,6 +43,7 @@ export function assembleScalesForModel(model: Model): VgScale[] {
       ...(domain ? {domain} : {}),
       ...(domainRaw ? {domainRaw} : {}),
       range: range,
+      ...(reverse !== undefined ? {reverse: reverse as any} : {}),
       ...otherScaleProps
     });
 

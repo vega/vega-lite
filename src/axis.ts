@@ -56,7 +56,14 @@ interface AxisMixins {
    */
   orient?: AxisOrient;
 }
-export type SignalAxisProp = 'domainColor' | 'labelColor' | 'gridColor' | 'tickColor' | 'titleColor' | 'title';
+export type SignalAxisProp =
+  | 'domainColor'
+  | 'labelAlign'
+  | 'labelColor'
+  | 'gridColor'
+  | 'tickColor'
+  | 'titleColor'
+  | 'title';
 
 export type ConditionalAxisProp =
   | 'labelAlign'
