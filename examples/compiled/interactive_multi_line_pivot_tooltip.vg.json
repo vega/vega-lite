@@ -152,8 +152,8 @@
             "signal": "{\"AAPL\": format(datum[\"AAPL\"], \"\"), \"AMZN\": format(datum[\"AMZN\"], \"\"), \"GOOG\": format(datum[\"GOOG\"], \"\"), \"IBM\": format(datum[\"IBM\"], \"\"), \"MSFT\": format(datum[\"MSFT\"], \"\")}"
           },
           "x": {"scale": "x", "field": "date"},
-          "y": {"field": {"group": "height"}},
-          "y2": {"value": 0}
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}}
         }
       }
     },

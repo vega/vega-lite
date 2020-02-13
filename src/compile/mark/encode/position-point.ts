@@ -18,8 +18,6 @@ export function pointPosition(
   model: UnitModel,
   {defaultPos, vgChannel}: {defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax'; vgChannel?: 'x' | 'y' | 'xc' | 'yc'}
 ) {
-  // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
-
   const {encoding, markDef, config, stack} = model;
 
   const channelDef = encoding[channel];
@@ -124,7 +122,7 @@ export function pointPositionDefaultRef({
           // Zero in time scale is arbitrary, and does not affect ratio.
           // (Time is an interval level of measurement, not ratio).
           // See https://en.wikipedia.org/wiki/Level_of_measurement for more info.
-          if (checkBarAreaWithZero && (mark === 'bar' || mark === 'area')) {
+          if (checkBarAreaWithZero && (mark === 'bar' || mark === 'area' || mark === 'rule')) {
             log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, mainChannel, {scaleType}));
           }
         } else {

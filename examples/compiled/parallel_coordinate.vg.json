@@ -64,8 +64,8 @@
         "update": {
           "stroke": {"value": "#ccc"},
           "x": {"scale": "x", "field": "key", "band": 0.5},
-          "y": {"field": {"group": "height"}},
-          "y2": {"value": 0}
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}}
         }
       }
     },

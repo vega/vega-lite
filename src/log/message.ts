@@ -135,7 +135,7 @@ export function invalidFieldType(type: Type) {
 }
 
 export function nonZeroScaleUsedWithLengthMark(
-  mark: 'bar' | 'area',
+  mark: 'bar' | 'area' | 'rule',
   channel: Channel,
   opt: {scaleType?: ScaleType; zeroFalse?: boolean}
 ) {

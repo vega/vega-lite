@@ -207,8 +207,8 @@
                 },
                 {"scale": "trellis_barley_x", "field": "median_yield"}
               ],
-              "y": {"field": {"group": "height"}},
-              "y2": {"value": 0}
+              "y": {"value": 0},
+              "y2": {"field": {"group": "height"}}
             }
           }
         }

@@ -166,8 +166,8 @@
         "update": {
           "stroke": {"value": "black"},
           "x": {"scale": "x", "field": "date"},
-          "y": {"field": {"group": "height"}},
-          "y2": {"value": 0}
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}}
         }
       }
     },

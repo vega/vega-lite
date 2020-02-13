@@ -226,8 +226,8 @@
           "strokeWidth": {"value": 0.5},
           "stroke": {"value": "firebrick"},
           "x": {"scale": "x", "field": "date"},
-          "y": {"field": {"group": "height"}},
-          "y2": {"value": 0}
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}}
         }
       }
     },

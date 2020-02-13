@@ -267,8 +267,8 @@
             "update": {
               "stroke": {"value": "black"},
               "x": {"scale": "x", "field": "median_median_x_by_a"},
-              "y": {"field": {"group": "height"}},
-              "y2": {"value": 0}
+              "y": {"value": 0},
+              "y2": {"field": {"group": "height"}}
             }
           }
         },
@@ -280,8 +280,8 @@
           "encode": {
             "update": {
               "stroke": {"value": "black"},
-              "x": {"value": 0},
-              "x2": {"field": {"group": "width"}},
+              "x": {"field": {"group": "width"}},
+              "x2": {"value": 0},
               "y": {"scale": "y", "field": "median_median_y_by_b"}
             }
           }

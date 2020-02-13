@@ -22,13 +22,13 @@ export const rule: MarkCompiler = {
         size: 'ignore'
       }),
       ...encode.pointOrRangePosition('x', model, {
-        defaultPos: orient === 'horizontal' ? 'zeroOrMin' : 'mid',
-        defaultPos2: 'zeroOrMax',
+        defaultPos: orient === 'horizontal' ? 'zeroOrMax' : 'mid',
+        defaultPos2: 'zeroOrMin',
         range: orient !== 'vertical' // include x2 for horizontal or line segment rule
       }),
       ...encode.pointOrRangePosition('y', model, {
-        defaultPos: orient === 'vertical' ? 'zeroOrMin' : 'mid',
-        defaultPos2: 'zeroOrMax',
+        defaultPos: orient === 'vertical' ? 'zeroOrMax' : 'mid',
+        defaultPos2: 'zeroOrMin',
         range: orient !== 'horizontal' // include y2 for vertical or line segment rule
       }),
       ...encode.nonPosition('size', model, {
