@@ -4448,6 +4448,10 @@
           ],
           "type": "string"
         },
+        "font": {
+          "description": "Default font for all text marks, titles, and labels.",
+          "type": "string"
+        },
         "geoshape": {
           "$ref": "#/definitions/MarkConfig",
           "description": "Geoshape-Specific Config"
@@ -4992,6 +4996,44 @@
         "spectral-11"
       ],
       "type": "string"
+    },
+    "DomainUnionWith": {
+      "additionalProperties": false,
+      "properties": {
+        "unionWith": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "boolean"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/DateTime"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Customized domain values to be union with the field's values.\n\n1) `domain` for _quantitative_ fields can take one of the following forms:\n\n- a two-element array with minimum and maximum values.\n- an array with more than two entries, for [Piecewise  quantitative scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). (Alternatively, the `domainMid` property can be set for a diverging scale.)\n- a string value `\"unaggregated\"`, if the input field is aggregated, to indicate that the domain should include the raw data values prior to the aggregation.\n\n2) `domain` for _temporal_ fields can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](https://vega.github.io/vega-lite/docs/types.html#datetime).\n\n3) `domain` for _ordinal_ and _nominal_ fields can be an array that lists valid input values."
+        }
+      },
+      "required": [
+        "unionWith"
+      ],
+      "type": "object"
     },
     "DsvDataFormat": {
       "additionalProperties": false,
@@ -7900,72 +7942,6 @@
         }
       ],
       "description": "Any specification in Vega-Lite."
-    },
-    "GenericUnitSpec<Encoding,AnyMark>": {
-      "additionalProperties": false,
-      "description": "Base interface for a unit (single-view) specification.",
-      "properties": {
-        "data": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Data"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "encoding": {
-          "$ref": "#/definitions/Encoding",
-          "description": "A key-value mapping between encoding channels and definition of fields."
-        },
-        "mark": {
-          "$ref": "#/definitions/AnyMark",
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "projection": {
-          "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
-        },
-        "selection": {
-          "additionalProperties": {
-            "$ref": "#/definitions/SelectionDef"
-          },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "mark"
-      ],
-      "type": "object"
     },
     "VConcatSpec": {
       "additionalProperties": false,
@@ -13591,9 +13567,12 @@
             },
             {
               "$ref": "#/definitions/SelectionExtent"
+            },
+            {
+              "$ref": "#/definitions/DomainUnionWith"
             }
           ],
-          "description": "Customized domain values.\n\nFor _quantitative_ fields, `domain` can take the form of a two-element array with minimum and maximum values. [Piecewise scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise) can be created by providing a `domain` with more than two entries.\nIf the input field is aggregated, `domain` can also be a string value `\"unaggregated\"`, indicating that the domain should include the raw data values prior to the aggregation.\n\nFor _temporal_ fields, `domain` can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](https://vega.github.io/vega-lite/docs/types.html#datetime).\n\nFor _ordinal_ and _nominal_ fields, `domain` can be an array that lists valid input values.\n\nThe `selection` property can be used to [interactively determine](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain."
+          "description": "Customized domain values in the form of constant values or dynamic values driven by a selection.\n\n1) Constant `domain` for _quantitative_ fields can take one of the following forms:\n\n- A two-element array with minimum and maximum values. To create a diverging scale, this two-element array can be combined with the `domainMid` property.\n- An array with more than two entries, for [Piecewise quantitative scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise).\n- A string value `\"unaggregated\"`, if the input field is aggregated, to indicate that the domain should include the raw data values prior to the aggregation.\n\n2) Constant `domain` for _temporal_ fields can be a two-element array with minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](https://vega.github.io/vega-lite/docs/types.html#datetime).\n\n3) Constant `domain` for _ordinal_ and _nominal_ fields can be an array that lists valid input values.\n\n4) To combine (union) specified constant domain with the field's values, `domain` can be an object with a `unionWith` property that specify constant domain to be combined. For example, `domain: {unionWith: [0, 100]}` for a quantitative scale means that the scale domain always includes `[0, 100]`, but will include other values in the fields beyond `[0, 100]`.\n\n5) Domain can also takes an object defining a field or encoding of a selection that [interactively determines](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain."
         },
         "domainMid": {
           "description": "Inserts a single mid-point value into a two-element domain. The mid-point value must lie between the domain minimum and maximum values. This property can be useful for setting a midpoint for [diverging color scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). The domainMid property is only intended for use with scales supporting continuous, piecewise domains.",
@@ -16671,8 +16650,108 @@
       "type": "object"
     },
     "UnitSpec": {
-      "$ref": "#/definitions/GenericUnitSpec<Encoding,AnyMark>",
-      "description": "A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types)."
+      "additionalProperties": false,
+      "description": "A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types).",
+      "properties": {
+        "data": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
+        },
+        "description": {
+          "description": "Description of this mark for commenting purpose.",
+          "type": "string"
+        },
+        "encoding": {
+          "$ref": "#/definitions/Encoding",
+          "description": "A key-value mapping between encoding channels and definition of fields."
+        },
+        "height": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Step"
+            }
+          ],
+          "description": "__Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec."
+        },
+        "mark": {
+          "$ref": "#/definitions/AnyMark",
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
+        },
+        "name": {
+          "description": "Name of the visualization for later reference.",
+          "type": "string"
+        },
+        "projection": {
+          "$ref": "#/definitions/Projection",
+          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
+        },
+        "selection": {
+          "additionalProperties": {
+            "$ref": "#/definitions/SelectionDef"
+          },
+          "description": "A key-value mapping between selection names and definitions.",
+          "type": "object"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
+        "transform": {
+          "description": "An array of data transformations such as filter and new field calculation.",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          },
+          "type": "array"
+        },
+        "view": {
+          "$ref": "#/definitions/ViewBackground",
+          "description": "__Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec."
+        },
+        "width": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "enum": [
+                "container"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Step"
+            }
+          ],
+          "description": "__Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec."
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "type": "object"
     },
     "UnitSpecWithFrame": {
       "additionalProperties": false,
@@ -17471,8 +17550,7 @@
           "type": "number"
         },
         "height": {
-          "deprecated": "Since Vega-Lite 4.0. Please use continuousHeight and discreteHeight instead.",
-          "description": "Default height",
+          "description": "Default height\n\n__Deprecated:__ Since Vega-Lite 4.0. Please use continuousHeight and discreteHeight instead.",
           "type": "number"
         },
         "opacity": {
@@ -17531,8 +17609,7 @@
           "type": "number"
         },
         "width": {
-          "deprecated": "Since Vega-Lite 4.0. Please use continuousWidth and discreteWidth instead.",
-          "description": "Default width",
+          "description": "Default width\n\n__Deprecated:__ Since Vega-Lite 4.0. Please use continuousWidth and discreteWidth instead.",
           "type": "number"
         }
       },
