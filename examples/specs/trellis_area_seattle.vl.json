@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "Derived from https://vega.github.io/vega/examples/annual-temperature/",
+  "description": "Average temperatures in Seattle, broken down by hour. Derived from [Seattle Annual Temperate](https://vega.github.io/vega/examples/annual-temperature/) example from the Vega example gallery.",
   "width": 800,
   "height": 25,
   "data": {
