@@ -3,7 +3,7 @@
 set -eu
 
 if [[ $1 == "vega-lite" ]]; then
-  npm list vega-lite | head -n 1 | sed 's/.*@//' | awk '{print $1}'
+  node -p "require('./package.json').version"
 else
-  npm list $1 | tail -n 2 | head -n 1 | sed 's/.*@//' | awk '{print $1}'
+  node -p "require('./node_modules/$1/package.json').version"
 fi
