@@ -8,6 +8,21 @@
   },
   "mark": "area",
   "title": "Seattle Annual Temperatures",
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "grid": false,
+      "domain": false
+    },
+    "headerRow": {
+      "labelAngle": 0,
+      "labelPadding": -40,
+      "titlePadding": -5,
+      "labelExpr": "hours(datum.value) == 0 ? 'Midnight' : hours(datum.value) == 12 ? 'Noon' : timeFormat(datum.value, '%I:%M %p')"
+    }
+  },
   "encoding": {
     "x": {
       "field": "date",
@@ -42,6 +57,7 @@
       "timeUnit": "hours",
       "type": "nominal",
       "spacing": 1,
+      "title": "Hour",
       "sort": [
         6,
         7,
@@ -67,26 +83,7 @@
         3,
         4,
         5
-      ],
-      "axis": {
-        "title": "Hour",
-        "labels": false
-      },
-      "header": {
-        "title": null,
-        "labelAngle": 0,
-        "labelPadding": -40,
-        "labelExpr": "hours(datum.value) == 0 ? 'Midnight ' : hours(datum.value) == 12 ? 'Noon   ' : timeFormat(datum.value, '%I:%M %p')"
-      }
-    }
-  },
-  "config": {
-    "view": {
-      "stroke": null
-    },
-    "axis": {
-      "grid": false,
-      "domain": false
+      ]
     }
   }
 }
