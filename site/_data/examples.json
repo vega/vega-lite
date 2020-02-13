@@ -90,7 +90,6 @@
         "name": "histogram_log",
         "title": "Log-scaled Histogram"
       },
-
       {
         "name": "area_density",
         "title": "Density Plot"
@@ -577,6 +576,10 @@
       {
         "name": "trellis_area",
         "title": "Trellis Area"
+      },
+      {
+        "name": "trellis_area_seattle",
+        "title": "Trellis Area Plot Showing Annual Temperatures in Seattle"
       },
       {
         "name": "area_density_facet",

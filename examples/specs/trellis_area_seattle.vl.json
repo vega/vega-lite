@@ -1,0 +1,92 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "Derived from https://vega.github.io/vega/examples/annual-temperature/",
+  "width": 800,
+  "height": 25,
+  "data": {
+    "url": "data/seattle-temps.csv"
+  },
+  "mark": "area",
+  "title": "Seattle Annual Temperatures",
+  "encoding": {
+    "x": {
+      "field": "date",
+      "type": "temporal",
+      "title": "Month",
+      "axis": {
+        "grid": false,
+        "labelExpr": "timeFormat(datum.value, '%b')"
+      }
+    },
+    "y": {
+      "field": "temp",
+      "type": "quantitative",
+      "scale": {
+        "domain": [
+          37.5,
+          75.9
+        ],
+        "padding": 0,
+        "zero": false,
+        "nice": false
+      },
+      "axis": {
+        "grid": false,
+        "title": null,
+        "labels": false,
+        "ticks": false
+      }
+    },
+    "row": {
+      "field": "date",
+      "timeUnit": "hours",
+      "type": "nominal",
+      "spacing": 1,
+      "sort": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "axis": {
+        "title": "Hour",
+        "labels": false
+      },
+      "header": {
+        "title": null,
+        "labelAngle": 0,
+        "labelPadding": -40,
+        "labelExpr": "hours(datum.value) == 0 ? 'Midnight ' : hours(datum.value) == 12 ? 'Noon   ' : timeFormat(datum.value, '%I:%M %p')"
+      }
+    }
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "grid": false,
+      "domain": false
+    }
+  }
+}
