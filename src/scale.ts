@@ -1,4 +1,4 @@
-import {RangeEnum} from 'vega-typings';
+import {RangeEnum, SignalRef} from 'vega-typings';
 import {isString, toSet} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, CHANNELS, isColorChannel} from './channel';
@@ -486,7 +486,7 @@ export interface Scale {
    *
    * @hidden
    */
-  reverse?: boolean;
+  reverse?: boolean | SignalRef;
 
   /**
    * The range of the scale. One of:

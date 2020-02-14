@@ -131,7 +131,7 @@ export function interpolatedSignalRef({
   fieldDef: TypedFieldDef<string>;
   fieldDef2?: SecondaryFieldDef<string>;
   startSuffix?: string;
-  offset: number;
+  offset: number | SignalRef;
   band: number;
 }) {
   const expr = 0 < band && band < 1 ? 'datum' : undefined;
