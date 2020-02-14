@@ -39,7 +39,6 @@ export class ScaleComponent extends Split<ScaleComponentProps> {
   }
 }
 
-// Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-export type ScaleComponentIndex = {[P in ScaleChannel]?: ScaleComponent};
+export type ScaleComponentIndex = Partial<Record<ScaleChannel, ScaleComponent>>;
 
-export type ScaleIndex = {[P in ScaleChannel]?: Scale};
+export type ScaleIndex = Partial<Record<ScaleChannel, Scale>>;

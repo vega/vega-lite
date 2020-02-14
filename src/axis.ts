@@ -290,15 +290,12 @@ export const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'tit
 
 /**
  * A dictionary listing whether a certain axis property is applicable for only main axes or only grid axes.
- * (Properties not listed are applicable for both)
  */
-export const AXIS_PROPERTY_TYPE: {
-  // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-  [k in keyof VgAxis]: 'main' | 'grid' | 'both';
-} = {
+export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> = {
   grid: 'grid',
   gridColor: 'grid',
   gridDash: 'grid',
+  gridDashOffset: 'grid',
   gridOpacity: 'grid',
   gridScale: 'grid',
   gridWidth: 'grid',
@@ -308,6 +305,8 @@ export const AXIS_PROPERTY_TYPE: {
   bandPosition: 'both', // Need to be applied to grid axis too, so the grid will align with ticks.
   domain: 'main',
   domainColor: 'main',
+  domainDash: 'main',
+  domainDashOffset: 'main',
   domainOpacity: 'main',
   domainWidth: 'main',
   format: 'main',
@@ -321,18 +320,25 @@ export const AXIS_PROPERTY_TYPE: {
   labelFlushOffset: 'main',
   labelFont: 'main',
   labelFontSize: 'main',
+  labelFontStyle: 'main',
   labelFontWeight: 'main',
+
   labelLimit: 'main',
   labelOpacity: 'main',
   labelOverlap: 'main',
   labelPadding: 'main',
   labels: 'main',
+  labelSeparation: 'main',
   maxExtent: 'main',
   minExtent: 'main',
   offset: 'both',
   position: 'main',
+  tickBand: 'main',
   tickColor: 'main',
+  tickDash: 'main',
+  tickDashOffset: 'main',
   tickExtra: 'main',
+  tickMinStep: 'main',
   tickOffset: 'both', // Need to be applied to grid axis too, so the grid will align with ticks.
   tickOpacity: 'main',
   tickRound: 'main',
@@ -340,11 +346,13 @@ export const AXIS_PROPERTY_TYPE: {
   tickSize: 'main',
   title: 'main',
   titleAlign: 'main',
+  titleAnchor: 'main',
   titleAngle: 'main',
   titleBaseline: 'main',
   titleColor: 'main',
   titleFont: 'main',
   titleFontSize: 'main',
+  titleFontStyle: 'main',
   titleFontWeight: 'main',
   titleLimit: 'main',
   titleLineHeight: 'main',
@@ -353,10 +361,12 @@ export const AXIS_PROPERTY_TYPE: {
   titleX: 'main',
   titleY: 'main',
 
-  tickWidth: 'both',
-  tickCount: 'both',
-  values: 'both',
+  encode: 'both', // we hide this in Vega-Lite
   scale: 'both',
+  tickCount: 'both',
+  tickWidth: 'both',
+  translate: 'both',
+  values: 'both',
   zindex: 'both' // this is actually set afterward, so it doesn't matter
 };
 

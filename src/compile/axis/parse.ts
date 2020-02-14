@@ -25,7 +25,7 @@ export function parseUnitAxes(model: UnitModel): AxisComponentIndex {
   }, {} as AxisComponentIndex);
 }
 
-const OPPOSITE_ORIENT: {[K in AxisOrient]: AxisOrient} = {
+const OPPOSITE_ORIENT: Record<AxisOrient, AxisOrient> = {
   bottom: 'top',
   top: 'bottom',
   left: 'right',
@@ -34,10 +34,7 @@ const OPPOSITE_ORIENT: {[K in AxisOrient]: AxisOrient} = {
 
 export function parseLayerAxes(model: LayerModel) {
   const {axes, resolve} = model.component;
-  const axisCount: {
-    // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-    [k in AxisOrient]: number;
-  } = {top: 0, bottom: 0, right: 0, left: 0};
+  const axisCount: Record<AxisOrient, number> = {top: 0, bottom: 0, right: 0, left: 0};
 
   for (const child of model.children) {
     child.parseAxesAndHeaders();

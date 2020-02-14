@@ -24,8 +24,8 @@ export interface SelectionProjection {
 }
 
 export class SelectionProjectionComponent {
-  public hasChannel: {[key in SingleDefUnitChannel]?: SelectionProjection};
-  public hasField: {[k: string]: SelectionProjection};
+  public hasChannel: Partial<Record<SingleDefUnitChannel, SelectionProjection>>;
+  public hasField: Record<string, SelectionProjection>;
   public timeUnit?: TimeUnitNode;
   public items: SelectionProjection[];
 

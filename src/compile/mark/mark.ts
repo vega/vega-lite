@@ -20,7 +20,7 @@ import {rule} from './rule';
 import {text} from './text';
 import {tick} from './tick';
 
-const markCompiler: {[m in Mark]: MarkCompiler} = {
+const markCompiler: Record<Mark, MarkCompiler> = {
   area,
   bar,
   circle,
