@@ -208,6 +208,36 @@ describe('Axis', () => {
       expect(axisComponent['x'][0].explicit.title).toBe('foo');
     });
 
+    it('should produces correct axis encode', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {
+            field: 'a',
+            type: 'quantitative',
+            axis: {
+              encoding: {
+                labels: {
+                  dx: {signal: 'a'},
+                  dy: {value: 2}
+                }
+              }
+            }
+          }
+        }
+      });
+      const axisComponent = parseUnitAxes(model);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].explicit.encode).toEqual({
+        labels: {
+          update: {
+            dx: {signal: 'a'},
+            dy: {value: 2}
+          }
+        }
+      });
+    });
+
     it('should merge title of fieldDef and fieldDef2', () => {
       const model = parseUnitModelWithScale({
         mark: 'bar',
