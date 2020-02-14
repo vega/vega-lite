@@ -212,6 +212,24 @@ function rectBandPosition(
   };
 }
 
+function getBinSpacing(channel: PositionChannel, spacing: number, reverse: boolean | SignalRef) {
+  if (isSignalRef(reverse)) {
+    if (channel === 'x' || channel === 'y2') {
+      return {signal: `${reverse.signal} ? ${spacing} : 0`};
+    } else {
+      return {signal: `${reverse.signal} ? 0 : ${spacing}`};
+    }
+  } else {
+    const spacingIndex = {
+      x: reverse ? spacing : 0,
+      x2: reverse ? 0 : spacing,
+      y: reverse ? 0 : spacing,
+      y2: reverse ? spacing : 0
+    };
+    return spacingIndex[channel];
+  }
+}
+
 export function rectBinPosition({
   fieldDef,
   fieldDef2,
@@ -231,23 +249,6 @@ export function rectBinPosition({
   spacing?: number;
   reverse: boolean | SignalRef;
 }) {
-  const binSpacing = isSignalRef(reverse)
-    ? {
-        signal:
-          `{` +
-          `"x": ${reverse.signal} ? ${spacing} : 0,` +
-          `"x2": ${reverse.signal} ? 0 : ${spacing},` +
-          `"y": ${reverse.signal} ? 0 : ${spacing},` +
-          `"y2": ${reverse.signal} ? ${spacing} : 0` +
-          `}`
-      }
-    : ({
-        x: reverse ? spacing : 0,
-        x2: reverse ? 0 : spacing,
-        y: reverse ? 0 : spacing,
-        y2: reverse ? spacing : 0
-      } as const);
-
   const channel2 = channel === X ? X2 : Y2;
   if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {
@@ -257,7 +258,7 @@ export function rectBinPosition({
         scaleName,
         markDef,
         band: (1 - band) / 2,
-        offset: isSignalRef(binSpacing) ? {signal: binSpacing.signal + `[${channel}2]`} : binSpacing[`${channel}2`]
+        offset: getBinSpacing(channel2, spacing, reverse)
       }),
       [channel]: rectBinRef({
         channel,
@@ -265,13 +266,13 @@ export function rectBinPosition({
         scaleName,
         markDef,
         band: 1 - (1 - band) / 2,
-        offset: isSignalRef(binSpacing) ? {signal: binSpacing.signal + `[${channel}]`} : binSpacing[`${channel}`]
+        offset: getBinSpacing(channel, spacing, reverse)
       })
     };
   } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
     return {
-      [channel2]: ref.fieldRef(fieldDef, scaleName, {}, {offset: binSpacing[`${channel}2`]}),
-      [channel]: ref.fieldRef(fieldDef2, scaleName, {}, {offset: binSpacing[channel]})
+      [channel2]: ref.fieldRef(fieldDef, scaleName, {}, {offset: getBinSpacing(channel2, spacing, reverse)}),
+      [channel]: ref.fieldRef(fieldDef2, scaleName, {}, {offset: getBinSpacing(channel, spacing, reverse)})
     };
   } else {
     log.warn(log.message.channelRequiredForBinned(channel2));
@@ -295,7 +296,7 @@ export function rectBinRef({
   scaleName: string;
   markDef: MarkDef<Mark>;
   band: number;
-  offset?: number;
+  offset?: number | SignalRef;
 }) {
   const r = ref.interpolatedSignalRef({
     scaleName,
